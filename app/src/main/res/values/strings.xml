@@ -1,0 +1,90 @@
+<resources>
+    <string name = "app_name">AnimaBuilder</string>
+    <string name = "nameText">Name:</string>
+    <string name = "classText">Class:</string>
+    <string name = "raceText">Race:</string>
+    <string name = "levelText">Level:</string>
+
+    <string name = "strText">STR:</string>
+    <string name = "dexText">DEX:</string>
+    <string name = "agiText">AGI:</string>
+    <string name = "conText">CON:</string>
+    <string name = "intText">INT:</string>
+    <string name = "powText">POW:</string>
+    <string name = "wpText">WP:</string>
+    <string name = "perText">PER:</string>
+
+    <string-array name = "classArray">
+        <item>Freelancer</item>
+        <item>Warrior</item>
+        <item>Acrobatic Warrior</item>
+        <item>Paladin</item>
+        <item>Dark Paladin</item>
+        <item>Weaponsmaster</item>
+        <item>Technician</item>
+        <item>Tao</item>
+        <item>Ranger</item>
+        <item>Shadow</item>
+        <item>Thief</item>
+        <item>Assassin</item>
+        <item>Wizard</item>
+        <item>Warlock</item>
+        <item>Illusionist</item>
+        <item>Wizard Mentalist</item>
+        <item>Summoner</item>
+        <item>Warrior Summoner</item>
+        <item>Mentalist</item>
+        <item>Warrior Mentalist</item>
+    </string-array>
+
+    <string-array name = "raceArray">
+        <item>Human</item>
+        <item>Sylvain</item>
+        <item>Jayan</item>
+        <item>D\'Anjayni</item>
+        <item>Ebudan</item>
+        <item>Daimah</item>
+        <item>Duk\'zarist</item>
+    </string-array>
+
+    <string-array name = "levelCountArray">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string name = "dpTotalLabel">\tTotal\t</string>
+    <string name = "dpCombatLabel">\tCombat\t</string>
+    <string name = "dpMagicLabel">\tMagic\t</string>
+    <string name = "dpPsychicLabel">\tPsychic\t</string>
+
+    <string name = "maxRowLabel">Max</string>
+    <string name = "usedRowLabel">Used</string>
+
+    <string name = "defaultScore">5</string>
+    <string name = "defaultMod">0</string>
+
+    <string name = "scoreLabel">Score</string>
+    <string name = "modLabel">Mod</string>
+
+    <string name = "modValue">%1$d</string>
+
+</resources>

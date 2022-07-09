@@ -2,21 +2,17 @@ package com.example.animabuilder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -27,10 +23,12 @@ public class CharacterPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_page);
 
+        //instantiate created character
         BaseCharacter charInstance = new BaseCharacter();
 
 
 
+        //find name input and get character's name if one found
         EditText nameInput = (EditText)findViewById(R.id.charNameEntry);
         nameInput.setText(charInstance.getCharName());
 
@@ -45,6 +43,7 @@ public class CharacterPageActivity extends AppCompatActivity {
 
         classSpinner.setAdapter(classAdapter);
 
+        //default to character's class
         classSpinner.setSelection(charInstance.getOwnClass().getClassIndex());
 
 
@@ -68,6 +67,29 @@ public class CharacterPageActivity extends AppCompatActivity {
         levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         levelSpinner.setAdapter(levelAdapter);
+
+
+
+        TextView maxDPDisplay = findViewById(R.id.maxDPCell);
+        TextView maxCombatDisplay = findViewById(R.id.maxCombatCell);
+        TextView maxMagDisplay = findViewById(R.id.maxMagCell);
+        TextView maxPsyDisplay = findViewById(R.id.maxPsyCell);
+
+        maxDPDisplay.setText(getString(R.string.intItem, charInstance.getDevPT()));
+        maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
+        maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
+        maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
+
+        TextView spentDPDisplay = findViewById(R.id.usedDPCell);
+        TextView spentCombatDisplay = findViewById(R.id.usedCombatCell);
+        TextView spentMagDisplay = findViewById(R.id.usedMagCell);
+        TextView spentPsyDisplay = findViewById(R.id.usedPsyCell);
+
+        spentDPDisplay.setText(getString(R.string.intItem, charInstance.getSpentTotal()));
+        spentCombatDisplay.setText(getString(R.string.intItem, charInstance.getPtInCombat()));
+        spentMagDisplay.setText(getString(R.string.intItem, charInstance.getPtInMag()));
+        spentPsyDisplay.setText(getString(R.string.intItem, charInstance.getPtInPsy()));
+
 
 
         //set integer range for characteristic inputs
@@ -97,6 +119,7 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
 
+        //get mod displays from the page
         TextView strMod = (TextView)findViewById(R.id.strMod);
         TextView dexMod = (TextView)findViewById(R.id.dexMod);
         TextView agiMod = (TextView)findViewById(R.id.agiMod);
@@ -108,6 +131,7 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
 
+        //set all listeners for characteristic change to make mod text change to corresponding value
         strScore.addTextChangedListener(new TextWatcher(){
 
             @Override
@@ -248,14 +272,27 @@ public class CharacterPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets the character's indicated value to the input value and alters the indicated mod display
+     * to the corresponding value
+     *
+     * @param userInput     EditText input for the characteristic score
+     * @param modOutput     TextView output for the characteristic mod
+     * @param valSetter     Corresponding setter function
+     * @param valGetter     Corresponding getter function
+     */
     private void applyModVal(EditText userInput, TextView modOutput,
                                 Consumer<Integer> valSetter, Supplier<Integer> valGetter){
 
+        //if integer value given
         if(!userInput.getText().toString().equals("")){
+            //chanage the indicated value in the character page
             valSetter.accept(Integer.parseInt(userInput.getText().toString()));
 
-            modOutput.setText(getString(R.string.modValue, valGetter.get()));
+            //get the indicated value from the character page
+            modOutput.setText(getString(R.string.intItem, valGetter.get()));
         }
+        //clear mod if text is empty
         else
             modOutput.setText("");
     }

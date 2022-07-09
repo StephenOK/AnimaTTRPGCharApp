@@ -85,6 +85,6 @@
     <string name = "scoreLabel">Score</string>
     <string name = "modLabel">Mod</string>
 
-    <string name = "modValue">%1$d</string>
+    <string name = "intItem">%1$d</string>
 
 </resources>

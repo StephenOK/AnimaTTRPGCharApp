@@ -30,8 +30,8 @@ public class CharClass {
 
     //primary ability block
     //combat block
-    int combatMax;
-    public int getCombatMax(){return combatMax;}
+    double combatMax;
+    public double getCombatMax(){return combatMax;}
 
     int atkGrowth;
     int blockGrowth;
@@ -53,8 +53,8 @@ public class CharClass {
 
 
     //supernatural block
-    int supernatMax;
-    public int getSupernatMax(){return supernatMax;}
+    double magMax;
+    public double getMagMax(){return magMax;}
 
     int zeonGrowth;
     int maGrowth;
@@ -78,8 +78,8 @@ public class CharClass {
 
 
     //psychic block
-    int psyMax;
-    public int getPsyMax(){return psyMax;}
+    double psyMax;
+    public double getPsyMax(){return psyMax;}
 
     int psyPointGrowth;
     int psyProjGrowth;
@@ -699,7 +699,7 @@ public class CharClass {
         mkPerLevel = statList[3];
         psyPerTurn = statList[4];
 
-        combatMax = statList[5];
+        combatMax = statList[5]/100.0;
         atkGrowth = statList[6];
         blockGrowth = statList[7];
         dodgeGrowth = statList[8];
@@ -707,7 +707,7 @@ public class CharClass {
         kiGrowth = statList[10];
         kiAccumMult = statList[11];
 
-        supernatMax = statList[12];
+        magMax = statList[12]/100.0;
         zeonGrowth = statList[13];
         maGrowth = statList[14];
         maProjGrowth = statList[15];
@@ -716,7 +716,7 @@ public class CharClass {
         bindGrowth = statList[18];
         banishGrowth = statList[19];
 
-        psyMax = statList[20];
+        psyMax = statList[20]/100.0;
         psyPointGrowth = statList[21];
         psyProjGrowth = statList[22];
 

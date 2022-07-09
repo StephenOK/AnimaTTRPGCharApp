@@ -1,15 +1,13 @@
 package com.example.animabuilder.CharacterCreation;
 
-import android.content.Context;
-
 import java.lang.Math;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.example.animabuilder.Armor;
-import com.example.animabuilder.CharRace;
 import com.example.animabuilder.CharacterCreation.Attributes.CharClass;
 import com.example.animabuilder.CharacterCreation.Attributes.ClassName;
+import com.example.animabuilder.CharacterCreation.Attributes.RaceName;
 import com.example.animabuilder.Weapon;
 
 public class BaseCharacter {
@@ -31,21 +29,37 @@ public class BaseCharacter {
     //character creation and development points
     int createPT;
     int devPT;
+    int spentTotal;
+
+    public int getDevPT() {return devPT;}
+    public int getSpentTotal() {return spentTotal;}
 
     //maximum point allotments to combat, magic, and psychic abilities
-    double maxCombatDP;
+    int maxCombatDP;
     double percCombatDP;
+    int ptInCombat;
 
-    double maxMagDP;
+    public int getMaxCombatDP(){return maxCombatDP;}
+    public int getPtInCombat(){return ptInCombat;}
+
+    int maxMagDP;
     double percMagDP;
+    int ptInMag;
 
-    double maxPsyDP;
+    public int getMaxMagDP(){return maxMagDP;}
+    public int getPtInMag(){return ptInMag;}
+
+    int maxPsyDP;
     double percPsyDP;
+    int ptInPsy;
+
+    public int getMaxPsyDP(){return maxPsyDP;}
+    public int getPtInPsy(){return ptInPsy;}
 
     private void dpAllotmentCalc(){
-        maxCombatDP = devPT * percCombatDP;
-        maxMagDP = devPT * percMagDP;
-        maxPsyDP = devPT * percPsyDP;
+        maxCombatDP = (int)(devPT * percCombatDP);
+        maxMagDP = (int)(devPT * percMagDP);
+        maxPsyDP = (int)(devPT * percPsyDP);
     }
 
     public void setLvl(int levNum){
@@ -180,7 +194,7 @@ public class BaseCharacter {
     public Supplier<Integer> getModPER = () -> modPER;
 
     CharClass ownClass;
-    CharRace ownRace;
+    RaceName ownRace;
 
     public CharClass getOwnClass(){
         return ownClass;
@@ -189,9 +203,9 @@ public class BaseCharacter {
     public void setOwnClass(ClassName classIn){
         ownClass = new CharClass(classIn);
     }
-    public CharRace getOwnRace() { return ownRace; }
-    
-    public void setOwnRace(CharRace raceIn){
+    public RaceName getOwnRace() { return ownRace; }
+
+    public void setOwnRace(RaceName raceIn){
         ownRace = raceIn;
     }
 
@@ -321,7 +335,11 @@ public class BaseCharacter {
 
     public BaseCharacter(){
         ownClass = new CharClass(ClassName.freelancer);
-        ownRace = CharRace.human;
+        ownRace = RaceName.human;
+
+        percCombatDP = ownClass.getCombatMax();
+        percMagDP = ownClass.getMagMax();
+        percPsyDP = ownClass.getPsyMax();
 
         setCharName("");
         setLvl(0);

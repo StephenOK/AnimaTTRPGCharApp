@@ -3,6 +3,10 @@ package com.example.animabuilder.CharacterCreation.Attributes;
 public class CharRace {
     int raceIndex;
 
+    public int getRaceIndex() {
+        return raceIndex;
+    }
+
     public CharRace(RaceName raceType){
         switch(raceType){
             case sylvain:

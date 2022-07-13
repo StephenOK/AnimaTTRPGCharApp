@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 
@@ -29,13 +33,13 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
         //find name input and get character's name if one found
-        EditText nameInput = (EditText)findViewById(R.id.charNameEntry);
+        EditText nameInput = findViewById(R.id.charNameEntry);
         nameInput.setText(charInstance.getCharName());
 
 
 
         //add class strings to dropdown menu
-        Spinner classSpinner = (Spinner)findViewById(R.id.classDropdown);
+        Spinner classSpinner = findViewById(R.id.classDropdown);
         ArrayAdapter<CharSequence> classAdapter = ArrayAdapter.createFromResource(this,
                 R.array.classArray, android.R.layout.simple_spinner_item);
 
@@ -47,8 +51,9 @@ public class CharacterPageActivity extends AppCompatActivity {
         classSpinner.setSelection(charInstance.getOwnClass().getClassIndex());
 
 
+
         //add race strings to dropdown menu
-        Spinner raceSpinner = (Spinner)findViewById(R.id.raceDropdown);
+        Spinner raceSpinner = findViewById(R.id.raceDropdown);
         ArrayAdapter<CharSequence> raceAdapter = ArrayAdapter.createFromResource(this,
                 R.array.raceArray, android.R.layout.simple_spinner_item);
 
@@ -56,11 +61,13 @@ public class CharacterPageActivity extends AppCompatActivity {
 
         raceSpinner.setAdapter(raceAdapter);
 
+        raceSpinner.setSelection(charInstance.getOwnRace().getRaceIndex());
+
 
 
 
         //add level strings to dropdown menu
-        Spinner levelSpinner = (Spinner)findViewById(R.id.levelDropdown);
+        Spinner levelSpinner = findViewById(R.id.levelDropdown);
         ArrayAdapter<CharSequence> levelAdapter = ArrayAdapter.createFromResource(this,
                 R.array.levelCountArray, android.R.layout.simple_spinner_item);
 
@@ -92,42 +99,78 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
 
+        classSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                charInstance.setOwnClass(classSpinner.getSelectedItem().toString());
+
+                maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
+                maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
+                maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        levelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                charInstance.setLvl(Integer.parseInt(levelSpinner.getSelectedItem().toString()));
+
+                maxDPDisplay.setText(getString(R.string.intItem, charInstance.getDevPT()));
+                maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
+                maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
+                maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
         //set integer range for characteristic inputs
-        EditText strScore = (EditText)findViewById(R.id.strScore);
+        EditText strScore = findViewById(R.id.strScore);
         strScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText dexScore = (EditText)findViewById(R.id.dexScore);
+        EditText dexScore = findViewById(R.id.dexScore);
         dexScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText agiScore = (EditText)findViewById(R.id.agiScore);
+        EditText agiScore = findViewById(R.id.agiScore);
         agiScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText conScore = (EditText)findViewById(R.id.conScore);
+        EditText conScore = findViewById(R.id.conScore);
         conScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText intScore = (EditText)findViewById(R.id.intScore);
+        EditText intScore = findViewById(R.id.intScore);
         intScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText powScore = (EditText)findViewById(R.id.powScore);
+        EditText powScore = findViewById(R.id.powScore);
         powScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText wpScore = (EditText)findViewById(R.id.wpScore);
+        EditText wpScore = findViewById(R.id.wpScore);
         wpScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText perScore = (EditText)findViewById(R.id.perScore);
+        EditText perScore = findViewById(R.id.perScore);
         perScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
 
 
         //get mod displays from the page
-        TextView strMod = (TextView)findViewById(R.id.strMod);
-        TextView dexMod = (TextView)findViewById(R.id.dexMod);
-        TextView agiMod = (TextView)findViewById(R.id.agiMod);
-        TextView conMod = (TextView)findViewById(R.id.conMod);
-        TextView intMod = (TextView)findViewById(R.id.intMod);
-        TextView powMod = (TextView)findViewById(R.id.powMod);
-        TextView wpMod = (TextView)findViewById(R.id.wpMod);
-        TextView perMod = (TextView)findViewById(R.id.perMod);
+        TextView strMod = findViewById(R.id.strMod);
+        TextView dexMod = findViewById(R.id.dexMod);
+        TextView agiMod = findViewById(R.id.agiMod);
+        TextView conMod = findViewById(R.id.conMod);
+        TextView intMod = findViewById(R.id.intMod);
+        TextView powMod = findViewById(R.id.powMod);
+        TextView wpMod = findViewById(R.id.wpMod);
+        TextView perMod = findViewById(R.id.perMod);
 
 
 

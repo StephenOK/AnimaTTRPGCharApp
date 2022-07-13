@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.example.animabuilder.Armor;
 import com.example.animabuilder.CharacterCreation.Attributes.CharClass;
+import com.example.animabuilder.CharacterCreation.Attributes.CharRace;
 import com.example.animabuilder.CharacterCreation.Attributes.ClassName;
 import com.example.animabuilder.CharacterCreation.Attributes.RaceName;
 import com.example.animabuilder.Weapon;
@@ -194,7 +195,7 @@ public class BaseCharacter {
     public Supplier<Integer> getModPER = () -> modPER;
 
     CharClass ownClass;
-    RaceName ownRace;
+    CharRace ownRace;
 
     public CharClass getOwnClass(){
         return ownClass;
@@ -202,11 +203,25 @@ public class BaseCharacter {
 
     public void setOwnClass(ClassName classIn){
         ownClass = new CharClass(classIn);
+        adjustMaxValues();
     }
-    public RaceName getOwnRace() { return ownRace; }
+    public void setOwnClass(String className){
+        ownClass = new CharClass(ClassName.fromString(className));
+        adjustMaxValues();
+    }
+
+    private void adjustMaxValues(){
+        percCombatDP = ownClass.getCombatMax();
+        percMagDP = ownClass.getMagMax();
+        percPsyDP = ownClass.getPsyMax();
+
+        dpAllotmentCalc();
+    }
+
+    public CharRace getOwnRace() { return ownRace; }
 
     public void setOwnRace(RaceName raceIn){
-        ownRace = raceIn;
+        ownRace = new CharRace(raceIn);
     }
 
     private void updateClassValues(){
@@ -334,12 +349,8 @@ public class BaseCharacter {
 
 
     public BaseCharacter(){
-        ownClass = new CharClass(ClassName.freelancer);
-        ownRace = RaceName.human;
-
-        percCombatDP = ownClass.getCombatMax();
-        percMagDP = ownClass.getMagMax();
-        percPsyDP = ownClass.getPsyMax();
+        setOwnClass(ClassName.freelancer);
+        setOwnRace(RaceName.human);
 
         setCharName("");
         setLvl(0);

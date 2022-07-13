@@ -103,6 +103,10 @@
 
             </TableLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
             <TableLayout
                 android:id="@+id/maxDistTable"
                 android:layout_width="wrap_content"
@@ -221,6 +225,10 @@
                 </TableRow>
 
             </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
             <TableLayout
                 android:id="@+id/characteristicTable"

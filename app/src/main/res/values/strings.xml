@@ -1,20 +1,24 @@
 <resources>
-    <string name = "app_name">AnimaBuilder</string>
-    <string name = "nameText">Name:</string>
-    <string name = "classText">Class:</string>
-    <string name = "raceText">Race:</string>
-    <string name = "levelText">Level:</string>
+    <string name="app_name">AnimaBuilder</string>
 
-    <string name = "strText">STR:</string>
-    <string name = "dexText">DEX:</string>
-    <string name = "agiText">AGI:</string>
-    <string name = "conText">CON:</string>
-    <string name = "intText">INT:</string>
-    <string name = "powText">POW:</string>
-    <string name = "wpText">WP:</string>
-    <string name = "perText">PER:</string>
+    <string name="nameText">Name:</string>
+    <string name="classText">Class:</string>
+    <string name="raceText">Race:</string>
+    <string name="levelText">Level:</string>
 
-    <string-array name = "classArray">
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <string name="strText">STR:</string>
+    <string name="dexText">DEX:</string>
+    <string name="agiText">AGI:</string>
+    <string name="conText">CON:</string>
+    <string name="intText">INT:</string>
+    <string name="powText">POW:</string>
+    <string name="wpText">WP:</string>
+    <string name="perText">PER:</string>
+
+    <string-array name="classArray">
         <item>Freelancer</item>
         <item>Warrior</item>
         <item>Acrobatic Warrior</item>
@@ -37,7 +41,7 @@
         <item>Warrior Mentalist</item>
     </string-array>
 
-    <string-array name = "raceArray">
+    <string-array name="raceArray">
         <item>Human</item>
         <item>Sylvain</item>
         <item>Jayan</item>
@@ -47,7 +51,7 @@
         <item>Duk\'zarist</item>
     </string-array>
 
-    <string-array name = "levelCountArray">
+    <string-array name="levelCountArray">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -71,20 +75,20 @@
         <item>20</item>
     </string-array>
 
-    <string name = "dpTotalLabel">\tTotal\t</string>
-    <string name = "dpCombatLabel">\tCombat\t</string>
-    <string name = "dpMagicLabel">\tMagic\t</string>
-    <string name = "dpPsychicLabel">\tPsychic\t</string>
+    <string name="dpTotalLabel">\tTotal\t</string>
+    <string name="dpCombatLabel">\tCombat\t</string>
+    <string name="dpMagicLabel">\tMagic\t</string>
+    <string name="dpPsychicLabel">\tPsychic\t</string>
 
-    <string name = "maxRowLabel">Max</string>
-    <string name = "usedRowLabel">Used</string>
+    <string name="maxRowLabel">Max</string>
+    <string name="usedRowLabel">Used</string>
 
-    <string name = "defaultScore">5</string>
-    <string name = "defaultMod">0</string>
+    <string name="defaultScore">5</string>
+    <string name="defaultMod">0</string>
 
-    <string name = "scoreLabel">Score</string>
-    <string name = "modLabel">Mod</string>
+    <string name="scoreLabel">Score</string>
+    <string name="modLabel">Mod</string>
 
-    <string name = "intItem">%1$d</string>
+    <string name="intItem">%1$d</string>
 
 </resources>

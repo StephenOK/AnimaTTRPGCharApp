@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id = "@+id/mainCharPageButton"
+        android:title = "Main Characteristics"/>
+
+    <item
+        android:id = "@+id/combatPageButton"
+        android:title = "Combat"/>
+
+    <item
+        android:id = "@+id/magicPageButton"
+        android:title = "Magic"/>
+
+    <item
+        android:id = "@+id/psychicPageButton"
+        android:title = "Psychic"/>
+
+    <item
+        android:id = "@+id/secondariesPageButton"
+        android:title = "Secondary Abilities"/>
+
+    <item
+        android:id = "@+id/equipmentPageButton"
+        android:title = "Equipment"/>
+</menu>

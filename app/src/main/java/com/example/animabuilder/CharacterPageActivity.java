@@ -1,11 +1,16 @@
 package com.example.animabuilder;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -16,16 +21,55 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class CharacterPageActivity extends AppCompatActivity {
 
+    public DrawerLayout pageDrawer;
+    public ActionBarDrawerToggle drawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_page);
+
+        pageDrawer = findViewById(R.id.charPageLayout);
+        drawerToggle = new ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close);
+
+        pageDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        NavigationView sideNav = findViewById(R.id.navViewSideBar);
+        sideNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.combatPageButton:
+                        startActivity(new Intent(CharacterPageActivity.this, CombatActivity.class));
+                        return true;
+                    case R.id.magicPageButton:
+                        startActivity(new Intent(CharacterPageActivity.this, MagicActivity.class));
+                        return true;
+                    case R.id.psychicPageButton:
+                        startActivity(new Intent(CharacterPageActivity.this, PsychicActivity.class));
+                        return true;
+                    case R.id.secondariesPageButton:
+                        startActivity(new Intent(CharacterPageActivity.this, SecondaryAbilityActivity.class));
+                        return true;
+                    case R.id.equipmentPageButton:
+                        startActivity(new Intent(CharacterPageActivity.this, EquipmentActivity.class));
+                        return true;
+                    default: return false;
+                }
+            }
+        });
+
+
 
         //instantiate created character
         BaseCharacter charInstance = new BaseCharacter();
@@ -338,5 +382,13 @@ public class CharacterPageActivity extends AppCompatActivity {
         //clear mod if text is empty
         else
             modOutput.setText("");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if(drawerToggle.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_character_page.xml" value="0.264" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_combat.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_magic.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_secondary_ability.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/menu/sidebar_nav.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

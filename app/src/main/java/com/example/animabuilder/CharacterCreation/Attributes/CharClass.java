@@ -7,6 +7,10 @@ import com.example.animabuilder.R;
 import java.util.Arrays;
 
 public class CharClass {
+    ClassName heldClass;
+
+    public ClassName getHeldClass(){return heldClass;}
+
     int classIndex;
 
     public int getClassIndex(){return classIndex;}
@@ -311,6 +315,8 @@ public class CharClass {
 
 
     public CharClass(ClassName classType){
+        heldClass = classType;
+
         int [] statBlock;
         switch(classType){
             case warrior:

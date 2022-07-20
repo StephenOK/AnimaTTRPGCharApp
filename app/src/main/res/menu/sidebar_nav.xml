@@ -25,4 +25,12 @@
     <item
         android:id = "@+id/equipmentPageButton"
         android:title = "Equipment"/>
+
+    <item android:id = "@+id/optionsButtons">
+        <menu>
+            <item
+                android:id = "@+id/saveButton"
+                android:title = "Save"/>
+        </menu>
+    </item>
 </menu>

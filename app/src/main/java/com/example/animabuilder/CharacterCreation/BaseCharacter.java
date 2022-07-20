@@ -1,6 +1,10 @@
 package com.example.animabuilder.CharacterCreation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.lang.Math;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -11,7 +15,7 @@ import com.example.animabuilder.CharacterCreation.Attributes.ClassName;
 import com.example.animabuilder.CharacterCreation.Attributes.RaceName;
 import com.example.animabuilder.Weapon;
 
-public class BaseCharacter {
+public class BaseCharacter implements Serializable {
     String charName;
 
     public void setCharName(String input){
@@ -354,5 +358,11 @@ public class BaseCharacter {
 
         setCharName("");
         setLvl(0);
+    }
+
+    public byte[] convertCharacter(){
+        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+
+        return byteArray.toByteArray();
     }
 }

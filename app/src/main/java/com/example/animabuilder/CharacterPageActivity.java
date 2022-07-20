@@ -36,6 +36,23 @@ public class CharacterPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_page);
 
+
+
+        String filename = getIntent().getStringExtra("filename");
+        boolean isNew = getIntent().getBooleanExtra("isNew", true);
+
+        BaseCharacter charInstance;
+
+        if(isNew){
+            charInstance = new BaseCharacter();
+        }
+
+        else{
+            charInstance = new BaseCharacter();
+        }
+
+
+
         pageDrawer = findViewById(R.id.charPageLayout);
         drawerToggle = new ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close);
 
@@ -45,34 +62,7 @@ public class CharacterPageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView sideNav = findViewById(R.id.navViewSideBar);
-        sideNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.combatPageButton:
-                        startActivity(new Intent(CharacterPageActivity.this, CombatActivity.class));
-                        return true;
-                    case R.id.magicPageButton:
-                        startActivity(new Intent(CharacterPageActivity.this, MagicActivity.class));
-                        return true;
-                    case R.id.psychicPageButton:
-                        startActivity(new Intent(CharacterPageActivity.this, PsychicActivity.class));
-                        return true;
-                    case R.id.secondariesPageButton:
-                        startActivity(new Intent(CharacterPageActivity.this, SecondaryAbilityActivity.class));
-                        return true;
-                    case R.id.equipmentPageButton:
-                        startActivity(new Intent(CharacterPageActivity.this, EquipmentActivity.class));
-                        return true;
-                    default: return false;
-                }
-            }
-        });
-
-
-
-        //instantiate created character
-        BaseCharacter charInstance = new BaseCharacter();
+        sideNav.setNavigationItemSelectedListener(new SideNavSelection(0, filename, this));
 
 
 
@@ -219,169 +209,14 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
         //set all listeners for characteristic change to make mod text change to corresponding value
-        strScore.addTextChangedListener(new TextWatcher(){
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(strScore, strMod, charInstance.setSTR, charInstance.getModSTR);
-            }
-        });
-
-        dexScore.addTextChangedListener(new TextWatcher(){
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(dexScore, dexMod, charInstance.setDEX, charInstance.getModDEX);
-            }
-        });
-
-        agiScore.addTextChangedListener(new TextWatcher(){
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(agiScore, agiMod, charInstance.setAGI, charInstance.getModAGI);
-            }
-        });
-
-        conScore.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(conScore, conMod, charInstance.setCON, charInstance.getModCON);
-            }
-        });
-
-        intScore.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(intScore, intMod, charInstance.setINT, charInstance.getModINT);
-            }
-        });
-
-        powScore.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(powScore, powMod, charInstance.setPOW, charInstance.getModPOW);
-            }
-        });
-
-        wpScore.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(wpScore, wpMod, charInstance.setWP, charInstance.getModWP);
-            }
-        });
-
-        perScore.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                applyModVal(perScore, perMod, charInstance.setPER, charInstance.getModPER);
-            }
-        });
-    }
-
-    /**
-     * Sets the character's indicated value to the input value and alters the indicated mod display
-     * to the corresponding value
-     *
-     * @param userInput     EditText input for the characteristic score
-     * @param modOutput     TextView output for the characteristic mod
-     * @param valSetter     Corresponding setter function
-     * @param valGetter     Corresponding getter function
-     */
-    private void applyModVal(EditText userInput, TextView modOutput,
-                                Consumer<Integer> valSetter, Supplier<Integer> valGetter){
-
-        //if integer value given
-        if(!userInput.getText().toString().equals("")){
-            //chanage the indicated value in the character page
-            valSetter.accept(Integer.parseInt(userInput.getText().toString()));
-
-            //get the indicated value from the character page
-            modOutput.setText(getString(R.string.intItem, valGetter.get()));
-        }
-        //clear mod if text is empty
-        else
-            modOutput.setText("");
+        strScore.addTextChangedListener(new CharacteristicInput(strScore, strMod, charInstance.setSTR, charInstance.getModSTR, this));
+        dexScore.addTextChangedListener(new CharacteristicInput(dexScore, dexMod, charInstance.setDEX, charInstance.getModDEX, this));
+        agiScore.addTextChangedListener(new CharacteristicInput(agiScore, agiMod, charInstance.setAGI, charInstance.getModAGI, this));
+        conScore.addTextChangedListener(new CharacteristicInput(conScore, conMod, charInstance.setCON, charInstance.getModCON, this));
+        intScore.addTextChangedListener(new CharacteristicInput(intScore, intMod, charInstance.setINT, charInstance.getModINT, this));
+        powScore.addTextChangedListener(new CharacteristicInput(powScore, powMod, charInstance.setPOW, charInstance.getModPOW, this));
+        wpScore.addTextChangedListener(new CharacteristicInput(wpScore, wpMod, charInstance.setWP, charInstance.getModWP,this));
+        perScore.addTextChangedListener(new CharacteristicInput(perScore, perMod, charInstance.setPER, charInstance.getModPER, this));
     }
 
     @Override

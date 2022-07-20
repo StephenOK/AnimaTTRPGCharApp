@@ -1,6 +1,12 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
 public class CharRace {
+    RaceName heldRace;
+    public RaceName getHeldRace(){
+        return heldRace;
+    }
+
+
     int raceIndex;
 
     public int getRaceIndex() {
@@ -8,6 +14,8 @@ public class CharRace {
     }
 
     public CharRace(RaceName raceType){
+        heldRace = raceType;
+
         switch(raceType){
             case sylvain:
                 raceIndex = 1;

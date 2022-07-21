@@ -3,18 +3,28 @@ package com.example.animabuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class SideNavSelection implements NavigationView.OnNavigationItemSelectedListener{
 
     int pageIndex;
+    String filename;
+    BaseCharacter saveObject;
     Context startPage;
 
-    public SideNavSelection(int pageIndex, String filenamae, Context startPage){
+    public SideNavSelection(int pageIndex, String filename, BaseCharacter saveObject, Context startPage){
         this.pageIndex = pageIndex;
+        this.filename = filename;
+        this.saveObject = saveObject;
         this.startPage = startPage;
     }
 
@@ -64,8 +74,18 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
                 break;
 
             case R.id.saveButton:
-
-                return false;
+                try {
+                    FileOutputStream saveStream = startPage.getApplicationContext().openFileOutput(filename, Context.MODE_PRIVATE);
+                    byte[] charData = saveObject.getBytes();
+                    saveStream.write(charData);
+                    saveStream.close();
+                }
+                catch (FileNotFoundException e) {
+                    Toast.makeText(startPage, "Unable to find file!", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(startPage, "Failed to write data!", Toast.LENGTH_SHORT).show();
+                }
+                return true;
 
             default: return false;
         }

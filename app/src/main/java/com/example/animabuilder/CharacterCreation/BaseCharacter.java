@@ -360,7 +360,7 @@ public class BaseCharacter implements Serializable {
         setLvl(0);
     }
 
-    public byte[] convertCharacter(){
+    public byte[] getBytes(){
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 
         return byteArray.toByteArray();

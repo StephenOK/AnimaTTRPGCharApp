@@ -62,7 +62,7 @@ public class CharacterPageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView sideNav = findViewById(R.id.navViewSideBar);
-        sideNav.setNavigationItemSelectedListener(new SideNavSelection(0, filename, this));
+        sideNav.setNavigationItemSelectedListener(new SideNavSelection(0, filename, charInstance, this));
 
 
 

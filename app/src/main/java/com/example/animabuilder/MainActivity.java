@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,42 +33,56 @@ public class MainActivity extends AppCompatActivity {
 
         Intent toNextPage = new Intent(MainActivity.this, CharacterPageActivity.class);
 
-        AlertDialog.Builder nameInputAlert = new AlertDialog.Builder(this);
-
-        EditText nameInput = new EditText(MainActivity.this);
-
-        nameInputAlert.setTitle("Save Character As:");
-        nameInputAlert.setView(nameInput);
-
-        LinearLayout nameInputLayout = new LinearLayout(this);
-        nameInputLayout.setOrientation(LinearLayout.VERTICAL);
-        nameInputLayout.addView(nameInput);
-        nameInputAlert.setView(nameInputLayout);
-
-        nameInputAlert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                BaseCharacter newInstance = new BaseCharacter();
-                toNextPage.putExtra("isNew", true);
-                toNextPage.putExtra("filename", nameInput.getText().toString());
-
-                startActivity(toNextPage);
-            }
-        });
-
-        nameInputAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
         Button newCharButton = (Button)findViewById(R.id.newCharButton);
         Button loadCharButton = (Button)findViewById(R.id.loadCharButton);
 
         newCharButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EditText nameInput = new EditText(MainActivity.this);
+                LinearLayout nameInputLayout = new LinearLayout(MainActivity.this);
+                nameInputLayout.setOrientation(LinearLayout.VERTICAL);
+                nameInputLayout.addView(nameInput);
+
+                AlertDialog nameInputAlert = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Save Character As:")
+                        .setView(nameInputLayout)
+                        .setPositiveButton("Save", null)
+                        .setNegativeButton("Cancel", null)
+                        .create();
+
+
+
+
+                nameInputAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button saveButton = ((AlertDialog)nameInputAlert).getButton(AlertDialog.BUTTON_POSITIVE);
+                        saveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(nameInput.getText().toString().compareTo("") == 0){
+                                    Toast.makeText(MainActivity.this, "File must have a name!", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    toNextPage.putExtra("isNew", true);
+                                    toNextPage.putExtra("filename", nameInput.getText().toString());
+
+                                    startActivity(toNextPage);
+                                }
+                            }
+                        });
+
+                        Button cancelButton = ((AlertDialog)nameInputAlert).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                nameInputAlert.dismiss();
+                            }
+                        });
+                    }
+                });
+
                 nameInputAlert.show();
             }
         });

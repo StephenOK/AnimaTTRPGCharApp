@@ -10,11 +10,15 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         Intent toNextPage = new Intent(MainActivity.this, CharacterPageActivity.class);
 
         Button newCharButton = (Button)findViewById(R.id.newCharButton);
@@ -39,15 +45,14 @@ public class MainActivity extends AppCompatActivity {
         newCharButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText nameInput = new EditText(MainActivity.this);
-                LinearLayout nameInputLayout = new LinearLayout(MainActivity.this);
-                nameInputLayout.setOrientation(LinearLayout.VERTICAL);
-                nameInputLayout.addView(nameInput);
+                View nameInputLayout = inflater.inflate(R.layout.new_char_alert, null, false);
+
+                TextView nameInput = nameInputLayout.findViewById(R.id.newCharInput);
 
                 AlertDialog nameInputAlert = new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Save Character As:")
                         .setView(nameInputLayout)
-                        .setPositiveButton("Save", null)
+                        .setPositiveButton("Create", null)
                         .setNegativeButton("Cancel", null)
                         .create();
 
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 nameInputAlert.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
-                        Button saveButton = ((AlertDialog)nameInputAlert).getButton(AlertDialog.BUTTON_POSITIVE);
+                        Button saveButton = nameInputAlert.getButton(AlertDialog.BUTTON_POSITIVE);
                         saveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        Button cancelButton = ((AlertDialog)nameInputAlert).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        Button cancelButton = nameInputAlert.getButton(AlertDialog.BUTTON_NEGATIVE);
                         cancelButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -90,7 +95,55 @@ public class MainActivity extends AppCompatActivity {
         loadCharButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(toNextPage);
+                final String[] returnName = new String[1];
+
+                View fileSelectionGroup = inflater.inflate(R.layout.load_char_alert, null, false);
+                RadioGroup selectionOptions = fileSelectionGroup.findViewById(R.id.loadOptions);
+
+                String[] allFiles = MainActivity.this.fileList();
+
+                for(String file: allFiles){
+                    RadioButton fileSelection = new RadioButton(MainActivity.this);
+                    fileSelection.setText(file);
+                    selectionOptions.addView(fileSelection);
+                }
+
+                selectionOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        returnName[0] = allFiles[(checkedId-1)%allFiles.length];
+                    }
+                });
+
+                AlertDialog findFileAlert = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Load Character:")
+                        .setView(fileSelectionGroup)
+                        .setPositiveButton("Load", null)
+                        .setNegativeButton("Cancel", null)
+                        .create();
+
+                findFileAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button loadButton = findFileAlert.getButton(AlertDialog.BUTTON_POSITIVE);
+                        loadButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(selectionOptions.getCheckedRadioButtonId() == -1){
+                                    Toast.makeText(MainActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    toNextPage.putExtra("isNew", false);
+                                    toNextPage.putExtra("filename", returnName[0]);
+                                    Toast.makeText(MainActivity.this, returnName[0], Toast.LENGTH_SHORT).show();
+                                    //startActivity(toNextPage);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                findFileAlert.show();
             }
         });
     }

@@ -82,9 +82,13 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
                 }
                 catch (FileNotFoundException e) {
                     Toast.makeText(startPage, "Unable to find file!", Toast.LENGTH_SHORT).show();
+                    return false;
                 } catch (IOException e) {
                     Toast.makeText(startPage, "Failed to write data!", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
+
+                Toast.makeText(startPage, "Save successful!", Toast.LENGTH_SHORT).show();
                 return true;
 
             default: return false;

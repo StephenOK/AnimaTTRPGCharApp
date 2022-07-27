@@ -23,6 +23,10 @@ import android.widget.Toast;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -41,14 +45,20 @@ public class CharacterPageActivity extends AppCompatActivity {
         String filename = getIntent().getStringExtra("filename");
         boolean isNew = getIntent().getBooleanExtra("isNew", true);
 
-        BaseCharacter charInstance;
+        BaseCharacter charInstance = new BaseCharacter();
 
-        if(isNew){
-            charInstance = new BaseCharacter();
-        }
+        if(!isNew){
+            try{
+                FileInputStream restoreChar = new FileInputStream(filename);
 
-        else{
-            charInstance = new BaseCharacter();
+                restoreChar.close();
+            }
+            catch (FileNotFoundException e) {
+                Toast.makeText(CharacterPageActivity.this, "File not found!", Toast.LENGTH_SHORT).show();
+            }
+            catch (IOException e) {
+                Toast.makeText(CharacterPageActivity.this, "Error in retreiving data!", Toast.LENGTH_SHORT).show();
+            }
         }
 
 

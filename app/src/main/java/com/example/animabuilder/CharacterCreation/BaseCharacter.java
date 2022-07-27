@@ -1,5 +1,6 @@
 package com.example.animabuilder.CharacterCreation;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.lang.Math;
@@ -362,6 +363,18 @@ public class BaseCharacter implements Serializable {
 
     public byte[] getBytes(){
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+
+        byteArray.write(charName.getBytes(), 0, charName.getBytes().length);
+        byteArray.write(ownClass.getHeldClass().name().getBytes(), 0, ownClass.getHeldClass().name().getBytes().length);
+
+        byteArray.write(STR);
+        byteArray.write(DEX);
+        byteArray.write(AGI);
+        byteArray.write(CON);
+        byteArray.write(INT);
+        byteArray.write(POW);
+        byteArray.write(WP);
+        byteArray.write(PER);
 
         return byteArray.toByteArray();
     }

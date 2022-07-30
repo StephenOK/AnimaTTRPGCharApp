@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -24,11 +23,9 @@ import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Objects;
 
 public class CharacterPageActivity extends AppCompatActivity {
 
@@ -45,22 +42,26 @@ public class CharacterPageActivity extends AppCompatActivity {
         String filename = getIntent().getStringExtra("filename");
         boolean isNew = getIntent().getBooleanExtra("isNew", true);
 
-        BaseCharacter charInstance = new BaseCharacter();
+        BaseCharacter charInstance;
 
         if(!isNew){
             try{
-                FileInputStream restoreChar = new FileInputStream(filename);
+                File inputFile = new File(this.getFilesDir(), filename);
 
-                restoreChar.close();
+                charInstance = new BaseCharacter(inputFile);
             }
             catch (FileNotFoundException e) {
                 Toast.makeText(CharacterPageActivity.this, "File not found!", Toast.LENGTH_SHORT).show();
+                charInstance = new BaseCharacter();
             }
             catch (IOException e) {
                 Toast.makeText(CharacterPageActivity.this, "Error in retreiving data!", Toast.LENGTH_SHORT).show();
+                charInstance = new BaseCharacter();
             }
         }
 
+        else
+            charInstance = new BaseCharacter();
 
 
         pageDrawer = findViewById(R.id.charPageLayout);
@@ -69,7 +70,7 @@ public class CharacterPageActivity extends AppCompatActivity {
         pageDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         NavigationView sideNav = findViewById(R.id.navViewSideBar);
         sideNav.setNavigationItemSelectedListener(new SideNavSelection(0, filename, charInstance, this));
@@ -79,6 +80,24 @@ public class CharacterPageActivity extends AppCompatActivity {
         //find name input and get character's name if one found
         EditText nameInput = findViewById(R.id.charNameEntry);
         nameInput.setText(charInstance.getCharName());
+
+        BaseCharacter finalCharInstance = charInstance;
+        nameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                finalCharInstance.setCharName(nameInput.getText().toString());
+            }
+        });
 
 
 
@@ -93,8 +112,6 @@ public class CharacterPageActivity extends AppCompatActivity {
 
         //default to character's class
         classSpinner.setSelection(charInstance.getOwnClass().getClassIndex());
-
-
 
         //add race strings to dropdown menu
         Spinner raceSpinner = findViewById(R.id.raceDropdown);
@@ -147,15 +164,27 @@ public class CharacterPageActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                charInstance.setOwnClass(classSpinner.getSelectedItem().toString());
+                finalCharInstance.setOwnClass(classSpinner.getSelectedItem().toString());
 
-                maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
-                maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
-                maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
+                maxCombatDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxCombatDP()));
+                maxMagDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxMagDP()));
+                maxPsyDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxPsyDP()));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        raceSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                finalCharInstance.setOwnRace(raceSpinner.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -163,12 +192,12 @@ public class CharacterPageActivity extends AppCompatActivity {
         levelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                charInstance.setLvl(Integer.parseInt(levelSpinner.getSelectedItem().toString()));
+                finalCharInstance.setLvl(Integer.parseInt(levelSpinner.getSelectedItem().toString()));
 
-                maxDPDisplay.setText(getString(R.string.intItem, charInstance.getDevPT()));
-                maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
-                maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
-                maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
+                maxDPDisplay.setText(getString(R.string.intItem, finalCharInstance.getDevPT()));
+                maxCombatDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxCombatDP()));
+                maxMagDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxMagDP()));
+                maxPsyDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxPsyDP()));
             }
 
             @Override
@@ -176,6 +205,8 @@ public class CharacterPageActivity extends AppCompatActivity {
 
             }
         });
+
+        levelSpinner.setSelection(finalCharInstance.getLvl());
 
 
 
@@ -227,6 +258,15 @@ public class CharacterPageActivity extends AppCompatActivity {
         powScore.addTextChangedListener(new CharacteristicInput(powScore, powMod, charInstance.setPOW, charInstance.getModPOW, this));
         wpScore.addTextChangedListener(new CharacteristicInput(wpScore, wpMod, charInstance.setWP, charInstance.getModWP,this));
         perScore.addTextChangedListener(new CharacteristicInput(perScore, perMod, charInstance.setPER, charInstance.getModPER, this));
+
+        strScore.setText(getString(R.string.intItem, finalCharInstance.getSTR()));
+        dexScore.setText(getString(R.string.intItem, finalCharInstance.getDEX()));
+        agiScore.setText(getString(R.string.intItem, finalCharInstance.getAGI()));
+        conScore.setText(getString(R.string.intItem, finalCharInstance.getCON()));
+        intScore.setText(getString(R.string.intItem, finalCharInstance.getINT()));
+        powScore.setText(getString(R.string.intItem, finalCharInstance.getPOW()));
+        wpScore.setText(getString(R.string.intItem, finalCharInstance.getWP()));
+        perScore.setText(getString(R.string.intItem, finalCharInstance.getPER()));
     }
 
     @Override

@@ -1,7 +1,12 @@
 package com.example.animabuilder.CharacterCreation;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.Math;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +23,8 @@ import com.example.animabuilder.Weapon;
 
 public class BaseCharacter implements Serializable {
     String charName;
+
+    ByteArrayOutputStream byteArray;
 
     public void setCharName(String input){
         charName = input;
@@ -162,6 +169,38 @@ public class BaseCharacter implements Serializable {
         modPER = getModVal(PER);
     };
 
+    public int getSTR() {
+        return STR;
+    }
+
+    public int getDEX(){
+        return DEX;
+    }
+
+    public int getAGI(){
+        return AGI;
+    }
+
+    public int getCON() {
+        return CON;
+    }
+
+    public int getINT() {
+        return INT;
+    }
+
+    public int getPOW() {
+        return POW;
+    }
+
+    public int getWP() {
+        return WP;
+    }
+
+    public int getPER() {
+        return PER;
+    }
+
     private int getModVal(int statVal){
         int output;
 
@@ -227,6 +266,9 @@ public class BaseCharacter implements Serializable {
 
     public void setOwnRace(RaceName raceIn){
         ownRace = new CharRace(raceIn);
+    }
+    public void setOwnRace(String raceName){
+        ownRace = new CharRace(RaceName.fromString(raceName));
     }
 
     private void updateClassValues(){
@@ -359,23 +401,66 @@ public class BaseCharacter implements Serializable {
 
         setCharName("");
         setLvl(0);
+
+        setSTR.accept(5);
+        setDEX.accept(5);
+        setAGI.accept(5);
+        setCON.accept(5);
+        setINT.accept(5);
+        setPOW.accept(5);
+        setWP.accept(5);
+        setPER.accept(5);
+    }
+
+    public BaseCharacter(File fileInput) throws IOException {
+        FileInputStream restoreChar = new FileInputStream(fileInput);
+        InputStreamReader readChar = new InputStreamReader(restoreChar, StandardCharsets.UTF_8);
+        BufferedReader fileReader = new BufferedReader(readChar);
+
+        setCharName(fileReader.readLine());
+        setOwnClass(fileReader.readLine());
+        setOwnRace(fileReader.readLine());
+
+        setLvl(Integer.parseInt(fileReader.readLine()));
+
+        setSTR.accept(Integer.parseInt(fileReader.readLine()));
+        setDEX.accept(Integer.parseInt(fileReader.readLine()));
+        setAGI.accept(Integer.parseInt(fileReader.readLine()));
+        setCON.accept(Integer.parseInt(fileReader.readLine()));
+        setINT.accept(Integer.parseInt(fileReader.readLine()));
+        setPOW.accept(Integer.parseInt(fileReader.readLine()));
+        setWP.accept(Integer.parseInt(fileReader.readLine()));
+        setPER.accept(Integer.parseInt(fileReader.readLine()));
+
+        restoreChar.close();
     }
 
     public byte[] getBytes(){
-        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+        byteArray = new ByteArrayOutputStream();
 
-        byteArray.write(charName.getBytes(), 0, charName.getBytes().length);
-        byteArray.write(ownClass.getHeldClass().name().getBytes(), 0, ownClass.getHeldClass().name().getBytes().length);
+        addNewData(charName);
+        addNewData(ownClass.getHeldClass().name());
+        addNewData(ownRace.getHeldRace().name());
 
-        byteArray.write(STR);
-        byteArray.write(DEX);
-        byteArray.write(AGI);
-        byteArray.write(CON);
-        byteArray.write(INT);
-        byteArray.write(POW);
-        byteArray.write(WP);
-        byteArray.write(PER);
+        addNewData(lvl);
+
+        addNewData(STR);
+        addNewData(DEX);
+        addNewData(AGI);
+        addNewData(CON);
+        addNewData(INT);
+        addNewData(POW);
+        addNewData(WP);
+        addNewData(PER);
 
         return byteArray.toByteArray();
+    }
+
+    private void addNewData (String toAdd){
+        byteArray.write((toAdd + "\n").getBytes(StandardCharsets.UTF_8), 0, (toAdd + "\n").getBytes(StandardCharsets.UTF_8).length);
+    }
+
+    private void addNewData(int toAdd){
+        byteArray.write((toAdd + "\n").getBytes(StandardCharsets.UTF_8), 0, (toAdd + "\n").getBytes(StandardCharsets.UTF_8).length);
     }
 }

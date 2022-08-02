@@ -29,6 +29,7 @@ import java.util.Objects;
 
 public class CharacterPageActivity extends AppCompatActivity {
 
+    //instantiate drawer layout and toggle
     public DrawerLayout pageDrawer;
     public ActionBarDrawerToggle drawerToggle;
 
@@ -37,33 +38,40 @@ public class CharacterPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_page);
 
-
-
+        //retreive filename and if the file is new
         String filename = getIntent().getStringExtra("filename");
         boolean isNew = getIntent().getBooleanExtra("isNew", true);
+        BaseCharacter testGuy = (BaseCharacter) getIntent().getSerializableExtra("object");
 
+        //instantiate character
         BaseCharacter charInstance;
 
+        //if a character is to be loaded
         if(!isNew){
             try{
+                //retreive file info
                 File inputFile = new File(this.getFilesDir(), filename);
 
+                //instantiate character off of file data
                 charInstance = new BaseCharacter(inputFile);
             }
+            //catch no file found exception
             catch (FileNotFoundException e) {
                 Toast.makeText(CharacterPageActivity.this, "File not found!", Toast.LENGTH_SHORT).show();
                 charInstance = new BaseCharacter();
             }
+            //catch input/output exception
             catch (IOException e) {
                 Toast.makeText(CharacterPageActivity.this, "Error in retreiving data!", Toast.LENGTH_SHORT).show();
                 charInstance = new BaseCharacter();
             }
         }
 
+        //create new character if indicated
         else
             charInstance = new BaseCharacter();
 
-
+        //set drawer view and toggle
         pageDrawer = findViewById(R.id.charPageLayout);
         drawerToggle = new ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close);
 
@@ -81,7 +89,10 @@ public class CharacterPageActivity extends AppCompatActivity {
         EditText nameInput = findViewById(R.id.charNameEntry);
         nameInput.setText(charInstance.getCharName());
 
+        //make base character copy for manipulation
         BaseCharacter finalCharInstance = charInstance;
+
+        //set watcher for name input
         nameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,6 +106,7 @@ public class CharacterPageActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                //set character's name to the new input
                 finalCharInstance.setCharName(nameInput.getText().toString());
             }
         });
@@ -122,10 +134,8 @@ public class CharacterPageActivity extends AppCompatActivity {
 
         raceSpinner.setAdapter(raceAdapter);
 
+        //default to character's race
         raceSpinner.setSelection(charInstance.getOwnRace().getRaceIndex());
-
-
-
 
         //add level strings to dropdown menu
         Spinner levelSpinner = findViewById(R.id.levelDropdown);
@@ -136,36 +146,39 @@ public class CharacterPageActivity extends AppCompatActivity {
 
         levelSpinner.setAdapter(levelAdapter);
 
-
-
+        //find displays for maximum point input
         TextView maxDPDisplay = findViewById(R.id.maxDPCell);
         TextView maxCombatDisplay = findViewById(R.id.maxCombatCell);
         TextView maxMagDisplay = findViewById(R.id.maxMagCell);
         TextView maxPsyDisplay = findViewById(R.id.maxPsyCell);
 
+        //set values to display
         maxDPDisplay.setText(getString(R.string.intItem, charInstance.getDevPT()));
         maxCombatDisplay.setText(getString(R.string.intItem, charInstance.getMaxCombatDP()));
         maxMagDisplay.setText(getString(R.string.intItem, charInstance.getMaxMagDP()));
         maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
 
+        //find spend amount displays
         TextView spentDPDisplay = findViewById(R.id.usedDPCell);
         TextView spentCombatDisplay = findViewById(R.id.usedCombatCell);
         TextView spentMagDisplay = findViewById(R.id.usedMagCell);
         TextView spentPsyDisplay = findViewById(R.id.usedPsyCell);
 
+        //set spent values to display
         spentDPDisplay.setText(getString(R.string.intItem, charInstance.getSpentTotal()));
         spentCombatDisplay.setText(getString(R.string.intItem, charInstance.getPtInCombat()));
         spentMagDisplay.setText(getString(R.string.intItem, charInstance.getPtInMag()));
         spentPsyDisplay.setText(getString(R.string.intItem, charInstance.getPtInPsy()));
 
-
-
+        //set on selection listener for class options
         classSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //get string from selection and change character's class accordingly
                 finalCharInstance.setOwnClass(classSpinner.getSelectedItem().toString());
 
+                //display new maximum values
                 maxCombatDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxCombatDP()));
                 maxMagDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxMagDP()));
                 maxPsyDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxPsyDP()));
@@ -177,9 +190,11 @@ public class CharacterPageActivity extends AppCompatActivity {
             }
         });
 
+        //set on selection listener for race options
         raceSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //get string from selection and change character's race accordingly
                 finalCharInstance.setOwnRace(raceSpinner.getSelectedItem().toString());
             }
 
@@ -189,11 +204,14 @@ public class CharacterPageActivity extends AppCompatActivity {
             }
         });
 
+        //set on selection listener for level
         levelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //get string from selection and change character's level accordingly
                 finalCharInstance.setLvl(Integer.parseInt(levelSpinner.getSelectedItem().toString()));
 
+                //display new maximum values
                 maxDPDisplay.setText(getString(R.string.intItem, finalCharInstance.getDevPT()));
                 maxCombatDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxCombatDP()));
                 maxMagDisplay.setText(getString(R.string.intItem, finalCharInstance.getMaxMagDP()));
@@ -206,6 +224,7 @@ public class CharacterPageActivity extends AppCompatActivity {
             }
         });
 
+        //set display to character's level
         levelSpinner.setSelection(finalCharInstance.getLvl());
 
 
@@ -259,6 +278,7 @@ public class CharacterPageActivity extends AppCompatActivity {
         wpScore.addTextChangedListener(new CharacteristicInput(wpScore, wpMod, charInstance.setWP, charInstance.getModWP,this));
         perScore.addTextChangedListener(new CharacteristicInput(perScore, perMod, charInstance.setPER, charInstance.getModPER, this));
 
+        //set initial values for characteristics
         strScore.setText(getString(R.string.intItem, finalCharInstance.getSTR()));
         dexScore.setText(getString(R.string.intItem, finalCharInstance.getDEX()));
         agiScore.setText(getString(R.string.intItem, finalCharInstance.getAGI()));

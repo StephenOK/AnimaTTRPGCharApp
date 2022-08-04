@@ -4,9 +4,10 @@ import android.content.Context;
 
 import com.example.animabuilder.R;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class CharClass {
+public class CharClass implements Serializable {
     ClassName heldClass;
 
     public ClassName getHeldClass(){return heldClass;}

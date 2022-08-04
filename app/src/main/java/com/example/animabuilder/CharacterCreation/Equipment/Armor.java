@@ -1,6 +1,8 @@
-package com.example.animabuilder;
+package com.example.animabuilder.CharacterCreation.Equipment;
 
-public class Armor {
+import java.io.Serializable;
+
+public class Armor implements Serializable {
     int strReq;
     int checkPenalty;
 

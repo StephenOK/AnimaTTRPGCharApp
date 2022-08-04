@@ -1,6 +1,8 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
-public enum RaceName {
+import java.io.Serializable;
+
+public enum RaceName implements Serializable {
     human,
     sylvain,
     jayan,

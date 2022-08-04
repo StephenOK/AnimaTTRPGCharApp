@@ -1,7 +1,6 @@
 package com.example.animabuilder.CharacterCreation;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,12 +13,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import com.example.animabuilder.Armor;
-import com.example.animabuilder.CharacterCreation.Attributes.CharClass;
-import com.example.animabuilder.CharacterCreation.Attributes.CharRace;
-import com.example.animabuilder.CharacterCreation.Attributes.ClassName;
-import com.example.animabuilder.CharacterCreation.Attributes.RaceName;
-import com.example.animabuilder.Weapon;
+import com.example.animabuilder.CharacterCreation.Attributes.*;
+import com.example.animabuilder.CharacterCreation.Equipment.*;
 
 public class BaseCharacter implements Serializable {
     String charName;
@@ -116,7 +111,7 @@ public class BaseCharacter implements Serializable {
     int modWP;
     int modPER;
 
-    public Consumer<Integer> setSTR = strVal -> {
+    public SerialConsumer<Integer> setSTR = strVal -> {
         STR = strVal;
 
         //change strength modifier number
@@ -128,43 +123,43 @@ public class BaseCharacter implements Serializable {
         //change appropriate secondary abilities
     };
 
-    public Consumer<Integer> setDEX = dexVal ->{
+    public SerialConsumer<Integer> setDEX = dexVal ->{
         DEX = dexVal;
 
         modDEX = getModVal(DEX);
     };
 
-    public Consumer<Integer> setAGI = agiVal -> {
+    public SerialConsumer<Integer> setAGI = agiVal -> {
         AGI = agiVal;
 
         modAGI = getModVal(AGI);
     };
 
-    public Consumer<Integer> setCON = conVal -> {
+    public SerialConsumer<Integer> setCON = conVal -> {
         CON = conVal;
 
         modCON = getModVal(CON);
     };
 
-    public Consumer<Integer> setINT = intVal -> {
+    public SerialConsumer<Integer> setINT = intVal -> {
         INT = intVal;
 
         modINT = getModVal(INT);
     };
 
-    public Consumer<Integer> setPOW = powVal -> {
+    public SerialConsumer<Integer> setPOW = powVal -> {
         POW = powVal;
 
         modPOW = getModVal(POW);
     };
 
-    public Consumer<Integer> setWP = wpVal -> {
+    public SerialConsumer<Integer> setWP = wpVal -> {
         WP = wpVal;
 
         modWP = getModVal(WP);
     };
 
-    public Consumer<Integer> setPER = perVal -> {
+    public SerialConsumer<Integer> setPER = perVal -> {
         PER = perVal;
         modPER = getModVal(PER);
     };
@@ -229,14 +224,14 @@ public class BaseCharacter implements Serializable {
         return output;
     }
 
-    public Supplier<Integer> getModSTR = () -> modSTR;
-    public Supplier<Integer> getModDEX = () -> modDEX;
-    public Supplier<Integer> getModAGI = () -> modAGI;
-    public Supplier<Integer> getModCON = () -> modCON;
-    public Supplier<Integer> getModINT = () -> modINT;
-    public Supplier<Integer> getModPOW = () -> modPOW;
-    public Supplier<Integer> getModWP = () -> modWP;
-    public Supplier<Integer> getModPER = () -> modPER;
+    public SerialSupplier<Integer> getModSTR = () -> modSTR;
+    public SerialSupplier<Integer> getModDEX = () -> modDEX;
+    public SerialSupplier<Integer> getModAGI = () -> modAGI;
+    public SerialSupplier<Integer> getModCON = () -> modCON;
+    public SerialSupplier<Integer> getModINT = () -> modINT;
+    public SerialSupplier<Integer> getModPOW = () -> modPOW;
+    public SerialSupplier<Integer> getModWP = () -> modWP;
+    public SerialSupplier<Integer> getModPER = () -> modPER;
 
     CharClass ownClass;
     CharRace ownRace;
@@ -333,56 +328,101 @@ public class BaseCharacter implements Serializable {
     //list of secondary abilities
 
     //athletics
-    int acrobatics;
-    int athletics;
-    int climb;
-    int jump;
-    int ride;
-    int swim;
+    SecondaryCharacteristic acrobatics;
+    SecondaryCharacteristic athletics;
+    SecondaryCharacteristic climb;
+    SecondaryCharacteristic jump;
+    SecondaryCharacteristic ride;
+    SecondaryCharacteristic swim;
+
+    public SecondaryCharacteristic getAcrobatics(){return acrobatics;}
+    public SecondaryCharacteristic getAthletics(){return athletics;}
+    public SecondaryCharacteristic getClimb(){return climb;}
+    public SecondaryCharacteristic getJump(){return jump;}
+    public SecondaryCharacteristic getRide(){return ride;}
+    public SecondaryCharacteristic getSwim(){return swim;}
 
     //creative
-    int art;
-    int dance;
-    int forging;
-    int music;
-    int sleightHand;
+    SecondaryCharacteristic art;
+    SecondaryCharacteristic dance;
+    SecondaryCharacteristic forging;
+    SecondaryCharacteristic music;
+    SecondaryCharacteristic sleightHand;
+
+    public SecondaryCharacteristic getArt(){return art;}
+    public SecondaryCharacteristic getDance(){return dance;}
+    public SecondaryCharacteristic getForging(){return forging;}
+    public SecondaryCharacteristic getMusic(){return music;}
+    public SecondaryCharacteristic getSleightHand(){return sleightHand;}
 
     //perceptive
-    int notice;
-    int search;
-    int track;
+    SecondaryCharacteristic notice;
+    SecondaryCharacteristic search;
+    SecondaryCharacteristic track;
+
+    public SecondaryCharacteristic getNotice(){return notice;}
+    public SecondaryCharacteristic getSearch(){return search;}
+    public SecondaryCharacteristic getTrack(){return track;}
 
     //social
-    int intimidate;
-    int leadership;
-    int persuasion;
-    int style;
+    SecondaryCharacteristic intimidate;
+    SecondaryCharacteristic leadership;
+    SecondaryCharacteristic persuasion;
+    SecondaryCharacteristic style;
+
+    public SecondaryCharacteristic getIntimidate(){return intimidate;}
+    public SecondaryCharacteristic getLeadership(){return leadership;}
+    public SecondaryCharacteristic getPersuasion(){return persuasion;}
+    public SecondaryCharacteristic getStyle(){return style;}
 
     //subterfuge
-    int disguise;
-    int hide;
-    int lockPick;
-    int poisons;
-    int theft;
-    int stealth;
-    int trapLore;
+    SecondaryCharacteristic disguise;
+    SecondaryCharacteristic hide;
+    SecondaryCharacteristic lockPick;
+    SecondaryCharacteristic poisons;
+    SecondaryCharacteristic theft;
+    SecondaryCharacteristic stealth;
+    SecondaryCharacteristic trapLore;
+
+    public SecondaryCharacteristic getDisguise(){return disguise;}
+    public SecondaryCharacteristic getHide(){return hide;}
+    public SecondaryCharacteristic getLockPick(){return lockPick;}
+    public SecondaryCharacteristic getPoisons(){return poisons;}
+    public SecondaryCharacteristic getTheft(){return theft;}
+    public SecondaryCharacteristic getStealth(){return stealth;}
+    public SecondaryCharacteristic getTrapLore(){return trapLore;}
 
     //intellectual
-    int animals;
-    int appraise;
-    int herbalLore;
-    int history;
-    int memorize;
-    int magicAppraise;
-    int medic;
-    int navigate;
-    int occult;
-    int sciences;
+    SecondaryCharacteristic animals;
+    SecondaryCharacteristic appraise;
+    SecondaryCharacteristic herbalLore;
+    SecondaryCharacteristic history;
+    SecondaryCharacteristic memorize;
+    SecondaryCharacteristic magicAppraise;
+    SecondaryCharacteristic medic;
+    SecondaryCharacteristic navigate;
+    SecondaryCharacteristic occult;
+    SecondaryCharacteristic sciences;
+
+    public SecondaryCharacteristic getAnimals(){return animals;}
+    public SecondaryCharacteristic getAppraise(){return appraise;}
+    public SecondaryCharacteristic getHerbalLore(){return herbalLore;}
+    public SecondaryCharacteristic getHistory(){return history;}
+    public SecondaryCharacteristic getMemorize(){return memorize;}
+    public SecondaryCharacteristic getMagicAppraise(){return magicAppraise;}
+    public SecondaryCharacteristic getMedic(){return medic;}
+    public SecondaryCharacteristic getNavigate(){return navigate;}
+    public SecondaryCharacteristic getOccult(){return occult;}
+    public SecondaryCharacteristic getSciences(){return sciences;}
 
     //vigor
-    int composure;
-    int strengthFeat;
-    int resistPain;
+    SecondaryCharacteristic composure;
+    SecondaryCharacteristic strengthFeat;
+    SecondaryCharacteristic resistPain;
+
+    public SecondaryCharacteristic getComposure(){return composure;}
+    public SecondaryCharacteristic getStrengthFeat(){return strengthFeat;}
+    public SecondaryCharacteristic getResistPain(){return resistPain;}
 
 
 

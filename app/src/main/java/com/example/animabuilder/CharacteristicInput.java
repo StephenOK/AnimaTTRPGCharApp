@@ -6,8 +6,6 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.animabuilder.CharacterCreation.BaseCharacter;
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 

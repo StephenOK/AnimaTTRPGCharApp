@@ -1,6 +1,8 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
-public enum ClassName {
+import java.io.Serializable;
+
+public enum ClassName implements Serializable {
     warrior,
     acroWarrior,
     paladin,

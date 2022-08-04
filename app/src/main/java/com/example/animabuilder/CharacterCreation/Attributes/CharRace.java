@@ -1,6 +1,8 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
-public class CharRace {
+import java.io.Serializable;
+
+public class CharRace implements Serializable {
     RaceName heldRace;
     public RaceName getHeldRace(){
         return heldRace;

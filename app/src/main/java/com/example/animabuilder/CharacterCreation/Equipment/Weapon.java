@@ -1,4 +1,6 @@
-package com.example.animabuilder;
+package com.example.animabuilder.CharacterCreation.Equipment;
 
-public class Weapon {
+import java.io.Serializable;
+
+public class Weapon implements Serializable {
 }

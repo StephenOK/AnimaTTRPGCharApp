@@ -1,4 +1,4 @@
-package com.example.animabuilder;
+package com.example.animabuilder.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
+import com.example.animabuilder.R;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BaseCharacter testo = new BaseCharacter();
+
         //initialize layout inflater
         LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //initialize intent to character page
-        Intent toNextPage = new Intent(MainActivity.this, CharacterPageActivity.class);
+        Intent toNextPage = new Intent(MainActivity.this, HomeActivity.class);
 
         //find buttons in layout
         Button newCharButton = findViewById(R.id.newCharButton);
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
             //set show alert action
             nameInputAlert.setOnShowListener(dialog -> {
+                BaseCharacter charInstance = new BaseCharacter();
+
                 //set confirmation action
                 Button saveButton = nameInputAlert.getButton(AlertDialog.BUTTON_POSITIVE);
                 saveButton.setOnClickListener(v -> {
@@ -64,9 +69,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else {
                         //send new notification and file's name to next page
-                        toNextPage.putExtra("isNew", true);
                         toNextPage.putExtra("filename", nameInput.getText().toString());
-                        toNextPage.putExtra("object", (Serializable) testo);
+                        toNextPage.putExtra("Character", charInstance);
 
                         //start next activity
                         startActivity(toNextPage);
@@ -116,18 +120,38 @@ public class MainActivity extends AppCompatActivity {
 
             //set show alert action
             findFileAlert.setOnShowListener(dialog -> {
+
                 //set confirmation action
                 Button loadButton = findFileAlert.getButton(AlertDialog.BUTTON_POSITIVE);
                 loadButton.setOnClickListener(v -> {
+                    BaseCharacter charInstance;
+
                     //check if item is selected
                     if(selectionOptions.getCheckedRadioButtonId() == -1){
                         //notify user of invalid input
                         Toast.makeText(MainActivity.this, "Please select a file", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        //send load notification and file's name to next page
-                        toNextPage.putExtra("isNew", false);
+                        try{
+                            //retreive file info
+                            File inputFile = new File(this.getFilesDir(), returnName[0]);
+
+                            //instantiate character off of file data
+                            charInstance = new BaseCharacter(inputFile);
+                        }
+                        //catch no file found exception
+                        catch (FileNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "File not found!", Toast.LENGTH_SHORT).show();
+                            charInstance = new BaseCharacter();
+                        }
+                        //catch input/output exception
+                        catch (IOException e) {
+                            Toast.makeText(MainActivity.this, "Error in retreiving data!", Toast.LENGTH_SHORT).show();
+                            charInstance = new BaseCharacter();
+                        }
+
                         toNextPage.putExtra("filename", returnName[0]);
+                        toNextPage.putExtra("Character", charInstance);
 
                         //start next activity
                         startActivity(toNextPage);

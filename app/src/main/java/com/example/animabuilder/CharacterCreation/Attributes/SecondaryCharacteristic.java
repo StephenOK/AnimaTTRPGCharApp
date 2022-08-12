@@ -6,6 +6,7 @@ public class SecondaryCharacteristic implements Serializable {
     int modVal;
     int pointsApplied;
     int pointsFromClass;
+    boolean bonusApplied;
     int total;
 
     public int getModVal() {
@@ -21,8 +22,8 @@ public class SecondaryCharacteristic implements Serializable {
         return pointsApplied;
     }
 
-    public void setPointsApplied(int points, int lvl){
-        pointsApplied = points * lvl;
+    public void setPointsApplied(int points){
+        pointsApplied = points;
         refreshTotal();
     }
 
@@ -35,15 +36,29 @@ public class SecondaryCharacteristic implements Serializable {
         refreshTotal();
     }
 
-    public SecondaryCharacteristic(int modVal, int pointsApplied, int pointsPerLevel, int lvl){
-        this.modVal = modVal;
-        this.pointsApplied = pointsApplied;
-        pointsFromClass = pointsPerLevel * lvl;
+    public boolean isBonusApplied() {
+        return bonusApplied;
+    }
+
+    public void setBonusApplied(boolean bonus){
+        bonusApplied = bonus;
+        refreshTotal();
+    }
+
+    public SecondaryCharacteristic(){
+        modVal = 0;
+        pointsApplied = 0;
+        pointsFromClass = 0;
+        bonusApplied = false;
 
         refreshTotal();
     }
 
     private void refreshTotal(){
         total = modVal + pointsApplied + pointsFromClass;
+        if(pointsApplied == 0)
+            total -= 30;
+        else if(bonusApplied)
+            total += 5;
     }
 }

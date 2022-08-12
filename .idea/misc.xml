@@ -5,11 +5,20 @@
       <map>
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_character_page.xml" value="0.264" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_combat.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_equipment.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_home.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_magic.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_psychic.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_secondary_ability.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/athletics_fragment.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/fragment_character_page.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/fragment_combat.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/fragment_equipment.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/fragment_secondary_ability.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/load_char_alert.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/new_char_alert.xml" value="0.29683698296836986" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/secondary_table_row.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/menu/sidebar_nav.xml" value="0.25416666666666665" />
       </map>
     </option>

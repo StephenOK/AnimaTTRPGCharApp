@@ -29,6 +29,8 @@ public class BaseCharacter implements Serializable {
         return charName;
     }
 
+    //list of secondary abilities
+    SecondaryList secondaryList;
 
 
     //character's level
@@ -79,6 +81,8 @@ public class BaseCharacter implements Serializable {
 
         //recalculate maximum DP allotments
         dpAllotmentCalc();
+
+        secondaryList.levelUpdate(lvl, ownClass);
     }
 
     public int getLvl(){
@@ -120,19 +124,23 @@ public class BaseCharacter implements Serializable {
         //change wear armor ability
         setWearArmor(modSTR);
 
-        //change appropriate secondary abilities
+        secondaryList.updateSTR(modSTR);
     };
 
     public SerialConsumer<Integer> setDEX = dexVal ->{
         DEX = dexVal;
 
         modDEX = getModVal(DEX);
+
+        secondaryList.updateDEX(modDEX);
     };
 
     public SerialConsumer<Integer> setAGI = agiVal -> {
         AGI = agiVal;
 
         modAGI = getModVal(AGI);
+
+        secondaryList.updateAGI(modAGI);
     };
 
     public SerialConsumer<Integer> setCON = conVal -> {
@@ -145,23 +153,31 @@ public class BaseCharacter implements Serializable {
         INT = intVal;
 
         modINT = getModVal(INT);
+
+        secondaryList.updateINT(modINT);
     };
 
     public SerialConsumer<Integer> setPOW = powVal -> {
         POW = powVal;
 
         modPOW = getModVal(POW);
+
+        secondaryList.updatePOW(modPOW);
     };
 
     public SerialConsumer<Integer> setWP = wpVal -> {
         WP = wpVal;
 
         modWP = getModVal(WP);
+
+        secondaryList.updateWP(modWP);
     };
 
     public SerialConsumer<Integer> setPER = perVal -> {
         PER = perVal;
         modPER = getModVal(PER);
+
+        secondaryList.updatePER(modPER);
     };
 
     public int getSTR() {
@@ -243,10 +259,12 @@ public class BaseCharacter implements Serializable {
     public void setOwnClass(ClassName classIn){
         ownClass = new CharClass(classIn);
         adjustMaxValues();
+        secondaryList.classUpdate(ownClass);
     }
     public void setOwnClass(String className){
         ownClass = new CharClass(ClassName.fromString(className));
         adjustMaxValues();
+        secondaryList.classUpdate(ownClass);
     }
 
     private void adjustMaxValues(){
@@ -322,111 +340,6 @@ public class BaseCharacter implements Serializable {
 
 
 
-
-
-
-    //list of secondary abilities
-
-    //athletics
-    SecondaryCharacteristic acrobatics;
-    SecondaryCharacteristic athletics;
-    SecondaryCharacteristic climb;
-    SecondaryCharacteristic jump;
-    SecondaryCharacteristic ride;
-    SecondaryCharacteristic swim;
-
-    public SecondaryCharacteristic getAcrobatics(){return acrobatics;}
-    public SecondaryCharacteristic getAthletics(){return athletics;}
-    public SecondaryCharacteristic getClimb(){return climb;}
-    public SecondaryCharacteristic getJump(){return jump;}
-    public SecondaryCharacteristic getRide(){return ride;}
-    public SecondaryCharacteristic getSwim(){return swim;}
-
-    //creative
-    SecondaryCharacteristic art;
-    SecondaryCharacteristic dance;
-    SecondaryCharacteristic forging;
-    SecondaryCharacteristic music;
-    SecondaryCharacteristic sleightHand;
-
-    public SecondaryCharacteristic getArt(){return art;}
-    public SecondaryCharacteristic getDance(){return dance;}
-    public SecondaryCharacteristic getForging(){return forging;}
-    public SecondaryCharacteristic getMusic(){return music;}
-    public SecondaryCharacteristic getSleightHand(){return sleightHand;}
-
-    //perceptive
-    SecondaryCharacteristic notice;
-    SecondaryCharacteristic search;
-    SecondaryCharacteristic track;
-
-    public SecondaryCharacteristic getNotice(){return notice;}
-    public SecondaryCharacteristic getSearch(){return search;}
-    public SecondaryCharacteristic getTrack(){return track;}
-
-    //social
-    SecondaryCharacteristic intimidate;
-    SecondaryCharacteristic leadership;
-    SecondaryCharacteristic persuasion;
-    SecondaryCharacteristic style;
-
-    public SecondaryCharacteristic getIntimidate(){return intimidate;}
-    public SecondaryCharacteristic getLeadership(){return leadership;}
-    public SecondaryCharacteristic getPersuasion(){return persuasion;}
-    public SecondaryCharacteristic getStyle(){return style;}
-
-    //subterfuge
-    SecondaryCharacteristic disguise;
-    SecondaryCharacteristic hide;
-    SecondaryCharacteristic lockPick;
-    SecondaryCharacteristic poisons;
-    SecondaryCharacteristic theft;
-    SecondaryCharacteristic stealth;
-    SecondaryCharacteristic trapLore;
-
-    public SecondaryCharacteristic getDisguise(){return disguise;}
-    public SecondaryCharacteristic getHide(){return hide;}
-    public SecondaryCharacteristic getLockPick(){return lockPick;}
-    public SecondaryCharacteristic getPoisons(){return poisons;}
-    public SecondaryCharacteristic getTheft(){return theft;}
-    public SecondaryCharacteristic getStealth(){return stealth;}
-    public SecondaryCharacteristic getTrapLore(){return trapLore;}
-
-    //intellectual
-    SecondaryCharacteristic animals;
-    SecondaryCharacteristic appraise;
-    SecondaryCharacteristic herbalLore;
-    SecondaryCharacteristic history;
-    SecondaryCharacteristic memorize;
-    SecondaryCharacteristic magicAppraise;
-    SecondaryCharacteristic medic;
-    SecondaryCharacteristic navigate;
-    SecondaryCharacteristic occult;
-    SecondaryCharacteristic sciences;
-
-    public SecondaryCharacteristic getAnimals(){return animals;}
-    public SecondaryCharacteristic getAppraise(){return appraise;}
-    public SecondaryCharacteristic getHerbalLore(){return herbalLore;}
-    public SecondaryCharacteristic getHistory(){return history;}
-    public SecondaryCharacteristic getMemorize(){return memorize;}
-    public SecondaryCharacteristic getMagicAppraise(){return magicAppraise;}
-    public SecondaryCharacteristic getMedic(){return medic;}
-    public SecondaryCharacteristic getNavigate(){return navigate;}
-    public SecondaryCharacteristic getOccult(){return occult;}
-    public SecondaryCharacteristic getSciences(){return sciences;}
-
-    //vigor
-    SecondaryCharacteristic composure;
-    SecondaryCharacteristic strengthFeat;
-    SecondaryCharacteristic resistPain;
-
-    public SecondaryCharacteristic getComposure(){return composure;}
-    public SecondaryCharacteristic getStrengthFeat(){return strengthFeat;}
-    public SecondaryCharacteristic getResistPain(){return resistPain;}
-
-
-
-
     Armor equippedPiece;
     Weapon equippedWeapon;
 
@@ -436,6 +349,8 @@ public class BaseCharacter implements Serializable {
 
 
     public BaseCharacter(){
+        secondaryList = new SecondaryList();
+
         setOwnClass(ClassName.freelancer);
         setOwnRace(RaceName.human);
 
@@ -456,6 +371,8 @@ public class BaseCharacter implements Serializable {
         FileInputStream restoreChar = new FileInputStream(fileInput);
         InputStreamReader readChar = new InputStreamReader(restoreChar, StandardCharsets.UTF_8);
         BufferedReader fileReader = new BufferedReader(readChar);
+
+        secondaryList = new SecondaryList();
 
         setCharName(fileReader.readLine());
         setOwnClass(fileReader.readLine());

@@ -1,92 +1,42 @@
-package com.example.animabuilder;
+package com.example.animabuilder.Activities.Fragments;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
-import com.google.android.material.navigation.NavigationView;
+import com.example.animabuilder.CharacteristicInput;
+import com.example.animabuilder.InputFilterMinMax;
+import com.example.animabuilder.R;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Objects;
-
-public class CharacterPageActivity extends AppCompatActivity {
-
-    //instantiate drawer layout and toggle
-    public DrawerLayout pageDrawer;
-    public ActionBarDrawerToggle drawerToggle;
+public class CharacterPageFragment extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_character_page);
+        View view = inflater.inflate(R.layout.fragment_character_page, container, false);
 
-        //retreive filename and if the file is new
-        String filename = getIntent().getStringExtra("filename");
-        boolean isNew = getIntent().getBooleanExtra("isNew", true);
-        BaseCharacter testGuy = (BaseCharacter) getIntent().getSerializableExtra("object");
+        Bundle fromActivity = getArguments();
 
-        //instantiate character
-        BaseCharacter charInstance;
-
-        //if a character is to be loaded
-        if(!isNew){
-            try{
-                //retreive file info
-                File inputFile = new File(this.getFilesDir(), filename);
-
-                //instantiate character off of file data
-                charInstance = new BaseCharacter(inputFile);
-            }
-            //catch no file found exception
-            catch (FileNotFoundException e) {
-                Toast.makeText(CharacterPageActivity.this, "File not found!", Toast.LENGTH_SHORT).show();
-                charInstance = new BaseCharacter();
-            }
-            //catch input/output exception
-            catch (IOException e) {
-                Toast.makeText(CharacterPageActivity.this, "Error in retreiving data!", Toast.LENGTH_SHORT).show();
-                charInstance = new BaseCharacter();
-            }
-        }
-
-        //create new character if indicated
-        else
-            charInstance = new BaseCharacter();
-
-        //set drawer view and toggle
-        pageDrawer = findViewById(R.id.charPageLayout);
-        drawerToggle = new ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close);
-
-        pageDrawer.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        NavigationView sideNav = findViewById(R.id.navViewSideBar);
-        sideNav.setNavigationItemSelectedListener(new SideNavSelection(0, filename, charInstance, this));
-
-
+        BaseCharacter charInstance = (BaseCharacter)fromActivity.getSerializable("Character");
 
         //find name input and get character's name if one found
-        EditText nameInput = findViewById(R.id.charNameEntry);
+        EditText nameInput = view.findViewById(R.id.charNameEntry);
         nameInput.setText(charInstance.getCharName());
 
         //make base character copy for manipulation
@@ -114,8 +64,8 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
         //add class strings to dropdown menu
-        Spinner classSpinner = findViewById(R.id.classDropdown);
-        ArrayAdapter<CharSequence> classAdapter = ArrayAdapter.createFromResource(this,
+        Spinner classSpinner = view.findViewById(R.id.classDropdown);
+        ArrayAdapter<CharSequence> classAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
                 R.array.classArray, android.R.layout.simple_spinner_item);
 
         classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -126,8 +76,8 @@ public class CharacterPageActivity extends AppCompatActivity {
         classSpinner.setSelection(charInstance.getOwnClass().getClassIndex());
 
         //add race strings to dropdown menu
-        Spinner raceSpinner = findViewById(R.id.raceDropdown);
-        ArrayAdapter<CharSequence> raceAdapter = ArrayAdapter.createFromResource(this,
+        Spinner raceSpinner = view.findViewById(R.id.raceDropdown);
+        ArrayAdapter<CharSequence> raceAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
                 R.array.raceArray, android.R.layout.simple_spinner_item);
 
         raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -138,8 +88,8 @@ public class CharacterPageActivity extends AppCompatActivity {
         raceSpinner.setSelection(charInstance.getOwnRace().getRaceIndex());
 
         //add level strings to dropdown menu
-        Spinner levelSpinner = findViewById(R.id.levelDropdown);
-        ArrayAdapter<CharSequence> levelAdapter = ArrayAdapter.createFromResource(this,
+        Spinner levelSpinner = view.findViewById(R.id.levelDropdown);
+        ArrayAdapter<CharSequence> levelAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
                 R.array.levelCountArray, android.R.layout.simple_spinner_item);
 
         levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -147,10 +97,10 @@ public class CharacterPageActivity extends AppCompatActivity {
         levelSpinner.setAdapter(levelAdapter);
 
         //find displays for maximum point input
-        TextView maxDPDisplay = findViewById(R.id.maxDPCell);
-        TextView maxCombatDisplay = findViewById(R.id.maxCombatCell);
-        TextView maxMagDisplay = findViewById(R.id.maxMagCell);
-        TextView maxPsyDisplay = findViewById(R.id.maxPsyCell);
+        TextView maxDPDisplay = view.findViewById(R.id.maxDPCell);
+        TextView maxCombatDisplay = view.findViewById(R.id.maxCombatCell);
+        TextView maxMagDisplay = view.findViewById(R.id.maxMagCell);
+        TextView maxPsyDisplay = view.findViewById(R.id.maxPsyCell);
 
         //set values to display
         maxDPDisplay.setText(getString(R.string.intItem, charInstance.getDevPT()));
@@ -159,10 +109,10 @@ public class CharacterPageActivity extends AppCompatActivity {
         maxPsyDisplay.setText(getString(R.string.intItem, charInstance.getMaxPsyDP()));
 
         //find spend amount displays
-        TextView spentDPDisplay = findViewById(R.id.usedDPCell);
-        TextView spentCombatDisplay = findViewById(R.id.usedCombatCell);
-        TextView spentMagDisplay = findViewById(R.id.usedMagCell);
-        TextView spentPsyDisplay = findViewById(R.id.usedPsyCell);
+        TextView spentDPDisplay = view.findViewById(R.id.usedDPCell);
+        TextView spentCombatDisplay = view.findViewById(R.id.usedCombatCell);
+        TextView spentMagDisplay = view.findViewById(R.id.usedMagCell);
+        TextView spentPsyDisplay = view.findViewById(R.id.usedPsyCell);
 
         //set spent values to display
         spentDPDisplay.setText(getString(R.string.intItem, charInstance.getSpentTotal()));
@@ -230,53 +180,53 @@ public class CharacterPageActivity extends AppCompatActivity {
 
 
         //set integer range for characteristic inputs
-        EditText strScore = findViewById(R.id.strScore);
+        EditText strScore = view.findViewById(R.id.strScore);
         strScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText dexScore = findViewById(R.id.dexScore);
+        EditText dexScore = view.findViewById(R.id.dexScore);
         dexScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText agiScore = findViewById(R.id.agiScore);
+        EditText agiScore = view.findViewById(R.id.agiScore);
         agiScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText conScore = findViewById(R.id.conScore);
+        EditText conScore = view.findViewById(R.id.conScore);
         conScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText intScore = findViewById(R.id.intScore);
+        EditText intScore = view.findViewById(R.id.intScore);
         intScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText powScore = findViewById(R.id.powScore);
+        EditText powScore = view.findViewById(R.id.powScore);
         powScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText wpScore = findViewById(R.id.wpScore);
+        EditText wpScore = view.findViewById(R.id.wpScore);
         wpScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
-        EditText perScore = findViewById(R.id.perScore);
+        EditText perScore = view.findViewById(R.id.perScore);
         perScore.setFilters(new InputFilter[]{new InputFilterMinMax(1, 20)});
 
 
 
         //get mod displays from the page
-        TextView strMod = findViewById(R.id.strMod);
-        TextView dexMod = findViewById(R.id.dexMod);
-        TextView agiMod = findViewById(R.id.agiMod);
-        TextView conMod = findViewById(R.id.conMod);
-        TextView intMod = findViewById(R.id.intMod);
-        TextView powMod = findViewById(R.id.powMod);
-        TextView wpMod = findViewById(R.id.wpMod);
-        TextView perMod = findViewById(R.id.perMod);
+        TextView strMod = view.findViewById(R.id.strMod);
+        TextView dexMod = view.findViewById(R.id.dexMod);
+        TextView agiMod = view.findViewById(R.id.agiMod);
+        TextView conMod = view.findViewById(R.id.conMod);
+        TextView intMod = view.findViewById(R.id.intMod);
+        TextView powMod = view.findViewById(R.id.powMod);
+        TextView wpMod = view.findViewById(R.id.wpMod);
+        TextView perMod = view.findViewById(R.id.perMod);
 
 
 
         //set all listeners for characteristic change to make mod text change to corresponding value
-        strScore.addTextChangedListener(new CharacteristicInput(strScore, strMod, charInstance.setSTR, charInstance.getModSTR, this));
-        dexScore.addTextChangedListener(new CharacteristicInput(dexScore, dexMod, charInstance.setDEX, charInstance.getModDEX, this));
-        agiScore.addTextChangedListener(new CharacteristicInput(agiScore, agiMod, charInstance.setAGI, charInstance.getModAGI, this));
-        conScore.addTextChangedListener(new CharacteristicInput(conScore, conMod, charInstance.setCON, charInstance.getModCON, this));
-        intScore.addTextChangedListener(new CharacteristicInput(intScore, intMod, charInstance.setINT, charInstance.getModINT, this));
-        powScore.addTextChangedListener(new CharacteristicInput(powScore, powMod, charInstance.setPOW, charInstance.getModPOW, this));
-        wpScore.addTextChangedListener(new CharacteristicInput(wpScore, wpMod, charInstance.setWP, charInstance.getModWP,this));
-        perScore.addTextChangedListener(new CharacteristicInput(perScore, perMod, charInstance.setPER, charInstance.getModPER, this));
+        strScore.addTextChangedListener(new CharacteristicInput(strScore, strMod, charInstance.setSTR, charInstance.getModSTR, getActivity().getApplicationContext()));
+        dexScore.addTextChangedListener(new CharacteristicInput(dexScore, dexMod, charInstance.setDEX, charInstance.getModDEX, getActivity().getApplicationContext()));
+        agiScore.addTextChangedListener(new CharacteristicInput(agiScore, agiMod, charInstance.setAGI, charInstance.getModAGI, getActivity().getApplicationContext()));
+        conScore.addTextChangedListener(new CharacteristicInput(conScore, conMod, charInstance.setCON, charInstance.getModCON, getActivity().getApplicationContext()));
+        intScore.addTextChangedListener(new CharacteristicInput(intScore, intMod, charInstance.setINT, charInstance.getModINT, getActivity().getApplicationContext()));
+        powScore.addTextChangedListener(new CharacteristicInput(powScore, powMod, charInstance.setPOW, charInstance.getModPOW, getActivity().getApplicationContext()));
+        wpScore.addTextChangedListener(new CharacteristicInput(wpScore, wpMod, charInstance.setWP, charInstance.getModWP,getActivity().getApplicationContext()));
+        perScore.addTextChangedListener(new CharacteristicInput(perScore, perMod, charInstance.setPER, charInstance.getModPER, getActivity().getApplicationContext()));
 
         //set initial values for characteristics
         strScore.setText(getString(R.string.intItem, finalCharInstance.getSTR()));
@@ -287,13 +237,7 @@ public class CharacterPageActivity extends AppCompatActivity {
         powScore.setText(getString(R.string.intItem, finalCharInstance.getPOW()));
         wpScore.setText(getString(R.string.intItem, finalCharInstance.getWP()));
         perScore.setText(getString(R.string.intItem, finalCharInstance.getPER()));
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        if(drawerToggle.onOptionsItemSelected(item))
-            return true;
-
-        return super.onOptionsItemSelected(item);
+        return view;
     }
 }

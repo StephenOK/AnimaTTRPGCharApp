@@ -190,12 +190,12 @@ public class CharClass implements Serializable {
 
 
     //secondaries
-    int acrobatPerLevel;
-    int athletPerLevel;
-    int climbPerLevel;
-    int jumpPerLevel;
-    int ridePerLevel;
-    int swimPerLevel;
+    int acrobatPerLevel = 0;
+    int athletPerLevel = 0;
+    int climbPerLevel = 0;
+    int jumpPerLevel = 0;
+    int ridePerLevel = 0;
+    int swimPerLevel = 0;
 
     public int getAcrobatPerLevel(){return acrobatPerLevel;}
     public int getAthletPerLevel(){return athletPerLevel;}
@@ -209,11 +209,11 @@ public class CharClass implements Serializable {
 
 
 
-    int artPerLevel;
-    int dancePerLevel;
-    int forgePerLevel;
-    int musicPerLevel;
-    int sleightPerLevel;
+    int artPerLevel = 0;
+    int dancePerLevel = 0;
+    int forgePerLevel = 0;
+    int musicPerLevel = 0;
+    int sleightPerLevel = 0;
 
     public int getArtPerLevel(){return artPerLevel;}
     public int getDancePerLevel(){return dancePerLevel;}
@@ -226,9 +226,9 @@ public class CharClass implements Serializable {
 
 
 
-    int noticePerLevel;
-    int searchPerLevel;
-    int trackPerLevel;
+    int noticePerLevel = 0;
+    int searchPerLevel = 0;
+    int trackPerLevel = 0;
 
     public int getNoticePerLevel(){return noticePerLevel;}
     public int getSearchPerLevel(){return searchPerLevel;}
@@ -239,10 +239,10 @@ public class CharClass implements Serializable {
 
 
 
-    int intimidatePerLevel;
-    int leaderPerLevel;
-    int persuadePerLevel;
-    int stylePerLevel;
+    int intimidatePerLevel = 0;
+    int leaderPerLevel = 0;
+    int persuadePerLevel = 0;
+    int stylePerLevel = 0;
 
     public int getIntimidatePerLevel(){return intimidatePerLevel;}
     public int getLeaderPerLevel(){return leaderPerLevel;}
@@ -254,13 +254,13 @@ public class CharClass implements Serializable {
 
 
 
-    int disguisePerLevel;
-    int hidePerLevel;
-    int lockpickPerLevel;
-    int poisonPerLevel;
-    int theftPerLevel;
-    int stealthPerLevel;
-    int trapPerLevel;
+    int disguisePerLevel = 0;
+    int hidePerLevel = 0;
+    int lockpickPerLevel = 0;
+    int poisonPerLevel = 0;
+    int theftPerLevel = 0;
+    int stealthPerLevel = 0;
+    int trapPerLevel = 0;
 
     public int getDisguisePerLevel(){return disguisePerLevel;}
     public int getHidePerLevel(){return hidePerLevel;}
@@ -275,16 +275,16 @@ public class CharClass implements Serializable {
 
 
 
-    int animalPerLevel;
-    int appraisePerLevel;
-    int herbPerLevel;
-    int histPerLevel;
-    int memorizePerLevel;
-    int magAppraisePerLevel;
-    int medicPerLevel;
-    int navPerLevel;
-    int occultPerLevel;
-    int sciencePerLevel;
+    int animalPerLevel = 0;
+    int appraisePerLevel = 0;
+    int herbPerLevel = 0;
+    int histPerLevel = 0;
+    int memorizePerLevel = 0;
+    int magAppraisePerLevel = 0;
+    int medicPerLevel = 0;
+    int navPerLevel = 0;
+    int occultPerLevel = 0;
+    int sciencePerLevel = 0;
 
     public int getAnimalPerLevel(){return animalPerLevel;}
     public int getAppraisePerLevel(){return appraisePerLevel;}
@@ -302,9 +302,9 @@ public class CharClass implements Serializable {
 
 
 
-    int composePerLevel;
-    int strengthFeatPerLevel;
-    int standPainPerLevel;
+    int composePerLevel = 0;
+    int strengthFeatPerLevel = 0;
+    int standPainPerLevel = 0;
 
     public int getComposePerLevel(){return composePerLevel;}
     public int getStrengthFeatPerLevel(){return composePerLevel;}

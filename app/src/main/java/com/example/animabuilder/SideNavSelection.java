@@ -3,13 +3,26 @@ package com.example.animabuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.animabuilder.Activities.Fragments.CharacterPageFragment;
+import com.example.animabuilder.Activities.Fragments.CombatFragment;
+import com.example.animabuilder.Activities.Fragments.EquipmentFragment;
+import com.example.animabuilder.Activities.Fragments.MagicFragment;
+import com.example.animabuilder.Activities.MainActivity;
+import com.example.animabuilder.Activities.Fragments.PsychicFragment;
+import com.example.animabuilder.Activities.Fragments.SecondaryAbilityFragment;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.google.android.material.navigation.NavigationView;
 
@@ -18,17 +31,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SideNavSelection implements NavigationView.OnNavigationItemSelectedListener{
-
+    DrawerLayout parent;
     int pageIndex;
     String filename;
     BaseCharacter saveObject;
     Context startPage;
+    AppCompatActivity startCompat;
 
-    public SideNavSelection(int pageIndex, String filename, BaseCharacter saveObject, Context startPage){
-        this.pageIndex = pageIndex;
+    CharacterPageFragment cpFrag = new CharacterPageFragment();
+    CombatFragment comFrag = new CombatFragment();
+    MagicFragment magFrag = new MagicFragment();
+    PsychicFragment psyFrag = new PsychicFragment();
+    SecondaryAbilityFragment secAbleFrag = new SecondaryAbilityFragment();
+    EquipmentFragment eqFrag = new EquipmentFragment();
+
+    public SideNavSelection(DrawerLayout parent,String filename, BaseCharacter saveObject, AppCompatActivity startPage){
+        this.parent = parent;
+        pageIndex = 0;
         this.filename = filename;
         this.saveObject = saveObject;
-        this.startPage = startPage;
+        this.startPage = startPage.getApplicationContext();
+        this.startCompat = startPage;
+    }
+
+    private void setPageIndex(int x){
+        pageIndex = x;
     }
 
     @Override
@@ -36,42 +63,42 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
         switch(item.getItemId()){
             case R.id.mainCharPageButton:
                 if (pageIndex != 0) {
-                    startPage.startActivity(new Intent(startPage, CharacterPageActivity.class));
+                    transferTo(cpFrag, 0);
                     return true;
                 }
                 break;
 
             case R.id.combatPageButton:
                 if(pageIndex != 1) {
-                    startPage.startActivity(new Intent(startPage, CombatActivity.class));
+                    transferTo(comFrag, 1);
                     return true;
                 }
                 break;
 
             case R.id.magicPageButton:
                 if(pageIndex != 2) {
-                    startPage.startActivity(new Intent(startPage, MagicActivity.class));
+                    transferTo(magFrag, 2);
                     return true;
                 }
                 break;
 
             case R.id.psychicPageButton:
                 if(pageIndex != 3) {
-                    startPage.startActivity(new Intent(startPage, PsychicActivity.class));
+                    transferTo(psyFrag, 3);
                     return true;
                 }
                 break;
 
             case R.id.secondariesPageButton:
                 if(pageIndex != 4) {
-                    startPage.startActivity(new Intent(startPage, SecondaryAbilityActivity.class));
+                    transferTo(secAbleFrag, 4);
                     return true;
                 }
                 break;
 
             case R.id.equipmentPageButton:
                 if(pageIndex != 5){
-                    startPage.startActivity(new Intent(startPage, EquipmentActivity.class));
+                    transferTo(eqFrag, 5);
                     return true;
                 }
                 break;
@@ -131,6 +158,24 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
         }
 
         Toast.makeText(startPage, "Save successful!", Toast.LENGTH_SHORT).show();
+
+        parent.closeDrawers();
         return true;
+    }
+
+    private void transferTo(Fragment nextPage, int x){
+        setPageIndex(x);
+
+        FragmentManager fm = startCompat.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        Bundle b = new Bundle();
+        b.putSerializable("Character", saveObject);
+        nextPage.setArguments(b);
+
+        ft.replace(R.id.currentFragment, nextPage);
+        ft.commit();
+
+        parent.closeDrawers();
     }
 }

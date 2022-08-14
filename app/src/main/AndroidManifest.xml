@@ -15,20 +15,7 @@
         tools:targetApi="31">
         <activity
             android:name=".Activities.HomeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_home"/>
-        <activity
-            android:name=".Activities.Fragments.PsychicFragment"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Fragments.MagicFragment"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Fragments.CombatFragment"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Fragments.SecondaryAbilityFragment"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">

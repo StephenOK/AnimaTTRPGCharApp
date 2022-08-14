@@ -1,63 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/athleticsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Points"
-                    android:textAlignment="center" />
+                        <TextView
+                            android:id="@+id/pointsHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pointsLabel"
+                            android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mod" />
+                        <TextView
+                            android:id="@+id/modHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/modLabel"
+                            android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Class" />
+                        <TextView
+                            android:id="@+id/classHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/classLabel"
+                            android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Natural" />
+                        <TextView
+                            android:id="@+id/natHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/natLabel"
+                            android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Total" />
+                        <TextView
+                            android:id="@+id/totalHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/totalLabel"
+                            android:textAlignment="center" />
 
-            </TableRow>
+                </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                        <TextView
+                            android:id="@+id/acroLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/acrobaticsLabel" />
 
-            </TableRow>
+                        <EditText
+                            android:id="@+id/acroValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                        <TextView
+                            android:id="@+id/acroModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/acroClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/acroNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/acroTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/athleticsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/athleticsLabel" />
+
+                        <EditText
+                            android:id="@+id/athValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/athModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/athClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/athNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/athTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/climbLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/climbLabel" />
+
+                        <EditText
+                            android:id="@+id/climbValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/climbModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/climbClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/climbNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/climbTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/jumpLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/jumpLabel" />
+
+                        <EditText
+                            android:id="@+id/jumpValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/jumpModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/jumpClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/jumpNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/jumpTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/rideLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rideLabel" />
+
+                        <EditText
+                            android:id="@+id/rideValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/rideModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/rideClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/rideNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/rideTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/swimLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/swimLabel" />
+
+                        <EditText
+                            android:id="@+id/swimValueInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ems="5"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/swimModValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/swimClassTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/swimNatBonus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/swimTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </TableRow>
 
         </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

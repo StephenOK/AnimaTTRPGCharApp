@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id = "@+id/mainCharPageButton"
         android:title = "Main Characteristics"/>
@@ -26,7 +24,8 @@
         android:id = "@+id/equipmentPageButton"
         android:title = "Equipment"/>
 
-    <item android:id = "@+id/optionsButtons">
+    <item android:id = "@+id/optionsButtons"
+        android:title = "">
         <menu>
             <item
                 android:id = "@+id/saveButton"

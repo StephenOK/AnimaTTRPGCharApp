@@ -76,29 +76,36 @@
         <item>20</item>
     </string-array>
 
-    <string name="dpTotalLabel">\tTotal\t</string>
+    <string name="totalLabel">\tTotal\t</string>
+    <string name="modLabel">\tMod\t</string>
+
     <string name="dpCombatLabel">\tCombat\t</string>
     <string name="dpMagicLabel">\tMagic\t</string>
     <string name="dpPsychicLabel">\tPsychic\t</string>
 
+    <string name="socialLabel">Social</string>
+    <string name="perceptionLabel">Perception</string>
+    <string name="intellectualLabel">Intellectual</string>
+    <string name="vigorLabel">Vigor</string>
+    <string name="subterfugeLabel">Subterfuge</string>
+    <string name="creativeLabel">Creative</string>
+
+    <string name="pointsLabel">\tPoints\t</string>
+    <string name="classLabel">\tClass\t</string>
+    <string name="natLabel">\tNatural\t</string>
+
+    <string name="acrobaticsLabel">Acrobatics</string>
+    <string name="athleticsLabel">Athletics</string>
+    <string name="climbLabel">Climb</string>
+    <string name="jumpLabel">Jump</string>
+    <string name="rideLabel">Ride</string>
+    <string name="swimLabel">Swim</string>
+
     <string name="maxRowLabel">Max</string>
     <string name="usedRowLabel">Used</string>
 
-    <string name="defaultScore">5</string>
-    <string name="defaultMod">0</string>
-
     <string name="scoreLabel">Score</string>
-    <string name="modLabel">Mod</string>
 
     <string name="intItem">%1$d</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

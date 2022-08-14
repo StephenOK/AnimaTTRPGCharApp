@@ -1,4 +1,4 @@
-package com.example.animabuilder.Activities.Fragments;
+package com.example.animabuilder.Activities.Fragments.HomeFragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +32,6 @@ public class CharacterPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_character_page, container, false);
 
         Bundle fromActivity = getArguments();
-
         BaseCharacter charInstance = (BaseCharacter)fromActivity.getSerializable("Character");
 
         //find name input and get character's name if one found

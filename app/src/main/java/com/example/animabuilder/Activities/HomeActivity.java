@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.animabuilder.Activities.Fragments.CharacterPageFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.CharacterPageFragment;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.example.animabuilder.R;
 import com.example.animabuilder.SideNavSelection;
@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        FragmentManager fm = getSupportFragmentManager();
+
         String filename = getIntent().getStringExtra("filename");
         BaseCharacter charInstance = (BaseCharacter) getIntent().getSerializableExtra("Character");
 
@@ -38,13 +40,12 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle.syncState();
 
         NavigationView sideNav = findViewById(R.id.navViewSideBar);
-        sideNav.setNavigationItemSelectedListener(new SideNavSelection(pageDrawer, filename, charInstance, this));
+        sideNav.setNavigationItemSelectedListener(new SideNavSelection(pageDrawer, filename, charInstance, this, fm));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CharacterPageFragment cpFrag = new CharacterPageFragment();
 
-        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         Bundle b = new Bundle();

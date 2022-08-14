@@ -16,13 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.animabuilder.Activities.Fragments.CharacterPageFragment;
-import com.example.animabuilder.Activities.Fragments.CombatFragment;
-import com.example.animabuilder.Activities.Fragments.EquipmentFragment;
-import com.example.animabuilder.Activities.Fragments.MagicFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.CharacterPageFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.CombatFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.EquipmentFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.MagicFragment;
 import com.example.animabuilder.Activities.MainActivity;
-import com.example.animabuilder.Activities.Fragments.PsychicFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryAbilityFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.PsychicFragment;
+import com.example.animabuilder.Activities.Fragments.HomeFragments.SecondaryAbilityFragment;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.google.android.material.navigation.NavigationView;
 
@@ -36,7 +36,7 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
     String filename;
     BaseCharacter saveObject;
     Context startPage;
-    AppCompatActivity startCompat;
+    FragmentManager fm;
 
     CharacterPageFragment cpFrag = new CharacterPageFragment();
     CombatFragment comFrag = new CombatFragment();
@@ -45,13 +45,13 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
     SecondaryAbilityFragment secAbleFrag = new SecondaryAbilityFragment();
     EquipmentFragment eqFrag = new EquipmentFragment();
 
-    public SideNavSelection(DrawerLayout parent,String filename, BaseCharacter saveObject, AppCompatActivity startPage){
+    public SideNavSelection(DrawerLayout parent,String filename, BaseCharacter saveObject, AppCompatActivity startPage, FragmentManager fm){
         this.parent = parent;
         pageIndex = 0;
         this.filename = filename;
         this.saveObject = saveObject;
         this.startPage = startPage.getApplicationContext();
-        this.startCompat = startPage;
+        this.fm = fm;
     }
 
     private void setPageIndex(int x){
@@ -166,7 +166,6 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
     private void transferTo(Fragment nextPage, int x){
         setPageIndex(x);
 
-        FragmentManager fm = startCompat.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         Bundle b = new Bundle();

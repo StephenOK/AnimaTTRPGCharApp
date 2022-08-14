@@ -1,4 +1,4 @@
-package com.example.animabuilder.Activities.Fragments;
+package com.example.animabuilder.Activities.Fragments.HomeFragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

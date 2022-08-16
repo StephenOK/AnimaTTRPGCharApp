@@ -101,6 +101,44 @@
     <string name="rideLabel">Ride</string>
     <string name="swimLabel">Swim</string>
 
+    <string name="intimidateLabel">Intimidate</string>
+    <string name="leadershipLabel">Leadership</string>
+    <string name="persuasionLabel">Persuasion</string>
+    <string name="styleLabel">Style</string>
+
+    <string name="noticeLabel">Notice</string>
+    <string name="searchLabel">Search</string>
+    <string name="trackLabel">Track</string>
+
+    <string name="animalLabel">Animals</string>
+    <string name="appraiseLabel">Appraise</string>
+    <string name="herbalLabel">Herb Lore</string>
+    <string name="histLabel">History</string>
+    <string name="memLabel">Memorize</string>
+    <string name="mAppraiseLabel">Magic Appraise</string>
+    <string name="medLabel">Medicine</string>
+    <string name="navLabel">Navigation</string>
+    <string name="occultLabel">Occult</string>
+    <string name="scienceLabel">Science</string>
+
+    <string name="composureLabel">Composure</string>
+    <string name="strFeatLabel">Feats of Strength</string>
+    <string name="resistPainLabel">Withstand Pain</string>
+
+    <string name="disguiseLabel">Disguise</string>
+    <string name="hideLabel">Hide</string>
+    <string name="lockpickLabel">Lock Picking</string>
+    <string name="poisonLabel">Poisons</string>
+    <string name="theftLabel">Theft</string>
+    <string name="stealthLabel">Stealth</string>
+    <string name="trapLabel">Trap Lore</string>
+
+    <string name="artLabel">Art</string>
+    <string name="danceLabel">Dance</string>
+    <string name="forgeLabel">Forging</string>
+    <string name="musicLabel">Music</string>
+    <string name="sleightLabel">Sleight of Hand</string>
+
     <string name="maxRowLabel">Max</string>
     <string name="usedRowLabel">Used</string>
 

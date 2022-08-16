@@ -34,95 +34,114 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <ToggleButton
+                android:id="@+id/socialToggle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/socialLabel"
+                android:textOn="@string/socialLabel"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/socialLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/socialFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/perceptionLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            </FrameLayout>
 
-            <LinearLayout
+            <ToggleButton
+                android:id="@+id/perceptionToggle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/perceptionLabel"
+                android:textOn="@string/perceptionLabel"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/intellectualLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/perceptionFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/vigorLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            </FrameLayout>
 
-            <LinearLayout
+            <ToggleButton
+                android:id="@+id/intellectualToggle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/intellectualLabel"
+                android:textOn="@string/intellectualLabel"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/subterfugeLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/intellectualFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/creativeLabel"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            </FrameLayout>
+
+            <ToggleButton
+                android:id="@+id/vigorToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/vigorLabel"
+                android:textOn="@string/vigorLabel"
+                android:textSize="24sp" />
+
+            <FrameLayout
+                android:id="@+id/vigorFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <ToggleButton
+                android:id="@+id/subterfugeToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/subterfugeLabel"
+                android:textOn="@string/subterfugeLabel"
+                android:textSize="24sp" />
+
+            <FrameLayout
+                android:id="@+id/subterfugeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <ToggleButton
+                android:id="@+id/creativeToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:drawable/ic_menu_more"
+                android:buttonTint="#000000"
+                android:textAlignment="center"
+                android:textOff="@string/creativeLabel"
+                android:textOn="@string/creativeLabel"
+                android:textSize="24sp" />
+
+            <FrameLayout
+                android:id="@+id/creativeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
 
         </LinearLayout>
     </ScrollView>

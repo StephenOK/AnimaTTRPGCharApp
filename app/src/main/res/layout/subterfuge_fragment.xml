@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subterfugeFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pointsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pointsLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/modHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/classHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/classLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/natHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/natLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/totalHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/totalLabel"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/disguiseLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/disguiseLabel" />
+
+            <EditText
+                style="@style/secondaryTableRowInput"
+                android:id="@+id/disguiseValueInput"
+                android:layout_width="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/secondaryTableRowData"
+                android:id="@+id/disguiseModValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/secondaryTableRowData"
+                android:id="@+id/disguiseClassTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/secondaryTableRowData"
+                android:id="@+id/disguiseNatBonus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/secondaryTableRowData"
+                android:id="@+id/disguiseTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/hideLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/hideLabel" />
+
+            <EditText
+                android:id="@+id/hideValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/hideModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/hideClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/hideNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/hideTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/lockpickLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/lockpickLabel" />
+
+            <EditText
+                android:id="@+id/lockpickValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/lockpickModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/lockpickClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/lockpickNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/lockpickTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/poisonLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poisonLabel" />
+
+            <EditText
+                android:id="@+id/poisonValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/poisonModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/poisonClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/poisonNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/poisonTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/theftLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/theftLabel" />
+
+            <EditText
+                android:id="@+id/theftInputValue"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/theftModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/theftClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/theftNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/theftTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/stealthLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/stealthLabel" />
+
+            <EditText
+                android:id="@+id/stealthValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/stealthModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/stealthClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/stealthNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/stealthTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/trapLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/trapLabel" />
+
+            <EditText
+                android:id="@+id/trapValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/trapModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/trapClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/trapNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/trapTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,26 +13,24 @@ public class SecondaryToggleClick implements View.OnClickListener {
     ToggleButton parent;
     Fragment toShow;
     FragmentManager fm;
-    int fragmentID;
 
-    public SecondaryToggleClick(ToggleButton parent, Fragment toShow, FragmentManager fm, int fragmentID){
+    FragmentTransaction ft;
+
+    public SecondaryToggleClick(ToggleButton parent, Fragment toShow, FragmentManager fm){
         this.parent = parent;
         this.toShow = toShow;
         this.fm = fm;
-        this.fragmentID = fragmentID;
     }
 
     @Override
     public void onClick(View v) {
-        if(parent.isChecked()){
-            FragmentTransaction ft = fm.beginTransaction();
+        ft = fm.beginTransaction();
+
+        if(parent.isChecked())
             ft.show(toShow);
-            ft.commit();
-        }
-        else{
-            FragmentTransaction ft = fm.beginTransaction();
+        else
             ft.hide(toShow);
-            ft.commit();
-        }
+
+        ft.commit();
     }
 }

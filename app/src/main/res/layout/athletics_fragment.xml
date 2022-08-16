@@ -63,34 +63,37 @@
                     android:layout_height="match_parent">
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/acroLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/acrobaticsLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/acroValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -102,34 +105,37 @@
                     android:layout_height="match_parent">
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/athleticsLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/athleticsLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/athValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/athModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/athClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/athNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/athTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -141,34 +147,37 @@
                     android:layout_height="match_parent" >
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/climbLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/climbLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/climbValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -179,34 +188,37 @@
                     android:layout_height="match_parent" >
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/jumpLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/jumpLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/jumpValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -217,34 +229,37 @@
                     android:layout_height="match_parent" >
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/rideLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/rideLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/rideValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -255,34 +270,37 @@
                     android:layout_height="match_parent" >
 
                         <TextView
+                            style="@style/secondaryTableRowHead"
                             android:id="@+id/swimLabel"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/swimLabel" />
 
                         <EditText
+                            style="@style/secondaryTableRowInput"
                             android:id="@+id/swimValueInput"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:ems="5"
                             android:inputType="number" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimModValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimClassTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimNatBonus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/socialFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/pointsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pointsLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/modHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/classHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/classLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/natHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/natLabel"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/totalHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/totalLabel"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/intimidateLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/intimidateLabel" />
+
+            <EditText
+                android:id="@+id/intimidateValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/intimidateModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/intimidateClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/intimidateNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/intimidateTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/leadershipLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/leadershipLabel" />
+
+            <EditText
+                android:id="@+id/leadershipValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/leadershipModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/leadershipClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/leadershipNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/leadershipTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/persuasionLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/persuasionLabel" />
+
+            <EditText
+                android:id="@+id/persuasionValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/persuasionModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/persuasionClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/persuasionNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/persuasionTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/styleLabel"
+                style="@style/secondaryTableRowHead"
+                android:layout_height="wrap_content"
+                android:text="@string/styleLabel" />
+
+            <EditText
+                android:id="@+id/styleValueInput"
+                style="@style/secondaryTableRowInput"
+                android:layout_width="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/styleModValue"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/styleClassTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/styleNatBonus"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/styleTotal"
+                style="@style/secondaryTableRowData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

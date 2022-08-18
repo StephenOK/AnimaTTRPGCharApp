@@ -27,10 +27,12 @@
     </style>
     <style name="secondaryTableRowData">
         <item name="android:textSize">14dp</item>
+        <item name="android:textAlignment">center</item>
     </style>
     <style name="secondaryTableRowInput">
         <item name="android:ems">5</item>
         <item name="android:layout_height">50dp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 </resources>

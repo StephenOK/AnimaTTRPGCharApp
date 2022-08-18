@@ -61,4 +61,8 @@ public class SecondaryCharacteristic implements Serializable {
         else if(bonusApplied)
             total += 5;
     }
+
+    public int getTotal(){
+        return total;
+    }
 }

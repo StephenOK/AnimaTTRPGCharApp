@@ -12,13 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
 
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.AthleticsFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.CreativeFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.IntellectualFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.PerceptionFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.SocialFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.SubterfugeFragment;
-import com.example.animabuilder.Activities.Fragments.SecondaryTables.VigorFragment;
+import com.example.animabuilder.Activities.Fragments.SubFragments.SecondaryTable;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.example.animabuilder.R;
 import com.example.animabuilder.SecondaryToggleClick;
@@ -37,13 +31,13 @@ public class SecondaryAbilityFragment extends Fragment {
         Bundle fromActivity = getArguments();
         BaseCharacter charInstance = (BaseCharacter)fromActivity.getSerializable("Character");
 
-        AthleticsFragment athFrag = new AthleticsFragment();
-        SocialFragment socFrag = new SocialFragment();
-        PerceptionFragment percFrag = new PerceptionFragment();
-        IntellectualFragment intelFrag = new IntellectualFragment();
-        VigorFragment vigFrag = new VigorFragment();
-        SubterfugeFragment subFrag = new SubterfugeFragment();
-        CreativeFragment creFrag = new CreativeFragment();
+        SecondaryTable athFrag = new SecondaryTable(charInstance, R.layout.athletics_fragment);
+        SecondaryTable socFrag = new SecondaryTable(charInstance, R.layout.social_fragment);
+        SecondaryTable percFrag = new SecondaryTable(charInstance, R.layout.perception_fragment);
+        SecondaryTable intelFrag = new SecondaryTable(charInstance, R.layout.intellecutal_fragment);
+        SecondaryTable vigFrag = new SecondaryTable(charInstance, R.layout.vigor_fragment);
+        SecondaryTable subFrag = new SecondaryTable(charInstance, R.layout.subterfuge_fragment);
+        SecondaryTable creFrag = new SecondaryTable(charInstance, R.layout.creative_fragment);
 
         ft = fm.beginTransaction();
         fragmentReplace(R.id.athleticsFragment, athFrag);

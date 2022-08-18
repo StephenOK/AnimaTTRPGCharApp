@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <TableLayout
+        android:id="@+id/heldTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -57,7 +58,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/composureLabel"
@@ -66,8 +67,8 @@
                 android:text="@string/composureLabel" />
 
             <EditText
-                style="@style/secondaryTableRowInput"
                 android:id="@+id/composureValueInput"
+                style="@style/secondaryTableRowInput"
                 android:layout_width="wrap_content"
                 android:inputType="number" />
 
@@ -98,7 +99,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/strFeatLabel"

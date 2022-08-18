@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
         <TableLayout
+            android:id="@+id/heldTable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,38 +64,38 @@
                     android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/acroLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/acrobaticsLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/acroValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/acroTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -105,38 +106,38 @@
                     android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/athleticsLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/athleticsLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/athValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/athModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/athClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/athNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/athTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -144,164 +145,164 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/climbLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/climbLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/climbValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/climbTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/jumpLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/jumpLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/jumpValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/jumpTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/rideLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/rideLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/rideValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/rideTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/secondaryTableRowHead"
                             android:id="@+id/swimLabel"
+                            style="@style/secondaryTableRowHead"
                             android:layout_height="wrap_content"
                             android:text="@string/swimLabel" />
 
                         <EditText
-                            style="@style/secondaryTableRowInput"
                             android:id="@+id/swimValueInput"
+                            style="@style/secondaryTableRowInput"
                             android:layout_width="wrap_content"
                             android:inputType="number" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimModValue"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimClassTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimNatBonus"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            style="@style/secondaryTableRowData"
                             android:id="@+id/swimTotal"
+                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                 </TableRow>

@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <TableLayout
+        android:id="@+id/heldTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -55,7 +56,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/disguiseLabel"
@@ -64,39 +65,39 @@
                 android:text="@string/disguiseLabel" />
 
             <EditText
-                style="@style/secondaryTableRowInput"
                 android:id="@+id/disguiseValueInput"
+                style="@style/secondaryTableRowInput"
                 android:layout_width="wrap_content"
                 android:inputType="number" />
 
             <TextView
-                style="@style/secondaryTableRowData"
                 android:id="@+id/disguiseModValue"
+                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
-                style="@style/secondaryTableRowData"
                 android:id="@+id/disguiseClassTotal"
+                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
-                style="@style/secondaryTableRowData"
                 android:id="@+id/disguiseNatBonus"
+                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
-                style="@style/secondaryTableRowData"
                 android:id="@+id/disguiseTotal"
+                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/hideLabel"
@@ -138,7 +139,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/lockpickLabel"
@@ -180,7 +181,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/poisonLabel"
@@ -223,7 +224,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/theftLabel"
@@ -265,7 +266,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/stealthLabel"
@@ -307,7 +308,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/trapLabel"

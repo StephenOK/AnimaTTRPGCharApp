@@ -32,6 +32,9 @@ public class BaseCharacter implements Serializable {
     //list of secondary abilities
     SecondaryList secondaryList;
 
+    public SecondaryList getSecondaryList(){
+        return secondaryList;
+    }
 
     //character's level
     int lvl;

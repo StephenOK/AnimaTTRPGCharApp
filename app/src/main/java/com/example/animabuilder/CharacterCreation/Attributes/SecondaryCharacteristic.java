@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class SecondaryCharacteristic implements Serializable {
     int modVal;
     int pointsApplied;
+    int devPerPoint;
     int pointsFromClass;
     boolean bonusApplied;
     int total;
@@ -25,6 +26,14 @@ public class SecondaryCharacteristic implements Serializable {
     public void setPointsApplied(int points){
         pointsApplied = points;
         refreshTotal();
+    }
+
+    public int getDevPerPoint(){
+        return devPerPoint;
+    }
+
+    public void setDevPerPoint(int perPoint){
+        devPerPoint = perPoint;
     }
 
     public int getPointsFromClass() {

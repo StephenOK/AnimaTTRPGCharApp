@@ -1,5 +1,7 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
+import android.widget.Toast;
+
 import java.io.Serializable;
 
 public class SecondaryList implements Serializable {
@@ -156,49 +158,87 @@ public class SecondaryList implements Serializable {
 
     public void classUpdate(CharClass newClass){
         acrobatics.setPointsFromClass(newClass.getAcrobatPerLevel() * lvl);
+        acrobatics.setDevPerPoint(newClass.getAthGrowth());
         athletics.setPointsFromClass(newClass.getAthletPerLevel() * lvl);
+        athletics.setDevPerPoint(newClass.getAthGrowth());
         climb.setPointsFromClass(newClass.getClimbPerLevel() * lvl);
+        climb.setDevPerPoint(newClass.getAthGrowth());
         jump.setPointsFromClass(newClass.getJumpPerLevel() * lvl);
+        jump.setDevPerPoint(newClass.getAthGrowth());
         ride.setPointsFromClass(newClass.getRidePerLevel() * lvl);
+        ride.setDevPerPoint(newClass.getAthGrowth());
         swim.setPointsFromClass(newClass.getSwimPerLevel() * lvl);
+        swim.setDevPerPoint(newClass.getAthGrowth());
 
         art.setPointsFromClass(newClass.getArtPerLevel() * lvl);
+        art.setDevPerPoint(newClass.getCreatGrowth());
         dance.setPointsFromClass(newClass.getDancePerLevel() * lvl);
+        dance.setDevPerPoint(newClass.getCreatGrowth());
         forging.setPointsFromClass(newClass.getForgePerLevel() * lvl);
+        forging.setDevPerPoint(newClass.getCreatGrowth());
         music.setPointsFromClass(newClass.getMusicPerLevel() * lvl);
+        music.setDevPerPoint(newClass.getCreatGrowth());
         sleightHand.setPointsFromClass(newClass.getSleightPerLevel() * lvl);
+        sleightHand.setDevPerPoint(newClass.getCreatGrowth());
 
         notice.setPointsFromClass(newClass.getNoticePerLevel() * lvl);
+        notice.setDevPerPoint(newClass.getPercGrowth());
         search.setPointsFromClass(newClass.getSearchPerLevel() * lvl);
+        search.setDevPerPoint(newClass.getPercGrowth());
         track.setPointsFromClass(newClass.getTrackPerLevel() * lvl);
+        track.setDevPerPoint(newClass.getPercGrowth());
 
         intimidate.setPointsFromClass(newClass.getIntimidatePerLevel() * lvl);
+        intimidate.setDevPerPoint(newClass.getSocGrowth());
         leadership.setPointsFromClass(newClass.getLeaderPerLevel() * lvl);
+        leadership.setDevPerPoint(newClass.getSocGrowth());
         persuasion.setPointsFromClass(newClass.getPersuadePerLevel() * lvl);
+        persuasion.setDevPerPoint(newClass.getSocGrowth());
         style.setPointsFromClass(newClass.getStylePerLevel() * lvl);
+        style.setDevPerPoint(newClass.getSocGrowth());
 
         disguise.setPointsFromClass(newClass.getDisguisePerLevel() * lvl);
+        disguise.setDevPerPoint(newClass.getSubterGrowth());
         hide.setPointsFromClass(newClass.getHidePerLevel() * lvl);
+        hide.setDevPerPoint(newClass.getSubterGrowth());
         lockPick.setPointsFromClass(newClass.getLockpickPerLevel() * lvl);
+        lockPick.setDevPerPoint(newClass.getSubterGrowth());
         poisons.setPointsFromClass(newClass.getPoisonPerLevel() * lvl);
+        poisons.setDevPerPoint(newClass.getSubterGrowth());
         theft.setPointsFromClass(newClass.getTheftPerLevel() * lvl);
+        theft.setDevPerPoint(newClass.getSubterGrowth());
         stealth.setPointsFromClass(newClass.getStealthPerLevel() * lvl);
+        stealth.setDevPerPoint(newClass.getSubterGrowth());
         trapLore.setPointsFromClass(newClass.getTrapPerLevel() * lvl);
+        trapLore.setDevPerPoint(newClass.getSubterGrowth());
 
         animals.setPointsFromClass(newClass.getAnimalPerLevel() * lvl);
+        animals.setDevPerPoint(newClass.getIntellGrowth());
         appraise.setPointsFromClass(newClass.getAppraisePerLevel() * lvl);
+        appraise.setDevPerPoint(newClass.getIntellGrowth());
         herbalLore.setPointsFromClass(newClass.getHerbPerLevel() * lvl);
+        herbalLore.setDevPerPoint(newClass.getIntellGrowth());
         history.setPointsFromClass(newClass.getHistPerLevel() * lvl);
+        history.setDevPerPoint(newClass.getIntellGrowth());
         memorize.setPointsFromClass(newClass.getMemorizePerLevel() * lvl);
+        memorize.setDevPerPoint(newClass.getIntellGrowth());
         magicAppraise.setPointsFromClass(newClass.getMagAppraisePerLevel() * lvl);
+        magicAppraise.setDevPerPoint(newClass.getIntellGrowth());
         medic.setPointsFromClass(newClass.getMedicPerLevel() * lvl);
+        medic.setDevPerPoint(newClass.getIntellGrowth());
         navigate.setPointsFromClass(newClass.getNavPerLevel() * lvl);
+        navigate.setDevPerPoint(newClass.getIntellGrowth());
         occult.setPointsFromClass(newClass.getOccultPerLevel() * lvl);
+        occult.setDevPerPoint(newClass.getIntellGrowth());
         sciences.setPointsFromClass(newClass.getSciencePerLevel() * lvl);
+        sciences.setDevPerPoint(newClass.getIntellGrowth());
 
         composure.setPointsFromClass(newClass.getComposePerLevel() * lvl);
+        composure.setDevPerPoint(newClass.getVigGrowth());
         strengthFeat.setPointsFromClass(newClass.getStrengthFeatPerLevel() * lvl);
+        strengthFeat.setDevPerPoint(newClass.getVigGrowth());
         resistPain.setPointsFromClass(newClass.getStandPainPerLevel() * lvl);
+        resistPain.setDevPerPoint(newClass.getVigGrowth());
     }
 
     public void updateSTR(int strMod){

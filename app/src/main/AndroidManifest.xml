@@ -14,8 +14,11 @@
         android:theme="@style/Theme.AnimaBuilder"
         tools:targetApi="31">
         <activity
+            android:name=".Test"
+            android:exported="false" />
+        <activity
             android:name=".Activities.HomeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">

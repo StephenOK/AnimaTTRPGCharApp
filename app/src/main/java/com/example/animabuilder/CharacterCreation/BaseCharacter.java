@@ -46,6 +46,7 @@ public class BaseCharacter implements Serializable {
 
     public int getDevPT() {return devPT;}
     public int getSpentTotal() {return spentTotal;}
+    public void setSpentTotal(int newSpent){spentTotal = newSpent;}
 
     //maximum point allotments to combat, magic, and psychic abilities
     int maxCombatDP;

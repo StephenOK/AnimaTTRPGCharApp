@@ -1,8 +1,14 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 
 public class SecondaryCharacteristic implements Serializable {
+    ByteArrayOutputStream byteArray;
+
     int modVal;
     int pointsApplied;
     int devPerPoint;
@@ -73,5 +79,27 @@ public class SecondaryCharacteristic implements Serializable {
 
     public int getTotal(){
         return total;
+    }
+
+    public void load(BufferedReader fileReader) throws IOException {
+        setPointsApplied(Integer.parseInt(fileReader.readLine()));
+
+        String loadBoolean = fileReader.readLine();
+        if(loadBoolean.equals("true"))
+            setBonusApplied(true);
+        else
+            setBonusApplied(false);
+    }
+
+    public void write(ByteArrayOutputStream byteArray){
+        byteArray.write((pointsApplied + "\n").getBytes(StandardCharsets.UTF_8), 0, (pointsApplied + "\n").getBytes(StandardCharsets.UTF_8).length);
+
+        String booleanIn;
+        if(bonusApplied)
+            booleanIn = "true";
+        else
+            booleanIn = "false";
+
+        byteArray.write((booleanIn + "\n").getBytes(StandardCharsets.UTF_8), 0, (booleanIn + "\n").getBytes(StandardCharsets.UTF_8).length);
     }
 }

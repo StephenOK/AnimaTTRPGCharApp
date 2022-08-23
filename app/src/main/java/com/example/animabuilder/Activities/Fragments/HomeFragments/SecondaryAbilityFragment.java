@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.animabuilder.Activities.Fragments.SubFragments.SecondaryTable;
+import com.example.animabuilder.CharacterCreation.Attributes.CharClass;
 import com.example.animabuilder.CharacterCreation.BaseCharacter;
 import com.example.animabuilder.R;
 import com.example.animabuilder.SecondaryToggleClick;
@@ -30,6 +32,7 @@ public class SecondaryAbilityFragment extends Fragment {
 
         Bundle fromActivity = getArguments();
         BaseCharacter charInstance = (BaseCharacter)fromActivity.getSerializable("Character");
+        CharClass valueRef = charInstance.getOwnClass();
 
         SecondaryTable athFrag = new SecondaryTable(charInstance, R.layout.athletics_fragment);
         SecondaryTable socFrag = new SecondaryTable(charInstance, R.layout.social_fragment);
@@ -56,6 +59,14 @@ public class SecondaryAbilityFragment extends Fragment {
         ToggleButton vigorToggle = view.findViewById(R.id.vigorToggle);
         ToggleButton subterToggle = view.findViewById(R.id.subterfugeToggle);
         ToggleButton createToggle = view.findViewById(R.id.creativeToggle);
+
+        athleteToggle.setTextOn(getString(R.string.athleticsLabel) + getString(R.string.togglePointInt, valueRef.getAthGrowth()));
+        socialToggle.setTextOn(getString(R.string.socialLabel) + getString(R.string.togglePointInt, valueRef.getSocGrowth()));
+        perceptionToggle.setTextOn(getString(R.string.perceptionLabel) + getString(R.string.togglePointInt, valueRef.getPercGrowth()));
+        intellectToggle.setTextOn(getString(R.string.intellectualLabel) + getString(R.string.togglePointInt, valueRef.getIntellGrowth()));
+        vigorToggle.setTextOn(getString(R.string.vigorLabel) + getString(R.string.togglePointInt, valueRef.getVigGrowth()));
+        subterToggle.setTextOn(getString(R.string.subterfugeLabel) + getString(R.string.togglePointInt, valueRef.getSubterGrowth()));
+        createToggle.setTextOn(getString(R.string.creativeLabel) + getString(R.string.togglePointInt, valueRef.getCreatGrowth()));
 
         athleteToggle.setOnClickListener(new SecondaryToggleClick(athleteToggle, athFrag, fm));
         socialToggle.setOnClickListener(new SecondaryToggleClick(socialToggle, socFrag, fm));

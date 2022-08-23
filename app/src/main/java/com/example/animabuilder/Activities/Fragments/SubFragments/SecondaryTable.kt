@@ -15,57 +15,68 @@ import androidx.fragment.app.Fragment
 import com.example.animabuilder.SecondaryInput
 
 class SecondaryTable(var charInstance: BaseCharacter, var rID: Int) : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         super.onCreate(savedInstanceState)
         val view = inflater.inflate(rID, container, false)
         val workingTable = view.findViewById<TableLayout>(R.id.heldTable)
+
         for (i in 1 until workingTable.childCount) {
             val workingRow = workingTable.getChildAt(i) as TableRow
             var workingStat: SecondaryCharacteristic
             val rowText = (workingRow.getChildAt(0) as TextView).text.toString()
+
             workingStat = when (rowText) {
-                "Acrobatics" -> charInstance.secondaryList.acrobatics
-                "Athletics" -> charInstance.secondaryList.athletics
-                "Climb" -> charInstance.secondaryList.climb
-                "Jump" -> charInstance.secondaryList.jump
-                "Ride" -> charInstance.secondaryList.ride
-                "Swim" -> charInstance.secondaryList.swim
-                "Intimidate" -> charInstance.secondaryList.intimidate
-                "Leadership" -> charInstance.secondaryList.leadership
-                "Persuasion" -> charInstance.secondaryList.persuasion
-                "Style" -> charInstance.secondaryList.style
-                "Notice" -> charInstance.secondaryList.notice
-                "Search" -> charInstance.secondaryList.search
-                "Track" -> charInstance.secondaryList.track
-                "Animals" -> charInstance.secondaryList.animals
-                "Appraise" -> charInstance.secondaryList.appraise
-                "Herb Lore" -> charInstance.secondaryList.herbalLore
-                "History" -> charInstance.secondaryList.history
-                "Memorize" -> charInstance.secondaryList.memorize
-                "Magic Appraise" -> charInstance.secondaryList.magicAppraise
-                "Medicine" -> charInstance.secondaryList.medic
-                "Navigation" -> charInstance.secondaryList.navigate
-                "Occult" -> charInstance.secondaryList.occult
-                "Science" -> charInstance.secondaryList.sciences
-                "Composure" -> charInstance.secondaryList.composure
-                "Feats of Strength" -> charInstance.secondaryList.strengthFeat
-                "Withstand Pain" -> charInstance.secondaryList.resistPain
-                "Disguise" -> charInstance.secondaryList.disguise
-                "Hide" -> charInstance.secondaryList.hide
-                "Lock Picking" -> charInstance.secondaryList.lockPick
-                "Poisons" -> charInstance.secondaryList.poisons
-                "Theft" -> charInstance.secondaryList.theft
-                "Stealth" -> charInstance.secondaryList.stealth
-                "Trap Lore" -> charInstance.secondaryList.trapLore
-                "Art" -> charInstance.secondaryList.art
-                "Dance" -> charInstance.secondaryList.dance
-                "Forging" -> charInstance.secondaryList.forging
-                "Music" -> charInstance.secondaryList.music
-                "Sleight of Hand" -> charInstance.secondaryList.sleightHand
+                getString(R.string.acrobaticsLabel) -> charInstance.secondaryList.acrobatics
+                getString(R.string.athleticsLabel) -> charInstance.secondaryList.athletics
+                getString(R.string.climbLabel) -> charInstance.secondaryList.climb
+                getString(R.string.jumpLabel) -> charInstance.secondaryList.jump
+                getString(R.string.rideLabel) -> charInstance.secondaryList.ride
+                getString(R.string.swimLabel) -> charInstance.secondaryList.swim
+
+                getString(R.string.intimidateLabel) -> charInstance.secondaryList.intimidate
+                getString(R.string.leadershipLabel) -> charInstance.secondaryList.leadership
+                getString(R.string.persuasionLabel) -> charInstance.secondaryList.persuasion
+                getString(R.string.styleLabel) -> charInstance.secondaryList.style
+
+                getString(R.string.noticeLabel) -> charInstance.secondaryList.notice
+                getString(R.string.searchLabel) -> charInstance.secondaryList.search
+                getString(R.string.trackLabel) -> charInstance.secondaryList.track
+
+                getString(R.string.animalLabel) -> charInstance.secondaryList.animals
+                getString(R.string.appraiseLabel) -> charInstance.secondaryList.appraise
+                getString(R.string.herbalLabel) -> charInstance.secondaryList.herbalLore
+                getString(R.string.histLabel) -> charInstance.secondaryList.history
+                getString(R.string.memLabel) -> charInstance.secondaryList.memorize
+                getString(R.string.mAppraiseLabel) -> charInstance.secondaryList.magicAppraise
+                getString(R.string.medLabel) -> charInstance.secondaryList.medic
+                getString(R.string.navLabel) -> charInstance.secondaryList.navigate
+                getString(R.string.occultLabel) -> charInstance.secondaryList.occult
+                getString(R.string.scienceLabel) -> charInstance.secondaryList.sciences
+
+                getString(R.string.composureLabel) -> charInstance.secondaryList.composure
+                getString(R.string.strFeatLabel) -> charInstance.secondaryList.strengthFeat
+                getString(R.string.resistPainLabel) -> charInstance.secondaryList.resistPain
+
+                getString(R.string.disguiseLabel) -> charInstance.secondaryList.disguise
+                getString(R.string.hideLabel) -> charInstance.secondaryList.hide
+                getString(R.string.lockpickLabel) -> charInstance.secondaryList.lockPick
+                getString(R.string.poisonLabel) -> charInstance.secondaryList.poisons
+                getString(R.string.theftLabel) -> charInstance.secondaryList.theft
+                getString(R.string.stealthLabel) -> charInstance.secondaryList.stealth
+                getString(R.string.trapLabel) -> charInstance.secondaryList.trapLore
+
+                getString(R.string.artLabel) -> charInstance.secondaryList.art
+                getString(R.string.danceLabel) -> charInstance.secondaryList.dance
+                getString(R.string.forgeLabel) -> charInstance.secondaryList.forging
+                getString(R.string.musicLabel) -> charInstance.secondaryList.music
+                getString(R.string.sleightLabel) -> charInstance.secondaryList.sleightHand
+
                 else -> SecondaryCharacteristic()
             }
             (workingRow.getChildAt(1) as EditText).setText(

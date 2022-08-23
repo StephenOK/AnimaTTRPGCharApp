@@ -24,7 +24,6 @@
                 android:buttonTint="#000000"
                 android:textAlignment="center"
                 android:textOff="@string/athleticsLabel"
-                android:textOn="@string/athleticsLabel"
                 android:textSize="24sp" />
 
             <FrameLayout

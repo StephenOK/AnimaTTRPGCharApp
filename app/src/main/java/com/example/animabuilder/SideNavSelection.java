@@ -38,13 +38,6 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
     Context startPage;
     FragmentManager fm;
 
-    CharacterPageFragment cpFrag = new CharacterPageFragment();
-    CombatFragment comFrag = new CombatFragment();
-    MagicFragment magFrag = new MagicFragment();
-    PsychicFragment psyFrag = new PsychicFragment();
-    SecondaryAbilityFragment secAbleFrag = new SecondaryAbilityFragment();
-    EquipmentFragment eqFrag = new EquipmentFragment();
-
     public SideNavSelection(DrawerLayout parent,String filename, BaseCharacter saveObject, AppCompatActivity startPage, FragmentManager fm){
         this.parent = parent;
         pageIndex = 0;
@@ -63,42 +56,42 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
         switch(item.getItemId()){
             case R.id.mainCharPageButton:
                 if (pageIndex != 0) {
-                    transferTo(cpFrag, 0);
+                    transferTo(new CharacterPageFragment(), 0);
                     return true;
                 }
                 break;
 
             case R.id.combatPageButton:
                 if(pageIndex != 1) {
-                    transferTo(comFrag, 1);
+                    transferTo(new CombatFragment(), 1);
                     return true;
                 }
                 break;
 
             case R.id.magicPageButton:
                 if(pageIndex != 2) {
-                    transferTo(magFrag, 2);
+                    transferTo(new MagicFragment(), 2);
                     return true;
                 }
                 break;
 
             case R.id.psychicPageButton:
                 if(pageIndex != 3) {
-                    transferTo(psyFrag, 3);
+                    transferTo(new PsychicFragment(), 3);
                     return true;
                 }
                 break;
 
             case R.id.secondariesPageButton:
                 if(pageIndex != 4) {
-                    transferTo(secAbleFrag, 4);
+                    transferTo(new SecondaryAbilityFragment(), 4);
                     return true;
                 }
                 break;
 
             case R.id.equipmentPageButton:
                 if(pageIndex != 5){
-                    transferTo(eqFrag, 5);
+                    transferTo(new EquipmentFragment(), 5);
                     return true;
                 }
                 break;

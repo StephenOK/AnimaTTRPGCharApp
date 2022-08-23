@@ -2,6 +2,9 @@ package com.example.animabuilder.CharacterCreation.Attributes;
 
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class SecondaryList implements Serializable {
@@ -307,4 +310,99 @@ public class SecondaryList implements Serializable {
 
         hide.setModVal(perMod);
     }
+
+    public void loadList(BufferedReader fileReader) throws IOException {
+        acrobatics.load(fileReader);
+        athletics.load(fileReader);
+        climb.load(fileReader);
+        jump.load(fileReader);
+        ride.load(fileReader);
+        swim.load(fileReader);
+
+        art.load(fileReader);
+        dance.load(fileReader);
+        forging.load(fileReader);
+        music.load(fileReader);
+        sleightHand.load(fileReader);
+
+        notice.load(fileReader);
+        search.load(fileReader);
+        track.load(fileReader);
+
+        intimidate.load(fileReader);
+        leadership.load(fileReader);
+        persuasion.load(fileReader);
+        style.load(fileReader);
+
+        disguise.load(fileReader);
+        hide.load(fileReader);
+        lockPick.load(fileReader);
+        poisons.load(fileReader);
+        theft.load(fileReader);
+        stealth.load(fileReader);
+        trapLore.load(fileReader);
+
+        animals.load(fileReader);
+        appraise.load(fileReader);
+        herbalLore.load(fileReader);
+        history.load(fileReader);
+        memorize.load(fileReader);
+        magicAppraise.load(fileReader);
+        medic.load(fileReader);
+        navigate.load(fileReader);
+        occult.load(fileReader);
+        sciences.load(fileReader);
+
+        composure.load(fileReader);
+        strengthFeat.load(fileReader);
+        resistPain.load(fileReader);
+    }
+
+    public void writeList(ByteArrayOutputStream byteArray) {
+        acrobatics.write(byteArray);
+        athletics.write(byteArray);
+        climb.write(byteArray);
+        jump.write(byteArray);
+        ride.write(byteArray);
+        swim.write(byteArray);
+
+        art.write(byteArray);
+        dance.write(byteArray);
+        forging.write(byteArray);
+        music.write(byteArray);
+        sleightHand.write(byteArray);
+
+        notice.write(byteArray);
+        search.write(byteArray);
+        track.write(byteArray);
+
+        intimidate.write(byteArray);
+        leadership.write(byteArray);
+        persuasion.write(byteArray);
+        style.write(byteArray);
+
+        disguise.write(byteArray);
+        hide.write(byteArray);
+        lockPick.write(byteArray);
+        poisons.write(byteArray);
+        theft.write(byteArray);
+        stealth.write(byteArray);
+        trapLore.write(byteArray);
+
+        animals.write(byteArray);
+        appraise.write(byteArray);
+        herbalLore.write(byteArray);
+        history.write(byteArray);
+        memorize.write(byteArray);
+        magicAppraise.write(byteArray);
+        medic.write(byteArray);
+        navigate.write(byteArray);
+        occult.write(byteArray);
+        sciences.write(byteArray);
+
+        composure.write(byteArray);
+        strengthFeat.write(byteArray);
+        resistPain.write(byteArray);
+    }
+
 }

@@ -361,6 +361,8 @@ public class BaseCharacter implements Serializable {
         setCharName("");
         setLvl(0);
 
+        setSpentTotal(0);
+
         setSTR.accept(5);
         setDEX.accept(5);
         setAGI.accept(5);
@@ -384,6 +386,8 @@ public class BaseCharacter implements Serializable {
 
         setLvl(Integer.parseInt(fileReader.readLine()));
 
+        setSpentTotal(Integer.parseInt(fileReader.readLine()));
+
         setSTR.accept(Integer.parseInt(fileReader.readLine()));
         setDEX.accept(Integer.parseInt(fileReader.readLine()));
         setAGI.accept(Integer.parseInt(fileReader.readLine()));
@@ -392,6 +396,8 @@ public class BaseCharacter implements Serializable {
         setPOW.accept(Integer.parseInt(fileReader.readLine()));
         setWP.accept(Integer.parseInt(fileReader.readLine()));
         setPER.accept(Integer.parseInt(fileReader.readLine()));
+
+        secondaryList.loadList(fileReader);
 
         restoreChar.close();
     }
@@ -405,6 +411,8 @@ public class BaseCharacter implements Serializable {
 
         addNewData(lvl);
 
+        addNewData(spentTotal);
+
         addNewData(STR);
         addNewData(DEX);
         addNewData(AGI);
@@ -413,6 +421,8 @@ public class BaseCharacter implements Serializable {
         addNewData(POW);
         addNewData(WP);
         addNewData(PER);
+
+        secondaryList.writeList(byteArray);
 
         return byteArray.toByteArray();
     }

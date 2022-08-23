@@ -22,7 +22,13 @@ class SecondaryInput: TextWatcher {
 
     var preValue: Int
 
-    constructor(workingRow: TableRow, location: Context, workingStat: SecondaryCharacteristic, charInstance: BaseCharacter){
+    constructor(
+        workingRow: TableRow,
+        location: Context,
+        workingStat: SecondaryCharacteristic,
+        charInstance: BaseCharacter
+    ){
+
         this.workingRow = workingRow
         this.location = location
         this.workingStat = workingStat
@@ -64,9 +70,6 @@ class SecondaryInput: TextWatcher {
             else{
                 textFrom.setTextColor(Color.rgb(255, 0, 0))
             }
-        }
-        else{
-
         }
     }
 }

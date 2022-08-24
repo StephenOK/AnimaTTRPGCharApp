@@ -2,6 +2,8 @@ package com.example.animabuilder.CharacterCreation.Attributes;
 
 import android.widget.Toast;
 
+import com.example.animabuilder.CharacterCreation.SerialOutputStream;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,6 +11,22 @@ import java.io.Serializable;
 
 public class SecondaryList implements Serializable {
     int lvl;
+    int currentNatTaken;
+
+    public boolean incrementNat(boolean direction){
+        if(direction){
+            if(currentNatTaken < lvl) {
+                currentNatTaken++;
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            currentNatTaken--;
+
+        return true;
+    }
 
     //athletics
     SecondaryCharacteristic acrobatics;
@@ -108,6 +126,8 @@ public class SecondaryList implements Serializable {
     public SecondaryCharacteristic getResistPain(){return resistPain;}
 
     public SecondaryList(){
+        currentNatTaken = 0;
+
         acrobatics = new SecondaryCharacteristic();
         athletics = new SecondaryCharacteristic();
         climb = new SecondaryCharacteristic();
@@ -312,53 +332,53 @@ public class SecondaryList implements Serializable {
     }
 
     public void loadList(BufferedReader fileReader) throws IOException {
-        acrobatics.load(fileReader);
-        athletics.load(fileReader);
-        climb.load(fileReader);
-        jump.load(fileReader);
-        ride.load(fileReader);
-        swim.load(fileReader);
+        acrobatics.load(fileReader, this);
+        athletics.load(fileReader, this);
+        climb.load(fileReader, this);
+        jump.load(fileReader, this);
+        ride.load(fileReader, this);
+        swim.load(fileReader, this);
 
-        art.load(fileReader);
-        dance.load(fileReader);
-        forging.load(fileReader);
-        music.load(fileReader);
-        sleightHand.load(fileReader);
+        art.load(fileReader, this);
+        dance.load(fileReader, this);
+        forging.load(fileReader, this);
+        music.load(fileReader, this);
+        sleightHand.load(fileReader, this);
 
-        notice.load(fileReader);
-        search.load(fileReader);
-        track.load(fileReader);
+        notice.load(fileReader, this);
+        search.load(fileReader, this);
+        track.load(fileReader, this);
 
-        intimidate.load(fileReader);
-        leadership.load(fileReader);
-        persuasion.load(fileReader);
-        style.load(fileReader);
+        intimidate.load(fileReader, this);
+        leadership.load(fileReader, this);
+        persuasion.load(fileReader, this);
+        style.load(fileReader, this);
 
-        disguise.load(fileReader);
-        hide.load(fileReader);
-        lockPick.load(fileReader);
-        poisons.load(fileReader);
-        theft.load(fileReader);
-        stealth.load(fileReader);
-        trapLore.load(fileReader);
+        disguise.load(fileReader, this);
+        hide.load(fileReader, this);
+        lockPick.load(fileReader, this);
+        poisons.load(fileReader, this);
+        theft.load(fileReader, this);
+        stealth.load(fileReader, this);
+        trapLore.load(fileReader, this);
 
-        animals.load(fileReader);
-        appraise.load(fileReader);
-        herbalLore.load(fileReader);
-        history.load(fileReader);
-        memorize.load(fileReader);
-        magicAppraise.load(fileReader);
-        medic.load(fileReader);
-        navigate.load(fileReader);
-        occult.load(fileReader);
-        sciences.load(fileReader);
+        animals.load(fileReader, this);
+        appraise.load(fileReader, this);
+        herbalLore.load(fileReader, this);
+        history.load(fileReader, this);
+        memorize.load(fileReader, this);
+        magicAppraise.load(fileReader, this);
+        medic.load(fileReader, this);
+        navigate.load(fileReader, this);
+        occult.load(fileReader, this);
+        sciences.load(fileReader, this);
 
-        composure.load(fileReader);
-        strengthFeat.load(fileReader);
-        resistPain.load(fileReader);
+        composure.load(fileReader, this);
+        strengthFeat.load(fileReader, this);
+        resistPain.load(fileReader, this);
     }
 
-    public void writeList(ByteArrayOutputStream byteArray) {
+    public void writeList(SerialOutputStream byteArray) {
         acrobatics.write(byteArray);
         athletics.write(byteArray);
         climb.write(byteArray);
@@ -404,5 +424,4 @@ public class SecondaryList implements Serializable {
         strengthFeat.write(byteArray);
         resistPain.write(byteArray);
     }
-
 }

@@ -19,7 +19,7 @@ import com.example.animabuilder.CharacterCreation.Equipment.*;
 public class BaseCharacter implements Serializable {
     String charName;
 
-    ByteArrayOutputStream byteArray;
+    SerialOutputStream byteArray;
 
     public void setCharName(String input){
         charName = input;
@@ -402,8 +402,8 @@ public class BaseCharacter implements Serializable {
         restoreChar.close();
     }
 
-    public byte[] getBytes(){
-        byteArray = new ByteArrayOutputStream();
+    public byte[] getBytes() throws IOException {
+        byteArray = new SerialOutputStream();
 
         addNewData(charName);
         addNewData(ownClass.getHeldClass().name());
@@ -423,6 +423,8 @@ public class BaseCharacter implements Serializable {
         addNewData(PER);
 
         secondaryList.writeList(byteArray);
+
+        byteArray.close();
 
         return byteArray.toByteArray();
     }

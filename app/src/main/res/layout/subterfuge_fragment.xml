@@ -82,9 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/disguiseNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -124,9 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/hideNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -166,9 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/lockpickNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -209,9 +206,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/poisonNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -251,9 +247,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/theftNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -293,9 +288,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/stealthNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -335,9 +329,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/trapNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

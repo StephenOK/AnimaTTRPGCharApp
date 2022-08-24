@@ -35,7 +35,7 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
     int pageIndex;
     String filename;
     BaseCharacter saveObject;
-    Context startPage;
+    AppCompatActivity startPage;
     FragmentManager fm;
 
     public SideNavSelection(DrawerLayout parent,String filename, BaseCharacter saveObject, AppCompatActivity startPage, FragmentManager fm){
@@ -43,7 +43,7 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
         pageIndex = 0;
         this.filename = filename;
         this.saveObject = saveObject;
-        this.startPage = startPage.getApplicationContext();
+        this.startPage = startPage;
         this.fm = fm;
     }
 
@@ -113,7 +113,8 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
                     public void onShow(DialogInterface dialog) {
                         Button saveButton = exitAlert.getButton(AlertDialog.BUTTON_POSITIVE);
                         saveButton.setOnClickListener(v -> {
-                            if(attemptSave()){
+                            if(attemptSave()) {
+
                                 startPage.startActivity(new Intent(startPage, MainActivity.class));
                             }
                         });
@@ -137,7 +138,7 @@ public class SideNavSelection implements NavigationView.OnNavigationItemSelected
 
     private boolean attemptSave(){
         try {
-            FileOutputStream saveStream = startPage.getApplicationContext().openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream saveStream = startPage.openFileOutput(filename, Context.MODE_PRIVATE);
             byte[] charData = saveObject.getBytes();
             saveStream.write(charData);
             saveStream.close();

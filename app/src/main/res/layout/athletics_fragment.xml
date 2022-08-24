@@ -87,9 +87,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/acroNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -129,9 +128,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/athNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -171,9 +169,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/climbNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -212,9 +209,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/jumpNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -253,9 +249,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/rideNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -294,9 +289,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <CheckBox
                             android:id="@+id/swimNatBonus"
-                            style="@style/secondaryTableRowData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 

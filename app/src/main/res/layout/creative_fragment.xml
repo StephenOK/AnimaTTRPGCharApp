@@ -82,9 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/artNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -124,9 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/danceNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -166,9 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/forgeNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -208,9 +205,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/musicNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -250,9 +246,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/sleightNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

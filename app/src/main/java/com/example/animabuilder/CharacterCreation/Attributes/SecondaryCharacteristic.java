@@ -1,5 +1,7 @@
 package com.example.animabuilder.CharacterCreation.Attributes;
 
+import com.example.animabuilder.CharacterCreation.SerialOutputStream;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,17 +83,19 @@ public class SecondaryCharacteristic implements Serializable {
         return total;
     }
 
-    public void load(BufferedReader fileReader) throws IOException {
+    public void load(BufferedReader fileReader, SecondaryList caller) throws IOException {
         setPointsApplied(Integer.parseInt(fileReader.readLine()));
 
         String loadBoolean = fileReader.readLine();
-        if(loadBoolean.equals("true"))
+        if(loadBoolean.equals("true")) {
             setBonusApplied(true);
+            caller.incrementNat(true);
+        }
         else
             setBonusApplied(false);
     }
 
-    public void write(ByteArrayOutputStream byteArray){
+    public void write(SerialOutputStream byteArray){
         byteArray.write((pointsApplied + "\n").getBytes(StandardCharsets.UTF_8), 0, (pointsApplied + "\n").getBytes(StandardCharsets.UTF_8).length);
 
         String booleanIn;

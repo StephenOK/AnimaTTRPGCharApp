@@ -82,9 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/noticeNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -123,9 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/searchNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -164,9 +162,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/trackNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

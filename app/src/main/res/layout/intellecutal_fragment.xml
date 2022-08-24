@@ -87,9 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/animalNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -129,9 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/appraiseNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -171,9 +169,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/herbNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -213,9 +210,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/histNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -255,9 +251,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/memNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -297,9 +292,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/mAppraiseNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -339,9 +333,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/medNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -381,9 +374,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/navNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -423,9 +415,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/occultNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -465,9 +456,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/scienceNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

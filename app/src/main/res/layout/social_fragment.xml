@@ -83,9 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/intimidateNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -124,9 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/leadershipNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -165,9 +163,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/persuasionNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -206,9 +203,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <CheckBox
                 android:id="@+id/styleNatBonus"
-                style="@style/secondaryTableRowData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

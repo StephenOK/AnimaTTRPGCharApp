@@ -144,6 +144,9 @@
 
     <string name="scoreLabel">Score</string>
 
+    <string name="natNotTaken">+ 0</string>
+    <string name="natTaken">+ 5</string>
+
     <string name="intItem">%1$d</string>
     <string name="togglePointInt">&#160;- %1$d</string>
 

@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2265" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/drawable/secondary_nat_checkbox.xml" value="0.2265" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_character_page.xml" value="0.264" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_combat.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/AnimaBuilder/app/src/main/res/layout/activity_equipment.xml" value="0.22554347826086957" />

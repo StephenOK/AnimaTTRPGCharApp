@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
-import android.widget.TableLayout
+import android.widget.*
 import com.example.animabuilder.R
 import com.example.animabuilder.CharacterCreation.Attributes.SecondaryCharacteristic
-import android.widget.TextView
-import android.widget.EditText
-import android.widget.TableRow
 import androidx.fragment.app.Fragment
 import com.example.animabuilder.SecondaryInput
+import com.example.animabuilder.natBonusCheck
 
 class SecondaryTable(var charInstance: BaseCharacter, var rID: Int) : Fragment() {
 
@@ -97,8 +95,21 @@ class SecondaryTable(var charInstance: BaseCharacter, var rID: Int) : Fragment()
                 getString(R.string.intItem, workingStat.modVal)
             (workingRow.getChildAt(3) as TextView).text =
                 getString(R.string.intItem, workingStat.pointsFromClass)
-            if (workingStat.isBonusApplied) (workingRow.getChildAt(4) as TextView).text =
-                "5" else (workingRow.getChildAt(4) as TextView).text = "0"
+
+            var natCheckBox = workingRow.getChildAt(4) as CheckBox
+
+            //apply initial checkmark
+            natCheckBox.isChecked =
+                workingStat.isBonusApplied
+
+            natCheckBox.text =
+                if(workingStat.isBonusApplied)
+                        getString(R.string.natTaken)
+                else
+                        getString(R.string.natNotTaken)
+
+            natCheckBox.setOnCheckedChangeListener(natBonusCheck(workingRow, charInstance.secondaryList, workingStat, this))
+
             (workingRow.getChildAt(5) as TextView).text =
                 getString(R.string.intItem, workingStat.total)
         }

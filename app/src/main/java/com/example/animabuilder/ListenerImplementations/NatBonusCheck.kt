@@ -1,12 +1,13 @@
-package com.example.animabuilder
+package com.example.animabuilder.ListenerImplementations
 
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.animabuilder.CharacterCreation.Attributes.SecondaryCharacteristic
-import com.example.animabuilder.CharacterCreation.Attributes.SecondaryList
+import com.example.animabuilder.CharacterCreation.Attributes.SecondaryAbilities.SecondaryCharacteristic
+import com.example.animabuilder.CharacterCreation.Attributes.SecondaryAbilities.SecondaryList
+import com.example.animabuilder.R
 
 class natBonusCheck: CompoundButton.OnCheckedChangeListener {
     var charList: SecondaryList
@@ -35,13 +36,13 @@ class natBonusCheck: CompoundButton.OnCheckedChangeListener {
             if (targetStat.pointsApplied == 0 || !charList.incrementNat(true))
                 parent.isChecked = false
             else {
-                targetStat.isBonusApplied = true
+                targetStat.bonusApplied = true
                 parent.text = location.getString(R.string.natTaken)
             }
         }
         else {
             charList.incrementNat(false)
-            targetStat.isBonusApplied = false
+            targetStat.bonusApplied = false
             parent.text = location.getString(R.string.natNotTaken)
         }
 

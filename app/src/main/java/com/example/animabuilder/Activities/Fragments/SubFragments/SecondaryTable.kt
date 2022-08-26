@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.example.animabuilder.R
-import com.example.animabuilder.CharacterCreation.Attributes.SecondaryCharacteristic
+import com.example.animabuilder.CharacterCreation.Attributes.SecondaryAbilities.SecondaryCharacteristic
 import androidx.fragment.app.Fragment
-import com.example.animabuilder.SecondaryInput
-import com.example.animabuilder.natBonusCheck
+import com.example.animabuilder.ListenerImplementations.SecondaryInput
+import com.example.animabuilder.ListenerImplementations.natBonusCheck
 
 class SecondaryTable(var charInstance: BaseCharacter, var rID: Int) : Fragment() {
 
@@ -100,10 +100,10 @@ class SecondaryTable(var charInstance: BaseCharacter, var rID: Int) : Fragment()
 
             //apply initial checkmark
             natCheckBox.isChecked =
-                workingStat.isBonusApplied
+                workingStat.bonusApplied
 
             natCheckBox.text =
-                if(workingStat.isBonusApplied)
+                if(workingStat.bonusApplied)
                         getString(R.string.natTaken)
                 else
                         getString(R.string.natNotTaken)

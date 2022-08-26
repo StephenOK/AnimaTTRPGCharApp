@@ -1,4 +1,4 @@
-package com.example.animabuilder.CharacterCreation
+package com.example.animabuilder.Serializables
 
 import java.io.Serializable
 import java.util.function.Consumer

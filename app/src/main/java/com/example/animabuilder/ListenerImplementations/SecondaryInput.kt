@@ -1,4 +1,4 @@
-package com.example.animabuilder
+package com.example.animabuilder.ListenerImplementations
 
 import android.content.Context
 import android.graphics.Color
@@ -7,9 +7,9 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TableRow
 import android.widget.TextView
-import android.widget.Toast
-import com.example.animabuilder.CharacterCreation.Attributes.SecondaryCharacteristic
+import com.example.animabuilder.CharacterCreation.Attributes.SecondaryAbilities.SecondaryCharacteristic
 import com.example.animabuilder.CharacterCreation.BaseCharacter
+import com.example.animabuilder.R
 
 class SecondaryInput: TextWatcher {
     var workingRow: TableRow

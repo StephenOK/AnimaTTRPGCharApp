@@ -1,6 +1,5 @@
-package com.example.animabuilder.CharacterCreation.Attributes
+package com.example.animabuilder.CharacterCreation.Attributes.Race
 
-import com.example.animabuilder.CharacterCreation.Attributes.RaceName
 import java.io.Serializable
 
 enum class RaceName : Serializable {

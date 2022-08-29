@@ -1,18 +1,21 @@
-package com.example.animabuilder.Activities
+package com.example.animabuilder.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.animabuilder.R
 import android.view.LayoutInflater
 import android.content.Intent
-import com.example.animabuilder.Activities.HomeActivity
-import android.content.DialogInterface.OnShowListener
 import android.content.DialogInterface
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import com.example.animabuilder.CharacterCreation.BaseCharacter
+import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.File
+
+/**
+ * Startup activity for the app
+ * Gives the option to load a character or create a new one
+ */
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

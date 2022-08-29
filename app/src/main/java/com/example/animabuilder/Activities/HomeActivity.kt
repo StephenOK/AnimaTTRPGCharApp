@@ -1,29 +1,28 @@
-package com.example.animabuilder.Activities
+package com.example.animabuilder.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
-import com.example.animabuilder.CharacterCreation.BaseCharacter
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.google.android.material.navigation.NavigationView
 import com.example.animabuilder.SideNavSelection
-import com.example.animabuilder.Activities.Fragments.HomeFragments.CharacterPageFragment
-import kotlinx.coroutines.launch
+import com.example.animabuilder.activities.fragments.home_fragments.CharacterPageFragment
+
+/**
+ * Activity that runs all character creation fragments
+ * Initially loads the CharacterPageFragment
+ */
 
 class HomeActivity : AppCompatActivity() {
 
     //instantiate drawer layout and toggle
-    var pageDrawer: DrawerLayout? = null
-    var drawerToggle: ActionBarDrawerToggle? = null
+    private var pageDrawer: DrawerLayout? = null
+    private var drawerToggle: ActionBarDrawerToggle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

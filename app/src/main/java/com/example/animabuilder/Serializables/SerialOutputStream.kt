@@ -1,7 +1,6 @@
-package com.example.animabuilder.Serializables
+package com.example.animabuilder.serializables
 
 import java.io.ByteArrayOutputStream
 import java.io.Serializable
 
-class SerialOutputStream: ByteArrayOutputStream(), Serializable {
-}
+class SerialOutputStream: ByteArrayOutputStream(), Serializable

@@ -5,7 +5,7 @@
     android:id = "@+id/currentFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Fragments.HomeFragments.SecondaryAbilityFragment">
+    tools:context=".activities.fragments.home_fragments.SecondaryAbilityFragment">
 
     <ScrollView
         android:layout_width="match_parent"

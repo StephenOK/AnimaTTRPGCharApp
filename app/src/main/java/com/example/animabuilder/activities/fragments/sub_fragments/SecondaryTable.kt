@@ -131,7 +131,7 @@ class SecondaryTable(private var charInstance: BaseCharacter, private var rID: I
 
             //set listener for checkbox
             natCheckBox.setOnCheckedChangeListener(
-                NatBonusCheck(workingRow, charInstance.secondaryList, workingStat, this)
+                NatBonusCheck(workingRow, charInstance.secondaryList, workingStat, context!!)
             )
 
             //set displayed stat total

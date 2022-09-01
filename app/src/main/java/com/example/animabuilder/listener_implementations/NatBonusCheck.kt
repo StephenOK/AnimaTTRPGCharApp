@@ -1,5 +1,6 @@
 package com.example.animabuilder.listener_implementations
 
+import android.content.Context
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TableRow
@@ -17,7 +18,7 @@ class NatBonusCheck(
     homeRow: TableRow,
     private var charList: SecondaryList,
     private var targetStat: SecondaryCharacteristic,
-    private var location: Fragment
+    private var location: Context
 ) : CompoundButton.OnCheckedChangeListener {
 
     var parent: CheckBox

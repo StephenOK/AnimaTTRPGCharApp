@@ -26,12 +26,10 @@
                 android:textOff="@string/athleticsLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/athleticsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/socialToggle"
@@ -44,12 +42,10 @@
                 android:textOn="@string/socialLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/socialFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/perceptionToggle"
@@ -62,12 +58,10 @@
                 android:textOn="@string/perceptionLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/perceptionFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/intellectualToggle"
@@ -80,12 +74,10 @@
                 android:textOn="@string/intellectualLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/intellectualFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/vigorToggle"
@@ -98,12 +90,10 @@
                 android:textOn="@string/vigorLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/vigorFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/subterfugeToggle"
@@ -116,12 +106,10 @@
                 android:textOn="@string/subterfugeLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/subterfugeFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
+                android:layout_height="match_parent"/>
 
             <ToggleButton
                 android:id="@+id/creativeToggle"
@@ -134,14 +122,15 @@
                 android:textOn="@string/creativeLabel"
                 android:textSize="24sp" />
 
-            <FrameLayout
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/creativeFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"/>
 
-            </FrameLayout>
-
-
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/testRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

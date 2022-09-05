@@ -1,35 +1,31 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.activities.fragments.sub_fragments.SecondaryTable
-import android.widget.ToggleButton
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
-import com.example.animabuilder.listener_implementations.SecondaryToggleClick
-import com.google.accompanist.appcompattheme.AppCompatTheme
 
 /**
  * Fragment to be displayed when working with secondary characteristics
@@ -37,131 +33,104 @@ import com.google.accompanist.appcompattheme.AppCompatTheme
 
 class SecondaryAbilityFragment : Fragment() {
 
-    private var ft: FragmentTransaction? = null
     private var charInstance: BaseCharacter = BaseCharacter()
+    private var charList: SecondaryList = charInstance.secondaryList
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        super.onCreate(savedInstanceState)
-
-        //get xml file to display
-        val view = inflater.inflate(R.layout.fragment_secondary_ability, container, false)
-
-        //get fragment manager from HomeActivity
-        val fm = this.parentFragmentManager
+    ): View {
 
         //receive BaseCharacter from bundle
         val fromActivity = arguments
         charInstance = fromActivity!!.getSerializable("Character") as BaseCharacter
+        charList = charInstance.secondaryList
 
-        //retrieve class from character
-        val valueRef = charInstance!!.ownClass
-        valueRef!!
+        return ComposeView(requireContext()).apply {
+            setContent {
 
-        //find table fragment locations
-        val athFrag = SecondaryTable(charInstance!!, R.layout.athletics_fragment)
-        val socFrag = SecondaryTable(charInstance!!, R.layout.social_fragment)
-        val percFrag = SecondaryTable(charInstance!!, R.layout.perception_fragment)
-        val intelFrag = SecondaryTable(charInstance!!, R.layout.intellecutal_fragment)
-        val vigFrag = SecondaryTable(charInstance!!, R.layout.vigor_fragment)
-        val subFrag = SecondaryTable(charInstance!!, R.layout.subterfuge_fragment)
-        val creFrag = SecondaryTable(charInstance!!, R.layout.creative_fragment)
+                MaterialTheme(
 
-        //place individual tables at the fragment locations
-        ft = fm.beginTransaction()
-        fragmentReplace(R.id.athleticsFragment, athFrag)
-        fragmentReplace(R.id.socialFragment, socFrag)
-        fragmentReplace(R.id.perceptionFragment, percFrag)
-        fragmentReplace(R.id.intellectualFragment, intelFrag)
-        fragmentReplace(R.id.vigorFragment, vigFrag)
-        fragmentReplace(R.id.subterfugeFragment, subFrag)
-        fragmentReplace(R.id.creativeFragment, creFrag)
-        ft!!.commit()
-
-        //retrieve page's toggle buttons
-        val athleteToggle = view.findViewById<ToggleButton>(R.id.athleticsToggle)
-        val socialToggle = view.findViewById<ToggleButton>(R.id.socialToggle)
-        val perceptionToggle = view.findViewById<ToggleButton>(R.id.perceptionToggle)
-        val intellectToggle = view.findViewById<ToggleButton>(R.id.intellectualToggle)
-        val vigorToggle = view.findViewById<ToggleButton>(R.id.vigorToggle)
-        val subterToggle = view.findViewById<ToggleButton>(R.id.subterfugeToggle)
-        val createToggle = view.findViewById<ToggleButton>(R.id.creativeToggle)
-
-        //set toggle on texts to values corresponding to class growth values
-        athleteToggle.textOn = getString(R.string.athleticsLabel) + getString(
-                R.string.togglePointInt,
-                valueRef.athGrowth
-            )
-        socialToggle.textOn = getString(R.string.socialLabel) + getString(
-                R.string.togglePointInt,
-                valueRef.socGrowth
-            )
-        perceptionToggle.textOn = getString(R.string.perceptionLabel) + getString(
-            R.string.togglePointInt,
-            valueRef.percGrowth
-        )
-        intellectToggle.textOn = getString(R.string.intellectualLabel) + getString(
-            R.string.togglePointInt,
-            valueRef.intellGrowth
-        )
-        vigorToggle.textOn = getString(R.string.vigorLabel) + getString(R.string.togglePointInt, valueRef.vigGrowth)
-        subterToggle.textOn = getString(R.string.subterfugeLabel) + getString(
-            R.string.togglePointInt,
-            valueRef.subterGrowth
-        )
-        createToggle.textOn = getString(R.string.creativeLabel) + getString(
-                R.string.togglePointInt,
-                valueRef.creatGrowth
-            )
-
-        //set toggle onclick listeners
-        athleteToggle.setOnClickListener(SecondaryToggleClick(athleteToggle, athFrag, fm))
-        socialToggle.setOnClickListener(SecondaryToggleClick(socialToggle, socFrag, fm))
-        perceptionToggle.setOnClickListener(SecondaryToggleClick(perceptionToggle, percFrag, fm))
-        intellectToggle.setOnClickListener(SecondaryToggleClick(intellectToggle, intelFrag, fm))
-        vigorToggle.setOnClickListener(SecondaryToggleClick(vigorToggle, vigFrag, fm))
-        subterToggle.setOnClickListener(SecondaryToggleClick(subterToggle, subFrag, fm))
-        createToggle.setOnClickListener(SecondaryToggleClick(createToggle, creFrag, fm))
-
-        val nameTag = view.findViewById<ComposeView>(R.id.testRow)
-        nameTag.setContent {
-            AppCompatTheme() {
-                intelTable(charInstance.secondaryList)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    ) {
+                        makeTableDisplay(athleticsTable(), R.string.athleticsLabel)
+                        makeTableDisplay(socialTable(), R.string.socialLabel)
+                        makeTableDisplay(percTable(), R.string.perceptionLabel)
+                        makeTableDisplay(intelTable(), R.string.intellectualLabel)
+                        makeTableDisplay(vigorTable(), R.string.vigorLabel)
+                        makeTableDisplay(subterTable(), R.string.subterfugeLabel)
+                        makeTableDisplay(creatTable(), R.string.creativeLabel)
+                    }
+                }
             }
         }
-
-        return view
-    }
-
-    /**
-     * Function to replace and immediately hide fragments
-     */
-    private fun fragmentReplace(id: Int, item: Fragment) {
-        ft!!.replace(id, item)
-        ft!!.hide(item)
     }
 
     @Composable
-    private fun makeToggle(){
-        Button(onClick = { /*TODO*/ }) {
-            
+    private fun makeTableDisplay(
+        tableFunc: @Composable () -> Unit,
+        stringReference: Int
+    ){
+        val active = remember{mutableStateOf(false)}
+
+        Button(
+            onClick = {active.value = !active.value},
+            modifier = Modifier.width(250.dp)
+        ){
+            Text(
+                text = stringResource(stringReference)
+            )
+        }
+        AnimatedVisibility(visible = active.value){
+            tableFunc()
+        }
+    }
+
+    @Composable
+    private fun rowHead(){
+        Row(){
+            Spacer(modifier = Modifier.weight(0.25f))
+            Text(
+                text = stringResource(R.string.pointsLabel),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.25f)
+            )
+            Text(
+                text = stringResource(R.string.modLabel),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.125f)
+            )
+            Text(
+                text = stringResource(R.string.classLabel),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.125f)
+            )
+            Text(
+                text = stringResource(R.string.natLabel),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.125f)
+            )
+            Text(
+                text = stringResource(R.string.totalLabel),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.125f)
+            )
         }
     }
 
     @Composable
     private fun makeRow(
         stringReference: Int,
-        itemList: SecondaryList,
         item: SecondaryCharacteristic
     ){
         val userInput = remember{mutableStateOf(item.pointsApplied.toString())}
         var preValue = item.pointsApplied
 
-        val textColor = remember{mutableStateOf(Color.BLACK)}
+        val textColor = remember{mutableStateOf(Color(0xff000000))}
 
         val checkedState = remember{mutableStateOf(item.bonusApplied)}
         val checkedText =
@@ -207,11 +176,11 @@ class SecondaryAbilityFragment : Fragment() {
                     //check if spent is  valid
                     if(charInstance!!.spentTotal < charInstance!!.devPT)
                         //make text black for valid
-                        textColor.value = Color.BLACK
+                        //textColor.value = Color.BLACK
 
                     else
                         //make text red for invalid
-                        textColor.value = Color.RED
+                        //textColor.value = Color.RED
 
                     preValue = calcNum
                 },
@@ -236,7 +205,7 @@ class SecondaryAbilityFragment : Fragment() {
                     //if user is applying a natural bonus
                     if (checkedState.value) {
                         //check if either no points are applied or if no more bonuses are available
-                        if (item.pointsApplied == 0 || !itemList.incrementNat(true))
+                        if (item.pointsApplied == 0 || !charList.incrementNat(true))
                         //prevent bonus from applying
                             checkedState.value = false
                         else {
@@ -249,7 +218,7 @@ class SecondaryAbilityFragment : Fragment() {
                     //if user is removing a natural bonus
                     else {
                         //remove bonus and change text accordingly
-                        itemList.incrementNat(false)
+                        charList.incrementNat(false)
                         item.setBonusApplied(false)
                         checkedText.value = R.string.natNotTaken
                     }
@@ -266,83 +235,103 @@ class SecondaryAbilityFragment : Fragment() {
         }
     }
 
-    @Composable
-    private fun athleticsTable(list: SecondaryList){
-        Column() {
-            makeRow(R.string.acrobaticsLabel, list, list.acrobatics)
-            makeRow(R.string.athleticsLabel, list, list.athletics)
-            makeRow(R.string.climbLabel, list, list.climb)
-            makeRow(R.string.jumpLabel, list, list.jump)
-            makeRow(R.string.rideLabel, list, list.ride)
-            makeRow(R.string.swimLabel, list, list.swim)
-        }
+    private fun athleticsTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column() {
+                rowHead()
+                makeRow(R.string.acrobaticsLabel, charList.acrobatics)
+                makeRow(R.string.athleticsLabel, charList.athletics)
+                makeRow(R.string.climbLabel, charList.climb)
+                makeRow(R.string.jumpLabel, charList.jump)
+                makeRow(R.string.rideLabel, charList.ride)
+                makeRow(R.string.swimLabel, charList.swim)
+            }
+        })
     }
 
     @Composable
-    private fun socialTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.intimidateLabel, list, list.intimidate)
-            makeRow(R.string.leadershipLabel, list, list.leadership)
-            makeRow(R.string.persuasionLabel, list, list.persuasion)
-            makeRow(R.string.styleLabel, list, list.style)
-        }
+    private fun socialTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column() {
+                rowHead()
+                makeRow(R.string.intimidateLabel, charList.intimidate)
+                makeRow(R.string.leadershipLabel, charList.leadership)
+                makeRow(R.string.persuasionLabel, charList.persuasion)
+                makeRow(R.string.styleLabel, charList.style)
+            }
+        })
     }
 
     @Composable
-    private fun percTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.noticeLabel, list, list.notice)
-            makeRow(R.string.searchLabel, list, list.search)
-            makeRow(R.string.trackLabel, list, list.track)
-        }
+    private fun percTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column(){
+                rowHead()
+                makeRow(R.string.noticeLabel, charList.notice)
+                makeRow(R.string.searchLabel, charList.search)
+                makeRow(R.string.trackLabel, charList.track)
+            }
+        })
     }
 
     @Composable
-    private fun intelTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.animalLabel, list, list.animals)
-            makeRow(R.string.appraiseLabel, list, list.appraise)
-            makeRow(R.string.herbalLabel, list, list.herbalLore)
-            makeRow(R.string.histLabel, list, list.history)
-            makeRow(R.string.memLabel, list, list.memorize)
-            makeRow(R.string.mAppraiseLabel, list, list.magicAppraise)
-            makeRow(R.string.medLabel, list, list.medic)
-            makeRow(R.string.navLabel, list, list.navigate)
-            makeRow(R.string.occultLabel, list, list.occult)
-            makeRow(R.string.scienceLabel, list, list.sciences)
-        }
+    private fun intelTable(): @Composable () -> Unit{
+        return (@Composable {
+            Column(){
+                rowHead()
+                makeRow(R.string.animalLabel, charList.animals)
+                makeRow(R.string.appraiseLabel, charList.appraise)
+                makeRow(R.string.herbalLabel, charList.herbalLore)
+                makeRow(R.string.histLabel, charList.history)
+                makeRow(R.string.memLabel, charList.memorize)
+                makeRow(R.string.mAppraiseLabel, charList.magicAppraise)
+                makeRow(R.string.medLabel, charList.medic)
+                makeRow(R.string.navLabel, charList.navigate)
+                makeRow(R.string.occultLabel, charList.occult)
+                makeRow(R.string.scienceLabel, charList.sciences)
+            }
+        })
     }
 
     @Composable
-    private fun vigorTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.composureLabel, list, list.composure)
-            makeRow(R.string.strFeatLabel, list, list.strengthFeat)
-            makeRow(R.string.resistPainLabel, list, list.resistPain)
-        }
+    private fun vigorTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column(){
+                rowHead()
+                makeRow(R.string.composureLabel, charList.composure)
+                makeRow(R.string.strFeatLabel, charList.strengthFeat)
+                makeRow(R.string.resistPainLabel, charList.resistPain)
+            }
+        })
     }
 
     @Composable
-    private fun subterTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.disguiseLabel, list, list.disguise)
-            makeRow(R.string.hideLabel, list, list.hide)
-            makeRow(R.string.lockpickLabel, list, list.lockPick)
-            makeRow(R.string.poisonLabel, list, list.poisons)
-            makeRow(R.string.theftLabel, list, list.theft)
-            makeRow(R.string.stealthLabel, list, list.stealth)
-            makeRow(R.string.trapLabel, list, list.trapLore)
-        }
+    private fun subterTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column(){
+                rowHead()
+                makeRow(R.string.disguiseLabel, charList.disguise)
+                makeRow(R.string.hideLabel, charList.hide)
+                makeRow(R.string.lockpickLabel, charList.lockPick)
+                makeRow(R.string.poisonLabel, charList.poisons)
+                makeRow(R.string.theftLabel, charList.theft)
+                makeRow(R.string.stealthLabel, charList.stealth)
+                makeRow(R.string.trapLabel, charList.trapLore)
+            }
+        })
     }
 
     @Composable
-    private fun creatTable(list: SecondaryList){
-        Column(){
-            makeRow(R.string.artLabel, list, list.art)
-            makeRow(R.string.danceLabel, list, list.dance)
-            makeRow(R.string.forgeLabel, list, list.forging)
-            makeRow(R.string.musicLabel, list, list.music)
-            makeRow(R.string.sleightLabel, list, list.sleightHand)
-        }
+    private fun creatTable(): @Composable () -> Unit{
+        return (@Composable{
+            Column(){
+                rowHead()
+                makeRow(R.string.artLabel, charList.art)
+                makeRow(R.string.danceLabel, charList.dance)
+                makeRow(R.string.forgeLabel, charList.forging)
+                makeRow(R.string.musicLabel, charList.music)
+                makeRow(R.string.sleightLabel, charList.sleightHand)
+            }
+        })
     }
 }

@@ -76,8 +76,8 @@
         <item>20</item>
     </string-array>
 
-    <string name="totalLabel">\tTotal\t</string>
-    <string name="modLabel">\tMod\t</string>
+    <string name="totalLabel">Total</string>
+    <string name="modLabel">Mod</string>
 
     <string name="dpCombatLabel">\tCombat\t</string>
     <string name="dpMagicLabel">\tMagic\t</string>
@@ -90,9 +90,9 @@
     <string name="subterfugeLabel">Subterfuge</string>
     <string name="creativeLabel">Creative</string>
 
-    <string name="pointsLabel">\tPoints\t</string>
-    <string name="classLabel">\tClass\t</string>
-    <string name="natLabel">\tNatural\t</string>
+    <string name="pointsLabel">Points</string>
+    <string name="classLabel">Class</string>
+    <string name="natLabel">Nat</string>
 
     <string name="acrobaticsLabel">Acrobatics</string>
     <string name="athleticsLabel">Athletics</string>

@@ -5,25 +5,32 @@ import android.view.ViewGroup
 import android.os.Bundle
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
-import android.widget.EditText
-import android.text.TextWatcher
-import android.text.Editable
-import android.text.InputFilter
 import android.view.View
-import android.widget.Spinner
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.AdapterView
-import androidx.compose.material.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.fragment.app.Fragment
-import com.example.animabuilder.listener_implementations.InputFilterMinMax
-import com.example.animabuilder.listener_implementations.CharacteristicInput
-import com.google.accompanist.appcompattheme.AppCompatTheme
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
+import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
+import com.example.animabuilder.character_creation.attributes.race_objects.CharRace
+import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -33,6 +40,8 @@ import com.google.accompanist.appcompattheme.AppCompatTheme
 
 class CharacterPageFragment : Fragment() {
 
+    private var charInstance: BaseCharacter = BaseCharacter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,264 +50,255 @@ class CharacterPageFragment : Fragment() {
 
         super.onCreate(savedInstanceState)
 
-        //inflate xml display
-        val view = inflater.inflate(R.layout.fragment_character_page, container, false)
-
-        //get BaseCharacter passed from HomeActivity bundle
         val fromActivity = arguments
-        val charInstance = fromActivity!!.getSerializable("Character") as BaseCharacter?
+        charInstance = fromActivity!!.getSerializable("Character") as BaseCharacter
 
-        //compose name label
-        val nameTag = view.findViewById<ComposeView>(R.id.nameText)
-        nameTag.setContent{ AppCompatTheme {
-            nameTag()
-        }}
+        return ComposeView(requireContext()).apply{
+            setContent{
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Row() {
+                        val inputName = remember { mutableStateOf(charInstance.charName) }
 
-        //find name input and get character's saved name
-        val nameInput = view.findViewById<EditText>(R.id.charNameEntry)
-        nameInput.setText(charInstance!!.charName)
+                        Text(text = stringResource(R.string.nameText))
 
-        //set watcher for name input
-        nameInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                //set character's name to the new input
-                charInstance.charName = nameInput.text.toString()
+                        TextField(
+                            value = inputName.value!!,
+                            onValueChange = {
+                                inputName.value = it
+                                charInstance.charName = inputName.value
+                            }
+                        )
+                    }
+
+                    val maxDP = remember{mutableStateOf(charInstance.devPT)}
+                    val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
+                    val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
+                    val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
+
+                    Row(){
+                        val classOpen = remember{mutableStateOf(false)}
+                        val className = remember{mutableStateOf(charInstance.ownClass)}
+                        val classArray = stringArrayResource(id = R.array.classArray)
+
+                        val classSize = remember{mutableStateOf(Size.Zero)}
+                        val classIcon = if(classOpen.value)
+                            Icons.Filled.KeyboardArrowUp
+                        else
+                            Icons.Filled.KeyboardArrowDown
+
+                        Text(text = stringResource(R.string.classText))
+
+                        OutlinedTextField(
+                            value = classArray[className.value!!.classIndex],
+                            onValueChange = {},
+                            modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    classSize.value = coordinates.size.toSize()
+                                },
+                            trailingIcon = {
+                                Icon(classIcon, "contentDescription", modifier= Modifier.clickable{classOpen.value = !classOpen.value})
+                            }
+                        )
+
+                        DropdownMenu(
+                            expanded = classOpen.value,
+                            onDismissRequest = {classOpen.value = false},
+                            modifier = Modifier.width(with(LocalDensity.current){classSize.value.width.toDp()})
+                        ) {
+                            classArray.forEach { item ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        className.value = CharClass(ClassName.fromString(item))
+
+                                        charInstance.setOwnClass(item)
+                                        maxDP.value = charInstance.devPT
+                                        maxCombat.value = charInstance.maxCombatDP
+                                        maxMagic.value = charInstance.maxMagDP
+                                        maxPsychic.value = charInstance.maxPsyDP
+
+                                        classOpen.value = false
+                                    }) {
+                                    Text(text = item)
+                                }
+                            }
+                        }
+                    }
+
+                    Row(){
+                        val raceOpen = remember{mutableStateOf(false)}
+                        val raceName = remember{mutableStateOf(charInstance.ownRace)}
+                        val raceArray = stringArrayResource(id = R.array.raceArray)
+
+                        val raceSize = remember{mutableStateOf(Size.Zero)}
+                        val raceIcon = if(raceOpen.value)
+                            Icons.Filled.KeyboardArrowUp
+                        else
+                            Icons.Filled.KeyboardArrowDown
+
+                        Text(text = stringResource(R.string.raceText))
+
+                        OutlinedTextField(
+                            value = raceArray[raceName.value!!.raceIndex],
+                            onValueChange = {},
+                            modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    raceSize.value = coordinates.size.toSize()
+                                },
+                            trailingIcon = {
+                                Icon(raceIcon, "contentDescription", modifier= Modifier.clickable{raceOpen.value = !raceOpen.value})
+                            }
+                        )
+
+                        DropdownMenu(
+                            expanded = raceOpen.value,
+                            onDismissRequest = {raceOpen.value = false}
+                        ){
+                            raceArray.forEach{ item ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        raceName.value = CharRace(RaceName.fromString(item))
+                                        charInstance.setOwnRace(item)
+                                        raceOpen.value = false
+                                    }){
+                                    Text(text = item)
+                                }
+                            }
+                        }
+                    }
+
+                    Row(){
+                        val levelOpen = remember{mutableStateOf(false)}
+                        val levelName = remember{mutableStateOf(charInstance.lvl)}
+                        val levelArray = stringArrayResource(id = R.array.levelCountArray)
+
+                        val levelSize = remember{mutableStateOf(Size.Zero)}
+                        val levelIcon = if(levelOpen.value)
+                            Icons.Filled.KeyboardArrowUp
+                        else
+                            Icons.Filled.KeyboardArrowDown
+
+                        Text(text = stringResource(R.string.levelText))
+
+                        OutlinedTextField(
+                            value = levelArray[levelName.value!!],
+                            onValueChange = {},
+                            modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    levelSize.value = coordinates.size.toSize()
+                                },
+                            trailingIcon = {
+                                Icon(levelIcon, "contentDescription", modifier= Modifier.clickable{levelOpen.value = !levelOpen.value})
+                            }
+                        )
+
+                        DropdownMenu(
+                            expanded = levelOpen.value,
+                            onDismissRequest = {levelOpen.value = false}
+                        ){
+                            levelArray.forEach{item ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        levelName.value = item.toInt()
+
+                                        charInstance.setLvl(levelName.value)
+                                        maxDP.value = charInstance.devPT
+                                        maxCombat.value = charInstance.maxCombatDP
+                                        maxMagic.value = charInstance.maxMagDP
+                                        maxPsychic.value = charInstance.maxPsyDP
+
+                                        levelOpen.value = false
+                                    }){
+                                    Text(text = item)
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Row(){
+                        Spacer(Modifier.weight(0.2f))
+                        Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.2f))
+                        Text(text = stringResource(R.string.dpCombatLabel), modifier = Modifier.weight(0.2f))
+                        Text(text = stringResource(R.string.dpMagicLabel), modifier = Modifier.weight(0.2f))
+                        Text(text = stringResource(R.string.dpPsychicLabel), modifier = Modifier.weight(0.2f))
+                    }
+
+                    Row(){
+                        Text(text = stringResource(R.string.maxRowLabel), modifier = Modifier.weight(0.2f))
+                        Text(text = maxDP.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = maxCombat.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = maxMagic.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = maxPsychic.value.toString(), modifier = Modifier.weight(0.2f))
+                    }
+
+                    val usedDP = remember{mutableStateOf(charInstance.spentTotal)}
+                    val usedCombat = remember{mutableStateOf(charInstance.ptInCombat)}
+                    val usedMagic = remember{mutableStateOf(charInstance.ptInMag)}
+                    val usedPsychic = remember{mutableStateOf(charInstance.ptInPsy)}
+
+                    Row(){
+                        Text(text = stringResource(R.string.usedRowLabel), modifier = Modifier.weight(0.2f))
+                        Text(text = usedDP.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = usedCombat.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = usedMagic.value.toString(), modifier = Modifier.weight(0.2f))
+                        Text(text = usedPsychic.value.toString(), modifier = Modifier.weight(0.2f))
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Column(){
+                        primaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
+                            {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
+
+                        primaryRow(stringResource(R.string.dexText), charInstance.dex, charInstance.modDEX)
+                            {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
+
+                        primaryRow(stringResource(R.string.agiText), charInstance.agi, charInstance.modAGI)
+                            {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
+
+                        primaryRow(stringResource(R.string.conText), charInstance.con, charInstance.modCON)
+                            {newCON -> charInstance.setCON(newCON); charInstance.modCON}
+
+                        primaryRow(stringResource(R.string.intText), charInstance.int, charInstance.modINT)
+                            {newINT -> charInstance.setINT(newINT); charInstance.modINT}
+
+                        primaryRow(stringResource(R.string.powText), charInstance.pow, charInstance.modPOW)
+                            {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW}
+
+                        primaryRow(stringResource(R.string.wpText), charInstance.wp, charInstance.modWP)
+                            {newWP -> charInstance.setWP(newWP); charInstance.modWP}
+
+                        primaryRow(stringResource(R.string.perText), charInstance.per, charInstance.modPER)
+                            {newPER -> charInstance.setPER(newPER); charInstance.modPER}
+                    }
+                }
             }
-        })
-
-
-        //add class strings to dropdown menu
-        val classSpinner = view.findViewById<Spinner>(R.id.classDropdown)
-        val classAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.classArray, android.R.layout.simple_spinner_item
-        )
-        classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        classSpinner.adapter = classAdapter
-
-        //default to character's class
-        charInstance.ownClass!!.let { classSpinner.setSelection(it.classIndex) }
-
-        //add race strings to dropdown menu
-        val raceSpinner = view.findViewById<Spinner>(R.id.raceDropdown)
-        val raceAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.raceArray, android.R.layout.simple_spinner_item
-        )
-        raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        raceSpinner.adapter = raceAdapter
-
-        //default to character's race
-        charInstance.ownRace!!.let { raceSpinner.setSelection(it.raceIndex) }
-
-        //add level strings to dropdown menu
-        val levelSpinner = view.findViewById<Spinner>(R.id.levelDropdown)
-        val levelAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.levelCountArray, android.R.layout.simple_spinner_item
-        )
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        levelSpinner.adapter = levelAdapter
-
-        //find displays for maximum point input
-        val maxDPDisplay = view.findViewById<TextView>(R.id.maxDPCell)
-        val maxCombatDisplay = view.findViewById<TextView>(R.id.maxCombatCell)
-        val maxMagDisplay = view.findViewById<TextView>(R.id.maxMagCell)
-        val maxPsyDisplay = view.findViewById<TextView>(R.id.maxPsyCell)
-
-        //set values to display
-        maxDPDisplay.text = getString(R.string.intItem, charInstance.devPT)
-        maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-        maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-        maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
-
-        //find spend amount displays
-        val spentDPDisplay = view.findViewById<TextView>(R.id.usedDPCell)
-        val spentCombatDisplay = view.findViewById<TextView>(R.id.usedCombatCell)
-        val spentMagDisplay = view.findViewById<TextView>(R.id.usedMagCell)
-        val spentPsyDisplay = view.findViewById<TextView>(R.id.usedPsyCell)
-
-        //set spent values to display
-        spentDPDisplay.text = getString(R.string.intItem, charInstance.spentTotal)
-        spentCombatDisplay.text = getString(R.string.intItem, charInstance.ptInCombat)
-        spentMagDisplay.text = getString(R.string.intItem, charInstance.ptInMag)
-        spentPsyDisplay.text = getString(R.string.intItem, charInstance.ptInPsy)
-
-        //set on selection listener for class options
-        classSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                //get string from selection and change character's class accordingly
-                charInstance.setOwnClass(classSpinner.selectedItem.toString())
-
-                //display new maximum values
-                maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-                maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-                maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
-
-        //set on selection listener for race options
-        raceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                //get string from selection and change character's race accordingly
-                charInstance.setOwnRace(raceSpinner.selectedItem.toString())
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        //set on selection listener for level
-        levelSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                //get string from selection and change character's level accordingly
-                charInstance.setLvl(levelSpinner.selectedItem.toString().toInt())
-
-                //display new maximum values
-                maxDPDisplay.text = getString(R.string.intItem, charInstance.devPT)
-                maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-                maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-                maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
-
-        //set display to character's level
-        levelSpinner.setSelection(charInstance.lvl)
-
-
-        //set integer range for characteristic inputs
-        val strScore = view.findViewById<EditText>(R.id.strScore)
-        strScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val dexScore = view.findViewById<EditText>(R.id.dexScore)
-        dexScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val agiScore = view.findViewById<EditText>(R.id.agiScore)
-        agiScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val conScore = view.findViewById<EditText>(R.id.conScore)
-        conScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val intScore = view.findViewById<EditText>(R.id.intScore)
-        intScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val powScore = view.findViewById<EditText>(R.id.powScore)
-        powScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val wpScore = view.findViewById<EditText>(R.id.wpScore)
-        wpScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val perScore = view.findViewById<EditText>(R.id.perScore)
-        perScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-
-
-        //get mod displays from the page
-        val strMod = view.findViewById<TextView>(R.id.strMod)
-        val dexMod = view.findViewById<TextView>(R.id.dexMod)
-        val agiMod = view.findViewById<TextView>(R.id.agiMod)
-        val conMod = view.findViewById<TextView>(R.id.conMod)
-        val intMod = view.findViewById<TextView>(R.id.intMod)
-        val powMod = view.findViewById<TextView>(R.id.powMod)
-        val wpMod = view.findViewById<TextView>(R.id.wpMod)
-        val perMod = view.findViewById<TextView>(R.id.perMod)
-
-
-        //set all listeners for characteristic change to make mod text change to corresponding value
-        strScore.addTextChangedListener(
-            CharacteristicInput(
-                strScore,
-                strMod,
-                charInstance.setSTR,
-                charInstance.getModSTR,
-                activity!!.applicationContext
-            )
-        )
-        dexScore.addTextChangedListener(
-            CharacteristicInput(
-                dexScore,
-                dexMod,
-                charInstance.setDEX,
-                charInstance.getModDEX,
-                activity!!.applicationContext
-            )
-        )
-        agiScore.addTextChangedListener(
-            CharacteristicInput(
-                agiScore,
-                agiMod,
-                charInstance.setAGI,
-                charInstance.getModAGI,
-                activity!!.applicationContext
-            )
-        )
-        conScore.addTextChangedListener(
-            CharacteristicInput(
-                conScore,
-                conMod,
-                charInstance.setCON,
-                charInstance.getModCON,
-                activity!!.applicationContext
-            )
-        )
-        intScore.addTextChangedListener(
-            CharacteristicInput(
-                intScore,
-                intMod,
-                charInstance.setINT,
-                charInstance.getModINT,
-                activity!!.applicationContext
-            )
-        )
-        powScore.addTextChangedListener(
-            CharacteristicInput(
-                powScore,
-                powMod,
-                charInstance.setPOW,
-                charInstance.getModPOW,
-                activity!!.applicationContext
-            )
-        )
-        wpScore.addTextChangedListener(
-            CharacteristicInput(
-                wpScore,
-                wpMod,
-                charInstance.setWP,
-                charInstance.getModWP,
-                activity!!.applicationContext
-            )
-        )
-        perScore.addTextChangedListener(
-            CharacteristicInput(
-                perScore,
-                perMod,
-                charInstance.setPER,
-                charInstance.getModPER,
-                activity!!.applicationContext
-            )
-        )
-
-        //set initial values for characteristics
-        strScore.setText(getString(R.string.intItem, charInstance.str))
-        dexScore.setText(getString(R.string.intItem, charInstance.dex))
-        agiScore.setText(getString(R.string.intItem, charInstance.agi))
-        conScore.setText(getString(R.string.intItem, charInstance.con))
-        intScore.setText(getString(R.string.intItem, charInstance.int))
-        powScore.setText(getString(R.string.intItem, charInstance.pow))
-        wpScore.setText(getString(R.string.intItem, charInstance.wp))
-        perScore.setText(getString(R.string.intItem, charInstance.per))
-
-        return view
     }
 
-    @Preview
     @Composable
-    private fun nameTag(){
-        Text(
-            text = stringResource(R.string.nameText),
-            fontSize = 20.sp
-        )
+    private fun primaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
+        Row(){
+            val statIn = remember{mutableStateOf(statInput.toString())}
+            val modOut = remember{mutableStateOf(modOutput)}
+
+            Text(text = labelText, modifier = Modifier.weight(0.33f))
+
+            TextField(value = statIn.value,
+                onValueChange ={
+                    if(it == "") {
+                        statIn.value = it
+                    }
+                    else if(it.toInt() in 0..20){
+                        statIn.value = it
+                        modOut.value = change(statIn.value.toInt())
+                    }
+                },
+                modifier = Modifier.weight(0.33f)
+            )
+
+            Text(text = modOut.value.toString(), modifier = Modifier.weight(0.33f))
+        }
     }
 }

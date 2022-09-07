@@ -79,9 +79,9 @@
     <string name="totalLabel">Total</string>
     <string name="modLabel">Mod</string>
 
-    <string name="dpCombatLabel">\tCombat\t</string>
-    <string name="dpMagicLabel">\tMagic\t</string>
-    <string name="dpPsychicLabel">\tPsychic\t</string>
+    <string name="dpCombatLabel">Combat</string>
+    <string name="dpMagicLabel">Magic</string>
+    <string name="dpPsychicLabel">Psychic</string>
 
     <string name="socialLabel">Social</string>
     <string name="perceptionLabel">Perception</string>
@@ -146,8 +146,5 @@
 
     <string name="natNotTaken">+ 0</string>
     <string name="natTaken">+ 5</string>
-
-    <string name="intItem">%1$d</string>
-    <string name="togglePointInt">&#160;- %1$d</string>
 
 </resources>

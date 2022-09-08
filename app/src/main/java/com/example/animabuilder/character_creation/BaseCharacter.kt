@@ -171,6 +171,12 @@ class BaseCharacter : Serializable {
         secondaryList.classUpdate(ownClass!!)
     }
 
+    fun setOwnClass(classInt: Int?){
+        ownClass = CharClass(ClassName.fromInt(classInt))
+        adjustMaxValues()
+        secondaryList.classUpdate(ownClass!!)
+    }
+
     //get new dp maximums based on class change
     private fun adjustMaxValues() {
         percCombatDP = ownClass!!.combatMax
@@ -187,6 +193,10 @@ class BaseCharacter : Serializable {
     //setter for race with String input
     fun setOwnRace(raceName: String?) {
         ownRace = CharRace(RaceName.fromString(raceName))
+    }
+
+    fun setOwnRace(raceNum: Int?){
+        ownRace = CharRace(RaceName.fromInt(raceNum))
     }
 
     //maximum fatigue value

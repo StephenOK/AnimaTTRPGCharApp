@@ -92,7 +92,7 @@ class SecondaryAbilityFragment : Fragment() {
 
     @Composable
     private fun rowHead(){
-        Row(){
+        Row{
             Spacer(modifier = Modifier.weight(0.25f))
             Text(
                 text = stringResource(R.string.pointsLabel),
@@ -158,7 +158,7 @@ class SecondaryAbilityFragment : Fragment() {
                 onValueChange = {
                     userInput.value = it
 
-                    var calcNum =
+                    val calcNum =
                         if(userInput.value == "")
                             0
                         else
@@ -168,13 +168,13 @@ class SecondaryAbilityFragment : Fragment() {
                     item.setPointsApplied(calcNum)
 
                     //get new amount of points spent
-                    charInstance!!.spentTotal += item.devPerPoint * (calcNum - preValue)
+                    charInstance.spentTotal += item.devPerPoint * (calcNum - preValue)
 
                     //update text
-                    total.value = getString(R.string.intItem, item.total)
+                    total.value = item.total.toString()
 
                     //check if spent is  valid
-                    if(charInstance!!.spentTotal < charInstance!!.devPT)
+                    if(charInstance.spentTotal < charInstance.devPT)
                         //make text black for valid
                         //textColor.value = Color.BLACK
 
@@ -237,7 +237,7 @@ class SecondaryAbilityFragment : Fragment() {
 
     private fun athleticsTable(): @Composable () -> Unit{
         return (@Composable{
-            Column() {
+            Column {
                 rowHead()
                 makeRow(R.string.acrobaticsLabel, charList.acrobatics)
                 makeRow(R.string.athleticsLabel, charList.athletics)
@@ -252,7 +252,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun socialTable(): @Composable () -> Unit{
         return (@Composable{
-            Column() {
+            Column {
                 rowHead()
                 makeRow(R.string.intimidateLabel, charList.intimidate)
                 makeRow(R.string.leadershipLabel, charList.leadership)
@@ -265,7 +265,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun percTable(): @Composable () -> Unit{
         return (@Composable{
-            Column(){
+            Column{
                 rowHead()
                 makeRow(R.string.noticeLabel, charList.notice)
                 makeRow(R.string.searchLabel, charList.search)
@@ -277,7 +277,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun intelTable(): @Composable () -> Unit{
         return (@Composable {
-            Column(){
+            Column{
                 rowHead()
                 makeRow(R.string.animalLabel, charList.animals)
                 makeRow(R.string.appraiseLabel, charList.appraise)
@@ -296,7 +296,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun vigorTable(): @Composable () -> Unit{
         return (@Composable{
-            Column(){
+            Column{
                 rowHead()
                 makeRow(R.string.composureLabel, charList.composure)
                 makeRow(R.string.strFeatLabel, charList.strengthFeat)
@@ -308,7 +308,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun subterTable(): @Composable () -> Unit{
         return (@Composable{
-            Column(){
+            Column{
                 rowHead()
                 makeRow(R.string.disguiseLabel, charList.disguise)
                 makeRow(R.string.hideLabel, charList.hide)
@@ -324,7 +324,7 @@ class SecondaryAbilityFragment : Fragment() {
     @Composable
     private fun creatTable(): @Composable () -> Unit{
         return (@Composable{
-            Column(){
+            Column{
                 rowHead()
                 makeRow(R.string.artLabel, charList.art)
                 makeRow(R.string.danceLabel, charList.dance)

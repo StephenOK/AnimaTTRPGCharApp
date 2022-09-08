@@ -6,9 +6,11 @@ import android.os.Bundle
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import android.view.View
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,13 +19,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotMutableState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.fragment.app.Fragment
@@ -31,6 +40,7 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Char
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.CharRace
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
+import java.lang.reflect.Type
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -42,11 +52,12 @@ class CharacterPageFragment : Fragment() {
 
     private var charInstance: BaseCharacter = BaseCharacter()
 
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         super.onCreate(savedInstanceState)
 
@@ -55,18 +66,31 @@ class CharacterPageFragment : Fragment() {
 
         return ComposeView(requireContext()).apply{
             setContent{
-                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                    Row() {
+                val screenSize = LocalConfiguration.current
+                val keyboardActive = LocalSoftwareKeyboardController.current
+                
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.width((screenSize.screenWidthDp * 0.67).dp)
+                    ) {
                         val inputName = remember { mutableStateOf(charInstance.charName) }
 
-                        Text(text = stringResource(R.string.nameText))
-
-                        TextField(
+                        OutlinedTextField(
                             value = inputName.value!!,
                             onValueChange = {
-                                inputName.value = it
-                                charInstance.charName = inputName.value
-                            }
+                                if(it[it.length - 1] == '\n')
+                                    keyboardActive?.hide()
+                                else{
+                                    inputName.value = it
+                                    charInstance.charName = inputName.value
+                                }
+                            },
+                            label = {Text(text = stringResource(R.string.nameText))},
                         )
                     }
 
@@ -75,179 +99,146 @@ class CharacterPageFragment : Fragment() {
                     val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
                     val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
 
-                    Row(){
-                        val classOpen = remember{mutableStateOf(false)}
-                        val className = remember{mutableStateOf(charInstance.ownClass)}
-                        val classArray = stringArrayResource(id = R.array.classArray)
+                    dropdownObject(stringResource(R.string.classText), charInstance.ownClass!!.classIndex,
+                        stringArrayResource(id = R.array.classArray))
+                    {index:Int ->
+                        charInstance.setOwnClass(index)
 
-                        val classSize = remember{mutableStateOf(Size.Zero)}
-                        val classIcon = if(classOpen.value)
-                            Icons.Filled.KeyboardArrowUp
-                        else
-                            Icons.Filled.KeyboardArrowDown
+                        maxDP.value = charInstance.devPT
+                        maxCombat.value = charInstance.maxCombatDP
+                        maxMagic.value = charInstance.maxMagDP
+                        maxPsychic.value = charInstance.maxPsyDP
+                    }
 
-                        Text(text = stringResource(R.string.classText))
+                    dropdownObject(stringResource(R.string.raceText), charInstance.ownRace!!.raceIndex,
+                        stringArrayResource(id = R.array.raceArray))
+                    {index:Int -> charInstance.setOwnRace(index) }
 
-                        OutlinedTextField(
-                            value = classArray[className.value!!.classIndex],
-                            onValueChange = {},
-                            modifier = Modifier
-                                .onGloballyPositioned { coordinates ->
-                                    classSize.value = coordinates.size.toSize()
-                                },
-                            trailingIcon = {
-                                Icon(classIcon, "contentDescription", modifier= Modifier.clickable{classOpen.value = !classOpen.value})
-                            }
-                        )
+                    dropdownObject(stringResource(R.string.levelText), charInstance.lvl,
+                        stringArrayResource(R.array.levelCountArray))
+                    {index:Int ->
+                        charInstance.setLvl(index)
+                        maxDP.value = charInstance.devPT
+                        maxCombat.value = charInstance.maxCombatDP
+                        maxMagic.value = charInstance.maxMagDP
+                        maxPsychic.value = charInstance.maxPsyDP
+                    }
 
-                        DropdownMenu(
-                            expanded = classOpen.value,
-                            onDismissRequest = {classOpen.value = false},
-                            modifier = Modifier.width(with(LocalDensity.current){classSize.value.width.toDp()})
+                    spaceObjects()
+
+                    Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.65).dp)) {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            classArray.forEach { item ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        className.value = CharClass(ClassName.fromString(item))
+                            Spacer(Modifier.weight(0.2f))
+                            Text(
+                                text = stringResource(R.string.totalLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpCombatLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpMagicLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpPsychicLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                        }
 
-                                        charInstance.setOwnClass(item)
-                                        maxDP.value = charInstance.devPT
-                                        maxCombat.value = charInstance.maxCombatDP
-                                        maxMagic.value = charInstance.maxMagDP
-                                        maxPsychic.value = charInstance.maxPsyDP
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.maxRowLabel),
+                                textAlign = TextAlign.End,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxDP.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxCombat.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(text = maxMagic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxPsychic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                        }
 
-                                        classOpen.value = false
-                                    }) {
-                                    Text(text = item)
-                                }
-                            }
+                        val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
+                        val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
+                        val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
+                        val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.usedRowLabel),
+                                textAlign = TextAlign.End,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedDP.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f))
+                            Text(
+                                text = usedCombat.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedMagic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedPsychic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
                         }
                     }
 
-                    Row(){
-                        val raceOpen = remember{mutableStateOf(false)}
-                        val raceName = remember{mutableStateOf(charInstance.ownRace)}
-                        val raceArray = stringArrayResource(id = R.array.raceArray)
+                    spaceObjects()
 
-                        val raceSize = remember{mutableStateOf(Size.Zero)}
-                        val raceIcon = if(raceOpen.value)
-                            Icons.Filled.KeyboardArrowUp
-                        else
-                            Icons.Filled.KeyboardArrowDown
+                    Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.80).dp)){
+                        Row{
+                            Spacer(modifier = Modifier.weight(0.33f))
 
-                        Text(text = stringResource(R.string.raceText))
+                            Text(
+                                text = stringResource(R.string.scoreLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.33f)
+                            )
 
-                        OutlinedTextField(
-                            value = raceArray[raceName.value!!.raceIndex],
-                            onValueChange = {},
-                            modifier = Modifier
-                                .onGloballyPositioned { coordinates ->
-                                    raceSize.value = coordinates.size.toSize()
-                                },
-                            trailingIcon = {
-                                Icon(raceIcon, "contentDescription", modifier= Modifier.clickable{raceOpen.value = !raceOpen.value})
-                            }
-                        )
-
-                        DropdownMenu(
-                            expanded = raceOpen.value,
-                            onDismissRequest = {raceOpen.value = false}
-                        ){
-                            raceArray.forEach{ item ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        raceName.value = CharRace(RaceName.fromString(item))
-                                        charInstance.setOwnRace(item)
-                                        raceOpen.value = false
-                                    }){
-                                    Text(text = item)
-                                }
-                            }
+                            Text(
+                                text = stringResource(R.string.modLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.33f)
+                            )
                         }
-                    }
 
-                    Row(){
-                        val levelOpen = remember{mutableStateOf(false)}
-                        val levelName = remember{mutableStateOf(charInstance.lvl)}
-                        val levelArray = stringArrayResource(id = R.array.levelCountArray)
-
-                        val levelSize = remember{mutableStateOf(Size.Zero)}
-                        val levelIcon = if(levelOpen.value)
-                            Icons.Filled.KeyboardArrowUp
-                        else
-                            Icons.Filled.KeyboardArrowDown
-
-                        Text(text = stringResource(R.string.levelText))
-
-                        OutlinedTextField(
-                            value = levelArray[levelName.value!!],
-                            onValueChange = {},
-                            modifier = Modifier
-                                .onGloballyPositioned { coordinates ->
-                                    levelSize.value = coordinates.size.toSize()
-                                },
-                            trailingIcon = {
-                                Icon(levelIcon, "contentDescription", modifier= Modifier.clickable{levelOpen.value = !levelOpen.value})
-                            }
-                        )
-
-                        DropdownMenu(
-                            expanded = levelOpen.value,
-                            onDismissRequest = {levelOpen.value = false}
-                        ){
-                            levelArray.forEach{item ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        levelName.value = item.toInt()
-
-                                        charInstance.setLvl(levelName.value)
-                                        maxDP.value = charInstance.devPT
-                                        maxCombat.value = charInstance.maxCombatDP
-                                        maxMagic.value = charInstance.maxMagDP
-                                        maxPsychic.value = charInstance.maxPsyDP
-
-                                        levelOpen.value = false
-                                    }){
-                                    Text(text = item)
-                                }
-                            }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(15.dp))
-
-                    Row(){
-                        Spacer(Modifier.weight(0.2f))
-                        Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.2f))
-                        Text(text = stringResource(R.string.dpCombatLabel), modifier = Modifier.weight(0.2f))
-                        Text(text = stringResource(R.string.dpMagicLabel), modifier = Modifier.weight(0.2f))
-                        Text(text = stringResource(R.string.dpPsychicLabel), modifier = Modifier.weight(0.2f))
-                    }
-
-                    Row(){
-                        Text(text = stringResource(R.string.maxRowLabel), modifier = Modifier.weight(0.2f))
-                        Text(text = maxDP.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = maxCombat.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = maxMagic.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = maxPsychic.value.toString(), modifier = Modifier.weight(0.2f))
-                    }
-
-                    val usedDP = remember{mutableStateOf(charInstance.spentTotal)}
-                    val usedCombat = remember{mutableStateOf(charInstance.ptInCombat)}
-                    val usedMagic = remember{mutableStateOf(charInstance.ptInMag)}
-                    val usedPsychic = remember{mutableStateOf(charInstance.ptInPsy)}
-
-                    Row(){
-                        Text(text = stringResource(R.string.usedRowLabel), modifier = Modifier.weight(0.2f))
-                        Text(text = usedDP.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = usedCombat.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = usedMagic.value.toString(), modifier = Modifier.weight(0.2f))
-                        Text(text = usedPsychic.value.toString(), modifier = Modifier.weight(0.2f))
-                    }
-
-                    Spacer(modifier = Modifier.height(15.dp))
-
-                    Column(){
                         primaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
                             {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
 
@@ -278,14 +269,66 @@ class CharacterPageFragment : Fragment() {
     }
 
     @Composable
+    private fun dropdownObject(title: String, objIndex: Int, options: Array<String>,
+                               clickAct: (num:Int)->Unit){
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width((LocalConfiguration.current.screenWidthDp * 0.67).dp)
+        ){
+            val isOpen = remember{mutableStateOf(false)}
+            val index = remember{mutableStateOf(objIndex)}
+            val size = remember{mutableStateOf(Size.Zero)}
+            val icon = if(isOpen.value)
+                Icons.Filled.KeyboardArrowUp
+            else
+                Icons.Filled.KeyboardArrowDown
+
+            OutlinedTextField(
+                value = options[index.value],
+                onValueChange = {},
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        size.value = coordinates.size.toSize()
+                    },
+                label = {Text(text = title)},
+                trailingIcon = {
+                    Icon(icon, "contentDescription", modifier= Modifier.clickable{isOpen.value = !isOpen.value})
+                }
+            )
+
+            DropdownMenu(
+                expanded = isOpen.value,
+                onDismissRequest = {isOpen.value = false},
+                modifier = Modifier.width(with(LocalDensity.current){size.value.width.toDp()})
+            ) {
+                options.forEach { item ->
+                    DropdownMenuItem(onClick = {
+                        index.value = options.indexOf(item)
+                        clickAct(index.value)
+                        isOpen.value = false
+                    }) {
+                        Text(text = item)
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
     private fun primaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
-        Row(){
+        Row(verticalAlignment = Alignment.CenterVertically){
             val statIn = remember{mutableStateOf(statInput.toString())}
             val modOut = remember{mutableStateOf(modOutput)}
 
-            Text(text = labelText, modifier = Modifier.weight(0.33f))
+            Text(
+                text = labelText,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.33f))
 
-            TextField(value = statIn.value,
+            TextField(
+                value = statIn.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange ={
                     if(it == "") {
                         statIn.value = it
@@ -295,10 +338,19 @@ class CharacterPageFragment : Fragment() {
                         modOut.value = change(statIn.value.toInt())
                     }
                 },
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                 modifier = Modifier.weight(0.33f)
             )
 
-            Text(text = modOut.value.toString(), modifier = Modifier.weight(0.33f))
+            Text(
+                text = modOut.value.toString(),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(0.33f))
         }
+    }
+
+    @Composable
+    private fun spaceObjects(){
+        Spacer(modifier = Modifier.height(30.dp))
     }
 }

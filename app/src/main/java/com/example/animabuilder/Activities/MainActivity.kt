@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.content.Intent
 import android.widget.*
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.animabuilder.R
+
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.File
 
@@ -62,10 +67,13 @@ class MainActivity : AppCompatActivity() {
                 Column{
                     fileList().forEach{name ->
                         Row(
-                          modifier = Modifier.selectable(
-                              selected = (name == selected.value),
-                              onClick = {selected.value = name}
-                          )
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier
+                                .selectable(
+                                    selected = (name == selected.value),
+                                    onClick = {selected.value = name}
+                                )
                         ){
                             RadioButton(
                                 selected = (name == selected.value),
@@ -84,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 if(selected.value == "")
                     Toast.makeText(this@MainActivity, "Please select a file", Toast.LENGTH_SHORT).show()
                 else {
-                    var inputFile = File(this.filesDir, selected.value)
+                    val inputFile = File(this.filesDir, selected.value)
 
                     //instantiate character off of file data
                     charInstance = BaseCharacter(inputFile)
@@ -101,26 +109,33 @@ class MainActivity : AppCompatActivity() {
                 loadOpen.value = false
             }
 
-            Column{
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ){
                 mainButton("NEW CHARACTER", newOpen)
                 mainButton("LOAD CHARACTER", loadOpen)
             }
 
             if(newOpen.value)
                 makeAlert(newOpen, "Save Character As:", newComposable,
-                    newConfirmation, "Create", newDecline, "Cancel")
+                    newConfirmation, "Create", newDecline)
 
             else if(loadOpen.value)
-                makeAlert(loadOpen, "", loadComposable,
-                    loadConfirmation, "Load", loadDecline,"Cancel")
+                makeAlert(loadOpen, "Load Character:", loadComposable,
+                    loadConfirmation, "Load", loadDecline)
         }
     }
 
     @Composable
     private fun mainButton(title: String, isOpen: MutableState<Boolean>){
-        Row() {
+        Row {
             Button(
-                onClick = {isOpen.value = true}
+                onClick = {isOpen.value = true},
+                modifier = Modifier.width(200.dp)
             ){
                 Text(text = title)
             }
@@ -134,8 +149,7 @@ class MainActivity : AppCompatActivity() {
         contents: @Composable () -> Unit,
         confirmation: () -> Unit,
         conTitle: String,
-        declination: () -> Unit,
-        decTitle: String
+        declination: () -> Unit
     ){
         AlertDialog(
             onDismissRequest = { isOpen.value = false },
@@ -148,7 +162,7 @@ class MainActivity : AppCompatActivity() {
             },
             dismissButton = {
                 TextButton(onClick = declination){
-                    Text(text = decTitle)
+                    Text(text = "Cancel")
                 }
             }
         )

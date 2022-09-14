@@ -26,5 +26,18 @@ enum class RaceName : Serializable {
                 else -> human
             }
         }
+
+        fun fromInt(raceNum: Int?): RaceName {
+            return when (raceNum){
+                1 -> sylvain
+                2 -> jayan
+                3 -> danjayni
+                4 -> ebudan
+                5 -> daimah
+                6 -> dukzarist
+                0 -> human
+                else -> human
+            }
+        }
     }
 }

@@ -58,5 +58,31 @@ enum class ClassName : Serializable {
                 else -> freelancer
             }
         }
+
+        fun fromInt(classInt: Int?): ClassName {
+            return when (classInt){
+                1 -> warrior
+                2 -> acroWarrior
+                3 -> paladin
+                4 -> darkPaladin
+                5 -> weaponMaster
+                6 -> technician
+                7 -> tao
+                8 -> ranger
+                9 -> shadow
+                10 -> thief
+                11 -> assassin
+                12 -> wizard
+                13 -> warlock
+                14 -> illusionist
+                15 -> wizMentalist
+                16 -> summoner
+                17 -> warSummoner
+                18 -> mentalist
+                19 -> warMentalist
+                0 -> freelancer
+                else -> freelancer
+            }
+        }
     }
 }

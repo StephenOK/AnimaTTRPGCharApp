@@ -1,17 +1,24 @@
 package com.example.animabuilder.activities
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.os.Bundle
-import android.view.MenuItem
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.animabuilder.R
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.google.android.material.navigation.NavigationView
-import com.example.animabuilder.SideNavSelection
-import com.example.animabuilder.activities.fragments.home_fragments.CharacterPageFragment
+import kotlinx.coroutines.launch
 
 /**
  * Activity that runs all character creation fragments
@@ -20,56 +27,98 @@ import com.example.animabuilder.activities.fragments.home_fragments.CharacterPag
 
 class HomeActivity : AppCompatActivity() {
 
-    //instantiate drawer layout and toggle
-    private var pageDrawer: DrawerLayout? = null
-    private var drawerToggle: ActionBarDrawerToggle? = null
+    private enum class ScreenPage{
+        Primary,
+        Secondary,
+        Combat,
+        Magic,
+        Psychic,
+        Equipment
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
 
+        val charInstance = intent.getSerializableExtra("Character") as BaseCharacter
 
+        setContent{
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
 
-        val fm = supportFragmentManager
-        val filename = intent.getStringExtra("filename")
-        val charInstance = intent.getSerializableExtra("Character") as BaseCharacter?
+            val navController = rememberNavController()
 
-        //set drawer view and toggle
-        pageDrawer = findViewById(R.id.homePageLayout)
-        drawerToggle =
-            ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close)
-        pageDrawer?.addDrawerListener(drawerToggle!!)
-        drawerToggle!!.syncState()
-        val sideNav = findViewById<NavigationView>(R.id.navViewSideBar)
-        sideNav.setNavigationItemSelectedListener(
-            SideNavSelection(
-                pageDrawer,
-                filename,
-                charInstance,
-                this,
-                fm
-            )
-        )
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        val cpFrag = CharacterPageFragment()
-        val ft = fm.beginTransaction()
-        val b = Bundle()
-        b.putSerializable("Character", charInstance)
-        cpFrag.arguments = b
-        ft.replace(R.id.currentFragment, cpFrag)
-        ft.commit()
+            val currentFragment = remember{ mutableStateOf(ScreenPage.Primary)}
+
+            Scaffold(
+                scaffoldState = scaffoldState,
+
+                topBar = {TopAppBar (
+                    title = {Text(text = currentFragment.value.name)},
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                if(scaffoldState.drawerState.isClosed)
+                                    scope.launch{scaffoldState.drawerState.open()}
+                            })
+                        {
+                            Icon(
+                                imageVector = Icons.Filled.Menu,
+                                contentDescription = "Open"
+                            )
+                        }
+                })},
+
+                drawerContent = {
+                    Column{
+                        enumValues<ScreenPage>().forEach {
+                            DrawerButton(it.name)
+                            {
+                                currentFragment.value = it
+                                scope.launch{scaffoldState.drawerState.close()}
+                                navController.navigate(it.name)
+                            }
+                        }
+                    }
+                }
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenPage.Primary.name,
+                    modifier = Modifier.padding(it)
+                ){
+                    composable(route = ScreenPage.Primary.name){
+                        CharacterPageFragment(charInstance)
+                    }
+
+                    composable(route = ScreenPage.Secondary.name){
+                        SecondaryAbilityFragment(charInstance)
+                    }
+
+                    composable(route = ScreenPage.Combat.name){
+                        CombatFragment()
+                    }
+
+                    composable(route = ScreenPage.Magic.name){
+                        MagicFragment()
+                    }
+
+                    composable(route = ScreenPage.Psychic.name){
+                        PsychicFragment()
+                    }
+
+                    composable(route = ScreenPage.Equipment.name){
+                        EquipmentFragment()
+                    }
+                }
+            }
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (drawerToggle!!.onOptionsItemSelected(item)) true else super.onOptionsItemSelected(
-            item
-        )
-    }
-
-    @Preview
     @Composable
-    private fun navDrawer(){
-
+    private fun DrawerButton(display:String, action: () -> Unit){
+        TextButton(onClick = {action()}) {
+            Text(text = display)
+        }
     }
 }

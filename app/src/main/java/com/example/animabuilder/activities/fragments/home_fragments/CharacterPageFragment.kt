@@ -5,25 +5,36 @@ import android.view.ViewGroup
 import android.os.Bundle
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
-import android.widget.EditText
-import android.text.TextWatcher
-import android.text.Editable
-import android.text.InputFilter
 import android.view.View
-import android.widget.Spinner
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.AdapterView
-import androidx.compose.material.Text
+import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.fragment.app.Fragment
-import com.example.animabuilder.listener_implementations.InputFilterMinMax
-import com.example.animabuilder.listener_implementations.CharacteristicInput
-import com.google.accompanist.appcompattheme.AppCompatTheme
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -31,274 +42,293 @@ import com.google.accompanist.appcompattheme.AppCompatTheme
  * Default fragment at character load
  */
 
-class CharacterPageFragment : Fragment() {
+@Composable
+@OptIn(ExperimentalComposeUiApi::class)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+fun CharacterPageFragment(
+    charInstance: BaseCharacter
+){
+    val screenSize = LocalConfiguration.current
+    val keyboardActive = LocalSoftwareKeyboardController.current
+                
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width((screenSize.screenWidthDp * 0.67).dp)
+        ) {
+            val inputName = remember { mutableStateOf(charInstance.charName) }
 
-        super.onCreate(savedInstanceState)
-
-        //inflate xml display
-        val view = inflater.inflate(R.layout.fragment_character_page, container, false)
-
-        //get BaseCharacter passed from HomeActivity bundle
-        val fromActivity = arguments
-        val charInstance = fromActivity!!.getSerializable("Character") as BaseCharacter?
-
-        //compose name label
-        val nameTag = view.findViewById<ComposeView>(R.id.nameText)
-        nameTag.setContent{ AppCompatTheme {
-            nameTag()
-        }}
-
-        //find name input and get character's saved name
-        val nameInput = view.findViewById<EditText>(R.id.charNameEntry)
-        nameInput.setText(charInstance!!.charName)
-
-        //set watcher for name input
-        nameInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                //set character's name to the new input
-                charInstance.charName = nameInput.text.toString()
-            }
-        })
-
-
-        //add class strings to dropdown menu
-        val classSpinner = view.findViewById<Spinner>(R.id.classDropdown)
-        val classAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.classArray, android.R.layout.simple_spinner_item
-        )
-        classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        classSpinner.adapter = classAdapter
-
-        //default to character's class
-        charInstance.ownClass!!.let { classSpinner.setSelection(it.classIndex) }
-
-        //add race strings to dropdown menu
-        val raceSpinner = view.findViewById<Spinner>(R.id.raceDropdown)
-        val raceAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.raceArray, android.R.layout.simple_spinner_item
-        )
-        raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        raceSpinner.adapter = raceAdapter
-
-        //default to character's race
-        charInstance.ownRace!!.let { raceSpinner.setSelection(it.raceIndex) }
-
-        //add level strings to dropdown menu
-        val levelSpinner = view.findViewById<Spinner>(R.id.levelDropdown)
-        val levelAdapter = ArrayAdapter.createFromResource(
-            activity!!.applicationContext,
-            R.array.levelCountArray, android.R.layout.simple_spinner_item
-        )
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        levelSpinner.adapter = levelAdapter
-
-        //find displays for maximum point input
-        val maxDPDisplay = view.findViewById<TextView>(R.id.maxDPCell)
-        val maxCombatDisplay = view.findViewById<TextView>(R.id.maxCombatCell)
-        val maxMagDisplay = view.findViewById<TextView>(R.id.maxMagCell)
-        val maxPsyDisplay = view.findViewById<TextView>(R.id.maxPsyCell)
-
-        //set values to display
-        maxDPDisplay.text = getString(R.string.intItem, charInstance.devPT)
-        maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-        maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-        maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
-
-        //find spend amount displays
-        val spentDPDisplay = view.findViewById<TextView>(R.id.usedDPCell)
-        val spentCombatDisplay = view.findViewById<TextView>(R.id.usedCombatCell)
-        val spentMagDisplay = view.findViewById<TextView>(R.id.usedMagCell)
-        val spentPsyDisplay = view.findViewById<TextView>(R.id.usedPsyCell)
-
-        //set spent values to display
-        spentDPDisplay.text = getString(R.string.intItem, charInstance.spentTotal)
-        spentCombatDisplay.text = getString(R.string.intItem, charInstance.ptInCombat)
-        spentMagDisplay.text = getString(R.string.intItem, charInstance.ptInMag)
-        spentPsyDisplay.text = getString(R.string.intItem, charInstance.ptInPsy)
-
-        //set on selection listener for class options
-        classSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                //get string from selection and change character's class accordingly
-                charInstance.setOwnClass(classSpinner.selectedItem.toString())
-
-                //display new maximum values
-                maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-                maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-                maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            OutlinedTextField(
+                value = inputName.value!!,
+                onValueChange = {
+                    if(it[it.length - 1] == '\n')
+                        keyboardActive?.hide()
+                    else{
+                        inputName.value = it
+                        charInstance.charName = inputName.value
+                    }},
+                label = {Text(text = stringResource(R.string.nameText))},
+            )
         }
 
-        //set on selection listener for race options
-        raceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
+        val maxDP = remember{mutableStateOf(charInstance.devPT)}
+        val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
+        val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
+        val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
+
+        dropdownObject(stringResource(R.string.classText), charInstance.ownClass!!.classIndex,
+            stringArrayResource(id = R.array.classArray))
+        {index:Int ->
+            charInstance.setOwnClass(index)
+
+            maxDP.value = charInstance.devPT
+            maxCombat.value = charInstance.maxCombatDP
+            maxMagic.value = charInstance.maxMagDP
+            maxPsychic.value = charInstance.maxPsyDP
+        }
+
+        dropdownObject(stringResource(R.string.raceText), charInstance.ownRace!!.raceIndex,
+            stringArrayResource(id = R.array.raceArray))
+        {index:Int -> charInstance.setOwnRace(index) }
+
+        dropdownObject(stringResource(R.string.levelText), charInstance.lvl,
+            stringArrayResource(R.array.levelCountArray))
+        {index:Int ->
+            charInstance.setLvl(index)
+            maxDP.value = charInstance.devPT
+            maxCombat.value = charInstance.maxCombatDP
+            maxMagic.value = charInstance.maxMagDP
+            maxPsychic.value = charInstance.maxPsyDP
+        }
+
+        spaceObjects()
+
+        Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.65).dp)) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                //get string from selection and change character's race accordingly
-                charInstance.setOwnRace(raceSpinner.selectedItem.toString())
+                Spacer(Modifier.weight(0.2f))
+                Text(
+                    text = stringResource(R.string.totalLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = stringResource(R.string.dpCombatLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = stringResource(R.string.dpMagicLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = stringResource(R.string.dpPsychicLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        //set on selection listener for level
-        levelSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                //get string from selection and change character's level accordingly
-                charInstance.setLvl(levelSpinner.selectedItem.toString().toInt())
-
-                //display new maximum values
-                maxDPDisplay.text = getString(R.string.intItem, charInstance.devPT)
-                maxCombatDisplay.text = getString(R.string.intItem, charInstance.maxCombatDP)
-                maxMagDisplay.text = getString(R.string.intItem, charInstance.maxMagDP)
-                maxPsyDisplay.text = getString(R.string.intItem, charInstance.maxPsyDP)
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.maxRowLabel),
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = maxDP.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = maxCombat.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(text = maxMagic.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = maxPsychic.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
+            val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
+            val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
+            val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.usedRowLabel),
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = usedDP.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f))
+                Text(
+                    text = usedCombat.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = usedMagic.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = usedPsychic.value.toString(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
         }
 
-        //set display to character's level
-        levelSpinner.setSelection(charInstance.lvl)
+        spaceObjects()
 
+        Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.80).dp)){
+            Row{
+                Spacer(modifier = Modifier.weight(0.33f))
 
-        //set integer range for characteristic inputs
-        val strScore = view.findViewById<EditText>(R.id.strScore)
-        strScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val dexScore = view.findViewById<EditText>(R.id.dexScore)
-        dexScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val agiScore = view.findViewById<EditText>(R.id.agiScore)
-        agiScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val conScore = view.findViewById<EditText>(R.id.conScore)
-        conScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val intScore = view.findViewById<EditText>(R.id.intScore)
-        intScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val powScore = view.findViewById<EditText>(R.id.powScore)
-        powScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val wpScore = view.findViewById<EditText>(R.id.wpScore)
-        wpScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
-        val perScore = view.findViewById<EditText>(R.id.perScore)
-        perScore.filters = arrayOf<InputFilter>(InputFilterMinMax(1, 20))
+                Text(
+                    text = stringResource(R.string.scoreLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.33f)
+                )
 
+                Text(
+                    text = stringResource(R.string.modLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.33f)
+                )
+            }
 
-        //get mod displays from the page
-        val strMod = view.findViewById<TextView>(R.id.strMod)
-        val dexMod = view.findViewById<TextView>(R.id.dexMod)
-        val agiMod = view.findViewById<TextView>(R.id.agiMod)
-        val conMod = view.findViewById<TextView>(R.id.conMod)
-        val intMod = view.findViewById<TextView>(R.id.intMod)
-        val powMod = view.findViewById<TextView>(R.id.powMod)
-        val wpMod = view.findViewById<TextView>(R.id.wpMod)
-        val perMod = view.findViewById<TextView>(R.id.perMod)
+            primaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
+            {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
 
+            primaryRow(stringResource(R.string.dexText), charInstance.dex, charInstance.modDEX)
+            {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
 
-        //set all listeners for characteristic change to make mod text change to corresponding value
-        strScore.addTextChangedListener(
-            CharacteristicInput(
-                strScore,
-                strMod,
-                charInstance.setSTR,
-                charInstance.getModSTR,
-                activity!!.applicationContext
-            )
-        )
-        dexScore.addTextChangedListener(
-            CharacteristicInput(
-                dexScore,
-                dexMod,
-                charInstance.setDEX,
-                charInstance.getModDEX,
-                activity!!.applicationContext
-            )
-        )
-        agiScore.addTextChangedListener(
-            CharacteristicInput(
-                agiScore,
-                agiMod,
-                charInstance.setAGI,
-                charInstance.getModAGI,
-                activity!!.applicationContext
-            )
-        )
-        conScore.addTextChangedListener(
-            CharacteristicInput(
-                conScore,
-                conMod,
-                charInstance.setCON,
-                charInstance.getModCON,
-                activity!!.applicationContext
-            )
-        )
-        intScore.addTextChangedListener(
-            CharacteristicInput(
-                intScore,
-                intMod,
-                charInstance.setINT,
-                charInstance.getModINT,
-                activity!!.applicationContext
-            )
-        )
-        powScore.addTextChangedListener(
-            CharacteristicInput(
-                powScore,
-                powMod,
-                charInstance.setPOW,
-                charInstance.getModPOW,
-                activity!!.applicationContext
-            )
-        )
-        wpScore.addTextChangedListener(
-            CharacteristicInput(
-                wpScore,
-                wpMod,
-                charInstance.setWP,
-                charInstance.getModWP,
-                activity!!.applicationContext
-            )
-        )
-        perScore.addTextChangedListener(
-            CharacteristicInput(
-                perScore,
-                perMod,
-                charInstance.setPER,
-                charInstance.getModPER,
-                activity!!.applicationContext
-            )
-        )
+            primaryRow(stringResource(R.string.agiText), charInstance.agi, charInstance.modAGI)
+            {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
 
-        //set initial values for characteristics
-        strScore.setText(getString(R.string.intItem, charInstance.str))
-        dexScore.setText(getString(R.string.intItem, charInstance.dex))
-        agiScore.setText(getString(R.string.intItem, charInstance.agi))
-        conScore.setText(getString(R.string.intItem, charInstance.con))
-        intScore.setText(getString(R.string.intItem, charInstance.int))
-        powScore.setText(getString(R.string.intItem, charInstance.pow))
-        wpScore.setText(getString(R.string.intItem, charInstance.wp))
-        perScore.setText(getString(R.string.intItem, charInstance.per))
+            primaryRow(stringResource(R.string.conText), charInstance.con, charInstance.modCON)
+            {newCON -> charInstance.setCON(newCON); charInstance.modCON}
 
-        return view
+            primaryRow(stringResource(R.string.intText), charInstance.int, charInstance.modINT)
+            {newINT -> charInstance.setINT(newINT); charInstance.modINT}
+
+            primaryRow(stringResource(R.string.powText), charInstance.pow, charInstance.modPOW)
+            {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW}
+
+            primaryRow(stringResource(R.string.wpText), charInstance.wp, charInstance.modWP)
+            {newWP -> charInstance.setWP(newWP); charInstance.modWP}
+
+            primaryRow(stringResource(R.string.perText), charInstance.per, charInstance.modPER)
+            {newPER -> charInstance.setPER(newPER); charInstance.modPER}
+        }
     }
+}
 
-    @Preview
-    @Composable
-    private fun nameTag(){
+@Composable
+private fun dropdownObject(title: String, objIndex: Int, options: Array<String>,
+                               clickAct: (num:Int)->Unit){
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.width((LocalConfiguration.current.screenWidthDp * 0.67).dp)
+    ){
+        val isOpen = remember{mutableStateOf(false)}
+        val index = remember{mutableStateOf(objIndex)}
+        val size = remember{mutableStateOf(Size.Zero)}
+        val icon = if(isOpen.value)
+            Icons.Filled.KeyboardArrowUp
+        else
+            Icons.Filled.KeyboardArrowDown
+
+        OutlinedTextField(
+            value = options[index.value],
+            onValueChange = {},
+            modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    size.value = coordinates.size.toSize() },
+            label = {Text(text = title)},
+            trailingIcon = {
+                Icon(icon, "contentDescription", modifier= Modifier.clickable{isOpen.value = !isOpen.value})
+            }
+        )
+
+        DropdownMenu(
+            expanded = isOpen.value,
+            onDismissRequest = {isOpen.value = false},
+            modifier = Modifier.width(with(LocalDensity.current){size.value.width.toDp()})
+        ) {
+            options.forEach { item ->
+                DropdownMenuItem(onClick = {
+                    index.value = options.indexOf(item)
+                    clickAct(index.value)
+                    isOpen.value = false
+                }) {
+                    Text(text = item)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun primaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
+    Row(verticalAlignment = Alignment.CenterVertically){
+        val statIn = remember{mutableStateOf(statInput.toString())}
+        val modOut = remember{mutableStateOf(modOutput)}
+
         Text(
-            text = stringResource(R.string.nameText),
-            fontSize = 20.sp
+            text = labelText,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.33f))
+
+        TextField(
+            value = statIn.value,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange ={
+                if(it == "") {
+                    statIn.value = it
+                }
+                else if(it.toInt() in 0..20){
+                    statIn.value = it
+                    modOut.value = change(statIn.value.toInt())
+                } },
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+            modifier = Modifier.weight(0.33f)
         )
+
+        Text(
+            text = modOut.value.toString(),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.33f))
     }
+}
+
+@Composable
+private fun spaceObjects(){
+    Spacer(modifier = Modifier.height(30.dp))
 }

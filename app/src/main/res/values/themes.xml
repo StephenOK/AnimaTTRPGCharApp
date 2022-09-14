@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.AnimaBuilder.NoActionBar">
@@ -19,20 +19,5 @@
     </style>
     <style name="Theme.AnimaBuilder.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.AnimaBuilder.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="secondaryTableRowHead">
-        <item name="android:textSize">20dp</item>
-        <item name="android:layout_width">110dp</item>
-        <item name="android:layout_gravity">fill</item>
-    </style>
-    <style name="secondaryTableRowData">
-        <item name="android:textSize">14dp</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-    <style name="secondaryTableRowInput">
-        <item name="android:ems">5</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:textAlignment">center</item>
-    </style>
 
 </resources>

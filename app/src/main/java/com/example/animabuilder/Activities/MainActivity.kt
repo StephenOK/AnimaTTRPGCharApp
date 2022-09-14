@@ -15,9 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.example.animabuilder.R
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.File
@@ -116,22 +113,22 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ){
-                mainButton("NEW CHARACTER", newOpen)
-                mainButton("LOAD CHARACTER", loadOpen)
+                MainButton("NEW CHARACTER", newOpen)
+                MainButton("LOAD CHARACTER", loadOpen)
             }
 
             if(newOpen.value)
-                makeAlert(newOpen, "Save Character As:", newComposable,
+                MakeAlert(newOpen, "Save Character As:", newComposable,
                     newConfirmation, "Create", newDecline)
 
             else if(loadOpen.value)
-                makeAlert(loadOpen, "Load Character:", loadComposable,
+                MakeAlert(loadOpen, "Load Character:", loadComposable,
                     loadConfirmation, "Load", loadDecline)
         }
     }
 
     @Composable
-    private fun mainButton(title: String, isOpen: MutableState<Boolean>){
+    private fun MainButton(title: String, isOpen: MutableState<Boolean>){
         Row {
             Button(
                 onClick = {isOpen.value = true},
@@ -143,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun makeAlert(
+    private fun MakeAlert(
         isOpen: MutableState<Boolean>,
         titleIn: String,
         contents: @Composable () -> Unit,

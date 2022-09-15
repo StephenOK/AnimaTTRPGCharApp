@@ -1,17 +1,27 @@
 package com.example.animabuilder.activities
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.animabuilder.R
+import android.widget.Toast
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.google.android.material.navigation.NavigationView
-import com.example.animabuilder.SideNavSelection
-import com.example.animabuilder.activities.fragments.home_fragments.CharacterPageFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.io.FileNotFoundException
+import java.io.IOException
 
 /**
  * Activity that runs all character creation fragments
@@ -20,56 +30,179 @@ import com.example.animabuilder.activities.fragments.home_fragments.CharacterPag
 
 class HomeActivity : AppCompatActivity() {
 
-    //instantiate drawer layout and toggle
-    private var pageDrawer: DrawerLayout? = null
-    private var drawerToggle: ActionBarDrawerToggle? = null
+    private enum class ScreenPage{
+        Primary,
+        Secondary,
+        Advantages,
+        Combat,
+        Magic,
+        Psychic,
+        Equipment
+    }
+
+    lateinit var charInstance: BaseCharacter
+    var filename: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
 
+        charInstance = intent.getSerializableExtra("Character") as BaseCharacter
+        filename = intent.getStringExtra("filename")
 
+        setContent{
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
 
-        val fm = supportFragmentManager
-        val filename = intent.getStringExtra("filename")
-        val charInstance = intent.getSerializableExtra("Character") as BaseCharacter?
+            val navController = rememberNavController()
 
-        //set drawer view and toggle
-        pageDrawer = findViewById(R.id.homePageLayout)
-        drawerToggle =
-            ActionBarDrawerToggle(this, pageDrawer, R.string.nav_open, R.string.nav_close)
-        pageDrawer?.addDrawerListener(drawerToggle!!)
-        drawerToggle!!.syncState()
-        val sideNav = findViewById<NavigationView>(R.id.navViewSideBar)
-        sideNav.setNavigationItemSelectedListener(
-            SideNavSelection(
-                pageDrawer,
-                filename,
-                charInstance,
-                this,
-                fm
-            )
-        )
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        val cpFrag = CharacterPageFragment()
-        val ft = fm.beginTransaction()
-        val b = Bundle()
-        b.putSerializable("Character", charInstance)
-        cpFrag.arguments = b
-        ft.replace(R.id.currentFragment, cpFrag)
-        ft.commit()
+            val currentFragment = remember{ mutableStateOf(ScreenPage.Primary)}
+
+            val exitOpen = remember{mutableStateOf(false)}
+
+            Scaffold(
+                scaffoldState = scaffoldState,
+
+                topBar = {TopAppBar (
+                    title = {Text(text = currentFragment.value.name)},
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                if(scaffoldState.drawerState.isClosed)
+                                    scope.launch{scaffoldState.drawerState.open()}
+                            })
+                        {
+                            Icon(
+                                imageVector = Icons.Filled.Menu,
+                                contentDescription = "Open"
+                            )
+                        }
+                })},
+
+                drawerContent = {
+                    Column{
+                        enumValues<ScreenPage>().forEach {
+                            DrawerButton(it.name)
+                            {
+                                currentFragment.value = it
+                                scope.launch{scaffoldState.drawerState.close()}
+                                navController.navigate(it.name)
+                            }
+                        }
+
+                        DrawerButton("Save"){
+                            scope.launch{scaffoldState.drawerState.close()}
+                            attemptSave()}
+
+                        DrawerButton("Exit"){
+                            scope.launch{scaffoldState.drawerState.close()}
+                            exitOpen.value = true }
+                    }
+                }
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenPage.Primary.name,
+                    modifier = Modifier.padding(it)
+                ){
+                    composable(route = ScreenPage.Primary.name){
+                        CharacterPageFragment(charInstance)
+                    }
+
+                    composable(route = ScreenPage.Secondary.name){
+                        SecondaryAbilityFragment(charInstance)
+                    }
+
+                    composable(route = ScreenPage.Advantages.name){
+                        Advantages(charInstance)
+                    }
+
+                    composable(route = ScreenPage.Combat.name){
+                        CombatFragment()
+                    }
+
+                    composable(route = ScreenPage.Magic.name){
+                        MagicFragment()
+                    }
+
+                    composable(route = ScreenPage.Psychic.name){
+                        PsychicFragment()
+                    }
+
+                    composable(route = ScreenPage.Equipment.name){
+                        EquipmentFragment()
+                    }
+                }
+            }
+
+            if(exitOpen.value)
+                ExitAlert(exitOpen)
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (drawerToggle!!.onOptionsItemSelected(item)) true else super.onOptionsItemSelected(
-            item
-        )
-    }
-
-    @Preview
     @Composable
-    private fun navDrawer(){
+    private fun DrawerButton(display:String, action: () -> Unit){
+        TextButton(onClick = {action()}) {
+            Text(text = display)
+        }
+    }
 
+    private fun attemptSave(){
+        try{
+            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+            val charData = charInstance.bytes
+            saveStream.write(charData)
+            saveStream.close()
+
+            Toast.makeText(
+                this@HomeActivity,
+                "Save successful!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        catch(e: FileNotFoundException){
+            Toast.makeText(
+                this@HomeActivity,
+                "Unable to find file!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        catch(e: IOException) {
+            Toast.makeText(
+                this@HomeActivity,
+                "Failed to write data!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun exitPage(){
+        startActivity(Intent(this@HomeActivity, MainActivity::class.java))
+    }
+
+    @Composable
+    private fun ExitAlert(
+        isOpen: MutableState<Boolean>,
+    ){
+        AlertDialog(
+            onDismissRequest = {isOpen.value = false},
+            title = {Text(text = "Save before exiting?")},
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        attemptSave()
+                        exitPage()}
+                ){
+                    Text(text = "Save")
+                }},
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        exitPage()
+                    }){
+                    Text(text = "Exit")
+                }
+            }
+        )
     }
 }

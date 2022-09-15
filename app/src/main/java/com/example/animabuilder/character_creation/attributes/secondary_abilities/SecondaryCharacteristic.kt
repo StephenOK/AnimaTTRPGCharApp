@@ -94,9 +94,9 @@ class SecondaryCharacteristic : Serializable {
         //write natural bonus applied data
         val booleanIn: String = if (bonusApplied) "true" else "false"
         byteArray.write(
-            """$booleanIn\n""".toByteArray(StandardCharsets.UTF_8),
+            """$booleanIn""".toByteArray(StandardCharsets.UTF_8),
             0,
-            """$booleanIn\n""".toByteArray(StandardCharsets.UTF_8).size
+            """$booleanIn""".toByteArray(StandardCharsets.UTF_8).size
         )
         byteArray.write(
             "\n".toByteArray(StandardCharsets.UTF_8),

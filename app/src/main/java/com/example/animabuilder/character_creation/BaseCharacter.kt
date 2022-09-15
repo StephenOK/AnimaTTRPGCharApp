@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation
 
+import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
@@ -22,8 +23,14 @@ class BaseCharacter : Serializable {
     var charName: String? = null
     var byteArray: SerialOutputStream? = null
 
+    var presence: Int = 25
+
+    var allActionPenalty = 0
+
     //list of secondary abilities
     var secondaryList: SecondaryList = SecondaryList()
+
+    var advantageRecord: AdvantageRecord = AdvantageRecord(this@BaseCharacter)
 
     //character's level
     var lvl = 0
@@ -59,6 +66,9 @@ class BaseCharacter : Serializable {
 
         //determine development point count
         devPT = 500 + lvl * 100
+
+        presence = 25 + (5 * lvl)
+        updateResistances()
 
         //recalculate maximum DP allotments
         dpAllotmentCalc()
@@ -105,6 +115,7 @@ class BaseCharacter : Serializable {
     var setCON = { conVal: Int ->
         con = conVal
         modCON = getModVal(con)
+        updateResistances()
     }
     var setINT = { intVal: Int ->
         int = intVal
@@ -115,11 +126,13 @@ class BaseCharacter : Serializable {
         pow = powVal
         modPOW = getModVal(pow)
         secondaryList.updatePOW(modPOW)
+        updateResistances()
     }
     var setWP = { wpVal: Int ->
         wp = wpVal
         modWP = getModVal(wp)
         secondaryList.updateWP(modWP)
+        updateResistances()
     }
     var setPER = { perVal: Int ->
         per = perVal
@@ -143,16 +156,6 @@ class BaseCharacter : Serializable {
         return output
     }
 
-    //create getter functions for primary characteristics
-    val getModSTR = { modSTR }
-    val getModDEX = { modDEX }
-    val getModAGI = { modAGI }
-    val getModCON = { modCON }
-    val getModINT = { modINT }
-    val getModPOW = { modPOW }
-    val getModWP = { modWP }
-    val getModPER = { modPER }
-
     //initialize character's class and race
     var ownClass: CharClass? = null
     var ownRace: CharRace? = null
@@ -171,6 +174,12 @@ class BaseCharacter : Serializable {
         secondaryList.classUpdate(ownClass!!)
     }
 
+    fun setOwnClass(classInt: Int?){
+        ownClass = CharClass(ClassName.fromInt(classInt))
+        adjustMaxValues()
+        secondaryList.classUpdate(ownClass!!)
+    }
+
     //get new dp maximums based on class change
     private fun adjustMaxValues() {
         percCombatDP = ownClass!!.combatMax
@@ -180,13 +189,17 @@ class BaseCharacter : Serializable {
     }
 
     //setter for race with RaceName input
-    fun setOwnRace(raceIn: RaceName?) {
-        ownRace = CharRace(raceIn!!)
+    fun setOwnRace(raceIn: RaceName) {
+        ownRace = CharRace(raceIn, advantageRecord)
     }
 
     //setter for race with String input
     fun setOwnRace(raceName: String?) {
-        ownRace = CharRace(RaceName.fromString(raceName))
+        ownRace = CharRace(RaceName.fromString(raceName), advantageRecord)
+    }
+
+    fun setOwnRace(raceNum: Int?){
+        ownRace = CharRace(RaceName.fromInt(raceNum), advantageRecord)
     }
 
     //maximum fatigue value
@@ -198,6 +211,26 @@ class BaseCharacter : Serializable {
     var resistVen = 0
     var resistMag = 0
     var resistPsy = 0
+
+    var rphysSpec = 0
+    var rdSpec = 0
+    var rvSpec = 0
+    var rmSpec = 0
+    var rpsySpec = 0
+
+    var rphysMult = 1.0
+    var rdMult = 1.0
+    var rvMult = 1.0
+    var rmMult = 1.0
+    var rpsyMult = 1.0
+
+    fun updateResistances(){
+        resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
+        resistDisease = ((presence + modCON + rdSpec) * rdMult).toInt()
+        resistVen = ((presence + modCON + rvSpec) * rvMult).toInt()
+        resistMag = ((presence + modPOW + rmSpec) * rmMult).toInt()
+        resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
+    }
 
     //character's maximum hp
     var lifeMax = 0

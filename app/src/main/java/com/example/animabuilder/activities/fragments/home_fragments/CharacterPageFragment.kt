@@ -1,12 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
-import android.view.View
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -31,7 +26,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import androidx.fragment.app.Fragment
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -82,7 +76,7 @@ fun CharacterPageFragment(
         val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
         val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
 
-        dropdownObject(stringResource(R.string.classText), charInstance.ownClass!!.classIndex,
+        DropdownObject(stringResource(R.string.classText), charInstance.ownClass!!.classIndex,
             stringArrayResource(id = R.array.classArray))
         {index:Int ->
             charInstance.setOwnClass(index)
@@ -93,11 +87,11 @@ fun CharacterPageFragment(
             maxPsychic.value = charInstance.maxPsyDP
         }
 
-        dropdownObject(stringResource(R.string.raceText), charInstance.ownRace!!.raceIndex,
+        DropdownObject(stringResource(R.string.raceText), charInstance.ownRace!!.raceIndex,
             stringArrayResource(id = R.array.raceArray))
         {index:Int -> charInstance.setOwnRace(index) }
 
-        dropdownObject(stringResource(R.string.levelText), charInstance.lvl,
+        DropdownObject(stringResource(R.string.levelText), charInstance.lvl,
             stringArrayResource(R.array.levelCountArray))
         {index:Int ->
             charInstance.setLvl(index)
@@ -107,7 +101,7 @@ fun CharacterPageFragment(
             maxPsychic.value = charInstance.maxPsyDP
         }
 
-        spaceObjects()
+        SpaceObjects()
 
         Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.65).dp)) {
             Row(
@@ -203,7 +197,7 @@ fun CharacterPageFragment(
             }
         }
 
-        spaceObjects()
+        SpaceObjects()
 
         Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.80).dp)){
             Row{
@@ -222,35 +216,35 @@ fun CharacterPageFragment(
                 )
             }
 
-            primaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
+            PrimaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
             {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
 
-            primaryRow(stringResource(R.string.dexText), charInstance.dex, charInstance.modDEX)
+            PrimaryRow(stringResource(R.string.dexText), charInstance.dex, charInstance.modDEX)
             {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
 
-            primaryRow(stringResource(R.string.agiText), charInstance.agi, charInstance.modAGI)
+            PrimaryRow(stringResource(R.string.agiText), charInstance.agi, charInstance.modAGI)
             {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
 
-            primaryRow(stringResource(R.string.conText), charInstance.con, charInstance.modCON)
+            PrimaryRow(stringResource(R.string.conText), charInstance.con, charInstance.modCON)
             {newCON -> charInstance.setCON(newCON); charInstance.modCON}
 
-            primaryRow(stringResource(R.string.intText), charInstance.int, charInstance.modINT)
+            PrimaryRow(stringResource(R.string.intText), charInstance.int, charInstance.modINT)
             {newINT -> charInstance.setINT(newINT); charInstance.modINT}
 
-            primaryRow(stringResource(R.string.powText), charInstance.pow, charInstance.modPOW)
+            PrimaryRow(stringResource(R.string.powText), charInstance.pow, charInstance.modPOW)
             {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW}
 
-            primaryRow(stringResource(R.string.wpText), charInstance.wp, charInstance.modWP)
+            PrimaryRow(stringResource(R.string.wpText), charInstance.wp, charInstance.modWP)
             {newWP -> charInstance.setWP(newWP); charInstance.modWP}
 
-            primaryRow(stringResource(R.string.perText), charInstance.per, charInstance.modPER)
+            PrimaryRow(stringResource(R.string.perText), charInstance.per, charInstance.modPER)
             {newPER -> charInstance.setPER(newPER); charInstance.modPER}
         }
     }
 }
 
 @Composable
-private fun dropdownObject(title: String, objIndex: Int, options: Array<String>,
+private fun DropdownObject(title: String, objIndex: Int, options: Array<String>,
                                clickAct: (num:Int)->Unit){
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -297,7 +291,7 @@ private fun dropdownObject(title: String, objIndex: Int, options: Array<String>,
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun primaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
+private fun PrimaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
     Row(verticalAlignment = Alignment.CenterVertically){
         val statIn = remember{mutableStateOf(statInput.toString())}
         val modOut = remember{mutableStateOf(modOutput)}
@@ -331,6 +325,6 @@ private fun primaryRow(labelText:String, statInput:Int, modOutput: Int, change: 
 }
 
 @Composable
-private fun spaceObjects(){
+private fun SpaceObjects(){
     Spacer(modifier = Modifier.height(30.dp))
 }

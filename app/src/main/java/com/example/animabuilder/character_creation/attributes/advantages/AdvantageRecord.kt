@@ -1,21 +1,22 @@
 package com.example.animabuilder.character_creation.attributes.advantages
 
 import com.example.animabuilder.character_creation.BaseCharacter
+import java.io.Serializable
 
-class AdvantageRecord(charInstance: BaseCharacter) {
+class AdvantageRecord(charInstance: BaseCharacter): Serializable {
     var advantTaken: List<Advantage> = mutableListOf()
     var advantForbidden: List<Advantage> = mutableListOf()
 
     fun addAdvantage(toAdd: Advantage){
         if(!advantForbidden.contains(toAdd)) {
-            toAdd.onReceive()
+            //toAdd.onReceive()
             advantTaken += toAdd
         }
     }
 
     fun removeAdvantage(toTake: Advantage){
         if(advantTaken.contains(toTake)){
-            toTake.onRemove()
+            //toTake.onRemove()
             advantTaken -= toTake
         }
     }

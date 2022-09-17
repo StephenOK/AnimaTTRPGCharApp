@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,10 +41,25 @@ var keyboardActive: SoftwareKeyboardController? = null
 @OptIn(ExperimentalComposeUiApi::class)
 
 fun CharacterPageFragment(
-    charInstance: BaseCharacter
+    charInstance: BaseCharacter,
+    maxDP: MutableState<Int>,
+    maxCombat: MutableState<Int>,
+    maxMagic: MutableState<Int>,
+    maxPsychic: MutableState<Int>
 ){
     val screenSize = LocalConfiguration.current
     keyboardActive = LocalSoftwareKeyboardController.current
+
+    val presence = remember{mutableStateOf(charInstance.presence)}
+
+    val strMod = remember{mutableStateOf(charInstance.modSTR)}
+    val dexMod = remember{mutableStateOf(charInstance.modDEX)}
+    val agiMod = remember{mutableStateOf(charInstance.modAGI)}
+    val conMod = remember{mutableStateOf(charInstance.modCON)}
+    val intMod = remember{mutableStateOf(charInstance.modINT)}
+    val powMod = remember{mutableStateOf(charInstance.modPOW)}
+    val wpMod = remember{mutableStateOf(charInstance.modWP)}
+    val perMod = remember{mutableStateOf(charInstance.modPER)}
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,11 +87,6 @@ fun CharacterPageFragment(
             )
         }
 
-        val maxDP = remember{mutableStateOf(charInstance.devPT)}
-        val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
-        val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
-        val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
-
         DropdownObject(stringResource(R.string.classText), charInstance.ownClass!!.classIndex,
             stringArrayResource(id = R.array.classArray))
         {index:Int ->
@@ -95,106 +106,11 @@ fun CharacterPageFragment(
             stringArrayResource(R.array.levelCountArray))
         {index:Int ->
             charInstance.setLvl(index)
+            presence.value = charInstance.presence
             maxDP.value = charInstance.devPT
             maxCombat.value = charInstance.maxCombatDP
             maxMagic.value = charInstance.maxMagDP
             maxPsychic.value = charInstance.maxPsyDP
-        }
-
-        SpaceObjects()
-
-        Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.65).dp)) {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(Modifier.weight(0.2f))
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = stringResource(R.string.dpCombatLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = stringResource(R.string.dpMagicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = stringResource(R.string.dpPsychicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.maxRowLabel),
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = maxDP.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = maxCombat.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(text = maxMagic.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = maxPsychic.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-            }
-
-            val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
-            val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
-            val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
-            val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.usedRowLabel),
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = usedDP.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f))
-                Text(
-                    text = usedCombat.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = usedMagic.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                Text(
-                    text = usedPsychic.value.toString(),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-            }
         }
 
         SpaceObjects()
@@ -216,29 +132,63 @@ fun CharacterPageFragment(
                 )
             }
 
-            PrimaryRow(stringResource(R.string.strText), charInstance.str, charInstance.modSTR)
+            PrimaryRow(stringResource(R.string.strText), charInstance.str, strMod)
             {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
 
-            PrimaryRow(stringResource(R.string.dexText), charInstance.dex, charInstance.modDEX)
+            PrimaryRow(stringResource(R.string.dexText), charInstance.dex, dexMod)
             {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
 
-            PrimaryRow(stringResource(R.string.agiText), charInstance.agi, charInstance.modAGI)
+            PrimaryRow(stringResource(R.string.agiText), charInstance.agi, agiMod)
             {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
 
-            PrimaryRow(stringResource(R.string.conText), charInstance.con, charInstance.modCON)
+            PrimaryRow(stringResource(R.string.conText), charInstance.con, conMod)
             {newCON -> charInstance.setCON(newCON); charInstance.modCON}
 
-            PrimaryRow(stringResource(R.string.intText), charInstance.int, charInstance.modINT)
+            PrimaryRow(stringResource(R.string.intText), charInstance.int, intMod)
             {newINT -> charInstance.setINT(newINT); charInstance.modINT}
 
-            PrimaryRow(stringResource(R.string.powText), charInstance.pow, charInstance.modPOW)
+            PrimaryRow(stringResource(R.string.powText), charInstance.pow, powMod)
             {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW}
 
-            PrimaryRow(stringResource(R.string.wpText), charInstance.wp, charInstance.modWP)
+            PrimaryRow(stringResource(R.string.wpText), charInstance.wp, wpMod)
             {newWP -> charInstance.setWP(newWP); charInstance.modWP}
 
-            PrimaryRow(stringResource(R.string.perText), charInstance.per, charInstance.modPER)
+            PrimaryRow(stringResource(R.string.perText), charInstance.per, perMod)
             {newPER -> charInstance.setPER(newPER); charInstance.modPER}
+        }
+
+        SpaceObjects()
+
+        Column(modifier = Modifier.width((screenSize.screenWidthDp * 0.80).dp)){
+            Row{
+                Spacer(modifier = Modifier.weight(0.2f))
+                Text(
+                    text = "Presence",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = stringResource(R.string.modLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = "Special",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                Text(
+                    text = stringResource(R.string.totalLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+
+            ResistanceRow("DR", presence, conMod, charInstance.rdSpec, charInstance.resistDisease)
+            ResistanceRow("MR", presence, powMod, charInstance.rmSpec, charInstance.resistMag)
+            ResistanceRow("PhR", presence, conMod, charInstance.rphysSpec, charInstance.resistPhys)
+            ResistanceRow("VR", presence, conMod, charInstance.rvSpec, charInstance.resistVen)
+            ResistanceRow("PsR", presence, wpMod, charInstance.rpsySpec, charInstance.resistPsy)
         }
     }
 }
@@ -291,10 +241,14 @@ private fun DropdownObject(title: String, objIndex: Int, options: Array<String>,
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PrimaryRow(labelText:String, statInput:Int, modOutput: Int, change: (newVal:Int) -> Int){
+private fun PrimaryRow(
+    labelText:String,
+    statInput:Int,
+    modOutput: MutableState<Int>,
+    change: (newVal:Int) -> Int
+){
     Row(verticalAlignment = Alignment.CenterVertically){
         val statIn = remember{mutableStateOf(statInput.toString())}
-        val modOut = remember{mutableStateOf(modOutput)}
 
         Text(
             text = labelText,
@@ -305,22 +259,65 @@ private fun PrimaryRow(labelText:String, statInput:Int, modOutput: Int, change: 
             value = statIn.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange ={
-                if(it[it.length - 1] == '\n')
-                    keyboardActive!!.hide()
-                else if(it == "")
-                    statIn.value = it
-                else if(it.toInt() in 0..20){
-                    statIn.value = it
-                    modOut.value = change(statIn.value.toInt())
-                } },
+                try{
+                    if(it.toInt() in 1..20) {
+                        statIn.value = it
+                        modOutput.value = change(statIn.value.toInt())
+                    }
+                }catch(e: NumberFormatException){
+                    if(it == "")
+                        statIn.value = it
+                    else if(it[it.length - 1] == '\n')
+                        keyboardActive!!.hide()
+                }},
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
             modifier = Modifier.weight(0.33f)
         )
 
         Text(
-            text = modOut.value.toString(),
+            text = modOutput.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.33f))
+    }
+}
+
+@Composable
+private fun ResistanceRow(
+    labelText: String,
+    presence: MutableState<Int>,
+    modStat: MutableState<Int>,
+    special: Int,
+    total: Int
+){
+    val specialStat = remember{mutableStateOf(special.toString())}
+    val resistStat = remember{mutableStateOf(total.toString())}
+
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Text(
+            text = labelText,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.2f)
+        )
+        Text(
+            text = presence.value.toString(),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.2f)
+        )
+        Text(
+            text = modStat.value.toString(),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.2f)
+        )
+        Text(
+            text = specialStat.value,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.2f)
+        )
+        Text(
+            text = resistStat.value,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.2f)
+        )
     }
 }
 

@@ -1,9 +1,5 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
-import android.view.View
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import androidx.compose.animation.AnimatedVisibility
@@ -13,21 +9,19 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
-import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 
 /**
  * Fragment to be displayed when working with secondary characteristics
@@ -35,10 +29,9 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 
 @Composable
 fun SecondaryAbilityFragment(
-    charInstance: BaseCharacter
+    charInstance: BaseCharacter,
+    spentDisplay: MutableState<Int>
 ) {
-    var charList: SecondaryList = charInstance.secondaryList
-
     MaterialTheme(
 
     ) {
@@ -48,13 +41,13 @@ fun SecondaryAbilityFragment(
                 .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
         ) {
-            makeTableDisplay(athleticsTable(charInstance), R.string.athleticsLabel)
-            makeTableDisplay(socialTable(charInstance), R.string.socialLabel)
-            makeTableDisplay(percTable(charInstance), R.string.perceptionLabel)
-            makeTableDisplay(intelTable(charInstance), R.string.intellectualLabel)
-            makeTableDisplay(vigorTable(charInstance), R.string.vigorLabel)
-            makeTableDisplay(subterTable(charInstance), R.string.subterfugeLabel)
-            makeTableDisplay(creatTable(charInstance), R.string.creativeLabel)
+            makeTableDisplay(athleticsTable(charInstance, spentDisplay), R.string.athleticsLabel)
+            makeTableDisplay(socialTable(charInstance, spentDisplay), R.string.socialLabel)
+            makeTableDisplay(percTable(charInstance, spentDisplay), R.string.perceptionLabel)
+            makeTableDisplay(intelTable(charInstance, spentDisplay), R.string.intellectualLabel)
+            makeTableDisplay(vigorTable(charInstance, spentDisplay), R.string.vigorLabel)
+            makeTableDisplay(subterTable(charInstance, spentDisplay), R.string.subterfugeLabel)
+            makeTableDisplay(creatTable(charInstance, spentDisplay), R.string.creativeLabel)
         }
     }
 }
@@ -116,7 +109,8 @@ private fun rowHead(){
 private fun makeRow(
     charInstance: BaseCharacter,
     stringReference: Int,
-    item: SecondaryCharacteristic
+    item: SecondaryCharacteristic,
+    spentDisplay: MutableState<Int>
 ){
     val charList = charInstance.secondaryList
     val keyboardActive = LocalSoftwareKeyboardController.current
@@ -150,37 +144,16 @@ private fun makeRow(
                 keyboardType = KeyboardType.Number
             ),
             onValueChange = {
-                if(it[it.length - 1] == '\n')
-                    keyboardActive?.hide()
-
-                else {
+                try{
+                    preValue = secondaryInput(charInstance, item, it.toInt(), preValue, spentDisplay, total)
                     userInput.value = it
-
-                    val calcNum =
-                        if (userInput.value == "")
-                            0
-                        else
-                            userInput.value.trim().toInt()
-
-                    //apply input to SecondaryCharacteristic
-                    item.setPointsApplied(calcNum)
-
-                    //get new amount of points spent
-                    charInstance.spentTotal += item.devPerPoint * (calcNum - preValue)
-
-                    //update text
-                    total.value = item.total.toString()
-
-                    //check if spent is  valid
-                    //if(charInstance.spentTotal < charInstance.devPT)
-                    //make text black for valid
-                    //textColor.value = Color.BLACK
-
-                    //else
-                    //make text red for invalid
-                    //textColor.value = Color.RED
-
-                    preValue = calcNum
+                }catch(e: NumberFormatException){
+                    if(it == "") {
+                        preValue = secondaryInput(charInstance, item, 0, preValue, spentDisplay, total)
+                        userInput.value = it
+                    }
+                    else if(it[it.length - 1] == '\n')
+                        keyboardActive?.hide()
                 }
             },
 
@@ -235,102 +208,127 @@ private fun makeRow(
     }
 }
 
-private fun athleticsTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun secondaryInput(
+    charInstance: BaseCharacter,
+    item: SecondaryCharacteristic,
+    input: Int,
+    preValue: Int,
+    spentDisplay: MutableState<Int>,
+    total: MutableState<String>
+): Int{
+    item.setPointsApplied(input)
+    charInstance.spentTotal += item.devPerPoint * (input - preValue)
+    spentDisplay.value = charInstance.spentTotal
+    total.value = item.total.toString()
+
+    //check if spent is  valid
+    //if(charInstance.spentTotal < charInstance.devPT)
+    //make text black for valid
+    //textColor.value = Color.BLACK
+
+    //else
+    //make text red for invalid
+    //textColor.value = Color.RED
+
+    return input
+}
+
+private fun athleticsTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column {
             rowHead()
-            makeRow(charInstance, R.string.acrobaticsLabel, charInstance.secondaryList.acrobatics)
-            makeRow(charInstance, R.string.athleticsLabel, charInstance.secondaryList.athletics)
-            makeRow(charInstance, R.string.climbLabel, charInstance.secondaryList.climb)
-            makeRow(charInstance, R.string.jumpLabel, charInstance.secondaryList.jump)
-            makeRow(charInstance, R.string.rideLabel, charInstance.secondaryList.ride)
-            makeRow(charInstance, R.string.swimLabel, charInstance.secondaryList.swim)
+            makeRow(charInstance, R.string.acrobaticsLabel, charInstance.secondaryList.acrobatics, spentDisplay)
+            makeRow(charInstance, R.string.athleticsLabel, charInstance.secondaryList.athletics, spentDisplay)
+            makeRow(charInstance, R.string.climbLabel, charInstance.secondaryList.climb, spentDisplay)
+            makeRow(charInstance, R.string.jumpLabel, charInstance.secondaryList.jump, spentDisplay)
+            makeRow(charInstance, R.string.rideLabel, charInstance.secondaryList.ride, spentDisplay)
+            makeRow(charInstance, R.string.swimLabel, charInstance.secondaryList.swim, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun socialTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun socialTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column {
             rowHead()
-            makeRow(charInstance, R.string.intimidateLabel, charInstance.secondaryList.intimidate)
-            makeRow(charInstance, R.string.leadershipLabel, charInstance.secondaryList.leadership)
-            makeRow(charInstance, R.string.persuasionLabel, charInstance.secondaryList.persuasion)
-            makeRow(charInstance, R.string.styleLabel, charInstance.secondaryList.style)
+            makeRow(charInstance, R.string.intimidateLabel, charInstance.secondaryList.intimidate, spentDisplay)
+            makeRow(charInstance, R.string.leadershipLabel, charInstance.secondaryList.leadership, spentDisplay)
+            makeRow(charInstance, R.string.persuasionLabel, charInstance.secondaryList.persuasion, spentDisplay)
+            makeRow(charInstance, R.string.styleLabel, charInstance.secondaryList.style, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun percTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun percTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
             rowHead()
-            makeRow(charInstance, R.string.noticeLabel, charInstance.secondaryList.notice)
-            makeRow(charInstance, R.string.searchLabel, charInstance.secondaryList.search)
-            makeRow(charInstance, R.string.trackLabel, charInstance.secondaryList.track)
+            makeRow(charInstance, R.string.noticeLabel, charInstance.secondaryList.notice, spentDisplay)
+            makeRow(charInstance, R.string.searchLabel, charInstance.secondaryList.search, spentDisplay)
+            makeRow(charInstance, R.string.trackLabel, charInstance.secondaryList.track, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun intelTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun intelTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable {
         Column{
             rowHead()
-            makeRow(charInstance, R.string.animalLabel, charInstance.secondaryList.animals)
-            makeRow(charInstance, R.string.appraiseLabel, charInstance.secondaryList.appraise)
-            makeRow(charInstance, R.string.herbalLabel, charInstance.secondaryList.herbalLore)
-            makeRow(charInstance, R.string.histLabel, charInstance.secondaryList.history)
-            makeRow(charInstance, R.string.memLabel, charInstance.secondaryList.memorize)
-            makeRow(charInstance, R.string.mAppraiseLabel, charInstance.secondaryList.magicAppraise)
-            makeRow(charInstance, R.string.medLabel, charInstance.secondaryList.medic)
-            makeRow(charInstance, R.string.navLabel, charInstance.secondaryList.navigate)
-            makeRow(charInstance, R.string.occultLabel, charInstance.secondaryList.occult)
-            makeRow(charInstance, R.string.scienceLabel, charInstance.secondaryList.sciences)
+            makeRow(charInstance, R.string.animalLabel, charInstance.secondaryList.animals, spentDisplay)
+            makeRow(charInstance, R.string.appraiseLabel, charInstance.secondaryList.appraise, spentDisplay)
+            makeRow(charInstance, R.string.herbalLabel, charInstance.secondaryList.herbalLore, spentDisplay)
+            makeRow(charInstance, R.string.histLabel, charInstance.secondaryList.history, spentDisplay)
+            makeRow(charInstance, R.string.memLabel, charInstance.secondaryList.memorize, spentDisplay)
+            makeRow(charInstance, R.string.mAppraiseLabel, charInstance.secondaryList.magicAppraise, spentDisplay)
+            makeRow(charInstance, R.string.medLabel, charInstance.secondaryList.medic, spentDisplay)
+            makeRow(charInstance, R.string.navLabel, charInstance.secondaryList.navigate, spentDisplay)
+            makeRow(charInstance, R.string.occultLabel, charInstance.secondaryList.occult, spentDisplay)
+            makeRow(charInstance, R.string.scienceLabel, charInstance.secondaryList.sciences, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun vigorTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun vigorTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
             rowHead()
-            makeRow(charInstance, R.string.composureLabel, charInstance.secondaryList.composure)
-            makeRow(charInstance, R.string.strFeatLabel, charInstance.secondaryList.strengthFeat)
-            makeRow(charInstance, R.string.resistPainLabel, charInstance.secondaryList.resistPain)
+            makeRow(charInstance, R.string.composureLabel, charInstance.secondaryList.composure, spentDisplay)
+            makeRow(charInstance, R.string.strFeatLabel, charInstance.secondaryList.strengthFeat, spentDisplay)
+            makeRow(charInstance, R.string.resistPainLabel, charInstance.secondaryList.resistPain, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun subterTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun subterTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
             rowHead()
-            makeRow(charInstance, R.string.disguiseLabel, charInstance.secondaryList.disguise)
-            makeRow(charInstance, R.string.hideLabel, charInstance.secondaryList.hide)
-            makeRow(charInstance, R.string.lockpickLabel, charInstance.secondaryList.lockPick)
-            makeRow(charInstance, R.string.poisonLabel, charInstance.secondaryList.poisons)
-            makeRow(charInstance, R.string.theftLabel, charInstance.secondaryList.theft)
-            makeRow(charInstance, R.string.stealthLabel, charInstance.secondaryList.stealth)
-            makeRow(charInstance, R.string.trapLabel, charInstance.secondaryList.trapLore)
+            makeRow(charInstance, R.string.disguiseLabel, charInstance.secondaryList.disguise, spentDisplay)
+            makeRow(charInstance, R.string.hideLabel, charInstance.secondaryList.hide, spentDisplay)
+            makeRow(charInstance, R.string.lockpickLabel, charInstance.secondaryList.lockPick, spentDisplay)
+            makeRow(charInstance, R.string.poisonLabel, charInstance.secondaryList.poisons, spentDisplay)
+            makeRow(charInstance, R.string.theftLabel, charInstance.secondaryList.theft, spentDisplay)
+            makeRow(charInstance, R.string.stealthLabel, charInstance.secondaryList.stealth, spentDisplay)
+            makeRow(charInstance, R.string.trapLabel, charInstance.secondaryList.trapLore, spentDisplay)
         }
     })
 }
 
 @Composable
-private fun creatTable(charInstance: BaseCharacter): @Composable () -> Unit{
+private fun creatTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
             rowHead()
-            makeRow(charInstance, R.string.artLabel, charInstance.secondaryList.art)
-            makeRow(charInstance, R.string.danceLabel, charInstance.secondaryList.dance)
-            makeRow(charInstance, R.string.forgeLabel, charInstance.secondaryList.forging)
-            makeRow(charInstance, R.string.musicLabel, charInstance.secondaryList.music)
-            makeRow(charInstance, R.string.sleightLabel, charInstance.secondaryList.sleightHand)
+            makeRow(charInstance, R.string.artLabel, charInstance.secondaryList.art, spentDisplay)
+            makeRow(charInstance, R.string.danceLabel, charInstance.secondaryList.dance, spentDisplay)
+            makeRow(charInstance, R.string.forgeLabel, charInstance.secondaryList.forging, spentDisplay)
+            makeRow(charInstance, R.string.musicLabel, charInstance.secondaryList.music, spentDisplay)
+            makeRow(charInstance, R.string.sleightLabel, charInstance.secondaryList.sleightHand, spentDisplay)
         }
     })
 }

@@ -6,16 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import kotlinx.coroutines.CoroutineScope
@@ -35,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
         Secondary,
         Advantages,
         Combat,
+        Ki,
         Magic,
         Psychic,
         Equipment
@@ -59,6 +64,16 @@ class HomeActivity : AppCompatActivity() {
             val currentFragment = remember{ mutableStateOf(ScreenPage.Primary)}
 
             val exitOpen = remember{mutableStateOf(false)}
+
+            val maxDP = remember{mutableStateOf(charInstance.devPT)}
+            val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
+            val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
+            val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
+
+            val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
+            val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
+            val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
+            val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
 
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -98,6 +113,97 @@ class HomeActivity : AppCompatActivity() {
                             scope.launch{scaffoldState.drawerState.close()}
                             exitOpen.value = true }
                     }
+                },
+
+                bottomBar = {
+                    Column {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(Modifier.weight(0.2f))
+                            Text(
+                                text = stringResource(R.string.totalLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpCombatLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpMagicLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = stringResource(R.string.dpPsychicLabel),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.maxRowLabel),
+                                textAlign = TextAlign.End,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxDP.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxCombat.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(text = maxMagic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = maxPsychic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.usedRowLabel),
+                                textAlign = TextAlign.End,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedDP.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f))
+                            Text(
+                                text = usedCombat.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedMagic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                            Text(
+                                text = usedPsychic.value.toString(),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(0.2f)
+                            )
+                        }
+                    }
                 }
             ) {
                 NavHost(
@@ -106,11 +212,11 @@ class HomeActivity : AppCompatActivity() {
                     modifier = Modifier.padding(it)
                 ){
                     composable(route = ScreenPage.Primary.name){
-                        CharacterPageFragment(charInstance)
+                        CharacterPageFragment(charInstance, maxDP, maxCombat, maxMagic, maxPsychic)
                     }
 
                     composable(route = ScreenPage.Secondary.name){
-                        SecondaryAbilityFragment(charInstance)
+                        SecondaryAbilityFragment(charInstance, usedDP)
                     }
 
                     composable(route = ScreenPage.Advantages.name){
@@ -176,10 +282,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun exitPage(){
-        startActivity(Intent(this@HomeActivity, MainActivity::class.java))
-    }
-
     @Composable
     private fun ExitAlert(
         isOpen: MutableState<Boolean>,
@@ -204,5 +306,9 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun exitPage(){
+        startActivity(Intent(this@HomeActivity, MainActivity::class.java))
     }
 }

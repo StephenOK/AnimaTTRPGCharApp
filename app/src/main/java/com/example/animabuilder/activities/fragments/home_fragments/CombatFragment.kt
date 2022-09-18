@@ -1,14 +1,14 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
-import android.view.View
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.fragment.app.Fragment
-import com.example.animabuilder.R
 
 @Composable
 fun CombatFragment() {
+    Column(){
+        Row(){
 
+        }
+    }
 }

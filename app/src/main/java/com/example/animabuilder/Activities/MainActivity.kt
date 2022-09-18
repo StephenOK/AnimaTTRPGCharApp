@@ -32,20 +32,24 @@ class MainActivity : AppCompatActivity() {
         val toNextPage = Intent(this@MainActivity, HomeActivity::class.java)
 
         setContent {
+            //initialize character
             var charInstance: BaseCharacter
 
+            //prepare values for new character alert
             val newOpen = remember{mutableStateOf(false)}
             val newName = remember{mutableStateOf("")}
-
             val newComposable = @Composable{
                 TextField(value = newName.value, onValueChange = {newName.value = it})
             }
-
             val newConfirmation = {
+                //check that a name is given for the new character
                 if(newName.value == "")
                     Toast.makeText(this@MainActivity, "File must have a name!", Toast.LENGTH_SHORT).show()
                 else{
+                    //create new character
                     charInstance = BaseCharacter()
+
+                    //prepare data for next activity
                     toNextPage.putExtra("filename", newName.value)
                     toNextPage.putExtra("Character", charInstance)
 
@@ -53,15 +57,14 @@ class MainActivity : AppCompatActivity() {
                     startActivity(toNextPage)
                 }
             }
-
             val newDecline = {newOpen.value = false}
 
+            //prepare values for load character alert
             val loadOpen = remember{mutableStateOf(false)}
-
             val selected = remember{mutableStateOf("")}
-
             val loadComposable = @Composable{
                 Column{
+                    //display each file name as a radio button
                     fileList().forEach{name ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -84,8 +87,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
             val loadConfirmation = {
+                //make sure the user has selected a character to load
                 if(selected.value == "")
                     Toast.makeText(this@MainActivity, "Please select a file", Toast.LENGTH_SHORT).show()
                 else {
@@ -100,12 +103,12 @@ class MainActivity : AppCompatActivity() {
                     startActivity(toNextPage)
                 }
             }
-
             val loadDecline = {
                 selected.value = ""
                 loadOpen.value = false
             }
 
+            //display both buttons on page
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -117,16 +120,24 @@ class MainActivity : AppCompatActivity() {
                 MainButton("LOAD CHARACTER", loadOpen)
             }
 
+            //display new character alert if it's open
             if(newOpen.value)
                 MakeAlert(newOpen, "Save Character As:", newComposable,
                     newConfirmation, "Create", newDecline)
 
+            //display load character alert if it's open
             else if(loadOpen.value)
                 MakeAlert(loadOpen, "Load Character:", loadComposable,
                     loadConfirmation, "Load", loadDecline)
         }
     }
 
+    /**
+     * Create a button for the main page
+     *
+     * title: name displayed on the button
+     * isOpen: boolean mutable for the alert's active state
+     */
     @Composable
     private fun MainButton(title: String, isOpen: MutableState<Boolean>){
         Row {
@@ -139,6 +150,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates an alert for the user to interact with
+     *
+     * isOpen: active state of the alert
+     * titleIn: head title of the alert
+     * contents: display for the alert
+     * confirmation: action for the confirm button to take
+     * conTitle: name displayed by the confirmation button
+     * declination: action for the dismiss button to take
+     */
     @Composable
     private fun MakeAlert(
         isOpen: MutableState<Boolean>,

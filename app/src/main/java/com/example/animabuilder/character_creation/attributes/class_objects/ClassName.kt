@@ -59,6 +59,9 @@ enum class ClassName : Serializable {
             }
         }
 
+        /**
+         * Converts integer objects into their corresponding class
+         */
         fun fromInt(classInt: Int?): ClassName {
             return when (classInt){
                 1 -> warrior

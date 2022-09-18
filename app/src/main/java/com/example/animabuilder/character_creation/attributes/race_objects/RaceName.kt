@@ -27,6 +27,9 @@ enum class RaceName : Serializable {
             }
         }
 
+        /**
+         * Converts an integer to its corresponding race
+         */
         fun fromInt(raceNum: Int?): RaceName {
             return when (raceNum){
                 1 -> sylvain

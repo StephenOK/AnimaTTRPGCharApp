@@ -25,6 +25,9 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 
 /**
  * Fragment to be displayed when working with secondary characteristics
+ *
+ * charInstance: character to work on
+ * spentDisplay: bottombar mutable of spent development points
  */
 
 @Composable
@@ -32,70 +35,94 @@ fun SecondaryAbilityFragment(
     charInstance: BaseCharacter,
     spentDisplay: MutableState<Int>
 ) {
-    MaterialTheme(
-
-    ) {
+    MaterialTheme{
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
         ) {
-            makeTableDisplay(athleticsTable(charInstance, spentDisplay), R.string.athleticsLabel)
-            makeTableDisplay(socialTable(charInstance, spentDisplay), R.string.socialLabel)
-            makeTableDisplay(percTable(charInstance, spentDisplay), R.string.perceptionLabel)
-            makeTableDisplay(intelTable(charInstance, spentDisplay), R.string.intellectualLabel)
-            makeTableDisplay(vigorTable(charInstance, spentDisplay), R.string.vigorLabel)
-            makeTableDisplay(subterTable(charInstance, spentDisplay), R.string.subterfugeLabel)
-            makeTableDisplay(creatTable(charInstance, spentDisplay), R.string.creativeLabel)
+            //make tables for each of the secondary characteristic categories
+            MakeTableDisplay(athleticsTable(charInstance, spentDisplay), R.string.athleticsLabel)
+            MakeTableDisplay(socialTable(charInstance, spentDisplay), R.string.socialLabel)
+            MakeTableDisplay(percTable(charInstance, spentDisplay), R.string.perceptionLabel)
+            MakeTableDisplay(intelTable(charInstance, spentDisplay), R.string.intellectualLabel)
+            MakeTableDisplay(vigorTable(charInstance, spentDisplay), R.string.vigorLabel)
+            MakeTableDisplay(subterTable(charInstance, spentDisplay), R.string.subterfugeLabel)
+            MakeTableDisplay(creatTable(charInstance, spentDisplay), R.string.creativeLabel)
         }
     }
 }
 
+/**
+ * Creates a toggle button to display the associated secondary characteristic table
+ *
+ * tableFund: function for the table display
+ * stringReference: name of the characteristic group
+ */
 @Composable
-private fun makeTableDisplay(
+private fun MakeTableDisplay(
     tableFunc: @Composable () -> Unit,
     stringReference: Int
 ){
+    //open state of the table
     val active = remember{mutableStateOf(false)}
 
+    //toggle button for the table
     Button(
         onClick = {active.value = !active.value},
         modifier = Modifier.width(250.dp)
     ){
+        //button label
         Text(
             text = stringResource(stringReference)
         )
     }
+
+    //visibility group for the table
     AnimatedVisibility(visible = active.value){
         tableFunc()
     }
 }
 
+/**
+ * Header row for a secondary characteristic table
+ */
 @Composable
-private fun rowHead(){
+private fun RowHead(){
     Row{
+        //column buffer
         Spacer(modifier = Modifier.weight(0.25f))
+
+        //input point label
         Text(
             text = stringResource(R.string.pointsLabel),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.25f)
         )
+
+        //mod value label
         Text(
             text = stringResource(R.string.modLabel),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f)
         )
+
+        //class bonus label
         Text(
             text = stringResource(R.string.classLabel),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f)
         )
+
+        //natural bonus label
         Text(
             text = stringResource(R.string.natLabel),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f)
         )
+
+        //characteristic total label
         Text(
             text = stringResource(R.string.totalLabel),
             textAlign = TextAlign.Center,
@@ -104,29 +131,45 @@ private fun rowHead(){
     }
 }
 
+/**
+ * Make on row for a secondary characteristic in a table
+ *
+ * charInstance: character to work on
+ * stringReference: name of the secondary characteristic
+ * item: characteristic item to work on
+ * spentDisplay: mutable value of the characteristic's score input
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun makeRow(
+private fun MakeRow(
     charInstance: BaseCharacter,
     stringReference: Int,
     item: SecondaryCharacteristic,
     spentDisplay: MutableState<Int>
 ){
-    val charList = charInstance.secondaryList
+    //keyboard controller
     val keyboardActive = LocalSoftwareKeyboardController.current
 
+    //secondary characteristic list from the character
+    val charList = charInstance.secondaryList
+
+    //initial score stat
     val userInput = remember{mutableStateOf(item.pointsApplied.toString())}
-    var preValue = item.pointsApplied
 
-    val textColor = remember{mutableStateOf(Color(0xff000000))}
+    //color of the score label's text
+    val textColor = remember{mutableStateOf(Color.Black)}
 
+    //state of natural bonus taken
     val checkedState = remember{mutableStateOf(item.bonusApplied)}
+
+    //text associated with the natural bonus check
     val checkedText =
         if(checkedState.value)
             remember{mutableStateOf(R.string.natTaken)}
         else
             remember{mutableStateOf(R.string.natNotTaken)}
 
+    //string to display for characteristic's total
     val total = remember{mutableStateOf(item.total.toString())}
 
     Row(
@@ -134,44 +177,57 @@ private fun makeRow(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
+        //row's label
         Text(text = stringResource(stringReference),
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(0.25f))
 
+        //user input for the stat's score
         TextField(
             value = userInput.value,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
             onValueChange = {
+                //attempt user input
                 try{
-                    preValue = secondaryInput(charInstance, item, it.toInt(), preValue, spentDisplay, total)
+                    //run operation from user input
+                    secondaryInput(charInstance, item, it.toInt(), spentDisplay, textColor, total)
+
+                    //update field's display
                     userInput.value = it
-                }catch(e: NumberFormatException){
+                }
+                //if non-numeric input
+                catch(e: NumberFormatException){
+                    //run as 0 with empty input
                     if(it == "") {
-                        preValue = secondaryInput(charInstance, item, 0, preValue, spentDisplay, total)
+                        secondaryInput(charInstance, item, 0, spentDisplay, textColor, total)
                         userInput.value = it
                     }
-                    else if(it[it.length - 1] == '\n')
+                    //hide keyboard if enter pressed
+                    else if(it.contains('\n'))
                         keyboardActive?.hide()
                 }
             },
-
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, color = textColor.value),
             modifier = Modifier.weight(0.25f)
         )
 
+        //display associated mod value
         Text(text = item.modVal.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
 
+        //display associated class bonus value
         Text(text = item.pointsFromClass.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
 
+        //checkbox to apply natural bonus
         Checkbox(
             checked = checkedState.value,
             onCheckedChange = {
+                //update checkbox state
                 checkedState.value = it
 
                 //if user is applying a natural bonus
@@ -202,133 +258,148 @@ private fun makeRow(
             modifier = Modifier.weight(0.125f)
         )
 
+        //display for characteristic's total value
         Text(text = total.value,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
     }
 }
 
+/**
+ * Update characteristic and development point values for an inputted score value
+ *
+ * charInstance: character to work on
+ * item: secondary characteristic to operate with
+ * input: new value of the characteristic's score
+ * spentDisplay: display value for the bottom bar of the spent point total
+ * textColor: color the the associated textfield's text
+ * total: secondary characteristic's final value
+ */
 private fun secondaryInput(
     charInstance: BaseCharacter,
     item: SecondaryCharacteristic,
     input: Int,
-    preValue: Int,
     spentDisplay: MutableState<Int>,
+    textColor: MutableState<Color>,
     total: MutableState<String>
-): Int{
+){
+    //update spent development points with input value
+    charInstance.spentTotal += item.devPerPoint * (input - item.pointsApplied)
+
+    //set characteristic's point value
     item.setPointsApplied(input)
-    charInstance.spentTotal += item.devPerPoint * (input - preValue)
+
+    //update text displays
     spentDisplay.value = charInstance.spentTotal
     total.value = item.total.toString()
 
     //check if spent is  valid
-    //if(charInstance.spentTotal < charInstance.devPT)
-    //make text black for valid
-    //textColor.value = Color.BLACK
+    if(charInstance.spentTotal < charInstance.devPT)
+        //make text black for valid
+        textColor.value = Color.Black
 
-    //else
-    //make text red for invalid
-    //textColor.value = Color.RED
-
-    return input
+    else
+        //make text red for invalid
+        textColor.value = Color.Red
 }
 
+//composable for athletic characteristics
 private fun athleticsTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column {
-            rowHead()
-            makeRow(charInstance, R.string.acrobaticsLabel, charInstance.secondaryList.acrobatics, spentDisplay)
-            makeRow(charInstance, R.string.athleticsLabel, charInstance.secondaryList.athletics, spentDisplay)
-            makeRow(charInstance, R.string.climbLabel, charInstance.secondaryList.climb, spentDisplay)
-            makeRow(charInstance, R.string.jumpLabel, charInstance.secondaryList.jump, spentDisplay)
-            makeRow(charInstance, R.string.rideLabel, charInstance.secondaryList.ride, spentDisplay)
-            makeRow(charInstance, R.string.swimLabel, charInstance.secondaryList.swim, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.acrobaticsLabel, charInstance.secondaryList.acrobatics, spentDisplay)
+            MakeRow(charInstance, R.string.athleticsLabel, charInstance.secondaryList.athletics, spentDisplay)
+            MakeRow(charInstance, R.string.climbLabel, charInstance.secondaryList.climb, spentDisplay)
+            MakeRow(charInstance, R.string.jumpLabel, charInstance.secondaryList.jump, spentDisplay)
+            MakeRow(charInstance, R.string.rideLabel, charInstance.secondaryList.ride, spentDisplay)
+            MakeRow(charInstance, R.string.swimLabel, charInstance.secondaryList.swim, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for social characteristics
 private fun socialTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column {
-            rowHead()
-            makeRow(charInstance, R.string.intimidateLabel, charInstance.secondaryList.intimidate, spentDisplay)
-            makeRow(charInstance, R.string.leadershipLabel, charInstance.secondaryList.leadership, spentDisplay)
-            makeRow(charInstance, R.string.persuasionLabel, charInstance.secondaryList.persuasion, spentDisplay)
-            makeRow(charInstance, R.string.styleLabel, charInstance.secondaryList.style, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.intimidateLabel, charInstance.secondaryList.intimidate, spentDisplay)
+            MakeRow(charInstance, R.string.leadershipLabel, charInstance.secondaryList.leadership, spentDisplay)
+            MakeRow(charInstance, R.string.persuasionLabel, charInstance.secondaryList.persuasion, spentDisplay)
+            MakeRow(charInstance, R.string.styleLabel, charInstance.secondaryList.style, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for perceptive characteristics
 private fun percTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
-            rowHead()
-            makeRow(charInstance, R.string.noticeLabel, charInstance.secondaryList.notice, spentDisplay)
-            makeRow(charInstance, R.string.searchLabel, charInstance.secondaryList.search, spentDisplay)
-            makeRow(charInstance, R.string.trackLabel, charInstance.secondaryList.track, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.noticeLabel, charInstance.secondaryList.notice, spentDisplay)
+            MakeRow(charInstance, R.string.searchLabel, charInstance.secondaryList.search, spentDisplay)
+            MakeRow(charInstance, R.string.trackLabel, charInstance.secondaryList.track, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for intellectual characteristics
 private fun intelTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable {
         Column{
-            rowHead()
-            makeRow(charInstance, R.string.animalLabel, charInstance.secondaryList.animals, spentDisplay)
-            makeRow(charInstance, R.string.appraiseLabel, charInstance.secondaryList.appraise, spentDisplay)
-            makeRow(charInstance, R.string.herbalLabel, charInstance.secondaryList.herbalLore, spentDisplay)
-            makeRow(charInstance, R.string.histLabel, charInstance.secondaryList.history, spentDisplay)
-            makeRow(charInstance, R.string.memLabel, charInstance.secondaryList.memorize, spentDisplay)
-            makeRow(charInstance, R.string.mAppraiseLabel, charInstance.secondaryList.magicAppraise, spentDisplay)
-            makeRow(charInstance, R.string.medLabel, charInstance.secondaryList.medic, spentDisplay)
-            makeRow(charInstance, R.string.navLabel, charInstance.secondaryList.navigate, spentDisplay)
-            makeRow(charInstance, R.string.occultLabel, charInstance.secondaryList.occult, spentDisplay)
-            makeRow(charInstance, R.string.scienceLabel, charInstance.secondaryList.sciences, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.animalLabel, charInstance.secondaryList.animals, spentDisplay)
+            MakeRow(charInstance, R.string.appraiseLabel, charInstance.secondaryList.appraise, spentDisplay)
+            MakeRow(charInstance, R.string.herbalLabel, charInstance.secondaryList.herbalLore, spentDisplay)
+            MakeRow(charInstance, R.string.histLabel, charInstance.secondaryList.history, spentDisplay)
+            MakeRow(charInstance, R.string.memLabel, charInstance.secondaryList.memorize, spentDisplay)
+            MakeRow(charInstance, R.string.mAppraiseLabel, charInstance.secondaryList.magicAppraise, spentDisplay)
+            MakeRow(charInstance, R.string.medLabel, charInstance.secondaryList.medic, spentDisplay)
+            MakeRow(charInstance, R.string.navLabel, charInstance.secondaryList.navigate, spentDisplay)
+            MakeRow(charInstance, R.string.occultLabel, charInstance.secondaryList.occult, spentDisplay)
+            MakeRow(charInstance, R.string.scienceLabel, charInstance.secondaryList.sciences, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for vigor characteristics
 private fun vigorTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
-            rowHead()
-            makeRow(charInstance, R.string.composureLabel, charInstance.secondaryList.composure, spentDisplay)
-            makeRow(charInstance, R.string.strFeatLabel, charInstance.secondaryList.strengthFeat, spentDisplay)
-            makeRow(charInstance, R.string.resistPainLabel, charInstance.secondaryList.resistPain, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.composureLabel, charInstance.secondaryList.composure, spentDisplay)
+            MakeRow(charInstance, R.string.strFeatLabel, charInstance.secondaryList.strengthFeat, spentDisplay)
+            MakeRow(charInstance, R.string.resistPainLabel, charInstance.secondaryList.resistPain, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for subterfuge characteristics
 private fun subterTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
-            rowHead()
-            makeRow(charInstance, R.string.disguiseLabel, charInstance.secondaryList.disguise, spentDisplay)
-            makeRow(charInstance, R.string.hideLabel, charInstance.secondaryList.hide, spentDisplay)
-            makeRow(charInstance, R.string.lockpickLabel, charInstance.secondaryList.lockPick, spentDisplay)
-            makeRow(charInstance, R.string.poisonLabel, charInstance.secondaryList.poisons, spentDisplay)
-            makeRow(charInstance, R.string.theftLabel, charInstance.secondaryList.theft, spentDisplay)
-            makeRow(charInstance, R.string.stealthLabel, charInstance.secondaryList.stealth, spentDisplay)
-            makeRow(charInstance, R.string.trapLabel, charInstance.secondaryList.trapLore, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.disguiseLabel, charInstance.secondaryList.disguise, spentDisplay)
+            MakeRow(charInstance, R.string.hideLabel, charInstance.secondaryList.hide, spentDisplay)
+            MakeRow(charInstance, R.string.lockpickLabel, charInstance.secondaryList.lockPick, spentDisplay)
+            MakeRow(charInstance, R.string.poisonLabel, charInstance.secondaryList.poisons, spentDisplay)
+            MakeRow(charInstance, R.string.theftLabel, charInstance.secondaryList.theft, spentDisplay)
+            MakeRow(charInstance, R.string.stealthLabel, charInstance.secondaryList.stealth, spentDisplay)
+            MakeRow(charInstance, R.string.trapLabel, charInstance.secondaryList.trapLore, spentDisplay)
         }
     })
 }
 
-@Composable
+//composable for creative characteristics
 private fun creatTable(charInstance: BaseCharacter, spentDisplay: MutableState<Int>): @Composable () -> Unit{
     return (@Composable{
         Column{
-            rowHead()
-            makeRow(charInstance, R.string.artLabel, charInstance.secondaryList.art, spentDisplay)
-            makeRow(charInstance, R.string.danceLabel, charInstance.secondaryList.dance, spentDisplay)
-            makeRow(charInstance, R.string.forgeLabel, charInstance.secondaryList.forging, spentDisplay)
-            makeRow(charInstance, R.string.musicLabel, charInstance.secondaryList.music, spentDisplay)
-            makeRow(charInstance, R.string.sleightLabel, charInstance.secondaryList.sleightHand, spentDisplay)
+            RowHead()
+            MakeRow(charInstance, R.string.artLabel, charInstance.secondaryList.art, spentDisplay)
+            MakeRow(charInstance, R.string.danceLabel, charInstance.secondaryList.dance, spentDisplay)
+            MakeRow(charInstance, R.string.forgeLabel, charInstance.secondaryList.forging, spentDisplay)
+            MakeRow(charInstance, R.string.musicLabel, charInstance.secondaryList.music, spentDisplay)
+            MakeRow(charInstance, R.string.sleightLabel, charInstance.secondaryList.sleightHand, spentDisplay)
         }
     })
 }

@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation
 
+import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
@@ -19,21 +20,22 @@ import kotlin.math.ceil
  * Holder class of all other character creation objects
  */
 
-class BaseCharacter : Serializable {
-    var charName: String? = null
-    var byteArray: SerialOutputStream? = null
-
-    var presence: Int = 25
-
-    var allActionPenalty = 0
+class BaseCharacter: Serializable {
+    //character's name
+    var charName: String = ""
 
     //list of secondary abilities
-    var secondaryList: SecondaryList = SecondaryList()
+    var secondaryList = SecondaryList()
+    var advantageRecord = AdvantageRecord(this@BaseCharacter)
 
-    var advantageRecord: AdvantageRecord = AdvantageRecord(this@BaseCharacter)
+    lateinit var ownClass: CharClass
+
+    //initialize character's class and race
+    var ownRace: CharRace? = null
 
     //character's level
     var lvl = 0
+    var presence: Int = 25
 
     //character creation and development points
     var createPT = 0
@@ -44,36 +46,14 @@ class BaseCharacter : Serializable {
     var maxCombatDP = 0
     var percCombatDP = 0.0
     var ptInCombat = 0
+
     var maxMagDP = 0
     var percMagDP = 0.0
     var ptInMag = 0
+
     var maxPsyDP = 0
     var percPsyDP = 0.0
     var ptInPsy = 0
-
-    //calculates percentage allotments for each category
-    private fun dpAllotmentCalc() {
-        maxCombatDP = (devPT * percCombatDP).toInt()
-        maxMagDP = (devPT * percMagDP).toInt()
-        maxPsyDP = (devPT * percPsyDP).toInt()
-    }
-
-    //update level and associated values
-    @JvmName("setLvl1")
-    fun setLvl(levNum: Int) {
-        //set new level number
-        lvl = levNum
-
-        //determine development point count
-        devPT = 500 + lvl * 100
-
-        presence = 25 + (5 * lvl)
-        updateResistances()
-
-        //recalculate maximum DP allotments
-        dpAllotmentCalc()
-        secondaryList.levelUpdate(lvl, ownClass!!)
-    }
 
     //initialize character's primary characteristics
     var str = 0
@@ -95,6 +75,155 @@ class BaseCharacter : Serializable {
     var modWP = 0
     var modPER = 0
 
+    //character's maximum hp
+    var lifeMax = 0
+    var lifeAt = 0
+
+    var lifeBase = 0
+    var lifeMultsTaken = 0
+
+    //character's attack stat
+    var attack = 0
+    var pointInAttack = 0
+
+    //character's block stat
+    var block = 0
+    var pointInBlock = 0
+
+    //character's dodge stat
+    var dodge = 0
+    var pointInDodge = 0
+
+    //character's wear armor stat
+    var wearArmor = 0
+    var pointInWear = 0
+
+    var allActionPenalty = 0
+
+    //maximum fatigue value
+    var maxFatigue = 0
+
+    var initiative = 0
+
+    //character resistance stats
+    var resistPhys = 0
+    var resistDisease = 0
+    var resistVen = 0
+    var resistMag = 0
+    var resistPsy = 0
+
+    var rphysSpec = 0
+    var rdSpec = 0
+    var rvSpec = 0
+    var rmSpec = 0
+    var rpsySpec = 0
+
+    var rphysMult = 1.0
+    var rdMult = 1.0
+    var rvMult = 1.0
+    var rmMult = 1.0
+    var rpsyMult = 1.0
+
+    var equippedPiece: Armor? = null
+    var equippedWeapon: Weapon? = null
+
+
+
+
+
+
+    //setter for class with ClassName input
+    fun setOwnClass(classIn: ClassName?) {
+        ownClass = CharClass(classIn!!)
+
+        updateLifePoints()
+        updateAttack()
+        adjustMaxValues()
+        secondaryList.classUpdate(ownClass)
+
+        updateTotalSpent()
+    }
+
+    //setter for class with String input
+    fun setOwnClass(className: String?) {
+        ownClass = CharClass(ClassName.fromString(className))
+
+        updateLifePoints()
+        updateAttack()
+        adjustMaxValues()
+        secondaryList.classUpdate(ownClass)
+
+        updateTotalSpent()
+    }
+
+    fun setOwnClass(classInt: Int?){
+        ownClass = CharClass(ClassName.fromInt(classInt))
+
+        updateLifePoints()
+        updateAttack()
+        adjustMaxValues()
+        secondaryList.classUpdate(ownClass)
+
+        updateTotalSpent()
+    }
+
+    //setter for race with RaceName input
+    fun setOwnRace(raceIn: RaceName) {
+        ownRace = CharRace(raceIn, advantageRecord)
+    }
+
+    //setter for race with String input
+    fun setOwnRace(raceName: String?) {
+        ownRace = CharRace(RaceName.fromString(raceName), advantageRecord)
+    }
+
+    fun setOwnRace(raceNum: Int?){
+        ownRace = CharRace(RaceName.fromInt(raceNum), advantageRecord)
+    }
+
+    //update level and associated values
+    @JvmName("setLvl1")
+    fun setLvl(levNum: Int) {
+        //set new level number
+        lvl = levNum
+
+        //determine development point count
+        devPT = 500 + lvl * 100
+
+        presence = 25 + (5 * lvl)
+        updateResistances()
+
+        //recalculate maximum DP allotments
+        dpAllotmentCalc()
+        secondaryList.levelUpdate(lvl, ownClass)
+    }
+
+    //get new dp maximums based on class change
+    private fun adjustMaxValues() {
+        percCombatDP = ownClass.combatMax
+        percMagDP = ownClass.magMax
+        percPsyDP = ownClass.psyMax
+        dpAllotmentCalc()
+    }
+
+    //calculates percentage allotments for each category
+    private fun dpAllotmentCalc() {
+        maxCombatDP = (devPT * percCombatDP).toInt()
+        maxMagDP = (devPT * percMagDP).toInt()
+        maxPsyDP = (devPT * percPsyDP).toInt()
+    }
+
+    fun updateTotalSpent(){
+        updateCombatSpent()
+        spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
+    }
+
+    fun updateCombatSpent(){
+        ptInCombat =
+            lifeMultsTaken * ownClass.lifePointMultiple +
+            pointInAttack * ownClass.atkGrowth
+    }
+
     //setters for each primary characteristic
     var setSTR = { strVal: Int ->
         str = strVal
@@ -105,7 +234,9 @@ class BaseCharacter : Serializable {
     var setDEX = { dexVal: Int ->
         dex = dexVal
         modDEX = getModVal(dex)
+
         secondaryList.updateDEX(modDEX)
+        updateAttack()
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
@@ -115,6 +246,9 @@ class BaseCharacter : Serializable {
     var setCON = { conVal: Int ->
         con = conVal
         modCON = getModVal(con)
+
+        updateLifeBase()
+        updateLifePoints()
         updateResistances()
     }
     var setINT = { intVal: Int ->
@@ -156,73 +290,56 @@ class BaseCharacter : Serializable {
         return output
     }
 
-    //initialize character's class and race
-    var ownClass: CharClass? = null
-    var ownRace: CharRace? = null
-
-    //setter for class with ClassName input
-    fun setOwnClass(classIn: ClassName?) {
-        ownClass = CharClass(classIn!!)
-        adjustMaxValues()
-        secondaryList.classUpdate(ownClass!!)
+    fun updateLifeBase(){
+        lifeBase = when(con){
+            1 -> 5
+            2 -> 20
+            3 -> 40
+            4 -> 55
+            5 -> 70
+            6 -> 85
+            7 -> 95
+            8 -> 110
+            9 -> 120
+            10 -> 135
+            11 -> 150
+            12 -> 160
+            13 -> 175
+            14 -> 185
+            15 -> 200
+            16 -> 215
+            17 -> 225
+            18 -> 240
+            19 -> 250
+            20 -> 265
+            else -> 0
+        }
     }
 
-    //setter for class with String input
-    fun setOwnClass(className: String?) {
-        ownClass = CharClass(ClassName.fromString(className))
-        adjustMaxValues()
-        secondaryList.classUpdate(ownClass!!)
+    fun takeLifeMult(multTake: Int){
+        lifeMultsTaken = multTake
+        updateTotalSpent()
+        updateLifePoints()
     }
 
-    fun setOwnClass(classInt: Int?){
-        ownClass = CharClass(ClassName.fromInt(classInt))
-        adjustMaxValues()
-        secondaryList.classUpdate(ownClass!!)
+    fun updateLifePoints(){
+        lifeMax = lifeBase + (lifeMultsTaken * con) + (ownClass.lifePointsPerLevel * lvl)
     }
 
-    //get new dp maximums based on class change
-    private fun adjustMaxValues() {
-        percCombatDP = ownClass!!.combatMax
-        percMagDP = ownClass!!.magMax
-        percPsyDP = ownClass!!.psyMax
-        dpAllotmentCalc()
+    val applyAttackPoint = {score: Int, textChange: MutableState<String>? ->
+        pointInAttack = score
+        updateTotalSpent()
+        updateAttack()
+
+        if(textChange != null)
+            textChange.value = attack.toString()
     }
 
-    //setter for race with RaceName input
-    fun setOwnRace(raceIn: RaceName) {
-        ownRace = CharRace(raceIn, advantageRecord)
+    fun updateAttack(){
+        attack = pointInAttack + modDEX + (ownClass.atkPerLevel * lvl)
     }
 
-    //setter for race with String input
-    fun setOwnRace(raceName: String?) {
-        ownRace = CharRace(RaceName.fromString(raceName), advantageRecord)
-    }
 
-    fun setOwnRace(raceNum: Int?){
-        ownRace = CharRace(RaceName.fromInt(raceNum), advantageRecord)
-    }
-
-    //maximum fatigue value
-    var maxFatigue = 0
-
-    //character resistance stats
-    var resistPhys = 0
-    var resistDisease = 0
-    var resistVen = 0
-    var resistMag = 0
-    var resistPsy = 0
-
-    var rphysSpec = 0
-    var rdSpec = 0
-    var rvSpec = 0
-    var rmSpec = 0
-    var rpsySpec = 0
-
-    var rphysMult = 1.0
-    var rdMult = 1.0
-    var rvMult = 1.0
-    var rmMult = 1.0
-    var rpsyMult = 1.0
 
     fun updateResistances(){
         resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
@@ -232,24 +349,20 @@ class BaseCharacter : Serializable {
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
     }
 
-    //character's maximum hp
-    var lifeMax = 0
 
-    //character's attack stat
-    var attack = 0
-    var pointInAttack = 0
 
-    //character's block stat
-    var block = 0
-    var pointInBlock = 0
 
-    //character's dodge stat
-    var dodge = 0
-    var pointInDodge = 0
 
-    //character's wear armor stat
-    var wearArmor = 0
-    var pointInWear = 0
+
+
+
+
+
+
+
+
+
+
 
     @JvmName("setWearArmor1")
     private fun setWearArmor(waValue: Int) {
@@ -261,20 +374,16 @@ class BaseCharacter : Serializable {
         return equippedPiece == null || equippedPiece!!.strReq < strCheck
     }
 
-    var initiative = 0
-    var maxKi = 0
-    var maxPsi = 0
-    var maxZeon = 0
-    var equippedPiece: Armor? = null
-    var equippedWeapon: Weapon? = null
+
 
     //constructor for new character
     constructor() {
+        charName = ""
+
         setOwnClass(ClassName.freelancer)
         setOwnRace(RaceName.human)
-        charName = ""
         setLvl(0)
-        spentTotal = 0
+
         setSTR(5)
         setDEX(5)
         setAGI(5)
@@ -290,11 +399,15 @@ class BaseCharacter : Serializable {
         val restoreChar = FileInputStream(fileInput)
         val readChar = InputStreamReader(restoreChar, StandardCharsets.UTF_8)
         val fileReader = BufferedReader(readChar)
+
         charName = fileReader.readLine()
+
+        secondaryList.loadList(fileReader)
+
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
-        spentTotal = fileReader.readLine().toInt()
+
         setSTR(fileReader.readLine().toInt())
         setDEX(fileReader.readLine().toInt())
         setAGI(fileReader.readLine().toInt())
@@ -303,20 +416,31 @@ class BaseCharacter : Serializable {
         setPOW(fileReader.readLine().toInt())
         setWP(fileReader.readLine().toInt())
         setPER(fileReader.readLine().toInt())
-        secondaryList.loadList(fileReader)
+
+        takeLifeMult(fileReader.readLine().toInt())
+        applyAttackPoint(fileReader.readLine().toInt(), null)
+
         restoreChar.close()
+
+        updateTotalSpent()
     }
+
+    private lateinit var byteArray: SerialOutputStream
 
     //retrieve byte information for the character
     @get:Throws(IOException::class)
     val bytes: ByteArray
         get() {
             byteArray = SerialOutputStream()
+
             addNewData(charName)
-            addNewData(ownClass!!.heldClass.name)
+
+            secondaryList.writeList(byteArray)
+
+            addNewData(ownClass.heldClass.name)
             addNewData(ownRace!!.heldRace.name)
             addNewData(lvl)
-            addNewData(spentTotal)
+
             addNewData(str)
             addNewData(dex)
             addNewData(agi)
@@ -325,19 +449,23 @@ class BaseCharacter : Serializable {
             addNewData(pow)
             addNewData(wp)
             addNewData(per)
-            secondaryList.writeList(byteArray)
-            byteArray!!.close()
-            return byteArray!!.toByteArray()
+
+            addNewData(lifeMultsTaken)
+            addNewData(pointInAttack)
+
+            byteArray.close()
+
+            return byteArray.toByteArray()
         }
 
     //adds new String data to the ByteOutputStream
     private fun addNewData(toAdd: String?) {
-        byteArray!!.write(
+        byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,
             """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
         )
-        byteArray!!.write(
+        byteArray.write(
             "\n".toByteArray(StandardCharsets.UTF_8),
             0,
             "\n".toByteArray(StandardCharsets.UTF_8).size)
@@ -345,12 +473,12 @@ class BaseCharacter : Serializable {
 
     //adds new Int data to the ByteOutputStream
     private fun addNewData(toAdd: Int) {
-        byteArray!!.write(
+        byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,
             """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
         )
-        byteArray!!.write(
+        byteArray.write(
             "\n".toByteArray(StandardCharsets.UTF_8),
             0,
             "\n".toByteArray(StandardCharsets.UTF_8).size)

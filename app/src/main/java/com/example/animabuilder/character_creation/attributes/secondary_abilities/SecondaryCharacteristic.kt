@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets
  */
 
 class SecondaryCharacteristic : Serializable {
+    var pointsIn: Int = 0
 
     //initialize values associated with the secondary characteristic
     var modVal = 0
@@ -33,7 +34,14 @@ class SecondaryCharacteristic : Serializable {
     @JvmName("setPointsApplied1")
     fun setPointsApplied(points: Int) {
         pointsApplied = points
+        pointsIn = pointsApplied * devPerPoint
         refreshTotal()
+    }
+
+    @JvmName("setDevPerPoint1")
+    fun setDevPerPoint(perPoints:Int){
+        devPerPoint = perPoints
+        pointsIn = pointsApplied * devPerPoint
     }
 
     //setter for class points

@@ -186,6 +186,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to primary characteristics page
                     composable(route = ScreenPage.Primary.name){
                         CharacterPageFragment(charInstance!!, maxDP, maxCombat, maxMagic, maxPsychic)
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to secondary characteristics page
@@ -200,7 +201,8 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment()
+                        CombatFragment(charInstance!!)
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to ki page
@@ -376,5 +378,17 @@ class HomeActivity : AppCompatActivity() {
     //transfer back to MainActivity
     private fun exitPage(){
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
+    }
+
+    fun updateBottomBar(
+        usedDP: MutableState<Int>,
+        usedCombat: MutableState<Int>,
+        usedMagic: MutableState<Int>,
+        usedPsychic: MutableState<Int>
+    ){
+        usedDP.value = charInstance!!.spentTotal
+        usedCombat.value = charInstance!!.ptInCombat
+        usedMagic.value = charInstance!!.ptInMag
+        usedPsychic.value = charInstance!!.ptInPsy
     }
 }

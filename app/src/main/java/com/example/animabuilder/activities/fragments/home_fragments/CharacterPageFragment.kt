@@ -51,7 +51,8 @@ fun CharacterPageFragment(
     maxDP: MutableState<Int>,
     maxCombat: MutableState<Int>,
     maxMagic: MutableState<Int>,
-    maxPsychic: MutableState<Int>
+    maxPsychic: MutableState<Int>,
+    updateFunc: () -> Unit
 ){
     //initialize screen size and keyboard
     val screenSize = LocalConfiguration.current
@@ -106,6 +107,8 @@ fun CharacterPageFragment(
             maxCombat.value = charInstance.maxCombatDP
             maxMagic.value = charInstance.maxMagDP
             maxPsychic.value = charInstance.maxPsyDP
+
+            updateFunc()
         }
 
         //race dropdown object

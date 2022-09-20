@@ -91,6 +91,11 @@ class SecondaryList : Serializable {
     var strengthFeat = SecondaryCharacteristic()
     var resistPain = SecondaryCharacteristic()
 
+    val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, art, dance, forging, music,
+    sleightHand, notice, search, track, intimidate, leadership, persuasion, style, disguise, hide,
+    lockPick, poisons, theft, stealth, trapLore, animals, appraise, herbalLore, history, memorize,
+    magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain)
+
     //update values based on given level change
     fun levelUpdate(lvl: Int, heldClass: CharClass) {
         this.lvl = lvl
@@ -100,118 +105,118 @@ class SecondaryList : Serializable {
     //update values based on given class change
     fun classUpdate(newClass: CharClass) {
         acrobatics.setPointsFromClass(newClass.acrobatPerLevel * lvl)
-        acrobatics.devPerPoint = newClass.athGrowth
+        acrobatics.setDevPerPoint(newClass.athGrowth)
 
         athletics.setPointsFromClass(newClass.athletPerLevel * lvl)
-        athletics.devPerPoint = newClass.athGrowth
+        athletics.setDevPerPoint(newClass.athGrowth)
 
         climb.setPointsFromClass(newClass.climbPerLevel * lvl)
-        climb.devPerPoint = newClass.athGrowth
+        climb.setDevPerPoint(newClass.athGrowth)
 
         jump.setPointsFromClass(newClass.jumpPerLevel * lvl)
-        jump.devPerPoint = newClass.athGrowth
+        jump.setDevPerPoint(newClass.athGrowth)
 
         ride.setPointsFromClass(newClass.ridePerLevel * lvl)
-        ride.devPerPoint = newClass.athGrowth
+        ride.setDevPerPoint(newClass.athGrowth)
 
         swim.setPointsFromClass(newClass.swimPerLevel * lvl)
-        swim.devPerPoint = newClass.athGrowth
+        swim.setDevPerPoint(newClass.athGrowth)
 
         art.setPointsFromClass(newClass.artPerLevel * lvl)
-        art.devPerPoint = newClass.creatGrowth
+        art.setDevPerPoint(newClass.creatGrowth)
 
         dance.setPointsFromClass(newClass.dancePerLevel * lvl)
-        dance.devPerPoint = newClass.creatGrowth
+        dance.setDevPerPoint(newClass.creatGrowth)
 
         forging.setPointsFromClass(newClass.forgePerLevel * lvl)
-        forging.devPerPoint = newClass.creatGrowth
+        forging.setDevPerPoint(newClass.creatGrowth)
 
         music.setPointsFromClass(newClass.musicPerLevel * lvl)
-        music.devPerPoint = newClass.creatGrowth
+        music.setDevPerPoint(newClass.creatGrowth)
 
         sleightHand.setPointsFromClass(newClass.sleightPerLevel * lvl)
-        sleightHand.devPerPoint = newClass.creatGrowth
+        sleightHand.setDevPerPoint(newClass.creatGrowth)
 
         notice.setPointsFromClass(newClass.noticePerLevel * lvl)
-        notice.devPerPoint = newClass.percGrowth
+        notice.setDevPerPoint(newClass.percGrowth)
 
         search.setPointsFromClass(newClass.searchPerLevel * lvl)
-        search.devPerPoint = newClass.percGrowth
+        search.setDevPerPoint(newClass.percGrowth)
 
         track.setPointsFromClass(newClass.trackPerLevel * lvl)
-        track.devPerPoint = newClass.percGrowth
+        track.setDevPerPoint(newClass.percGrowth)
 
         intimidate.setPointsFromClass(newClass.intimidatePerLevel * lvl)
-        intimidate.devPerPoint = newClass.socGrowth
+        intimidate.setDevPerPoint(newClass.socGrowth)
 
         leadership.setPointsFromClass(newClass.leaderPerLevel * lvl)
-        leadership.devPerPoint = newClass.socGrowth
+        leadership.setDevPerPoint(newClass.socGrowth)
 
         persuasion.setPointsFromClass(newClass.persuadePerLevel * lvl)
-        persuasion.devPerPoint = newClass.socGrowth
+        persuasion.setDevPerPoint(newClass.socGrowth)
 
         style.setPointsFromClass(newClass.stylePerLevel * lvl)
-        style.devPerPoint = newClass.socGrowth
+        style.setDevPerPoint(newClass.socGrowth)
 
         disguise.setPointsFromClass(newClass.disguisePerLevel * lvl)
-        disguise.devPerPoint = newClass.subterGrowth
+        disguise.setDevPerPoint(newClass.subterGrowth)
 
         hide.setPointsFromClass(newClass.hidePerLevel * lvl)
-        hide.devPerPoint = newClass.subterGrowth
+        hide.setDevPerPoint(newClass.subterGrowth)
 
         lockPick.setPointsFromClass(newClass.lockpickPerLevel * lvl)
-        lockPick.devPerPoint = newClass.subterGrowth
+        lockPick.setDevPerPoint(newClass.subterGrowth)
 
         poisons.setPointsFromClass(newClass.poisonPerLevel * lvl)
-        poisons.devPerPoint = newClass.subterGrowth
+        poisons.setDevPerPoint(newClass.subterGrowth)
 
         theft.setPointsFromClass(newClass.theftPerLevel * lvl)
-        theft.devPerPoint = newClass.subterGrowth
+        theft.setDevPerPoint(newClass.subterGrowth)
 
         stealth.setPointsFromClass(newClass.stealthPerLevel * lvl)
-        stealth.devPerPoint = newClass.subterGrowth
+        stealth.setDevPerPoint(newClass.subterGrowth)
 
         trapLore.setPointsFromClass(newClass.trapPerLevel * lvl)
-        trapLore.devPerPoint = newClass.subterGrowth
+        trapLore.setDevPerPoint(newClass.subterGrowth)
 
         animals.setPointsFromClass(newClass.animalPerLevel * lvl)
-        animals.devPerPoint = newClass.intellGrowth
+        animals.setDevPerPoint(newClass.intellGrowth)
 
         appraise.setPointsFromClass(newClass.appraisePerLevel * lvl)
-        appraise.devPerPoint = newClass.intellGrowth
+        appraise.setDevPerPoint(newClass.intellGrowth)
 
         herbalLore.setPointsFromClass(newClass.herbPerLevel * lvl)
-        herbalLore.devPerPoint = newClass.intellGrowth
+        herbalLore.setDevPerPoint(newClass.intellGrowth)
 
         history.setPointsFromClass(newClass.histPerLevel * lvl)
-        history.devPerPoint = newClass.intellGrowth
+        history.setDevPerPoint(newClass.intellGrowth)
 
         memorize.setPointsFromClass(newClass.memorizePerLevel * lvl)
-        memorize.devPerPoint = newClass.intellGrowth
+        memorize.setDevPerPoint(newClass.intellGrowth)
 
         magicAppraise.setPointsFromClass(newClass.magAppraisePerLevel * lvl)
-        magicAppraise.devPerPoint = newClass.intellGrowth
+        magicAppraise.setDevPerPoint(newClass.intellGrowth)
 
         medic.setPointsFromClass(newClass.medicPerLevel * lvl)
-        medic.devPerPoint = newClass.intellGrowth
+        medic.setDevPerPoint(newClass.intellGrowth)
 
         navigate.setPointsFromClass(newClass.navPerLevel * lvl)
-        navigate.devPerPoint = newClass.intellGrowth
+        navigate.setDevPerPoint(newClass.intellGrowth)
 
         occult.setPointsFromClass(newClass.occultPerLevel * lvl)
-        occult.devPerPoint = newClass.intellGrowth
+        occult.setDevPerPoint(newClass.intellGrowth)
 
         sciences.setPointsFromClass(newClass.sciencePerLevel * lvl)
-        sciences.devPerPoint = newClass.intellGrowth
+        sciences.setDevPerPoint(newClass.intellGrowth)
 
         composure.setPointsFromClass(newClass.composePerLevel * lvl)
-        composure.devPerPoint = newClass.vigGrowth
+        composure.setDevPerPoint(newClass.vigGrowth)
 
         strengthFeat.setPointsFromClass(newClass.strengthFeatPerLevel * lvl)
-        strengthFeat.devPerPoint = newClass.vigGrowth
+        strengthFeat.setDevPerPoint(newClass.vigGrowth)
 
         resistPain.setPointsFromClass(newClass.standPainPerLevel * lvl)
-        resistPain.devPerPoint = newClass.vigGrowth
+        resistPain.setDevPerPoint(newClass.vigGrowth)
     }
 
     //update needed values based on new strength modifier
@@ -283,85 +288,19 @@ class SecondaryList : Serializable {
     //load characteristic values from a given file reader
     @Throws(IOException::class)
     fun loadList(fileReader: BufferedReader?) {
-        acrobatics.load(fileReader!!, this)
-        athletics.load(fileReader, this)
-        climb.load(fileReader, this)
-        jump.load(fileReader, this)
-        ride.load(fileReader, this)
-        swim.load(fileReader, this)
-        art.load(fileReader, this)
-        dance.load(fileReader, this)
-        forging.load(fileReader, this)
-        music.load(fileReader, this)
-        sleightHand.load(fileReader, this)
-        notice.load(fileReader, this)
-        search.load(fileReader, this)
-        track.load(fileReader, this)
-        intimidate.load(fileReader, this)
-        leadership.load(fileReader, this)
-        persuasion.load(fileReader, this)
-        style.load(fileReader, this)
-        disguise.load(fileReader, this)
-        hide.load(fileReader, this)
-        lockPick.load(fileReader, this)
-        poisons.load(fileReader, this)
-        theft.load(fileReader, this)
-        stealth.load(fileReader, this)
-        trapLore.load(fileReader, this)
-        animals.load(fileReader, this)
-        appraise.load(fileReader, this)
-        herbalLore.load(fileReader, this)
-        history.load(fileReader, this)
-        memorize.load(fileReader, this)
-        magicAppraise.load(fileReader, this)
-        medic.load(fileReader, this)
-        navigate.load(fileReader, this)
-        occult.load(fileReader, this)
-        sciences.load(fileReader, this)
-        composure.load(fileReader, this)
-        strengthFeat.load(fileReader, this)
-        resistPain.load(fileReader, this)
+        fullList.forEach{it.load(fileReader!!, this)}
     }
 
     //save characteristic values to file
     fun writeList(byteArray: SerialOutputStream?) {
-        acrobatics.write(byteArray!!)
-        athletics.write(byteArray)
-        climb.write(byteArray)
-        jump.write(byteArray)
-        ride.write(byteArray)
-        swim.write(byteArray)
-        art.write(byteArray)
-        dance.write(byteArray)
-        forging.write(byteArray)
-        music.write(byteArray)
-        sleightHand.write(byteArray)
-        notice.write(byteArray)
-        search.write(byteArray)
-        track.write(byteArray)
-        intimidate.write(byteArray)
-        leadership.write(byteArray)
-        persuasion.write(byteArray)
-        style.write(byteArray)
-        disguise.write(byteArray)
-        hide.write(byteArray)
-        lockPick.write(byteArray)
-        poisons.write(byteArray)
-        theft.write(byteArray)
-        stealth.write(byteArray)
-        trapLore.write(byteArray)
-        animals.write(byteArray)
-        appraise.write(byteArray)
-        herbalLore.write(byteArray)
-        history.write(byteArray)
-        memorize.write(byteArray)
-        magicAppraise.write(byteArray)
-        medic.write(byteArray)
-        navigate.write(byteArray)
-        occult.write(byteArray)
-        sciences.write(byteArray)
-        composure.write(byteArray)
-        strengthFeat.write(byteArray)
-        resistPain.write(byteArray)
+        fullList.forEach{it.write(byteArray!!)}
+    }
+
+    fun calculateSpent(): Int{
+        var total = 0
+
+        fullList.forEach{total += it.pointsIn}
+
+        return total
     }
 }

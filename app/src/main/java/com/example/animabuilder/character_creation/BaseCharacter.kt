@@ -136,34 +136,32 @@ class BaseCharacter: Serializable {
     fun setOwnClass(classIn: ClassName?) {
         ownClass = CharClass(classIn!!)
 
-        updateLifePoints()
-        updateAttack()
-        adjustMaxValues()
-        secondaryList.classUpdate(ownClass)
-
-        updateTotalSpent()
+        updateClassInputs()
     }
 
     //setter for class with String input
     fun setOwnClass(className: String?) {
         ownClass = CharClass(ClassName.fromString(className))
 
-        updateLifePoints()
-        updateAttack()
-        adjustMaxValues()
-        secondaryList.classUpdate(ownClass)
-
-        updateTotalSpent()
+        updateClassInputs()
     }
 
     fun setOwnClass(classInt: Int?){
         ownClass = CharClass(ClassName.fromInt(classInt))
 
+        updateClassInputs()
+    }
+
+    fun updateClassInputs(){
         updateLifePoints()
+
         updateAttack()
+        updateBlock()
+        updateDodge()
+        updateWear()
+
         adjustMaxValues()
         secondaryList.classUpdate(ownClass)
-
         updateTotalSpent()
     }
 
@@ -195,6 +193,13 @@ class BaseCharacter: Serializable {
 
         //recalculate maximum DP allotments
         dpAllotmentCalc()
+
+        updateLifePoints()
+        updateAttack()
+        updateBlock()
+        updateDodge()
+        updateWear()
+
         secondaryList.levelUpdate(lvl, ownClass)
     }
 
@@ -221,14 +226,18 @@ class BaseCharacter: Serializable {
     fun updateCombatSpent(){
         ptInCombat =
             lifeMultsTaken * ownClass.lifePointMultiple +
-            pointInAttack * ownClass.atkGrowth
+            pointInAttack * ownClass.atkGrowth +
+            pointInBlock * ownClass.blockGrowth +
+            pointInDodge * ownClass.dodgeGrowth +
+            pointInWear * ownClass.armorGrowth
     }
 
     //setters for each primary characteristic
     var setSTR = { strVal: Int ->
         str = strVal
         modSTR = getModVal(str)
-        setWearArmor(modSTR)
+
+        updateWear()
         secondaryList.updateSTR(modSTR)
     }
     var setDEX = { dexVal: Int ->
@@ -237,11 +246,14 @@ class BaseCharacter: Serializable {
 
         secondaryList.updateDEX(modDEX)
         updateAttack()
+        updateBlock()
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
         modAGI = getModVal(agi)
+
         secondaryList.updateAGI(modAGI)
+        updateDodge()
     }
     var setCON = { conVal: Int ->
         con = conVal
@@ -339,7 +351,44 @@ class BaseCharacter: Serializable {
         attack = pointInAttack + modDEX + (ownClass.atkPerLevel * lvl)
     }
 
+    val applyBlockPoint = {score: Int, textChange: MutableState<String>? ->
+        pointInBlock = score
+        updateTotalSpent()
+        updateBlock()
 
+        if(textChange != null)
+            textChange.value = block.toString()
+    }
+
+    fun updateBlock(){
+        block = pointInBlock + modDEX + (ownClass.blockPerLevel * lvl)
+    }
+
+    val applyDodgePoint = {score: Int, textChange: MutableState<String>? ->
+        pointInDodge = score
+        updateTotalSpent()
+        updateDodge()
+
+        if(textChange != null)
+            textChange.value = dodge.toString()
+    }
+
+    fun updateDodge(){
+        dodge = pointInDodge + modAGI + (ownClass.dodgePerLevel * lvl)
+    }
+
+    val applyWearPoint = {score: Int, textChange: MutableState<String>? ->
+        pointInWear = score
+        updateTotalSpent()
+        updateWear()
+
+        if(textChange != null)
+            textChange.value = wearArmor.toString()
+    }
+
+    fun updateWear(){
+        wearArmor = pointInWear + modSTR + (ownClass.armorPerLevel * lvl)
+    }
 
     fun updateResistances(){
         resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
@@ -351,28 +400,6 @@ class BaseCharacter: Serializable {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @JvmName("setWearArmor1")
-    private fun setWearArmor(waValue: Int) {
-        wearArmor = waValue
-        checkArmor(wearArmor)
-    }
-
-    private fun checkArmor(strCheck: Int): Boolean {
-        return equippedPiece == null || equippedPiece!!.strReq < strCheck
-    }
 
 
 
@@ -419,6 +446,9 @@ class BaseCharacter: Serializable {
 
         takeLifeMult(fileReader.readLine().toInt())
         applyAttackPoint(fileReader.readLine().toInt(), null)
+        applyBlockPoint(fileReader.readLine().toInt(), null)
+        applyDodgePoint(fileReader.readLine().toInt(), null)
+        applyWearPoint(fileReader.readLine().toInt(), null)
 
         restoreChar.close()
 
@@ -452,6 +482,9 @@ class BaseCharacter: Serializable {
 
             addNewData(lifeMultsTaken)
             addNewData(pointInAttack)
+            addNewData(pointInBlock)
+            addNewData(pointInDodge)
+            addNewData(pointInWear)
 
             byteArray.close()
 
@@ -465,10 +498,8 @@ class BaseCharacter: Serializable {
             0,
             """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
         )
-        byteArray.write(
-            "\n".toByteArray(StandardCharsets.UTF_8),
-            0,
-            "\n".toByteArray(StandardCharsets.UTF_8).size)
+
+        writeEndLine()
     }
 
     //adds new Int data to the ByteOutputStream
@@ -478,6 +509,11 @@ class BaseCharacter: Serializable {
             0,
             """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
         )
+
+        writeEndLine()
+    }
+
+    private fun writeEndLine(){
         byteArray.write(
             "\n".toByteArray(StandardCharsets.UTF_8),
             0,

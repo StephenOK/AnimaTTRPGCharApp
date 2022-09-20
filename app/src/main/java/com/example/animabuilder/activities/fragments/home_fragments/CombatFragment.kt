@@ -79,17 +79,24 @@ fun CombatFragment(
                 Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.2f))
             }
 
-            combatItemRow(charInstance, "Attack", charInstance.applyAttackPoint,
+            CombatItemRow(charInstance, "Attack", charInstance.pointInAttack, charInstance.applyAttackPoint,
                 charInstance.modDEX, charInstance.ownClass.atkPerLevel, charInstance.attack, updateFunc)
+            CombatItemRow(charInstance, "Block", charInstance.pointInBlock, charInstance.applyBlockPoint,
+                charInstance.modDEX, charInstance.ownClass.blockPerLevel, charInstance.block, updateFunc)
+            CombatItemRow(charInstance, "Dodge", charInstance.pointInDodge, charInstance.applyDodgePoint,
+                charInstance.modAGI, charInstance.ownClass.dodgePerLevel, charInstance.dodge, updateFunc)
+            CombatItemRow(charInstance, "Wear Armor", charInstance.pointInWear, charInstance.applyWearPoint,
+                charInstance.modSTR, charInstance.ownClass.armorPerLevel, charInstance.wearArmor, updateFunc)
         }
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun combatItemRow(
+fun CombatItemRow(
     charInstance: BaseCharacter,
     labelText: String,
+    pointIn: Int,
     changeAct: (Int, MutableState<String>) -> Unit,
     modInput: Int,
     classAdd: Int,
@@ -97,7 +104,7 @@ fun combatItemRow(
 
     updateFunc: () -> Unit
 ){
-    val pointInScore = remember{mutableStateOf(charInstance.pointInAttack.toString())}
+    val pointInScore = remember{mutableStateOf(pointIn.toString())}
     val pointTotal = remember{mutableStateOf(total.toString())}
 
     Row() {

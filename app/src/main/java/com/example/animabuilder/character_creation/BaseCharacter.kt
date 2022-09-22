@@ -9,7 +9,7 @@ import com.example.animabuilder.character_creation.attributes.race_objects.CharR
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.equipment.Armor
-import com.example.animabuilder.character_creation.equipment.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import java.io.*
 import java.nio.charset.StandardCharsets
 import kotlin.Throws

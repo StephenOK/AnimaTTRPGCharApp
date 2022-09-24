@@ -1,6 +1,8 @@
 package com.example.animabuilder.character_creation.equipment.weapons
 
-enum class WeaponType {
+import java.io.Serializable
+
+enum class WeaponType: Serializable {
     Short,
     Axe,
     Mace,

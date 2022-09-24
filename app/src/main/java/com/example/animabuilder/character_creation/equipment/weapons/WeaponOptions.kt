@@ -1,6 +1,8 @@
 package com.example.animabuilder.character_creation.equipment.weapons
 
-class WeaponOptions {
+import java.io.Serializable
+
+class WeaponOptions(): Serializable {
     val bastardSword = Weapon(
         "Bastard Sword",
         70,

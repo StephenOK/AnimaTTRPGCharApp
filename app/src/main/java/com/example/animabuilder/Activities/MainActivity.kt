@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     charInstance = BaseCharacter()
 
                     //prepare data for next activity
-                    toNextPage.putExtra("filename", newName.value)
+                    toNextPage.putExtra("filename", "AnimaChar" + newName.value)
                     toNextPage.putExtra("Character", charInstance)
 
                     //start next activity
@@ -66,23 +66,25 @@ class MainActivity : AppCompatActivity() {
                 Column{
                     //display each file name as a radio button
                     fileList().forEach{name ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier
-                                .selectable(
+                        if(name.contains("AnimaChar")) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier
+                                    .selectable(
+                                        selected = (name == selected.value),
+                                        onClick = { selected.value = name }
+                                    )
+                            ) {
+                                RadioButton(
                                     selected = (name == selected.value),
-                                    onClick = {selected.value = name}
+                                    onClick = { selected.value = name }
                                 )
-                        ){
-                            RadioButton(
-                                selected = (name == selected.value),
-                                onClick = {selected.value = name}
-                            )
 
-                            Text(
-                                text = name
-                            )
+                                Text(
+                                    text = name.drop(9)
+                                )
+                            }
                         }
                     }
                 }

@@ -37,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         Primary,
         Secondary,
         Advantages,
-        Combat,
+        Weapon_Modules,
         Ki,
         Magic,
         Psychic,
@@ -200,7 +200,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to combat page
-                    composable(route = ScreenPage.Combat.name){
+                    composable(route = ScreenPage.Weapon_Modules.name){
                         CombatFragment(charInstance!!)
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }

@@ -60,9 +60,18 @@ fun CharacterPageFragment(
 
     //initialize mutable states for resistance display
     val presence = remember{mutableStateOf(charInstance.presence)}
+
+    val strMod = remember{mutableStateOf(charInstance.modSTR)}
+    val agiMod = remember{mutableStateOf(charInstance.modAGI)}
+    val dexMod = remember{mutableStateOf(charInstance.modDEX)}
     val conMod = remember{mutableStateOf(charInstance.modCON)}
     val powMod = remember{mutableStateOf(charInstance.modPOW)}
     val wpMod = remember{mutableStateOf(charInstance.modWP)}
+
+    val classAttack = remember{mutableStateOf((charInstance.ownClass.atkPerLevel * charInstance.lvl).toString())}
+    val classBlock = remember{mutableStateOf((charInstance.ownClass.blockPerLevel * charInstance.lvl).toString())}
+    val classDodge = remember{mutableStateOf((charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString())}
+    val classWear = remember{mutableStateOf((charInstance.ownClass.armorPerLevel * charInstance.lvl).toString())}
 
     //page column
     Column(
@@ -108,6 +117,11 @@ fun CharacterPageFragment(
             maxMagic.value = charInstance.maxMagDP
             maxPsychic.value = charInstance.maxPsyDP
 
+            classAttack.value = (charInstance.ownClass.atkPerLevel * charInstance.lvl).toString()
+            classBlock.value = (charInstance.ownClass.blockPerLevel * charInstance.lvl).toString()
+            classDodge.value = (charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString()
+            classWear.value = (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
+
             updateFunc()
         }
 
@@ -130,6 +144,11 @@ fun CharacterPageFragment(
             maxCombat.value = charInstance.maxCombatDP
             maxMagic.value = charInstance.maxMagDP
             maxPsychic.value = charInstance.maxPsyDP
+
+            classAttack.value = (charInstance.ownClass.atkPerLevel * charInstance.lvl).toString()
+            classBlock.value = (charInstance.ownClass.blockPerLevel * charInstance.lvl).toString()
+            classDodge.value = (charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString()
+            classWear.value = (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
         }
 
         SpaceObjects()
@@ -157,13 +176,13 @@ fun CharacterPageFragment(
             }
 
             //create row for each primary statistic
-            PrimaryRow(stringResource(R.string.strText), charInstance.str, remember{mutableStateOf(charInstance.modSTR)})
+            PrimaryRow(stringResource(R.string.strText), charInstance.str, strMod)
             {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
 
-            PrimaryRow(stringResource(R.string.dexText), charInstance.dex, remember{mutableStateOf(charInstance.modDEX)})
+            PrimaryRow(stringResource(R.string.dexText), charInstance.dex, dexMod)
             {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
 
-            PrimaryRow(stringResource(R.string.agiText), charInstance.agi, remember{mutableStateOf(charInstance.modAGI)})
+            PrimaryRow(stringResource(R.string.agiText), charInstance.agi, agiMod)
             {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
 
             PrimaryRow(stringResource(R.string.conText), charInstance.con, conMod)
@@ -226,6 +245,68 @@ fun CharacterPageFragment(
             ResistanceRow("PhR", presence, conMod, charInstance.rphysSpec, charInstance.resistPhys)
             ResistanceRow("VR", presence, conMod, charInstance.rvSpec, charInstance.resistVen)
             ResistanceRow("PsR", presence, wpMod, charInstance.rpsySpec, charInstance.resistPsy)
+        }
+
+        Row{
+            Spacer(modifier = Modifier.weight(0.2f))
+            Text(text = "Base", modifier = Modifier.weight(0.2f))
+            Text(text = "Class", modifier = Modifier.weight(0.2f))
+            Text(text = "Multiplier", modifier = Modifier.weight(0.2f))
+            Text(text = "Total", modifier = Modifier.weight(0.2f))
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically){
+            val lifeTotal = remember{mutableStateOf(charInstance.lifeMax)}
+            val lifeMults = remember{mutableStateOf(charInstance.lifeMultsTaken.toString())}
+
+            Text(text = "Life Points: ", modifier = Modifier.weight(0.2f))
+
+            Text(text = charInstance.lifeBase.toString(), modifier = Modifier.weight(0.2f))
+            Text(text = (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl).toString(),
+                modifier = Modifier.weight(0.2f))
+
+            TextField(
+                value = lifeMults.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = {
+                    try{
+                        charInstance.takeLifeMult(it.toInt())
+                        lifeTotal.value = charInstance.lifeMax
+
+                        lifeMults.value = it
+                        updateFunc()
+                    }catch(e: NumberFormatException){
+                        if(it == "")
+                            lifeMults.value = it
+                        else if(it.contains('\n'))
+                            keyboardActive!!.hide()
+                    }
+                },
+                modifier = Modifier.weight(0.2f)
+            )
+
+            Text(text = lifeTotal.value.toString(), modifier = Modifier.weight(0.2f))
+        }
+
+        Spacer(Modifier.height(30.dp))
+
+        Column{
+            Row{
+                Spacer(modifier = Modifier.weight(0.2f))
+                Text(text = "Points", modifier = Modifier.weight(0.2f))
+                Text(text = stringResource(R.string.modLabel), modifier = Modifier.weight(0.2f))
+                Text(text = stringResource(R.string.classLabel), modifier = Modifier.weight(0.2f))
+                Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.2f))
+            }
+
+            CombatItemRow(charInstance, "Attack", charInstance.pointInAttack, charInstance.applyAttackPoint,
+                dexMod, classAttack, charInstance.attack, updateFunc)
+            CombatItemRow(charInstance, "Block", charInstance.pointInBlock, charInstance.applyBlockPoint,
+                dexMod, classBlock, charInstance.block, updateFunc)
+            CombatItemRow(charInstance, "Dodge", charInstance.pointInDodge, charInstance.applyDodgePoint,
+                agiMod, classDodge, charInstance.dodge, updateFunc)
+            CombatItemRow(charInstance, "Wear Armor", charInstance.pointInWear, charInstance.applyWearPoint,
+                strMod, classWear, charInstance.wearArmor, updateFunc)
         }
     }
 }
@@ -416,6 +497,49 @@ private fun ResistanceRow(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun CombatItemRow(
+    charInstance: BaseCharacter,
+    labelText: String,
+    pointIn: Int,
+    changeAct: (Int, MutableState<String>) -> Unit,
+    modInput: MutableState<Int>,
+    classAdd: MutableState<String>,
+    total: Int,
+
+    updateFunc: () -> Unit
+){
+    val pointInScore = remember{mutableStateOf(pointIn.toString())}
+    val pointTotal = remember{mutableStateOf(total.toString())}
+
+    Row {
+        Text(text = labelText, modifier = Modifier.weight(0.2f))
+
+        TextField(
+            value = pointInScore.value,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = {
+                try{
+                    changeAct(it.toInt(), pointTotal)
+                    pointInScore.value = it
+                    updateFunc()
+                }catch(e: NumberFormatException){
+                    if(it == "")
+                        pointInScore.value = it
+                    else if(it.contains('\n'))
+                        keyboardActive!!.hide()
+                }
+            },
+            modifier = Modifier.weight(0.2f)
+        )
+
+        Text(text = modInput.value.toString(), modifier = Modifier.weight(0.2f))
+        Text(text = classAdd.value, modifier = Modifier.weight(0.2f))
+        Text(text = pointTotal.value, modifier = Modifier.weight(0.2f))
     }
 }
 

@@ -10,6 +10,8 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Clas
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponOptions
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.*
 import java.nio.charset.StandardCharsets
 import kotlin.Throws
@@ -124,8 +126,19 @@ class BaseCharacter: Serializable {
     var rmMult = 1.0
     var rpsyMult = 1.0
 
+    val weaponOptions = WeaponOptions()
+
+    var primaryWeapon: Weapon = weaponOptions.unarmed
+
+    var secondaryWeapon: List<Weapon> = mutableListOf()
+
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
+
+
+
+
+
 
 
 
@@ -229,7 +242,8 @@ class BaseCharacter: Serializable {
             pointInAttack * ownClass.atkGrowth +
             pointInBlock * ownClass.blockGrowth +
             pointInDodge * ownClass.dodgeGrowth +
-            pointInWear * ownClass.armorGrowth
+            pointInWear * ownClass.armorGrowth +
+            calculateModulePoints()
     }
 
     //setters for each primary characteristic
@@ -397,6 +411,60 @@ class BaseCharacter: Serializable {
         resistMag = ((presence + modPOW + rmSpec) * rmMult).toInt()
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
     }
+
+    @JvmName("setPrimaryWeapon1")
+    fun setPrimaryWeapon(toSet: Weapon){
+        primaryWeapon = toSet
+        updateTotalSpent()
+    }
+
+    fun addSecondaryWeapon(toAdd: Weapon){
+        secondaryWeapon = secondaryWeapon + toAdd
+        updateTotalSpent()
+    }
+
+    fun removeSecondaryWeapon(toRemove: Weapon){
+        secondaryWeapon = secondaryWeapon - toRemove
+        updateTotalSpent()
+    }
+
+    fun calculateModulePoints(): Int{
+        var total = 0
+
+        secondaryWeapon.forEach{
+            //if primary weapon is mixed
+            if(primaryWeapon.type == WeaponType.Mixed){
+                //apply same type for exactly matching weapons
+                if(it.type == WeaponType.Mixed) {
+                    if ((primaryWeapon.mixedType!! - it.mixedType).isEmpty())
+                        total += 10
+
+                    //apply mixed type for one matching type
+                    else if (primaryWeapon.mixedType!!.contains(it.mixedType!![0]) ||
+                        primaryWeapon.mixedType!!.contains(it.mixedType!![1])
+                    )
+                        total += 15
+                }
+
+                //apply same type for it belonging to one mixed type
+                else if(primaryWeapon.mixedType!!.contains(it.type))
+                    total += 10
+            }
+            else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
+                    total += 15
+            else if(it.type == primaryWeapon.type)
+                total += 10
+            else
+                total += 20
+        }
+
+        return total
+    }
+
+
+
+
+
 
 
 

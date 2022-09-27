@@ -91,7 +91,7 @@ fun CharacterPageFragment(
 
             //name input field
             OutlinedTextField(
-                value = inputName.value!!,
+                value = inputName.value,
                 onValueChange = {
                     //close keyboard if enter is pushed
                     if(it[it.length - 1] == '\n')

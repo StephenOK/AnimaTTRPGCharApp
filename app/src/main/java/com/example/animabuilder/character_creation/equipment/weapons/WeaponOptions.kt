@@ -14,7 +14,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         15,
         5,
-        25
+        25,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "This is a sword halfway between a Long Sword and the Two-handed Sword, " +
+                "measuring about five feet long. The weapon's long grip and counterweight " +
+                "allow it to be used with either one or two hands."
     )
 
     val battleAxe = Weapon(
@@ -28,7 +32,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Axe,
         15,
         5,
-        25
+        25,
+        listOf(WeaponAbility.Throwable),
+        "A more manageable version of the Two-handed Axe, a battle axe can be wielded " +
+                "with just one hand."
     )
 
     val broadsword = Weapon(
@@ -42,7 +49,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         15,
         3,
-        25
+        25,
+        null,
+        "A straight-bladed weapon slightly shorter than the Long sword. It is " +
+                "characterized by its broad blade and great fortitude."
     )
 
     val cavLance = Weapon(
@@ -56,7 +66,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         12,
         7,
-        25
+        25,
+        listOf(WeaponAbility.Special),
+        "A longer and heavier version of the traditional lance, it measures from nine " +
+                "to twelve feet long and can only be wielded from horseback. If it is used to " +
+                "block an attack, the defender applies a -30 penalty to his ability."
     )
 
     val cestus = Weapon(
@@ -70,7 +84,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         11,
         -2,
-        15
+        15,
+        null,
+        "Metal covering for the hands, kneecaps, elbows, or forearms that includes " +
+                "knives or spikes used for striking an enemy."
     )
 
     val chain = Weapon(
@@ -84,7 +101,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Cord,
         13,
         2,
-        15
+        15,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping),
+        "A length of metal links."
     )
 
     val club = Weapon(
@@ -98,7 +117,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         11,
         -2,
-        15
+        15,
+        null,
+        "Made of wood or just stone, the Club is the quintessential Impact weapon."
     )
 
     val dagger = Weapon(
@@ -108,11 +129,14 @@ class WeaponOptions(): Serializable {
         3,
         null,
         AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        12,
-        7,
-        25
+        AttackType.Cut,
+        WeaponType.Short,
+        10,
+        -2,
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Precision),
+        "A combat knife roughly eight to twelve inches long. It is usually sharpened " +
+                "on both edges and balanced for throwing."
     )
 
     val flail = Weapon(
@@ -126,7 +150,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         13,
         4,
-        15
+        15,
+        listOf(WeaponAbility.Complex),
+        "This is a shaft of wood or metal with a chain that ends in a spiked metal " +
+                "ball. A version exists with several smaller chains."
     )
 
     val foil = Weapon(
@@ -140,7 +167,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         9,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.Precision),
+        "A sword that is more slender and flexible than the Rapier. It is used as a " +
+                "Thrust weapon."
     )
 
     val gladNet = Weapon(
@@ -154,7 +184,14 @@ class WeaponOptions(): Serializable {
         WeaponType.Cord,
         13,
         -4,
-        15
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Trapping, WeaponAbility.Special),
+        "This weapon is a narrow net with weighted hooks designed to entangle the " +
+                "person at whom it is swung or thrown. Although it is a hand-to-hand weapon, " +
+                "its attack is against an area nine feet wide, and it can entangle various " +
+                "targets. Do not apply either the Strength Bonus of the character or the -40 " +
+                "penalty usually applied to maneuvers aimed at capturing the enemy when " +
+                "utilizing this weapon."
     )
 
     val greatHammer = Weapon(
@@ -168,7 +205,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         16,
         6,
-        20
+        20,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "A very large two-handed Impact weapon. It consists of a straight shaft " +
+                "crowned with an enormous metal hammer. Some have sharp pointed tips on the " +
+                "side so that they can be used for a second type of attack, a penetrating, or " +
+                "Thrust, attack."
     )
 
     val halberd = Weapon(
@@ -182,7 +224,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         15,
         4,
-        20
+        20,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "The halberd is a weapon made of a pole of wood or metal that ends in an " +
+                "axe-like edged blade. It measures a total of between five feet and six and " +
+                "a half feet in length."
     )
 
     val handAxe = Weapon(
@@ -196,7 +242,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Axe,
         13,
         4,
-        15
+        15,
+        listOf(WeaponAbility.Throwable),
+        "These are light axes used with a single hand. They usually have a " +
+                "counterweight that facilitates their use as thrown weapons. They measure from " +
+                "one to two feet in length."
     )
 
     val harpoon = Weapon(
@@ -210,7 +260,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         11,
         0,
-        15
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        "This is a short-hafted weapon similar to a javelin, but with a barbed tip."
     )
 
     val heavyBattleMace = Weapon(
@@ -224,7 +276,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         16,
         5,
-        15
+        15,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "A heavier version of the Mace with a shaft almost 3 feet long. It is topped " +
+                "with a weight of enormous proportions. Due to its size, it is usually used with " +
+                "both hands."
     )
 
     val hook = Weapon(
@@ -238,7 +294,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         11,
         -2,
-        15
+        15,
+        null,
+        "A weapon that is small and curved with a sharp point."
     )
 
     val javelin = Weapon(
@@ -252,7 +310,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         10,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.Throwable),
+        "A short spear used almost exclusively for throwing."
     )
 
     val lance = Weapon(
@@ -266,7 +326,14 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         13,
         2,
-        25
+        25,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        "The lance is the quintessential pole weapon. It consists of a long shaft of " +
+                "wood or metal ending in a fine two-edged point. It is very suitable for use " +
+                "from horseback, or for keeping enemies at a distance. It can measure from five " +
+                "to over seven feet long. Although it can be used with just one hand, fighting " +
+                "in that fashion brings on a -10 penalty to the attack, unless being used to " +
+                "resist a charge."
     )
 
     val largeMultiFlail = Weapon(
@@ -280,7 +347,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         14,
         6,
-        20
+        20,
+        listOf(WeaponAbility.Complex),
+        "A Flail of enormous dimensions. It has various chains coming from the end of " +
+                "its shaft, each ending in a spiked metal ball."
     )
 
     val lasso = Weapon(
@@ -294,7 +364,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Cord,
         9,
         -4,
-        20
+        20,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping, WeaponAbility.Special),
+        "A lasso is a rope prepared with a running knot for trapping animals or " +
+                "people. As a special rule, it does not apply the Strength of the person to " +
+                "calculate the damage caused. It requires both hands for use."
     )
 
     val longSword = Weapon(
@@ -308,7 +382,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         13,
         3,
-        25
+        25,
+        null,
+        "A cutting blade with a sharp point. It is generally three to three and a half " +
+                "feet long."
     )
 
     val mace = Weapon(
@@ -322,7 +399,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         14,
         4,
-        15
+        15,
+        null,
+        "This weapon consists of a wood or metal shaft about 18 inches long topped " +
+                "with a heavy round or spherical head."
     )
 
     val parryDagger = Weapon(
@@ -336,7 +416,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         12,
         0,
-        20
+        20,
+        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision),
+        "A variation on the traditional dagger designed to block the attacks of enemy " +
+                "weapons and trap them with the hilt. At its base are two sharp edges."
     )
 
     val quarterstaff = Weapon(
@@ -350,7 +433,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         11,
         0,
-        30
+        30,
+        listOf(WeaponAbility.TwoHanded),
+        "This weapon is a pole of wood or metal that may be as long as three feet. " +
+                "Although it can be used with just one hand, fighting that way causes a -10 " +
+                "penalty to a character's Attack ability."
     )
 
     val rapier = Weapon(
@@ -364,7 +451,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         11,
         2,
-        20
+        20,
+        listOf(WeaponAbility.Precision),
+        "A fine and stylized two-edged sword."
     )
 
     val saber = Weapon(
@@ -378,7 +467,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         12,
         3,
-        20
+        20,
+        null,
+        "A light curved blade that is similar and less durable than the Long Sword, " +
+                "but much more maneuverable."
     )
 
     val scimitar = Weapon(
@@ -392,7 +484,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         13,
         4,
-        20
+        20,
+        null,
+        "A large curved sword generally shorter than the Long Sword, but with a broader blade."
     )
 
     val scythe = Weapon(
@@ -406,7 +500,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         12,
         2,
-        25
+        25,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "This weapon consists of a long shaft ending in a long curved blade. It also " +
+                "has a handle allowing it to be used with two hands."
     )
 
     val shortSword = Weapon(
@@ -420,7 +517,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         12,
         1,
-        20
+        20,
+        listOf(WeaponAbility.Precision),
+        "A straight sharp blade about a foot and a half long. Although it can cut, it " +
+                "is used principally as a Thrust weapon. Its reduced size makes it a very " +
+                "discrete weapon."
     )
 
     val stiletto = Weapon(
@@ -434,7 +535,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         8,
         -3,
-        15
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Precision),
+        "A sharp needle-like knife whose main purpose is for throwing, although it can " +
+                "be used in hand-to-hand combat."
     )
 
     val trident = Weapon(
@@ -448,7 +552,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         12,
         3,
-        15
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        "A spear or lance with a three part tip resembling a fork. Its design does " +
+                "allow it to be thrown. It is slightly larger than the trident used for fishing."
     )
 
     val twoHandAxe = Weapon(
@@ -462,7 +569,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         17,
         7,
-        30
+        30,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "An enormous axe with a counterweight at the base of the handle. Depending " +
+                "on the design, it can be single- or double-bladed. Its size makes it almost " +
+                "imperative to wield it with both hands. It can measure from 5 feet to over 7 " +
+                "feet long."
     )
 
     val twoHandSword = Weapon(
@@ -476,7 +588,11 @@ class WeaponOptions(): Serializable {
         WeaponType.TwoHanded,
         18,
         6,
-        30
+        30,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "The Two-handed Sword is the greatest of swords and can be measured more than " +
+                "5 feet long. Used almost exclusively with two hands, it is an awkward, but very " +
+                "deadly weapon."
     )
 
     val unarmed = Weapon(
@@ -490,7 +606,13 @@ class WeaponOptions(): Serializable {
         WeaponType.Unarmed,
         null,
         null,
-        null
+        null,
+        listOf(WeaponAbility.Precision),
+        "This is not a weapon, of course. Rather, these are the numbers used for a " +
+                "character fighting without weapons. The attacks made are made by punching, " +
+                "kicking, head-butting, and biting. Fighting unarmed requires the use of the " +
+                "whole body, so a character fighting this way cannot apply the rules for attacks " +
+                "with other weapons"
     )
 
     val warhammer = Weapon(
@@ -504,7 +626,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         15,
         4,
-        15
+        15,
+        null,
+        "A crushing weapon consisting of a shaft topped by a great steel hammerhead."
     )
 
     val whip = Weapon(
@@ -518,7 +642,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Cord,
         9,
         -3,
-        20
+        20,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping),
+        "A whip is a cord or chain appropriately made to be used as a weapon. It is " +
+                "used with rapid flicks of the wrist and is capable of cutting or trapping and " +
+                "opponent."
     )
 
     val boomerang = Weapon(
@@ -532,7 +660,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         10,
         0,
-        15
+        15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Special),
+        "A curved stick of wood or metal designed to be thrown and to return if it " +
+                "doesn't hit anything. To catch it requires a Difficult Sleight of Hand check."
     )
 
     val claws = Weapon(
@@ -546,7 +677,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         12,
         2,
-        15
+        15,
+        null,
+        "Knives on a glove made to resemble animal claws."
     )
 
     val haruNoOkina = Weapon(
@@ -560,7 +693,16 @@ class WeaponOptions(): Serializable {
         WeaponType.Pole,
         12,
         2,
-        25
+        25,
+        listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special),
+        "A weapon of oriental origin, it consists of two long poles connected by chains " +
+                "to a third, shorter section. Each of the longer poles ends in a blade like that " +
+                "of the halberd, but smaller. It is used placing the middle, shortest section " +
+                "against the back, while the longer poles are maneuvered with each hand. To lend " +
+                "greater power to the strikes, the weapon is twirled to use centrifugal force. " +
+                "Although both hands are used, the Strength bonus is not doubled. The " +
+                "Three-section Glaive allows a second attack per turn, as though a second weapon " +
+                "were being used, but applying a penalty of only -10 to a character's Attack ability."
     )
 
     val katana = Weapon(
@@ -574,7 +716,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         11,
         3,
-        40
+        40,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "A sword of Asian design, it has a curved blade sharpened on only one edge. " +
+                "Similar to a saber, it is considerably heavier and more effective, but not as " +
+                "resistant to breaking."
     )
 
     val katar = Weapon(
@@ -588,7 +734,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         13,
         3,
-        25
+        25,
+        listOf(WeaponAbility.Complex, WeaponAbility.Special),
+        "A gauntlet equipped with knife blades 10 to 12 inches long. It possesses a " +
+                "complex mechanism that allows the blades to be extended and spun. In those " +
+                "cases, they can block projectiles like a buckler."
     )
 
     val kusariGama = Weapon(
@@ -602,7 +752,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Mixed,
         12,
         4,
-        25
+        25,
+        listOf(WeaponAbility.TwoHanded, WeaponAbility.Trapping, WeaponAbility.Special),
+        "This is a sickle of Asian design that has a chain attached to the bottom " +
+                "used to trap opponents. Although both hands are used, the Strength bonus is " +
+                "not doubled. It can be used for conventional attacks, or by whipping the chain " +
+                "to try to trap an opponent, in which case it causes a Base Damage of only 10."
     )
 
     val nodachi = Weapon(
@@ -616,7 +771,10 @@ class WeaponOptions(): Serializable {
         WeaponType.TwoHanded,
         14,
         4,
-        40
+        40,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "A larger version of the Katana. It is used in a similar way, but it is much " +
+                "longer and thicker."
     )
 
     val nunchakus = Weapon(
@@ -630,7 +788,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Cord,
         11,
         0,
-        15
+        15,
+        null,
+        "These are two short sticks of wood or metal connected by a short chain."
     )
 
     val raven = Weapon(
@@ -644,7 +804,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         11,
         2,
-        25
+        25,
+        listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special),
+        "A multi-bladed knife in the shape of a star with a hole in the center. The " +
+                "thumb is placed in the hole and the knife is spun hard. As it spins, it can " +
+                "block missile attacks as though it were a buckler."
     )
 
     val sai = Weapon(
@@ -658,7 +822,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         12,
         0,
-        25
+        25,
+        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision),
+        "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to resemble a trident. It is used primarily to block an opponent's weapon."
     )
 
     val shuko = Weapon(
@@ -672,7 +838,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         9,
         -2,
-        25
+        25,
+        listOf(WeaponAbility.Special),
+        "This is a claw-like device held in the palms of the hands. It is used both as " +
+                "a weapon and as a tool for climbing. Shuko adds a +10 to a character's climbing " +
+                "ability."
     )
 
     val shuriken = Weapon(
@@ -686,7 +856,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         10,
         1,
-        20
+        20,
+        listOf(WeaponAbility.Throwable),
+        "Small Asian metal weapons used exclusively for throwing. They can be " +
+                "various shapes, from simple sharp-edged disks to star-shaped knives."
     )
 
     val swordBreaker = Weapon(
@@ -700,7 +873,11 @@ class WeaponOptions(): Serializable {
         WeaponType.TwoHanded,
         16,
         8,
-        25
+        25,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        "This is a short sword of great weight, containing a blade of almost 10 " +
+                "inches wide. Due to its enormous Impact potential, it is often used to break " +
+                "weapons or break through an enemy's armor."
     )
 
     val tanto = Weapon(
@@ -714,7 +891,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         9,
         1,
-        40
+        40,
+        listOf(WeaponAbility.Precision),
+        "Another oriental weapon, it resembles the Katana but is much smaller."
     )
 
     val tessen = Weapon(
@@ -728,7 +907,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         8,
         0,
-        25
+        25,
+        listOf(WeaponAbility.Precision, WeaponAbility.Throwable),
+        "An especially exotic oriental weapon, its appearance is that of a fan, but " +
+                "sharp knives have replaced the wooden slates of the fan. The base of the fan is " +
+                "a heavy counterweight that can deliver an Impact attack."
     )
 
     val tonfa = Weapon(
@@ -742,7 +925,10 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         13,
         0,
-        25
+        25,
+        listOf(WeaponAbility.Precision),
+        "This is a club with a short handle sticking out in the middle used while " +
+                "being held along the line of the forearm."
     )
 
     val twoBladeKatana = Weapon(
@@ -756,7 +942,13 @@ class WeaponOptions(): Serializable {
         WeaponType.Sword,
         11,
         3,
-        40
+        40,
+        listOf(WeaponAbility.Special),
+        "This is a staff with a Katana on each end. It is held and maneuvered holding " +
+                "the long central shaft. Although both hands must be used, the Strength bonus " +
+                "is not doubled. Because of the way it is wielded, it allows a second attack " +
+                "per turn, as though a second weapon were being used. However, it applies a " +
+                "penalty of only -10 to a character's Attack ability when being used in that way."
     )
 
     val brokenBottle = Weapon(
@@ -770,7 +962,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         5,
         -3,
-        15
+        15,
+        null,
+        ""
     )
 
     val chair = Weapon(
@@ -784,7 +978,9 @@ class WeaponOptions(): Serializable {
         WeaponType.TwoHanded,
         9,
         0,
-        20
+        20,
+        listOf(WeaponAbility.TwoHanded),
+        ""
     )
 
     val kitchenKnife = Weapon(
@@ -798,7 +994,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         9,
         -1,
-        10
+        10,
+        null,
+        ""
     )
 
     val hammer = Weapon(
@@ -812,7 +1010,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         12,
         2,
-        10
+        10,
+        null,
+        ""
     )
 
     val hoe = Weapon(
@@ -826,7 +1026,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Axe,
         10,
         1,
-        15
+        15,
+        null,
+        ""
     )
 
     val metalBar = Weapon(
@@ -840,7 +1042,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         12,
         2,
-        15
+        15,
+        null,
+        ""
     )
 
     val pick = Weapon(
@@ -854,7 +1058,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         10,
         3,
-        15
+        15,
+        null,
+        ""
     )
 
     val sickle = Weapon(
@@ -868,7 +1074,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Short,
         8,
         0,
-        15
+        15,
+        null,
+        ""
     )
 
     val torch = Weapon(
@@ -882,7 +1090,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         10,
         -2,
-        20
+        20,
+        null,
+        ""
     )
 
     val vase = Weapon(
@@ -896,7 +1106,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         6,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.Throwable),
+        ""
     )
 
     val woodenPole = Weapon(
@@ -910,7 +1122,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Mace,
         8,
         -1,
-        10
+        10,
+        null,
+        ""
     )
 
     val woodAxe = Weapon(
@@ -924,7 +1138,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Axe,
         12,
         3,
-        15
+        15,
+        listOf(WeaponAbility.OneOrTwoHanded),
+        ""
     )
 
     val buckler = Weapon(
@@ -938,7 +1154,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Shield,
         14,
         0,
-        20
+        20,
+        listOf(WeaponAbility.Special),
+        "This is a very small shield no more than a foot across. The greatest " +
+                "advantage of the buckler is that it can be fastened directly onto the forearm, " +
+                "allowing both hands to remain free. The buckler grants its user +10 to their " +
+                "Blocking ability and +5 to their Dodging ability."
     )
 
     val shield = Weapon(
@@ -952,7 +1173,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Shield,
         16,
         0,
-        25
+        25,
+        listOf(WeaponAbility.Special),
+        "A metal or reinforced wood surface with handles on the back so it can be held. " +
+                "It is used mostly as a means of defense. The shield grants its user +20 to their " +
+                "Blocking ability and +10 to their Dodging ability."
     )
 
     val fullShield = Weapon(
@@ -966,7 +1191,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Shield,
         18,
         1,
-        25
+        25,
+        listOf(WeaponAbility.Special),
+        "A large heavy shield often as tall as a man. Generally used by infantry " +
+                "soldiers, it has either a square or pointed base allowing it to be stuck into " +
+                "the ground by its own weight. The full shield grants its user +30 to their " +
+                "Blocking ability and +15 to their Dodging ability."
     )
 
     val arquebus = Weapon(
@@ -975,12 +1205,23 @@ class WeaponOptions(): Serializable {
         -20,
         6,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         9,
         -3,
-        20
+        20,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        "The arquebus is a firearm made from a long metal tube through which a ball of " +
+                "lead shot is propelled by an explosion of gunpowder. The arquebus is basically a " +
+                "cannon small enough to be carried and fired by a lone man. Like crossbows, they " +
+                "do not depend on the Strength of the user and, therefore, do not use any Strength " +
+                "bonus the character may have. Instead, the Arquebus has its own Strength, an 11, " +
+                "for which a +20 is added to the base damage of the shot fired. If a fumble is " +
+                "rolled with a level of less than 80 with the arquebus, the weapon fails to fire. " +
+                "If the fumble is higher than 80, the arquebus bursts, which ruins the weapon. For " +
+                "each +5 to the weapon's quality, a point is added to the Strength with which it " +
+                "fires, and also adds 15 to the level of Fumble required to make it burst."
     )
 
     val bolas = Weapon(
@@ -994,7 +1235,11 @@ class WeaponOptions(): Serializable {
         WeaponType.Throwing,
         6,
         2,
-        15
+        15,
+        listOf(WeaponAbility.Trapping, WeaponAbility.Complex, WeaponAbility.Special),
+        "A throwing weapon made up of three balls of metal or reinforced leather tied " +
+                "together by cords. It is used to capture an opponent. Unlike other weapons used " +
+                "for capture, it does not suffer a -40 penalty when trying to trap an opponent."
     )
 
     val blowgun = Weapon(
@@ -1003,12 +1248,17 @@ class WeaponOptions(): Serializable {
         -10,
         4,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         3,
         -3,
-        15
+        15,
+        null,
+        "This is a hollow tube of wood or metal from one to three feet long. It is " +
+                "used to shoot small darts, which are usually poisoned. As a special rule, the " +
+                "blowgun does not apply the Strength of the person to calculate the damage " +
+                "caused. It requires both hands for use."
     )
 
     val chakram = Weapon(
@@ -1022,7 +1272,12 @@ class WeaponOptions(): Serializable {
         WeaponType.Throwing,
         9,
         2,
-        20
+        20,
+        listOf(WeaponAbility.Special),
+        "Indigenous weapon that consists of a circular blade, used as a thrown weapon. " +
+                "It's known as Turcus in other cultures. It can return after being thrown if it " +
+                "doesn't hit anything. To catch it requires beating a Very Difficult Sleight of " +
+                "Hand check."
     )
 
     val compositeBow = Weapon(
@@ -1031,12 +1286,16 @@ class WeaponOptions(): Serializable {
         -30,
         7,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         8,
         -2,
-        25
+        25,
+        listOf(WeaponAbility.TwoHanded),
+        "This is the largest and most powerful type of bow. It is made of three pieces " +
+                "and measures more than 8 feet. It requires two hands to use, but its Strength " +
+                "bonus is not doubled."
     )
 
     val crossbow = Weapon(
@@ -1045,12 +1304,20 @@ class WeaponOptions(): Serializable {
         0,
         8,
         4,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         8,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        "A bow mounted on a stock with a groove from which crossbow bolts are fired. It " +
+                "is cocked using a small winch. Crossbows do not depend on the Strength of the " +
+                "user and, therefore, do not use any Strength bonus a character may have. " +
+                "Instead, they have their own Strength score (8) for which a +10 is added to " +
+                "the Base Damage of the quarrels fired. Each +5 to the weapon's quality, aside " +
+                "from improving its accuracy, adds a point to the Strength with which it fires. " +
+                "It requires both hands for use."
     )
 
     val darts = Weapon(
@@ -1064,7 +1331,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Throwing,
         3,
         -4,
-        15
+        15,
+        null,
+        "Small metal-tipped darts designed to be thrown by hand."
     )
 
     val repeatingCrossbow = Weapon(
@@ -1073,12 +1342,18 @@ class WeaponOptions(): Serializable {
         0,
         8,
         5,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         6,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        "In reality, this is not a different class of weapon from the normal crossbow, " +
+                "so it can be used without any need to develop a separate expertise. It is simply " +
+                "equipped with a system of gears that enable it to fire a larger number of " +
+                "quarrels without needing to reload. Usually it has a magazine containing from " +
+                "between 4 to 8 quarrels. It requires both hands to use."
     )
 
     val heavyCrossbow = Weapon(
@@ -1087,12 +1362,15 @@ class WeaponOptions(): Serializable {
         -20,
         10,
         7,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         8,
         -1,
-        20
+        20,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        "A large and heavy crossbow. It has a Strength of 10 and so it possesses a " +
+                "bonus of +15 to the Base Damage of its quarrels. It requires both hands for use."
     )
 
     val miniCrossbow = Weapon(
@@ -1101,12 +1379,17 @@ class WeaponOptions(): Serializable {
         10,
         3,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         5,
         -4,
-        15
+        15,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        "A crossbow of very small size which may be fired with just one hand. It has " +
+                "a Strength of 5, and so no bonus is added to the Base Damage. In game terms, " +
+                "it works the same way as a normal crossbow, and so it is not necessary to learn " +
+                "its use separately."
     )
 
     val shortBow = Weapon(
@@ -1115,12 +1398,16 @@ class WeaponOptions(): Serializable {
         -10,
         4,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         7,
         -3,
-        15
+        15,
+        listOf(WeaponAbility.TwoHanded),
+        "This weapon consists of a taut cord attached to either end of a singular " +
+                "curved piece of flexible wood and is less than about four feet tall. It " +
+                "requires two hands to use, but its Strength bonus is not doubled."
     )
 
     val longBow = Weapon(
@@ -1129,12 +1416,15 @@ class WeaponOptions(): Serializable {
         -30,
         7,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         8,
         -2,
-        20
+        20,
+        listOf(WeaponAbility.TwoHanded),
+        "Like the Short Bow, but with a size of between four-and-a-half and six feet " +
+                "tall. It requires two hands to use, but its Strength Bonus is not doubled."
     )
 
     val matchlock = Weapon(
@@ -1143,12 +1433,20 @@ class WeaponOptions(): Serializable {
         0,
         4,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         8,
         -3,
-        20
+        20,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        "A smaller and more complex version of the arquebus that can be fired with one" +
+                " hand. Like its larger counterpart, it has its own Strength score (9), for which" +
+                " a bonus of +10 is added to the Base Damage of the shot it fires. If a Fumble" +
+                " is rolled with a level of less than 80, the weapon misfires. If the Fumble is" +
+                " 80 or higher, it bursts, which ruins the weapon. For each +5 to the weapon's" +
+                " quality, a point is added to the Strength with which it fires, and also adds" +
+                " 15 to the level of Fumble required to make it burst."
     )
 
     val sling = Weapon(
@@ -1157,12 +1455,15 @@ class WeaponOptions(): Serializable {
         -40,
         4,
         null,
-        AttackType.Impact,
+        null,
         null,
         WeaponType.Projectile,
         3,
         -6,
-        10
+        10,
+        null,
+        "This is a small leather pouch tied to a cord. It is used with a spinning motion " +
+                "to throw stones."
     )
 
     val spikedBall = Weapon(
@@ -1176,7 +1477,9 @@ class WeaponOptions(): Serializable {
         WeaponType.Throwing,
         10,
         2,
-        15
+        15,
+        null,
+        "Metallic balls equipped with spikes to facilitate their being thrown."
     )
 
     val lightBallista = Weapon(
@@ -1185,12 +1488,24 @@ class WeaponOptions(): Serializable {
         -80,
         null,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         18,
         null,
-        25
+        25,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        "The ballista is a crossbow of enormous proportions that is used as a siege " +
+                "weapon. It is moved on wheels because its large size makes it impossible to " +
+                "carry. Light ballistae are manned by three persons, two who move it laterally, " +
+                "and a third who aims and fires. Ballistae do not depend on the Strength of the " +
+                "user and, therefore, do not use the Strength Bonuses of their crews. Instead the " +
+                "weapon has its own Strength score (12), for which a +20 is added to the Base " +
+                "Damage of the quarrels fired. Each +5 to the weapon's quality, aside from " +
+                "improving its accuracy, adds a point to the Strength with which it fires. As a " +
+                "special rule, the tremendous penetrating power of the quarrel fired by the " +
+                "ballista allows it to make a type of area attack in a straight line 10 feet " +
+                "long from its initial point of impact."
     )
 
     val heavyBallista = Weapon(
@@ -1199,12 +1514,18 @@ class WeaponOptions(): Serializable {
         -100,
         null,
         null,
-        AttackType.Thrust,
+        null,
         null,
         WeaponType.Projectile,
         20,
         null,
-        30
+        30,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        "A larger version of the Light Ballista that requires five persons to manage. " +
+                "It has a Strength of 13, and so adds a +25 to the Base Damage from its quarrels. " +
+                "Each +5 to the weapon's quality, aside from improving its accuracy, adds a point " +
+                "to the Strength with which it fires. Its area attack extends for 15 feet in a " +
+                "straight line from its initial point of impact."
     )
 
     val cannon = Weapon(
@@ -1213,30 +1534,68 @@ class WeaponOptions(): Serializable {
         -100,
         null,
         null,
-        AttackType.Impact,
+        null,
         null,
         WeaponType.Projectile,
         24,
         null,
-        30
+        30,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        "A firearm made of a large metal tube from which a large metal shell is " +
+                "propelled by gunpowder. The shell is made to explode, creating a cloud of " +
+                "shrapnel with a radius of 15-30 feet. Although the shell itself attacks in " +
+                "a conventional way, the explosion does not. The accuracy is checked to see " +
+                "if the shell hits where intended (using Table 45). After that, if a victim " +
+                "attempts to Dodge or Block, he must pass a Dodge or Athleticism check of " +
+                "Absurd difficulty if he is at greater than half the radius of the explosion, " +
+                "or against an Almost Impossible level difficulty otherwise. Cannons do not " +
+                "depend on the Strength of the user, instead they have their own Strength " +
+                "score (13), for which reason a +25 is added to the Base Damage of the shells " +
+                "fired. If a Fumble less than 70 is rolled with a cannon, the weapon fails to " +
+                "fire. If the Fumble is higher than 70, the cannon bursts, which ruins the " +
+                "weapon. For each +5 to the weapon's quality, a point is added to the Strength " +
+                "with which its shells fire. It also adds 15 to the level of Fumble required to " +
+                "make it burst."
     )
 
-    val commonWeapons = listOf(bastardSword, battleAxe, broadsword, cavLance, cestus, chain, club,
-        dagger, flail, foil, gladNet, greatHammer, halberd, handAxe, harpoon, heavyBattleMace,
-        hook, javelin, lance, largeMultiFlail, lasso, longSword, mace, parryDagger, quarterstaff,
-        rapier, saber, scimitar, scythe, shortSword, stiletto, trident, twoHandAxe, twoHandSword,
-        unarmed, warhammer, whip)
+    val shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
+        parryDagger, pick, raven, sai, shortSword, shuko, shuriken, sickle, stiletto, tanto, tessen, tonfa)
 
-    val exoticWeapons = listOf(boomerang, claws, haruNoOkina, katana, katar, kusariGama, nodachi,
-        nunchakus, raven, sai, shuko, shuriken, swordBreaker, tanto, tessen, tonfa, twoBladeKatana)
+    val axes = listOf(battleAxe, handAxe, hoe, woodAxe)
 
-    val improvisedWeapons = listOf(brokenBottle, chair, kitchenKnife, hammer, hoe, metalBar, pick,
-        sickle, torch, vase, woodenPole, woodAxe)
+    val maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)
+
+    val swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)
+
+    val twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)
+
+    val poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)
+
+    val cords = listOf(chain, gladNet, lasso, nunchakus, whip)
+
+    val mixed = listOf(bastardSword, flail, foil, halberd, heavyBattleMace, kusariGama,
+        largeMultiFlail, scythe, twoHandAxe)
 
     val shields = listOf(buckler, shield, fullShield)
 
-    val projectileWeapons = listOf(arquebus, bolas, blowgun, chakram, compositeBow, crossbow, darts,
-        repeatingCrossbow, heavyCrossbow, miniCrossbow, shortBow, longBow, matchlock, sling, spikedBall)
+    val projectileWeapons = listOf(arquebus, blowgun, compositeBow, crossbow, darts, repeatingCrossbow,
+        heavyCrossbow, miniCrossbow, shortBow, longBow, matchlock, sling)
+
+    val throwingWeapons = listOf(bolas, chakram, spikedBall)
 
     val siegeWeapons = listOf(lightBallista, heavyBallista, cannon)
+
+    val allWeapons = listOf(shortArms, axes, maces, swords, twoHanded, poles, cords, mixed, shields,
+        projectileWeapons, throwingWeapons, siegeWeapons)
+
+    fun findWeapon(weaponName: String): Weapon{
+        allWeapons.forEach{list ->
+            list.forEach{
+                if(it.name == weaponName)
+                    return it
+            }
+        }
+
+        return unarmed
+    }
 }

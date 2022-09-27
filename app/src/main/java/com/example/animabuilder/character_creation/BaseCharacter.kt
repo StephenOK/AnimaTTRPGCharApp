@@ -37,7 +37,7 @@ class BaseCharacter: Serializable {
 
     //character's level
     var lvl = 0
-    var presence: Int = 25
+    var presence: Int = 20
 
     //character creation and development points
     var createPT = 0
@@ -201,7 +201,11 @@ class BaseCharacter: Serializable {
         //determine development point count
         devPT = 500 + lvl * 100
 
-        presence = 25 + (5 * lvl)
+        presence =
+            if(lvl == 0)
+                20
+            else
+                25 + (5 * lvl)
         updateResistances()
 
         //recalculate maximum DP allotments
@@ -418,8 +422,19 @@ class BaseCharacter: Serializable {
         updateTotalSpent()
     }
 
+    @JvmName("setPrimaryWeapon2")
+    fun setPrimaryWeapon(toSet: String){
+        primaryWeapon = weaponOptions.findWeapon(toSet)
+        updateTotalSpent()
+    }
+
     fun addSecondaryWeapon(toAdd: Weapon){
         secondaryWeapon = secondaryWeapon + toAdd
+        updateTotalSpent()
+    }
+
+    fun addSecondaryWeapon(toAdd: String){
+        secondaryWeapon = secondaryWeapon + weaponOptions.findWeapon(toAdd)
         updateTotalSpent()
     }
 
@@ -446,9 +461,12 @@ class BaseCharacter: Serializable {
                         total += 15
                 }
 
-                //apply same type for it belonging to one mixed type
+                //apply mixed type for it belonging to one mixed type
                 else if(primaryWeapon.mixedType!!.contains(it.type))
-                    total += 10
+                    total += 15
+
+                else
+                    total += 20
             }
             else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
                     total += 15
@@ -518,6 +536,15 @@ class BaseCharacter: Serializable {
         applyDodgePoint(fileReader.readLine().toInt(), null)
         applyWearPoint(fileReader.readLine().toInt(), null)
 
+        setPrimaryWeapon(fileReader.readLine())
+
+        var loops = fileReader.readLine().toInt()
+
+        while(loops > 0){
+            addSecondaryWeapon(fileReader.readLine())
+            loops--
+        }
+
         restoreChar.close()
 
         updateTotalSpent()
@@ -553,6 +580,14 @@ class BaseCharacter: Serializable {
             addNewData(pointInBlock)
             addNewData(pointInDodge)
             addNewData(pointInWear)
+
+            addNewData(primaryWeapon.name)
+
+            addNewData(secondaryWeapon.size)
+
+            secondaryWeapon.forEach{
+                addNewData(it.name)
+            }
 
             byteArray.close()
 

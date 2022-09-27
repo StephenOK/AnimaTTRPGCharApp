@@ -8,14 +8,17 @@ class Weapon(
     var speed: Int,
     var oneHandStr: Int?,
     var twoHandStr: Int?,
-    var primaryType: AttackType,
+    var primaryType: AttackType?,
     var secondaryType: AttackType?,
     var type: WeaponType,
     var fortitude: Int?,
     var breakage: Int?,
-    var presence: Int?
+    var presence: Int?,
+    var ability: List<WeaponAbility>?,
+    var description: String
 ) : Serializable{
     var mixedType: List<WeaponType>? = null
+    var ownStrength: Int? = null
 
     init {
         if(type == WeaponType.Mixed){
@@ -28,6 +31,19 @@ class Weapon(
                 "Two-Handed Axe" -> listOf(WeaponType.Axe, WeaponType.TwoHanded)
 
                 "Kusari-Gama" -> listOf(WeaponType.Short, WeaponType.Cord)
+                else -> null
+            }
+        }
+
+        if(ability!!.contains(WeaponAbility.Trapping)){
+            ownStrength = when(name){
+                "Miniature Crossbow" -> 5
+                "Chain", "Whip", "Kusari-Gama", "Crossbow", "Repeating Crossbow" -> 8
+                "Lasso", "Matchlock Pistol" -> 9
+                "Gladiator's Net", "Bolas", "Heavy Crossbow" -> 10
+                "Arquebus" -> 11
+                "Light Ballista" -> 12
+                "Heavy Ballista", "Cannon" -> 13
                 else -> null
             }
         }

@@ -3,85 +3,161 @@ package com.example.animabuilder.activities.fragments.home_fragments
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 
 @Composable
 fun CombatFragment(
     charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ) {
-    Column(Modifier.verticalScroll(rememberScrollState())){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+    ){
         val primaryWeapon = remember{mutableStateOf(charInstance.primaryWeapon)}
         val allPrimaryBoxes: MutableState<List<MutableState<Boolean>>> = remember{mutableStateOf(listOf())}
 
         val detailAlertOn = remember{mutableStateOf(false)}
         val detailShow: MutableState<Weapon?> = remember{mutableStateOf(null)}
 
-        Column {
-             WeaponListButton(
-                 "Common",
-                 charInstance.weaponOptions.commonWeapons,
-                 primaryWeapon,
-                 charInstance,
-                 allPrimaryBoxes,
-                 detailAlertOn,
-                 detailShow
-             )
-            WeaponListButton(
-                "Exotic",
-                charInstance.weaponOptions.exoticWeapons,
-                primaryWeapon,
-                charInstance,
-                allPrimaryBoxes,
-                detailAlertOn,
-                detailShow
-            )
-            WeaponListButton(
-                "Improvised",
-                charInstance.weaponOptions.improvisedWeapons,
-                primaryWeapon,
-                charInstance,
-                allPrimaryBoxes,
-                detailAlertOn,
-                detailShow
-            )
-            WeaponListButton(
-                "Shields",
-                charInstance.weaponOptions.shields,
-                primaryWeapon,
-                charInstance,
-                allPrimaryBoxes,
-                detailAlertOn,
-                detailShow
-            )
-            WeaponListButton(
-                "Projectile",
-                charInstance.weaponOptions.projectileWeapons,
-                primaryWeapon,
-                charInstance,
-                allPrimaryBoxes,
-                detailAlertOn,
-                detailShow
-            )
-            WeaponListButton(
-                "Siege",
-                charInstance.weaponOptions.siegeWeapons,
-                primaryWeapon,
-                charInstance,
-                allPrimaryBoxes,
-                detailAlertOn,
-                detailShow
-            )
-        }
+        WeaponListButton(
+            "Short",
+            charInstance.weaponOptions.shortArms,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Axes",
+            charInstance.weaponOptions.axes,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Maces",
+            charInstance.weaponOptions.maces,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Swords",
+            charInstance.weaponOptions.swords,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Two-Handed",
+            charInstance.weaponOptions.twoHanded,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Pole",
+            charInstance.weaponOptions.poles,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Cords",
+            charInstance.weaponOptions.cords,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Mixed",
+            charInstance.weaponOptions.mixed,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Shields",
+            charInstance.weaponOptions.shields,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Projectile",
+            charInstance.weaponOptions.projectileWeapons,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Throwing",
+            charInstance.weaponOptions.throwingWeapons,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponListButton(
+            "Siege",
+            charInstance.weaponOptions.siegeWeapons,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
+        WeaponRow(
+            charInstance.weaponOptions.unarmed,
+            primaryWeapon,
+            charInstance,
+            allPrimaryBoxes,
+            detailAlertOn,
+            detailShow,
+            updateFunc
+        )
 
         if(detailAlertOn.value)
             WeaponDetailsAlert(detailAlertOn, detailShow.value!!)
@@ -98,12 +174,14 @@ private fun WeaponListButton(
     charInstance: BaseCharacter,
     primaryBoxes: MutableState<List<MutableState<Boolean>>>,
     alertToggle: MutableState<Boolean>,
-    toDisplay: MutableState<Weapon?>
+    toDisplay: MutableState<Weapon?>,
+    updateFunc: () -> Unit
 ){
     val open = remember{ mutableStateOf(false) }
 
     Button(
         onClick = {open.value = !open.value},
+        modifier = Modifier.width(250.dp)
     ){
         Text(text = name)
     }
@@ -113,7 +191,7 @@ private fun WeaponListButton(
     ){
         Column{
             options.forEach{
-                WeaponRow(it, chosen, charInstance, primaryBoxes, alertToggle, toDisplay)
+                WeaponRow(it, chosen, charInstance, primaryBoxes, alertToggle, toDisplay, updateFunc)
             }
         }
     }
@@ -126,13 +204,14 @@ private fun WeaponRow(
     charInstance: BaseCharacter,
     primaryBoxes: MutableState<List<MutableState<Boolean>>>,
     alertToggle: MutableState<Boolean>,
-    toDisplay: MutableState<Weapon?>
+    toDisplay: MutableState<Weapon?>,
+    updateFunc: () -> Unit
 ){
     val primeCheck = remember{mutableStateOf(input == chosen.value)}
     val secondCheck = remember{mutableStateOf(charInstance.secondaryWeapon.contains(input))}
     primaryBoxes.value += primeCheck
 
-    Row{
+    Row(verticalAlignment = Alignment.CenterVertically){
         Checkbox(
             checked = primeCheck.value,
             onCheckedChange = {
@@ -142,6 +221,7 @@ private fun WeaponRow(
                 primeCheck.value = true
                 chosen.value = input
                 charInstance.setPrimaryWeapon(chosen.value)
+                updateFunc()
             }
         )
 
@@ -153,6 +233,8 @@ private fun WeaponRow(
                     charInstance.addSecondaryWeapon(input)
                 else
                     charInstance.removeSecondaryWeapon(input)
+
+                updateFunc()
             }
         )
 
@@ -173,22 +255,29 @@ private fun WeaponDetailsAlert(
         onDismissRequest = {isOpen.value = false},
         title = {Text(text = "Stats for " + input.name)},
         text = {
-            Row{
-                Text(text = input.damage.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.speed.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.oneHandStr.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.twoHandStr.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.primaryType.name, modifier = Modifier.weight(0.8f))
+            Column {
+                InfoRow("Damage:", input.damage.toString())
+                InfoRow("Speed:", input.speed.toString())
+
+                if(input.oneHandStr != null)
+                    InfoRow("Min. Str:", input.oneHandStr.toString())
+
+                if(input.twoHandStr != null)
+                    InfoRow("Two-Handed Str:", input.twoHandStr.toString())
+
+                InfoRow("Weapon Type:", input.primaryType!!.name)
 
                 if(input.secondaryType != null)
-                    Text(text = input.secondaryType!!.name, modifier = Modifier.weight(0.8f))
-                else
-                    Spacer(modifier = Modifier.weight(0.8f))
+                    InfoRow("Secondary Type:", input.secondaryType!!.name)
 
-                Text(text = input.type.name, modifier = Modifier.weight(0.8f))
-                Text(text = input.fortitude.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.breakage.toString(), modifier = Modifier.weight(0.8f))
-                Text(text = input.presence.toString(), modifier = Modifier.weight(0.8f))
+                if(input.type == WeaponType.Mixed)
+                    InfoRow("Weapon Type:", input.mixedType!![0].name + "/" + input.mixedType!![1].name)
+                else
+                    InfoRow("WeaponType:", input.type.name)
+
+                InfoRow("Fortitude:", input.fortitude.toString())
+                InfoRow("Breakage:", input.breakage.toString())
+                InfoRow("Presence:", input.presence.toString())
             }
         },
         confirmButton = {
@@ -197,4 +286,15 @@ private fun WeaponDetailsAlert(
             }
         }
     )
+}
+
+@Composable
+private fun InfoRow(
+    label: String,
+    info: String
+){
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Text(text = label, modifier = Modifier.weight(0.5f))
+        Text(text = info, modifier = Modifier.weight(0.5f))
+    }
 }

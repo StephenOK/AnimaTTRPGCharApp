@@ -1,21 +1,21 @@
 package com.example.animabuilder.character_creation.equipment.weapons
 
+import com.example.animabuilder.serializables.SerialOutputStream
+import java.io.BufferedReader
 import java.io.Serializable
+import java.nio.charset.StandardCharsets
 
-class WeaponOptions(): Serializable {
+class WeaponProficiencies(): Serializable {
     val bastardSword = Weapon(
         "Bastard Sword",
         70,
         -30,
-        9,
-        7,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Mixed,
-        15,
-        5,
-        25,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        9, 7,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Mixed, listOf(WeaponType.Sword, WeaponType.TwoHanded),
+        15, 5, 25,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "This is a sword halfway between a Long Sword and the Two-handed Sword, " +
                 "measuring about five feet long. The weapon's long grip and counterweight " +
                 "allow it to be used with either one or two hands."
@@ -25,15 +25,12 @@ class WeaponOptions(): Serializable {
         "Battle Axe",
         70,
         -30,
-        7,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Axe,
-        15,
-        5,
-        25,
-        listOf(WeaponAbility.Throwable),
+        7, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Axe, null,
+        15, 5, 25,
+        100, null, 5,
+        listOf(WeaponAbility.Throwable), null,
         "A more manageable version of the Two-handed Axe, a battle axe can be wielded " +
                 "with just one hand."
     )
@@ -42,15 +39,12 @@ class WeaponOptions(): Serializable {
         "Broadsword",
         55,
         -5,
-        5,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Sword,
-        15,
-        3,
-        25,
-        null,
+        5, null,
+        AttackType.Cut, null,
+        WeaponType.Sword, null,
+        15, 3, 25,
+        null, null, null,
+        null, null,
         "A straight-bladed weapon slightly shorter than the Long sword. It is " +
                 "characterized by its broad blade and great fortitude."
     )
@@ -59,15 +53,12 @@ class WeaponOptions(): Serializable {
         "Cavalry Lance",
         80,
         -30,
-        8,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        12,
-        7,
-        25,
-        listOf(WeaponAbility.Special),
+        8, null,
+        AttackType.Thrust, null,
+        WeaponType.Pole, null,
+        12, 7, 25,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "A longer and heavier version of the traditional lance, it measures from nine " +
                 "to twelve feet long and can only be wielded from horseback. If it is used to " +
                 "block an attack, the defender applies a -30 penalty to his ability."
@@ -77,15 +68,12 @@ class WeaponOptions(): Serializable {
         "Cestus",
         25,
         10,
-        3,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        11,
-        -2,
-        15,
-        null,
+        3, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        11, -2, 15,
+        null, null, null,
+        null, null,
         "Metal covering for the hands, kneecaps, elbows, or forearms that includes " +
                 "knives or spikes used for striking an enemy."
     )
@@ -94,15 +82,12 @@ class WeaponOptions(): Serializable {
         "Chain",
         25,
         0,
-        6,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Cord,
-        13,
-        2,
-        15,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping),
+        6, null,
+        AttackType.Impact, null,
+        WeaponType.Cord, null,
+        13, 2, 15,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping), 8,
         "A length of metal links."
     )
 
@@ -110,15 +95,12 @@ class WeaponOptions(): Serializable {
         "Club",
         30,
         0,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        11,
-        -2,
-        15,
-        null,
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        11, -2, 15,
+        null, null, null,
+        null, null,
         "Made of wood or just stone, the Club is the quintessential Impact weapon."
     )
 
@@ -126,15 +108,12 @@ class WeaponOptions(): Serializable {
         "Dagger",
         30,
         20,
-        3,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        10,
-        -2,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Precision),
+        3, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        10, -2, 15,
+        50, null, 20,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
         "A combat knife roughly eight to twelve inches long. It is usually sharpened " +
                 "on both edges and balanced for throwing."
     )
@@ -143,15 +122,12 @@ class WeaponOptions(): Serializable {
         "Flail",
         40,
         0,
-        6,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mixed,
-        13,
-        4,
-        15,
-        listOf(WeaponAbility.Complex),
+        6, null,
+        AttackType.Impact, null,
+        WeaponType.Mixed, listOf(WeaponType.Mace, WeaponType.Cord),
+        13, 4, 15,
+        null, null, null,
+        listOf(WeaponAbility.Complex), null,
         "This is a shaft of wood or metal with a chain that ends in a spiked metal " +
                 "ball. A version exists with several smaller chains."
     )
@@ -160,15 +136,12 @@ class WeaponOptions(): Serializable {
         "Foil",
         35,
         15,
-        3,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Mixed,
-        9,
-        -2,
-        20,
-        listOf(WeaponAbility.Precision),
+        3, null,
+        AttackType.Thrust, null,
+        WeaponType.Mixed, listOf(WeaponType.Sword, WeaponType.Short),
+        9, -2, 20,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "A sword that is more slender and flexible than the Rapier. It is used as a " +
                 "Thrust weapon."
     )
@@ -177,15 +150,12 @@ class WeaponOptions(): Serializable {
         "Gladiator's Net",
         5,
         0,
-        4,
-        null,
-        AttackType.Impact,
-        AttackType.Cut,
-        WeaponType.Cord,
-        13,
-        -4,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Trapping, WeaponAbility.Special),
+        4, null,
+        AttackType.Impact, AttackType.Cut,
+        WeaponType.Cord, null,
+        13, -4, 15,
+        100, null, 5,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Trapping, WeaponAbility.Special), 10,
         "This weapon is a narrow net with weighted hooks designed to entangle the " +
                 "person at whom it is swung or thrown. Although it is a hand-to-hand weapon, " +
                 "its attack is against an area nine feet wide, and it can entangle various " +
@@ -198,15 +168,12 @@ class WeaponOptions(): Serializable {
         "Great Warhammer",
         70,
         -35,
-        10,
-        7,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        16,
-        6,
-        20,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        10, 7,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        16, 6, 20,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "A very large two-handed Impact weapon. It consists of a straight shaft " +
                 "crowned with an enormous metal hammer. Some have sharp pointed tips on the " +
                 "side so that they can be used for a second type of attack, a penetrating, or " +
@@ -217,15 +184,12 @@ class WeaponOptions(): Serializable {
         "Halberd",
         60,
         -15,
-        11,
-        6,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Mixed,
-        15,
-        4,
-        20,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        11, 6,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Mixed, listOf(WeaponType.Pole, WeaponType.TwoHanded),
+        15, 4, 20,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "The halberd is a weapon made of a pole of wood or metal that ends in an " +
                 "axe-like edged blade. It measures a total of between five feet and six and " +
                 "a half feet in length."
@@ -235,15 +199,12 @@ class WeaponOptions(): Serializable {
         "Hand Axe",
         45,
         0,
-        5,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Axe,
-        13,
-        4,
-        15,
-        listOf(WeaponAbility.Throwable),
+        5, null,
+        AttackType.Cut, null,
+        WeaponType.Axe, null,
+        13, 4, 15,
+        80, null, 10,
+        listOf(WeaponAbility.Throwable), null,
         "These are light axes used with a single hand. They usually have a " +
                 "counterweight that facilitates their use as thrown weapons. They measure from " +
                 "one to two feet in length."
@@ -253,15 +214,12 @@ class WeaponOptions(): Serializable {
         "Harpoon",
         35,
         -5,
-        5,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        11,
-        0,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        5, null,
+        AttackType.Thrust, null,
+        WeaponType.Pole, null,
+        11, 0, 15,
+        100, null, 20,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
         "This is a short-hafted weapon similar to a javelin, but with a barbed tip."
     )
 
@@ -269,15 +227,12 @@ class WeaponOptions(): Serializable {
         "Heavy Battle-Mace",
         60,
         -15,
-        10,
-        6,
-        AttackType.Impact,
-        null,
-        WeaponType.Mixed,
-        16,
-        5,
-        15,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        10, 6,
+        AttackType.Impact, null,
+        WeaponType.Mixed, listOf(WeaponType.Mace, WeaponType.TwoHanded),
+        16, 5, 15,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "A heavier version of the Mace with a shaft almost 3 feet long. It is topped " +
                 "with a weight of enormous proportions. Due to its size, it is usually used with " +
                 "both hands."
@@ -287,15 +242,12 @@ class WeaponOptions(): Serializable {
         "Hook",
         30,
         10,
-        3,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Short,
-        11,
-        -2,
-        15,
-        null,
+        3, null,
+        AttackType.Thrust, null,
+        WeaponType.Short, null,
+        11, -2, 15,
+        null, null, null,
+        null, null,
         "A weapon that is small and curved with a sharp point."
     )
 
@@ -303,15 +255,12 @@ class WeaponOptions(): Serializable {
         "Javelin",
         35,
         5,
-        4,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        10,
-        -2,
-        20,
-        listOf(WeaponAbility.Throwable),
+        4, null,
+        AttackType.Thrust, null,
+        WeaponType.Pole, null,
+        10, -2, 20,
+        80, null, 30,
+        listOf(WeaponAbility.Throwable), null,
         "A short spear used almost exclusively for throwing."
     )
 
@@ -319,15 +268,12 @@ class WeaponOptions(): Serializable {
         "Lance",
         40,
         5,
-        6,
-        4,
-        AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        13,
-        2,
-        25,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        6, 4,
+        AttackType.Thrust, null,
+        WeaponType.Pole, null,
+        13, 2, 25,
+        80, null, 30,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
         "The lance is the quintessential pole weapon. It consists of a long shaft of " +
                 "wood or metal ending in a fine two-edged point. It is very suitable for use " +
                 "from horseback, or for keeping enemies at a distance. It can measure from five " +
@@ -340,15 +286,12 @@ class WeaponOptions(): Serializable {
         "Large Multi-Headed Flail",
         80,
         -50,
-        10,
-        8,
-        AttackType.Impact,
-        null,
-        WeaponType.Mixed,
-        14,
-        6,
-        20,
-        listOf(WeaponAbility.Complex),
+        10, 8,
+        AttackType.Impact, null,
+        WeaponType.Mixed, listOf(WeaponType.Mace, WeaponType.TwoHanded),
+        14, 6, 20,
+        null, null, null,
+        listOf(WeaponAbility.Complex), null,
         "A Flail of enormous dimensions. It has various chains coming from the end of " +
                 "its shaft, each ending in a spiked metal ball."
     )
@@ -357,15 +300,12 @@ class WeaponOptions(): Serializable {
         "Lasso",
         5,
         10,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Cord,
-        9,
-        -4,
-        20,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping, WeaponAbility.Special),
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Cord, null,
+        9, -4, 20,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping, WeaponAbility.Special), 9,
         "A lasso is a rope prepared with a running knot for trapping animals or " +
                 "people. As a special rule, it does not apply the Strength of the person to " +
                 "calculate the damage caused. It requires both hands for use."
@@ -375,15 +315,12 @@ class WeaponOptions(): Serializable {
         "Long Sword",
         50,
         0,
-        6,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Sword,
-        13,
-        3,
-        25,
-        null,
+        6, null,
+        AttackType.Cut, null,
+        WeaponType.Sword, null,
+        13, 3, 25,
+        null, null, null,
+        null, null,
         "A cutting blade with a sharp point. It is generally three to three and a half " +
                 "feet long."
     )
@@ -392,15 +329,12 @@ class WeaponOptions(): Serializable {
         "Mace",
         40,
         0,
-        6,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        14,
-        4,
-        15,
-        null,
+        6, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        14, 4, 15,
+        null, null, null,
+        null, null,
         "This weapon consists of a wood or metal shaft about 18 inches long topped " +
                 "with a heavy round or spherical head."
     )
@@ -409,15 +343,12 @@ class WeaponOptions(): Serializable {
         "Parrying Dagger",
         30,
         15,
-        3,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        12,
-        0,
-        20,
-        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision),
+        3, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        12, 0, 20,
+        50, null, 15,
+        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision), null,
         "A variation on the traditional dagger designed to block the attacks of enemy " +
                 "weapons and trap them with the hilt. At its base are two sharp edges."
     )
@@ -426,15 +357,12 @@ class WeaponOptions(): Serializable {
         "Quarterstaff",
         30,
         10,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Pole,
-        11,
-        0,
-        30,
-        listOf(WeaponAbility.TwoHanded),
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Pole, null,
+        11, 0, 30,
+        null, null, null,
+        listOf(WeaponAbility.TwoHanded), null,
         "This weapon is a pole of wood or metal that may be as long as three feet. " +
                 "Although it can be used with just one hand, fighting that way causes a -10 " +
                 "penalty to a character's Attack ability."
@@ -444,15 +372,12 @@ class WeaponOptions(): Serializable {
         "Rapier",
         40,
         15,
-        4,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Sword,
-        11,
-        2,
-        20,
-        listOf(WeaponAbility.Precision),
+        4, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Sword, null,
+        11, 2, 20,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "A fine and stylized two-edged sword."
     )
 
@@ -460,15 +385,12 @@ class WeaponOptions(): Serializable {
         "Saber",
         45,
         10,
-        6,
-        null,
-        AttackType.Cut,
-        AttackType.Thrust,
-        WeaponType.Sword,
-        12,
-        3,
-        20,
-        null,
+        6, null,
+        AttackType.Cut, AttackType.Thrust,
+        WeaponType.Sword, null,
+        12, 3, 20,
+        null, null, null,
+        null, null,
         "A light curved blade that is similar and less durable than the Long Sword, " +
                 "but much more maneuverable."
     )
@@ -477,15 +399,12 @@ class WeaponOptions(): Serializable {
         "Scimitar",
         50,
         -5,
-        5,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Sword,
-        13,
-        4,
-        20,
-        null,
+        5, null,
+        AttackType.Cut, null,
+        WeaponType.Sword, null,
+        13, 4, 20,
+        null, null, null,
+        null, null,
         "A large curved sword generally shorter than the Long Sword, but with a broader blade."
     )
 
@@ -493,15 +412,12 @@ class WeaponOptions(): Serializable {
         "Scythe",
         35,
         0,
-        9,
-        5,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Mixed,
-        12,
-        2,
-        25,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        9, 5,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Mixed, listOf(WeaponType.Pole, WeaponType.TwoHanded),
+        12, 2, 25,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "This weapon consists of a long shaft ending in a long curved blade. It also " +
                 "has a handle allowing it to be used with two hands."
     )
@@ -510,15 +426,12 @@ class WeaponOptions(): Serializable {
         "Short Sword",
         40,
         15,
-        4,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        12,
-        1,
-        20,
-        listOf(WeaponAbility.Precision),
+        4, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        12, 1, 20,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "A straight sharp blade about a foot and a half long. Although it can cut, it " +
                 "is used principally as a Thrust weapon. Its reduced size makes it a very " +
                 "discrete weapon."
@@ -528,15 +441,12 @@ class WeaponOptions(): Serializable {
         "Stiletto",
         25,
         20,
-        3,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Short,
-        8,
-        -3,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Precision),
+        3, null,
+        AttackType.Thrust, null,
+        WeaponType.Short, null,
+        8, -3, 15,
+        30, null, 30,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
         "A sharp needle-like knife whose main purpose is for throwing, although it can " +
                 "be used in hand-to-hand combat."
     )
@@ -545,15 +455,12 @@ class WeaponOptions(): Serializable {
         "Weapon",
         40,
         -10,
-        7,
-        6,
-        AttackType.Thrust,
-        null,
-        WeaponType.Pole,
-        12,
-        3,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded),
+        7, 6,
+        AttackType.Thrust, null,
+        WeaponType.Pole, null,
+        12, 3, 15,
+        100, null, 15,
+        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
         "A spear or lance with a three part tip resembling a fork. Its design does " +
                 "allow it to be thrown. It is slightly larger than the trident used for fishing."
     )
@@ -562,15 +469,12 @@ class WeaponOptions(): Serializable {
         "Two-Handed Axe",
         100,
         -70,
-        11,
-        9,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Mixed,
-        17,
-        7,
-        30,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        11, 9,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Mixed, listOf(WeaponType.Axe, WeaponType.TwoHanded),
+        17, 7, 30,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "An enormous axe with a counterweight at the base of the handle. Depending " +
                 "on the design, it can be single- or double-bladed. Its size makes it almost " +
                 "imperative to wield it with both hands. It can measure from 5 feet to over 7 " +
@@ -581,15 +485,12 @@ class WeaponOptions(): Serializable {
         "Two-Handed Sword",
         90,
         -60,
-        10,
-        8,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.TwoHanded,
-        18,
-        6,
-        30,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        10, 8,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.TwoHanded, null,
+        18, 6, 30,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "The Two-handed Sword is the greatest of swords and can be measured more than " +
                 "5 feet long. Used almost exclusively with two hands, it is an awkward, but very " +
                 "deadly weapon."
@@ -599,15 +500,12 @@ class WeaponOptions(): Serializable {
         "Unarmed Combat",
         10,
         20,
-        0,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Unarmed,
-        null,
-        null,
-        null,
-        listOf(WeaponAbility.Precision),
+        0, null,
+        AttackType.Impact, null,
+        WeaponType.Unarmed, null,
+        null, null, null,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "This is not a weapon, of course. Rather, these are the numbers used for a " +
                 "character fighting without weapons. The attacks made are made by punching, " +
                 "kicking, head-butting, and biting. Fighting unarmed requires the use of the " +
@@ -619,15 +517,12 @@ class WeaponOptions(): Serializable {
         "Warhammer",
         50,
         -5,
-        6,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        15,
-        4,
-        15,
-        null,
+        6, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        15, 4, 15,
+        null, null, null,
+        null, null,
         "A crushing weapon consisting of a shaft topped by a great steel hammerhead."
     )
 
@@ -635,15 +530,12 @@ class WeaponOptions(): Serializable {
         "Whip",
         35,
         -20,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Cord,
-        9,
-        -3,
-        20,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping),
+        4, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Cord, null,
+        9, -3, 20,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.Trapping), 8,
         "A whip is a cord or chain appropriately made to be used as a weapon. It is " +
                 "used with rapid flicks of the wrist and is capable of cutting or trapping and " +
                 "opponent."
@@ -653,15 +545,12 @@ class WeaponOptions(): Serializable {
         "Boomerang",
         30,
         10,
-        4,
-        null,
-        AttackType.Impact,
-        AttackType.Cut,
-        WeaponType.Short,
-        10,
-        0,
-        15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Special),
+        4, null,
+        AttackType.Impact, AttackType.Cut,
+        WeaponType.Short, null,
+        10, 0, 15,
+        60, null, 20,
+        listOf(WeaponAbility.Throwable, WeaponAbility.Special), null,
         "A curved stick of wood or metal designed to be thrown and to return if it " +
                 "doesn't hit anything. To catch it requires a Difficult Sleight of Hand check."
     )
@@ -670,15 +559,12 @@ class WeaponOptions(): Serializable {
         "Claws",
         30,
         15,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Thrust,
-        WeaponType.Short,
-        12,
-        2,
-        15,
-        null,
+        4, null,
+        AttackType.Cut, AttackType.Thrust,
+        WeaponType.Short, null,
+        12, 2, 15,
+        null, null, null,
+        null, null,
         "Knives on a glove made to resemble animal claws."
     )
 
@@ -686,15 +572,12 @@ class WeaponOptions(): Serializable {
         "Haru No Okina",
         35,
         15,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Thrust,
-        WeaponType.Pole,
-        12,
-        2,
-        25,
-        listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special),
+        4, null,
+        AttackType.Cut, AttackType.Thrust,
+        WeaponType.Pole, null,
+        12, 2, 25,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special), null,
         "A weapon of oriental origin, it consists of two long poles connected by chains " +
                 "to a third, shorter section. Each of the longer poles ends in a blade like that " +
                 "of the halberd, but smaller. It is used placing the middle, shortest section " +
@@ -709,15 +592,12 @@ class WeaponOptions(): Serializable {
         "Katana",
         50,
         0,
-        6,
-        5,
-        AttackType.Cut,
-        null,
-        WeaponType.Sword,
-        11,
-        3,
-        40,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        6, 5,
+        AttackType.Cut, null,
+        WeaponType.Sword, null,
+        11, 3, 40,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "A sword of Asian design, it has a curved blade sharpened on only one edge. " +
                 "Similar to a saber, it is considerably heavier and more effective, but not as " +
                 "resistant to breaking."
@@ -727,15 +607,12 @@ class WeaponOptions(): Serializable {
         "Katar",
         40,
         10,
-        8,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        13,
-        3,
-        25,
-        listOf(WeaponAbility.Complex, WeaponAbility.Special),
+        8, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        13, 3, 25,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.Special), null,
         "A gauntlet equipped with knife blades 10 to 12 inches long. It possesses a " +
                 "complex mechanism that allows the blades to be extended and spun. In those " +
                 "cases, they can block projectiles like a buckler."
@@ -745,15 +622,12 @@ class WeaponOptions(): Serializable {
         "Kusari-Gama",
         40,
         5,
-        5,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Mixed,
-        12,
-        4,
-        25,
-        listOf(WeaponAbility.TwoHanded, WeaponAbility.Trapping, WeaponAbility.Special),
+        5, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Mixed, listOf(WeaponType.Short, WeaponType.Cord),
+        12, 4, 25,
+        null, null, null,
+        listOf(WeaponAbility.TwoHanded, WeaponAbility.Trapping, WeaponAbility.Special), 8,
         "This is a sickle of Asian design that has a chain attached to the bottom " +
                 "used to trap opponents. Although both hands are used, the Strength bonus is " +
                 "not doubled. It can be used for conventional attacks, or by whipping the chain " +
@@ -764,15 +638,12 @@ class WeaponOptions(): Serializable {
         "Nodachi",
         80,
         -35,
-        10,
-        8,
-        AttackType.Cut,
-        null,
-        WeaponType.TwoHanded,
-        14,
-        4,
-        40,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        10, 8,
+        AttackType.Cut, null,
+        WeaponType.TwoHanded, null,
+        14, 4, 40,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "A larger version of the Katana. It is used in a similar way, but it is much " +
                 "longer and thicker."
     )
@@ -781,15 +652,12 @@ class WeaponOptions(): Serializable {
         "Nunchakus",
         30,
         15,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Cord,
-        11,
-        0,
-        15,
-        null,
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Cord, null,
+        11, 0, 15,
+        null, null, null,
+        null, null,
         "These are two short sticks of wood or metal connected by a short chain."
     )
 
@@ -797,15 +665,12 @@ class WeaponOptions(): Serializable {
         "Raven",
         35,
         10,
-        4,
-        null,
-        AttackType.Impact,
-        AttackType.Cut,
-        WeaponType.Short,
-        11,
-        2,
-        25,
-        listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special),
+        4, null,
+        AttackType.Impact, AttackType.Cut,
+        WeaponType.Short, null,
+        11, 2, 25,
+        null, null, null,
+        listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special), null,
         "A multi-bladed knife in the shape of a star with a hole in the center. The " +
                 "thumb is placed in the hole and the knife is spun hard. As it spins, it can " +
                 "block missile attacks as though it were a buckler."
@@ -815,15 +680,12 @@ class WeaponOptions(): Serializable {
         "Sai",
         35,
         15,
-        4,
-        null,
-        AttackType.Thrust,
-        AttackType.Cut,
-        WeaponType.Short,
-        12,
-        0,
-        25,
-        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision),
+        4, null,
+        AttackType.Thrust, AttackType.Cut,
+        WeaponType.Short, null,
+        12, 0, 25,
+        null, null, null,
+        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), null,
         "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to resemble a trident. It is used primarily to block an opponent's weapon."
     )
 
@@ -831,15 +693,12 @@ class WeaponOptions(): Serializable {
         "Shuko",
         20,
         10,
-        4,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Short,
-        9,
-        -2,
-        25,
-        listOf(WeaponAbility.Special),
+        4, null,
+        AttackType.Thrust, null,
+        WeaponType.Short, null,
+        9, -2, 25,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "This is a claw-like device held in the palms of the hands. It is used both as " +
                 "a weapon and as a tool for climbing. Shuko adds a +10 to a character's climbing " +
                 "ability."
@@ -849,15 +708,12 @@ class WeaponOptions(): Serializable {
         "Shuriken",
         25,
         20,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Thrust,
-        WeaponType.Short,
-        10,
-        1,
-        20,
-        listOf(WeaponAbility.Throwable),
+        4, null,
+        AttackType.Cut, AttackType.Thrust,
+        WeaponType.Short, null,
+        10, 1, 20,
+        30, null, 20,
+        listOf(WeaponAbility.Throwable), null,
         "Small Asian metal weapons used exclusively for throwing. They can be " +
                 "various shapes, from simple sharp-edged disks to star-shaped knives."
     )
@@ -866,15 +722,12 @@ class WeaponOptions(): Serializable {
         "Sword Breaker",
         50,
         -20,
-        10,
-        8,
-        AttackType.Impact,
-        AttackType.Cut,
-        WeaponType.TwoHanded,
-        16,
-        8,
-        25,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        10, 8,
+        AttackType.Impact, AttackType.Cut,
+        WeaponType.TwoHanded, null,
+        16, 8, 25,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         "This is a short sword of great weight, containing a blade of almost 10 " +
                 "inches wide. Due to its enormous Impact potential, it is often used to break " +
                 "weapons or break through an enemy's armor."
@@ -884,15 +737,12 @@ class WeaponOptions(): Serializable {
         "Tanto",
         40,
         20,
-        3,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Short,
-        9,
-        1,
-        40,
-        listOf(WeaponAbility.Precision),
+        3, null,
+        AttackType.Cut, null,
+        WeaponType.Short, null,
+        9, 1, 40,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "Another oriental weapon, it resembles the Katana but is much smaller."
     )
 
@@ -900,15 +750,12 @@ class WeaponOptions(): Serializable {
         "Tessen (War Fan)",
         30,
         20,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Short,
-        8,
-        0,
-        25,
-        listOf(WeaponAbility.Precision, WeaponAbility.Throwable),
+        4, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Short, null,
+        8, 0, 25,
+        40, null, 20,
+        listOf(WeaponAbility.Precision, WeaponAbility.Throwable), null,
         "An especially exotic oriental weapon, its appearance is that of a fan, but " +
                 "sharp knives have replaced the wooden slates of the fan. The base of the fan is " +
                 "a heavy counterweight that can deliver an Impact attack."
@@ -918,15 +765,12 @@ class WeaponOptions(): Serializable {
         "Tonfa",
         30,
         20,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Short,
-        13,
-        0,
-        25,
-        listOf(WeaponAbility.Precision),
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Short, null,
+        13, 0, 25,
+        null, null, null,
+        listOf(WeaponAbility.Precision), null,
         "This is a club with a short handle sticking out in the middle used while " +
                 "being held along the line of the forearm."
     )
@@ -935,15 +779,12 @@ class WeaponOptions(): Serializable {
         "Two-Bladed Katana",
         55,
         -5,
-        8,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Sword,
-        11,
-        3,
-        40,
-        listOf(WeaponAbility.Special),
+        8, null,
+        AttackType.Cut, null,
+        WeaponType.Sword, null,
+        11, 3, 40,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "This is a staff with a Katana on each end. It is held and maneuvered holding " +
                 "the long central shaft. Although both hands must be used, the Strength bonus " +
                 "is not doubled. Because of the way it is wielded, it allows a second attack " +
@@ -955,15 +796,12 @@ class WeaponOptions(): Serializable {
         "Broken Bottle",
         15,
         10,
-        3,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Short,
-        5,
-        -3,
-        15,
-        null,
+        3, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Short, null,
+        5, -3, 15,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -971,15 +809,12 @@ class WeaponOptions(): Serializable {
         "Chair",
         25,
         -20,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.TwoHanded,
-        9,
-        0,
-        20,
-        listOf(WeaponAbility.TwoHanded),
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.TwoHanded, null,
+        9, 0, 20,
+        null, null, null,
+        listOf(WeaponAbility.TwoHanded), null,
         ""
     )
 
@@ -987,15 +822,12 @@ class WeaponOptions(): Serializable {
         "Kitchen Knife",
         25,
         10,
-        4,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Short,
-        9,
-        -1,
-        10,
-        null,
+        4, null,
+        AttackType.Cut, null,
+        WeaponType.Short, null,
+        9, -1, 10,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1003,15 +835,12 @@ class WeaponOptions(): Serializable {
         "Hammer",
         30,
         -20,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        12,
-        2,
-        10,
-        null,
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        12, 2, 10,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1019,15 +848,12 @@ class WeaponOptions(): Serializable {
         "Hoe",
         30,
         -20,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Impact,
-        WeaponType.Axe,
-        10,
-        1,
-        15,
-        null,
+        4, null,
+        AttackType.Cut, AttackType.Impact,
+        WeaponType.Axe, null,
+        10, 1, 15,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1035,15 +861,12 @@ class WeaponOptions(): Serializable {
         "Metal Bar",
         25,
         -5,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        12,
-        2,
-        15,
-        null,
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        12, 2, 15,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1051,15 +874,12 @@ class WeaponOptions(): Serializable {
         "Pick",
         40,
         -20,
-        5,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Short,
-        10,
-        3,
-        15,
-        null,
+        5, null,
+        AttackType.Thrust, null,
+        WeaponType.Short, null,
+        10, 3, 15,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1067,15 +887,12 @@ class WeaponOptions(): Serializable {
         "Sickle",
         35,
         -10,
-        4,
-        null,
-        AttackType.Cut,
-        AttackType.Thrust,
-        WeaponType.Short,
-        8,
-        0,
-        15,
-        null,
+        4, null,
+        AttackType.Cut, AttackType.Thrust,
+        WeaponType.Short, null,
+        8, 0, 15,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1083,15 +900,12 @@ class WeaponOptions(): Serializable {
         "Torch",
         20,
         -10,
-        4,
-        null,
-        AttackType.Impact,
-        AttackType.Heat,
-        WeaponType.Mace,
-        10,
-        -2,
-        20,
-        null,
+        4, null,
+        AttackType.Impact, AttackType.Heat,
+        WeaponType.Mace, null,
+        10, -2, 20,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1099,15 +913,12 @@ class WeaponOptions(): Serializable {
         "Vase",
         15,
         -10,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        6,
-        -2,
-        20,
-        listOf(WeaponAbility.Throwable),
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        6, -2, 20,
+        null, null, null,
+        listOf(WeaponAbility.Throwable), null,
         ""
     )
 
@@ -1115,15 +926,12 @@ class WeaponOptions(): Serializable {
         "Wooden Pole",
         20,
         0,
-        4,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Mace,
-        8,
-        -1,
-        10,
-        null,
+        4, null,
+        AttackType.Impact, null,
+        WeaponType.Mace, null,
+        8, -1, 10,
+        null, null, null,
+        null, null,
         ""
     )
 
@@ -1131,15 +939,12 @@ class WeaponOptions(): Serializable {
         "Woodsman's Axe",
         40,
         -10,
-        7,
-        5,
-        AttackType.Cut,
-        null,
-        WeaponType.Axe,
-        12,
-        3,
-        15,
-        listOf(WeaponAbility.OneOrTwoHanded),
+        7, 5,
+        AttackType.Cut, null,
+        WeaponType.Axe, null,
+        12, 3, 15,
+        null, null, null,
+        listOf(WeaponAbility.OneOrTwoHanded), null,
         ""
     )
 
@@ -1147,15 +952,12 @@ class WeaponOptions(): Serializable {
         "Buckler",
         15,
         -15,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Shield,
-        14,
-        0,
-        20,
-        listOf(WeaponAbility.Special),
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Shield, null,
+        14, 0, 20,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "This is a very small shield no more than a foot across. The greatest " +
                 "advantage of the buckler is that it can be fastened directly onto the forearm, " +
                 "allowing both hands to remain free. The buckler grants its user +10 to their " +
@@ -1166,15 +968,12 @@ class WeaponOptions(): Serializable {
         "Shield",
         20,
         -25,
-        7,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Shield,
-        16,
-        0,
-        25,
-        listOf(WeaponAbility.Special),
+        7, null,
+        AttackType.Impact, null,
+        WeaponType.Shield, null,
+        16, 0, 25,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "A metal or reinforced wood surface with handles on the back so it can be held. " +
                 "It is used mostly as a means of defense. The shield grants its user +20 to their " +
                 "Blocking ability and +10 to their Dodging ability."
@@ -1184,15 +983,12 @@ class WeaponOptions(): Serializable {
         "Full Shield",
         25,
         -40,
-        10,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Shield,
-        18,
-        1,
-        25,
-        listOf(WeaponAbility.Special),
+        10, null,
+        AttackType.Impact, null,
+        WeaponType.Shield, null,
+        18, 1, 25,
+        null, null, null,
+        listOf(WeaponAbility.Special), null,
         "A large heavy shield often as tall as a man. Generally used by infantry " +
                 "soldiers, it has either a square or pointed base allowing it to be stuck into " +
                 "the ground by its own weight. The full shield grants its user +30 to their " +
@@ -1203,15 +999,12 @@ class WeaponOptions(): Serializable {
         "Arquebus",
         null,
         -20,
-        6,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        9,
-        -3,
-        20,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        6, null,
+        null, null,
+        WeaponType.Projectile, null,
+        9, -3, 20,
+        null, 4, 80,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 11,
         "The arquebus is a firearm made from a long metal tube through which a ball of " +
                 "lead shot is propelled by an explosion of gunpowder. The arquebus is basically a " +
                 "cannon small enough to be carried and fired by a lone man. Like crossbows, they " +
@@ -1228,15 +1021,12 @@ class WeaponOptions(): Serializable {
         "Bolas",
         30,
         -10,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Throwing,
-        6,
-        2,
-        15,
-        listOf(WeaponAbility.Trapping, WeaponAbility.Complex, WeaponAbility.Special),
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Throwing, null,
+        6, 2, 15,
+        80, null, 20,
+        listOf(WeaponAbility.Trapping, WeaponAbility.Complex, WeaponAbility.Special), 10,
         "A throwing weapon made up of three balls of metal or reinforced leather tied " +
                 "together by cords. It is used to capture an opponent. Unlike other weapons used " +
                 "for capture, it does not suffer a -40 penalty when trying to trap an opponent."
@@ -1246,15 +1036,12 @@ class WeaponOptions(): Serializable {
         "Blowgun",
         null,
         -10,
-        4,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        3,
-        -3,
-        15,
-        null,
+        4, null,
+        null, null,
+        WeaponType.Projectile, null,
+        3, -3, 15,
+        null, 1, 50,
+        null, null,
         "This is a hollow tube of wood or metal from one to three feet long. It is " +
                 "used to shoot small darts, which are usually poisoned. As a special rule, the " +
                 "blowgun does not apply the Strength of the person to calculate the damage " +
@@ -1265,15 +1052,12 @@ class WeaponOptions(): Serializable {
         "Chakram",
         40,
         0,
-        6,
-        null,
-        AttackType.Cut,
-        null,
-        WeaponType.Throwing,
-        9,
-        2,
-        20,
-        listOf(WeaponAbility.Special),
+        6, null,
+        AttackType.Cut, null,
+        WeaponType.Throwing, null,
+        9, 2, 20,
+        80, null, 30,
+        listOf(WeaponAbility.Special), null,
         "Indigenous weapon that consists of a circular blade, used as a thrown weapon. " +
                 "It's known as Turcus in other cultures. It can return after being thrown if it " +
                 "doesn't hit anything. To catch it requires beating a Very Difficult Sleight of " +
@@ -1284,15 +1068,12 @@ class WeaponOptions(): Serializable {
         "Composite Bow",
         null,
         -30,
-        7,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        8,
-        -2,
-        25,
-        listOf(WeaponAbility.TwoHanded),
+        7, null,
+        null, null,
+        WeaponType.Projectile, null,
+        8, -2, 25,
+        null, 1, 90,
+        listOf(WeaponAbility.TwoHanded), null,
         "This is the largest and most powerful type of bow. It is made of three pieces " +
                 "and measures more than 8 feet. It requires two hands to use, but its Strength " +
                 "bonus is not doubled."
@@ -1302,15 +1083,12 @@ class WeaponOptions(): Serializable {
         "Crossbow",
         null,
         0,
-        8,
-        4,
-        null,
-        null,
-        WeaponType.Projectile,
-        8,
-        -2,
-        20,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        8, 4,
+        null, null,
+        WeaponType.Projectile, null,
+        8, -2, 20,
+        null, 2, 60,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
         "A bow mounted on a stock with a groove from which crossbow bolts are fired. It " +
                 "is cocked using a small winch. Crossbows do not depend on the Strength of the " +
                 "user and, therefore, do not use any Strength bonus a character may have. " +
@@ -1324,15 +1102,12 @@ class WeaponOptions(): Serializable {
         "Darts",
         20,
         20,
-        3,
-        null,
-        AttackType.Thrust,
-        null,
-        WeaponType.Throwing,
-        3,
-        -4,
-        15,
-        null,
+        3, null,
+        AttackType.Thrust, null,
+        WeaponType.Throwing, null,
+        3, -4, 15,
+        40, null, 20,
+        null, null,
         "Small metal-tipped darts designed to be thrown by hand."
     )
 
@@ -1340,15 +1115,12 @@ class WeaponOptions(): Serializable {
         "Repeating Crossbow",
         null,
         0,
-        8,
-        5,
-        null,
-        null,
-        WeaponType.Projectile,
-        6,
-        -2,
-        20,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        8, 5,
+        null, null,
+        WeaponType.Projectile, null,
+        6, -2, 20,
+        null, 3, 60,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
         "In reality, this is not a different class of weapon from the normal crossbow, " +
                 "so it can be used without any need to develop a separate expertise. It is simply " +
                 "equipped with a system of gears that enable it to fire a larger number of " +
@@ -1360,15 +1132,12 @@ class WeaponOptions(): Serializable {
         "Heavy Crossbow",
         null,
         -20,
-        10,
-        7,
-        null,
-        null,
-        WeaponType.Projectile,
-        8,
-        -1,
-        20,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        10, 7,
+        null, null,
+        WeaponType.Projectile, null,
+        8, -1, 20,
+        null, 2, 80,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 10,
         "A large and heavy crossbow. It has a Strength of 10 and so it possesses a " +
                 "bonus of +15 to the Base Damage of its quarrels. It requires both hands for use."
     )
@@ -1377,15 +1146,12 @@ class WeaponOptions(): Serializable {
         "Miniature Crossbow",
         null,
         10,
-        3,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        5,
-        -4,
-        15,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        3, null,
+        null, null,
+        WeaponType.Projectile, null,
+        5, -4, 15,
+        null, 2, 30,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 5,
         "A crossbow of very small size which may be fired with just one hand. It has " +
                 "a Strength of 5, and so no bonus is added to the Base Damage. In game terms, " +
                 "it works the same way as a normal crossbow, and so it is not necessary to learn " +
@@ -1396,15 +1162,12 @@ class WeaponOptions(): Serializable {
         "Short Bow",
         null,
         -10,
-        4,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        7,
-        -3,
-        15,
-        listOf(WeaponAbility.TwoHanded),
+        4, null,
+        null, null,
+        WeaponType.Projectile, null,
+        7, -3, 15,
+        null, 1, 40,
+        listOf(WeaponAbility.TwoHanded), null,
         "This weapon consists of a taut cord attached to either end of a singular " +
                 "curved piece of flexible wood and is less than about four feet tall. It " +
                 "requires two hands to use, but its Strength bonus is not doubled."
@@ -1414,15 +1177,12 @@ class WeaponOptions(): Serializable {
         "Longbow",
         null,
         -30,
-        7,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        8,
-        -2,
-        20,
-        listOf(WeaponAbility.TwoHanded),
+        7, null,
+        null, null,
+        WeaponType.Projectile, null,
+        8, -2, 20,
+        null, 1, 60,
+        listOf(WeaponAbility.TwoHanded), null,
         "Like the Short Bow, but with a size of between four-and-a-half and six feet " +
                 "tall. It requires two hands to use, but its Strength Bonus is not doubled."
     )
@@ -1431,15 +1191,12 @@ class WeaponOptions(): Serializable {
         "Matchlock Pistol",
         null,
         0,
-        4,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        8,
-        -3,
-        20,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        4, null,
+        null, null,
+        WeaponType.Projectile, null,
+        8, -3, 20,
+        null, 4, 50,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 9,
         "A smaller and more complex version of the arquebus that can be fired with one" +
                 " hand. Like its larger counterpart, it has its own Strength score (9), for which" +
                 " a bonus of +10 is added to the Base Damage of the shot it fires. If a Fumble" +
@@ -1453,15 +1210,12 @@ class WeaponOptions(): Serializable {
         "Sling",
         null,
         -40,
-        4,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        3,
-        -6,
-        10,
-        null,
+        4, null,
+        null, null,
+        WeaponType.Projectile, null,
+        3, -6, 10,
+        null, 1, 50,
+        null, null,
         "This is a small leather pouch tied to a cord. It is used with a spinning motion " +
                 "to throw stones."
     )
@@ -1470,15 +1224,12 @@ class WeaponOptions(): Serializable {
         "Spiked Ball",
         20,
         0,
-        5,
-        null,
-        AttackType.Impact,
-        null,
-        WeaponType.Throwing,
-        10,
-        2,
-        15,
-        null,
+        5, null,
+        AttackType.Impact, null,
+        WeaponType.Throwing, null,
+        10, 2, 15,
+        50, null, 20,
+        null, null,
         "Metallic balls equipped with spikes to facilitate their being thrown."
     )
 
@@ -1486,15 +1237,12 @@ class WeaponOptions(): Serializable {
         "Light Ballista",
         null,
         -80,
-        null,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        18,
-        null,
-        25,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        null, null,
+        null, null,
+        WeaponType.Projectile, null,
+        18, null, 25,
+        null, 10, 150,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 12,
         "The ballista is a crossbow of enormous proportions that is used as a siege " +
                 "weapon. It is moved on wheels because its large size makes it impossible to " +
                 "carry. Light ballistae are manned by three persons, two who move it laterally, " +
@@ -1512,15 +1260,12 @@ class WeaponOptions(): Serializable {
         "Heavy Ballista",
         null,
         -100,
-        null,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        20,
-        null,
-        30,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        null, null,
+        null, null,
+        WeaponType.Projectile, null,
+        20, null, 30,
+        null, 12, 200,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 13,
         "A larger version of the Light Ballista that requires five persons to manage. " +
                 "It has a Strength of 13, and so adds a +25 to the Base Damage from its quarrels. " +
                 "Each +5 to the weapon's quality, aside from improving its accuracy, adds a point " +
@@ -1532,15 +1277,12 @@ class WeaponOptions(): Serializable {
         "Cannon",
         null,
         -100,
-        null,
-        null,
-        null,
-        null,
-        WeaponType.Projectile,
-        24,
-        null,
-        30,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special),
+        null, null,
+        null, null,
+        WeaponType.Projectile, null,
+        24, null, 30,
+        null, 12, 250,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 13,
         "A firearm made of a large metal tube from which a large metal shell is " +
                 "propelled by gunpowder. The shell is made to explode, creating a cloud of " +
                 "shrapnel with a radius of 15-30 feet. Although the shell itself attacks in " +
@@ -1558,44 +1300,160 @@ class WeaponOptions(): Serializable {
                 "make it burst."
     )
 
-    val shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
+    var shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
         parryDagger, pick, raven, sai, shortSword, shuko, shuriken, sickle, stiletto, tanto, tessen, tonfa)
 
-    val axes = listOf(battleAxe, handAxe, hoe, woodAxe)
+    var axes = listOf(battleAxe, handAxe, hoe, woodAxe)
 
-    val maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)
+    var maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)
 
-    val swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)
+    var swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)
 
-    val twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)
+    var twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)
 
-    val poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)
+    var poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)
 
-    val cords = listOf(chain, gladNet, lasso, nunchakus, whip)
+    var cords = listOf(chain, gladNet, lasso, nunchakus, whip)
 
     val mixed = listOf(bastardSword, flail, foil, halberd, heavyBattleMace, kusariGama,
         largeMultiFlail, scythe, twoHandAxe)
 
-    val shields = listOf(buckler, shield, fullShield)
+    var shields = listOf(buckler, shield, fullShield)
 
-    val projectileWeapons = listOf(arquebus, blowgun, compositeBow, crossbow, darts, repeatingCrossbow,
-        heavyCrossbow, miniCrossbow, shortBow, longBow, matchlock, sling)
+    var projectiles = listOf(arquebus, blowgun, compositeBow, crossbow, darts, repeatingCrossbow,
+        heavyCrossbow, miniCrossbow, shortBow, longBow, matchlock, sling, lightBallista, heavyBallista, cannon)
 
-    val throwingWeapons = listOf(bolas, chakram, spikedBall)
+    var thrown = listOf(bolas, chakram, spikedBall)
 
-    val siegeWeapons = listOf(lightBallista, heavyBallista, cannon)
-
-    val allWeapons = listOf(shortArms, axes, maces, swords, twoHanded, poles, cords, mixed, shields,
-        projectileWeapons, throwingWeapons, siegeWeapons)
+    val allWeapons = shortArms + axes + maces + swords + twoHanded + poles + cords + mixed +
+            shields + projectiles + thrown
 
     fun findWeapon(weaponName: String): Weapon{
-        allWeapons.forEach{list ->
-            list.forEach{
-                if(it.name == weaponName)
-                    return it
-            }
+        allWeapons.forEach{
+            if(it.name == weaponName)
+                return it
         }
 
         return unarmed
+    }
+
+    var improvised = listOf(brokenBottle, chair, kitchenKnife, hammer, hoe, metalBar, pick,
+        sickle, torch, vase, woodenPole, woodAxe)
+    var barbarianWeapons = listOf(twoHandAxe, battleAxe, twoHandSword, bastardSword, heavyBattleMace)
+    var ninjaWeapons = listOf(katana, tanto, claws, shuriken, kusariGama)
+    var duelWeapons = listOf(rapier, foil, parryDagger, dagger, saber, longSword)
+    var pirateWeapons = listOf(harpoon, gladNet, hook, saber, handAxe)
+    var nomadWeapons = listOf(dagger, chakram, longBow, scimitar, lance)
+    var huntWeapons = listOf(javelin, shortBow, shortSword, lance, bolas)
+    var knightWeapons = listOf(longSword, cavLance, mace, bastardSword, shield)
+    var gladiatorWeapons = listOf(shortSword, gladNet, buckler, trident, whip)
+    var assassinWeapons = listOf(shortSword, miniCrossbow, club, blowgun, stiletto)
+    var soldierWeapons = listOf(crossbow, longSword, halberd, lance, shield)
+    var indigenousWeapons = listOf(javelin, lance, fullShield, shortBow, blowgun)
+    var banditWeapons = listOf(dagger, crossbow, shortSword, mace, club)
+
+    var takenModules: List<List<Weapon>> = mutableListOf()
+
+    fun updateModulesTaken(weaponCheck: List<Weapon>, isAdded: Boolean){
+        if(isAdded)
+            takenModules = takenModules + listOf(weaponCheck)
+        else
+            takenModules = takenModules - listOf(weaponCheck).toSet()
+    }
+
+
+    var primaryWeapon = unarmed
+    var secondaryWeapon: List<Weapon> = listOf()
+
+    fun calculateSpent(): Int{
+        var total = 0
+
+        val toCheck = secondaryWeapon.toMutableList()
+
+        takenModules.forEach{
+            secondaryWeapon = secondaryWeapon - it.toSet()
+            total += 50
+        }
+
+        toCheck.forEach{
+            //if primary weapon is mixed
+            if(primaryWeapon.type == WeaponType.Mixed){
+                //apply same type for exactly matching weapons
+                if(it.type == WeaponType.Mixed) {
+                    if ((primaryWeapon.mixedType!! - it.mixedType).isEmpty())
+                        total += 10
+
+                    //apply mixed type for one matching type
+                    else if (primaryWeapon.mixedType!!.contains(it.mixedType!![0]) ||
+                        primaryWeapon.mixedType!!.contains(it.mixedType!![1])
+                    )
+                        total += 15
+                }
+
+                //apply mixed type for it belonging to one mixed type
+                else if(primaryWeapon.mixedType!!.contains(it.type))
+                    total += 15
+
+                else
+                    total += 20
+            }
+            else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
+                total += 15
+            else if(it.type == primaryWeapon.type)
+                total += 10
+            else
+                total += 20
+        }
+
+        return total
+    }
+
+
+
+
+
+
+    fun loadProficiencies(fileReader: BufferedReader){
+        primaryWeapon = findWeapon(fileReader.readLine())
+
+        var loops = fileReader.readLine().toInt()
+
+        while(loops > 0){
+            secondaryWeapon = secondaryWeapon + findWeapon(fileReader.readLine())
+            loops--
+        }
+    }
+
+    fun writeProficiencies(byteArray: SerialOutputStream){
+        byteArray.write(
+            primaryWeapon.name.toByteArray(StandardCharsets.UTF_8),
+            0,
+            primaryWeapon.name.toByteArray(StandardCharsets.UTF_8).size
+        )
+        writeNewLine(byteArray)
+
+        byteArray.write(
+            ("" + secondaryWeapon.size).toByteArray(StandardCharsets.UTF_8),
+            0,
+            ("" + secondaryWeapon.size).toByteArray(StandardCharsets.UTF_8).size
+        )
+        writeNewLine(byteArray)
+
+        secondaryWeapon.forEach{
+            byteArray.write(
+                it.name.toByteArray(StandardCharsets.UTF_8),
+                0,
+                it.name.toByteArray(StandardCharsets.UTF_8).size
+            )
+            writeNewLine(byteArray)
+        }
+    }
+
+    private fun writeNewLine(byteArray: SerialOutputStream){
+        byteArray.write(
+            "\n".toByteArray(StandardCharsets.UTF_8),
+            0,
+            "\n".toByteArray(StandardCharsets.UTF_8).size
+        )
     }
 }

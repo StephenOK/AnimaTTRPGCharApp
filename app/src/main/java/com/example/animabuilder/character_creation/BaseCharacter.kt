@@ -10,7 +10,7 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Clas
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
-import com.example.animabuilder.character_creation.equipment.weapons.WeaponOptions
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponProficiencies
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.*
 import java.nio.charset.StandardCharsets
@@ -126,11 +126,7 @@ class BaseCharacter: Serializable {
     var rmMult = 1.0
     var rpsyMult = 1.0
 
-    val weaponOptions = WeaponOptions()
-
-    var primaryWeapon: Weapon = weaponOptions.unarmed
-
-    var secondaryWeapon: List<Weapon> = mutableListOf()
+    val weaponProficiencies = WeaponProficiencies()
 
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
@@ -247,7 +243,7 @@ class BaseCharacter: Serializable {
             pointInBlock * ownClass.blockGrowth +
             pointInDodge * ownClass.dodgeGrowth +
             pointInWear * ownClass.armorGrowth +
-            calculateModulePoints()
+            weaponProficiencies.calculateSpent()
     }
 
     //setters for each primary characteristic
@@ -416,69 +412,6 @@ class BaseCharacter: Serializable {
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
     }
 
-    @JvmName("setPrimaryWeapon1")
-    fun setPrimaryWeapon(toSet: Weapon){
-        primaryWeapon = toSet
-        updateTotalSpent()
-    }
-
-    @JvmName("setPrimaryWeapon2")
-    fun setPrimaryWeapon(toSet: String){
-        primaryWeapon = weaponOptions.findWeapon(toSet)
-        updateTotalSpent()
-    }
-
-    fun addSecondaryWeapon(toAdd: Weapon){
-        secondaryWeapon = secondaryWeapon + toAdd
-        updateTotalSpent()
-    }
-
-    fun addSecondaryWeapon(toAdd: String){
-        secondaryWeapon = secondaryWeapon + weaponOptions.findWeapon(toAdd)
-        updateTotalSpent()
-    }
-
-    fun removeSecondaryWeapon(toRemove: Weapon){
-        secondaryWeapon = secondaryWeapon - toRemove
-        updateTotalSpent()
-    }
-
-    fun calculateModulePoints(): Int{
-        var total = 0
-
-        secondaryWeapon.forEach{
-            //if primary weapon is mixed
-            if(primaryWeapon.type == WeaponType.Mixed){
-                //apply same type for exactly matching weapons
-                if(it.type == WeaponType.Mixed) {
-                    if ((primaryWeapon.mixedType!! - it.mixedType).isEmpty())
-                        total += 10
-
-                    //apply mixed type for one matching type
-                    else if (primaryWeapon.mixedType!!.contains(it.mixedType!![0]) ||
-                        primaryWeapon.mixedType!!.contains(it.mixedType!![1])
-                    )
-                        total += 15
-                }
-
-                //apply mixed type for it belonging to one mixed type
-                else if(primaryWeapon.mixedType!!.contains(it.type))
-                    total += 15
-
-                else
-                    total += 20
-            }
-            else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
-                    total += 15
-            else if(it.type == primaryWeapon.type)
-                total += 10
-            else
-                total += 20
-        }
-
-        return total
-    }
-
 
 
 
@@ -516,6 +449,7 @@ class BaseCharacter: Serializable {
         charName = fileReader.readLine()
 
         secondaryList.loadList(fileReader)
+        weaponProficiencies.loadProficiencies(fileReader)
 
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
@@ -536,15 +470,6 @@ class BaseCharacter: Serializable {
         applyDodgePoint(fileReader.readLine().toInt(), null)
         applyWearPoint(fileReader.readLine().toInt(), null)
 
-        setPrimaryWeapon(fileReader.readLine())
-
-        var loops = fileReader.readLine().toInt()
-
-        while(loops > 0){
-            addSecondaryWeapon(fileReader.readLine())
-            loops--
-        }
-
         restoreChar.close()
 
         updateTotalSpent()
@@ -561,6 +486,7 @@ class BaseCharacter: Serializable {
             addNewData(charName)
 
             secondaryList.writeList(byteArray)
+            weaponProficiencies.writeProficiencies(byteArray)
 
             addNewData(ownClass.heldClass.name)
             addNewData(ownRace!!.heldRace.name)
@@ -580,14 +506,6 @@ class BaseCharacter: Serializable {
             addNewData(pointInBlock)
             addNewData(pointInDodge)
             addNewData(pointInWear)
-
-            addNewData(primaryWeapon.name)
-
-            addNewData(secondaryWeapon.size)
-
-            secondaryWeapon.forEach{
-                addNewData(it.name)
-            }
 
             byteArray.close()
 

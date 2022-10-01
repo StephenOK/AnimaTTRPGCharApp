@@ -1300,6 +1300,10 @@ class WeaponProficiencies(): Serializable {
                 "make it burst."
     )
 
+    var primaryWeapon = unarmed
+    var individualModules: List<Weapon> = listOf()
+    var fullModWeapons: List<Weapon> = listOf()
+
     var shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
         parryDagger, pick, raven, sai, shortSword, shuko, shuriken, sickle, stiletto, tanto, tessen, tonfa)
 
@@ -1354,24 +1358,33 @@ class WeaponProficiencies(): Serializable {
 
     var takenModules: List<List<Weapon>> = mutableListOf()
 
-    fun updateModulesTaken(weaponCheck: List<Weapon>, isAdded: Boolean){
-        if(isAdded)
-            takenModules = takenModules + listOf(weaponCheck)
-        else
-            takenModules = takenModules - listOf(weaponCheck).toSet()
+    fun updateModulesTaken(weaponCheck: List<Weapon>, isAdded: Boolean): List<Weapon>{
+        fullModWeapons = listOf()
+
+        takenModules =
+            if(isAdded)
+                takenModules + listOf(weaponCheck)
+            else
+                takenModules - listOf(weaponCheck).toSet()
+
+        takenModules.forEach{list ->
+            list.forEach{
+                fullModWeapons = fullModWeapons + it
+            }
+        }
+        individualModules = individualModules - fullModWeapons.toSet()
+
+        return fullModWeapons
     }
 
 
-    var primaryWeapon = unarmed
-    var secondaryWeapon: List<Weapon> = listOf()
 
     fun calculateSpent(): Int{
         var total = 0
 
-        val toCheck = secondaryWeapon.toMutableList()
+        val toCheck = individualModules.toMutableList() - fullModWeapons.toSet()
 
         takenModules.forEach{
-            secondaryWeapon = secondaryWeapon - it.toSet()
             total += 50
         }
 
@@ -1419,7 +1432,14 @@ class WeaponProficiencies(): Serializable {
         var loops = fileReader.readLine().toInt()
 
         while(loops > 0){
-            secondaryWeapon = secondaryWeapon + findWeapon(fileReader.readLine())
+            individualModules = individualModules + findWeapon(fileReader.readLine())
+            loops--
+        }
+
+        loops = fileReader.readLine().toInt()
+
+        while(loops > 0){
+            loadModule(fileReader)
             loops--
         }
     }
@@ -1433,18 +1453,93 @@ class WeaponProficiencies(): Serializable {
         writeNewLine(byteArray)
 
         byteArray.write(
-            ("" + secondaryWeapon.size).toByteArray(StandardCharsets.UTF_8),
+            (individualModules.size.toString()).toByteArray(StandardCharsets.UTF_8),
             0,
-            ("" + secondaryWeapon.size).toByteArray(StandardCharsets.UTF_8).size
+            (individualModules.size.toString()).toByteArray(StandardCharsets.UTF_8).size
         )
         writeNewLine(byteArray)
 
-        secondaryWeapon.forEach{
+        individualModules.forEach{
             byteArray.write(
                 it.name.toByteArray(StandardCharsets.UTF_8),
                 0,
                 it.name.toByteArray(StandardCharsets.UTF_8).size
             )
+            writeNewLine(byteArray)
+        }
+
+        byteArray.write(
+            (takenModules.size.toString()).toByteArray(StandardCharsets.UTF_8),
+            0,
+            (takenModules.size.toString()).toByteArray(StandardCharsets.UTF_8).size
+        )
+        writeNewLine(byteArray)
+
+        writeModules(byteArray)
+    }
+
+    private fun loadModule(fileReader: BufferedReader){
+        val addList = when(fileReader.readLine().toInt()){
+            0 -> shortArms
+            1 -> axes
+            2 -> maces
+            3 -> swords
+            4 -> twoHanded
+            5 -> poles
+            6 -> cords
+            7 -> shields
+            8 -> projectiles
+            9 -> thrown
+            10 -> barbarianWeapons
+            11 -> ninjaWeapons
+            12 -> duelWeapons
+            13 -> pirateWeapons
+            14 -> nomadWeapons
+            15 -> huntWeapons
+            16 -> knightWeapons
+            17 -> gladiatorWeapons
+            18 -> assassinWeapons
+            19 -> soldierWeapons
+            20 -> indigenousWeapons
+            21 -> banditWeapons
+            22 -> improvised
+            else -> listOf()
+        }
+
+        updateModulesTaken(addList, true)
+    }
+
+    private fun writeModules(byteArray: SerialOutputStream){
+        takenModules.forEach{
+            val listNum = when(it){
+                shortArms -> "0"
+                axes -> "1"
+                maces -> "2"
+                swords -> "3"
+                twoHanded -> "4"
+                poles -> "5"
+                cords -> "6"
+                shields -> "7"
+                projectiles -> "8"
+                thrown -> "9"
+                barbarianWeapons -> "10"
+                ninjaWeapons -> "11"
+                duelWeapons -> "12"
+                pirateWeapons -> "13"
+                nomadWeapons -> "14"
+                huntWeapons -> "15"
+                knightWeapons -> "16"
+                gladiatorWeapons -> "17"
+                assassinWeapons -> "18"
+                soldierWeapons -> "19"
+                indigenousWeapons -> "20"
+                banditWeapons -> "21"
+                improvised -> "22"
+                else -> "23"
+            }
+
+            byteArray.write(listNum.toByteArray(StandardCharsets.UTF_8), 0, listNum.toByteArray(StandardCharsets.UTF_8).size)
+
             writeNewLine(byteArray)
         }
     }

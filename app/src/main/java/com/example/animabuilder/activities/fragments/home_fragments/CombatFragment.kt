@@ -8,8 +8,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
@@ -17,6 +19,13 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 
 var modWeapons: List<Weapon> = listOf()
 var allSecondaries: List<Pair<Weapon, MutableState<Boolean>>> = listOf()
+
+val archetypeAlert = mutableStateOf(false)
+var detailListName = ""
+var detailList: List<Weapon> = listOf()
+
+val detailAlertOn = mutableStateOf(false)
+val detailItem = mutableStateOf(Pair("name", "description"))
 
 @Composable
 fun CombatFragment(
@@ -34,7 +43,7 @@ fun CombatFragment(
         val primaryWeapon = remember{mutableStateOf(charInstance.weaponProficiencies.primaryWeapon)}
         val allPrimaryBoxes: MutableState<List<MutableState<Boolean>>> = remember{mutableStateOf(listOf())}
 
-        val detailAlertOn = remember{mutableStateOf(false)}
+        val weaponDetailAlertOn = remember{mutableStateOf(false)}
         val detailShow: MutableState<Weapon?> = remember{mutableStateOf(null)}
 
         Text(text = "Current Primary Weapon: " + primaryWeapon.value.name)
@@ -45,7 +54,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.shortArms,
             true,
@@ -57,7 +66,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.axes,
             true,
@@ -69,7 +78,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.maces,
             true,
@@ -81,7 +90,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.swords,
             true,
@@ -93,7 +102,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.twoHanded,
             true,
@@ -105,7 +114,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.poles,
             true,
@@ -117,7 +126,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.cords,
             true,
@@ -129,7 +138,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             null,
             false,
@@ -141,7 +150,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.shields,
             true,
@@ -153,7 +162,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.projectiles,
             true,
@@ -165,7 +174,7 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.thrown,
             true,
@@ -176,29 +185,21 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            detailAlertOn,
+            weaponDetailAlertOn,
             detailShow,
             updateFunc
         )
 
-        Text(text = "Archetype Modules")
+        ArchetypeButton(charInstance, updateFunc)
 
-        ModuleRow("Barbarian", charInstance, charInstance.weaponProficiencies.barbarianWeapons, updateFunc)
-        ModuleRow("Ninja", charInstance, charInstance.weaponProficiencies.ninjaWeapons, updateFunc)
-        ModuleRow("Duel", charInstance, charInstance.weaponProficiencies.duelWeapons, updateFunc)
-        ModuleRow("Pirate", charInstance, charInstance.weaponProficiencies.pirateWeapons, updateFunc)
-        ModuleRow("Nomad", charInstance, charInstance.weaponProficiencies.nomadWeapons, updateFunc)
-        ModuleRow("Hunter", charInstance, charInstance.weaponProficiencies.huntWeapons, updateFunc)
-        ModuleRow("Knight", charInstance, charInstance.weaponProficiencies.knightWeapons, updateFunc)
-        ModuleRow("Gladiator", charInstance, charInstance.weaponProficiencies.gladiatorWeapons, updateFunc)
-        ModuleRow("Assassin", charInstance, charInstance.weaponProficiencies.assassinWeapons, updateFunc)
-        ModuleRow("Soldier", charInstance, charInstance.weaponProficiencies.soldierWeapons, updateFunc)
-        ModuleRow("Indigenous", charInstance, charInstance.weaponProficiencies.indigenousWeapons, updateFunc)
-        ModuleRow("Bandit", charInstance, charInstance.weaponProficiencies.banditWeapons, updateFunc)
-        ModuleRow("Improvised", charInstance, charInstance.weaponProficiencies.improvised, updateFunc)
+        StyleButton(charInstance, updateFunc)
 
+        if(weaponDetailAlertOn.value)
+            WeaponDetailsAlert(weaponDetailAlertOn, detailShow.value!!)
         if(detailAlertOn.value)
-            WeaponDetailsAlert(detailAlertOn, detailShow.value!!)
+            DetailAlert()
+        if(archetypeAlert.value)
+            ArchetypeAlert()
     }
 }
 
@@ -234,8 +235,164 @@ private fun WeaponListButton(
                 ModuleRow("$name Module", charInstance, wholeList!!, updateFunc)
 
             options.forEach{
-                WeaponRow(it, chosen, charInstance, primaryBoxes, alertToggle, toDisplay, updateFunc)
+                WeaponRow(
+                    it,
+                    chosen,
+                    charInstance,
+                    primaryBoxes,
+                    alertToggle,
+                    toDisplay,
+                    updateFunc
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun ArchetypeButton(charInstance: BaseCharacter, updateFunc: () -> Unit){
+    val open = remember{mutableStateOf(false)}
+
+    Button(
+        onClick = {open.value = !open.value},
+        modifier = Modifier.width(250.dp)
+    ){
+        Text(text = "Archetype Modules")
+    }
+
+    AnimatedVisibility(visible = open.value){
+        Column {
+            ModuleRow(
+                "Barbarian",
+                charInstance,
+                charInstance.weaponProficiencies.barbarianWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Ninja",
+                charInstance,
+                charInstance.weaponProficiencies.ninjaWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Duel",
+                charInstance,
+                charInstance.weaponProficiencies.duelWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Pirate",
+                charInstance,
+                charInstance.weaponProficiencies.pirateWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Nomad",
+                charInstance,
+                charInstance.weaponProficiencies.nomadWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Hunter",
+                charInstance,
+                charInstance.weaponProficiencies.huntWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Knight",
+                charInstance,
+                charInstance.weaponProficiencies.knightWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Gladiator",
+                charInstance,
+                charInstance.weaponProficiencies.gladiatorWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Assassin",
+                charInstance,
+                charInstance.weaponProficiencies.assassinWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Soldier",
+                charInstance,
+                charInstance.weaponProficiencies.soldierWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Indigenous",
+                charInstance,
+                charInstance.weaponProficiencies.indigenousWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Bandit",
+                charInstance,
+                charInstance.weaponProficiencies.banditWeapons,
+                updateFunc
+            )
+            ModuleRow(
+                "Improvised",
+                charInstance,
+                charInstance.weaponProficiencies.improvised,
+                updateFunc
+            )
+        }
+    }
+}
+
+@Composable
+private fun StyleButton(charInstance: BaseCharacter, updateFunc: () -> Unit){
+    val open = remember{mutableStateOf(false)}
+
+    Button(
+        onClick = {open.value = !open.value},
+        modifier = Modifier.width(250.dp)
+    ){
+        Text(text = "Style Modules")
+    }
+
+    AnimatedVisibility(visible = open.value) {
+        Column {
+            StyleRow(
+                charInstance,
+                stringResource(R.string.battoIai),
+                "This skill permits a character to unsheathe his weapon with perfect ease. " +
+                        "The character can unsheathe his weapon without applying the -25 penalty to " +
+                        "the Attack or Block abilities. It has no effect for two-handed weapons.",
+                "30 DP",
+                updateFunc
+            )
+            StyleRow(
+                charInstance,
+                stringResource(R.string.area),
+                "The character specializes in broad maneuvers that can take out various " +
+                        "enemies with greater ease. This reduces the penalty for an Area Attack " +
+                        "maneuver by half. Therefore a character applies a -25 to his attack ability " +
+                        "when using this attack.",
+                "40 DP",
+                updateFunc
+            )
+            StyleRow(
+                charInstance,
+                stringResource(R.string.precision),
+                "The character has a marked ability to put his adversary in a Menace " +
+                        "Position. This reduces the penalty for a Put at Weapon's Point maneuver by " +
+                        "half. Therefore a character applies -50 to his attack ability when using this attack.",
+                "50 DP",
+                updateFunc
+            )
+            StyleRow(
+                charInstance,
+                stringResource(R.string.disarming),
+                "A character with this ability has specialized in disarming his opponents. " +
+                        "This reduces the penalty for a Disarm maneuver to -20.",
+                "40 DP",
+                updateFunc
+            )
         }
     }
 }
@@ -248,7 +405,7 @@ private fun WeaponRow(
     primaryBoxes: MutableState<List<MutableState<Boolean>>>,
     alertToggle: MutableState<Boolean>,
     toDisplay: MutableState<Weapon?>,
-    updateFunc: () -> Unit,
+    updateFunc: () -> Unit
 ){
     val primeCheck = remember{mutableStateOf(input == chosen.value)}
     val secondCheck = remember{mutableStateOf(
@@ -339,8 +496,18 @@ private fun ModuleRow(
             modifier = Modifier.weight(0.1f)
         )
 
-        Text(text = title, modifier = Modifier.weight(0.6f))
+        Text(text = title, modifier = Modifier.weight(0.4f))
         Text(text = "50 DP", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+        TextButton(
+            onClick = {
+                archetypeAlert.value = true
+                detailListName = title
+                detailList = modList
+            },
+            modifier = Modifier.weight(0.2f)
+        ) {
+            Text(text = "Details")
+        }
     }
 }
 
@@ -351,6 +518,46 @@ fun modUpdate(charInstance: BaseCharacter){
                 display.value = true
             else if(!charInstance.weaponProficiencies.individualModules.contains(input) && display.value)
                 display.value = false
+        }
+    }
+}
+
+@Composable
+private fun StyleRow(
+    charInstance: BaseCharacter,
+    title: String,
+    description: String,
+    cost: String,
+    updateFunc: () -> Unit
+){
+    val hasStyle = remember{ mutableStateOf(charInstance.weaponProficiencies.styleMods.contains(title)) }
+
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Spacer(modifier = Modifier.weight(0.1f))
+        Checkbox(
+            checked = hasStyle.value,
+            onCheckedChange = {
+                hasStyle.value = it
+                if(hasStyle.value)
+                    charInstance.weaponProficiencies.styleMods += title
+                else
+                    charInstance.weaponProficiencies.styleMods -= title
+
+                charInstance.updateTotalSpent()
+                updateFunc()
+            },
+            modifier = Modifier.weight(0.1f)
+        )
+        Text(text = title, modifier = Modifier.weight(0.4f))
+        Text(text = cost, modifier = Modifier.weight(0.2f))
+        TextButton(
+            onClick = {
+                detailItem.value = Pair(title, description)
+                detailAlertOn.value = true
+            },
+            modifier = Modifier.weight(0.2f)
+        ) {
+            Text(text = "Details")
         }
     }
 }
@@ -442,4 +649,30 @@ private fun InfoRow(
         Text(text = label, modifier = Modifier.weight(0.5f))
         Text(text = info, modifier = Modifier.weight(0.5f))
     }
+}
+
+@Composable
+private fun ArchetypeAlert(){
+    AlertDialog(
+        onDismissRequest = {archetypeAlert.value = false},
+        title = {Text(text = "Weapons from $detailListName Archetype")},
+        text = {
+            Column{
+                detailList.forEach{
+                    Text(text = it.name)
+                }
+            }
+        },
+        confirmButton = {TextButton(onClick = {archetypeAlert.value = false}){Text(text = "Close")} }
+    )
+}
+
+@Composable
+private fun DetailAlert(){
+    AlertDialog(
+        onDismissRequest = {detailAlertOn.value = false},
+        title = {Text(text = "Description of " + detailItem.value.first)},
+        text = {Column{Text(text = detailItem.value.second)}},
+        confirmButton = {TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")} }
+    )
 }

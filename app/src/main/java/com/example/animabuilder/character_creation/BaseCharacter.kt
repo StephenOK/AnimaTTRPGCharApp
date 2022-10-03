@@ -11,7 +11,6 @@ import com.example.animabuilder.character_creation.attributes.race_objects.RaceN
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponProficiencies
-import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.*
 import java.nio.charset.StandardCharsets
 import kotlin.Throws
@@ -236,7 +235,7 @@ class BaseCharacter: Serializable {
         spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }
 
-    fun updateCombatSpent(){
+    private fun updateCombatSpent(){
         ptInCombat =
             lifeMultsTaken * ownClass.lifePointMultiple +
             pointInAttack * ownClass.atkGrowth +

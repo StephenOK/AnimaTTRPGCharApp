@@ -146,4 +146,12 @@
     <string name="natNotTaken">+ 0</string>
     <string name="natTaken">+ 5</string>
 
+    <string name="battoIai">Batto Jutsu/Iai Jutsu</string>
+    <string name="area">Area Attack</string>
+    <string name="precision">Precision Attack</string>
+    <string name="disarming">Disarming Attack</string>
+    <string name="mpAttack">Magic Projection as Attack</string>
+    <string name="mpDefense">Magic Projection as Defense</string>
+    <string name="psyProjectionMod">Psychic Projection Module</string>
+
 </resources>

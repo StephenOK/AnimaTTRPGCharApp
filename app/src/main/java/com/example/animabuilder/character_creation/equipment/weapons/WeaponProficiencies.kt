@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.equipment.weapons
 
+import com.example.animabuilder.R
 import com.example.animabuilder.serializables.SerialOutputStream
 import java.io.BufferedReader
 import java.io.Serializable
@@ -1377,7 +1378,7 @@ class WeaponProficiencies(): Serializable {
         return fullModWeapons
     }
 
-
+    var styleMods: List<String> = listOf()
 
     fun calculateSpent(): Int{
         var total = 0
@@ -1418,8 +1419,19 @@ class WeaponProficiencies(): Serializable {
                 total += 20
         }
 
+        styleMods.forEach{
+            total += when(it){
+                "Batto Jutsu/Iai Jutsu"-> 30
+                "Area Attack",
+                "Disarming Attack" -> 40
+                "Precision Attack" -> 50
+                else -> 0
+            }
+        }
+
         return total
     }
+
 
 
 
@@ -1440,6 +1452,13 @@ class WeaponProficiencies(): Serializable {
 
         while(loops > 0){
             loadModule(fileReader)
+            loops--
+        }
+
+        loops = fileReader.readLine().toInt()
+
+        while(loops > 0){
+            styleMods = styleMods + fileReader.readLine()
             loops--
         }
     }
@@ -1476,6 +1495,22 @@ class WeaponProficiencies(): Serializable {
         writeNewLine(byteArray)
 
         writeModules(byteArray)
+
+        byteArray.write(
+            styleMods.size.toString().toByteArray(StandardCharsets.UTF_8),
+            0,
+            styleMods.size.toString().toByteArray(StandardCharsets.UTF_8).size
+        )
+        writeNewLine(byteArray)
+
+        styleMods.forEach{
+            byteArray.write(
+                it.toByteArray(StandardCharsets.UTF_8),
+                0,
+                it.toByteArray(StandardCharsets.UTF_8).size
+            )
+        }
+        writeNewLine(byteArray)
     }
 
     private fun loadModule(fileReader: BufferedReader){

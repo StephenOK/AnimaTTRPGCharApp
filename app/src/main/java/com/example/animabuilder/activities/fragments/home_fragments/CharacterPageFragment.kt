@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
@@ -44,6 +45,7 @@ var keyboardActive: SoftwareKeyboardController? = null
  * maxMagic: passed mutable for maximum dp for magic abilities
  * maxPsychic: passed mutable for maximum dp for psychic abilities
  */
+
 @Composable
 @OptIn(ExperimentalComposeUiApi::class)
 fun CharacterPageFragment(
@@ -72,6 +74,17 @@ fun CharacterPageFragment(
     val classBlock = remember{mutableStateOf((charInstance.ownClass.blockPerLevel * charInstance.lvl).toString())}
     val classDodge = remember{mutableStateOf((charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString())}
     val classWear = remember{mutableStateOf((charInstance.ownClass.armorPerLevel * charInstance.lvl).toString())}
+
+    val totalAttack = remember{mutableStateOf(charInstance.attack.toString())}
+    val totalBlock = remember{mutableStateOf(charInstance.block.toString())}
+    val totalDodge = remember{mutableStateOf(charInstance.dodge.toString())}
+    val totalWear = remember{mutableStateOf(charInstance.wearArmor.toString())}
+
+    val pointColor =
+            if(charInstance.validAttackDodgeBlock())
+                remember{mutableStateOf(Color.Black)}
+            else
+                remember{mutableStateOf(Color.Red)}
 
     //page column
     Column(
@@ -177,13 +190,26 @@ fun CharacterPageFragment(
 
             //create row for each primary statistic
             PrimaryRow(stringResource(R.string.strText), charInstance.str, strMod)
-            {newSTR -> charInstance.setSTR(newSTR); charInstance.modSTR}
+                { newSTR ->
+                    charInstance.setSTR(newSTR)
+                    totalWear.value = charInstance.wearArmor.toString()
+                    charInstance.modSTR
+                }
 
             PrimaryRow(stringResource(R.string.dexText), charInstance.dex, dexMod)
-            {newDEX -> charInstance.setDEX(newDEX); charInstance.modDEX}
+                { newDEX ->
+                    charInstance.setDEX(newDEX)
+                    totalAttack.value = charInstance.attack.toString()
+                    totalBlock.value = charInstance.block.toString()
+                    charInstance.modDEX
+                }
 
             PrimaryRow(stringResource(R.string.agiText), charInstance.agi, agiMod)
-            {newAGI -> charInstance.setAGI(newAGI); charInstance.modAGI}
+                {newAGI ->
+                    charInstance.setAGI(newAGI)
+                    totalDodge.value = charInstance.dodge.toString()
+                    charInstance.modAGI
+                }
 
             PrimaryRow(stringResource(R.string.conText), charInstance.con, conMod)
             {newCON -> charInstance.setCON(newCON); charInstance.modCON}
@@ -299,14 +325,22 @@ fun CharacterPageFragment(
                 Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.2f))
             }
 
-            CombatItemRow(charInstance, "Attack", charInstance.pointInAttack, charInstance.applyAttackPoint,
-                dexMod, classAttack, charInstance.attack, updateFunc)
-            CombatItemRow(charInstance, "Block", charInstance.pointInBlock, charInstance.applyBlockPoint,
-                dexMod, classBlock, charInstance.block, updateFunc)
-            CombatItemRow(charInstance, "Dodge", charInstance.pointInDodge, charInstance.applyDodgePoint,
-                agiMod, classDodge, charInstance.dodge, updateFunc)
-            CombatItemRow(charInstance, "Wear Armor", charInstance.pointInWear, charInstance.applyWearPoint,
-                strMod, classWear, charInstance.wearArmor, updateFunc)
+            CombatItemRow(
+                "Attack", charInstance.pointInAttack, charInstance.applyAttackPoint, dexMod,
+                classAttack, pointColor, totalAttack, charInstance.attack, updateFunc
+            )
+            CombatItemRow(
+                "Block", charInstance.pointInBlock, charInstance.applyBlockPoint, dexMod,
+                classBlock, pointColor, totalBlock, charInstance.block, updateFunc
+            )
+            CombatItemRow(
+                "Dodge", charInstance.pointInDodge, charInstance.applyDodgePoint, agiMod,
+                classDodge, pointColor, totalDodge, charInstance.dodge, updateFunc
+            )
+            CombatItemRow(
+                "Wear Armor", charInstance.pointInWear, charInstance.applyWearPoint, strMod,
+                classWear, remember{mutableStateOf(Color.Black)}, totalWear, charInstance.wearArmor, updateFunc
+            )
         }
     }
 }
@@ -398,7 +432,7 @@ private fun PrimaryRow(
     labelText: String,
     statInput: Int,
     modOutput: MutableState<Int>,
-    change: (newVal:Int) -> Int
+    change: (newVal:Int) -> Int,
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         //make user input in textfield mutable
@@ -503,18 +537,19 @@ private fun ResistanceRow(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CombatItemRow(
-    charInstance: BaseCharacter,
     labelText: String,
     pointIn: Int,
-    changeAct: (Int, MutableState<String>) -> Unit,
+    changeAct: (Int, MutableState<String>) -> Boolean,
     modInput: MutableState<Int>,
     classAdd: MutableState<String>,
+    pointColor: MutableState<Color>,
+    totalText: MutableState<String>,
     total: Int,
 
     updateFunc: () -> Unit
 ){
     val pointInScore = remember{mutableStateOf(pointIn.toString())}
-    val pointTotal = remember{mutableStateOf(total.toString())}
+    val pointTotal = totalText
 
     Row {
         Text(text = labelText, modifier = Modifier.weight(0.2f))
@@ -524,7 +559,11 @@ fun CombatItemRow(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = {
                 try{
-                    changeAct(it.toInt(), pointTotal)
+                    if(changeAct(it.toInt(), pointTotal))
+                        pointColor.value = Color.Black
+                    else
+                        pointColor.value = Color.Red
+
                     pointInScore.value = it
                     updateFunc()
                 }catch(e: NumberFormatException){
@@ -534,6 +573,7 @@ fun CombatItemRow(
                         keyboardActive!!.hide()
                 }
             },
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, color = pointColor.value),
             modifier = Modifier.weight(0.2f)
         )
 

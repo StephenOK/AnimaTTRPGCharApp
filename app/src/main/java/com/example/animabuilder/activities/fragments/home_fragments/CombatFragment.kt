@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.MartialArt
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
@@ -25,7 +26,10 @@ var detailListName = ""
 var detailList: List<Weapon> = listOf()
 
 val detailAlertOn = mutableStateOf(false)
-val detailItem = mutableStateOf(Pair("name", "description"))
+val detailItem = mutableStateOf("")
+val detailParagraph = mutableStateOf("")
+
+val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
 @Composable
 fun CombatFragment(
@@ -185,21 +189,16 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             updateFunc
         )
 
         ArchetypeButton(charInstance, updateFunc)
-
+        MartialButton(charInstance, updateFunc)
         StyleButton(charInstance, updateFunc)
 
-        if(weaponDetailAlertOn.value)
-            WeaponDetailsAlert(weaponDetailAlertOn, detailShow.value!!)
         if(detailAlertOn.value)
-            DetailAlert()
-        if(archetypeAlert.value)
-            ArchetypeAlert()
+            DetailAlert(contents.value!!)
     }
 }
 
@@ -240,7 +239,6 @@ private fun WeaponListButton(
                     chosen,
                     charInstance,
                     primaryBoxes,
-                    alertToggle,
                     toDisplay,
                     updateFunc
                 )
@@ -398,12 +396,39 @@ private fun StyleButton(charInstance: BaseCharacter, updateFunc: () -> Unit){
 }
 
 @Composable
+private fun MartialButton(
+    charInstance: BaseCharacter,
+    updateFunc: () -> Unit
+){
+    val open = remember{mutableStateOf(false)}
+
+    Button(
+        onClick = {open.value = !open.value},
+        modifier = Modifier.width(250.dp)
+    ){
+        Text(text = "Martial Arts")
+    }
+    AnimatedVisibility(visible = open.value){
+        Column{
+            Text(text = "Max Martial Arts: " + charInstance.weaponProficiencies.martialMax)
+
+            charInstance.weaponProficiencies.allMartialArts.forEach{
+                MartialArtRow(
+                    charInstance,
+                    it,
+                    updateFunc
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun WeaponRow(
     input: Weapon,
     chosen: MutableState<Weapon>,
     charInstance: BaseCharacter,
     primaryBoxes: MutableState<List<MutableState<Boolean>>>,
-    alertToggle: MutableState<Boolean>,
     toDisplay: MutableState<Weapon?>,
     updateFunc: () -> Unit
 ){
@@ -463,7 +488,12 @@ private fun WeaponRow(
         Text(text = input.name, modifier = Modifier.weight(0.6f))
 
         TextButton(
-            onClick = {toDisplay.value = input; alertToggle.value = true},
+            onClick = {
+                toDisplay.value = input
+                detailAlertOn.value = true
+                detailItem.value = input.name
+                contents.value = @Composable{WeaponContents(input)}
+            },
             modifier = Modifier.weight(0.2f)
         ) {
             Text(text = "Details")
@@ -500,9 +530,10 @@ private fun ModuleRow(
         Text(text = "50 DP", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
         TextButton(
             onClick = {
-                archetypeAlert.value = true
-                detailListName = title
+                detailAlertOn.value = true
+                detailItem.value = title
                 detailList = modList
+                contents.value = @Composable{ArchetypeContents()}
             },
             modifier = Modifier.weight(0.2f)
         ) {
@@ -552,7 +583,8 @@ private fun StyleRow(
         Text(text = cost, modifier = Modifier.weight(0.2f))
         TextButton(
             onClick = {
-                detailItem.value = Pair(title, description)
+                detailItem.value = title
+                contents.value = @Composable{Text(text = description)}
                 detailAlertOn.value = true
             },
             modifier = Modifier.weight(0.2f)
@@ -563,81 +595,101 @@ private fun StyleRow(
 }
 
 @Composable
-private fun WeaponDetailsAlert(
-    isOpen: MutableState<Boolean>,
-    input: Weapon
+private fun MartialArtRow(
+    charInstance: BaseCharacter,
+    martialArt: MartialArt,
+    updateFunc: () -> Unit
 ){
-    AlertDialog(
-        onDismissRequest = {isOpen.value = false},
-        title = {Text(text = "Stats for " + input.name)},
-        text = {
-            Column {
-                if(input.damage != null)
-                    InfoRow("Damage:", input.damage.toString())
-                else
-                    InfoRow("Strength:", input.ownStrength.toString())
+    val martialTaken = remember{mutableStateOf(charInstance.weaponProficiencies.takenMartialList.contains(martialArt))}
 
-                InfoRow("Speed:", input.speed.toString())
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Checkbox(
+            checked = martialTaken.value,
+            onCheckedChange = {
+                if(charInstance.weaponProficiencies.changeMartial(martialArt, it))
+                    martialTaken.value = it
 
-                if(input.oneHandStr != null)
-                    InfoRow("Min. Str:", input.oneHandStr.toString())
-
-                if(input.twoHandStr != null)
-                    InfoRow("Two-Handed Str:", input.twoHandStr.toString())
-
-                if(input.primaryType != null)
-                    InfoRow("Weapon Type:", input.primaryType!!.name)
-
-                if(input.secondaryType != null)
-                    InfoRow("Secondary Type:", input.secondaryType!!.name)
-
-                if(input.type == WeaponType.Mixed)
-                    InfoRow("Weapon Type:", input.mixedType!![0].name + "/" + input.mixedType!![1].name)
-                else
-                    InfoRow("WeaponType:", input.type.name)
-
-                if(input.fortitude != null)
-                    InfoRow("Fortitude:", input.fortitude.toString())
-                if(input.breakage != null)
-                    InfoRow("Breakage:", input.breakage.toString())
-                if(input.presence != null)
-                    InfoRow("Presence:", input.presence.toString())
-
-                if(input.rateOfFire != null)
-                    InfoRow("Fire Rate:", input.rateOfFire.toString())
-                if(input.reload != null)
-                    InfoRow("Reload:", input.reload.toString())
-                if(input.range != null)
-                    InfoRow("Range", input.range.toString() + "m")
-
-                var abilityString = ""
-                var counter = 0
-
-                if(input.ability != null){
-                    input.ability!!.forEach{
-                        abilityString += it.name
-
-                        if(it == WeaponAbility.Trapping)
-                            abilityString += "(" + input.ownStrength + ")"
-
-                        if(counter < input.ability!!.count() - 1){
-                            abilityString += "/"
-                            counter++
-                        }
-                    }
-
-                    InfoRow("Abilities:", abilityString)
-                }
-
-                Text(text = input.description)
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = {isOpen.value = false}){
-                Text(text = "Close")
-            }
+                charInstance.updateTotalSpent()
+                updateFunc()
+            },
+            modifier = Modifier.weight(0.1f)
+        )
+        Text(text = martialArt.name, modifier = Modifier.weight(0.5f))
+        Text(text = "+" + martialArt.mkBonus.toString() + " MK", modifier = Modifier.weight(0.2f))
+        TextButton(onClick = {
+            detailAlertOn.value = true
+            detailItem.value = martialArt.name
+            contents.value = @Composable{MartialContents(martialArt.prereqList, martialArt.description)}
+            },
+            modifier = Modifier.weight(0.2f)
+        ) {
+            Text(text = "Details")
         }
-    )
+    }
+}
+
+val WeaponContents = @Composable
+{input: Weapon ->
+    Column {
+        if(input.damage != null)
+            InfoRow("Damage:", input.damage.toString())
+        else
+            InfoRow("Strength:", input.ownStrength.toString())
+
+        InfoRow("Speed:", input.speed.toString())
+
+        if(input.oneHandStr != null)
+            InfoRow("Min. Str:", input.oneHandStr.toString())
+
+        if(input.twoHandStr != null)
+            InfoRow("Two-Handed Str:", input.twoHandStr.toString())
+
+        if(input.primaryType != null)
+            InfoRow("Weapon Type:", input.primaryType!!.name)
+
+        if(input.secondaryType != null)
+            InfoRow("Secondary Type:", input.secondaryType!!.name)
+
+        if(input.type == WeaponType.Mixed)
+            InfoRow("Weapon Type:", input.mixedType!![0].name + "/" + input.mixedType!![1].name)
+        else
+            InfoRow("WeaponType:", input.type.name)
+
+        if(input.fortitude != null)
+            InfoRow("Fortitude:", input.fortitude.toString())
+        if(input.breakage != null)
+            InfoRow("Breakage:", input.breakage.toString())
+        if(input.presence != null)
+            InfoRow("Presence:", input.presence.toString())
+
+        if(input.rateOfFire != null)
+            InfoRow("Fire Rate:", input.rateOfFire.toString())
+        if(input.reload != null)
+            InfoRow("Reload:", input.reload.toString())
+        if(input.range != null)
+            InfoRow("Range", input.range.toString() + "m")
+
+        var abilityString = ""
+        var counter = 0
+
+        if(input.ability != null){
+            input.ability!!.forEach{
+                abilityString += it.name
+
+                if(it == WeaponAbility.Trapping)
+                    abilityString += "(" + input.ownStrength + ")"
+
+                if(counter < input.ability!!.count() - 1){
+                    abilityString += "/"
+                    counter++
+                }
+            }
+
+            InfoRow("Abilities:", abilityString)
+        }
+
+        Text(text = input.description)
+    }
 }
 
 @Composable
@@ -651,28 +703,28 @@ private fun InfoRow(
     }
 }
 
-@Composable
-private fun ArchetypeAlert(){
-    AlertDialog(
-        onDismissRequest = {archetypeAlert.value = false},
-        title = {Text(text = "Weapons from $detailListName Archetype")},
-        text = {
-            Column{
-                detailList.forEach{
-                    Text(text = it.name)
-                }
-            }
-        },
-        confirmButton = {TextButton(onClick = {archetypeAlert.value = false}){Text(text = "Close")} }
-    )
+val ArchetypeContents = @Composable
+{
+    Column {
+        detailList.forEach {
+            Text(text = it.name)
+        }
+    }
+}
+
+val MartialContents = @Composable{preReqList: String, description: String ->
+    Column{
+        InfoRow("PreRequisites", preReqList)
+        Text(text = description)
+    }
 }
 
 @Composable
-private fun DetailAlert(){
+private fun DetailAlert(contents: @Composable () -> Unit){
     AlertDialog(
         onDismissRequest = {detailAlertOn.value = false},
-        title = {Text(text = "Description of " + detailItem.value.first)},
-        text = {Column{Text(text = detailItem.value.second)}},
+        title = {Text(text = "Description of " + detailItem.value)},
+        text = {contents()},
         confirmButton = {TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")} }
     )
 }

@@ -127,6 +127,8 @@ class BaseCharacter: Serializable {
 
     val weaponProficiencies = WeaponProficiencies()
 
+    var martialKnowledge = 0
+
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
 
@@ -242,7 +244,7 @@ class BaseCharacter: Serializable {
             pointInBlock * ownClass.blockGrowth +
             pointInDodge * ownClass.dodgeGrowth +
             pointInWear * ownClass.armorGrowth +
-            weaponProficiencies.calculateSpent()
+            weaponProficiencies.calculateSpent(this@BaseCharacter)
     }
 
     //setters for each primary characteristic
@@ -358,10 +360,24 @@ class BaseCharacter: Serializable {
 
         if(textChange != null)
             textChange.value = attack.toString()
+
+        validAttackDodgeBlock()
     }
 
     fun updateAttack(){
-        attack = pointInAttack + modDEX + (ownClass.atkPerLevel * lvl)
+        attack = pointInAttack + modDEX + attackClassVal()
+        weaponProficiencies.updateMartialMax(this@BaseCharacter)
+    }
+
+    fun attackClassVal(): Int{
+        var total = ownClass.atkPerLevel * lvl
+        if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.capoeira))
+            total += 10
+
+        if(total > 50)
+            return 50
+        else
+            return total
     }
 
     val applyBlockPoint = {score: Int, textChange: MutableState<String>? ->
@@ -371,10 +387,13 @@ class BaseCharacter: Serializable {
 
         if(textChange != null)
             textChange.value = block.toString()
+
+        validAttackDodgeBlock()
     }
 
     fun updateBlock(){
         block = pointInBlock + modDEX + (ownClass.blockPerLevel * lvl)
+        weaponProficiencies.updateMartialMax(this@BaseCharacter)
     }
 
     val applyDodgePoint = {score: Int, textChange: MutableState<String>? ->
@@ -384,10 +403,29 @@ class BaseCharacter: Serializable {
 
         if(textChange != null)
             textChange.value = dodge.toString()
+
+        validAttackDodgeBlock()
     }
 
     fun updateDodge(){
         dodge = pointInDodge + modAGI + (ownClass.dodgePerLevel * lvl)
+        weaponProficiencies.updateMartialMax(this@BaseCharacter)
+    }
+
+    fun validAttackDodgeBlock(): Boolean{
+        //if only one stat developed, cannot exceed 25% of overall devPT
+        return ((pointInBlock == 0 && pointInDodge == 0 && pointInAttack * ownClass.atkGrowth <= devPT/4) ||
+                (pointInAttack == 0 && pointInDodge == 0 && pointInBlock * ownClass.blockGrowth <= devPT/4) ||
+                (pointInAttack == 0 && pointInBlock == 0 && pointInDodge * ownClass.dodgeGrowth <= devPT/4)) ||
+
+                //attack, dodge, and block cannot equate to over 50% of overall devPT
+                (((pointInAttack * ownClass.atkGrowth) + (pointInBlock * ownClass.blockGrowth) + (pointInDodge * ownClass.dodgeGrowth) <= devPT/2) &&
+
+                //attack can not be more than 50 of either one of block or dodge
+                (attack - block <= 50 || attack - dodge <= 50) &&
+
+                //neither block nor dodge can be 50 more than attack
+                (block - attack <= 50 && dodge - attack <= 50))
     }
 
     val applyWearPoint = {score: Int, textChange: MutableState<String>? ->
@@ -397,6 +435,8 @@ class BaseCharacter: Serializable {
 
         if(textChange != null)
             textChange.value = wearArmor.toString()
+
+        true
     }
 
     fun updateWear(){
@@ -409,6 +449,10 @@ class BaseCharacter: Serializable {
         resistVen = ((presence + modCON + rvSpec) * rvMult).toInt()
         resistMag = ((presence + modPOW + rmSpec) * rmMult).toInt()
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
+    }
+
+    fun updateMK(){
+        martialKnowledge = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
     }
 
 
@@ -447,9 +491,6 @@ class BaseCharacter: Serializable {
 
         charName = fileReader.readLine()
 
-        secondaryList.loadList(fileReader)
-        weaponProficiencies.loadProficiencies(fileReader)
-
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
@@ -469,6 +510,9 @@ class BaseCharacter: Serializable {
         applyDodgePoint(fileReader.readLine().toInt(), null)
         applyWearPoint(fileReader.readLine().toInt(), null)
 
+        secondaryList.loadList(fileReader)
+        weaponProficiencies.loadProficiencies(fileReader)
+
         restoreChar.close()
 
         updateTotalSpent()
@@ -483,9 +527,6 @@ class BaseCharacter: Serializable {
             byteArray = SerialOutputStream()
 
             addNewData(charName)
-
-            secondaryList.writeList(byteArray)
-            weaponProficiencies.writeProficiencies(byteArray)
 
             addNewData(ownClass.heldClass.name)
             addNewData(ownRace!!.heldRace.name)
@@ -506,13 +547,16 @@ class BaseCharacter: Serializable {
             addNewData(pointInDodge)
             addNewData(pointInWear)
 
+            secondaryList.writeList(byteArray)
+            weaponProficiencies.writeProficiencies(this@BaseCharacter)
+
             byteArray.close()
 
             return byteArray.toByteArray()
         }
 
     //adds new String data to the ByteOutputStream
-    private fun addNewData(toAdd: String?) {
+    fun addNewData(toAdd: String?) {
         byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,
@@ -523,7 +567,7 @@ class BaseCharacter: Serializable {
     }
 
     //adds new Int data to the ByteOutputStream
-    private fun addNewData(toAdd: Int) {
+    fun addNewData(toAdd: Int) {
         byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,
@@ -533,7 +577,7 @@ class BaseCharacter: Serializable {
         writeEndLine()
     }
 
-    private fun writeEndLine(){
+    fun writeEndLine(){
         byteArray.write(
             "\n".toByteArray(StandardCharsets.UTF_8),
             0,

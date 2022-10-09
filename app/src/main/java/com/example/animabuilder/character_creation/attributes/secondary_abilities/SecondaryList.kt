@@ -1,8 +1,8 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import kotlin.Throws
-import com.example.animabuilder.serializables.SerialOutputStream
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.Serializable
@@ -292,8 +292,8 @@ class SecondaryList : Serializable {
     }
 
     //save characteristic values to file
-    fun writeList(byteArray: SerialOutputStream?) {
-        fullList.forEach{it.write(byteArray!!)}
+    fun writeList(charInstance: BaseCharacter) {
+        fullList.forEach{it.write(charInstance)}
     }
 
     fun calculateSpent(): Int{

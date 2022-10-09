@@ -12,24 +12,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
+import com.example.animabuilder.activities.InfoRow
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.MartialArt
+import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 
-var modWeapons: List<Weapon> = listOf()
-var allSecondaries: List<Pair<Weapon, MutableState<Boolean>>> = listOf()
+private var modWeapons: List<Weapon> = listOf()
+private var allSecondaries: List<Pair<Weapon, MutableState<Boolean>>> = listOf()
 
-val archetypeAlert = mutableStateOf(false)
-var detailListName = ""
-var detailList: List<Weapon> = listOf()
+private var detailList: List<Weapon> = listOf()
 
-val detailAlertOn = mutableStateOf(false)
-val detailItem = mutableStateOf("")
-val detailParagraph = mutableStateOf("")
+private val detailAlertOn = mutableStateOf(false)
+private val detailItem = mutableStateOf("")
 
-val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
+private val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
 @Composable
 fun CombatFragment(
@@ -58,7 +56,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.shortArms,
             true,
@@ -70,7 +67,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.axes,
             true,
@@ -82,7 +78,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.maces,
             true,
@@ -94,7 +89,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.swords,
             true,
@@ -106,7 +100,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.twoHanded,
             true,
@@ -118,7 +111,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.poles,
             true,
@@ -130,7 +122,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.cords,
             true,
@@ -142,7 +133,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             null,
             false,
@@ -154,7 +144,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.shields,
             true,
@@ -166,7 +155,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.projectiles,
             true,
@@ -178,7 +166,6 @@ fun CombatFragment(
             primaryWeapon,
             charInstance,
             allPrimaryBoxes,
-            weaponDetailAlertOn,
             detailShow,
             charInstance.weaponProficiencies.thrown,
             true,
@@ -211,7 +198,6 @@ private fun WeaponListButton(
     chosen: MutableState<Weapon>,
     charInstance: BaseCharacter,
     primaryBoxes: MutableState<List<MutableState<Boolean>>>,
-    alertToggle: MutableState<Boolean>,
     toDisplay: MutableState<Weapon?>,
     wholeList: List<Weapon>?,
     wholeClass: Boolean,
@@ -606,7 +592,7 @@ private fun MartialArtRow(
         Checkbox(
             checked = martialTaken.value,
             onCheckedChange = {
-                if(charInstance.weaponProficiencies.changeMartial(martialArt, it))
+                if(charInstance.weaponProficiencies.changeMartial(charInstance, martialArt, it))
                     martialTaken.value = it
 
                 charInstance.updateTotalSpent()
@@ -689,17 +675,6 @@ val WeaponContents = @Composable
         }
 
         Text(text = input.description)
-    }
-}
-
-@Composable
-private fun InfoRow(
-    label: String,
-    info: String
-){
-    Row(verticalAlignment = Alignment.CenterVertically){
-        Text(text = label, modifier = Modifier.weight(0.5f))
-        Text(text = info, modifier = Modifier.weight(0.5f))
     }
 }
 

@@ -1,12 +1,9 @@
 package com.example.animabuilder.character_creation.equipment.weapons
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.MartialArt
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
-import com.example.animabuilder.serializables.SerialOutputStream
 import java.io.BufferedReader
 import java.io.Serializable
-import java.nio.charset.StandardCharsets
 
 class WeaponProficiencies(): Serializable {
     val bastardSword = Weapon(
@@ -1672,7 +1669,7 @@ class WeaponProficiencies(): Serializable {
     var takenMartialList: List<MartialArt> = mutableListOf()
     var martialMax = 0
 
-    fun changeMartial(changeItem: MartialArt, isInput: Boolean): Boolean{
+    fun changeMartial(charInstance:BaseCharacter, changeItem: MartialArt, isInput: Boolean): Boolean{
         if(isInput){
             if(takenMartialList.size >= martialMax)
                 return false
@@ -1682,6 +1679,8 @@ class WeaponProficiencies(): Serializable {
         else {
             takenMartialList = takenMartialList - changeItem
         }
+
+        charInstance.updateMK()
 
         return true
     }

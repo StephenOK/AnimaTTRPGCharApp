@@ -154,9 +154,4 @@
     <string name="mpDefense">Magic Projection as Defense</string>
     <string name="psyProjectionMod">Psychic Projection Module</string>
 
-    <string name = "Kempo">Kempo</string>
-    <string name = "Capoeira">Capoeira</string>
-    <string name = "TaiChi">Tai Chi</string>
-    <string name = "Shotokan">Shotokan</string>
-
 </resources>

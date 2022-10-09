@@ -1,6 +1,7 @@
 package com.example.animabuilder.character_creation
 
 import androidx.compose.runtime.MutableState
+import com.example.animabuilder.character_creation.attributes.ki_abilities.KiList
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
@@ -26,8 +27,9 @@ class BaseCharacter: Serializable {
     var charName: String = ""
 
     //list of secondary abilities
-    var secondaryList = SecondaryList()
-    var advantageRecord = AdvantageRecord(this@BaseCharacter)
+    val secondaryList = SecondaryList()
+    val advantageRecord = AdvantageRecord(this@BaseCharacter)
+    val kiList = KiList()
 
     lateinit var ownClass: CharClass
 
@@ -127,8 +129,6 @@ class BaseCharacter: Serializable {
 
     val weaponProficiencies = WeaponProficiencies()
 
-    var martialKnowledge = 0
-
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
 
@@ -147,6 +147,7 @@ class BaseCharacter: Serializable {
         ownClass = CharClass(classIn!!)
 
         updateClassInputs()
+        updateMK()
     }
 
     //setter for class with String input
@@ -154,12 +155,14 @@ class BaseCharacter: Serializable {
         ownClass = CharClass(ClassName.fromString(className))
 
         updateClassInputs()
+        updateMK()
     }
 
     fun setOwnClass(classInt: Int?){
         ownClass = CharClass(ClassName.fromInt(classInt))
 
         updateClassInputs()
+        updateMK()
     }
 
     fun updateClassInputs(){
@@ -214,6 +217,8 @@ class BaseCharacter: Serializable {
         updateDodge()
         updateWear()
 
+        updateMK()
+
         secondaryList.levelUpdate(lvl, ownClass)
     }
 
@@ -244,7 +249,8 @@ class BaseCharacter: Serializable {
             pointInBlock * ownClass.blockGrowth +
             pointInDodge * ownClass.dodgeGrowth +
             pointInWear * ownClass.armorGrowth +
-            weaponProficiencies.calculateSpent(this@BaseCharacter)
+            weaponProficiencies.calculateSpent(this@BaseCharacter) +
+            kiList.calculateSpent(this@BaseCharacter)
     }
 
     //setters for each primary characteristic
@@ -254,6 +260,7 @@ class BaseCharacter: Serializable {
 
         updateWear()
         secondaryList.updateSTR(modSTR)
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setDEX = { dexVal: Int ->
         dex = dexVal
@@ -262,6 +269,7 @@ class BaseCharacter: Serializable {
         secondaryList.updateDEX(modDEX)
         updateAttack()
         updateBlock()
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
@@ -269,6 +277,7 @@ class BaseCharacter: Serializable {
 
         secondaryList.updateAGI(modAGI)
         updateDodge()
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setCON = { conVal: Int ->
         con = conVal
@@ -277,6 +286,7 @@ class BaseCharacter: Serializable {
         updateLifeBase()
         updateLifePoints()
         updateResistances()
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setINT = { intVal: Int ->
         int = intVal
@@ -288,12 +298,14 @@ class BaseCharacter: Serializable {
         modPOW = getModVal(pow)
         secondaryList.updatePOW(modPOW)
         updateResistances()
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setWP = { wpVal: Int ->
         wp = wpVal
         modWP = getModVal(wp)
         secondaryList.updateWP(modWP)
         updateResistances()
+        kiList.updateKiStats(this@BaseCharacter)
     }
     var setPER = { perVal: Int ->
         per = perVal
@@ -452,8 +464,11 @@ class BaseCharacter: Serializable {
     }
 
     fun updateMK(){
-        martialKnowledge = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
+        kiList.martialKnowledgeMax = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
+        kiList.updateMkSpent()
     }
+
+
 
 
 
@@ -547,7 +562,7 @@ class BaseCharacter: Serializable {
             addNewData(pointInDodge)
             addNewData(pointInWear)
 
-            secondaryList.writeList(byteArray)
+            secondaryList.writeList(this@BaseCharacter)
             weaponProficiencies.writeProficiencies(this@BaseCharacter)
 
             byteArray.close()

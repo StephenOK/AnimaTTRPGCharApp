@@ -45,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     //character to work with and its associated file name
-    private var charInstance: BaseCharacter? = null
+    private lateinit var charInstance: BaseCharacter
     private var filename: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,16 +71,16 @@ class HomeActivity : AppCompatActivity() {
             val exitOpen = remember{mutableStateOf(false)}
 
             //displays for maximum development points
-            val maxDP = remember{mutableStateOf(charInstance!!.devPT)}
-            val maxCombat = remember{mutableStateOf(charInstance!!.maxCombatDP)}
-            val maxMagic = remember{mutableStateOf(charInstance!!.maxMagDP)}
-            val maxPsychic = remember{mutableStateOf(charInstance!!.maxPsyDP)}
+            val maxDP = remember{mutableStateOf(charInstance.devPT)}
+            val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
+            val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
+            val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
 
             //displays for spent development points
-            val usedDP = remember { mutableStateOf(charInstance!!.spentTotal) }
-            val usedCombat = remember { mutableStateOf(charInstance!!.ptInCombat) }
-            val usedMagic = remember { mutableStateOf(charInstance!!.ptInMag) }
-            val usedPsychic = remember { mutableStateOf(charInstance!!.ptInPsy) }
+            val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
+            val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
+            val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
+            val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
 
             //scaffold for the home page
             Scaffold(
@@ -185,29 +185,30 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Primary.name){
-                        CharacterPageFragment(charInstance!!, maxDP, maxCombat, maxMagic, maxPsychic)
+                        CharacterPageFragment(charInstance, maxDP, maxCombat, maxMagic, maxPsychic)
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary.name){
-                        SecondaryAbilityFragment(charInstance!!, usedDP)
+                        SecondaryAbilityFragment(charInstance, usedDP)
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        Advantages(charInstance!!)
+                        Advantages(charInstance)
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Weapon_Modules.name){
-                        CombatFragment(charInstance!!)
+                        CombatFragment(charInstance)
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
-                        KiFragment()
+                        KiFragment(charInstance)
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to magic page
@@ -312,7 +313,7 @@ class HomeActivity : AppCompatActivity() {
             val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
 
             //get and write character's bytes
-            val charData = charInstance!!.bytes
+            val charData = charInstance.bytes
             saveStream.write(charData)
             saveStream.close()
 
@@ -386,9 +387,20 @@ class HomeActivity : AppCompatActivity() {
         usedMagic: MutableState<Int>,
         usedPsychic: MutableState<Int>
     ){
-        usedDP.value = charInstance!!.spentTotal
-        usedCombat.value = charInstance!!.ptInCombat
-        usedMagic.value = charInstance!!.ptInMag
-        usedPsychic.value = charInstance!!.ptInPsy
+        usedDP.value = charInstance.spentTotal
+        usedCombat.value = charInstance.ptInCombat
+        usedMagic.value = charInstance.ptInMag
+        usedPsychic.value = charInstance.ptInPsy
+    }
+}
+
+@Composable
+fun InfoRow(
+    label: String,
+    info: String
+){
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Text(text = label, modifier = Modifier.weight(0.5f))
+        Text(text = info, modifier = Modifier.weight(0.5f))
     }
 }

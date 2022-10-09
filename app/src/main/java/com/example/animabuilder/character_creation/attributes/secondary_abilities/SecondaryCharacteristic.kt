@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
+import com.example.animabuilder.character_creation.BaseCharacter
 import kotlin.Throws
 import com.example.animabuilder.serializables.SerialOutputStream
 import java.io.BufferedReader
@@ -87,29 +88,13 @@ class SecondaryCharacteristic : Serializable {
     /**
      * Write characteristic data to the file output stream
      */
-    fun write(byteArray: SerialOutputStream) {
-        //write points applied data
-        byteArray.write(
-            """$pointsApplied""".toByteArray(StandardCharsets.UTF_8),
-            0,
-            """$pointsApplied""".toByteArray(StandardCharsets.UTF_8).size
-        )
-        byteArray.write(
-            "\n".toByteArray(StandardCharsets.UTF_8),
-            0,
-            "\n".toByteArray(StandardCharsets.UTF_8).size)
+    fun write(charInstance: BaseCharacter) {
+        charInstance.addNewData(pointsApplied)
 
         //write natural bonus applied data
         val booleanIn: String = if (bonusApplied) "true" else "false"
-        byteArray.write(
-            booleanIn.toByteArray(StandardCharsets.UTF_8),
-            0,
-            booleanIn.toByteArray(StandardCharsets.UTF_8).size
-        )
-        byteArray.write(
-            "\n".toByteArray(StandardCharsets.UTF_8),
-            0,
-            "\n".toByteArray(StandardCharsets.UTF_8).size)
+
+        charInstance.addNewData(booleanIn)
     }
 
     init {

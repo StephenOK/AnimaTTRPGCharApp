@@ -1,6 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
 import com.example.animabuilder.character_creation.BaseCharacter
+import java.io.BufferedReader
 import java.io.Serializable
 
 class KiList: Serializable {
@@ -422,5 +423,37 @@ class KiList: Serializable {
         total += totalAccBuy * charInstance.ownClass.kiAccumMult
 
         return total
+    }
+
+
+
+
+
+
+    fun loadKiAttributes(fileReader: BufferedReader){
+        var loops = fileReader.readLine().toInt()
+
+        while(loops > 0){
+            takenAbilities = takenAbilities + listOf(getAbility(fileReader.readLine())!!)
+            loops--
+        }
+
+        updateMkSpent()
+    }
+
+    fun writeKiAttributes(charInstance: BaseCharacter){
+        charInstance.addNewData(takenAbilities.size)
+        takenAbilities.forEach{
+            charInstance.addNewData(it.name)
+        }
+    }
+
+    fun getAbility(toFind: String): KiAbility?{
+        allKiAbilities.forEach{
+            if(it.name == toFind)
+                return it
+        }
+
+        return null
     }
 }

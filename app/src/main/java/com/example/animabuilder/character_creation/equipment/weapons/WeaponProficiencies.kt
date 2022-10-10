@@ -1671,7 +1671,7 @@ class WeaponProficiencies(): Serializable {
 
     fun changeMartial(charInstance:BaseCharacter, changeItem: MartialArt, isInput: Boolean): Boolean{
         if(isInput){
-            if(takenMartialList.size >= martialMax)
+            if(takenMartialList.size >= martialMax || !qualifies(changeItem, charInstance))
                 return false
             else
                 takenMartialList = takenMartialList + changeItem
@@ -1683,6 +1683,63 @@ class WeaponProficiencies(): Serializable {
         charInstance.updateMK()
 
         return true
+    }
+
+    fun qualifies(input: MartialArt, charInstance: BaseCharacter): Boolean{
+        when(input){
+            kempo, shotokan, sambo, taekwondo -> return true
+            capoeira -> return charInstance.secondaryList.dance.total >= 40
+            taiChi -> return charInstance.kiList.takenAbilities.contains(charInstance.kiList.useOfKi)
+            kungFu -> return charInstance.secondaryList.acrobatics.total >= 40 &&
+                    charInstance.secondaryList.sleightHand.total >= 40 &&
+                    charInstance.secondaryList.style.total >= 20
+            aikido -> return charInstance.secondaryList.sleightHand.total >= 40
+            muayThai, grappling -> return charInstance.secondaryList.strengthFeat.total >= 40
+
+            melkaiah -> return (takenMartialList.contains(grappling) || takenMartialList.contains(sambo)) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.inhumanity) &&
+                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            seraphite -> return (takenMartialList.contains(shotokan) || takenMartialList.contains(kempo)) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.presenceExtrusion) &&
+                    charInstance.attack >= 180 &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            dumah -> return (takenMartialList.contains(kempo) || takenMartialList.contains(capoeira)) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.presenceExtrusion)
+
+            emp -> return (takenMartialList.contains(kempo) || takenMartialList.contains(taekwondo)) &&
+                    charInstance.attack >= 200 &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            enuth -> return (takenMartialList.contains(sambo) || takenMartialList.contains(shotokan)) &&
+                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            shephon -> return takenMartialList.contains(aikido) && takenMartialList.contains(kungFu) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.kiControl) &&
+                    (charInstance.block >= 200 || charInstance.dodge >= 200) &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            asakusen -> return takenMartialList.contains(kungFu) &&
+                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            velez -> return (takenMartialList.contains(taiChi) || takenMartialList.contains(kungFu)) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.presenceExtrusion)
+
+            selene -> return takenMartialList.contains(aikido) &&
+                    (charInstance.block >= 200 || charInstance.dodge >= 200) &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            hakyoukuken -> return (takenMartialList.contains(shotokan) || takenMartialList.contains(muayThai)) &&
+                    charInstance.kiList.takenAbilities.contains(charInstance.kiList.useOfNecessaryEnergy) &&
+                    charInstance.attack >= 200 &&
+                    (primaryWeapon == unarmed || individualModules.contains(unarmed))
+
+            else -> return false
+        }
     }
 
     fun updateMartialMax(charInstance: BaseCharacter){

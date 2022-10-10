@@ -527,6 +527,7 @@ class BaseCharacter: Serializable {
 
         secondaryList.loadList(fileReader)
         weaponProficiencies.loadProficiencies(fileReader)
+        kiList.loadKiAttributes(fileReader)
 
         restoreChar.close()
 
@@ -564,6 +565,7 @@ class BaseCharacter: Serializable {
 
             secondaryList.writeList(this@BaseCharacter)
             weaponProficiencies.writeProficiencies(this@BaseCharacter)
+            kiList.writeKiAttributes(this@BaseCharacter)
 
             byteArray.close()
 

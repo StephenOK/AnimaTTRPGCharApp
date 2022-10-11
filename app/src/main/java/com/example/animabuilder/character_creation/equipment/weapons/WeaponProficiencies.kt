@@ -1676,9 +1676,8 @@ class WeaponProficiencies(): Serializable {
             else
                 takenMartialList = takenMartialList + changeItem
         }
-        else {
+        else
             takenMartialList = takenMartialList - changeItem
-        }
 
         charInstance.updateMK()
 
@@ -1739,6 +1738,13 @@ class WeaponProficiencies(): Serializable {
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             else -> return false
+        }
+    }
+
+    fun doubleCheck(charInstance: BaseCharacter){
+        takenMartialList.forEach{
+            if(!qualifies(it, charInstance))
+                takenMartialList = takenMartialList - it
         }
     }
 

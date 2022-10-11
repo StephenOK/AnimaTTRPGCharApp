@@ -238,6 +238,7 @@ class BaseCharacter: Serializable {
     }
 
     fun updateTotalSpent(){
+        weaponProficiencies.doubleCheck(this@BaseCharacter)
         updateCombatSpent()
         spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }

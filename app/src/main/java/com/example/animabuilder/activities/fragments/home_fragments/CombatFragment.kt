@@ -21,6 +21,7 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 
 private var modWeapons: List<Weapon> = listOf()
 private var allSecondaries: List<Pair<Weapon, MutableState<Boolean>>> = listOf()
+private var allMartials: List<Pair<MartialArt, MutableState<Boolean>>> = listOf()
 
 private var detailList: List<Weapon> = listOf()
 
@@ -45,7 +46,6 @@ fun CombatFragment(
         val primaryWeapon = remember{mutableStateOf(charInstance.weaponProficiencies.primaryWeapon)}
         val allPrimaryBoxes: MutableState<List<MutableState<Boolean>>> = remember{mutableStateOf(listOf())}
 
-        val weaponDetailAlertOn = remember{mutableStateOf(false)}
         val detailShow: MutableState<Weapon?> = remember{mutableStateOf(null)}
 
         Text(text = "Current Primary Weapon: " + primaryWeapon.value.name)
@@ -444,6 +444,7 @@ private fun WeaponRow(
                 chosen.value = input
                 charInstance.weaponProficiencies.primaryWeapon = chosen.value
                 charInstance.updateTotalSpent()
+                martialUpdate(charInstance)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -466,6 +467,7 @@ private fun WeaponRow(
                     charInstance.updateTotalSpent()
                 }
 
+                martialUpdate(charInstance)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -539,6 +541,14 @@ fun modUpdate(charInstance: BaseCharacter){
     }
 }
 
+fun martialUpdate(charInstance: BaseCharacter){
+    allMartials.forEach{
+        it.let{(input, display) ->
+            display.value = charInstance.weaponProficiencies.takenMartialList.contains(input)
+        }
+    }
+}
+
 @Composable
 private fun StyleRow(
     charInstance: BaseCharacter,
@@ -587,6 +597,7 @@ private fun MartialArtRow(
     updateFunc: () -> Unit
 ){
     val martialTaken = remember{mutableStateOf(charInstance.weaponProficiencies.takenMartialList.contains(martialArt))}
+    allMartials = allMartials + Pair(martialArt, martialTaken)
 
     Row(verticalAlignment = Alignment.CenterVertically){
         Checkbox(
@@ -596,6 +607,7 @@ private fun MartialArtRow(
                     martialTaken.value = it
 
                 charInstance.updateTotalSpent()
+                martialUpdate(charInstance)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)

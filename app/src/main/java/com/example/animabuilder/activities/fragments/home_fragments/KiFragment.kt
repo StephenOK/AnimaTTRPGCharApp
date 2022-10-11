@@ -84,11 +84,15 @@ private fun KiAbilityRow(charInstance: BaseCharacter, ability: KiAbility){
                 }
 
                 remainingMK.value = charInstance.kiList.martialKnowledgeRemaining.toString()
-            }
+            },
+            modifier = Modifier.weight(0.1f)
         )
-        Text(text = ability.name)
-        Text(text = ability.mkCost.toString())
-        TextButton(onClick = { /*TODO*/ }) {
+        Text(text = ability.name, modifier = Modifier.weight(0.5f))
+        Text(text = ability.mkCost.toString(), modifier = Modifier.weight(0.2f))
+        TextButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier.weight(0.2f)
+        ) {
             Text(text = "Details")
         }
     }

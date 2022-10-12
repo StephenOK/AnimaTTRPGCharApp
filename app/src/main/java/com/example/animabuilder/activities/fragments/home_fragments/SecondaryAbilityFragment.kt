@@ -13,14 +13,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.activities.numberCatcher
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 
 /**
@@ -139,7 +138,6 @@ private fun RowHead(){
  * item: characteristic item to work on
  * spentDisplay: mutable value of the characteristic's score input
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MakeRow(
     charInstance: BaseCharacter,
@@ -147,9 +145,6 @@ private fun MakeRow(
     item: SecondaryCharacteristic,
     spentDisplay: MutableState<Int>
 ){
-    //keyboard controller
-    val keyboardActive = LocalSoftwareKeyboardController.current
-
     //secondary characteristic list from the character
     val charList = charInstance.secondaryList
 
@@ -189,25 +184,13 @@ private fun MakeRow(
                 keyboardType = KeyboardType.Number
             ),
             onValueChange = {
-                //attempt user input
-                try{
-                    //run operation from user input
-                    secondaryInput(charInstance, item, it.toInt(), spentDisplay, textColor, total)
-
-                    //update field's display
-                    userInput.value = it
-                }
-                //if non-numeric input
-                catch(e: NumberFormatException){
-                    //run as 0 with empty input
-                    if(it == "") {
-                        secondaryInput(charInstance, item, 0, spentDisplay, textColor, total)
-                        userInput.value = it
-                    }
-                    //hide keyboard if enter pressed
-                    else if(it.contains('\n'))
-                        keyboardActive?.hide()
-                }
+                numberCatcher(it,
+                    {input: String ->
+                        secondaryInput(charInstance, item, input.toInt(), spentDisplay, textColor, total)
+                        userInput.value = input},
+                    {secondaryInput(charInstance, item, 0, spentDisplay, textColor, total)
+                        userInput.value = ""}
+                )
             },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, color = textColor.value),
             modifier = Modifier.weight(0.25f)

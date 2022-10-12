@@ -28,11 +28,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-
-//initialize keyboard interaction
-@OptIn(ExperimentalComposeUiApi::class)
-var keyboardActive: SoftwareKeyboardController? = null
-
+import com.example.animabuilder.activities.keyboardActive
+import com.example.animabuilder.activities.numberCatcher
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -46,8 +43,8 @@ var keyboardActive: SoftwareKeyboardController? = null
  * maxPsychic: passed mutable for maximum dp for psychic abilities
  */
 
-@Composable
 @OptIn(ExperimentalComposeUiApi::class)
+@Composable
 fun CharacterPageFragment(
     charInstance: BaseCharacter,
     maxDP: MutableState<Int>,
@@ -58,7 +55,6 @@ fun CharacterPageFragment(
 ){
     //initialize screen size and keyboard
     val screenSize = LocalConfiguration.current
-    keyboardActive = LocalSoftwareKeyboardController.current
 
     //initialize mutable states for resistance display
     val presence = remember{mutableStateOf(charInstance.presence)}
@@ -107,7 +103,7 @@ fun CharacterPageFragment(
                 value = inputName.value,
                 onValueChange = {
                     //close keyboard if enter is pushed
-                    if(it[it.length - 1] == '\n')
+                    if(it.contains('\n'))
                         keyboardActive?.hide()
                     //otherwise, update name
                     else{
@@ -295,18 +291,15 @@ fun CharacterPageFragment(
                 value = lifeMults.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
-                    try{
-                        charInstance.takeLifeMult(it.toInt())
-                        lifeTotal.value = charInstance.lifeMax
+                    numberCatcher(it,
+                        {input ->
+                            charInstance.takeLifeMult(input.toInt())
+                            lifeTotal.value = charInstance.lifeMax
 
-                        lifeMults.value = it
-                        updateFunc()
-                    }catch(e: NumberFormatException){
-                        if(it == "")
-                            lifeMults.value = it
-                        else if(it.contains('\n'))
-                            keyboardActive!!.hide()
-                    }
+                            lifeMults.value = input
+                            updateFunc()},
+                        {lifeMults.value = ""}
+                    )
                 },
                 modifier = Modifier.weight(0.2f)
             )
@@ -449,24 +442,16 @@ private fun PrimaryRow(
             value = statIn.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange ={
-                //try to take user's input
-                try{
-                    //check if input is within legal range
-                    if(it.toInt() in 1..20) {
-                        //update display and mod values
-                        statIn.value = it
-                        modOutput.value = change(statIn.value.toInt())
-                    }
-                }
-                //catch non-numeric input
-                catch(e: NumberFormatException){
-                    //allow empty inputs to display
-                    if(it == "")
-                        statIn.value = it
-                    //hide keyboard if enter pressed
-                    else if(it.contains('\n'))
-                        keyboardActive!!.hide()
-                }},
+                numberCatcher(it,
+                    {input ->
+                        if(input.toInt() in 1..20) {
+                            //update display and mod values
+                            statIn.value = input
+                            modOutput.value = change(statIn.value.toInt())
+                    }},
+                    {statIn.value = ""}
+                )
+            },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
             modifier = Modifier.weight(0.33f)
         )
@@ -558,20 +543,18 @@ fun CombatItemRow(
             value = pointInScore.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = {
-                try{
-                    if(changeAct(it.toInt(), pointTotal))
-                        pointColor.value = Color.Black
-                    else
-                        pointColor.value = Color.Red
+                numberCatcher(it,
+                    {input ->
+                        if(changeAct(input.toInt(), pointTotal))
+                            pointColor.value = Color.Black
+                        else
+                            pointColor.value = Color.Red
 
-                    pointInScore.value = it
-                    updateFunc()
-                }catch(e: NumberFormatException){
-                    if(it == "")
-                        pointInScore.value = it
-                    else if(it.contains('\n'))
-                        keyboardActive!!.hide()
-                }
+                        pointInScore.value = input
+                        updateFunc()
+                    },
+                    {pointInScore.value = ""}
+                )
             },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, color = pointColor.value),
             modifier = Modifier.weight(0.2f)

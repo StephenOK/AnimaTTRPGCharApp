@@ -13,6 +13,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.InfoRow
+import com.example.animabuilder.activities.contents
+import com.example.animabuilder.activities.detailAlertOn
+import com.example.animabuilder.activities.detailItem
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
@@ -24,11 +27,6 @@ private var allSecondaries: List<Pair<Weapon, MutableState<Boolean>>> = listOf()
 private var allMartials: List<Pair<MartialArt, MutableState<Boolean>>> = listOf()
 
 private var detailList: List<Weapon> = listOf()
-
-private val detailAlertOn = mutableStateOf(false)
-private val detailItem = mutableStateOf("")
-
-private val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
 @Composable
 fun CombatFragment(
@@ -184,8 +182,7 @@ fun CombatFragment(
         MartialButton(charInstance, updateFunc)
         StyleButton(charInstance, updateFunc)
 
-        if(detailAlertOn.value)
-            DetailAlert(contents.value!!)
+
     }
 }
 
@@ -699,19 +696,10 @@ val ArchetypeContents = @Composable
     }
 }
 
-val MartialContents = @Composable{preReqList: String, description: String ->
+val MartialContents = @Composable
+{preReqList: String, description: String ->
     Column{
         InfoRow("PreRequisites", preReqList)
         Text(text = description)
     }
-}
-
-@Composable
-private fun DetailAlert(contents: @Composable () -> Unit){
-    AlertDialog(
-        onDismissRequest = {detailAlertOn.value = false},
-        title = {Text(text = "Description of " + detailItem.value)},
-        text = {contents()},
-        confirmButton = {TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")} }
-    )
 }

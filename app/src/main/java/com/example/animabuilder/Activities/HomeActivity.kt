@@ -12,7 +12,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.NavHost
@@ -24,6 +27,13 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
+
+@OptIn(ExperimentalComposeUiApi::class)
+var keyboardActive: SoftwareKeyboardController? = null
+
+val detailAlertOn = mutableStateOf(false)
+val detailItem = mutableStateOf("")
+val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
 /**
  * Activity that runs all character creation fragments
@@ -44,10 +54,12 @@ class HomeActivity : AppCompatActivity() {
         Equipment
     }
 
+
     //character to work with and its associated file name
     private lateinit var charInstance: BaseCharacter
     private var filename: String? = null
 
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -57,6 +69,8 @@ class HomeActivity : AppCompatActivity() {
         filename = intent.getStringExtra("filename")
 
         setContent{
+            keyboardActive = LocalSoftwareKeyboardController.current
+
             //create scaffold state and coroutine scope
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -231,6 +245,8 @@ class HomeActivity : AppCompatActivity() {
             //show exit alert if user opens it
             if(exitOpen.value)
                 ExitAlert(exitOpen)
+            if(detailAlertOn.value)
+                DetailAlert(contents.value!!)
         }
     }
 
@@ -342,6 +358,16 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    @Composable
+    private fun DetailAlert(contents: @Composable () -> Unit){
+        AlertDialog(
+            onDismissRequest = {detailAlertOn.value = false},
+            title = {Text(text = "Description of " + detailItem.value)},
+            text = {contents()},
+            confirmButton = {TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")} }
+        )
+    }
+
     /**
      * Alert for when user wishes to leave the current activity
      *
@@ -402,5 +428,22 @@ fun InfoRow(
     Row(verticalAlignment = Alignment.CenterVertically){
         Text(text = label, modifier = Modifier.weight(0.5f))
         Text(text = info, modifier = Modifier.weight(0.5f))
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+fun numberCatcher(
+    input: String,
+    tryBlock: (String) -> Unit,
+    blankBlock: () -> Unit,
+){
+    try{
+        tryBlock(input)
+    }
+    catch(e: NumberFormatException){
+        if(input == "")
+            blankBlock()
+        else if (input.contains('\n'))
+            keyboardActive?.hide()
     }
 }

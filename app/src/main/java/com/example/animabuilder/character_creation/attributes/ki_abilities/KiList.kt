@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
+import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import java.io.Serializable
@@ -355,6 +356,78 @@ class KiList: Serializable {
     var boughtPowPoint = 0
     var boughtWpPoint = 0
 
+    val setBoughtStr = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String>->
+        boughtStrPoint = input
+        updateStr(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiSTR.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
+    val setBoughtDex = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtDexPoint = input
+        updateDex(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiDEX.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
+    val setBoughtAgi = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtAgiPoint = input
+        updateAgi(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiAGI.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
+    val setBoughtCon = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtConPoint = input
+        updateCon(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiCON.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
+    val setBoughtPow = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtPowPoint = input
+        updatePow(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiPOW.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
+    val setBoughtWp = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtWpPoint = input
+        updateWp(charIn)
+        updateTotals(charIn)
+        statFinal.value = kiWP.toString()
+        totalDisplay.value = totalKi.toString()
+    }
+
     var totalPointBuy = 0
 
     var boughtStrAcc = 0
@@ -363,6 +436,78 @@ class KiList: Serializable {
     var boughtConAcc = 0
     var boughtPowAcc = 0
     var boughtWpAcc = 0
+
+    val setStrAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtStrAcc = input
+        updateStr(charIn)
+        updateTotals(charIn)
+        statFinal.value = accSTR.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
+
+    val setDexAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtDexAcc = input
+        updateDex(charIn)
+        updateTotals(charIn)
+        statFinal.value = accDEX.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
+
+    val setAgiAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtAgiAcc = input
+        updateAgi(charIn)
+        updateTotals(charIn)
+        statFinal.value = accAGI.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
+
+    val setConAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtConAcc = input
+        updateCon(charIn)
+        updateTotals(charIn)
+        statFinal.value = accCON.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
+
+    val setPowAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtPowAcc = input
+        updatePow(charIn)
+        updateTotals(charIn)
+        statFinal.value = accPOW.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
+
+    val setWpAcc = {
+            input: Int,
+            charIn: BaseCharacter,
+            statFinal: MutableState<String>,
+            totalDisplay: MutableState<String> ->
+        boughtWpAcc = input
+        updateWp(charIn)
+        updateTotals(charIn)
+        statFinal.value = accWP.toString()
+        totalDisplay.value = totalAcc.toString()
+    }
 
     var totalAccBuy = 0
 
@@ -375,39 +520,64 @@ class KiList: Serializable {
 
 
     fun updateKiStats(charInstance: BaseCharacter){
-        kiSTR = getStatKi(charInstance.str, boughtStrPoint)
-        accSTR = getStatKiAccumulation(charInstance.str, boughtStrAcc)
+        updateStr(charInstance)
+        updateDex(charInstance)
+        updateAgi(charInstance)
+        updateCon(charInstance)
+        updatePow(charInstance)
+        updateWp(charInstance)
 
-        kiDEX = getStatKi(charInstance.dex, boughtDexPoint)
-        accDEX = getStatKiAccumulation(charInstance.dex, boughtDexAcc)
-
-        kiAGI = getStatKi(charInstance.agi, boughtAgiPoint)
-        accAGI = getStatKiAccumulation(charInstance.agi, boughtAgiAcc)
-
-        kiCON = getStatKi(charInstance.con, boughtConPoint)
-        accCON =  getStatKiAccumulation(charInstance.con, boughtConAcc)
-
-        kiPOW = getStatKi(charInstance.pow, boughtPowPoint)
-        accPOW = getStatKiAccumulation(charInstance.pow, boughtPowAcc)
-
-        kiWP = getStatKi(charInstance.wp, boughtWpPoint)
-        accWP = getStatKiAccumulation(charInstance.wp, boughtWpAcc)
-
-        totalKi = kiSTR + kiDEX + kiAGI + kiCON + kiPOW + kiWP
-        totalAcc = accSTR + accDEX + accAGI + accCON + accPOW + accWP
+        updateTotals(charInstance)
     }
 
-    fun getStatKi(input: Int, addition: Int): Int {
-        return addition +
-            if (input <= 10)
+    fun updateStr(charInstance: BaseCharacter){
+        kiSTR = getStatKi(charInstance.str) + boughtStrPoint
+        accSTR = getStatKiAcc(charInstance.str) + boughtStrAcc
+    }
+
+    fun updateDex(charInstance: BaseCharacter){
+        kiDEX = getStatKi(charInstance.dex) + boughtDexPoint
+        accDEX = getStatKiAcc(charInstance.dex) + boughtDexAcc
+    }
+
+    fun updateAgi(charInstance: BaseCharacter){
+        kiAGI = getStatKi(charInstance.agi) + boughtAgiPoint
+        accAGI = getStatKiAcc(charInstance.agi) + boughtAgiAcc
+    }
+
+    fun updateCon(charInstance: BaseCharacter){
+        kiCON = getStatKi(charInstance.con) + boughtConPoint
+        accCON =  getStatKiAcc(charInstance.con) + boughtConAcc
+    }
+
+    fun updatePow(charInstance: BaseCharacter){
+        kiPOW = getStatKi(charInstance.pow) + boughtPowPoint
+        accPOW = getStatKiAcc(charInstance.pow) + boughtPowAcc
+    }
+
+    fun updateWp(charInstance: BaseCharacter){
+        kiWP = getStatKi(charInstance.wp) + boughtWpPoint
+        accWP = getStatKiAcc(charInstance.wp) + boughtWpAcc
+    }
+
+    fun updateTotals(charInstance: BaseCharacter){
+        totalKi = kiSTR + kiDEX + kiAGI + kiCON + kiPOW + kiWP
+        totalAcc = accSTR + accDEX + accAGI + accCON + accPOW + accWP
+
+        totalPointBuy = boughtStrPoint + boughtDexPoint + boughtAgiPoint + boughtConPoint + boughtPowPoint + boughtWpPoint
+        totalAccBuy = boughtStrAcc + boughtDexAcc + boughtAgiAcc + boughtConAcc + boughtPowAcc + boughtWpAcc
+        charInstance.updateTotalSpent()
+    }
+
+    fun getStatKi(input: Int): Int {
+        return if (input <= 10)
                 input
             else
                 10 + ((input - 10) * 2)
     }
 
-    fun getStatKiAccumulation(input: Int, addition: Int): Int{
-        return addition +
-            if(input <= 9)
+    fun getStatKiAcc(input: Int): Int{
+        return if(input <= 9)
                 1
             else if (input in 10 .. 12)
                 2

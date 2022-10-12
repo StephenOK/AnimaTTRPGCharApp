@@ -203,7 +203,9 @@ class Spellbook(): Serializable {
         true,
         32,
         60,
-        "Detects any life-form within 80 feet. The spell only detects the number of life-forms and their exact location. Resisting the spell requires beating a MR Check with a Difficulty of 140.",
+        "Detects any life-form within 80 feet. The spell only detects the number of " +
+                "life-forms and their exact location. Resisting the spell requires beating a " +
+                "MR Check with a Difficulty of 140.",
         "+30 feet to radius and +10 to MR Difficulty",
         10,
     "1 every 20",
@@ -216,10 +218,301 @@ class Spellbook(): Serializable {
         true,
         36,
         100,
-        "Creates a small light of energy that moves as wished by the caster, with a Flight Value of 14, for a maximum distance of one mile. Through it, the caster can see and hear as though he were present, but doing so overwhelms his body's senses, and he can only perceive the world through the Spy of Light. Each combat turn, the caster decides if he will see through the Spy of Light or his own senses. The Spy of Light has an ability of 100 at Notice and Search. If attacked, it can defend itself with the Magic Projection of its caster. For purposes of Initiative, it acts when its controller does. It is only possible to attack it with supernatural attacks, although it is destroyed if it receives any damage.",
+        "Creates a small light of energy that moves as wished by the caster, with a Flight " +
+                "Value of 14, for a maximum distance of one mile. Through it, the caster can see " +
+                "and hear as though he were present, but doing so overwhelms his body's senses, " +
+                "and he can only perceive the world through the Spy of Light. Each combat turn, " +
+                "the caster decides if he will see through the Spy of Light or his own senses. " +
+                "The Spy of Light has an ability of 100 at Notice and Search. If attacked, it " +
+                "can defend itself with the Magic Projection of its caster. For purposes of " +
+                "Initiative, it acts when its controller does. It is only possible to attack it " +
+                "with supernatural attacks, although it is destroyed if it receives any damage.",
         "+5 to Notice and Search and +1 mile to range",
         20,
         "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val ecstasy = Spell(
+        "Ecstasy",
+        SpellCategory.Light,
+        true,
+        38,
+        60,
+        "This spell intoxicates anyone affected with a feeling of utter ecstasy. The " +
+                "sensation of pleasure is so powerful that the victim's senses are completely " +
+                "clouded, and he receives a -20 All Action Penalty while affected. However, the " +
+                "spell's victims are also completely oblivious and immune to any pain or other " +
+                "affliction based penalty, except those for actually being physically " +
+                "incapacitated. The MR Check to resist this spell has a Difficulty of 80, and " +
+                "affects a radius of 30 feet.",
+        "+30 feet to radius and +5 to MR Difficulty",
+        10,
+        "1 every 10",
+        listOf(SpellType.Spiritual)
+    )
+
+    val banishNegativeEmotions = Spell(
+        "Banish Negative Emotions",
+        SpellCategory.Light,
+        true,
+        40,
+        80,
+        "Temporarily banishes any negative sentiments such as hatred, fear, or anger within " +
+                "300 feet of the caster. Resisting the spell requires beating a MR or PsR Check " +
+                "with a Difficulty of 100.",
+        "+150 feet to radius and +5 to MR or PsR Difficulty",
+        20,
+        null,
+        listOf(SpellType.Spiritual)
+    )
+
+    val healingLight = Spell(
+        "Healing Light",
+        SpellCategory.Light,
+        true,
+        42,
+        80,
+        "Causes whomever the spell is directed at to recover 40 Life Points. This spell " +
+                "does not restore permanently lost or destroyed limbs, nor eliminate penalties " +
+                "caused by Critical attacks.",
+        "+5 Life Points",
+        10,
+        null,
+        listOf(SpellType.Effect)
+    )
+
+    val seekingSphere = Spell(
+        "Seeking Sphere",
+        SpellCategory.Light,
+        true,
+        46,
+        120,
+        "Unleashes a sphere of luminous energy with Base Damage of 100. The caster can " +
+                "control it using his Magic Projection until it hits its target. If the target " +
+                "successfully dodges, the Seeking Sphere can continue attacking the following " +
+                "turn, since it has not been destroyed. When seeking sphere causes damage, or " +
+                "is blocked, the sphere explodes and vanishes. If the caster abandons control of " +
+                "it, it will act independently, following its last designated target with a " +
+                "Magic Projection of 150.",
+        "+5 to Base Damage and +5 to the Magic Projection of the Seeking Sphere",
+        20,
+        "1 every 10",
+        listOf(SpellType.Attack)
+    )
+
+    val detectionZone = Spell(
+        "Zone of Detection",
+        SpellCategory.Light,
+        true,
+        48,
+        140,
+        "This spell allows the caster to detect any being within the area of the spell who " +
+                "does not beat a MR Check with a Difficulty of 180. The Zone of Detection only " +
+                "tells the caster how many individuals are in the zone, and their exact " +
+                "location. It also senses spells of Detection that attempt to enter into the " +
+                "area, as long as the spellcaster using them does not beat the MR (regardless " +
+                "of his actual location). The affected zone can be no larger than 60 feet in " +
+                "radius, and is stationary in the place it was cast.",
+        "+30 feet to radius and +10 to MR Difficulty",
+        20,
+        "1 every 20 (Daily)",
+        listOf(SpellType.Detection)
+    )
+
+    val enterDreams = Spell(
+        "Enter Another's Dreams",
+        SpellCategory.Light,
+        true,
+        50,
+        120,
+        "This allows the caster to physically enter a sleeper's dreams. The caster has no " +
+                "control over the dream world of the dreamer, and anything that happens there " +
+                "will be real to the caster. The person must have peaceful dreams to be affected " +
+                "\by this spell, and the moment the dream turns into a nightmare, or he awakens " +
+                "or dies, the mage abandons the dream world and returns to reality. Any Spiritual " +
+                "spell cast on the dreamer while the caster is present in his dreams will also " +
+                "affect the caster. The MR or PsR Check has a Difficulty of 140. Once he is in " +
+                "the target person's dreams, the caster can jump to the unconscious of yet another " +
+                "dreamer who is physically no more than 30 feet from the original sleeper. " +
+                "Naturally, this new dreamer will have the right to his own MR Check. If the " +
+                "dreamer's consciousness happens to be in the world of The Wake, the caster is " +
+                "trapped there even when the spell expires.",
+        "+30 feet additional to jumping range and +5 to MR or PsR Difficulty",
+        20,
+        "1 every 20 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val lightForm = Spell(
+        "Light Form",
+        SpellCategory.Light,
+        true,
+        52,
+        100,
+        "The body designated by the caster is transformed into pure luminous energy and " +
+                "becomes intangible to matter and non-energy attacks. While in this state, the " +
+                "transformed person gains a +50 bonus to his abilities of Notice and Search, and " +
+                "a +30 to his Resistance against affects based on Light. In this state, the " +
+                "damage caused by Darkness based attacks is doubled. The maximum presence that " +
+                "can be affected is 100.",
+        "+10 to the maximum Presence that can be affected",
+        10,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val blessing = Spell(
+        "Blessing",
+        SpellCategory.Light,
+        true,
+        56,
+        100,
+        "Blessing endows the affected party with incredible energy. Those affected receive " +
+                "a bonus of +20 to all their actions and Resistances. All allies within 15 feet " +
+                "of the caster are affected. No one can be affected by more than one Blessing at a time.",
+        "+15 feet to radius",
+        20,
+        "1 every 20",
+        listOf(SpellType.Effect)
+    )
+
+    val createGoodFeelings = Spell(
+        "Create Good Feelings",
+        SpellCategory.Light,
+        true,
+        58,
+        100,
+        "This creates positive sentiments such as love, pleasure, or friendship in the " +
+                "people designated by the caster. The radius of the spell is 60 feet, and the MR " +
+                "or PsR Check has a Difficulty of 120. Those affected can repeat the Resistance " +
+                "Check once per day.",
+        "+5 to MR or PsR Difficulty and +30 foot radius",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val seeTruth = Spell(
+        "See Truth",
+        SpellCategory.Light,
+        true,
+        60,
+        100,
+        "Permits the affected person to perceive supernatural forces that are invisible to " +
+                "the human eye, including magic, psychic matrices, and invisible or spiritual " +
+                "beings. Although this spell does not directly work against illusion spells " +
+                "because they affect the mind, not the vision, anyone using See Truth against " +
+                "visual illusions can apply a +50 bonus to the MR Check, since it would help " +
+                "detect the falseness. The maximum Presence that can be affected is 80.",
+        "+10 to the maximum Presence affected",
+        10,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val shieldFromNegative = Spell(
+        "Shield From Negative",
+        SpellCategory.Light,
+        true,
+        62,
+        140,
+        "This spell enchants a certain area, making it impenetrable for beings naturally " +
+                "based in negative emotions or Darkness. Any such creature entering the zone must " +
+                "pass a MR Check with a Difficulty of 120 or suffer the loss of a number of Life " +
+                "Points equal to the margin of failure. Additionally, if it fails the check, it " +
+                "receives an immediate -40 All Action Penalty. The affected zone can be no larger " +
+                "than 60 feet in radius, and is stationary in the place it was cast.",
+        "+60 feet to radius and +5 to the MR Difficulty",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Automatic)
+    )
+
+    val find = Spell(
+        "Find",
+        SpellCategory.Light,
+        true,
+        66,
+        160,
+        "By means of Find, the finder can locate any person, place, or thing, and know its " +
+                "exact location in that moment regardless of the distance separating them. " +
+                "Anything can be found, whether an individual object, or a type of object, or " +
+                "simply something that fulfills a specified condition. For example, the caster " +
+                "can try to locate a city, the thief who stole his crosier (even if he doesn't " +
+                "know who did it), or the closest eligible maiden of royal blood. Objects, " +
+                "places, or people affected must make a dice roll against a MR Check with a " +
+                "Difficulty of 140 to avoid being located. Large places apply a -40 penalty to " +
+                "this check.",
+        "+10 to the MR Difficulty",
+        20,
+        null,
+        listOf(SpellType.Detection)
+    )
+
+    val restore = Spell(
+        "Restore",
+        SpellCategory.Light,
+        true,
+        70,
+        140,
+        "This spell allows the person affected to recover from any penalties including " +
+                "those caused by fatigue, hunger, physical damage, and even spells, although not " +
+                "from actual physical loss such as from the loss of a limb or other body part. " +
+                "Restore automatically restores any number of Fatigue points lost due to fatigue. " +
+                "The maximum Presence that can be affected iss 100.",
+        "+10 to the maximum Presence affected",
+        20,
+        null,
+        listOf(SpellType.Effect)
+    )
+
+    val hypnoticDisplay = Spell(
+        "Hypnotic Display",
+        SpellCategory.Light,
+        true,
+        70,
+        150,
+        "The spell creates a spectacle of lights in a specified place that has a fascinating " +
+                "and dumbfounding affect. All the characters that see the display cannot help but " +
+                "continue watching it. It is visible for a radius of half a mile, and anyone " +
+                "seeing it must make a MR or PsR Check with a Difficulty of 120 to resist its " +
+                "effects. Those affected can perform Passive Actions, but cannot move. They can " +
+                "make a new Resistance Check every time they are attacked. The condition for being " +
+                "affected is looking directly at the Hypnotic Display.",
+        "+1 mile to radius and +5 to MR or PsR Difficulty",
+        20,
+        "1 every 50",
+        listOf(SpellType.Automatic)
+    )
+
+    val catastrophicLight = Spell(
+        "Catastrophic Light",
+        SpellCategory.Light,
+        true,
+        72,
+        120,
+        "Creates a deadly discharge of Light with a Base Damage of 150. Catastrophic Light " +
+                "has a radius of 80 feet and is an Energy Attack Type.",
+        "+30 feet to radius and +5 damage",
+        20,
+        null,
+        listOf(SpellType.Attack)
+    )
+
+    val luminousMaterial = Spell(
+        "Luminous Material Objects",
+        SpellCategory.Light,
+        true,
+        76,
+        150,
+        "Forms a material object from luminous energy. Whether it is something as complex " +
+                "as a clock, or as simple as a sword, the object created can not have a Presence " +
+                "of more than 60, but for all purposes it is treated as having a quality of +10. " +
+                "As an exceptional rule, the quality of the object does not affect its Presence.",
+        "+10 to the object's presence",
+        20,
+        "1 every 10",
         listOf(SpellType.Effect)
     )
 }

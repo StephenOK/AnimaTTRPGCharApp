@@ -1,12 +1,12 @@
 package com.example.animabuilder.character_creation.attributes.spells
 
-import android.hardware.lights.Light
+import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
 class Spellbook(): Serializable {
     val createLight = Spell(
         "Create Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         2,
         20,
@@ -19,7 +19,7 @@ class Spellbook(): Serializable {
 
     val induceCalm = Spell(
         "Induce Calm",
-        SpellCategory.Light,
+        Element.Light,
         true,
         6,
         40,
@@ -35,7 +35,7 @@ class Spellbook(): Serializable {
 
     val blindingFlash = Spell(
         "Blinding Flash",
-        SpellCategory.Light,
+        Element.Light,
         true,
         8,
         50,
@@ -53,7 +53,7 @@ class Spellbook(): Serializable {
 
     val lightShield = Spell(
         "Shield of Light",
-        SpellCategory.Light,
+        Element.Light,
         false,
         10,
         50,
@@ -68,7 +68,7 @@ class Spellbook(): Serializable {
 
     val perceive = Spell(
         "Perceive",
-        SpellCategory.Light,
+        Element.Light,
         true,
         12,
         50,
@@ -84,7 +84,7 @@ class Spellbook(): Serializable {
 
     val lightArmor = Spell(
         "Armor of Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         16,
         60,
@@ -99,7 +99,7 @@ class Spellbook(): Serializable {
 
     val banishShadows = Spell(
         "Banish Shadows",
-        SpellCategory.Light,
+        Element.Light,
         true,
         18,
         60,
@@ -116,7 +116,7 @@ class Spellbook(): Serializable {
 
     val detectNegativeEmotions = Spell(
         "Detect Negative Emotions",
-        SpellCategory.Light,
+        Element.Light,
         true,
         20,
         50,
@@ -131,7 +131,7 @@ class Spellbook(): Serializable {
 
     val lightBeam = Spell(
         "Light Beam",
-        SpellCategory.Light,
+        Element.Light,
         true,
         22,
         50,
@@ -145,7 +145,7 @@ class Spellbook(): Serializable {
 
     val hologram = Spell(
         "Hologram",
-        SpellCategory.Light,
+        Element.Light,
         true,
         26,
         40,
@@ -166,7 +166,7 @@ class Spellbook(): Serializable {
 
     val lightBond = Spell(
         "Bonds of Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         28,
         60,
@@ -183,7 +183,7 @@ class Spellbook(): Serializable {
 
     val controlLight = Spell(
         "Control Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         30,
         50,
@@ -199,7 +199,7 @@ class Spellbook(): Serializable {
 
     val detectLife = Spell(
         "Detect Life",
-        SpellCategory.Light,
+        Element.Light,
         true,
         32,
         60,
@@ -214,7 +214,7 @@ class Spellbook(): Serializable {
 
     val lightSpy = Spell(
         "Spy of Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         36,
         100,
@@ -235,7 +235,7 @@ class Spellbook(): Serializable {
 
     val ecstasy = Spell(
         "Ecstasy",
-        SpellCategory.Light,
+        Element.Light,
         true,
         38,
         60,
@@ -254,7 +254,7 @@ class Spellbook(): Serializable {
 
     val banishNegativeEmotions = Spell(
         "Banish Negative Emotions",
-        SpellCategory.Light,
+        Element.Light,
         true,
         40,
         80,
@@ -269,7 +269,7 @@ class Spellbook(): Serializable {
 
     val healingLight = Spell(
         "Healing Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         42,
         80,
@@ -284,7 +284,7 @@ class Spellbook(): Serializable {
 
     val seekingSphere = Spell(
         "Seeking Sphere",
-        SpellCategory.Light,
+        Element.Light,
         true,
         46,
         120,
@@ -303,7 +303,7 @@ class Spellbook(): Serializable {
 
     val detectionZone = Spell(
         "Zone of Detection",
-        SpellCategory.Light,
+        Element.Light,
         true,
         48,
         140,
@@ -322,7 +322,7 @@ class Spellbook(): Serializable {
 
     val enterDreams = Spell(
         "Enter Another's Dreams",
-        SpellCategory.Light,
+        Element.Light,
         true,
         50,
         120,
@@ -346,7 +346,7 @@ class Spellbook(): Serializable {
 
     val lightForm = Spell(
         "Light Form",
-        SpellCategory.Light,
+        Element.Light,
         true,
         52,
         100,
@@ -364,7 +364,7 @@ class Spellbook(): Serializable {
 
     val blessing = Spell(
         "Blessing",
-        SpellCategory.Light,
+        Element.Light,
         true,
         56,
         100,
@@ -379,7 +379,7 @@ class Spellbook(): Serializable {
 
     val createGoodFeelings = Spell(
         "Create Good Feelings",
-        SpellCategory.Light,
+        Element.Light,
         true,
         58,
         100,
@@ -395,7 +395,7 @@ class Spellbook(): Serializable {
 
     val seeTruth = Spell(
         "See Truth",
-        SpellCategory.Light,
+        Element.Light,
         true,
         60,
         100,
@@ -413,7 +413,7 @@ class Spellbook(): Serializable {
 
     val shieldFromNegative = Spell(
         "Shield From Negative",
-        SpellCategory.Light,
+        Element.Light,
         true,
         62,
         140,
@@ -431,7 +431,7 @@ class Spellbook(): Serializable {
 
     val find = Spell(
         "Find",
-        SpellCategory.Light,
+        Element.Light,
         true,
         66,
         160,
@@ -452,7 +452,7 @@ class Spellbook(): Serializable {
 
     val restore = Spell(
         "Restore",
-        SpellCategory.Light,
+        Element.Light,
         true,
         70,
         140,
@@ -469,7 +469,7 @@ class Spellbook(): Serializable {
 
     val hypnoticDisplay = Spell(
         "Hypnotic Display",
-        SpellCategory.Light,
+        Element.Light,
         true,
         70,
         150,
@@ -488,7 +488,7 @@ class Spellbook(): Serializable {
 
     val catastrophicLight = Spell(
         "Catastrophic Light",
-        SpellCategory.Light,
+        Element.Light,
         true,
         72,
         120,
@@ -502,7 +502,7 @@ class Spellbook(): Serializable {
 
     val luminousMaterial = Spell(
         "Luminous Material Objects",
-        SpellCategory.Light,
+        Element.Light,
         true,
         76,
         150,
@@ -514,5 +514,21 @@ class Spellbook(): Serializable {
         20,
         "1 every 10",
         listOf(SpellType.Effect)
+    )
+
+    val lightTravel = Spell(
+        "Travel by Light",
+        Element.Light,
+        true,
+        78,
+        250,
+        "Transports individuals or objects designated by the caster from one light source " +
+                "to another that must be less than 60 miles away. The quantity of Presence that " +
+                "can be transported cannot be greater than 250. If someone wishes to resist, the " +
+                "MR Check has a Difficulty of 120.",
+        "+5 to MR Difficulty, +20 to transportable Presence, and +60 miles",
+        30,
+        null,
+        listOf(SpellType.Spiritual, SpellType.Effect)
     )
 }

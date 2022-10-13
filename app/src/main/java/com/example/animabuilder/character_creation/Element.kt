@@ -1,6 +1,6 @@
-package com.example.animabuilder.character_creation.attributes.spells
+package com.example.animabuilder.character_creation
 
-enum class SpellCategory {
+enum class Element {
     Light,
     Dark,
     Creation,

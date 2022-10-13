@@ -2,6 +2,7 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities
 
 import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.Element
 import java.io.BufferedReader
 import java.io.Serializable
 
@@ -309,7 +310,7 @@ class KiList: Serializable {
         return false
     }
 
-    fun removeItem(item: KiAbility){
+    fun removeAbility(item: KiAbility){
         takenAbilities = takenAbilities - item
 
         takenAbilities.forEach{
@@ -319,6 +320,24 @@ class KiList: Serializable {
 
         updateMkSpent()
     }
+
+    val excisumAeris = Technique(
+        "Excisum Aeris",
+        "This technique allows the character to emit a full Ki explosion at a specific " +
+                "moment, projecting a blow at such speed that it causes the air to warp while he " +
+                "advances to attack. This technique uses the Base Damage of the user's weapon.",
+        1,
+        listOf(
+            TechniqueEffect("Long-Distance Attack", "+80ft", 15, 4, 3,
+                listOf(0, 4, 0, 0, 2, 0), listOf(Element.Air), 1),
+            TechniqueEffect("Initiative Augmentation", "+50", 10, 1, 1,
+                listOf(0, 0, 4, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 1)
+        )
+    )
+
+    val allTechniques = listOf(excisumAeris)
+    val takenTechniques: List<Technique> = listOf()
+    val techniqueExtensions: List<Boolean> = listOf()
 
     fun updateMkSpent(){
         martialKnowledgeRemaining = martialKnowledgeMax
@@ -510,14 +529,6 @@ class KiList: Serializable {
     }
 
     var totalAccBuy = 0
-
-
-
-
-
-
-
-
 
     fun updateKiStats(charInstance: BaseCharacter){
         updateStr(charInstance)

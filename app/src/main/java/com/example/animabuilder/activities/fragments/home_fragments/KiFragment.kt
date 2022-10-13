@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.ki_abilities.KiAbility
+import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
 
 private var allKiAbilities: List<Pair<KiAbility, MutableState<Boolean>>> = listOf()
 private val remainingMK = mutableStateOf("")
@@ -29,6 +30,7 @@ fun KiFragment(
     updateFunc: () -> Unit
 ) {
     val kiListOpen = remember{mutableStateOf(false)}
+    val techListOpen = remember{mutableStateOf(false)}
     remainingMK.value = charInstance.kiList.martialKnowledgeRemaining.toString()
 
     kiPointTotal.value = charInstance.kiList.totalKi.toString()
@@ -153,6 +155,23 @@ fun KiFragment(
                 }
             }
         }
+
+        Button(
+            onClick = {
+                techListOpen.value = !techListOpen.value
+            },
+            modifier = Modifier.width(250.dp)
+        ){
+            Text(text = "Dominion Techniques")
+        }
+
+        AnimatedVisibility(visible = techListOpen.value) {
+            Column{
+                charInstance.kiList.allTechniques.forEach{
+                    TechniqueRow(charInstance, it)
+                }
+            }
+        }
     }
 }
 
@@ -233,7 +252,7 @@ private fun KiAbilityRow(charInstance: BaseCharacter, ability: KiAbility){
                 }
                 else{
                     abilityTaken.value = false
-                    charInstance.kiList.removeItem(ability)
+                    charInstance.kiList.removeAbility(ability)
                     updateKiTaken(charInstance)
                 }
 
@@ -263,6 +282,43 @@ private fun updateKiTaken(charInstance: BaseCharacter){
     }
 }
 
+@Composable
+private fun TechniqueRow(
+    charInstance: BaseCharacter,
+    toShow: Technique
+) {
+    val techCheck = remember{mutableStateOf(charInstance.kiList.takenTechniques.contains(toShow))}
+    val isExtended = remember{ mutableStateOf(techCheck.value &&
+            charInstance.kiList.techniqueExtensions[charInstance.kiList.takenTechniques.indexOf(toShow)])}
+    Row{
+        Checkbox(
+            checked = techCheck.value,
+            onCheckedChange ={
+                techCheck.value = it
+            }
+        )
+        Checkbox(
+            checked = isExtended.value,
+            onCheckedChange = {
+                isExtended.value = it
+            }
+        )
+
+        Text(text = toShow.name)
+        Text(text = toShow.cost().toString() + " MK")
+        Text(text = toShow.level.toString())
+
+        TextButton(
+            onClick = {
+                detailAlertOn.value = true
+                detailItem.value = toShow.name
+                contents.value = @Composable{TechContents(toShow)}
+            }) {
+            Text(text = "Details")
+        }
+    }
+}
+
 val KiContents = @Composable
 {ability: KiAbility ->
     Column{
@@ -274,5 +330,36 @@ val KiContents = @Composable
 
         InfoRow("Prerequisite:", preString)
         Text(text = ability.description)
+    }
+}
+
+val TechContents = @Composable
+{technique: Technique ->
+    Column{
+        technique.givenAbilities.forEach{
+            Row{
+                Text(text = it.name + " " + it.effect)
+                if(it.maint != null)
+                    Text(text = " Maint: " + it.maint)
+            }
+        }
+
+        val kiBuilds = technique.statSpent()
+        if(kiBuilds[0] > 0)
+            InfoRow("STR: ", kiBuilds[0].toString())
+        if(kiBuilds[1] > 0)
+            InfoRow("DEX: ", kiBuilds[1].toString())
+        if(kiBuilds[2] > 0)
+            InfoRow("AGI: ", kiBuilds[2].toString())
+        if(kiBuilds[3] > 0)
+            InfoRow("CON: ", kiBuilds[3].toString())
+        if(kiBuilds[4] > 0)
+            InfoRow("POW: ", kiBuilds[4].toString())
+        if(kiBuilds[5] > 0)
+            InfoRow("WP: ", kiBuilds[5].toString())
+
+        InfoRow("Total Accumulation: ", technique.accTotal().toString())
+
+        Text(text = technique.description)
     }
 }

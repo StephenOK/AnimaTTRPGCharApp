@@ -10,8 +10,8 @@ class Spellbook(): Serializable {
         true,
         2,
         20,
-        "Create light in a radius of 15 feet.",
-        "+15 feet radius",
+        "Create light in a radius of 5 meters.",
+        "+5 meters radius",
         20,
         "1 every 10 (Daily)",
         listOf(SpellType.Effect)
@@ -23,11 +23,11 @@ class Spellbook(): Serializable {
         true,
         6,
         40,
-        "Calms individuals feeling fear or hatred within 50 feet of the caster. Makes any " +
+        "Calms individuals feeling fear or hatred within 15 meters of the caster. Makes any " +
                 "Fear, Anger, or Terror States disappear, even if of supernatural origin. It does " +
                 "not prevent violent actions deliberately done in cold blood. The MR or PsR Check " +
                 "to overcome this spell has a Difficulty of 80.",
-        "+30 feet to radius and +5 to MR or PsR Difficulty",
+        "+10 meters to radius and +5 to MR or PsR Difficulty",
         10,
         null,
         listOf(SpellType.Spiritual)
@@ -39,13 +39,13 @@ class Spellbook(): Serializable {
         true,
         8,
         50,
-        "Causes a sudden flash of light for a radius of 50 feet. It blinds anyone looking " +
+        "Causes a sudden flash of light for a radius of 15 meters. It blinds anyone looking " +
                 "at it when it goes off for as many combat turns as he fails the MR check by, " +
                 "divided by 10. It is not possible to designate specific targets within the " +
                 "flash, and everyone except the caster is equally effected. Characters can resist " +
                 "this spell by passing a PhR Check with a Difficulty Check of 140. If someone is " +
                 "actively avoiding looking at the flash, the PhR Check Difficulty is 80.",
-        "+15 feet to radius",
+        "+5 meters to radius",
         10,
         null,
         listOf(SpellType.Automatic)
@@ -149,7 +149,7 @@ class Spellbook(): Serializable {
         true,
         26,
         40,
-        "Creates a immaterial luminous form with a maximum size of three square feet. The " +
+        "Creates a immaterial luminous form with a maximum size of one square meter. The " +
                 "caster can give the hologram the appearance he desires making it very difficult " +
                 "to tell it from something real. If he creates a creature, it can perform any " +
                 "inhuman action the caster wishes, but will mimic the physical abilities of the " +
@@ -158,7 +158,7 @@ class Spellbook(): Serializable {
                 "touched, but if it receives any damage, based on Energy, it disappears. To " +
                 "detect that a hologram is not real, it is necessary to beat a Notice check " +
                 "against a Difficulty of Almost Impossible, or Search against Very Difficult.",
-        "+3 square feet to maximum size",
+        "+1 square meter to maximum size",
         20,
         "1 every 10",
         listOf(SpellType.Effect)
@@ -187,11 +187,11 @@ class Spellbook(): Serializable {
         true,
         30,
         50,
-        "Modifies and controls the form, color, or intensity of light in a 60-foot radius. " +
+        "Modifies and controls the form, color, or intensity of light in a 20 meter radius. " +
                 "If cast at Light-based beings, they must pass a MR Check with a Difficulty of 80 " +
                 "or they will fall under the control of the caster. A creature can only repeat " +
                 "the check if it is ordered to do something against its nature.",
-        "+30 feet to radius and +5 to MR Difficulty",
+        "+10 meters to radius and +5 to MR Difficulty",
         20,
         "1 every 10",
         listOf(SpellType.Spiritual, SpellType.Effect)
@@ -203,10 +203,10 @@ class Spellbook(): Serializable {
         true,
         32,
         60,
-        "Detects any life-form within 80 feet. The spell only detects the number of " +
+        "Detects any life-form within 25 meters. The spell only detects the number of " +
                 "life-forms and their exact location. Resisting the spell requires beating a " +
                 "MR Check with a Difficulty of 140.",
-        "+30 feet to radius and +10 to MR Difficulty",
+        "+10 meters to radius and +10 to MR Difficulty",
         10,
     "1 every 20",
         listOf(SpellType.Detection)
@@ -219,7 +219,7 @@ class Spellbook(): Serializable {
         36,
         100,
         "Creates a small light of energy that moves as wished by the caster, with a Flight " +
-                "Value of 14, for a maximum distance of one mile. Through it, the caster can see " +
+                "Value of 14, for a maximum distance of one kilometer. Through it, the caster can see " +
                 "and hear as though he were present, but doing so overwhelms his body's senses, " +
                 "and he can only perceive the world through the Spy of Light. Each combat turn, " +
                 "the caster decides if he will see through the Spy of Light or his own senses. " +
@@ -227,7 +227,7 @@ class Spellbook(): Serializable {
                 "can defend itself with the Magic Projection of its caster. For purposes of " +
                 "Initiative, it acts when its controller does. It is only possible to attack it " +
                 "with supernatural attacks, although it is destroyed if it receives any damage.",
-        "+5 to Notice and Search and +1 mile to range",
+        "+5 to Notice and Search and +1 kilometer to range",
         20,
         "1 every 5 (Daily)",
         listOf(SpellType.Effect)
@@ -245,8 +245,8 @@ class Spellbook(): Serializable {
                 "spell's victims are also completely oblivious and immune to any pain or other " +
                 "affliction based penalty, except those for actually being physically " +
                 "incapacitated. The MR Check to resist this spell has a Difficulty of 80, and " +
-                "affects a radius of 30 feet.",
-        "+30 feet to radius and +5 to MR Difficulty",
+                "affects a radius of 10 meters.",
+        "+10 meters to radius and +5 to MR Difficulty",
         10,
         "1 every 10",
         listOf(SpellType.Spiritual)
@@ -259,9 +259,9 @@ class Spellbook(): Serializable {
         40,
         80,
         "Temporarily banishes any negative sentiments such as hatred, fear, or anger within " +
-                "300 feet of the caster. Resisting the spell requires beating a MR or PsR Check " +
+                "100 meters of the caster. Resisting the spell requires beating a MR or PsR Check " +
                 "with a Difficulty of 100.",
-        "+150 feet to radius and +5 to MR or PsR Difficulty",
+        "+50 meters to radius and +5 to MR or PsR Difficulty",
         20,
         null,
         listOf(SpellType.Spiritual)
@@ -312,9 +312,9 @@ class Spellbook(): Serializable {
                 "tells the caster how many individuals are in the zone, and their exact " +
                 "location. It also senses spells of Detection that attempt to enter into the " +
                 "area, as long as the spellcaster using them does not beat the MR (regardless " +
-                "of his actual location). The affected zone can be no larger than 60 feet in " +
+                "of his actual location). The affected zone can be no larger than 20 meters in " +
                 "radius, and is stationary in the place it was cast.",
-        "+30 feet to radius and +10 to MR Difficulty",
+        "+10 meters to radius and +10 to MR Difficulty",
         20,
         "1 every 20 (Daily)",
         listOf(SpellType.Detection)
@@ -329,16 +329,16 @@ class Spellbook(): Serializable {
         "This allows the caster to physically enter a sleeper's dreams. The caster has no " +
                 "control over the dream world of the dreamer, and anything that happens there " +
                 "will be real to the caster. The person must have peaceful dreams to be affected " +
-                "\by this spell, and the moment the dream turns into a nightmare, or he awakens " +
+                "by this spell, and the moment the dream turns into a nightmare, or he awakens " +
                 "or dies, the mage abandons the dream world and returns to reality. Any Spiritual " +
                 "spell cast on the dreamer while the caster is present in his dreams will also " +
                 "affect the caster. The MR or PsR Check has a Difficulty of 140. Once he is in " +
                 "the target person's dreams, the caster can jump to the unconscious of yet another " +
-                "dreamer who is physically no more than 30 feet from the original sleeper. " +
+                "dreamer who is physically no more than 10 meters from the original sleeper. " +
                 "Naturally, this new dreamer will have the right to his own MR Check. If the " +
                 "dreamer's consciousness happens to be in the world of The Wake, the caster is " +
                 "trapped there even when the spell expires.",
-        "+30 feet additional to jumping range and +5 to MR or PsR Difficulty",
+        "+10 meters additional to jumping range and +5 to MR or PsR Difficulty",
         20,
         "1 every 20 (Daily)",
         listOf(SpellType.Spiritual)
@@ -369,9 +369,9 @@ class Spellbook(): Serializable {
         56,
         100,
         "Blessing endows the affected party with incredible energy. Those affected receive " +
-                "a bonus of +20 to all their actions and Resistances. All allies within 15 feet " +
+                "a bonus of +20 to all their actions and Resistances. All allies within 5 meters " +
                 "of the caster are affected. No one can be affected by more than one Blessing at a time.",
-        "+15 feet to radius",
+        "+5 meters to radius",
         20,
         "1 every 20",
         listOf(SpellType.Effect)
@@ -384,10 +384,10 @@ class Spellbook(): Serializable {
         58,
         100,
         "This creates positive sentiments such as love, pleasure, or friendship in the " +
-                "people designated by the caster. The radius of the spell is 60 feet, and the MR " +
+                "people designated by the caster. The radius of the spell is 20 meters, and the MR " +
                 "or PsR Check has a Difficulty of 120. Those affected can repeat the Resistance " +
                 "Check once per day.",
-        "+5 to MR or PsR Difficulty and +30 foot radius",
+        "+5 to MR or PsR Difficulty and +10 meters radius",
         20,
         "1 every 10 (Daily)",
         listOf(SpellType.Spiritual)
@@ -422,8 +422,8 @@ class Spellbook(): Serializable {
                 "pass a MR Check with a Difficulty of 120 or suffer the loss of a number of Life " +
                 "Points equal to the margin of failure. Additionally, if it fails the check, it " +
                 "receives an immediate -40 All Action Penalty. The affected zone can be no larger " +
-                "than 60 feet in radius, and is stationary in the place it was cast.",
-        "+60 feet to radius and +5 to the MR Difficulty",
+                "than 20 meters in radius, and is stationary in the place it was cast.",
+        "+20 meters to radius and +5 to the MR Difficulty",
         20,
         "1 every 10 (Daily)",
         listOf(SpellType.Automatic)
@@ -475,12 +475,12 @@ class Spellbook(): Serializable {
         150,
         "The spell creates a spectacle of lights in a specified place that has a fascinating " +
                 "and dumbfounding affect. All the characters that see the display cannot help but " +
-                "continue watching it. It is visible for a radius of half a mile, and anyone " +
+                "continue watching it. It is visible for a radius of half a kilometer, and anyone " +
                 "seeing it must make a MR or PsR Check with a Difficulty of 120 to resist its " +
                 "effects. Those affected can perform Passive Actions, but cannot move. They can " +
                 "make a new Resistance Check every time they are attacked. The condition for being " +
                 "affected is looking directly at the Hypnotic Display.",
-        "+1 mile to radius and +5 to MR or PsR Difficulty",
+        "+1 kilometer to radius and +5 to MR or PsR Difficulty",
         20,
         "1 every 50",
         listOf(SpellType.Automatic)
@@ -493,8 +493,8 @@ class Spellbook(): Serializable {
         72,
         120,
         "Creates a deadly discharge of Light with a Base Damage of 150. Catastrophic Light " +
-                "has a radius of 80 feet and is an Energy Attack Type.",
-        "+30 feet to radius and +5 damage",
+                "has a radius of 25 meters and is an Energy Attack Type.",
+        "+10 meters to radius and +5 damage",
         20,
         null,
         listOf(SpellType.Attack)
@@ -523,10 +523,10 @@ class Spellbook(): Serializable {
         78,
         250,
         "Transports individuals or objects designated by the caster from one light source " +
-                "to another that must be less than 60 miles away. The quantity of Presence that " +
+                "to another that must be less than 100 kilometers away. The quantity of Presence that " +
                 "can be transported cannot be greater than 250. If someone wishes to resist, the " +
                 "MR Check has a Difficulty of 120.",
-        "+5 to MR Difficulty, +20 to transportable Presence, and +60 miles",
+        "+5 to MR Difficulty, +20 to transportable Presence, and +100 kilometers",
         30,
         null,
         listOf(SpellType.Spiritual, SpellType.Effect)

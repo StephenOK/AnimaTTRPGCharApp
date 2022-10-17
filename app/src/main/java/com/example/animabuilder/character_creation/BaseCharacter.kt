@@ -585,7 +585,7 @@ class BaseCharacter: Serializable {
     }
 
     //adds new Int data to the ByteOutputStream
-    fun addNewData(toAdd: Int) {
+    fun addNewData(toAdd: Int?) {
         byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,

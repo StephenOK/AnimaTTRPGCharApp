@@ -1,16 +1,17 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.activities.*
@@ -19,7 +20,10 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.KiAbi
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
 
 private var allKiAbilities: List<Pair<KiAbility, MutableState<Boolean>>> = listOf()
+private var allTechniques: List<Pair<Technique, MutableState<Boolean>>> = listOf()
+
 private val remainingMK = mutableStateOf("")
+private var techListOpen = mutableStateOf(false)
 
 private val kiPointTotal = mutableStateOf("")
 private val kiAccTotal = mutableStateOf("")
@@ -29,8 +33,9 @@ fun KiFragment(
     charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val kiListOpen = remember{mutableStateOf(false)}
-    val techListOpen = remember{mutableStateOf(false)}
     remainingMK.value = charInstance.kiList.martialKnowledgeRemaining.toString()
 
     kiPointTotal.value = charInstance.kiList.totalKi.toString()
@@ -65,7 +70,8 @@ fun KiFragment(
                 charInstance.kiList.boughtStrAcc,
                 charInstance.kiList.setStrAcc,
                 charInstance.kiList.kiSTR,
-                charInstance.kiList.accSTR
+                charInstance.kiList.accSTR,
+                updateFunc
             )
 
             KiFromStatRow(
@@ -77,7 +83,8 @@ fun KiFragment(
                 charInstance.kiList.boughtDexAcc,
                 charInstance.kiList.setDexAcc,
                 charInstance.kiList.kiDEX,
-                charInstance.kiList.accDEX
+                charInstance.kiList.accDEX,
+                updateFunc
             )
 
             KiFromStatRow(
@@ -89,7 +96,8 @@ fun KiFragment(
                 charInstance.kiList.boughtAgiAcc,
                 charInstance.kiList.setAgiAcc,
                 charInstance.kiList.kiAGI,
-                charInstance.kiList.accAGI
+                charInstance.kiList.accAGI,
+                updateFunc
             )
 
             KiFromStatRow(
@@ -101,7 +109,8 @@ fun KiFragment(
                 charInstance.kiList.boughtConAcc,
                 charInstance.kiList.setConAcc,
                 charInstance.kiList.kiCON,
-                charInstance.kiList.accCON
+                charInstance.kiList.accCON,
+                updateFunc
             )
 
             KiFromStatRow(
@@ -113,7 +122,8 @@ fun KiFragment(
                 charInstance.kiList.boughtPowAcc,
                 charInstance.kiList.setPowAcc,
                 charInstance.kiList.kiPOW,
-                charInstance.kiList.accPOW
+                charInstance.kiList.accPOW,
+                updateFunc
             )
 
             KiFromStatRow(
@@ -125,7 +135,8 @@ fun KiFragment(
                 charInstance.kiList.boughtWpAcc,
                 charInstance.kiList.setWpAcc,
                 charInstance.kiList.kiWP,
-                charInstance.kiList.accWP
+                charInstance.kiList.accWP,
+                updateFunc
             )
 
             Row{
@@ -158,7 +169,10 @@ fun KiFragment(
 
         Button(
             onClick = {
-                techListOpen.value = !techListOpen.value
+                if(charInstance.kiList.takenAbilities.contains(charInstance.kiList.kiControl))
+                    techListOpen.value = !techListOpen.value
+                else
+                    Toast.makeText(context, "You need Ki Control for Dominion Techniques", Toast.LENGTH_SHORT).show()
             },
             modifier = Modifier.width(250.dp)
         ){
@@ -169,6 +183,14 @@ fun KiFragment(
             Column{
                 charInstance.kiList.allTechniques.forEach{
                     TechniqueRow(charInstance, it)
+                }
+
+                Button(
+                    onClick = {
+                    /*TODO*/
+                    }
+                ) {
+                    Text(text = "Add Technique")
                 }
             }
         }
@@ -185,7 +207,8 @@ private fun KiFromStatRow(
     boughtAcc: Int,
     accUpdate: (Int, BaseCharacter, MutableState<String>, MutableState<String>) -> Unit,
     pointTotal: Int,
-    accTotal: Int
+    accTotal: Int,
+    updateFunc: () -> Unit
 ){
     val pointString = remember{ mutableStateOf(boughtPoint.toString()) }
     val accString = remember{ mutableStateOf(boughtAcc.toString()) }
@@ -199,11 +222,13 @@ private fun KiFromStatRow(
 
         TextField(
             value = pointString.value,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = {
                 numberCatcher(it,
                     {input: String ->
                         pointUpdate(input.toInt(), charInstance, pointTotalString, kiPointTotal)
-                        pointString.value = input},
+                        pointString.value = input
+                        updateFunc()},
                     {pointUpdate(0, charInstance, pointTotalString, kiPointTotal)
                         pointString.value = ""},
                 )
@@ -218,11 +243,13 @@ private fun KiFromStatRow(
 
         TextField(
             value = accString.value,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = {
                 numberCatcher(it,
                     {input: String ->
                         accUpdate(input.toInt(), charInstance, accTotalString, kiAccTotal)
-                        accString.value = input},
+                        accString.value = input
+                        updateFunc()},
                     {accUpdate(0, charInstance, accTotalString, kiAccTotal)
                         accString.value = ""}
                 )
@@ -280,6 +307,9 @@ private fun updateKiTaken(charInstance: BaseCharacter){
         if(charInstance.kiList.takenAbilities.contains(it.first) != it.second.value)
             it.second.value = false
     }
+
+    if(techListOpen.value && !charInstance.kiList.takenAbilities.contains(charInstance.kiList.kiControl))
+        techListOpen.value = false
 }
 
 @Composable
@@ -288,24 +318,29 @@ private fun TechniqueRow(
     toShow: Technique
 ) {
     val techCheck = remember{mutableStateOf(charInstance.kiList.takenTechniques.contains(toShow))}
-    val isExtended = remember{ mutableStateOf(techCheck.value &&
-            charInstance.kiList.techniqueExtensions[charInstance.kiList.takenTechniques.indexOf(toShow)])}
+
+    allTechniques = allTechniques + Pair(toShow, techCheck)
+
     Row{
         Checkbox(
             checked = techCheck.value,
             onCheckedChange ={
-                techCheck.value = it
-            }
-        )
-        Checkbox(
-            checked = isExtended.value,
-            onCheckedChange = {
-                isExtended.value = it
+                if(it) {
+                    if(charInstance.kiList.addTechnique(toShow))
+                        techCheck.value = true
+                }
+                else{
+                    charInstance.kiList.removeTechnique(toShow)
+                    techCheck.value = false
+                    updateTechTaken(charInstance)
+                }
+
+                remainingMK.value = charInstance.kiList.martialKnowledgeRemaining.toString()
             }
         )
 
         Text(text = toShow.name)
-        Text(text = toShow.cost().toString() + " MK")
+        Text(text = toShow.mkCost().toString() + " MK")
         Text(text = toShow.level.toString())
 
         TextButton(
@@ -316,6 +351,13 @@ private fun TechniqueRow(
             }) {
             Text(text = "Details")
         }
+    }
+}
+
+private fun updateTechTaken(charInstance: BaseCharacter){
+    allTechniques.forEach{
+        if(charInstance.kiList.takenTechniques.contains(it.first) != it.second.value)
+            it.second.value = false
     }
 }
 
@@ -339,12 +381,13 @@ val TechContents = @Composable
         technique.givenAbilities.forEach{
             Row{
                 Text(text = it.name + " " + it.effect)
-                if(it.maint != null)
-                    Text(text = " Maint: " + it.maint)
+                if(it.maint != null && technique.isMaintained)
+                    Text(text = " Maint: " + it.maint + " (" + getStatName(it.maintIndex!!) + ")")
             }
         }
 
         val kiBuilds = technique.statSpent()
+
         if(kiBuilds[0] > 0)
             InfoRow("STR: ", kiBuilds[0].toString())
         if(kiBuilds[1] > 0)
@@ -361,5 +404,17 @@ val TechContents = @Composable
         InfoRow("Total Accumulation: ", technique.accTotal().toString())
 
         Text(text = technique.description)
+    }
+}
+
+private fun getStatName(label: Int): String{
+    return when(label){
+        0 -> "STR"
+        1 -> "DEX"
+        2 -> "AGI"
+        3 -> "CON"
+        4 -> "POW"
+        5 -> "WP"
+        else -> ""
     }
 }

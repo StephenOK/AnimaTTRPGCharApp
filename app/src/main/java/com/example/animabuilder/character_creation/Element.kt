@@ -12,5 +12,24 @@ enum class Element {
     Earth,
     Air,
     Necromancy,
-    Free
+    Free;
+
+    companion object{
+        fun fromString(input: String): Element{
+            return when(input){
+                "Light" -> Light
+                "Dark" -> Dark
+                "Creation" -> Creation
+                "Destruction" -> Destruction
+                "Essence" -> Essence
+                "Illusion" -> Illusion
+                "Fire" -> Fire
+                "Water" -> Water
+                "Earth" -> Earth
+                "Air" -> Air
+                "Necromancy" -> Necromancy
+                else -> Free
+            }
+        }
+    }
 }

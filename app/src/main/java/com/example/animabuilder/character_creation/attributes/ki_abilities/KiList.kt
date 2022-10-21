@@ -585,6 +585,8 @@ class KiList: Serializable {
     var takenSecondTechniques: List<Technique> = listOf()
     var takenThirdTechniques: List<Technique> = listOf()
 
+    var customTechniques: List<Technique> = listOf()
+
     var takenTechniques: List<Technique> = takenFirstTechniques + takenSecondTechniques + takenThirdTechniques
 
     fun addTechnique(input: Technique): Boolean{

@@ -33,13 +33,11 @@ class Technique(
 
         givenAbilities.forEach{ability ->
             var dummyList = ability.kiBuild
-            var numRemoved = 0
 
             dummyList.forEach{
                 if(it > 0) {
                     output[ability.kiBuild.indexOf(it)] += it
                     dummyList = dummyList - it
-                    numRemoved++
                 }
             }
         }
@@ -114,5 +112,63 @@ class Technique(
         }
 
         return listCopy.isEmpty()
+    }
+
+    fun validEffectAddition(input: TechniqueEffect): Boolean{
+        if(hasAbility(input.name))
+            return false
+
+        if(!checkElementalBinding(input))
+            return false
+
+        if(input.lvl > level)
+            return false
+
+        val max = when(level){
+            1 -> 50
+            2 -> 100
+            3 -> 200
+            else -> 0
+        }
+
+        if(mkCost() + input.mkCost > max)
+            return false
+
+        return true
+    }
+
+    fun hasAbility(input: String): Boolean{
+        givenAbilities.forEach{
+            if(it.name == input)
+                return true
+        }
+
+        return false
+    }
+
+    fun getAbility(retrieve: String): TechniqueEffect?{
+        givenAbilities.forEach{
+            if(it.name == retrieve)
+                return it
+        }
+
+        return null
+    }
+
+    fun checkElementalBinding(input: TechniqueEffect): Boolean{
+        val binding = getAbility("Elemental Binding")
+        if(binding != null){
+            val boundElements = binding.elements
+            var trueCheck = false
+
+            boundElements.forEach{
+                if(input.elements.contains(it))
+                    trueCheck = true
+            }
+
+            return trueCheck
+        }
+
+        return true
     }
 }

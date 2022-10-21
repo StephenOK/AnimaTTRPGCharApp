@@ -531,4 +531,73 @@ class Spellbook(): Serializable {
         null,
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
+
+    val dreamLordship = Spell(
+        "Lordship Over Dreams",
+        Element.Light,
+        true,
+        80,
+        300,
+        "Permits the control of any type of dream. The caster has the ability to control the " +
+                "sleeper's dream world, modifying it as if he had a Gnosis of 45 (although it is " +
+                "not real). If the dream is fed by negative energy, in other words, if it turns " +
+                "into a nightmare, his Gnosis becomes only 30. If the dreamer wishes to resist " +
+                "the spell, it requires beating a MR Check with a Difficulty of 140. This spell " +
+                "also has a second use, depending on whether or now the caster is in the Wake. " +
+                "Within the Wake, the caster can control his surroundings and acquires the powers " +
+                "of a creature with a Gnosis of 40, as long as he is in an area strongly " +
+                "influenced by positive energies. If he is in an area of neutral energies, he " +
+                "is treated as having a Gnosis of 30.",
+        "+5 to the MR Difficulty",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Spiritual, SpellType.Effect)
+    )
+
+    val createLightBeing = Spell(
+        "Create Being of Light",
+        Element.Light,
+        true,
+        82,
+        250,
+        "Creates a luminous being with the appearance of life, but completely under the " +
+                "control of the caster. The entity is developed as a Being Between Worlds, using " +
+                "the powers and limitations of Light Elementals explained in Chapter 26. The " +
+                "creature has 600 DP and its maximum level is calculated using the same rules as " +
+                "in the spell Create Being from the Path of Creation.",
+        "+50 DP",
+        30,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val reflectingPrism = Spell(
+        "Reflecting Prism",
+        Element.Light,
+        false,
+        86,
+        160,
+        "Creates a body of light that works like a prismatic shield, reflecting any spell, psychic attack, or Ki technique back at the caster. For the charge to be reflected back, it must lose a Clashing Spells check against an equivalent of 100 Base Damage. It is also necessary to make a successful Block using the Prism. If defending against an Area Attack, the prism does not reflect the entire spell; it will still affect anyone in the area of the spell except the caster of the Reflecting Prism. This spell does not reflect Spiritual spells. The caster can use his Magic Projection to redirect the attack. It will absorb 800 points of damage before breaking.",
+        "+5 to damage for clashing spells and +100 Resistance Points",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Defense)
+    )
+
+    val omniscienceRadius = Spell(
+        "Radius of Omniscience",
+        Element.Light,
+        true,
+        88,
+        200,
+        "Permits the caster to be omniscient concerning any occurrence or thought within a " +
+                "radius of 450 meters from his location. Affects only individuals whose Presence " +
+                "is less than 60 and who do not have higher Gnosis than the caster. The caster " +
+                "will automatically know everything that is happening and everything thought " +
+                "within the radius. No Resistance is possible.",
+        "+450 meters to radius and +5 to the affected Base Presence",
+        20,
+        "1 every 5",
+        listOf(SpellType.Effect)
+    )
 }

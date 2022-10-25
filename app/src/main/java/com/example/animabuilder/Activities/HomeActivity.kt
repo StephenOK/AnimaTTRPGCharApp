@@ -35,6 +35,8 @@ val detailAlertOn = mutableStateOf(false)
 val detailItem = mutableStateOf("")
 val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
+lateinit var charInstance: BaseCharacter
+
 /**
  * Activity that runs all character creation fragments
  * Initially loads the CharacterPageFragment
@@ -56,7 +58,6 @@ class HomeActivity : AppCompatActivity() {
 
 
     //character to work with and its associated file name
-    private lateinit var charInstance: BaseCharacter
     private var filename: String? = null
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -199,29 +200,29 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Primary.name){
-                        CharacterPageFragment(charInstance, maxDP, maxCombat, maxMagic, maxPsychic)
+                        CharacterPageFragment(maxDP, maxCombat, maxMagic, maxPsychic)
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary.name){
-                        SecondaryAbilityFragment(charInstance, usedDP)
+                        SecondaryAbilityFragment(usedDP)
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        Advantages(charInstance)
+                        Advantages()
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Weapon_Modules.name){
-                        CombatFragment(charInstance)
+                        CombatFragment()
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
-                        KiFragment(charInstance)
+                        KiFragment()
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 

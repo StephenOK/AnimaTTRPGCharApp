@@ -5,11 +5,14 @@ import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -44,8 +47,10 @@ private val kiAccTotal = mutableStateOf("")
 private val selected = mutableStateOf("1")
 
 private val customTechOn = mutableStateOf(false)
-private var customConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
-private var customContents: MutableState<@Composable () -> Unit> = mutableStateOf({})
+private val customConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
+private val prevConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
+private val customBack: MutableState<(() -> Unit)?> = mutableStateOf(null)
+private val customContents: MutableState<@Composable () -> Unit> = mutableStateOf({})
 
 private var techniqueIndex = mutableStateOf(0)
 private lateinit var allEffectChecks: List<Pair<TechniqueEffect, MutableState<Boolean>>>
@@ -57,11 +62,13 @@ private var kiIndex: MutableState<Int?> = mutableStateOf(0)
 private var elementList: MutableState<List<Element>> = mutableStateOf(listOf())
 private var elementChecks: List<Pair<Element, MutableState<Boolean>>> = listOf()
 
+private val isThird = mutableStateOf(false)
+private val toRemove: MutableState<List<TechniqueEffect>> = mutableStateOf(listOf())
+
 private lateinit var customTechnique: Technique
 
 @Composable
 fun KiFragment(
-    charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ) {
     val context = LocalContext.current
@@ -220,6 +227,7 @@ fun KiFragment(
                     onClick = {
                         customTechOn.value = true
                         customContents.value = customFirstContents
+                        customBack.value = null
                         customConfirm.value = customFirstConfirm
                         selected.value = "1"
                     }
@@ -231,7 +239,7 @@ fun KiFragment(
     }
 
     if(customTechOn.value)
-        CustomTechniqueAlert(customContents.value, customConfirm.value)
+        CustomTechniqueAlert(customContents.value, customBack.value, customConfirm.value)
 }
 
 @Composable
@@ -459,6 +467,7 @@ private fun getStatName(label: Int): String{
 @Composable
 private fun CustomTechniqueAlert(
     contents: @Composable () -> Unit,
+    backAction: (() -> Unit)?,
     confirmAction: () -> Unit
 ){
     AlertDialog(
@@ -469,8 +478,69 @@ private fun CustomTechniqueAlert(
                 contents()
             }
         },
-        confirmButton = {TextButton(onClick = {confirmAction()}){Text(text = "Next")} },
-        dismissButton = {TextButton(onClick = {customTechOn.value = false}){Text(text = "Cancel")} }
+        buttons = {
+            Row (modifier = Modifier.fillMaxWidth()){
+                TextButton(onClick = { customTechOn.value = false }) { Text(text = "Cancel") }
+
+                if(isThird.value && customBack.value == null){
+                    TextButton(
+                        onClick = {
+                            customTechnique.givenAbilities -= toRemove.value
+                            toRemove.value = listOf()
+
+                            customTechnique.fixPrimaryAbility()
+
+                            if(customTechnique.givenAbilities.isNotEmpty()) {
+                                setAlertPage(
+                                    customThirdContents,
+                                    customFirstConfirm,
+                                    customThirdConfirm
+                                )
+                            }
+                            else {
+                                isThird.value = false
+
+                                setAlertPage(
+                                    customSecondContents,
+                                    {
+                                        selected.value = "1"
+                                        setAlertPage(customFirstContents, null, prevConfirm.value)
+                                    },
+                                    customSecondConfirm
+                                )
+                            }
+                        }
+                    ){
+                        Text(text = "Delete")
+                    }
+                }
+                else if(isThird.value){
+                    TextButton(
+                        onClick = {
+                            setAlertPage(customEditContents, null, customEditBack)
+                        }
+                    ){Text(text = "Edit")}
+
+                    TextButton(
+                        onClick = {
+                            if(getSelectedEffect() != null) {
+                                val addedTechnique = getSelectedEffect()!!
+                                if(techniqueIndex.value == 35)
+                                    addedTechnique.elements += Element.Free
+
+                                customTechnique.givenAbilities += addedTechnique
+                                techniqueIndex.value = 0
+                            }
+                        }
+                    ){Text(text = "Add")}
+                }
+
+                if(backAction != null)
+                    TextButton(onClick = { backAction() }) { Text(text = "Back") }
+
+                TextButton(onClick = { confirmAction() }) { Text(text = "Next") }
+            }
+        }
     )
 }
 
@@ -520,13 +590,30 @@ val customFirstContents = @Composable {
 }
 
 val customFirstConfirm = {
-    isPrimary.value = true
-    customTechnique.level = selected.value.toInt()
-    customContents.value = customSecondContents
-    customConfirm.value = customSecondConfirm
+    if(selected.value == "1" ||
+        (selected.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2) ||
+        (selected.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2)) {
+        isThird.value = false
+        isPrimary.value = true
+        customTechnique.level = selected.value.toInt()
+
+        customConfirm.value = customSecondConfirm
+        setAlertPage(
+            customSecondContents,
+            {
+                selected.value = "1"
+                setAlertPage(customFirstContents, null, prevConfirm.value)
+            },
+            customSecondConfirm
+        )
+    }
 }
 
-val customSecondContents = @Composable{
+val customSecondContents: @Composable () -> Unit = @Composable{
+    customTechnique.givenAbilities = listOf()
+    prevConfirm.value = customFirstConfirm
+    techniqueIndex.value = 0
+
     Column{
         Text(text = "Select Primary Ability: ")
         TechniqueAbilityDropdown()
@@ -535,15 +622,19 @@ val customSecondContents = @Composable{
 }
 
 val customSecondConfirm = {
-    if(getSelectedEffect().isNotEmpty()) {
+    if(getSelectedEffect() != null) {
+        isThird.value = true
         isPrimary.value = false
-        customTechnique.givenAbilities = getSelectedEffect()
-        customContents.value = customThirdContents
-        customConfirm.value = customThirdConfirm
+        customTechnique.givenAbilities = listOf(getSelectedEffect()!!)
+
+        setAlertPage(customThirdContents, prevConfirm.value, customThirdConfirm)
     }
 }
 
-val customThirdContents = @Composable{
+val customThirdContents: @Composable () -> Unit = @Composable{
+    prevConfirm.value = customSecondConfirm
+    techniqueIndex.value = 0
+
     Column{
         Text(text = "Add Secondary Abilities: ")
         TechniqueAbilityDropdown()
@@ -552,6 +643,35 @@ val customThirdContents = @Composable{
 }
 
 val customThirdConfirm = {}
+
+var customEditContents: @Composable () -> Unit = @Composable{
+    LazyColumn {
+        customTechnique.givenAbilities.forEach {
+            item{EditEffectRow(it)}
+        }
+
+        item{
+            LazyRow {
+                item{Text(text = "MK: " + customTechnique.mkCost().toString())}
+            }
+        }
+    }
+}
+
+val customEditBack = {
+    isThird.value = true
+    setAlertPage(customThirdContents, customFirstConfirm, customThirdConfirm)
+}
+
+private fun setAlertPage(
+    inContents: @Composable () -> Unit,
+    inBack: (() -> Unit)?,
+    inConfirm: (() -> Unit)
+){
+    customContents.value = inContents
+    customBack.value = inBack
+    customConfirm.value = inConfirm
+}
 
 @Composable
 private fun TechniqueAbilityDropdown(){
@@ -602,7 +722,8 @@ private fun TechniqueTable(){
 
     elementChecks = listOf()
 
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
         .fillMaxWidth()
         .fillMaxHeight()){
         when(techniqueIndex.value){
@@ -1205,7 +1326,7 @@ private fun TechniqueTable(){
 
             //Elemental Binding
             35-> {
-                elementList.value = listOf(Element.Free)
+                elementList.value = listOf()
 
                 TechniqueTableRow("Single Element", 0, 0, -15, 0, 1, 1)
                 TechniqueTableRow("Two Elements", 0, 0, -10, 0, 1, 1)
@@ -1291,7 +1412,8 @@ private fun TechniqueTableRow(
         stringArrayResource(R.array.techniqueDisadvantages)[techniqueIndex.value - 35]
 
     val thisEffect =
-        TechniqueEffect(useString, effect, mkCost, maintCost, kiIndex.value, defaultArray, elementList.value, level)
+        TechniqueEffect(useString, effect, mkCost, maintCost, kiIndex.value, Pair(primaryCost, secondaryCost),
+            defaultArray, getSelectedElement(), level)
 
     when(listNum) {
         1 -> allEffectChecks = allEffectChecks + Pair(thisEffect, thisCheck)
@@ -1354,28 +1476,66 @@ private fun ElementalRow(elementType: Element){
     }
 }
 
-private fun getSelectedEffect(): List<TechniqueEffect>{
-    var output: List<TechniqueEffect> = listOf()
+@Composable
+private fun EditEffectRow(effect: TechniqueEffect){
+    val deleteCheck = remember{mutableStateOf(false)}
+    var elementString = ""
+    effect.elements.forEach{
+        elementString += it.name
 
+        if(effect.elements.indexOf(it) != effect.elements.size - 1)
+            elementString += "/"
+    }
+
+    LazyRow {
+        item {
+            Checkbox(
+                checked = deleteCheck.value,
+                onCheckedChange = {
+                    deleteCheck.value = it
+
+                    if(it)
+                        toRemove.value += effect
+                    else
+                        toRemove.value -= effect
+                }
+            )
+            Text(text = effect.name)
+            Text(text = effect.effect)
+        }
+    }
+
+    LazyRow {
+        item {
+            Text(text = effect.mkCost.toString())
+            Text(text = elementString)
+        }
+    }
+}
+
+private fun getSelectedEffect(): TechniqueEffect?{
     allEffectChecks.forEach{
-        if(it.second.value)
-            output = output + it.first
+        if(it.second.value && it.first.elements.isNotEmpty())
+            return it.first
     }
 
     advantageOneCheck.forEach{
-        if(it.second.value)
-            output = output + it.first
+        if(it.second.value && it.first.elements.isNotEmpty())
+            return it.first
     }
 
     advantageTwoCheck.forEach{
-        if(it.second.value)
-            output = output + it.first
+        if(it.second.value && it.first.elements.isNotEmpty())
+            return it.first
     }
 
-    return output
+    return null
 }
 
 private fun getSelectedElement(): List<Element>{
+    if(elementList.value.isNotEmpty())
+        return elementList.value
+
     var output: List<Element> = listOf()
 
     elementChecks.forEach{

@@ -1,6 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.Element
 import java.io.BufferedReader
 import java.io.Serializable
 
@@ -73,22 +74,6 @@ class Technique(
         }
 
         total
-    }
-
-    fun write(charInstance: BaseCharacter){
-        charInstance.addNewData(name)
-        charInstance.addNewData(description)
-        charInstance.addNewData(level)
-
-        if(isMaintained)
-            charInstance.addNewData("true")
-        else
-            charInstance.addNewData("false")
-
-        charInstance.addNewData(givenAbilities.size)
-        givenAbilities.forEach{
-            it.write(charInstance)
-        }
     }
 
     fun equivalentTo(compareTo: Technique): Boolean{
@@ -170,5 +155,43 @@ class Technique(
         }
 
         return true
+    }
+
+    fun fixPrimaryAbility(){
+        var onlyDis = true
+        givenAbilities.forEach{
+            if(!it.elements.contains(Element.Free))
+                onlyDis = false
+        }
+
+        if(onlyDis)
+            givenAbilities = listOf()
+        else{
+            var pointer = 0
+            while(pointer < givenAbilities.size){
+                if(!givenAbilities[pointer].elements.contains(Element.Free)) {
+                    givenAbilities[pointer].mkCost = givenAbilities[pointer].costPair.first
+                    pointer = givenAbilities.size
+                }
+
+                pointer++
+            }
+        }
+    }
+
+    fun write(charInstance: BaseCharacter){
+        charInstance.addNewData(name)
+        charInstance.addNewData(description)
+        charInstance.addNewData(level)
+
+        if(isMaintained)
+            charInstance.addNewData("true")
+        else
+            charInstance.addNewData("false")
+
+        charInstance.addNewData(givenAbilities.size)
+        givenAbilities.forEach{
+            it.write(charInstance)
+        }
     }
 }

@@ -600,4 +600,396 @@ class Spellbook(): Serializable {
         "1 every 5",
         listOf(SpellType.Effect)
     )
+
+    val predict = Spell(
+        "Predict",
+        Element.Light,
+        true,
+        90,
+        200,
+        "Permits the caster to forsee future events that will happen around a given person, " +
+                "place, or thing. Predict shows the caster the most probable destiny awaiting " +
+                "someone or something, providing him with detailed information about future " +
+                "events. The period of time covered can never be more than a year from the moment " +
+                "of the prediction. The Game Master can truthfully tell the caster what events " +
+                "will occur in the future. Of course, these predictions are not infallible; what " +
+                "is seen is only the most probable destiny, which may be changed through the " +
+                "intervention of higher powers or the actions of persons with elevated Gnosis.",
+        "Doubles the period of time covered",
+        20,
+        null,
+        listOf(SpellType.Spiritual)
+    )
+
+    val lightPrison = Spell(
+        "Prison of Light",
+        Element.Light,
+        true,
+        92,
+        200,
+        "Enclose the victim in an inescapable world of Light, a separate universe which " +
+                "has no interaction with our own. While the victim is imprisoned, he will have " +
+                "no knowledge of anything that happens outside the prison, nor does anyone " +
+                "outside have any knowledge of the prisoner. To try to break out from within, " +
+                "the prison will resist damage points up to 100 times the Zeon value of the " +
+                "spell, which defends itself according to the rules of Damage Resistance with " +
+                "an AT of 10. From the outside, the prison can resist only double the Zeon " +
+                "value spent. It can only be damaged by Energy-based Attacks with a Presence " +
+                "greater than 180. The prison recovers from any damage with a Regeneration of " +
+                "19. The spell can be avoided by passing a MR Check with a Difficulty of 140, " +
+                "but if that fails, the prisoner has no chance to check again later; if he wants " +
+                "to get out, he better be able to break through the spell.",
+        "+10 to the MR Difficulty",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val oneWithLight = Spell(
+        "One with the Light",
+        Element.Light,
+        true,
+        96,
+        100,
+        "Permits the caster to enter a state of utter meditation in which his body becomes " +
+                "one with the Light. He abandons this world and ascends to the Flow of Souls to " +
+                "nourish himself from their energies. Apart from, and without knowledge of " +
+                "anything happening elsewhere, he multiplies his Zeon Regeneration rate by 10, " +
+                "and cures his wounds with a Healing Regeneration of 16. Although there is no " +
+                "maintenance cost for the spell, the caster can be in the Flow of Souls for the " +
+                "equivalent of one day.",
+        "One day additional stay in the Flow of Souls",
+        20,
+        null,
+        listOf(SpellType.Effect)
+    )
+
+    val ascension = Spell(
+        "Ascension",
+        Element.Light,
+        true,
+        98,
+        300,
+        "This spell exchanges the material essence of a person for divine energy, modifying " +
+                "his spirit through supernatural power. The effects of Ascension are different " +
+                "depending on whether the caster is casting it on himself, or on another. When " +
+                "increasing his own power, the spell increases his Gnosis by 10 points. If used " +
+                "on another person, it can give the target as much Gnosis as desired, up to a " +
+                "level 10 points below that of the caster. For instance, a caster with a Gnosis " +
+                "of 45 can raise another individual to at most a Gnosis of 35. This spell can " +
+                "affect as many targets as long as their accumulated Presence is no higher than 80.",
+        "+10 to the maximum Presence affected",
+        30,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val lightHolocaust = Spell(
+        "Holocaust of Light",
+        Element.Light,
+        true,
+        100,
+        600,
+        "This spell unleashes the power of Light in its purest state, sweeping away " +
+                "everything in the spiritual as well as the material world. The freed energy " +
+                "sweeps up and devours anything, unifying its existence to the Light. Even " +
+                "elemental creatures of Light are assimilated by its power. The Holocaust of " +
+                "Light creates a great luminous dome within which everything is dissolved. It " +
+                "has a radius of 100 meters, attacks the Energy AT, and causes a Base Damage of 350. " +
+                "Anyone receiving damage, no matter how small, must beat a MR Check with a " +
+                "Difficulty of 160 or be joined with the Light, and automatically destroyed in " +
+                "body and soul. It is not possible to designate specific targets within the " +
+                "Holocaust; all except the caster are equally affected.",
+        "+10 Base Damage and doubles the radius of the spell",
+        50,
+        null,
+        listOf(SpellType.Attack, SpellType.Spiritual)
+    )
+
+    val createDark = Spell(
+        "Create Darkness",
+        Element.Dark,
+        true,
+        2,
+        20,
+        "Completely darkens the area within a 5m radius. Everything within the area is " +
+                "perceived as though on a dark and moonless night.",
+        "+5m radius",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val induceFear = Spell(
+        "Induce Fear",
+        Element.Dark,
+        true,
+        6,
+        40,
+        "Temporarily causes a Fear State in all people within 15m of the caster. The " +
+                "spellcaster decides what the victims are afraid of. The MR or PsR Check to " +
+                "overcome this spell has a Difficulty of 80.",
+        "+5 to MR or PsR Difficulty and +10 meters radius",
+        10,
+        null,
+        listOf(SpellType.Spiritual)
+    )
+
+    val seeInDarkness = Spell(
+        "See in Darkness",
+        Element.Dark,
+        true,
+        8,
+        40,
+        "Permits the caster, or anyone he selects, to see perfectly in the dark. This spell " +
+                "can affect as many targets as desired as long as their accumulated Presence is no " +
+                "higher than 80.",
+        "+5 to the maximum Presence that can be affected",
+        10,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val darkShield = Spell(
+        "Shield of Darkness",
+        Element.Dark,
+        false,
+        10,
+        50,
+        "Forms a barrier of Energy that protects from any source of attack. The shield can " +
+                "absorb up to 300 points before breaking, but is only damaged by supernatural " +
+                "attacks. Impacts based on Light cause it double damage",
+        "+100 Resistance Points",
+        20,
+        "1 every 10",
+        listOf(SpellType.Defense)
+    )
+
+    val shadow = Spell(
+        "Shadow",
+        Element.Dark,
+        false,
+        12,
+        50,
+        "This spell increases the caster's ability to conceal, boosting his Secondary " +
+                "Abilities of Stealth and Hide by +50. It also increases his Magic Appraisal by " +
+                "+50, but only for the purpose of hiding the magical potency of something or " +
+                "someone, not to detect it.",
+        "+10 Stealth, Hide, Magic Appraisal",
+        20,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val darkArmor = Spell(
+        "Armor of Darkness",
+        Element.Dark,
+        true,
+        16,
+        60,
+        "Forms a mystical armor with AT 2 against Energy-based Attacks, and an AT of 1 " +
+                "against all others. Although it counts as armor, it does not count as an " +
+                "additional layer of armor for purposes of penalties to Initiative.",
+        "+1 to AT",
+        10,
+        "1 every 20",
+        listOf(SpellType.Effect)
+    )
+
+    val banishLight = Spell(
+        "Banish Light",
+        Element.Dark,
+        true,
+        18,
+        60,
+        "Destroys ambient light within a radius of 10 meters. Any light-based creatures " +
+                "within the radius must pass a MR Check with a Difficulty of 120, or lose double " +
+                "their Failure level in Life Points (Damage Resistance creatures increase this " +
+                "amount by its Damage Resistance multiple). As long as the spell is maintained " +
+                "over the creatures, they must make a new MR Check each combat turn.",
+        "+10 to the MR Difficulty and +20 meter radius",
+        10,
+        "1 every 10",
+        listOf(SpellType.Spiritual, SpellType.Effect)
+    )
+
+    val hideMagic = Spell(
+        "Hide Magic",
+        Element.Dark,
+        false,
+        20,
+        50,
+        "Hides a spell, or the mystical properties of an object, from any type of magical " +
+                "detection. In game terms, it produces a -80 penalty to the Magic Appraisal spell " +
+                "of anyone attempting to to detect or measure a spell or object that has been " +
+                "hidden (it also hides the Hide Magic spell itself).",
+        "-10 to Magic Appraisal",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val darkBeam = Spell(
+        "Dark Beam",
+        Element.Dark,
+        true,
+        22,
+        50,
+        "Projects a beam of Dark-based magical energy. Dark Beam is an Energy Attack Type " +
+                "with a Base Damage of 60.",
+        "+5 to Base Damage",
+        10,
+        null,
+        listOf(SpellType.Attack)
+    )
+
+    val darkzone = Spell(
+        "Darkzone",
+        Element.Dark,
+        true,
+        26,
+        60,
+        "Creates a mystical environment that clouds the senses of anyone within it. The " +
+                "Darkzone increases the difficulty of any Perceptive check within it by 2 levels. " +
+                "This ability also affects Ki Detection. The spell has a radius of 20 meters, and " +
+                "it is not possible to designate targets within it. No Resistance is possible.",
+        "+20 meter radius",
+        20,
+        "1 every 20",
+        listOf(SpellType.Effect)
+    )
+
+    val darkBond = Spell(
+        "Bonds of Darkness",
+        Element.Dark,
+        true,
+        28,
+        60,
+        "This spell casts bonds of darkness that hold the designated target immobile. An " +
+                "attack is made using the rules for Trapping, although the caster suffers no " +
+                "penalty to his Ability for performing this maneuver. The bonds use a Strength of " +
+                "8 for any Check. If anyone tries to help free the person Trapped, the Bonds of " +
+                "Darkness are treated as an Energy weapon with a Fortitude of 20.",
+        "Strength +1",
+        10,
+        "1 every 10",
+        listOf(SpellType.Attack)
+    )
+
+    val controlDark = Spell(
+        "Control Darkness",
+        Element.Dark,
+        true,
+        30,
+        50,
+        "This spell modifies and controls the intensity of darkness within a radius of 20 " +
+                "meters. If cast at Darkness-based beings, they must pass a MR Check with a " +
+                "Difficulty of 80 or they will fall under the control of the caster. A creature " +
+                "can only repeat the check if it is ordered to do something against its nature.",
+        "+10 meter radius and +5 to MR Difficulty",
+        20,
+        "1 every 10",
+        listOf(SpellType.Spiritual, SpellType.Effect)
+    )
+
+    val concealment = Spell(
+        "Concealment",
+        Element.Dark,
+        false,
+        32,
+        60,
+        "Conceals the Presence of the caster or a target designated by him from any type of " +
+                "detection. In game terms, it increases the resistance to supernatural (mystical " +
+                "or psychic) detection by +40. This ability also increases the Ki Concealment of " +
+                "the person by 40 points, permitting him to hide his energy even if he has not " +
+                "developed that ability.",
+        "+10 to Resistance against detections and +10 to Ki Concealment",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val obfuscate = Spell(
+        "Obfuscate",
+        Element.Dark,
+        true,
+        36,
+        100,
+        "Modifies the body of the individual, blending him in to the background and " +
+                "permitting him to hide himself naturally. While the spell is active, the person " +
+                "can exchange his own level of ability at Stealth and Hide for a base of 100. " +
+                "It also offers the same level of ability at Ki Concealment, even if he has not " +
+                "developed that ability. Remember that these numbers are not added to the person's " +
+                "Secondary Ability, but are substituted for them if they are lower.",
+        "+5 Stealth, Hide, and Ki Concealment",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val enrage = Spell(
+        "Enrage",
+        Element.Dark,
+        true,
+        38,
+        60,
+        "Provokes a Rage State in those affected, making them lose control and attack the " +
+                "person closest to them. The spell's victim applies a bonus of +10 to their " +
+                "offensive abilities and a -30 to all other checks. Enrage has a radius of 5 " +
+                "meters and can be resisted by beating a MR Check with a Difficulty of 80.",
+        "+5 meter radius and +5 to the MR Difficulty",
+        10,
+        "1 every 10",
+        listOf(SpellType.Spiritual)
+    )
+
+    val banishPositiveEmotions = Spell(
+        "Banish Positive Emotions",
+        Element.Dark,
+        true,
+        40,
+        80,
+        "Temporarily banishes any positive sentiments such as inner peace, calm, or joy " +
+                "within 100 meters of the caster. Resisting this spell requires beating a MR or " +
+                "PsR Check with a Difficulty of 100.",
+        "+45 meter radius and +5 to MR or PsR Difficulty",
+        20,
+        null,
+        listOf(SpellType.Spiritual)
+    )
+
+    val night = Spell(
+        "Night",
+        Element.Dark,
+        true,
+        42,
+        80,
+        "Forms a dome of darkness with a maximum radius of 25 meters. Everyone in the " +
+                "interior area, except the caster, is subject to the rules for Vision Totally " +
+                "Obscured. To see through the darkness, whether from inside or outside the dome, " +
+                "requires a difficulty check of Inhuman in Notice, or Almost Impossible in Search.",
+        "+25 meter radius",
+        20,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val darkSphere = Spell(
+        "Dark Sphere",
+        Element.Dark,
+        true,
+        46,
+        120,
+        "Unleashes a sphere of dark energy with Base Damage of 100. The caster can control " +
+                "it using his Magic Projection until it hits the target. If the target " +
+                "successfully dodges, the Dark Sphere can continue attacking the following turn, " +
+                "since it has not been destroyed. When Dark Sphere causes damage, or is blocked, " +
+                "the sphere explodes and vanishes. If the caster abandons control of it, it will " +
+                "act independently, following its last designated target with a Magic Projection " +
+                "of 150.",
+        "+5 to Base Damage and +5 to the Magic Projection of the Dark Sphere",
+        20,
+        "1 every 10",
+        listOf(SpellType.Attack)
+    )
 }

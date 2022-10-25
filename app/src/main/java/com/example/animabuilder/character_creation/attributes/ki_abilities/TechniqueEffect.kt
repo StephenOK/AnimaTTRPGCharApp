@@ -10,6 +10,7 @@ class TechniqueEffect(
     var mkCost: Int,
     var maint: Int?,
     var maintIndex: Int?,
+    var costPair: Pair<Int, Int>,
     var kiBuild: List<Int>,
     var elements: List<Element>,
     var lvl: Int
@@ -20,6 +21,8 @@ class TechniqueEffect(
         charInstance.addNewData(mkCost)
         charInstance.addNewData(maint)
         charInstance.addNewData(maintIndex)
+        charInstance.addNewData(costPair.first)
+        charInstance.addNewData(costPair.second)
 
         kiBuild.forEach{
             charInstance.addNewData(it)
@@ -39,6 +42,8 @@ class TechniqueEffect(
                 compareTo.mkCost == mkCost &&
                 compareTo.maint == maint &&
                 compareTo.maintIndex == maintIndex &&
+                compareTo.costPair.first == costPair.first &&
+                compareTo.costPair.second == costPair.second &&
                 compareTo.kiBuild == kiBuild &&
                 compareTo.elements == elements &&
                 compareTo.lvl == lvl

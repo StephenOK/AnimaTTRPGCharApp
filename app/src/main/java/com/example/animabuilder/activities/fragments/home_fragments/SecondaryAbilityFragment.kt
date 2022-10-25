@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.numberCatcher
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 
@@ -31,7 +32,6 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 
 @Composable
 fun SecondaryAbilityFragment(
-    charInstance: BaseCharacter,
     spentDisplay: MutableState<Int>
 ) {
     MaterialTheme{

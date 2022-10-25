@@ -12,10 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
-import com.example.animabuilder.activities.InfoRow
-import com.example.animabuilder.activities.contents
-import com.example.animabuilder.activities.detailAlertOn
-import com.example.animabuilder.activities.detailItem
+import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
@@ -30,7 +27,6 @@ private var detailList: List<Weapon> = listOf()
 
 @Composable
 fun CombatFragment(
-    charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ) {
     modWeapons = charInstance.weaponProficiencies.fullModWeapons

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.keyboardActive
 import com.example.animabuilder.activities.numberCatcher
 
@@ -46,7 +47,6 @@ import com.example.animabuilder.activities.numberCatcher
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
-    charInstance: BaseCharacter,
     maxDP: MutableState<Int>,
     maxCombat: MutableState<Int>,
     maxMagic: MutableState<Int>,

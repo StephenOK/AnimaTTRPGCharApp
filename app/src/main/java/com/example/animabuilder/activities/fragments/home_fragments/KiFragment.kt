@@ -1,8 +1,8 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.hardware.lights.Light
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,13 +12,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.window.Dialog
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.BaseCharacter
@@ -48,7 +49,6 @@ private val selected = mutableStateOf("1")
 
 private val customTechOn = mutableStateOf(false)
 private val customConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
-private val prevConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
 private val customBack: MutableState<(() -> Unit)?> = mutableStateOf(null)
 private val customContents: MutableState<@Composable () -> Unit> = mutableStateOf({})
 
@@ -58,12 +58,22 @@ private lateinit var advantageOneCheck: List<Pair<TechniqueEffect, MutableState<
 private lateinit var advantageTwoCheck: List<Pair<TechniqueEffect, MutableState<Boolean>>>
 
 private var isPrimary = mutableStateOf(true)
-private var kiIndex: MutableState<Int?> = mutableStateOf(0)
+private var kiIndex: MutableState<Int> = mutableStateOf(0)
 private var elementList: MutableState<List<Element>> = mutableStateOf(listOf())
 private var elementChecks: List<Pair<Element, MutableState<Boolean>>> = listOf()
 
 private val isThird = mutableStateOf(false)
 private val toRemove: MutableState<List<TechniqueEffect>> = mutableStateOf(listOf())
+
+private val buildArray: MutableState<List<Int?>> = mutableStateOf(listOf(null))
+private val allKiBuilds: MutableState<List<Pair<String, MutableList<Int>>>> = mutableStateOf(listOf())
+private val strAccTotal = mutableStateOf(getAccTotal(0))
+private val dexAccTotal = mutableStateOf(getAccTotal(1))
+private val agiAccTotal = mutableStateOf(getAccTotal(2))
+private val conAccTotal = mutableStateOf(getAccTotal(3))
+private val powAccTotal = mutableStateOf(getAccTotal(4))
+private val wpAccTotal = mutableStateOf(getAccTotal(5))
+private val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
 
 private lateinit var customTechnique: Technique
 
@@ -426,25 +436,17 @@ val TechContents = @Composable
         technique.givenAbilities.forEach{
             Row{
                 Text(text = it.name + " " + it.effect)
-                if(it.maint != null && technique.isMaintained)
-                    Text(text = " Maint: " + it.maint + " (" + getStatName(it.maintIndex!!) + ")")
+                if(technique.isMaintained)
+                    Text(text = " Maint: " + it.maint + " (" + getStatName(it.maintIndex) + ")")
             }
         }
 
         val kiBuilds = technique.statSpent()
 
-        if(kiBuilds[0] > 0)
-            InfoRow("STR: ", kiBuilds[0].toString())
-        if(kiBuilds[1] > 0)
-            InfoRow("DEX: ", kiBuilds[1].toString())
-        if(kiBuilds[2] > 0)
-            InfoRow("AGI: ", kiBuilds[2].toString())
-        if(kiBuilds[3] > 0)
-            InfoRow("CON: ", kiBuilds[3].toString())
-        if(kiBuilds[4] > 0)
-            InfoRow("POW: ", kiBuilds[4].toString())
-        if(kiBuilds[5] > 0)
-            InfoRow("WP: ", kiBuilds[5].toString())
+        for(index in 0..5){
+            if(kiBuilds[index] > 0)
+                InfoRow(getStatName(index), kiBuilds[index].toString())
+        }
 
         InfoRow("Total Accumulation: ", technique.accTotal().toString())
 
@@ -470,75 +472,77 @@ private fun CustomTechniqueAlert(
     backAction: (() -> Unit)?,
     confirmAction: () -> Unit
 ){
-    AlertDialog(
+    Dialog(
         onDismissRequest = {customTechOn.value = false},
-        title = {Text(text = "Create Custom Technique")},
-        text = {
-            Box(modifier = Modifier.size(300.dp, 300.dp)){
-                contents()
-            }
-        },
-        buttons = {
-            Row (modifier = Modifier.fillMaxWidth()){
-                TextButton(onClick = { customTechOn.value = false }) { Text(text = "Cancel") }
+        content = {
+            Box(Modifier.background(Color.White)
+                .size(600.dp, 600.dp)) {
 
-                if(isThird.value && customBack.value == null){
-                    TextButton(
-                        onClick = {
-                            customTechnique.givenAbilities -= toRemove.value
-                            toRemove.value = listOf()
+                    Row(Modifier.align(Alignment.TopCenter)
+                        .height(100.dp)){ Text(text = "Create Custom Technique") }
+                    Row(Modifier.align(Alignment.Center)
+                        .height(400.dp)){ contents() }
+                    Row(modifier = Modifier.fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .height(100.dp)) {
+                        TextButton(onClick = {
+                            customTechOn.value = false
+                        }) { Text(text = "Cancel") }
 
-                            customTechnique.fixPrimaryAbility()
+                        if (isThird.value && customBack.value == null) {
+                            TextButton(
+                                onClick = {
+                                    customTechnique.givenAbilities -= toRemove.value
+                                    toRemove.value.forEach {
+                                        allKiBuilds.value = allKiBuilds.value - findBuild(it.name)!!
+                                    }
 
-                            if(customTechnique.givenAbilities.isNotEmpty()) {
-                                setAlertPage(
-                                    customThirdContents,
-                                    customFirstConfirm,
-                                    customThirdConfirm
-                                )
+                                    toRemove.value = listOf()
+
+                                    customTechnique.fixPrimaryAbility()
+
+                                    if (customTechnique.givenAbilities.isNotEmpty())
+                                        customThirdBack()
+                                    else {
+                                        isThird.value = false
+                                        customSecondBack()
+                                    }
+                                }
+                            ) {
+                                Text(text = "Delete")
                             }
-                            else {
-                                isThird.value = false
+                        } else if (isThird.value) {
+                            TextButton(
+                                onClick = {
+                                    setAlertPage(customEditContents, null, customEditBack)
+                                }
+                            ) { Text(text = "Edit") }
 
-                                setAlertPage(
-                                    customSecondContents,
-                                    {
-                                        selected.value = "1"
-                                        setAlertPage(customFirstContents, null, prevConfirm.value)
-                                    },
-                                    customSecondConfirm
-                                )
-                            }
+                            TextButton(
+                                onClick = {
+                                    if (getSelectedEffect() != null) {
+                                        val addedTechnique = getSelectedEffect()!!
+                                        if (techniqueIndex.value == 35)
+                                            addedTechnique.elements += Element.Free
+
+                                        customTechnique.givenAbilities += addedTechnique
+                                        techniqueIndex.value = 0
+
+                                        allKiBuilds.value = allKiBuilds.value + Pair(
+                                            addedTechnique.name,
+                                            addedTechnique.kiBuild.toMutableList()
+                                        )
+                                    }
+                                }
+                            ) { Text(text = "Add") }
                         }
-                    ){
-                        Text(text = "Delete")
+
+                        if (backAction != null)
+                            TextButton(onClick = { backAction() }) { Text(text = "Back") }
+
+                        TextButton(onClick = { confirmAction() }) { Text(text = "Next") }
                     }
-                }
-                else if(isThird.value){
-                    TextButton(
-                        onClick = {
-                            setAlertPage(customEditContents, null, customEditBack)
-                        }
-                    ){Text(text = "Edit")}
 
-                    TextButton(
-                        onClick = {
-                            if(getSelectedEffect() != null) {
-                                val addedTechnique = getSelectedEffect()!!
-                                if(techniqueIndex.value == 35)
-                                    addedTechnique.elements += Element.Free
-
-                                customTechnique.givenAbilities += addedTechnique
-                                techniqueIndex.value = 0
-                            }
-                        }
-                    ){Text(text = "Add")}
-                }
-
-                if(backAction != null)
-                    TextButton(onClick = { backAction() }) { Text(text = "Back") }
-
-                TextButton(onClick = { confirmAction() }) { Text(text = "Next") }
             }
         }
     )
@@ -594,24 +598,25 @@ val customFirstConfirm = {
         (selected.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2) ||
         (selected.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2)) {
         isThird.value = false
-        isPrimary.value = true
         customTechnique.level = selected.value.toInt()
 
         customConfirm.value = customSecondConfirm
         setAlertPage(
             customSecondContents,
-            {
-                selected.value = "1"
-                setAlertPage(customFirstContents, null, prevConfirm.value)
-            },
+            customFirstBack,
             customSecondConfirm
         )
     }
 }
 
+val customFirstBack: () -> Unit = {
+    selected.value = "1"
+    setAlertPage(customFirstContents, null, customFirstConfirm)
+}
+
 val customSecondContents: @Composable () -> Unit = @Composable{
+    isPrimary.value = true
     customTechnique.givenAbilities = listOf()
-    prevConfirm.value = customFirstConfirm
     techniqueIndex.value = 0
 
     Column{
@@ -621,19 +626,24 @@ val customSecondContents: @Composable () -> Unit = @Composable{
     }
 }
 
-val customSecondConfirm = {
+val customSecondConfirm: () -> Unit = {
     if(getSelectedEffect() != null) {
-        isThird.value = true
         isPrimary.value = false
         customTechnique.givenAbilities = listOf(getSelectedEffect()!!)
+        allKiBuilds.value = listOf(Pair(getSelectedEffect()!!.name, getSelectedEffect()!!.kiBuild.toMutableList()))
 
-        setAlertPage(customThirdContents, prevConfirm.value, customThirdConfirm)
+        setAlertPage(customThirdContents, customSecondBack, customThirdConfirm)
     }
 }
 
+val customSecondBack: () -> Unit = {
+    isThird.value = false
+    setAlertPage(customSecondContents, customFirstBack, customSecondConfirm)
+}
+
 val customThirdContents: @Composable () -> Unit = @Composable{
-    prevConfirm.value = customSecondConfirm
     techniqueIndex.value = 0
+    isThird.value = true
 
     Column{
         Text(text = "Add Secondary Abilities: ")
@@ -642,7 +652,88 @@ val customThirdContents: @Composable () -> Unit = @Composable{
     }
 }
 
-val customThirdConfirm = {}
+val customThirdConfirm = {
+    isThird.value = false
+    setAlertPage(customFourthContents, customThirdBack, customFourthConfirm)
+}
+
+val customThirdBack: () -> Unit = {
+    techniqueIndex.value = 0
+    setAlertPage(customThirdContents, customSecondBack, customThirdConfirm)
+}
+
+val customFourthContents: @Composable () -> Unit = @Composable{
+    Column{
+        for(index in 0..5)
+            allAccs[index].value = getAccTotal(index)
+
+        Row{Text(text = "Accumulation Totals:")}
+        Row{
+            for(index in 0..5)
+                Text(text = getStatName(index), modifier = Modifier.weight(0.13f))
+        }
+
+        Row {
+            Text(text = strAccTotal.value, modifier = Modifier.weight(0.13f))
+            Text(text = dexAccTotal.value, modifier = Modifier.weight(0.13f))
+            Text(text = agiAccTotal.value, modifier = Modifier.weight(0.13f))
+            Text(text = conAccTotal.value, modifier = Modifier.weight(0.13f))
+            Text(text = powAccTotal.value, modifier = Modifier.weight(0.13f))
+            Text(text = wpAccTotal.value, modifier = Modifier.weight(0.13f))
+        }
+
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())){
+            customTechnique.givenAbilities.forEach {
+                Row { Text(text = it.name) }
+
+                for (index in 0..5) {
+                    EditBuildRow(it, index, findBuild(it.name)!!.second)
+                }
+            }
+        }
+    }
+}
+
+val customFourthConfirm: () -> Unit = {
+    var isFirst = true
+    var moveOn = true
+
+   allKiBuilds.value.forEach{
+       var total = 0
+
+       val effect = customTechnique.getAbility(it.first)
+
+       var accTotal = if(isFirst) effect!!.costPair.first else effect!!.costPair.second
+
+       for(index in 0..5){
+           total += it.second[index]
+
+           if(it.second[index] > 0)
+               accTotal += effect.buildAdditions[index]!!
+       }
+
+       if(total == accTotal)
+           effect.kiBuild = it.second
+
+       else
+           moveOn = false
+
+       isFirst = false
+   }
+
+    if(moveOn)
+        setAlertPage(customFifthContents, customFourthBack, customFifthConfirm)
+}
+
+val customFourthBack = {
+    setAlertPage(customFourthContents, customThirdBack, customFourthConfirm)
+}
+
+val customFifthContents = @Composable{
+
+}
+
+val customFifthConfirm = {}
 
 var customEditContents: @Composable () -> Unit = @Composable{
     LazyColumn {
@@ -722,15 +813,14 @@ private fun TechniqueTable(){
 
     elementChecks = listOf()
 
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
-        .fillMaxWidth()
-        .fillMaxHeight()){
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())){
         when(techniqueIndex.value){
             //Attack Ability
             1 -> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air, Element.Fire, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 0, 2, null, 2, 3)
 
                 TechniqueTableHeader("Attack Bonus")
                 TechniqueTableRow("+10", 2, 4, 5, 1, 1, 1)
@@ -750,6 +840,8 @@ private fun TechniqueTable(){
             2 -> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air, Element.Water, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 0, 2, null, 2, 3)
 
                 TechniqueTableHeader("Attack Bonus")
                 TechniqueTableRow("+10", 1, 2, 5, 1, 1, 1)
@@ -769,6 +861,8 @@ private fun TechniqueTable(){
             3 -> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Light, Element.Water, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 0, 2, null, 2, 3)
 
                 TechniqueTableHeader("Block Bonus")
                 TechniqueTableRow("+10", 2, 4, 5, 1, 1, 1)
@@ -788,6 +882,8 @@ private fun TechniqueTable(){
             4 -> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Light, Element.Water, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 0, 2, null, 2, 3)
 
                 TechniqueTableHeader("Block Bonus")
                 TechniqueTableRow("+10", 1, 2, 5, 1, 1, 1)
@@ -807,6 +903,8 @@ private fun TechniqueTable(){
             5-> {
                 kiIndex.value = 2
                 elementList.value = listOf(Element.Light, Element.Air, Element.Water)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 2, 0, 2, 2, 3)
 
                 TechniqueTableHeader("Dodge Bonus")
                 TechniqueTableRow("+10", 2, 4, 5, 1, 1, 1)
@@ -826,6 +924,8 @@ private fun TechniqueTable(){
             6-> {
                 kiIndex.value = 2
                 elementList.value = listOf(Element.Light, Element.Air, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 2, 0, 2, 2, 3)
 
                 TechniqueTableHeader("Dodge Bonus")
                 TechniqueTableRow("+10", 1, 2, 5, 1, 1, 1)
@@ -845,6 +945,8 @@ private fun TechniqueTable(){
             7-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Fire, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 3, null, 2, 1, 1)
 
                 TechniqueTableHeader("Multiplier")
                 TechniqueTableRow("x2", 10, 15, 25, 4, 1, 1)
@@ -856,6 +958,8 @@ private fun TechniqueTable(){
             8-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Fire, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 3, null, 1, 2, 1)
 
                 TechniqueTableHeader("Damage Bonus")
                 TechniqueTableRow("+10", 1, 2, 5, 1, 1, 1)
@@ -881,6 +985,8 @@ private fun TechniqueTable(){
             9-> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air, Element.Water)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
 
                 TechniqueTableHeader("Attacks")
                 TechniqueTableRow("+1", 6, 9, 20, 3, 1, 1)
@@ -900,6 +1006,8 @@ private fun TechniqueTable(){
             10-> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air, Element.Water, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
 
                 TechniqueTableHeader("Attacks")
                 TechniqueTableRow("+1", 3, 5, 5, 1, 1, 1)
@@ -919,6 +1027,8 @@ private fun TechniqueTable(){
             11-> {
                 kiIndex.value = 2
                 elementList.value = listOf(Element.Light)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 1, 0, 1, 3, 3)
 
                 TechniqueTableHeader("Defenses")
                 TechniqueTableRow("+1", 1, 2, 5, 1, 1, 1)
@@ -938,6 +1048,8 @@ private fun TechniqueTable(){
             12-> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 0, 1, 1, 3, 3)
 
                 TechniqueTableHeader("Actions")
                 TechniqueTableRow("+1", 1, 2, 5, 1, 1, 1)
@@ -957,6 +1069,8 @@ private fun TechniqueTable(){
             13-> {
                 kiIndex.value = 2
                 elementList.value = listOf(Element.Air)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 1, 0, 2, 3, 3)
 
                 TechniqueTableHeader("Initiative Bonus")
                 TechniqueTableRow("+25", 1, 2, 5, 1, 1, 1)
@@ -973,6 +1087,8 @@ private fun TechniqueTable(){
             14-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Dark, Element.Light)
+                ElementDisplayRow()
+                buildArray.value = listOf(4, 4, null, 4, 0, 1)
 
                 TechniqueTableHeader("PhR Check")
                 TechniqueTableRow("40", 1, 2, 5, 1, 1, 1)
@@ -986,24 +1102,26 @@ private fun TechniqueTable(){
                 TechniqueTableRow("240", 18, 22, 80, 10, 3, 1)
 
                 Row{Text(text = "Optional Advantage: Added State")}
-                TechniqueTableRow("Action Penalty", 2, 2, 5, null,  1, 2)
-                TechniqueTableRow("PhR Reduction", 2, 2, 10, null,  1, 2)
-                TechniqueTableRow("Blindness", 5, 5, 15, null,  1, 2)
-                TechniqueTableRow("Characteristic Reduction", 2, 2, 10, null, 1, 2)
-                TechniqueTableRow("Partial Paralysis", 6, 6, 10, null, 1, 2)
-                TechniqueTableRow("Damage", 5, 5, 10, null, 1, 2)
-                TechniqueTableRow("Unconscious", 8, 8, 15, null, 1, 2)
-                TechniqueTableRow("Coma", 10, 10, 30, null, 2, 2)
-                TechniqueTableRow("Total Paralysis", 8, 8, 20, null, 2, 2)
-                TechniqueTableRow("Life Drain", 8, 8, 15, null, 2, 2)
-                TechniqueTableRow("Control", 10, 10, 40, null, 3, 2)
-                TechniqueTableRow("Death", 12, 12, 50, null, 3, 2)
+                TechniqueTableRow("Action Penalty", 2, 2, 5, 0,  1, 2)
+                TechniqueTableRow("PhR Reduction", 2, 2, 10, 0,  1, 2)
+                TechniqueTableRow("Blindness", 5, 5, 15, 0,  1, 2)
+                TechniqueTableRow("Characteristic Reduction", 2, 2, 10, 0, 1, 2)
+                TechniqueTableRow("Partial Paralysis", 6, 6, 10, 0, 1, 2)
+                TechniqueTableRow("Damage", 5, 5, 10, 0, 1, 2)
+                TechniqueTableRow("Unconscious", 8, 8, 15, 0, 1, 2)
+                TechniqueTableRow("Coma", 10, 10, 30, 0, 2, 2)
+                TechniqueTableRow("Total Paralysis", 8, 8, 20, 0, 2, 2)
+                TechniqueTableRow("Life Drain", 8, 8, 15, 0, 2, 2)
+                TechniqueTableRow("Control", 10, 10, 40, 0, 3, 2)
+                TechniqueTableRow("Death", 12, 12, 50, 0, 3, 2)
             }
 
             //Combat Maneuvers and Aiming
             15-> {
                 kiIndex.value = 1
                 elementList.value = listOf(Element.Air)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 0, 1, 2, 2, 2)
 
                 TechniqueTableHeader("Precision")
                 TechniqueTableRow("-10", 1, 2, 5, 1, 1, 1)
@@ -1018,6 +1136,8 @@ private fun TechniqueTable(){
             16-> {
                 kiIndex.value = 3
                 elementList.value = listOf(Element.Earth, Element.Water, Element.Light)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, null, 3, 0, 1, 2)
 
                 TechniqueTableHeader("AT")
                 TechniqueTableRow("1", 1, 2, 5, 1, 1, 1)
@@ -1034,6 +1154,8 @@ private fun TechniqueTable(){
             17-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Dark, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 2, null, 2, 1, 2)
 
                 TechniqueTableHeader("Reduction")
                 TechniqueTableRow("-1 AT", 1, 2, 5, 1, 1, 1)
@@ -1050,6 +1172,8 @@ private fun TechniqueTable(){
             18-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Earth, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 4, null, 2, 2, 1)
 
                 TechniqueTableHeader("Breakage")
                 TechniqueTableRow("+5", 1, 2, 5, 1, 1, 1)
@@ -1066,6 +1190,8 @@ private fun TechniqueTable(){
             19-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Earth, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 4, null, 2, 2, 1)
 
                 TechniqueTableHeader("Fortitude")
                 TechniqueTableRow("+10", 1, 2, 5, 1, 1, 1)
@@ -1081,6 +1207,8 @@ private fun TechniqueTable(){
             20-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Air, Element.Water, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 2, 3, 4, 0, 1)
 
                 TechniqueTableHeader("Distance")
                 TechniqueTableRow("5m", 1, 2, 5, 1, 1, 1)
@@ -1100,6 +1228,8 @@ private fun TechniqueTable(){
             21-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Dark, Element.Light, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 2, 3, 3, 0, 1)
 
                 TechniqueTableHeader("Radius")
                 TechniqueTableRow("1m", 1, 2, 5, 1, 1, 1)
@@ -1120,6 +1250,8 @@ private fun TechniqueTable(){
             22-> {
                 kiIndex.value = 2
                 elementList.value = listOf(Element.Air, Element.Light, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 2, 0, 2, 3, null)
 
                 TechniqueTableHeader("Distance")
                 TechniqueTableRow("10m", 2, 4, 5, 1, 1, 1)
@@ -1138,6 +1270,8 @@ private fun TechniqueTable(){
             23-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Fire, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(1, 2, null, 2, 0, 1)
 
                 TechniqueTableHeader("Critical")
                 TechniqueTableRow("+10", 2, 4, 5, 1, 1, 1)
@@ -1160,6 +1294,8 @@ private fun TechniqueTable(){
             24-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Light, Element.Dark, Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 3, null, 1, 0, 1)
 
                 TechniqueTableHeader("Quality")
                 TechniqueTableRow("+0", 2, 4, 5, 1, 1, 1)
@@ -1176,6 +1312,8 @@ private fun TechniqueTable(){
             25-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 1, null, 2, 2, 2)
 
                 TechniqueTableHeader("Trap")
                 TechniqueTableRow("4", 2, 4, 5, 1, 1, 1)
@@ -1193,6 +1331,8 @@ private fun TechniqueTable(){
             26-> {
                 kiIndex.value = 0
                 elementList.value = listOf(Element.Earth, Element.Fire)
+                ElementDisplayRow()
+                buildArray.value = listOf(0, 3, null, 2, 1, 1)
 
                 TechniqueTableHeader("Projection")
                 TechniqueTableRow("4", 1, 2, 5, 1, 1, 1)
@@ -1210,6 +1350,8 @@ private fun TechniqueTable(){
             27-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Light, Element.Water)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 3, null, 2, 0, 1)
 
                 TechniqueTableHeader("LP")
                 TechniqueTableRow("100", 2, 4, 5, 1, 1, 1)
@@ -1228,6 +1370,8 @@ private fun TechniqueTable(){
             28-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Light, Element.Dark, Element.Water)
+                ElementDisplayRow()
+                buildArray.value = listOf(3, 3, null, 3, 0, 1)
 
                 TechniqueTableHeader("Effect")
                 TechniqueTableRow("Intangibility", 3, 5, 10, 2, 1, 1)
@@ -1237,6 +1381,8 @@ private fun TechniqueTable(){
             29-> {
                 kiIndex.value = 5
                 elementList.value = listOf(Element.Water, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(null, 3, 2, 3, 1, 0)
 
                 TechniqueTableHeader("Mirages")
                 TechniqueTableRow("1", 1, 2, 5, 1, 1, 1)
@@ -1249,20 +1395,22 @@ private fun TechniqueTable(){
                 TechniqueTableRow("25", 14, 18, 30, 12, 3, 1)
 
                 Row{Text(text = "Optional Advantage: Non-Detection")}
-                TechniqueTableRow("Moderate", 1, 1, 5, null, 1, 2)
-                TechniqueTableRow("Difficult", 2, 2, 10, null, 1, 2)
-                TechniqueTableRow("Very Difficult", 3, 3, 10, null, 1, 2)
-                TechniqueTableRow("Absurd", 4, 4, 15, null, 1, 2)
-                TechniqueTableRow("Almost Impossible", 5, 5, 15, null, 1, 2)
-                TechniqueTableRow("Impossible", 6, 6, 20, null, 2, 2)
-                TechniqueTableRow("Inhuman", 7, 7, 25, null, 2, 2)
-                TechniqueTableRow("Zen", 8, 8, 30, null, 3, 2)
+                TechniqueTableRow("Moderate", 1, 1, 5, 0, 1, 2)
+                TechniqueTableRow("Difficult", 2, 2, 10, 0, 1, 2)
+                TechniqueTableRow("Very Difficult", 3, 3, 10, 0, 1, 2)
+                TechniqueTableRow("Absurd", 4, 4, 15, 0, 1, 2)
+                TechniqueTableRow("Almost Impossible", 5, 5, 15, 0, 1, 2)
+                TechniqueTableRow("Impossible", 6, 6, 20, 0, 2, 2)
+                TechniqueTableRow("Inhuman", 7, 7, 25, 0, 2, 2)
+                TechniqueTableRow("Zen", 8, 8, 30, 0, 3, 2)
             }
 
             //Attack Mirroring
             30-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Light, Element.Dark, Element.Water)
+                ElementDisplayRow()
+                buildArray.value = listOf(2, 3, 3, null, 0, 1)
 
                 TechniqueTableHeader("Effect")
                 TechniqueTableRow("Attack Mirroring", 12, 15, 30, 8, 2, 1)
@@ -1278,6 +1426,8 @@ private fun TechniqueTable(){
             31-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Fire, Element.Light, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(3, 3, null, 2, 0, 1)
 
                 TechniqueTableHeader("Attack")
                 TechniqueTableRow("Energy", 1, 2, 5, 1, 1, 1)
@@ -1287,6 +1437,8 @@ private fun TechniqueTable(){
             32-> {
                 kiIndex.value = 4
                 elementList.value = listOf()
+                ElementDisplayRow()
+                buildArray.value = listOf(3, 3, null, 2, 0, 1)
 
                 TechniqueTableHeader("Attack")
                 TechniqueTableRow("2", 2, 4, 5, 1, 1, 1)
@@ -1302,6 +1454,8 @@ private fun TechniqueTable(){
             33-> {
                 kiIndex.value = 4
                 elementList.value = listOf(Element.Light, Element.Dark)
+                ElementDisplayRow()
+                buildArray.value = listOf(3, 3, null, 2, 0, 1)
 
                 TechniqueTableHeader("Attack")
                 TechniqueTableRow("Energy", 5, 8, 10, 1, 1, 1)
@@ -1311,6 +1465,8 @@ private fun TechniqueTable(){
             34-> {
                 kiIndex.value = 3
                 elementList.value = listOf(Element.Earth)
+                ElementDisplayRow()
+                buildArray.value = listOf(3, 3, null, 0, 3, 1)
 
                 TechniqueTableHeader("LP")
                 TechniqueTableRow("100", 2, 4, 5, 1, 1, 1)
@@ -1327,6 +1483,7 @@ private fun TechniqueTable(){
             //Elemental Binding
             35-> {
                 elementList.value = listOf()
+                buildArray.value = listOf(null, null, null, null, null, null)
 
                 TechniqueTableRow("Single Element", 0, 0, -15, 0, 1, 1)
                 TechniqueTableRow("Two Elements", 0, 0, -10, 0, 1, 1)
@@ -1343,6 +1500,7 @@ private fun TechniqueTable(){
             //Reduce Damage
             36-> {
                 elementList.value = listOf(Element.Free)
+                buildArray.value = listOf(null, null, null, null, null, null)
 
                 TechniqueTableRow("No Damage", 0, 0, -20, 0, 1, 1)
                 TechniqueTableRow("Half Damage", 0, 0, -10, 0, 1, 1)
@@ -1351,6 +1509,7 @@ private fun TechniqueTable(){
             //Special Requirements
             37-> {
                 elementList.value = listOf(Element.Free)
+                buildArray.value = listOf(null, null, null, null, null, null)
 
                 TechniqueTableRow("Simple Intensity", 0, 0, -15, 0, 1, 1)
                 TechniqueTableRow("Major Intensity", 0, 0, -10, 0, 1, 1)
@@ -1359,6 +1518,7 @@ private fun TechniqueTable(){
 
             38-> {
                 elementList.value = listOf(Element.Free)
+                buildArray.value = listOf(null, null, null, null, null, null)
 
                 TechniqueTableRow("Predetermination", 0, 0, -20, 0, 1, 1)
             }
@@ -1390,30 +1550,28 @@ private fun TechniqueTableRow(
     primaryCost: Int,
     secondaryCost: Int,
     mkCost: Int,
-    maintCost: Int?,
+    maintCost: Int,
     level: Int,
     listNum: Int
 ){
     val thisCheck = remember{ mutableStateOf(false) }
 
     val defaultArray = mutableListOf(0, 0, 0, 0, 0, 0)
-    if(kiIndex.value != null){
-        defaultArray[kiIndex.value!!] =
-            if(isPrimary.value)
-                primaryCost
-            else
-                secondaryCost
-    }
+    defaultArray[kiIndex.value] =
+        if(isPrimary.value)
+            primaryCost
+        else
+            secondaryCost
 
     val useString =
         if(techniqueIndex.value < 35)
             stringArrayResource(R.array.techniqueAbilities)[techniqueIndex.value]
-    else
-        stringArrayResource(R.array.techniqueDisadvantages)[techniqueIndex.value - 35]
+        else
+            stringArrayResource(R.array.techniqueDisadvantages)[techniqueIndex.value - 35]
 
     val thisEffect =
         TechniqueEffect(useString, effect, mkCost, maintCost, kiIndex.value, Pair(primaryCost, secondaryCost),
-            defaultArray, getSelectedElement(), level)
+            defaultArray, buildArray.value, getSelectedElement(), level)
 
     when(listNum) {
         1 -> allEffectChecks = allEffectChecks + Pair(thisEffect, thisCheck)
@@ -1477,6 +1635,24 @@ private fun ElementalRow(elementType: Element){
 }
 
 @Composable
+private fun ElementDisplayRow(){
+    val name = stringArrayResource(id = R.array.techniqueAbilities)[techniqueIndex.value]
+    var elementString = ""
+
+    elementList.value.forEach{
+        elementString += it.name
+        if(elementList.value.indexOf(it) < elementList.value.size)
+            elementString += ", "
+    }
+
+    LazyRow {
+        item {
+            Text(text = "Elements of $name: $elementString")
+        }
+    }
+}
+
+@Composable
 private fun EditEffectRow(effect: TechniqueEffect){
     val deleteCheck = remember{mutableStateOf(false)}
     var elementString = ""
@@ -1513,6 +1689,53 @@ private fun EditEffectRow(effect: TechniqueEffect){
     }
 }
 
+@Composable
+private fun EditBuildRow(
+    effect: TechniqueEffect,
+    index: Int,
+    workArray: MutableList<Int>
+){
+    Row {
+        if (effect.buildAdditions[index] != null) {
+            Text(text = getStatName(index) + ": ", modifier = Modifier.weight(0.4f))
+
+            val buildVal = remember { mutableStateOf(workArray[index].toString()) }
+            TextField(
+                value = buildVal.value,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                ),
+                onValueChange = { input ->
+                    numberCatcher(input,
+                        { catchIn: String ->
+                            workArray[index] = catchIn.toInt()
+                            allAccs[index].value = getAccTotal(index)
+                            buildVal.value = catchIn
+                        },
+                        {
+                            workArray[index] = 0
+                            allAccs[index].value = getAccTotal(index)
+                            buildVal.value = ""
+                        }
+                    )},
+                modifier = Modifier.weight(0.2f)
+            )
+
+            Text(text = "+" + effect.buildAdditions[index], modifier = Modifier.weight(0.4f))
+        }
+    }
+}
+
+private fun getAccTotal(index: Int): String{
+    var total = 0
+
+    allKiBuilds.value.forEach{
+        total += it.second[index]
+    }
+
+    return total.toString()
+}
+
 private fun getSelectedEffect(): TechniqueEffect?{
     allEffectChecks.forEach{
         if(it.second.value && it.first.elements.isNotEmpty())
@@ -1544,4 +1767,13 @@ private fun getSelectedElement(): List<Element>{
     }
 
     return output
+}
+
+private fun findBuild(token: String): Pair<String, MutableList<Int>>?{
+    allKiBuilds.value.forEach{
+        if(token == it.first)
+            return it
+    }
+
+    return null
 }

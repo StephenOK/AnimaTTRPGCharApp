@@ -8,10 +8,11 @@ class TechniqueEffect(
     var name: String,
     var effect: String,
     var mkCost: Int,
-    var maint: Int?,
-    var maintIndex: Int?,
+    var maint: Int,
+    var maintIndex: Int,
     var costPair: Pair<Int, Int>,
-    var kiBuild: List<Int>,
+    var kiBuild: MutableList<Int>,
+    var buildAdditions: List<Int?>,
     var elements: List<Element>,
     var lvl: Int
 ): Serializable{
@@ -25,6 +26,10 @@ class TechniqueEffect(
         charInstance.addNewData(costPair.second)
 
         kiBuild.forEach{
+            charInstance.addNewData(it)
+        }
+
+        buildAdditions.forEach{
             charInstance.addNewData(it)
         }
 

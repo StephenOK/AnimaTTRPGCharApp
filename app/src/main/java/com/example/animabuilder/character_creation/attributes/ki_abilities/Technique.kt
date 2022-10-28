@@ -2,8 +2,8 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
-import java.io.BufferedReader
 import java.io.Serializable
+import java.util.Collections
 
 class Technique(
     var name: String,
@@ -33,13 +33,8 @@ class Technique(
         val output = mutableListOf(0, 0, 0, 0, 0, 0)
 
         givenAbilities.forEach{ability ->
-            var dummyList = ability.kiBuild
-
-            dummyList.forEach{
-                if(it > 0) {
-                    output[ability.kiBuild.indexOf(it)] += it
-                    dummyList = dummyList - it
-                }
+            for(index in 0..5){
+                output[index] += ability.kiBuild[index]
             }
         }
 
@@ -51,9 +46,7 @@ class Technique(
 
         if(isMaintained) {
             givenAbilities.forEach {
-                if (it.maint != null) {
-                    output[it.maintIndex!!] += it.maint!!
-                }
+                output[it.maintIndex] += it.maint
             }
         }
 
@@ -69,8 +62,8 @@ class Technique(
         }
 
         givenAbilities.forEach{
-            if(isMaintained && it.maint != null)
-                total += it.maint!!
+            if(isMaintained)
+                total += it.maint
         }
 
         total
@@ -164,13 +157,20 @@ class Technique(
                 onlyDis = false
         }
 
-        if(onlyDis)
+        if(onlyDis || givenAbilities.isEmpty())
             givenAbilities = listOf()
         else{
             var pointer = 0
             while(pointer < givenAbilities.size){
                 if(!givenAbilities[pointer].elements.contains(Element.Free)) {
-                    givenAbilities[pointer].mkCost = givenAbilities[pointer].costPair.first
+                    val replaceList = mutableListOf(0, 0, 0, 0, 0, 0)
+                    replaceList[givenAbilities[pointer].maintIndex] = givenAbilities[pointer].costPair.first
+
+                    givenAbilities[pointer].kiBuild = replaceList
+
+                    if(pointer != 0)
+                        Collections.swap(givenAbilities, 0, pointer)
+
                     pointer = givenAbilities.size
                 }
 

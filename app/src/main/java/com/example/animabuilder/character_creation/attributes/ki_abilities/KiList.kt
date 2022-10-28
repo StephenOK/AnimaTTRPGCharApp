@@ -332,10 +332,10 @@ class KiList: Serializable {
         listOf(
             TechniqueEffect(
                 "Long-Distance Attack", "+50m", 15, 3, 4, Pair(4, 6),
-                listOf(0, 4, 0, 0, 2, 0), listOf(Element.Air), 1),
+                mutableListOf(0, 4, 0, 0, 2, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air), 1),
             TechniqueEffect(
                 "Initiative Augmentation", "+50", 10, 1, 2, Pair(2, 4),
-                listOf(0, 0, 4, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -348,9 +348,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Limited Additional Attack", "+3", 15, 3, 1, Pair(9, 12),
-                listOf(0, 7, 3, 0, 4, 0), listOf(Element.Air, Element.Water, Element.Dark), 1),
+                mutableListOf(0, 7, 3, 0, 4, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 1),
             TechniqueEffect("Initiative Augmentation", "+50", 10, 1, 2, Pair(2, 4),
-                listOf(0, 0, 4, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -363,9 +363,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Initiative Augmentation", "+125", 25, 4, 2, Pair(8, 11),
-                listOf(0, 0, 8, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 2),
+                mutableListOf(0, 0, 8, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2),
             TechniqueEffect("Attack Ability", "+75", 20, 6, 1, Pair(8, 11),
-                listOf(0, 8, 0, 0, 5, 0), listOf(Element.Air, Element.Fire, Element.Dark), 1)
+                mutableListOf(0, 8, 0, 0, 5, 0), listOf(2, 1, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1)
         )
     )
 
@@ -379,9 +379,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Area Attack", "10m radius", 15, 2, 4, Pair(3, 5),
-                listOf(0, 0, 0, 0, 3, 0), listOf(Element.Dark, Element.Light, Element.Fire), 1),
+                mutableListOf(0, 0, 0, 0, 3, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1),
             TechniqueEffect("Initiative Augmentation", "+150", 30, 5, 2, Pair(10, 13),
-                listOf(0, 7, 7, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 2)
+                mutableListOf(0, 7, 7, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2)
         )
     )
 
@@ -398,9 +398,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Limited Additional Attack", "+8", 50, 10, 1, Pair(22, 26),
-                listOf(0, 17, 0, 0, 8, 0), listOf(Element.Air, Element.Water, Element.Dark), 2),
+                mutableListOf(0, 17, 0, 0, 8, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 2),
             TechniqueEffect("Initiative Augmentation", "+175", 35, 6, 2, Pair(12, 15),
-                listOf(0, 0, 15, 0, 0, 0), listOf(Element.Air, Element.Water, Element.Fire), 3,)
+                mutableListOf(0, 0, 15, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 3,)
         )
     )
 
@@ -415,9 +415,9 @@ class KiList: Serializable {
         true,
         listOf(
             TechniqueEffect("Damage Augmentation", "+25", 5, 1, 0, Pair(2, 4),
-                listOf(2, 0, 0, 0, 0, 0), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(2, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Elemental Attack", "Heat", 5, 1, 5, Pair(2, 4),
-                listOf(0, 0, 0, 0, 1, 4), listOf(), 1)
+                mutableListOf(0, 0, 0, 0, 1, 4), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire),1)
         )
     )
 
@@ -430,9 +430,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Attack Ability", "+40", 10, 3, 1, Pair(4, 6),
-                listOf(1, 3, 0, 0, 4, 0), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(1, 3, 0, 0, 4, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Long-Distance Attack", "20m", 10, 2, 4, Pair(3, 5),
-                listOf(0, 0, 0, 0, 1, 5), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 0, 0, 1, 5), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -446,11 +446,11 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Damage Multiplier", "x2", 25, 4, 0, Pair(10, 15),
-                listOf(2, 0, 0, 0, 2, 8), listOf(Element.Light, Element.Water, Element.Earth), 1),
+                mutableListOf(2, 0, 0, 0, 2, 8), listOf(0, 3, null, 2, 1, 1), listOf(Element.Light, Element.Water, Element.Earth), 1),
             TechniqueEffect("Area Attack", "50m radius", 30, 5, 4, Pair(4, 6),
-                listOf(0, 6, 0, 0, 4, 2), listOf(Element.Dark, Element.Light, Element.Fire), 2),
-            TechniqueEffect("Special Requirements", "Determined Condition", -15, null, null, Pair(0, 0),
-                listOf(0, 0, 0, 0, 0, 0), listOf(Element.Free), 1)
+                mutableListOf(0, 6, 0, 0, 4, 2), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
+            TechniqueEffect("Special Requirements", "Determined Condition", -15, 0, 0, Pair(0, 0),
+                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
 
@@ -464,13 +464,13 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Attack Ability", "+75", 20, 6, 1, Pair(8, 11),
-                listOf(0, 6, 0, 0, 0, 5), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 6, 0, 0, 0, 5), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Damage Augmentation", "+75", 20, 3, 0, Pair(6, 9),
-                listOf(1, 0, 0, 3, 0, 7), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(1, 0, 0, 3, 0, 7), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Critical Enhancement", "+40", 10, 3, 4, Pair(4, 6),
-                listOf(0, 0, 0, 0, 6, 0), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Special Requirements", "Determined Condition", -10, null, null, Pair(0, 0),
-                listOf(0, 0, 0, 0, 0, 0), listOf(Element.Free), 1)
+                mutableListOf(0, 0, 0, 0, 6, 0), listOf(1, 2, null, 2, 0, 1), listOf(Element.Fire, Element.Earth), 1),
+            TechniqueEffect("Special Requirements", "Determined Condition", -10, 0, 0, Pair(0, 0),
+                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
 
@@ -486,11 +486,11 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Sacrifice", "Double Vital Sacrifice", 50, 4, 0, Pair(10, 10),
-                listOf(10, 0, 0, 0, 0, 0), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Attack Ability", "+150", 40, 14, 1, Pair(22, 26),
-                listOf(0, 10, 0, 0, 0, 19), listOf(Element.Air, Element.Fire, Element.Dark), 2),
-            TechniqueEffect("Special Requirements", "Determined Condition", -30, null, null, Pair(0, 0),
-                listOf(0, 0, 0, 0, 0, 0), listOf(), 1)
+                mutableListOf(0, 10, 0, 0, 0, 19), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 2),
+            TechniqueEffect("Special Requirements", "Determined Condition", -30, 0, 0, Pair(0, 0),
+                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
 
@@ -503,7 +503,7 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Additional Defense", "+6", 20, 6, 2, Pair(5, 8),
-                listOf(0, 3, 1, 3, 0, 0), listOf(Element.Light), 1)
+                mutableListOf(0, 3, 1, 3, 0, 0), listOf(null, 1, 0, 1, 3, 3), listOf(Element.Light), 1)
         )
     )
 
@@ -515,9 +515,9 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Additional Attack", "+1", 20, 3, 1, Pair(6, 9),
-                listOf(0, 4, 4, 0, 0, 0), listOf(Element.Air, Element.Water), 1),
+                mutableListOf(0, 4, 4, 0, 0, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water), 1),
             TechniqueEffect("Damage Augmentation", "+40", 10, 1, 0, Pair(3, 5),
-                listOf(2, 0, 0, 4, 0, 0), listOf(Element.Fire, Element.Earth), 1)
+                mutableListOf(2, 0, 0, 4, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1)
         )
     )
 
@@ -529,11 +529,11 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Attack Ability", "+50", 15, 4, 1, Pair(5, 8),
-                listOf(0, 5, 0, 0, 0, 0), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 5, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Armor Destruction", "-6", 20, 3, 0, Pair(6, 9),
-                listOf(3, 0, 0, 8, 0, 0), listOf(Element.Dark, Element.Fire), 2),
+                mutableListOf(3, 0, 0, 8, 0, 0), listOf(0, 2, null, 2, 1, 2), listOf(Element.Dark, Element.Fire), 2),
             TechniqueEffect("Combat Maneuvers and Aiming", "-50", 10, 2, 1, Pair(3, 5),
-                listOf(0, 0, 6, 0, 0, 0), listOf(Element.Air), 1)
+                mutableListOf(0, 0, 6, 0, 0, 0), listOf(null, 0, 1, 2, 2, 2), listOf(Element.Air), 1)
         )
     )
 
@@ -547,11 +547,11 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Projection", "16", 25, 7, 0, Pair(8, 11),
-                listOf(2, 0, 0, 8, 0, 0), listOf(Element.Earth, Element.Fire), 2),
+                mutableListOf(2, 0, 0, 8, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Earth, Element.Fire), 2),
             TechniqueEffect("Attack Ability", "+40", 10, 3, 1, Pair(4, 6),
-                listOf(0, 6, 0, 0, 0, 0), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 6, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Area Attack", "25m radius", 20, 3, 4, Pair(4, 6),
-                listOf(0, 0, 0, 0, 6, 0), listOf(Element.Dark, Element.Light, Element.Fire), 1)
+                mutableListOf(0, 0, 0, 0, 6, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1)
         )
     )
 
@@ -566,15 +566,15 @@ class KiList: Serializable {
         false,
         listOf(
             TechniqueEffect("Long-Distance Attack", "1km", 35, 8, 4, Pair(10, 13),
-                listOf(0, 0, 6, 10, 4, 0), listOf(Element.Air, Element.Water, Element.Fire), 2),
+                mutableListOf(0, 0, 6, 10, 4, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 2),
             TechniqueEffect("Area Attack", "100m radius", 30, 5, 4, Pair(8, 11),
-                listOf(0, 10, 4, 0, 2, 0), listOf(Element.Dark, Element.Light, Element.Fire), 2),
+                mutableListOf(0, 10, 4, 0, 2, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
             TechniqueEffect("Energy Damaging Attack", "", 5, 1, 4, Pair(1, 2),
-                listOf(5, 0, 0, 0, 0, 0), listOf(Element.Fire, Element.Light, Element.Dark), 1),
+                mutableListOf(5, 0, 0, 0, 0, 0), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire, Element.Light, Element.Dark), 1),
             TechniqueEffect("Damage Multiplier", "x2", 25, 4, 0, Pair(10, 15),
-                listOf(10, 0, 0, 0, 0, 0), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Predetermination", "", -20, null, null, Pair(0, 0),
-                listOf(0, 0, 0, 0, 0, 0), listOf(), 1)
+                mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Fire, Element.Earth), 1),
+            TechniqueEffect("Predetermination", "", -20, 0, 0, Pair(0, 0),
+                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
 
@@ -950,20 +950,8 @@ class KiList: Serializable {
                 val teName = fileReader.readLine()
                 val teEffect = fileReader.readLine()
                 val teCost = fileReader.readLine().toInt()
-
-                val teMaint: Int? =
-                    try{
-                        fileReader.readLine().toInt()
-                    }catch(_: NumberFormatException){
-                        null
-                    }
-
-                val teIndex: Int? =
-                    try{
-                        fileReader.readLine().toInt()
-                    }catch(_: NumberFormatException){
-                        null
-                    }
+                val teMaint = fileReader.readLine().toInt()
+                val teIndex: Int = fileReader.readLine().toInt()
 
                 val tePair = Pair(fileReader.readLine().toInt(), fileReader.readLine().toInt())
 
@@ -974,6 +962,15 @@ class KiList: Serializable {
                     fileReader.readLine().toInt(),
                     fileReader.readLine().toInt(),
                     fileReader.readLine().toInt()
+                )
+
+                val teAdditions = listOf(
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toIntOrNull()
                 )
 
                 var teElements: List<Element> = listOf()
@@ -993,6 +990,7 @@ class KiList: Serializable {
                             teIndex,
                             tePair,
                             teBuild,
+                            teAdditions,
                             teElements,
                             fileReader.readLine().toInt()
                         )

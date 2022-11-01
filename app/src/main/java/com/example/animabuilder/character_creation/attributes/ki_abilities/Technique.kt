@@ -9,7 +9,7 @@ class Technique(
     var name: String,
     var description: String,
     var level: Int,
-    var isMaintained: Boolean,
+    var maintArray: MutableList<Int>,
     var givenAbilities: List<TechniqueEffect>
 ): Serializable{
     val mkCost = {
@@ -18,12 +18,21 @@ class Technique(
             total += it.mkCost
         }
 
-        if(isMaintained){
+        if(isMaintained()){
             total += when(level) {
                 2 -> 20
                 3 -> 30
                 else -> 10
             }
+        }
+
+        total
+    }
+
+    val maintTotal = {
+        var total = 0
+        givenAbilities.forEach{
+            total += it.maintTotal
         }
 
         total
@@ -41,18 +50,6 @@ class Technique(
         output
     }
 
-    val maintArray = {
-        val output = mutableListOf(0, 0, 0, 0, 0, 0)
-
-        if(isMaintained) {
-            givenAbilities.forEach {
-                output[it.maintIndex] += it.maint
-            }
-        }
-
-        output
-    }
-
     val accTotal = {
         val addUp = statSpent()
         var total = 0
@@ -62,18 +59,35 @@ class Technique(
         }
 
         givenAbilities.forEach{
-            if(isMaintained)
-                total += it.maint
+            if(isMaintained())
+                total += it.maintTotal
         }
 
         total
+    }
+
+    fun isMaintained(): Boolean{
+        for(index in 0..5)
+            if(maintArray[index] != 0)
+                return true
+
+        return false
+    }
+
+    fun hasAccumulation(index: Int): Boolean{
+        givenAbilities.forEach{
+            if(it.kiBuild[index] != 0)
+                return true
+        }
+
+        return false
     }
 
     fun equivalentTo(compareTo: Technique): Boolean{
         return compareTo.name == name &&
                 compareTo.description == description &&
                 compareTo.level == level &&
-                compareTo.isMaintained == isMaintained &&
+                compareTo.maintArray == maintArray &&
                 listCheck(compareTo.givenAbilities)
     }
 
@@ -164,7 +178,7 @@ class Technique(
             while(pointer < givenAbilities.size){
                 if(!givenAbilities[pointer].elements.contains(Element.Free)) {
                     val replaceList = mutableListOf(0, 0, 0, 0, 0, 0)
-                    replaceList[givenAbilities[pointer].maintIndex] = givenAbilities[pointer].costPair.first
+                    replaceList[givenAbilities[pointer].buildAdditions.indexOf(0)] = givenAbilities[pointer].costPair.first
 
                     givenAbilities[pointer].kiBuild = replaceList
 
@@ -183,11 +197,7 @@ class Technique(
         charInstance.addNewData(name)
         charInstance.addNewData(description)
         charInstance.addNewData(level)
-
-        if(isMaintained)
-            charInstance.addNewData("true")
-        else
-            charInstance.addNewData("false")
+        maintArray.forEach{charInstance.addNewData(it)}
 
         charInstance.addNewData(givenAbilities.size)
         givenAbilities.forEach{

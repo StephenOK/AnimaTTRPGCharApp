@@ -328,13 +328,13 @@ class KiList: Serializable {
                 "moment, projecting a blow at such speed that it causes the air to warp while he " +
                 "advances to attack. This technique uses the Base Damage of the user's weapon.",
         1,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
             TechniqueEffect(
-                "Long-Distance Attack", "+50m", 15, 3, 4, Pair(4, 6),
+                "Long-Distance Attack", "+50m", 15, 3, Pair(4, 6),
                 mutableListOf(0, 4, 0, 0, 2, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air), 1),
             TechniqueEffect(
-                "Initiative Augmentation", "+50", 10, 1, 2, Pair(2, 4),
+                "Initiative Augmentation", "+50", 10, 1, Pair(2, 4),
                 mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
@@ -345,11 +345,11 @@ class KiList: Serializable {
                 "that his body seems to split. In this way, he can attack four times during the " +
                 "Combat Turn while also adding a bonus to his Final Initiative.",
         1,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Limited Additional Attack", "+3", 15, 3, 1, Pair(9, 12),
+            TechniqueEffect("Limited Additional Attack", "+3", 15, 3, Pair(9, 12),
                 mutableListOf(0, 7, 3, 0, 4, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 1),
-            TechniqueEffect("Initiative Augmentation", "+50", 10, 1, 2, Pair(2, 4),
+            TechniqueEffect("Initiative Augmentation", "+50", 10, 1, Pair(2, 4),
                 mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
@@ -360,11 +360,11 @@ class KiList: Serializable {
                 "speed that it has the ability to split an opponent's body. This Technique " +
                 "increases both Base Initiative and Attack Ability.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Initiative Augmentation", "+125", 25, 4, 2, Pair(8, 11),
+            TechniqueEffect("Initiative Augmentation", "+125", 25, 4, Pair(8, 11),
                 mutableListOf(0, 0, 8, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2),
-            TechniqueEffect("Attack Ability", "+75", 20, 6, 1, Pair(8, 11),
+            TechniqueEffect("Attack Ability", "+75", 20, 6, Pair(8, 11),
                 mutableListOf(0, 8, 0, 0, 5, 0), listOf(2, 1, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1)
         )
     )
@@ -376,11 +376,11 @@ class KiList: Serializable {
                 "materialize and charge against them, only to disappear soon after. This Technique " +
                 "uses the Base Damage of the user's weapon.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Area Attack", "10m radius", 15, 2, 4, Pair(3, 5),
+            TechniqueEffect("Area Attack", "10m radius", 15, 2, Pair(3, 5),
                 mutableListOf(0, 0, 0, 0, 3, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1),
-            TechniqueEffect("Initiative Augmentation", "+150", 30, 5, 2, Pair(10, 13),
+            TechniqueEffect("Initiative Augmentation", "+150", 30, 5, Pair(10, 13),
                 mutableListOf(0, 7, 7, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2)
         )
     )
@@ -395,11 +395,11 @@ class KiList: Serializable {
                 "in the same Combat Turn, the first of which is usually accompanied by Surprise " +
                 "due to its reaction speed.",
         3,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Limited Additional Attack", "+8", 50, 10, 1, Pair(22, 26),
+            TechniqueEffect("Limited Additional Attack", "+8", 50, 10, Pair(22, 26),
                 mutableListOf(0, 17, 0, 0, 8, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 2),
-            TechniqueEffect("Initiative Augmentation", "+175", 35, 6, 2, Pair(12, 15),
+            TechniqueEffect("Initiative Augmentation", "+175", 35, 6, Pair(12, 15),
                 mutableListOf(0, 0, 15, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 3,)
         )
     )
@@ -412,11 +412,11 @@ class KiList: Serializable {
                 "investing 1 Ki Point for Will and 1 for Strength in each round. This is also a key " +
                 "Technique for performing subsequent attacks of greater power.",
         1,
-        true,
+        mutableListOf(1, 0, 0, 0, 0, 1),
         listOf(
-            TechniqueEffect("Damage Augmentation", "+25", 5, 1, 0, Pair(2, 4),
+            TechniqueEffect("Damage Augmentation", "+25", 5, 1, Pair(2, 4),
                 mutableListOf(2, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Elemental Attack", "Heat", 5, 1, 5, Pair(2, 4),
+            TechniqueEffect("Elemental Attack", "Heat", 5, 1, Pair(2, 4),
                 mutableListOf(0, 0, 0, 0, 1, 4), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire),1)
         )
     )
@@ -427,11 +427,11 @@ class KiList: Serializable {
                 "20 meters away. Le Feu does not use the weapon's damage, but twice the character's " +
                 "Base Presence plus his Power Bonus.",
         1,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Attack Ability", "+40", 10, 3, 1, Pair(4, 6),
+            TechniqueEffect("Attack Ability", "+40", 10, 3, Pair(4, 6),
                 mutableListOf(1, 3, 0, 0, 4, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
-            TechniqueEffect("Long-Distance Attack", "20m", 10, 2, 4, Pair(3, 5),
+            TechniqueEffect("Long-Distance Attack", "20m", 10, 2, Pair(3, 5),
                 mutableListOf(0, 0, 0, 0, 1, 5), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
@@ -443,13 +443,13 @@ class KiList: Serializable {
                 "it doubles the weapon's original Base Damage. Horecka requires a character to " +
                 "maintain the first-level Technique, Feuer.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Damage Multiplier", "x2", 25, 4, 0, Pair(10, 15),
+            TechniqueEffect("Damage Multiplier", "x2", 25, 4, Pair(10, 15),
                 mutableListOf(2, 0, 0, 0, 2, 8), listOf(0, 3, null, 2, 1, 1), listOf(Element.Light, Element.Water, Element.Earth), 1),
-            TechniqueEffect("Area Attack", "50m radius", 30, 5, 4, Pair(4, 6),
+            TechniqueEffect("Area Attack", "50m radius", 30, 5, Pair(4, 6),
                 mutableListOf(0, 6, 0, 0, 4, 2), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
-            TechniqueEffect("Special Requirements", "Determined Condition", -15, 0, 0, Pair(0, 0),
+            TechniqueEffect("Special Requirements", "Determined Condition", -15, 0, Pair(0, 0),
                 mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
@@ -461,15 +461,15 @@ class KiList: Serializable {
                 "attack increases damage, Attack Ability, and the resulting Critical (if any). " +
                 "Vatra requires a character to maintain the first-level Technique, Feuer.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Attack Ability", "+75", 20, 6, 1, Pair(8, 11),
+            TechniqueEffect("Attack Ability", "+75", 20, 6, Pair(8, 11),
                 mutableListOf(0, 6, 0, 0, 0, 5), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
-            TechniqueEffect("Damage Augmentation", "+75", 20, 3, 0, Pair(6, 9),
+            TechniqueEffect("Damage Augmentation", "+75", 20, 3, Pair(6, 9),
                 mutableListOf(1, 0, 0, 3, 0, 7), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Critical Enhancement", "+40", 10, 3, 4, Pair(4, 6),
+            TechniqueEffect("Critical Enhancement", "+40", 10, 3, Pair(4, 6),
                 mutableListOf(0, 0, 0, 0, 6, 0), listOf(1, 2, null, 2, 0, 1), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Special Requirements", "Determined Condition", -10, 0, 0, Pair(0, 0),
+            TechniqueEffect("Special Requirements", "Determined Condition", -10, 0, Pair(0, 0),
                 mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
@@ -483,13 +483,13 @@ class KiList: Serializable {
                 "amount equivalent to twice the Life Points sacrificed. Eld requires a character " +
                 "to maintain the first-level Technique, Feuer.",
         3,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Sacrifice", "Double Vital Sacrifice", 50, 4, 0, Pair(10, 10),
+            TechniqueEffect("Sacrifice", "Double Vital Sacrifice", 50, 4, Pair(10, 10),
                 mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Attack Ability", "+150", 40, 14, 1, Pair(22, 26),
+            TechniqueEffect("Attack Ability", "+150", 40, 14, Pair(22, 26),
                 mutableListOf(0, 10, 0, 0, 0, 19), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 2),
-            TechniqueEffect("Special Requirements", "Determined Condition", -30, 0, 0, Pair(0, 0),
+            TechniqueEffect("Special Requirements", "Determined Condition", -30, 0, Pair(0, 0),
                 mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
@@ -500,9 +500,9 @@ class KiList: Serializable {
                 "several attacks without applying penalties. This Technique allows the user to " +
                 "repel seven attacks without compromising his ability.",
         1,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Additional Defense", "+6", 20, 6, 2, Pair(5, 8),
+            TechniqueEffect("Additional Defense", "+6", 20, 6, Pair(5, 8),
                 mutableListOf(0, 3, 1, 3, 0, 0), listOf(null, 1, 0, 1, 3, 3), listOf(Element.Light), 1)
         )
     )
@@ -512,11 +512,11 @@ class KiList: Serializable {
         "There are few things as lethal as a dragon's claws. Executing this Technique " +
                 "permits the user to make two attacks, each with a 40-point bonus to Base Damage.",
         1,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Additional Attack", "+1", 20, 3, 1, Pair(6, 9),
+            TechniqueEffect("Additional Attack", "+1", 20, 3, Pair(6, 9),
                 mutableListOf(0, 4, 4, 0, 0, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water), 1),
-            TechniqueEffect("Damage Augmentation", "+40", 10, 1, 0, Pair(3, 5),
+            TechniqueEffect("Damage Augmentation", "+40", 10, 1, Pair(3, 5),
                 mutableListOf(2, 0, 0, 4, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1)
         )
     )
@@ -526,13 +526,13 @@ class KiList: Serializable {
         "This attack lowers the victim's AT by 6 points while increasing offensive " +
                 "ability and reducing penalties for performing aimed Attacks.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Attack Ability", "+50", 15, 4, 1, Pair(5, 8),
+            TechniqueEffect("Attack Ability", "+50", 15, 4, Pair(5, 8),
                 mutableListOf(0, 5, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
-            TechniqueEffect("Armor Destruction", "-6", 20, 3, 0, Pair(6, 9),
+            TechniqueEffect("Armor Destruction", "-6", 20, 3, Pair(6, 9),
                 mutableListOf(3, 0, 0, 8, 0, 0), listOf(0, 2, null, 2, 1, 2), listOf(Element.Dark, Element.Fire), 2),
-            TechniqueEffect("Combat Maneuvers and Aiming", "-50", 10, 2, 1, Pair(3, 5),
+            TechniqueEffect("Combat Maneuvers and Aiming", "-50", 10, 2, Pair(3, 5),
                 mutableListOf(0, 0, 6, 0, 0, 0), listOf(null, 0, 1, 2, 2, 2), listOf(Element.Air), 1)
         )
     )
@@ -544,13 +544,13 @@ class KiList: Serializable {
                 "Base Damage and increasing its offensive ability. Any individual hit by this " +
                 "Technique must make and Opposed Check against Strength 16 or be knocked to the ground.",
         2,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Projection", "16", 25, 7, 0, Pair(8, 11),
+            TechniqueEffect("Projection", "16", 25, 7, Pair(8, 11),
                 mutableListOf(2, 0, 0, 8, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Earth, Element.Fire), 2),
-            TechniqueEffect("Attack Ability", "+40", 10, 3, 1, Pair(4, 6),
+            TechniqueEffect("Attack Ability", "+40", 10, 3, Pair(4, 6),
                 mutableListOf(0, 6, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
-            TechniqueEffect("Area Attack", "25m radius", 20, 3, 4, Pair(4, 6),
+            TechniqueEffect("Area Attack", "25m radius", 20, 3, Pair(4, 6),
                 mutableListOf(0, 0, 0, 0, 6, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1)
         )
     )
@@ -563,17 +563,17 @@ class KiList: Serializable {
                 "Presence, plus his Power Bonus, then multiplied by two. Dragon's Breath is a " +
                 "Predetermined Technique and must be declared before it is used.",
         3,
-        false,
+        mutableListOf(0, 0, 0, 0, 0, 0),
         listOf(
-            TechniqueEffect("Long-Distance Attack", "1km", 35, 8, 4, Pair(10, 13),
+            TechniqueEffect("Long-Distance Attack", "1km", 35, 8, Pair(10, 13),
                 mutableListOf(0, 0, 6, 10, 4, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 2),
-            TechniqueEffect("Area Attack", "100m radius", 30, 5, 4, Pair(8, 11),
+            TechniqueEffect("Area Attack", "100m radius", 30, 5, Pair(8, 11),
                 mutableListOf(0, 10, 4, 0, 2, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
-            TechniqueEffect("Energy Damaging Attack", "", 5, 1, 4, Pair(1, 2),
+            TechniqueEffect("Energy Damaging Attack", "", 5, 1, Pair(1, 2),
                 mutableListOf(5, 0, 0, 0, 0, 0), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire, Element.Light, Element.Dark), 1),
-            TechniqueEffect("Damage Multiplier", "x2", 25, 4, 0, Pair(10, 15),
+            TechniqueEffect("Damage Multiplier", "x2", 25, 4, Pair(10, 15),
                 mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Fire, Element.Earth), 1),
-            TechniqueEffect("Predetermination", "", -20, 0, 0, Pair(0, 0),
+            TechniqueEffect("Predetermination", "", -20, 0, Pair(0, 0),
                 mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
         )
     )
@@ -594,18 +594,24 @@ class KiList: Serializable {
             1 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0){
                     takenFirstTechniques = takenFirstTechniques + input
+                    if(customCheck(input))
+                        customTechniques = customTechniques + input
                     updateFullList()
                     return true
                 }
             2 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenFirstTechniques.size >= 2){
                     takenSecondTechniques = takenSecondTechniques + input
+                    if(customCheck(input))
+                        customTechniques = customTechniques + input
                     updateFullList()
                     return true
                 }
             3 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenSecondTechniques.size >= 2){
                     takenThirdTechniques = takenThirdTechniques + input
+                    if(customCheck(input))
+                        customTechniques = customTechniques + input
                     updateFullList()
                     return true
                 }
@@ -615,6 +621,15 @@ class KiList: Serializable {
         return false
     }
 
+    fun customCheck(input: Technique): Boolean{
+        allTechniques.forEach{
+            if(it.equivalentTo(input))
+                return false
+        }
+
+        return true
+    }
+
     fun removeTechnique(input: Technique){
         when(input.level){
             1 -> takenFirstTechniques = takenFirstTechniques - input
@@ -622,6 +637,7 @@ class KiList: Serializable {
             3 -> takenThirdTechniques = takenThirdTechniques - input
             else -> {}
         }
+        customTechniques = customTechniques - input
         removeExtra()
         updateFullList()
     }
@@ -941,7 +957,14 @@ class KiList: Serializable {
             val techName = fileReader.readLine()
             val techDesc = fileReader.readLine()
             val techLvl = fileReader.readLine().toInt()
-            val techMaint = fileReader.readLine() == "true"
+            val techMaint = mutableListOf(
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt()
+            )
             var techEffects: List<TechniqueEffect> = listOf()
 
             var techLoops = fileReader.readLine().toInt()
@@ -951,7 +974,6 @@ class KiList: Serializable {
                 val teEffect = fileReader.readLine()
                 val teCost = fileReader.readLine().toInt()
                 val teMaint = fileReader.readLine().toInt()
-                val teIndex: Int = fileReader.readLine().toInt()
 
                 val tePair = Pair(fileReader.readLine().toInt(), fileReader.readLine().toInt())
 
@@ -987,7 +1009,6 @@ class KiList: Serializable {
                             teEffect,
                             teCost,
                             teMaint,
-                            teIndex,
                             tePair,
                             teBuild,
                             teAdditions,

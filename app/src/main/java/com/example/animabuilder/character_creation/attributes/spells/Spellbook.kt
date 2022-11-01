@@ -472,7 +472,7 @@ class Spellbook(): Serializable {
         Element.Light,
         true,
         70,
-        150,
+        140,
         "The spell creates a spectacle of lights in a specified place that has a fascinating " +
                 "and dumbfounding affect. All the characters that see the display cannot help but " +
                 "continue watching it. It is visible for a radius of half a kilometer, and anyone " +
@@ -991,5 +991,137 @@ class Spellbook(): Serializable {
         20,
         "1 every 10",
         listOf(SpellType.Attack)
+    )
+
+    val concealZone = Spell(
+        "Zone of Concealment",
+        Element.Dark,
+        true,
+        48,
+        140,
+        "By casting this spell over a particular zone, the spellcaster creates a mystical " +
+                "area that impedes the detection of anything within it. Anything within the area " +
+                "is concealed, with a MR Check against a value of 180 to avoid detections. " +
+                "Additionally, any Ki Detection or Magic Appraisal used within the zone suffers " +
+                "a -140 penalty to its Final Result. Similarly, any type of psychic detection is " +
+                "subject to a -40 penalty to its Potential. The affected zone can be no larger " +
+                "than 20 meters in radius, and is stationary in the place it was cast.",
+        "+10 meters to radius, +10 to MR, and -10 to Ki Detection, -10 Magic Appraisal, " +
+                "and -10 to the potential of any Psychic detection",
+        20,
+        "1 every 20 (Daily)",
+        listOf(SpellType.Detection)
+    )
+
+    val enterNightmare = Spell(
+        "Enter Another's Nightmares",
+        Element.Dark,
+        true,
+        50,
+        120,
+        "This allows the caster to physically enter in a sleeper's nightmares. The " +
+                "spellcaster has no control over the dream world of the dreamer, and anything " +
+                "that happen there will be real to him. The person must have terrible nightmares " +
+                "to be affected by this spell, and the moment the dream turns into a peaceful " +
+                "dream, or he awakens or dies, the mage abandons the dream world and returns to " +
+                "reality. Any Spiritual spell cast on the dreamer will also affect the caster. " +
+                "The MR or PsR Check for the sleeper has a has a Difficulty of 140. Once he is in " +
+                "the other person's nightmares, the caster can jump to the unconscious of yet " +
+                "another dreamer who is physically no more than 10 meters from the original " +
+                "sleeper. Naturally, this new sleeper will have the right to his own MR Check. " +
+                "If the dreamer's consciousness happens to be in the world of the Wake, the " +
+                "caster is trapped there even when the spell expires.",
+        "+5 to MR or PsR Difficulty, +10 meters to jumping range",
+        20,
+        "1 every 50 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val darkForm = Spell(
+        "Dark Form",
+        Element.Dark,
+        true,
+        52,
+        100,
+        "The body designated by the caster is transformed to pure dark energy and becomes " +
+                "intangible to matter and non-energy attacks. While in this state, the transformed " +
+                "person gains a +50 bonus to his abilities of Stealth and Hide, and a +30 to his " +
+                "Resistance against effects based on Darkness. In this state, the damage caused " +
+                "by any attacks based on Light are doubled. The maximum Presence that can be affected is 100.",
+        "+10 to the maximum Presence that can be affected",
+        10,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val perdition = Spell(
+        "Perdition",
+        Element.Dark,
+        true,
+        56,
+        100,
+        "Perdition causes a disturbed feeling among those affected, reducing their " +
+                "abilities. Those within its area of influence must pass a MR Check of with a " +
+                "Difficulty of 120, or else receive a -40 All Action Penalty. The area covered is " +
+                "that within 5 meters of the caster, automatically affecting anyone within the " +
+                "radius. The penalties for Perdition are not cumulative, and so no one ever " +
+                "suffers a double penalty if in the area of influence of more than one such spell.",
+        "+5 meters to radius and +5 to the MR Difficulty",
+        20,
+        "1 every 20",
+        listOf(SpellType.Automatic)
+    )
+
+    val createNegativeFeelings = Spell(
+        "Create Negative Feelings",
+        Element.Dark,
+        true,
+        58,
+        100,
+        "This creates negative sentiments such as hatred, fear, or anger in the people " +
+                "designated by the caster. The radius of the spell is 20 meters, and the MR or " +
+                "PsR Check to resist the effects has a Difficulty of 120. Those affected can " +
+                "repeat the Resistance Check once per day.",
+        "+10 meters to radius and +5 to MR or PsR Difficulty",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val eliminateTraces = Spell(
+        "Eliminate Traces",
+        Element.Dark,
+        true,
+        60,
+        100,
+        "The caster can erase the evidence that he has been in a certain place. In fact, " +
+                "any sign whatsoever of his passing, whether detectable naturally, or by " +
+                "supernatural means, disappears completely. This spell even provides immunity " +
+                "from spells that permit someone to see the past of a place or an object, hiding " +
+                "the presence of the caster of Eliminate Traces from the recording of past " +
+                "events. The only way to overcome the effects of this spell is by achieving a Zen " +
+                "level at Track. The spell erases all such traces within a 45 meter radius.",
+        "+45 meters to radius",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val shieldFromPositive = Spell(
+        "Shield From Positive",
+        Element.Dark,
+        true,
+        62,
+        140,
+        "This spell enchants a certain area, making it impenetrable for beings naturally " +
+                "based in positive emotions or Light. Any such creature entering the zone must " +
+                "pass a MR Check with a Difficulty of 120 or suffer the loss of a number of Life " +
+                "Points equal to the margin of failure. Additionally, if the creature fails the " +
+                "check, he receives an immediate -40 All Action Penalty. The affected zone can be " +
+                "no larger than 20 meters in radius, and is stationary in the place it was cast.",
+        "+20 meters to radius and +5 to the MR Difficulty",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Automatic)
     )
 }

@@ -45,7 +45,7 @@ private var techListOpen = mutableStateOf(false)
 private val kiPointTotal = mutableStateOf("")
 private val kiAccTotal = mutableStateOf("")
 
-private val selected = mutableStateOf("1")
+private val customTechLevelSelection = mutableStateOf("1")
 
 private val customTechOn = mutableStateOf(false)
 private val customConfirm: MutableState<(() -> Unit)> = mutableStateOf({})
@@ -74,6 +74,8 @@ private val conAccTotal = mutableStateOf(getAccTotal(3))
 private val powAccTotal = mutableStateOf(getAccTotal(4))
 private val wpAccTotal = mutableStateOf(getAccTotal(5))
 private val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
+
+private val customTechMaintenanceSelection = mutableStateOf(false)
 
 private lateinit var customTechnique: Technique
 
@@ -230,7 +232,7 @@ fun KiFragment(
         AnimatedVisibility(visible = techListOpen.value) {
             Column{
                 charInstance.kiList.allTechniques.forEach{
-                    TechniqueRow(charInstance, it)
+                    TechniqueRow(it)
                 }
 
                 Button(
@@ -239,10 +241,14 @@ fun KiFragment(
                         customContents.value = customFirstContents
                         customBack.value = null
                         customConfirm.value = customFirstConfirm
-                        selected.value = "1"
+                        customTechLevelSelection.value = "1"
                     }
                 ) {
                     Text(text = "Add Technique")
+                }
+
+                charInstance.kiList.customTechniques.forEach{
+                    TechniqueRow(it)
                 }
             }
         }
@@ -369,7 +375,6 @@ private fun updateKiTaken(charInstance: BaseCharacter){
 
 @Composable
 private fun TechniqueRow(
-    charInstance: BaseCharacter,
     toShow: Technique
 ) {
     val techCheck = remember{mutableStateOf(charInstance.kiList.takenTechniques.contains(toShow))}
@@ -432,12 +437,18 @@ val KiContents = @Composable
 
 val TechContents = @Composable
 {technique: Technique ->
-    Column{
-        technique.givenAbilities.forEach{
-            Row{
-                Text(text = it.name + " " + it.effect)
-                if(technique.isMaintained)
-                    Text(text = " Maint: " + it.maint + " (" + getStatName(it.maintIndex) + ")")
+    Column {
+        technique.givenAbilities.forEach {
+            Row { Text(text = it.name + " " + it.effect) }
+        }
+
+        if (technique.isMaintained()){
+            Row {
+                Text(text = "Maintenance: ")
+                for(index in 0..5){
+                    if(technique.maintArray[index] != 0)
+                        Text(text = technique.maintArray[index].toString() + " (" + getStatName(index) + ")")
+                }
             }
         }
 
@@ -475,14 +486,21 @@ private fun CustomTechniqueAlert(
     Dialog(
         onDismissRequest = {customTechOn.value = false},
         content = {
-            Box(Modifier.background(Color.White)
-                .size(600.dp, 600.dp)) {
+            Box(
+                Modifier
+                    .background(Color.White)
+                    .size(600.dp, 600.dp)) {
 
-                    Row(Modifier.align(Alignment.TopCenter)
-                        .height(100.dp)){ Text(text = "Create Custom Technique") }
-                    Row(Modifier.align(Alignment.Center)
-                        .height(400.dp)){ contents() }
-                    Row(modifier = Modifier.fillMaxWidth()
+                    Row(
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .height(100.dp)){ Text(text = "Create Custom Technique") }
+                    Row(
+                        Modifier
+                            .align(Alignment.Center)
+                            .height(400.dp)){ contents() }
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .height(100.dp)) {
                         TextButton(onClick = {
@@ -549,7 +567,7 @@ private fun CustomTechniqueAlert(
 }
 
 val customFirstContents = @Composable {
-    customTechnique = Technique("", "", selected.value.toInt(), false, listOf())
+    customTechnique = Technique("", "", customTechLevelSelection.value.toInt(), mutableListOf(0, 0, 0, 0, 0, 0), listOf())
     techniqueIndex.value = 0
 
     Column{
@@ -557,32 +575,32 @@ val customFirstContents = @Composable {
         Column{
             Row {
                 RadioButton(
-                    selected = selected.value == "1",
-                    onClick = { selected.value = "1" })
+                    selected = customTechLevelSelection.value == "1",
+                    onClick = { customTechLevelSelection.value = "1" })
                 Text(text = "1")
             }
             Row{
                 RadioButton(
-                    selected = selected.value == "2",
-                    onClick = {selected.value = "2"})
+                    selected = customTechLevelSelection.value == "2",
+                    onClick = {customTechLevelSelection.value = "2"})
                 Text(text = "2")
             }
             Row{
                 RadioButton(
-                    selected = selected.value == "3",
-                    onClick = {selected.value = "3"})
+                    selected = customTechLevelSelection.value == "3",
+                    onClick = {customTechLevelSelection.value = "3"})
                 Text(text = "3")
             }
         }
 
-        val minMK = when(selected.value){
+        val minMK = when(customTechLevelSelection.value){
             "1" -> 20
             "2" -> 40
             "3" -> 60
             else -> 0
         }
 
-        val maxMK = when(selected.value){
+        val maxMK = when(customTechLevelSelection.value){
             "1" -> 50
             "2" -> 100
             "3" -> 200
@@ -594,11 +612,11 @@ val customFirstContents = @Composable {
 }
 
 val customFirstConfirm = {
-    if(selected.value == "1" ||
-        (selected.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2) ||
-        (selected.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2)) {
+    if(customTechLevelSelection.value == "1" ||
+        (customTechLevelSelection.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2) ||
+        (customTechLevelSelection.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2)) {
         isThird.value = false
-        customTechnique.level = selected.value.toInt()
+        customTechnique.level = customTechLevelSelection.value.toInt()
 
         customConfirm.value = customSecondConfirm
         setAlertPage(
@@ -610,7 +628,7 @@ val customFirstConfirm = {
 }
 
 val customFirstBack: () -> Unit = {
-    selected.value = "1"
+    customTechLevelSelection.value = "1"
     setAlertPage(customFirstContents, null, customFirstConfirm)
 }
 
@@ -730,10 +748,104 @@ val customFourthBack = {
 }
 
 val customFifthContents = @Composable{
+    Column(Modifier.verticalScroll(rememberScrollState())){
+        Row { Text(text = "Make technique maintainable?") }
+        Row {
+            RadioButton(
+                selected = customTechMaintenanceSelection.value,
+                onClick = { customTechMaintenanceSelection.value = true }
+            )
+            Text(text = "Yes")
+        }
+        Row {
+            RadioButton(
+                selected = !customTechMaintenanceSelection.value,
+                onClick = { customTechMaintenanceSelection.value = false }
+            )
+            Text(text = "No")
+        }
 
+
+        if (customTechMaintenanceSelection.value) {
+            Row { Text(text = "Total Maintenance Cost: " + customTechnique.maintTotal().toString()) }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                for (index in 0..5)
+                    if(customTechnique.hasAccumulation(index))
+                        MaintenanceInput(index)
+            }
+        }
+    }
 }
 
-val customFifthConfirm = {}
+val customFifthConfirm: () -> Unit = {
+    var toNext = true
+
+    if(customTechMaintenanceSelection.value){
+        var total = 0
+        customTechnique.maintArray.forEach{
+            total += it
+        }
+
+        toNext = total == customTechnique.maintTotal()
+    }
+    else{
+        customTechnique.maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+    }
+
+    if(toNext)
+        setAlertPage(customSixthContents, customFifthBack, customSixthConfirm)
+}
+
+val customFifthBack = {
+    setAlertPage(customFifthContents, customFourthBack, customFifthConfirm)
+}
+
+val customSixthContents = @Composable {
+    val customName = remember{mutableStateOf("")}
+    val customDescription = remember{mutableStateOf("")}
+
+    Column{
+        Row{
+            Text(text = "Name your Technique: ")
+            TextField(
+                value = customName.value,
+                onValueChange = {
+                    customTechnique.name = it
+                    customName.value = it
+                }
+            )
+        }
+        Row{
+            Text(text = "Description")
+            TextField(
+                value = customDescription.value,
+                onValueChange = {
+                    customTechnique.description = it
+                    customDescription.value = it
+                }
+            )
+        }
+    }
+}
+
+val customSixthConfirm: () -> Unit = {
+    if(customTechnique.name != "")
+        setAlertPage(customSeventhContents, customSixthBack, customSeventhConfirm)
+}
+
+val customSixthBack = {
+    setAlertPage(customSixthContents, customFifthBack, customSixthConfirm)
+}
+
+val customSeventhContents = @Composable{
+    Row{Text(text = "Description of " + customTechnique.name)}
+    Row{TechContents(customTechnique)}
+}
+
+val customSeventhConfirm = {
+    charInstance.kiList.addTechnique(customTechnique)
+    customTechOn.value = false
+}
 
 var customEditContents: @Composable () -> Unit = @Composable{
     LazyColumn {
@@ -1416,7 +1528,7 @@ private fun TechniqueTable(){
                 TechniqueTableRow("Attack Mirroring", 12, 15, 30, 8, 2, 1)
 
                 Row{Text(text = "Optional Advantage: Target Choice")}
-                TechniqueTableRow("Target Choide", 2, 2, 10, 2, 1, 2)
+                TechniqueTableRow("Target Choice", 2, 2, 10, 2, 1, 2)
 
                 Row{Text(text = "Optional Advantage: Mirroring Esoteric Abilities")}
                 TechniqueTableRow("Mirror Esoteric Abilities", 4, 4, 20, 1, 1, 3)
@@ -1570,7 +1682,7 @@ private fun TechniqueTableRow(
             stringArrayResource(R.array.techniqueDisadvantages)[techniqueIndex.value - 35]
 
     val thisEffect =
-        TechniqueEffect(useString, effect, mkCost, maintCost, kiIndex.value, Pair(primaryCost, secondaryCost),
+        TechniqueEffect(useString, effect, mkCost, maintCost, Pair(primaryCost, secondaryCost),
             defaultArray, buildArray.value, getSelectedElement(), level)
 
     when(listNum) {
@@ -1723,6 +1835,34 @@ private fun EditBuildRow(
 
             Text(text = "+" + effect.buildAdditions[index], modifier = Modifier.weight(0.4f))
         }
+    }
+}
+
+@Composable
+private fun MaintenanceInput(index: Int){
+    val maintInput = remember{mutableStateOf(customTechnique.maintArray[index].toString())}
+
+    Row{
+        Text(text = getStatName(index), modifier = Modifier.weight(0.5f))
+
+        TextField(
+            value = maintInput.value,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = {
+                numberCatcher(
+                    it,
+                    { input ->
+                        customTechnique.maintArray[index] = input.toInt()
+                        maintInput.value = input
+                    },
+                    {
+                        customTechnique.maintArray[index] = 0
+                        maintInput.value = ""
+                    }
+                )
+            },
+            modifier = Modifier.weight(0.5f)
+        )
     }
 }
 

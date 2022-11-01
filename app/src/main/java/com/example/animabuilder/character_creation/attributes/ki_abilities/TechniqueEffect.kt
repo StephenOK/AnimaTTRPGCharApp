@@ -8,8 +8,7 @@ class TechniqueEffect(
     var name: String,
     var effect: String,
     var mkCost: Int,
-    var maint: Int,
-    var maintIndex: Int,
+    var maintTotal: Int,
     var costPair: Pair<Int, Int>,
     var kiBuild: MutableList<Int>,
     var buildAdditions: List<Int?>,
@@ -20,8 +19,8 @@ class TechniqueEffect(
         charInstance.addNewData(name)
         charInstance.addNewData(effect)
         charInstance.addNewData(mkCost)
-        charInstance.addNewData(maint)
-        charInstance.addNewData(maintIndex)
+        charInstance.addNewData(maintTotal)
+
         charInstance.addNewData(costPair.first)
         charInstance.addNewData(costPair.second)
 
@@ -45,8 +44,7 @@ class TechniqueEffect(
         return compareTo.name == name &&
                 compareTo.effect == effect &&
                 compareTo.mkCost == mkCost &&
-                compareTo.maint == maint &&
-                compareTo.maintIndex == maintIndex &&
+                compareTo.maintTotal == maintTotal &&
                 compareTo.costPair.first == costPair.first &&
                 compareTo.costPair.second == costPair.second &&
                 compareTo.kiBuild == kiBuild &&

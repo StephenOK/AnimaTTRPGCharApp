@@ -29,12 +29,14 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 @OptIn(ExperimentalComposeUiApi::class)
-var keyboardActive: SoftwareKeyboardController? = null
+val keyboardActive: MutableState<SoftwareKeyboardController?> = mutableStateOf(null)
 
+//initialize detail alert values
 val detailAlertOn = mutableStateOf(false)
 val detailItem = mutableStateOf("")
 val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
+//initialize player's character
 lateinit var charInstance: BaseCharacter
 
 /**
@@ -58,19 +60,19 @@ class HomeActivity : AppCompatActivity() {
 
 
     //character to work with and its associated file name
-    private var filename: String? = null
+    private val filename: MutableState<String?> = mutableStateOf(null)
 
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         //get values from intent
         charInstance = intent.getSerializableExtra("Character") as BaseCharacter
-        filename = intent.getStringExtra("filename")
+        filename.value = intent.getStringExtra("filename")
 
         setContent{
-            keyboardActive = LocalSoftwareKeyboardController.current
+            //define active keyboard
+            keyboardActive.value = LocalSoftwareKeyboardController.current
 
             //create scaffold state and coroutine scope
             val scaffoldState = rememberScaffoldState()
@@ -327,7 +329,7 @@ class HomeActivity : AppCompatActivity() {
     private fun attemptSave(){
         try{
             //create file writer
-            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+            val saveStream = openFileOutput(filename.value, Context.MODE_PRIVATE)
 
             //get and write character's bytes
             val charData = charInstance.bytes
@@ -359,6 +361,11 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Shows an alert that gives details on the item in question
+     *
+     * contents: item's details specific to the type of item being displayed
+     */
     @Composable
     private fun DetailAlert(contents: @Composable () -> Unit){
         AlertDialog(
@@ -408,12 +415,21 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
     }
 
-    fun updateBottomBar(
+    /**
+     * Update the displayed totals for spent development points
+     *
+     * usedDP: total development points spent
+     * usedCombat: development points spent in combat items
+     * usedMagic: development points spent in magic items
+     * usedPsychic: development points spent in psychic items
+     */
+    private fun updateBottomBar(
         usedDP: MutableState<Int>,
         usedCombat: MutableState<Int>,
         usedMagic: MutableState<Int>,
         usedPsychic: MutableState<Int>
     ){
+        //get spent values from the player's character
         usedDP.value = charInstance.spentTotal
         usedCombat.value = charInstance.ptInCombat
         usedMagic.value = charInstance.ptInMag
@@ -421,6 +437,12 @@ class HomeActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Display item that holds a label and the associated amount
+ *
+ * label: name of the item displayed
+ * info: associated value for the listed item
+ */
 @Composable
 fun InfoRow(
     label: String,
@@ -432,6 +454,13 @@ fun InfoRow(
     }
 }
 
+/**
+ * Input feature for numeric inputs
+ *
+ * input: user's input into the text item
+ * tryBlock: function to attempt with an integer input with
+ * blankBlock: function to run for an empty input
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 fun numberCatcher(
     input: String,
@@ -445,6 +474,6 @@ fun numberCatcher(
         if(input == "")
             blankBlock()
         else if (input.contains('\n'))
-            keyboardActive?.hide()
+            keyboardActive.value?.hide()
     }
 }

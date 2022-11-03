@@ -106,7 +106,7 @@ class Technique(
         return listCopy.isEmpty()
     }
 
-    fun validEffectAddition(input: TechniqueEffect): Boolean{
+    fun validEffectAddition(input: TechniqueEffect, mkMax: Int): Boolean{
         if(hasAbility(input.name))
             return false
 
@@ -124,6 +124,9 @@ class Technique(
         }
 
         if(mkCost() + input.mkCost > max)
+            return false
+
+        if(mkCost() + input.mkCost > mkMax)
             return false
 
         return true

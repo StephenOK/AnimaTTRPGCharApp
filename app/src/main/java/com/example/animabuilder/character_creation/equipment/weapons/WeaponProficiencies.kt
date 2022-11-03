@@ -452,7 +452,7 @@ class WeaponProficiencies(): Serializable {
     )
 
     val trident = Weapon(
-        "Weapon",
+        "Trident",
         40,
         -10,
         7, 6,
@@ -686,7 +686,8 @@ class WeaponProficiencies(): Serializable {
         12, 0, 25,
         null, null, null,
         listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), null,
-        "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to resemble a trident. It is used primarily to block an opponent's weapon."
+        "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to " +
+                "resemble a trident. It is used primarily to block an opponent's weapon."
     )
 
     val shuko = Weapon(
@@ -1670,14 +1671,13 @@ class WeaponProficiencies(): Serializable {
     var martialMax = 0
 
     fun changeMartial(charInstance:BaseCharacter, changeItem: MartialArt, isInput: Boolean): Boolean{
-        if(isInput){
+        takenMartialList = if(isInput){
             if(takenMartialList.size >= martialMax || !qualifies(changeItem, charInstance))
                 return false
             else
-                takenMartialList = takenMartialList + changeItem
-        }
-        else
-            takenMartialList = takenMartialList - changeItem
+                takenMartialList + changeItem
+        } else
+            takenMartialList - changeItem
 
         charInstance.updateMK()
 

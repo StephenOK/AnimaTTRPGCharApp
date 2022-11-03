@@ -276,7 +276,7 @@ private fun KiFromStatRow(
     val pointTotalString = remember{ mutableStateOf(pointTotal.toString()) }
     val accTotalString = remember{mutableStateOf(accTotal.toString())}
 
-    Row(){
+    Row{
         Text(text = title, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         Text(text = charInstance.kiList.getStatKi(statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
@@ -612,9 +612,9 @@ val customFirstContents = @Composable {
 }
 
 val customFirstConfirm = {
-    if(customTechLevelSelection.value == "1" ||
-        (customTechLevelSelection.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2) ||
-        (customTechLevelSelection.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2)) {
+    if((customTechLevelSelection.value == "1" && remainingMK.value.toInt() >= 20) ||
+        (customTechLevelSelection.value == "2" && charInstance.kiList.takenFirstTechniques.size >= 2 && remainingMK.value.toInt() >= 40) ||
+        (customTechLevelSelection.value == "3" && charInstance.kiList.takenSecondTechniques.size >= 2 && remainingMK.value.toInt() >= 60)) {
         isThird.value = false
         customTechnique.level = customTechLevelSelection.value.toInt()
 
@@ -671,8 +671,12 @@ val customThirdContents: @Composable () -> Unit = @Composable{
 }
 
 val customThirdConfirm = {
-    isThird.value = false
-    setAlertPage(customFourthContents, customThirdBack, customFourthConfirm)
+    if((customTechnique.level == 1 && customTechnique.mkCost() >= 20) ||
+        (customTechnique.level == 2 && customTechnique.mkCost() >= 40) ||
+        (customTechnique.level == 3 && customTechnique.mkCost() >= 60)) {
+        isThird.value = false
+        setAlertPage(customFourthContents, customThirdBack, customFourthConfirm)
+    }
 }
 
 val customThirdBack: () -> Unit = {
@@ -1696,7 +1700,7 @@ private fun TechniqueTableRow(
         Checkbox(
             checked = thisCheck.value,
             onCheckedChange = {
-                if(it && customTechnique.validEffectAddition(thisEffect)) {
+                if(it && customTechnique.validEffectAddition(thisEffect, remainingMK.value.toInt())) {
                     when (listNum) {
                         1 -> allEffectChecks.forEach { boxVal -> boxVal.second.value = false }
                         2 -> advantageOneCheck.forEach { boxVal -> boxVal.second.value = false }

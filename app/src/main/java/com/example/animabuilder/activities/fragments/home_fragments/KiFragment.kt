@@ -538,7 +538,7 @@ private fun CustomTechniqueAlert(
 
                             TextButton(
                                 onClick = {
-                                    if (getSelectedEffect() != null) {
+                                    if (getSelectedEffect() != null && customTechnique.validEffectAddition(getSelectedEffect()!!)) {
                                         val addedTechnique = getSelectedEffect()!!
                                         if (techniqueIndex.value == 35)
                                             addedTechnique.elements += Element.Free
@@ -1687,7 +1687,7 @@ private fun TechniqueTableRow(
 
     val thisEffect =
         TechniqueEffect(useString, effect, mkCost, maintCost, Pair(primaryCost, secondaryCost),
-            defaultArray, buildArray.value, getSelectedElement(), level)
+            defaultArray, buildArray.value, listOf(), level)
 
     when(listNum) {
         1 -> allEffectChecks = allEffectChecks + Pair(thisEffect, thisCheck)
@@ -1700,7 +1700,7 @@ private fun TechniqueTableRow(
         Checkbox(
             checked = thisCheck.value,
             onCheckedChange = {
-                if(it && customTechnique.validEffectAddition(thisEffect, remainingMK.value.toInt())) {
+                if(it && customTechnique.validEffectAddition(thisEffect)) {
                     when (listNum) {
                         1 -> allEffectChecks.forEach { boxVal -> boxVal.second.value = false }
                         2 -> advantageOneCheck.forEach { boxVal -> boxVal.second.value = false }
@@ -1733,15 +1733,16 @@ private fun ElementalRow(elementType: Element){
             checked = checkStatus.value,
             onCheckedChange = {
                 if(techniqueIndex.value == 32 || allEffectChecks[0].second.value){
-                    if(it)
-                        elementChecks.forEach{item ->
+                    if(it) {
+                        elementChecks.forEach { item ->
                             item.second.value = false
                         }
+                    }
 
                     checkStatus.value = it
                 }
                 else{
-                    checkStatus.value = it && getSelectedElement().size <= 2
+                    checkStatus.value = it && getSelectedElement().size < 2
                 }
             }
         )
@@ -1882,18 +1883,33 @@ private fun getAccTotal(index: Int): String{
 
 private fun getSelectedEffect(): TechniqueEffect?{
     allEffectChecks.forEach{
-        if(it.second.value && it.first.elements.isNotEmpty())
-            return it.first
+        if(it.second.value) {
+            val dummyEffect = it.first
+            dummyEffect.elements = getSelectedElement()
+
+            if(dummyEffect.elements.isNotEmpty())
+                return dummyEffect
+        }
     }
 
     advantageOneCheck.forEach{
-        if(it.second.value && it.first.elements.isNotEmpty())
-            return it.first
+        if(it.second.value) {
+            val dummyEffect = it.first
+            dummyEffect.elements = getSelectedElement()
+
+            if(dummyEffect.elements.isNotEmpty())
+                return dummyEffect
+        }
     }
 
     advantageTwoCheck.forEach{
-        if(it.second.value && it.first.elements.isNotEmpty())
-            return it.first
+        if(it.second.value) {
+            val dummyEffect = it.first
+            dummyEffect.elements = getSelectedElement()
+
+            if(dummyEffect.elements.isNotEmpty())
+                return dummyEffect
+        }
     }
 
     return null
@@ -1906,7 +1922,7 @@ private fun getSelectedElement(): List<Element>{
     var output: List<Element> = listOf()
 
     elementChecks.forEach{
-        if(it.second.value)
+        if(it.second.value && !output.contains(it.first))
             output = output + it.first
     }
 

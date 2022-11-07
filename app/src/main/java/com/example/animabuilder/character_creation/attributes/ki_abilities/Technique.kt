@@ -106,9 +106,23 @@ class Technique(
         return listCopy.isEmpty()
     }
 
-    fun validEffectAddition(input: TechniqueEffect, mkMax: Int): Boolean{
+    fun validEffectAddition(input: TechniqueEffect): Boolean{
         if(hasAbility(input.name))
             return false
+
+        if(input.name == "Elemental Binding" && input.elements != listOf<Element>()){
+            givenAbilities.forEach{effect ->
+                var isBound = false
+
+                input.elements.forEach{
+                    if(effect.elements.contains(it))
+                        isBound = true
+                }
+
+                if(!isBound)
+                    return false
+            }
+        }
 
         if(!checkElementalBinding(input))
             return false
@@ -124,9 +138,6 @@ class Technique(
         }
 
         if(mkCost() + input.mkCost > max)
-            return false
-
-        if(mkCost() + input.mkCost > mkMax)
             return false
 
         return true

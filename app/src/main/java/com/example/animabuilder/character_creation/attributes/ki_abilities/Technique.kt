@@ -12,6 +12,14 @@ class Technique(
     var maintArray: MutableList<Int>,
     var givenAbilities: List<TechniqueEffect>
 ): Serializable{
+    fun clearTechnique() {
+        name = ""
+        description = ""
+        level = 1
+        maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+        givenAbilities = listOf()
+    }
+
     val mkCost = {
         var total = 0
         givenAbilities.forEach{
@@ -106,9 +114,12 @@ class Technique(
         return listCopy.isEmpty()
     }
 
-    fun validEffectAddition(input: TechniqueEffect): Boolean{
+    fun validEffectAddition(input: TechniqueEffect?, charMax: Int): String?{
+        if(input == null)
+            return "No Effect Selected"
+
         if(hasAbility(input.name))
-            return false
+            return "Technique is already present"
 
         if(input.name == "Elemental Binding" && input.elements != listOf<Element>()){
             givenAbilities.forEach{effect ->
@@ -120,15 +131,15 @@ class Technique(
                 }
 
                 if(!isBound)
-                    return false
+                    return "Cannot currently bind to selected element(s)"
             }
         }
 
         if(!checkElementalBinding(input))
-            return false
+            return "Cannot take because of Elemental Binding"
 
         if(input.lvl > level)
-            return false
+            return "Cannot take an effect of that level"
 
         val max = when(level){
             1 -> 50
@@ -138,9 +149,12 @@ class Technique(
         }
 
         if(mkCost() + input.mkCost > max)
-            return false
+            return "Maximum technique cost exceeded"
 
-        return true
+        if(mkCost() + input.mkCost > charMax)
+            return "Technique would exceed character's limit"
+
+        return null
     }
 
     fun hasAbility(input: String): Boolean{

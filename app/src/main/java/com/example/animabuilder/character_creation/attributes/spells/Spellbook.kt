@@ -1124,4 +1124,142 @@ class Spellbook(): Serializable {
         "1 every 10 (Daily)",
         listOf(SpellType.Automatic)
     )
+
+    val dark = Spell(
+        "Dark",
+        Element.Dark,
+        false,
+        66,
+        120,
+        "Creates a shadow shield with the ability to swallow any attack spell received. For " +
+                "the defense against an attacking spell to work, it is necessary to achieve a " +
+                "Block against the attack. If the defender does achieve it, the attacking spell " +
+                "must then lose a Clashing Spells Check against a damage of 80. The void absorbs " +
+                "half the Zeon of the devoured spell, giving those points to the caster. It is " +
+                "also possible for it to devour Area Attacks. The shield will resist 600 points " +
+                "of damage before breaking.",
+        "+5 to damage for Clashing Spells and +100 Resistance Points",
+        20,
+        "1 every 20",
+        listOf(SpellType.Defense)
+    )
+
+    val devastate = Spell(
+        "Devastate",
+        Element.Dark,
+        true,
+        68,
+        100,
+        "Causes penalties through and accumulation of pain, suffering, misery, and other " +
+                "negative mystical effects. The affected person must pass a MR Check with a " +
+                "Difficulty of 120 or suffer an All Action Penalty and a penalty to his " +
+                "Resistances equivalent to the margin of failure of the Check. If he does not " +
+                "pass the Check, the target of Devastate does not have the right to a new check " +
+                "for as long as the spell is maintained.",
+        "+5 to the MR Difficulty",
+        20,
+        "1 every 10",
+        listOf(SpellType.Spiritual)
+    )
+
+    val markOfFear = Spell(
+        "Mark of Fear",
+        Element.Dark,
+        true,
+        70,
+        140,
+        "Forms a display of shadows in a designated spot that terrorizes all who see it. " +
+                "Anyone seeing the Mark of Fear suffers a Terror State unless they beat MR or PsR " +
+                "Check with a Difficulty of 120. The spell is visible for a radius of one " +
+                "kilometer. The condition for being affected is merely looking directly at the Mark of Fear.",
+        "+1 km to radius and -5 to MR or PsR Difficulty",
+        20,
+        "1 every 50",
+        listOf(SpellType.Automatic)
+    )
+
+    val catastrophicDarkness = Spell(
+        "Catastrophic Darkness",
+        Element.Dark,
+        true,
+        72,
+        120,
+        "Creates a deadly discharge of Darkness with a Bases Damage of 150. The Catastrophic " +
+                "Darkness has a radius of 25 meters and is an Energy Attack Type spell.",
+        "+5 Base Damage and 10 meters radius",
+        20,
+        null,
+        listOf(SpellType.Attack)
+    )
+
+    val darkMaterialObjects = Spell(
+        "Dark Material Objects",
+        Element.Dark,
+        true,
+        76,
+        150,
+        "Forms a material object from dark energy. Whether it is something as complex as a " +
+                "clock, or as simple as a sword, the object created cannot have a Presence of more " +
+                "than 60, but for all purposes it is treated as having a quality of +10. As an " +
+                "exceptional rule, the quality of the object does not affect its Presence.",
+        "+10 to the object's Presence",
+        20,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val shadowTravel = Spell(
+        "Travel by Shadow",
+        Element.Dark,
+        true,
+        78,
+        250,
+        "Transports individuals or objects designated by the caster from one shadow to " +
+                "another that must be less than 100 km away. The quantity of Presence that can " +
+                "be transported cannot be greater than 250. If someone wishes to resist, the MR " +
+                "Check has a Difficulty of 120.",
+        "+5 to MR Difficulty, +20 to transportable Presence, and +100 km",
+        30,
+        null,
+        listOf(SpellType.Spiritual, SpellType.Effect)
+    )
+
+    val nightmareLord = Spell(
+        "Lord of Nightmares",
+        Element.Dark,
+        true,
+        80,
+        300,
+        "Permits the control of any type of nightmare. The caster has the ability to control " +
+                "a sleeper's dream world, modifying it as if he had a Gnosis of 45 (although is " +
+                "not real). If the dream is fed by positive energy, in other words, if it stops " +
+                "being a nightmare, his Gnosis becomes only 30. If the dreamer wishes to resist " +
+                "the spell, it requires beating a MR Check with a Difficulty of 140. This spell " +
+                "also has a second use, depending on whether or not the caster is in the Wake. " +
+                "Within the Wake, the caster can control his surroundings and acquires the " +
+                "powers of a creature with a Gnosis of 40, as long as he is in an area strongly " +
+                "influenced by negative energies. If he is in an area of neutral energies, he " +
+                "is treated as having a Gnosis of 30.",
+        "+5 to the MR Difficulty",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Spiritual, SpellType.Effect)
+    )
+
+    val createDarkBeing = Spell(
+        "Create Being of Darkness",
+        Element.Dark,
+        true,
+        82,
+        250,
+        "Creates a dark being with the appearance of life, but completely under the control " +
+                "of the caster. The entity is developed as a Being Between Worlds using the " +
+                "powers and limitations of Dark Elementals explained in Chapter 26. The being " +
+                "has 600 DP, and to calculate its maximum level the same rules are used as for " +
+                "Create Being from the Path of Creation.",
+        "+50 DP",
+        30,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
 }

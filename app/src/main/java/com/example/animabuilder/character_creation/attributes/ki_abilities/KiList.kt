@@ -698,72 +698,73 @@ class KiList: Serializable {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String>->
+            changeDisplay: (String) -> Unit ->
         boughtStrPoint = input
         updateStr(charIn)
         updateTotals(charIn)
         statFinal.value = kiSTR.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
+        //totalDisplay.value = totalKi.toString()
     }
 
     val setBoughtDex = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtDexPoint = input
         updateDex(charIn)
         updateTotals(charIn)
         statFinal.value = kiDEX.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
     }
 
     val setBoughtAgi = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtAgiPoint = input
         updateAgi(charIn)
         updateTotals(charIn)
         statFinal.value = kiAGI.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
     }
 
     val setBoughtCon = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtConPoint = input
         updateCon(charIn)
         updateTotals(charIn)
         statFinal.value = kiCON.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
     }
 
     val setBoughtPow = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtPowPoint = input
         updatePow(charIn)
         updateTotals(charIn)
         statFinal.value = kiPOW.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
     }
 
     val setBoughtWp = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtWpPoint = input
         updateWp(charIn)
         updateTotals(charIn)
         statFinal.value = kiWP.toString()
-        totalDisplay.value = totalKi.toString()
+        changeDisplay(totalKi.toString())
     }
 
     var totalPointBuy = 0
@@ -779,72 +780,72 @@ class KiList: Serializable {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtStrAcc = input
         updateStr(charIn)
         updateTotals(charIn)
         statFinal.value = accSTR.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     val setDexAcc = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtDexAcc = input
         updateDex(charIn)
         updateTotals(charIn)
         statFinal.value = accDEX.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     val setAgiAcc = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtAgiAcc = input
         updateAgi(charIn)
         updateTotals(charIn)
         statFinal.value = accAGI.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     val setConAcc = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtConAcc = input
         updateCon(charIn)
         updateTotals(charIn)
         statFinal.value = accCON.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     val setPowAcc = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtPowAcc = input
         updatePow(charIn)
         updateTotals(charIn)
         statFinal.value = accPOW.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     val setWpAcc = {
             input: Int,
             charIn: BaseCharacter,
             statFinal: MutableState<String>,
-            totalDisplay: MutableState<String> ->
+            changeDisplay: (String) -> Unit ->
         boughtWpAcc = input
         updateWp(charIn)
         updateTotals(charIn)
         statFinal.value = accWP.toString()
-        totalDisplay.value = totalAcc.toString()
+        changeDisplay(totalAcc.toString())
     }
 
     var totalAccBuy = 0

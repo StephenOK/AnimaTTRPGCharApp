@@ -37,31 +37,51 @@ import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.TechniqueEffect
 
+/**
+ * Dialog that gives the user a sequence of pages to develop their own custom dominion technique
+ * Applies the created technique to the character after creation is complete
+ * Takes the appropriate checks to confirm a valid technique as it is being built
+ */
+
 @Composable
 fun CustomTechnique(
     techContents: @Composable (Technique) -> Unit,
     deactivate: () -> Unit
 ) {
+    //get current context
     val context = LocalContext.current
+
+    //create list of stat names to cycle through
     val statName = listOf("STR", "DEX", "AGI", "CON", "POW", "WP")
 
+    //instantiate the dialog's current page
     val pageNum = remember{mutableStateOf(1)}
+
+    //custom technique to be created
     val customTechnique = Technique("", "", 1, mutableListOf(0, 0, 0, 0, 0, 0), listOf())
+
+    //tracker for technique effect dropdown index
     val techniqueIndex = remember{mutableStateOf(0)}
 
+    //selected value for the technique's level
     val customTechLevelSelection = remember{mutableStateOf(1)}
 
+    //boolean for technique effect being the primary effect
     val isPrimary = remember{mutableStateOf(false)}
 
-    val allEffectChecks = mutableListOf<Pair<TechniqueEffect, MutableState<Boolean>>>()
-    val optionalCheck1 = mutableListOf<Pair<TechniqueEffect, MutableState<Boolean>>>()
-    val optionalCheck2 = mutableListOf<Pair<TechniqueEffect, MutableState<Boolean>>>()
-    val allElementChecks = mutableListOf<Pair<Element, MutableState<Boolean>>>()
+    //instantiate master lists for technique effect checkboxes and element checkboxes
+    val allEffectChecks = remember{mutableMapOf<TechniqueEffect, MutableState<Boolean>>()}
+    val optionalCheck1 = remember{mutableMapOf<TechniqueEffect, MutableState<Boolean>>()}
+    val optionalCheck2 = remember{mutableMapOf<TechniqueEffect, MutableState<Boolean>>()}
+    val allElementChecks = remember{mutableListOf<Pair<Element, MutableState<Boolean>>>()}
 
-    val removeEffects = mutableListOf<TechniqueEffect>()
+    //list of effects to be removed from the custom technique
+    val removeEffects = remember{mutableListOf<TechniqueEffect>()}
 
-    val allKiBuilds = mutableListOf<Pair<String, MutableList<Int>>>()
+    //list of ki builds for each taken technique effect
+    val allKiBuilds = remember{mutableListOf<Pair<String, MutableList<Int>>>()}
 
+    //technique accumulation totals for each stat
     val strAccTotal = remember{mutableStateOf("")}
     val dexAccTotal = remember{mutableStateOf("")}
     val agiAccTotal = remember{mutableStateOf("")}
@@ -69,18 +89,24 @@ fun CustomTechnique(
     val powAccTotal = remember{mutableStateOf("")}
     val wpAccTotal = remember{mutableStateOf("")}
 
+    //maintenance state of the custom technique
     val customTechMaintenanceSelection = remember{mutableStateOf(false)}
 
     Dialog(
         onDismissRequest = {},
         content = {
             Box(
-                Modifier.background(Color.White)
-                .size(600.dp, 600.dp)) {
+                Modifier
+                    .background(Color.White)
+                    .size(600.dp, 600.dp)) {
 
-                Row(Modifier.align(Alignment.TopCenter)
-                    .height(100.dp)){Text(text = "Create Custom Technique")}
+                //title header
+                Row(
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .height(100.dp)){Text(text = "Create Custom Technique")}
 
+                //content box
                 Row(
                     Modifier
                         .align(Alignment.Center)
@@ -89,20 +115,26 @@ fun CustomTechnique(
                         //page for determining technique level
                         1 -> {
                             Column{
+                                //prompt for technique's level
                                 Row{Text(text = "Select the Technique's Level:")}
                                 Column{
+                                    //selection for level 1 technique
                                     Row {
                                         RadioButton(
                                             selected = customTechLevelSelection.value == 1,
                                             onClick = { customTechLevelSelection.value = 1 })
                                         Text(text = "1")
                                     }
+
+                                    //selection for level 2 technique
                                     Row{
                                         RadioButton(
                                             selected = customTechLevelSelection.value == 2,
                                             onClick = {customTechLevelSelection.value = 2})
                                         Text(text = "2")
                                     }
+
+                                    //selection for level 3 technique
                                     Row{
                                         RadioButton(
                                             selected = customTechLevelSelection.value == 3,
@@ -111,6 +143,7 @@ fun CustomTechnique(
                                     }
                                 }
 
+                                //set minimum and maximum MK values for each level
                                 val minMK = when(customTechLevelSelection.value){
                                     1 -> 20
                                     2 -> 40
@@ -125,19 +158,28 @@ fun CustomTechnique(
                                     else -> 0
                                 }
 
+                                //display minimums and maximums
                                 Text(text = "Martial Knowledge Range: $minMK - $maxMK")
                             }
                         }
 
                         //page for determining primary effect
                         2 -> {
+                            //define added technique as primary
                             isPrimary.value = true
+
+                            //clear custom technique's effects
                             customTechnique.givenAbilities = listOf()
                             allKiBuilds.clear()
+
+                            //set dropdown's default index
                             techniqueIndex.value = 0
 
                             Column{
+                                //prompt for ability selection
                                 Text(text = "Select Primary Ability: ")
+
+                                //create dropdown and displayed table
                                 TechniqueAbilityDropdown(
                                     isPrimary.value,
                                     techniqueIndex,
@@ -158,10 +200,14 @@ fun CustomTechnique(
 
                         //page for determining secondary effects
                         3 -> {
+                            //reset dropdown index
                             techniqueIndex.value = 0
 
                             Column{
+                                //prompt for ability addition
                                 Text(text = "Add Secondary Abilities: ")
+
+                                //create dropdown and displayed table
                                 TechniqueAbilityDropdown(
                                     isPrimary.value,
                                     techniqueIndex,
@@ -183,6 +229,7 @@ fun CustomTechnique(
                         //page for editing taken secondary effects
                         4 -> {
                             LazyColumn{
+                                //display each taken effect with their deletable checkboxes
                                 customTechnique.givenAbilities.forEach{
                                     item{EditEffectRow(it, removeEffects)}
                                 }
@@ -193,21 +240,25 @@ fun CustomTechnique(
 
                         //page for redistributing ki accumulations
                         5 -> {
+                            //set initial accumulation total values
                             strAccTotal.value = getAccTotal(0, allKiBuilds)
                             dexAccTotal.value = getAccTotal(1, allKiBuilds)
                             agiAccTotal.value = getAccTotal(2, allKiBuilds)
                             conAccTotal.value = getAccTotal(3, allKiBuilds)
                             powAccTotal.value = getAccTotal(4, allKiBuilds)
                             wpAccTotal.value = getAccTotal(5, allKiBuilds)
+
+                            //gather all totals into a single list
                             val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
 
                             Column{
                                 Row{Text(text = "Accumulation Totals:")}
+
+                                //display each characteristic accumulation totals
                                 Row{
                                     for(index in 0..5)
                                         Text(text = statName[index], modifier = Modifier.weight(0.13f))
                                 }
-
                                 Row {
                                     Text(text = strAccTotal.value, modifier = Modifier.weight(0.13f))
                                     Text(text = dexAccTotal.value, modifier = Modifier.weight(0.13f))
@@ -218,9 +269,12 @@ fun CustomTechnique(
                                 }
 
                                 LazyColumn{
+                                    //for each taken effect
                                     customTechnique.givenAbilities.forEach {
+                                        //display the effect's name
                                         item { Text(text = it.name) }
 
+                                        //create an input for the stat's accumulation input
                                         for (index in 0..5) {
                                             item{
                                                 EditBuildRow(
@@ -240,7 +294,10 @@ fun CustomTechnique(
                         //page for determining maintenance values
                         6 -> {
                             Column(Modifier.verticalScroll(rememberScrollState())){
+                                //prompt for making technique maintainable
                                 Row { Text(text = "Make technique maintainable?") }
+
+                                //option for making it maintainable
                                 Row {
                                     RadioButton(
                                         selected = customTechMaintenanceSelection.value,
@@ -248,6 +305,8 @@ fun CustomTechnique(
                                     )
                                     Text(text = "Yes")
                                 }
+
+                                //option for technique not being maintained
                                 Row {
                                     RadioButton(
                                         selected = !customTechMaintenanceSelection.value,
@@ -256,9 +315,12 @@ fun CustomTechnique(
                                     Text(text = "No")
                                 }
 
-
+                                //if user makes technique maintainable
                                 if (customTechMaintenanceSelection.value) {
+                                    //display required maintenance distribution
                                     Row { Text(text = "Total Maintenance Cost: " + customTechnique.maintTotal().toString()) }
+
+                                    //make an input for each available stat
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         for (index in 0..5)
                                             if(customTechnique.hasAccumulation(index))
@@ -278,6 +340,7 @@ fun CustomTechnique(
                             val customDescription = remember{mutableStateOf("")}
 
                             Column{
+                                //prompt and input for technique's name
                                 Row{
                                     Text(text = "Name your Technique: ")
                                     TextField(
@@ -288,6 +351,7 @@ fun CustomTechnique(
                                         }
                                     )
                                 }
+                                //prompt and input for technique's description
                                 Row{
                                     Text(text = "Description")
                                     TextField(
@@ -304,13 +368,14 @@ fun CustomTechnique(
                         //confirmation page
                         8 -> {
                             Row{Text(text = "Description of " + customTechnique.name)}
-                            Row{techContents(customTechnique)}
+                            techContents(customTechnique)
                         }
 
                         else -> {deactivate()}
                     }
                 }
 
+                //row for user's buttons
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
@@ -323,20 +388,29 @@ fun CustomTechnique(
                     if(pageNum.value == 4){
                         TextButton(
                             onClick = {
-                                customTechnique.givenAbilities -= removeEffects
-                                removeEffects.forEach {removable ->
+                                //remove selected effects from the technique
+                                customTechnique.givenAbilities = customTechnique.givenAbilities - removeEffects.toSet()
+
+                                //remove selected effects from the kiBuild list
+                                removeEffects.forEach removeItem@{removable ->
                                     allKiBuilds.forEach{
-                                        if(removable.name == it.first)
+                                        if(removable.name == it.first) {
                                             allKiBuilds.remove(it)
+                                            return@removeItem
+                                        }
                                     }
                                 }
 
+                                //clear deletion list
                                 removeEffects.clear()
 
+                                //realign effects for removed primary ability
                                 customTechnique.fixPrimaryAbility()
 
+                                //go back to adding secondaries
                                 if (customTechnique.givenAbilities.isNotEmpty())
                                     pageNum.value = 3
+                                //if effects list is empty, go back to primary effect page
                                 else {
                                     pageNum.value = 2
                                 }
@@ -355,40 +429,79 @@ fun CustomTechnique(
                         //option to add selected effect
                         TextButton(
                             onClick = {
+                                //get all selected effects
                                 val addedTechnique = listOf(
                                     getSelectedEffect(allEffectChecks, allElementChecks, true),
                                     getSelectedEffect(optionalCheck1, allElementChecks, true),
                                     getSelectedEffect(optionalCheck2, allElementChecks, true)
                                 )
 
+                                val validAddition = mutableListOf<String?>()
+
+                                var addedCost = 0
+                                var allAdd = false
+
                                 addedTechnique.forEach {
-                                    val validAddition = customTechnique.validEffectAddition(
-                                        it,
-                                        charInstance.kiList.martialKnowledgeRemaining
-                                    )
-
-                                    if (validAddition == null) {
-                                        if (techniqueIndex.value == 35)
-                                            it!!.elements += Element.Free
-
-                                        customTechnique.givenAbilities += it!!
-
-                                        allKiBuilds += Pair(
-                                            it.name,
-                                            it.kiBuild.toMutableList()
+                                    if (it != null) {
+                                        allAdd = true
+                                        val newInput = customTechnique.validEffectAddition(
+                                            it,
+                                            charInstance.kiList.martialKnowledgeRemaining - addedCost
                                         )
+                                        validAddition.add(newInput)
 
-                                        techniqueIndex.value = 0
+                                        if (newInput == null)
+                                            addedCost += it.mkCost
+                                        else {
+                                            allAdd = false
+                                            return@forEach
+                                        }
                                     }
-                                    else if(it != null)
-                                        Toast.makeText(context, validAddition, Toast.LENGTH_SHORT).show()
+                                }
+
+                                if (allAdd){
+                                    //attempt to add each one to the character
+                                    addedTechnique.forEach {
+                                        if(it != null) {
+                                            val itemIndex = addedTechnique.indexOf(it)
+                                            //addition is valid
+                                            if (validAddition[itemIndex] == null) {
+                                                //add disadvantage marker to Elemental Binding list
+                                                if (techniqueIndex.value == 35)
+                                                    it.elements += Element.Free
+
+                                                //add effect to technique
+                                                customTechnique.givenAbilities += it
+
+                                                //add effect to ki build master list
+                                                allKiBuilds += Pair(
+                                                    it.name,
+                                                    it.kiBuild.toMutableList()
+                                                )
+
+                                                //reset dropdown index
+                                                techniqueIndex.value = 0
+                                            }
+
+                                            //display addition error
+                                            else
+                                                Toast.makeText(
+                                                    context,
+                                                    validAddition[itemIndex],
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                        }
+                                    }
                                 }
                             }
-                        ) {Text(text = "Add")}
+                        )
+                        {Text(text = "Add")}
                     }
 
+                    //display back button on any page except the first and edit effect pages
                     if(pageNum.value != 1 && pageNum.value != 4){
                         TextButton(onClick = {
+                            //set back button function for each page
                             when(pageNum.value){
                                 2 -> {
                                     customTechLevelSelection.value = 1
@@ -426,22 +539,36 @@ fun CustomTechnique(
                                 val selectedOpt1 = getSelectedEffect(optionalCheck1, allElementChecks, true)
                                 val selectedOpt2 = getSelectedEffect(optionalCheck2, allElementChecks, true)
 
+                                val mkMax = when(customTechnique.level){
+                                    1 -> 50
+                                    2 -> 100
+                                    3 -> 200
+                                    else -> 0
+                                }
+
+                                val currSpent = mutableStateOf(0)
+
                                 if(selectedMain != null){
                                     customTechnique.givenAbilities = listOf(selectedMain)
                                     allKiBuilds += Pair(selectedMain.name, selectedMain.kiBuild)
+                                    currSpent.value += selectedMain.mkCost
                                 }
 
                                 if(selectedOpt1 != null){
                                     customTechnique.givenAbilities = customTechnique.givenAbilities + selectedOpt1
                                     allKiBuilds += Pair(selectedOpt1.name, selectedOpt1.kiBuild)
+                                    currSpent.value += selectedOpt1.mkCost
                                 }
 
                                 if(selectedOpt2 != null){
                                     customTechnique.givenAbilities = customTechnique.givenAbilities + selectedOpt2
                                     allKiBuilds += Pair(selectedOpt2.name, selectedOpt2.kiBuild)
+                                    currSpent.value += selectedOpt2.mkCost
                                 }
 
-                                if(selectedMain != null || selectedOpt1 != null || selectedOpt2 != null) {
+                                if(currSpent.value > mkMax)
+                                    Toast.makeText(context, "Cannot take all abilities: level cost exceeded", Toast.LENGTH_SHORT).show()
+                                else if(selectedMain != null || selectedOpt1 != null || selectedOpt2 != null) {
                                     isPrimary.value = false
                                     pageNum.value = 3
                                 }
@@ -530,9 +657,9 @@ fun CustomTechnique(
 private fun TechniqueAbilityDropdown(
     isPrimary: Boolean,
     techniqueIndex: MutableState<Int>,
-    allEffectChecks: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
-    optionalCheck1: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
-    optionalCheck2: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
+    allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
+    optionalCheck1: MutableMap<TechniqueEffect, MutableState<Boolean>>,
+    optionalCheck2: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>,
     customTechnique: Technique,
     changeIndex: (Int) -> Unit,
@@ -598,9 +725,9 @@ private fun TechniqueAbilityDropdown(
 private fun TechniqueTable(
     index: Int,
     isPrimary: Boolean,
-    allEffectChecks: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
-    optionalCheck1: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
-    optionalCheck2: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
+    allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
+    optionalCheck1: MutableMap<TechniqueEffect, MutableState<Boolean>>,
+    optionalCheck2: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>,
     customTechnique: Technique,
     listClear: () -> Unit
@@ -967,7 +1094,7 @@ private fun TechniqueTable(
     table37.add(TechniqueTableData("Major Intensity", 0, 0, -10, 0, 1))
     table37.add(TechniqueTableData("Determined Condition", 0, 0, -5, 0, 1))
 
-    LazyColumn{
+    Column(Modifier.verticalScroll(rememberScrollState())){
         val kiIndex = when(index){
             7, 8, 17, 18, 19, 25, 26 -> 0
             1, 2, 3, 4, 9, 10, 12, 15 -> 1
@@ -1002,15 +1129,15 @@ private fun TechniqueTable(
         }
 
         if(!listOf(0, 32, 35, 36, 37, 38).contains(index))
-            item{ElementDisplayRow(elementList)}
+            ElementDisplayRow(elementList)
 
         when(index){
             //Attack Ability
             1 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                item{TechniqueTableHeader("Attack Bonus")}
+                TechniqueTableHeader("Attack Bonus")
 
-                items(table1){tableRow ->
+                table1.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1028,9 +1155,9 @@ private fun TechniqueTable(
             //Counterattack Ability
             2 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                item{TechniqueTableHeader("Attack Bonus")}
+                TechniqueTableHeader("Attack Bonus")
 
-                items(table2){tableRow ->
+                table2.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1048,9 +1175,9 @@ private fun TechniqueTable(
             //Block Ability
             3 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                item { TechniqueTableHeader("Block Bonus") }
+                TechniqueTableHeader("Block Bonus")
 
-                items(table3) { tableRow ->
+                table3.forEach{ tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1073,9 +1200,9 @@ private fun TechniqueTable(
             //Limited Block Ability
             4 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                item{TechniqueTableHeader("Block Bonus")}
+                TechniqueTableHeader("Block Bonus")
 
-                items(table4){tableRow ->
+                table4.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1093,9 +1220,9 @@ private fun TechniqueTable(
             //Dodge Ability
             5 -> {
                 buildArray.value = listOf(null, 2, 0, 2, 2, 3)
-                item{TechniqueTableHeader("Dodge Bonus")}
+                TechniqueTableHeader("Dodge Bonus")
 
-                items(table5){tableRow ->
+                table5.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1113,9 +1240,9 @@ private fun TechniqueTable(
             //Limited Dodge Ability
             6 -> {
                 buildArray.value = listOf(null, 2, 0, 2, 2, 3)
-                item{TechniqueTableHeader("Dodge Bonus")}
+                TechniqueTableHeader("Dodge Bonus")
 
-                items(table6){tableRow ->
+                table6.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1133,9 +1260,9 @@ private fun TechniqueTable(
             //Damage Multiplier
             7 -> {
                 buildArray.value = listOf(0, 3, null, 2, 1, 1)
-                item{TechniqueTableHeader("Multiplier")}
+                TechniqueTableHeader("Multiplier")
 
-                items(table7){tableRow ->
+                table7.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1153,9 +1280,9 @@ private fun TechniqueTable(
             //Damage Augmentation
             8 -> {
                 buildArray.value = listOf(0, 3, null, 1, 2, 1)
-                item{TechniqueTableHeader("Damage Bonus")}
+                TechniqueTableHeader("Damage Bonus")
 
-                items(table8){tableRow ->
+                table8.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1169,8 +1296,8 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Sacrifice")}
-                items(table8a){tableRow ->
+                Text(text = "Optional Advantage: Sacrifice")
+                table8a.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1189,9 +1316,9 @@ private fun TechniqueTable(
             //Additional Attack
             9 -> {
                 buildArray.value = listOf(null, 0, 2, 1, 3, 3)
-                item{TechniqueTableHeader("Attacks")}
+                TechniqueTableHeader("Attacks")
 
-                items(table9){tableRow ->
+                table9.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1205,58 +1332,8 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Continuous Attack")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                item{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Added Fatigue Bonus", 8, 8, 30, 2, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck2
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-            }
-
-            //Limited Additional Attack
-            10 -> {
-                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
-                item{TechniqueTableHeader("Attacks")}
-
-                items(table10){tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                item{Text(text = "Optional Advantage: Continuous Attack")}
-                item{TechniqueTableRow(
+                Row{Text(text = "Optional Advantage: Continuous Attack")}
+                TechniqueTableRow(
                     TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1),
                     elementList,
                     index,
@@ -1268,15 +1345,59 @@ private fun TechniqueTable(
                 {effectInput: TechniqueEffect ->
                     customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
 
+                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
+                TechniqueTableRow(
+                    TechniqueTableData("Added Fatigue Bonus", 8, 8, 30, 2, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck2
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+            }
+
+            //Limited Additional Attack
+            10 -> {
+                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
+                TechniqueTableHeader("Attacks")
+
+                table10.forEach{tableRow ->
+                    TechniqueTableRow(
+                        tableRow,
+                        elementList,
+                        index,
+                        kiIndex,
+                        isPrimary,
+                        buildArray.value,
+                        allEffectChecks
+                    )
+                    {effectInput: TechniqueEffect ->
+                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
+
+                Row{Text(text = "Optional Advantage: Continuous Attack")}
+                TechniqueTableRow(
+                    TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Additional Defense
             11 -> {
                 buildArray.value = listOf(null, 1, 0, 1, 3, 3)
-                item{TechniqueTableHeader("Defenses")}
+                TechniqueTableHeader("Defenses")
 
-                items(table11){tableRow ->
+                table11.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1290,28 +1411,26 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 2, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
+                TechniqueTableRow(
+                    TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 2, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Additional Action
             12 -> {
                 buildArray.value = listOf(null, 0, 1, 1, 3, 3)
-                item{TechniqueTableHeader("Actions")}
+                TechniqueTableHeader("Actions")
 
-                items(table12){tableRow ->
+                table12.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1325,28 +1444,26 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
+                TechniqueTableRow(
+                    TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Initiative Augmentation
             13 -> {
                 buildArray.value = listOf(null, 1, 0, 2, 3, 3)
-                item{TechniqueTableHeader("Initiative Bonus")}
+                TechniqueTableHeader("Initiative Bonus")
 
-                items(table13){tableRow ->
+                table13.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1364,9 +1481,9 @@ private fun TechniqueTable(
             //States
             14 -> {
                 buildArray.value = listOf(4, 4, null, 4, 0, 1)
-                item{TechniqueTableHeader("PhR Check")}
+                TechniqueTableHeader("PhR Check")
 
-                items(table14){tableRow ->
+                table14.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1380,8 +1497,8 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Added State")}
-                items(table14a){tableRow ->
+                Row{Text(text = "Optional Advantage: Added State")}
+                table14a.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1399,9 +1516,9 @@ private fun TechniqueTable(
             //Combat Maneuvers and Aiming
             15 -> {
                 buildArray.value = listOf(null, 0, 1, 2, 2, 2)
-                item{TechniqueTableHeader("Precision")}
+                TechniqueTableHeader("Precision")
 
-                items(table15){tableRow ->
+                table15.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1419,9 +1536,9 @@ private fun TechniqueTable(
             //Armor Increase
             16 -> {
                 buildArray.value = listOf(2, null, 3, 0, 1, 2)
-                item{TechniqueTableHeader("AT")}
+                TechniqueTableHeader("AT")
 
-                items(table16){tableRow ->
+                table16.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1439,9 +1556,9 @@ private fun TechniqueTable(
             //Armor Destruction
             17 -> {
                 buildArray.value = listOf(0, 2, null, 2, 1, 2)
-                item{TechniqueTableHeader("Reduction")}
+                TechniqueTableHeader("Reduction")
 
-                items(table17){tableRow ->
+                table17.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1459,9 +1576,9 @@ private fun TechniqueTable(
             //Breakage Augmentation
             18 -> {
                 buildArray.value = listOf(0, 4, null, 2, 2, 1)
-                item{TechniqueTableHeader("Breakage")}
+                TechniqueTableHeader("Breakage")
 
-                items(table18){tableRow ->
+                table18.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1479,9 +1596,9 @@ private fun TechniqueTable(
             //Fortitude Augmentation
             19 -> {
                 buildArray.value = listOf(0, 4, null, 2, 2, 1)
-                item{TechniqueTableHeader("Fortitude")}
+                TechniqueTableHeader("Fortitude")
 
-                items(table19){tableRow ->
+                table19.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1499,9 +1616,9 @@ private fun TechniqueTable(
             //Long-Distance Attack
             20 -> {
                 buildArray.value = listOf(null, 2, 3, 4, 0, 1)
-                item{TechniqueTableHeader("Distance")}
+                TechniqueTableHeader("Distance")
 
-                items(table20){tableRow ->
+                table20.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1519,9 +1636,9 @@ private fun TechniqueTable(
             //Area Attack
             21 -> {
                 buildArray.value = listOf(null, 2, 3, 3, 0, 1)
-                item{TechniqueTableHeader("Radius")}
+                TechniqueTableHeader("Radius")
 
-                items(table21){tableRow ->
+                table21.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1535,28 +1652,26 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Target Choice")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Target Choice", 2, 2, 10, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Target Choice")}
+                TechniqueTableRow(
+                    TechniqueTableData("Target Choice", 2, 2, 10, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Automatic Transportation
             22 -> {
                 buildArray.value = listOf(2, 2, 0, 2, 3, null)
-                item{TechniqueTableHeader("Distance")}
+                TechniqueTableHeader("Distance")
 
-                items(table22){tableRow ->
+                table22.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1574,9 +1689,9 @@ private fun TechniqueTable(
             //Critical Enhancement
             23 -> {
                 buildArray.value = listOf(1, 2, null, 2, 0, 1)
-                item{TechniqueTableHeader("Critical")}
+                TechniqueTableHeader("Critical")
 
-                items(table23){tableRow ->
+                table23.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1590,28 +1705,26 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Automatic Critical")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Automatic Critical", 8, 8, 30, 4, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Automatic Critical")}
+                TechniqueTableRow(
+                    TechniqueTableData("Automatic Critical", 8, 8, 30, 4, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Physical Ki Weapons
             24 -> {
                 buildArray.value = listOf(2, 3, null, 1, 0, 1)
-                item{TechniqueTableHeader("Quality")}
+                TechniqueTableHeader("Quality")
 
-                items(table24){tableRow ->
+                table24.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1625,28 +1738,26 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional Advantage: Projectiles")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Projectile Weapon", 2, 2, 10, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Projectiles")}
+                TechniqueTableRow(
+                    TechniqueTableData("Projectile Weapon", 2, 2, 10, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Trapping
             25 -> {
                 buildArray.value = listOf(0, 1, null, 2, 2, 2)
-                item{TechniqueTableHeader("Trap")}
+                TechniqueTableHeader("Trap")
 
-                items(table25){tableRow ->
+                table25.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1664,9 +1775,9 @@ private fun TechniqueTable(
             //Projection
             26 -> {
                 buildArray.value = listOf(0, 3, null, 2, 1, 1)
-                item{TechniqueTableHeader("Projection")}
+                TechniqueTableHeader("Projection")
 
-                items(table26){tableRow ->
+                table26.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1684,9 +1795,9 @@ private fun TechniqueTable(
             //Energy Shield
             27 -> {
                 buildArray.value = listOf(2, 3, null, 2, 0, 1)
-                item{TechniqueTableHeader("LP")}
+                TechniqueTableHeader("LP")
 
-                items(table27){tableRow ->
+                table27.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1704,29 +1815,27 @@ private fun TechniqueTable(
             //Intangibility
             28 -> {
                 buildArray.value = listOf(3, 3, null, 3, 0, 1)
-                item{TechniqueTableHeader("Effect")}
+                TechniqueTableHeader("Effect")
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Intangibility", 3, 5, 10, 2, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("Intangibility", 3, 5, 10, 2, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Mirage
             29 -> {
                 buildArray.value = listOf(null, 3, 2, 3, 1, 0)
-                item{TechniqueTableHeader("Mirages")}
+                TechniqueTableHeader("Mirages")
 
-                items(table29){tableRow ->
+                table29.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1740,8 +1849,8 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Optional dvantage: Non-Detection")}
-                items(table29a){tableRow ->
+                Row{Text(text = "Optional advantage: Non-Detection")}
+                table29a.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1759,94 +1868,84 @@ private fun TechniqueTable(
             //Attack Mirroring
             30 -> {
                 buildArray.value = listOf(2, 3, 3, null, 0, 1)
-                item{TechniqueTableHeader("Effect")}
+                TechniqueTableHeader("Effect")
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Attack Mirroring", 12, 15, 30, 8, 2),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("Attack Mirroring", 12, 15, 30, 8, 2),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
 
-                item{Text(text = "Optional Advantage: Target Choice")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Target Choice", 2, 2, 10, 2, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Target Choice")}
+                TechniqueTableRow(
+                    TechniqueTableData("Target Choice", 2, 2, 10, 2, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck1
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
 
-                item{Text(text = "Optional Advantage: Mirroring Esoteric Abilities")}
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Mirror Esoteric Abilities", 4, 4, 20, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck2
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                Row{Text(text = "Optional Advantage: Mirroring Esoteric Abilities")}
+                TechniqueTableRow(
+                    TechniqueTableData("Mirror Esoteric Abilities", 4, 4, 20, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    optionalCheck2
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Energy Damaging Attack
             31 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                item{TechniqueTableHeader("Attack")}
+                TechniqueTableHeader("Attack")
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Energy", 1, 2, 5, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("Energy", 1, 2, 5, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Elemental Attack
             32 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                item{TechniqueTableHeader("Attack")}
+                TechniqueTableHeader("Attack")
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("2", 2, 4, 5, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("2", 2, 4, 5, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
 
-                item{Text(text = "Select Element: ")}
-                items(elementAttackList){element ->
+                Row{Text(text = "Select Element: ")}
+                elementAttackList.forEach{element ->
                     ElementalRow(
                         element,
                         allEffectChecks,
@@ -1858,29 +1957,27 @@ private fun TechniqueTable(
             //Supernatural Attack
             33 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                item{TechniqueTableHeader("Attack")}
+                TechniqueTableHeader("Attack")
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Energy", 5, 8, 10, 1, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("Energy", 5, 8, 10, 1, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             //Damage Resistance
             34 -> {
                 buildArray.value = listOf(3, 3, null, 0, 3, 1)
-                item{TechniqueTableHeader("LP")}
+                TechniqueTableHeader("LP")
 
-                items(table34){tableRow ->
+                table34.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1899,7 +1996,7 @@ private fun TechniqueTable(
             35 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
 
-                items(table35){tableRow ->
+                table35.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1913,8 +2010,8 @@ private fun TechniqueTable(
                         customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
                 }
 
-                item{Text(text = "Select Element(s): ")}
-                items(elementBindList){element ->
+                Row{Text(text = "Select Element(s): ")}
+                elementBindList.forEach{element ->
                     ElementalRow(element, allEffectChecks, elementChecks)
                 }
             }
@@ -1923,7 +2020,7 @@ private fun TechniqueTable(
             36 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
 
-                items(table36){tableRow ->
+                table36.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1942,7 +2039,7 @@ private fun TechniqueTable(
             37 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
 
-                items(table37){tableRow ->
+                table37.forEach{tableRow ->
                     TechniqueTableRow(
                         tableRow,
                         elementList,
@@ -1961,19 +2058,17 @@ private fun TechniqueTable(
             38 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
 
-                item{
-                    TechniqueTableRow(
-                        TechniqueTableData("Predetermination", 0, 0, -20, 0, 1),
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                TechniqueTableRow(
+                    TechniqueTableData("Predetermination", 0, 0, -20, 0, 1),
+                    elementList,
+                    index,
+                    kiIndex,
+                    isPrimary,
+                    buildArray.value,
+                    allEffectChecks
+                )
+                {effectInput: TechniqueEffect ->
+                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
             }
 
             else -> {}
@@ -2023,12 +2118,10 @@ private fun TechniqueTableRow(
     isPrimary: Boolean,
     buildArray: List<Int?>,
 
-    allChecksList: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
+    allChecksList: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     getValidInput: (TechniqueEffect) -> String?
 ){
     val context = LocalContext.current
-
-    val thisCheck = remember{ mutableStateOf(false) }
 
     val defaultArray = mutableListOf(0, 0, 0, 0, 0, 0)
     defaultArray[kiIndex] =
@@ -2047,6 +2140,8 @@ private fun TechniqueTableRow(
         TechniqueEffect(useString, input.effect, input.mkCost, input.maintCost, Pair(input.primaryCost, input.secondaryCost),
             defaultArray, buildArray, elementList, input.level)
 
+    val thisCheck = remember{mutableStateOf(false)}
+
     allChecksList += Pair(thisEffect, thisCheck)
 
     Row(verticalAlignment = Alignment.CenterVertically)
@@ -2055,10 +2150,10 @@ private fun TechniqueTableRow(
             checked = thisCheck.value,
             onCheckedChange = {
                 val textOut = getValidInput(thisEffect)
-                    //customTechnique.validEffectAddition(thisEffect, charInstance.kiList.martialKnowledgeRemaining)
+
                 if(it) {
                     if(textOut == null) {
-                        allChecksList.forEach { boxVal -> boxVal.second.value = false }
+                        allChecksList.forEach { boxVal -> boxVal.value.value = false }
 
                         thisCheck.value = true
                     }
@@ -2082,7 +2177,7 @@ private fun TechniqueTableRow(
 @Composable
 private fun ElementalRow(
     elementType: Element,
-    allEffectChecks: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
+    allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>
 ){
     val checkStatus = remember{ mutableStateOf(false) }
@@ -2226,14 +2321,14 @@ private fun MaintenanceInput(
 }
 
 private fun getSelectedEffect(
-    effectList: MutableList<Pair<TechniqueEffect, MutableState<Boolean>>>,
+    effectList: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementList: MutableList<Pair<Element, MutableState<Boolean>>>,
     elementRequired: Boolean
 ): TechniqueEffect?{
     effectList.forEach{
-        if(it.second.value){
-            val dummyEffect = it.first
-            dummyEffect.elements = getSelectedElement(it.first, elementList)
+        if(it.value.value){
+            val dummyEffect = it.key
+            dummyEffect.elements = getSelectedElement(it.key, elementList)
 
             if(!elementRequired || dummyEffect.elements.isNotEmpty())
                 return dummyEffect

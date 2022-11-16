@@ -187,13 +187,13 @@ fun CustomTechnique(
                                     optionalCheck1,
                                     optionalCheck2,
                                     allElementChecks,
-                                    customTechnique,
-                                    { input: Int -> techniqueIndex.value = input}
-                                ) {
-                                    allEffectChecks.clear()
-                                    optionalCheck1.clear()
-                                    optionalCheck2.clear()
-                                    allElementChecks.clear()
+                                    customTechnique
+                                ) { input: Int ->
+                                    techniqueIndex.value = input
+                                    allEffectChecks.forEach { it.value.value = false }
+                                    optionalCheck1.forEach { it.value.value = false }
+                                    optionalCheck1.forEach { it.value.value = false }
+                                    allElementChecks.forEach { it.second.value = false }
                                 }
                             }
                         }
@@ -215,25 +215,29 @@ fun CustomTechnique(
                                     optionalCheck1,
                                     optionalCheck2,
                                     allElementChecks,
-                                    customTechnique,
-                                    { input: Int -> techniqueIndex.value = input}
-                                ) {
-                                    allEffectChecks.clear()
-                                    optionalCheck1.clear()
-                                    optionalCheck2.clear()
-                                    allElementChecks.clear()
+                                    customTechnique
+                                ) { input: Int ->
+                                    techniqueIndex.value = input
+                                    allEffectChecks.forEach { it.value.value = false }
+                                    optionalCheck1.forEach { it.value.value = false }
+                                    optionalCheck1.forEach { it.value.value = false }
+                                    allElementChecks.forEach { it.second.value = false }
                                 }
                             }
                         }
 
                         //page for editing taken secondary effects
                         4 -> {
+                            //initialize all deletion checkboxes
+                            val deletionCheckList = customTechnique.givenAbilities.map{mutableStateOf(false)}
+
                             LazyColumn{
                                 //display each taken effect with their deletable checkboxes
                                 customTechnique.givenAbilities.forEach{
-                                    item{EditEffectRow(it, removeEffects)}
+                                    item{EditEffectRow(it, deletionCheckList[customTechnique.givenAbilities.indexOf(it)], removeEffects)}
                                 }
 
+                                //display total current MK cost
                                 item{Text(text = "MK: " + customTechnique.mkCost().toString())}
                             }
                         }
@@ -367,8 +371,10 @@ fun CustomTechnique(
 
                         //confirmation page
                         8 -> {
-                            Row{Text(text = "Description of " + customTechnique.name)}
-                            techContents(customTechnique)
+                            Column {
+                                Row { Text(text = "Description of " + customTechnique.name) }
+                                techContents(customTechnique)
+                            }
                         }
 
                         else -> {deactivate()}
@@ -408,8 +414,15 @@ fun CustomTechnique(
                                 customTechnique.fixPrimaryAbility()
 
                                 //go back to adding secondaries
-                                if (customTechnique.givenAbilities.isNotEmpty())
+                                if (customTechnique.givenAbilities.isNotEmpty()) {
+                                    val newPrimary = customTechnique.givenAbilities[0]
+
+                                    for(index in 0..5){
+                                        findBuild(newPrimary.name, allKiBuilds)!!.second[index] = newPrimary.kiBuild[index]
+                                    }
+
                                     pageNum.value = 3
+                                }
                                 //if effects list is empty, go back to primary effect page
                                 else {
                                     pageNum.value = 2
@@ -436,22 +449,33 @@ fun CustomTechnique(
                                     getSelectedEffect(optionalCheck2, allElementChecks, true)
                                 )
 
+                                //initialize list of valid input returns
                                 val validAddition = mutableListOf<String?>()
 
+                                //initialize cost forecast
                                 var addedCost = 0
+
+                                //initialize state of all selected items being legal
                                 var allAdd = false
 
+                                //for each selected effect
                                 addedTechnique.forEach {
                                     if (it != null) {
+                                        //change continuation to true for at least one effect present
                                         allAdd = true
+
+                                        //get if effect is valid and add to return list
                                         val newInput = customTechnique.validEffectAddition(
                                             it,
                                             charInstance.kiList.martialKnowledgeRemaining - addedCost
                                         )
                                         validAddition.add(newInput)
 
+                                        //increment cost forecast if input is valid
                                         if (newInput == null)
                                             addedCost += it.mkCost
+
+                                        //stop addition process
                                         else {
                                             allAdd = false
                                             return@forEach
@@ -459,13 +483,17 @@ fun CustomTechnique(
                                     }
                                 }
 
+                                //if no problem in adding effects
                                 if (allAdd){
                                     //attempt to add each one to the character
                                     addedTechnique.forEach {
+                                        //found effect to add
                                         if(it != null) {
-                                            val itemIndex = addedTechnique.indexOf(it)
+                                            //get next valid statement
+                                            val validReturn = validAddition.removeFirst()
+
                                             //addition is valid
-                                            if (validAddition[itemIndex] == null) {
+                                            if (validReturn == null) {
                                                 //add disadvantage marker to Elemental Binding list
                                                 if (techniqueIndex.value == 35)
                                                     it.elements += Element.Free
@@ -487,7 +515,7 @@ fun CustomTechnique(
                                             else
                                                 Toast.makeText(
                                                     context,
-                                                    validAddition[itemIndex],
+                                                    validReturn,
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                         }
@@ -524,21 +552,28 @@ fun CustomTechnique(
                     TextButton(onClick = {
                         when(pageNum.value){
                             1 -> {
+                                //if character can take technique of this level
                                 if((customTechLevelSelection.value == 1 && charInstance.kiList.martialKnowledgeRemaining >= 20) ||
                                     (customTechLevelSelection.value == 2 && charInstance.kiList.takenFirstTechniques.size >= 2 && charInstance.kiList.martialKnowledgeRemaining >= 40) ||
                                     (customTechLevelSelection.value == 3 && charInstance.kiList.takenSecondTechniques.size >= 2 && charInstance.kiList.martialKnowledgeRemaining >= 60)) {
 
+                                    //set technique's level
                                     customTechnique.level = customTechLevelSelection.value
 
+                                    //proceed to next page
                                     pageNum.value = 2
                                 }
                             }
 
                             2 -> {
-                                val selectedMain = getSelectedEffect(allEffectChecks, allElementChecks, true)
-                                val selectedOpt1 = getSelectedEffect(optionalCheck1, allElementChecks, true)
-                                val selectedOpt2 = getSelectedEffect(optionalCheck2, allElementChecks, true)
+                                //get any possible selected effects
+                                val selectedEffects = listOf(
+                                    getSelectedEffect(allEffectChecks, allElementChecks, true),
+                                    getSelectedEffect(optionalCheck1, allElementChecks, true),
+                                    getSelectedEffect(optionalCheck2, allElementChecks, true)
+                                )
 
+                                //get technique's maximum cost
                                 val mkMax = when(customTechnique.level){
                                     1 -> 50
                                     2 -> 100
@@ -546,92 +581,123 @@ fun CustomTechnique(
                                     else -> 0
                                 }
 
+                                //get current expenditure of
                                 val currSpent = mutableStateOf(0)
 
-                                if(selectedMain != null){
-                                    customTechnique.givenAbilities = listOf(selectedMain)
-                                    allKiBuilds += Pair(selectedMain.name, selectedMain.kiBuild)
-                                    currSpent.value += selectedMain.mkCost
+                                //make certain custom technique has no effects before addition
+                                customTechnique.givenAbilities = listOf()
+
+                                //for each potential effect addition
+                                selectedEffects.forEach{
+                                    //if there is a valid addition
+                                    if(it != null){
+                                        //add it to the technique
+                                        customTechnique.givenAbilities = customTechnique.givenAbilities + it
+
+                                        //track its build
+                                        allKiBuilds += Pair(it.name, it.kiBuild)
+
+                                        //determine cost of addition
+                                        currSpent.value += it.mkCost
+                                    }
                                 }
 
-                                if(selectedOpt1 != null){
-                                    customTechnique.givenAbilities = customTechnique.givenAbilities + selectedOpt1
-                                    allKiBuilds += Pair(selectedOpt1.name, selectedOpt1.kiBuild)
-                                    currSpent.value += selectedOpt1.mkCost
-                                }
-
-                                if(selectedOpt2 != null){
-                                    customTechnique.givenAbilities = customTechnique.givenAbilities + selectedOpt2
-                                    allKiBuilds += Pair(selectedOpt2.name, selectedOpt2.kiBuild)
-                                    currSpent.value += selectedOpt2.mkCost
-                                }
-
+                                //notify if maximum cost exceeded
                                 if(currSpent.value > mkMax)
                                     Toast.makeText(context, "Cannot take all abilities: level cost exceeded", Toast.LENGTH_SHORT).show()
-                                else if(selectedMain != null || selectedOpt1 != null || selectedOpt2 != null) {
+                                //proceed to next page if any ability was added
+                                else if(customTechnique.givenAbilities.isNotEmpty()) {
                                     isPrimary.value = false
                                     pageNum.value = 3
                                 }
                             }
 
                             3 -> {
+                                //go to next page if minimum costs are met
                                 if((customTechnique.level == 1 && customTechnique.mkCost() >= 20) ||
                                     (customTechnique.level == 2 && customTechnique.mkCost() >= 40) ||
                                     (customTechnique.level == 3 && customTechnique.mkCost() >= 60))
                                     pageNum.value = 5
                             }
 
+                            //return to secondary additions page
                             4 -> {pageNum.value = 3}
 
                             5 -> {
+                                //initialize booleans for primary ability and valid inputs
                                 var isFirst = true
                                 var moveOn = true
 
+                                //for each effect build
                                 allKiBuilds.forEach{
+                                    //initialize build total
                                     var total = 0
 
+                                    //retrieve associated effect
                                     val effect = customTechnique.getAbility(it.first)
 
+                                    //determine accumulation total for the effect
                                     var accTotal = if(isFirst) effect!!.costPair.first else effect!!.costPair.second
 
+                                    //for each accumulation index
                                     for(index in 0..5){
+                                        //add amount to the total
                                         total += it.second[index]
 
+                                        //if any points added to this stat
                                         if(it.second[index] > 0)
+                                            //add stat's additional build value to required accumulation
                                             accTotal += effect.buildAdditions[index]!!
                                     }
 
+                                    //set effect's ki build if total matches needed accumulation
                                     if(total == accTotal)
                                         effect.kiBuild = it.second
 
+                                    //notify of invalid ki build
                                     else
                                         moveOn = false
 
+                                    //notify of no longer checking primary effect
                                     isFirst = false
                                 }
 
+                                //go to next page if all effects have valid builds
                                 if(moveOn)
                                     pageNum.value = 6
                             }
+
                             6 -> {
+                                //initialize valid input indicator
                                 var toNext = true
 
+                                //user makes technique maintainable
                                 if(customTechMaintenanceSelection.value){
+                                    //initialize maintenance input total
                                     var total = 0
+
+                                    //add each index's value
                                     customTechnique.maintArray.forEach{
                                         total += it
                                     }
 
+                                    //determine if input is valid
                                     toNext = total == customTechnique.maintTotal()
                                 }
-                                else{
-                                    customTechnique.maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
-                                }
 
+                                //set default input for no maintenance
+                                else
+                                    customTechnique.maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+
+                                //go to next page if input is valid
                                 if(toNext)
                                     pageNum.value = 7
                             }
+
+                            //go to next page if technique is named
                             7 -> {if(customTechnique.name != "") pageNum.value = 8}
+
+                            //add technique to character and close dialog
                             8 -> {
                                 charInstance.kiList.addTechnique(customTechnique)
                                 deactivate()
@@ -640,6 +706,7 @@ fun CustomTechnique(
                         }
                     }) {
                         Text(
+                            //set next button text depending on the active page
                             text = when (pageNum.value) {
                                 4 -> "Return"
                                 8 -> "Confirm"
@@ -653,6 +720,18 @@ fun CustomTechnique(
     )
 }
 
+/**
+ * Displays a dropdown and table for the technique's effects
+ *
+ * isPrimary: whether the added effect is the primary effect or not
+ * techniqueIndex: current index of the effect selection
+ * allEffectChecks: master list of main effects
+ * optionalCheck1: first master list of optional effect
+ * optionalCheck2: second master list of optional effect
+ * elementChecks: master list of elemental checks
+ * customTechnique: technique to add the effects to
+ * changeIndex: action to do when the index is changed
+ */
 @Composable
 private fun TechniqueAbilityDropdown(
     isPrimary: Boolean,
@@ -663,22 +742,37 @@ private fun TechniqueAbilityDropdown(
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>,
     customTechnique: Technique,
     changeIndex: (Int) -> Unit,
-    tableClear: () -> Unit
 ){
+    //initialize string list of effects
     var source = stringArrayResource(R.array.techniqueAbilities)
 
+    //add disadvantages if adding secondary abilities
     if(!isPrimary)
         source += stringArrayResource(R.array.techniqueDisadvantages)
 
+    //initialize open state of dropdown list
     val isOpen = remember{mutableStateOf(false)}
+
+    //initialize size of dropdown box
     val size = remember{mutableStateOf(Size.Zero)}
 
+    //initialize symbol in dropdown box
     val icon = if(isOpen.value)
         Icons.Filled.KeyboardArrowUp
     else
         Icons.Filled.KeyboardArrowDown
 
+    //initialize lists and labels for the table data
+    val header = remember{mutableStateOf<String?>(null)}
+    val useTable = remember{mutableStateOf<List<TechniqueTableData>?>(null)}
+    val optHeader1 = remember{mutableStateOf<String?>(null)}
+    val optTable1 = remember{mutableStateOf<List<TechniqueTableData>?>(null)}
+    val optHeader2 = remember{mutableStateOf<String?>(null)}
+    val optTable2 = remember{mutableStateOf<List<TechniqueTableData>?>(null)}
+    val optElement = remember{mutableStateOf<List<Element>?>(null)}
+
     Column {
+        //dropdown text field
         OutlinedTextField(
             value = source[techniqueIndex.value],
             onValueChange = {},
@@ -693,6 +787,8 @@ private fun TechniqueAbilityDropdown(
                     modifier = Modifier.clickable { isOpen.value = !isOpen.value })
             }
         )
+
+        //effect options list
         DropdownMenu(
             expanded = isOpen.value,
             onDismissRequest = { isOpen.value = false },
@@ -700,402 +796,390 @@ private fun TechniqueAbilityDropdown(
         ) {
             source.forEach {
                 DropdownMenuItem(onClick = {
+                    //perform change action
                     changeIndex(source.indexOf(it))
+
+                    //close the dropdown list
                     isOpen.value = false
+
+                    //clear all displayed values
+                    optHeader1.value = null
+                    optTable1.value = null
+                    optHeader2.value = null
+                    optTable2.value = null
+                    optElement.value = null
                 }) {
                     Text(text = it)
                 }
             }
         }
 
-        TechniqueTable(
-            techniqueIndex.value,
-            isPrimary,
-            allEffectChecks,
-            optionalCheck1,
-            optionalCheck2,
-            elementChecks,
-            customTechnique,
-            tableClear
-        )
-    }
-}
+        //initialize table data lists
+        val table1 = mutableListOf<TechniqueTableData>()
+        val table2 = mutableListOf<TechniqueTableData>()
+        val table3 = mutableListOf<TechniqueTableData>()
+        val table4 = mutableListOf<TechniqueTableData>()
+        val table5 = mutableListOf<TechniqueTableData>()
+        val table6 = mutableListOf<TechniqueTableData>()
+        val table7 = mutableListOf<TechniqueTableData>()
+        val table8 = mutableListOf<TechniqueTableData>()
+        val table8a = mutableListOf<TechniqueTableData>()
+        val table9 = mutableListOf<TechniqueTableData>()
+        val table10 = mutableListOf<TechniqueTableData>()
+        val table11 = mutableListOf<TechniqueTableData>()
+        val table12 = mutableListOf<TechniqueTableData>()
+        val table13 = mutableListOf<TechniqueTableData>()
+        val table14 = mutableListOf<TechniqueTableData>()
+        val table14a = mutableListOf<TechniqueTableData>()
+        val table15 = mutableListOf<TechniqueTableData>()
+        val table16 = mutableListOf<TechniqueTableData>()
+        val table17 = mutableListOf<TechniqueTableData>()
+        val table18 = mutableListOf<TechniqueTableData>()
+        val table19 = mutableListOf<TechniqueTableData>()
+        val table20 = mutableListOf<TechniqueTableData>()
+        val table21 = mutableListOf<TechniqueTableData>()
+        val table22 = mutableListOf<TechniqueTableData>()
+        val table23 = mutableListOf<TechniqueTableData>()
+        val table24 = mutableListOf<TechniqueTableData>()
+        val table25 = mutableListOf<TechniqueTableData>()
+        val table26 = mutableListOf<TechniqueTableData>()
+        val table27 = mutableListOf<TechniqueTableData>()
+        val table29 = mutableListOf<TechniqueTableData>()
+        val table29a = mutableListOf<TechniqueTableData>()
+        val table34 = mutableListOf<TechniqueTableData>()
+        val table35 = mutableListOf<TechniqueTableData>()
+        val table36 = mutableListOf<TechniqueTableData>()
+        val table37 = mutableListOf<TechniqueTableData>()
 
-@Composable
-private fun TechniqueTable(
-    index: Int,
-    isPrimary: Boolean,
-    allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
-    optionalCheck1: MutableMap<TechniqueEffect, MutableState<Boolean>>,
-    optionalCheck2: MutableMap<TechniqueEffect, MutableState<Boolean>>,
-    elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>,
-    customTechnique: Technique,
-    listClear: () -> Unit
-){
-    listClear()
+        //get element lists for Elemental Attack and Elemental Binding
+        val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
+        val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
-    val table1 = mutableListOf<TechniqueTableData>()
-    val table2 = mutableListOf<TechniqueTableData>()
-    val table3 = mutableListOf<TechniqueTableData>()
-    val table4 = mutableListOf<TechniqueTableData>()
-    val table5 = mutableListOf<TechniqueTableData>()
-    val table6 = mutableListOf<TechniqueTableData>()
-    val table7 = mutableListOf<TechniqueTableData>()
-    val table8 = mutableListOf<TechniqueTableData>()
-    val table8a = mutableListOf<TechniqueTableData>()
-    val table9 = mutableListOf<TechniqueTableData>()
-    val table10 = mutableListOf<TechniqueTableData>()
-    val table11 = mutableListOf<TechniqueTableData>()
-    val table12 = mutableListOf<TechniqueTableData>()
-    val table13 = mutableListOf<TechniqueTableData>()
-    val table14 = mutableListOf<TechniqueTableData>()
-    val table14a = mutableListOf<TechniqueTableData>()
-    val table15 = mutableListOf<TechniqueTableData>()
-    val table16 = mutableListOf<TechniqueTableData>()
-    val table17 = mutableListOf<TechniqueTableData>()
-    val table18 = mutableListOf<TechniqueTableData>()
-    val table19 = mutableListOf<TechniqueTableData>()
-    val table20 = mutableListOf<TechniqueTableData>()
-    val table21 = mutableListOf<TechniqueTableData>()
-    val table22 = mutableListOf<TechniqueTableData>()
-    val table23 = mutableListOf<TechniqueTableData>()
-    val table24 = mutableListOf<TechniqueTableData>()
-    val table25 = mutableListOf<TechniqueTableData>()
-    val table26 = mutableListOf<TechniqueTableData>()
-    val table27 = mutableListOf<TechniqueTableData>()
-    val table29 = mutableListOf<TechniqueTableData>()
-    val table29a = mutableListOf<TechniqueTableData>()
-    val table34 = mutableListOf<TechniqueTableData>()
-    val table35 = mutableListOf<TechniqueTableData>()
-    val table36 = mutableListOf<TechniqueTableData>()
-    val table37 = mutableListOf<TechniqueTableData>()
+        //initialize build addition list
+        val buildArray = remember{ mutableStateOf(listOf<Int?>()) }
 
-    val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
-    val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
+        //create all tables for data
+        table1.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
+        table1.add(TechniqueTableData("+25", 3, 5, 5, 2, 1))
+        table1.add(TechniqueTableData("+40", 4, 6, 10, 3, 1))
+        table1.add(TechniqueTableData("+50", 5, 8, 15, 4, 1))
+        table1.add(TechniqueTableData("+75", 8, 11, 20, 6, 1))
+        table1.add(TechniqueTableData("+90", 12, 15, 25, 8, 1))
+        table1.add(TechniqueTableData("+100", 14, 18, 30, 10, 1))
+        table1.add(TechniqueTableData("+125", 18, 22, 35, 12, 2))
+        table1.add(TechniqueTableData("+150", 22, 26, 40, 14, 2))
+        table1.add(TechniqueTableData("+175", 26, 32, 45, 16, 3))
+        table1.add(TechniqueTableData("+200", 30, 36, 50, 18, 3))
 
-    val buildArray = remember{ mutableStateOf(listOf<Int?>()) }
+        table2.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
+        table2.add(TechniqueTableData("+25", 2, 4, 5, 2, 1))
+        table2.add(TechniqueTableData("+40", 3, 5, 10, 3, 1))
+        table2.add(TechniqueTableData("+50", 4, 6, 10, 4, 1))
+        table2.add(TechniqueTableData("+75", 6, 9, 15, 6, 1))
+        table2.add(TechniqueTableData("+90", 9, 12, 20, 8, 1))
+        table2.add(TechniqueTableData("+100", 12, 15, 25, 10, 1))
+        table2.add(TechniqueTableData("+125", 14, 18, 30, 12, 2))
+        table2.add(TechniqueTableData("+150", 18, 22, 35, 14, 2))
+        table2.add(TechniqueTableData("+175", 22, 26, 40, 16, 3))
+        table2.add(TechniqueTableData("+200", 26, 32, 45, 18, 3))
 
-    table1.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
-    table1.add(TechniqueTableData("+25", 3, 5, 5, 2, 1))
-    table1.add(TechniqueTableData("+40", 4, 6, 10, 3, 1))
-    table1.add(TechniqueTableData("+50", 5, 8, 15, 4, 1))
-    table1.add(TechniqueTableData("+75", 8, 11, 20, 6, 1))
-    table1.add(TechniqueTableData("+90", 12, 15, 25, 8, 1))
-    table1.add(TechniqueTableData("+100", 14, 18, 30, 10, 1))
-    table1.add(TechniqueTableData("+125", 18, 22, 35, 12, 2))
-    table1.add(TechniqueTableData("+150", 22, 26, 40, 14, 2))
-    table1.add(TechniqueTableData("+175", 26, 32, 45, 16, 3))
-    table1.add(TechniqueTableData("+200", 30, 36, 50, 18, 3))
+        table3.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
+        table3.add(TechniqueTableData("+25", 3, 5, 5, 1, 1))
+        table3.add(TechniqueTableData("+40", 4, 6, 10, 2, 1))
+        table3.add(TechniqueTableData("+50", 5, 8, 15, 3, 1))
+        table3.add(TechniqueTableData("+75", 8, 11, 20, 4, 1))
+        table3.add(TechniqueTableData("+90", 12, 15, 25, 5, 1))
+        table3.add(TechniqueTableData("+100", 14, 18, 30, 8, 1))
+        table3.add(TechniqueTableData("125", 18, 22, 35, 10, 2))
+        table3.add(TechniqueTableData("+150", 22, 26, 40, 12, 2))
+        table3.add(TechniqueTableData("+175", 26, 32, 45, 14, 3))
+        table3.add(TechniqueTableData("+200", 30, 36, 50, 16, 3))
 
-    table2.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
-    table2.add(TechniqueTableData("+25", 2, 4, 5, 2, 1))
-    table2.add(TechniqueTableData("+40", 3, 5, 10, 3, 1))
-    table2.add(TechniqueTableData("+50", 4, 6, 10, 4, 1))
-    table2.add(TechniqueTableData("+75", 6, 9, 15, 6, 1))
-    table2.add(TechniqueTableData("+90", 9, 12, 20, 8, 1))
-    table2.add(TechniqueTableData("+100", 12, 15, 25, 10, 1))
-    table2.add(TechniqueTableData("+125", 14, 18, 30, 12, 2))
-    table2.add(TechniqueTableData("+150", 18, 22, 35, 14, 2))
-    table2.add(TechniqueTableData("+175", 22, 26, 40, 16, 3))
-    table2.add(TechniqueTableData("+200", 26, 32, 45, 18, 3))
+        table4.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
+        table4.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
+        table4.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
+        table4.add(TechniqueTableData("+50", 4, 6, 10, 2, 1))
+        table4.add(TechniqueTableData("+75", 6, 9, 15, 3, 1))
+        table4.add(TechniqueTableData("+90", 8, 11, 20, 4, 1))
+        table4.add(TechniqueTableData("+100", 10, 13, 25, 6, 1))
+        table4.add(TechniqueTableData("+125", 12, 15, 30, 8, 2))
+        table4.add(TechniqueTableData("+150", 16, 20, 35, 10, 2))
+        table4.add(TechniqueTableData("+175", 20, 24, 40, 12, 3))
+        table4.add(TechniqueTableData("+200", 24, 29, 45, 14, 3))
 
-    table3.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
-    table3.add(TechniqueTableData("+25", 3, 5, 5, 1, 1))
-    table3.add(TechniqueTableData("+40", 4, 6, 10, 2, 1))
-    table3.add(TechniqueTableData("+50", 5, 8, 15, 3, 1))
-    table3.add(TechniqueTableData("+75", 8, 11, 20, 4, 1))
-    table3.add(TechniqueTableData("+90", 12, 15, 25, 5, 1))
-    table3.add(TechniqueTableData("+100", 14, 18, 30, 8, 1))
-    table3.add(TechniqueTableData("125", 18, 22, 35, 10, 2))
-    table3.add(TechniqueTableData("+150", 22, 26, 40, 12, 2))
-    table3.add(TechniqueTableData("+175", 26, 32, 45, 14, 3))
-    table3.add(TechniqueTableData("+200", 30, 36, 50, 16, 3))
+        table5.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
+        table5.add(TechniqueTableData("+25", 3, 5, 5, 1, 1))
+        table5.add(TechniqueTableData("+40", 4, 6, 10, 2, 1))
+        table5.add(TechniqueTableData("+50", 5, 8, 15, 3, 1))
+        table5.add(TechniqueTableData("+75", 8, 11, 20, 4, 1))
+        table5.add(TechniqueTableData("+90", 12, 15, 25, 5, 1))
+        table5.add(TechniqueTableData("+100", 14, 18, 30, 8, 1))
+        table5.add(TechniqueTableData("+125", 18, 22, 35, 10, 2))
+        table5.add(TechniqueTableData("+150", 22, 26, 40, 12, 2))
+        table5.add(TechniqueTableData("+175", 26, 32, 45, 14, 3))
+        table5.add(TechniqueTableData("+200", 30, 36, 50, 16, 3))
 
-    table4.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
-    table4.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
-    table4.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
-    table4.add(TechniqueTableData("+50", 4, 6, 10, 2, 1))
-    table4.add(TechniqueTableData("+75", 6, 9, 15, 3, 1))
-    table4.add(TechniqueTableData("+90", 8, 11, 20, 4, 1))
-    table4.add(TechniqueTableData("+100", 10, 13, 25, 6, 1))
-    table4.add(TechniqueTableData("+125", 12, 15, 30, 8, 2))
-    table4.add(TechniqueTableData("+150", 16, 20, 35, 10, 2))
-    table4.add(TechniqueTableData("+175", 20, 24, 40, 12, 3))
-    table4.add(TechniqueTableData("+200", 24, 29, 45, 14, 3))
+        table6.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
+        table6.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
+        table6.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
+        table6.add(TechniqueTableData("+50", 4, 6, 10, 2, 1))
+        table6.add(TechniqueTableData("+75", 6, 9, 15, 3, 1))
+        table6.add(TechniqueTableData("+90", 8, 11, 20, 4, 1))
+        table6.add(TechniqueTableData("+100", 10, 13, 25, 6, 1))
+        table6.add(TechniqueTableData("+125", 12, 15, 30, 8, 2))
+        table6.add(TechniqueTableData("+150", 16, 20, 35, 10, 2))
+        table6.add(TechniqueTableData("+175", 20, 24, 40, 12, 3))
+        table6.add(TechniqueTableData("+200", 24, 29, 45, 14, 3))
 
-    table5.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
-    table5.add(TechniqueTableData("+25", 3, 5, 5, 1, 1))
-    table5.add(TechniqueTableData("+40", 4, 6, 10, 2, 1))
-    table5.add(TechniqueTableData("+50", 5, 8, 15, 3, 1))
-    table5.add(TechniqueTableData("+75", 8, 11, 20, 4, 1))
-    table5.add(TechniqueTableData("+90", 12, 15, 25, 5, 1))
-    table5.add(TechniqueTableData("+100", 14, 18, 30, 8, 1))
-    table5.add(TechniqueTableData("+125", 18, 22, 35, 10, 2))
-    table5.add(TechniqueTableData("+150", 22, 26, 40, 12, 2))
-    table5.add(TechniqueTableData("+175", 26, 32, 45, 14, 3))
-    table5.add(TechniqueTableData("+200", 30, 36, 50, 16, 3))
+        table7.add(TechniqueTableData("x2", 10, 15, 25, 4, 1))
+        table7.add(TechniqueTableData("x3", 15, 20, 40, 8, 2))
+        table7.add(TechniqueTableData("x4", 20, 30, 80, 12, 3))
 
-    table6.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
-    table6.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
-    table6.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
-    table6.add(TechniqueTableData("+50", 4, 6, 10, 2, 1))
-    table6.add(TechniqueTableData("+75", 6, 9, 15, 3, 1))
-    table6.add(TechniqueTableData("+90", 8, 11, 20, 4, 1))
-    table6.add(TechniqueTableData("+100", 10, 13, 25, 6, 1))
-    table6.add(TechniqueTableData("+125", 12, 15, 30, 8, 2))
-    table6.add(TechniqueTableData("+150", 16, 20, 35, 10, 2))
-    table6.add(TechniqueTableData("+175", 20, 24, 40, 12, 3))
-    table6.add(TechniqueTableData("+200", 24, 29, 45, 14, 3))
+        table8.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
+        table8.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
+        table8.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
+        table8.add(TechniqueTableData("+50", 4, 6, 15, 2, 1))
+        table8.add(TechniqueTableData("+75", 6, 9, 20, 3, 1))
+        table8.add(TechniqueTableData("+90", 8, 11, 25, 4, 1))
+        table8.add(TechniqueTableData("+100", 10, 13, 30, 5, 1))
+        table8.add(TechniqueTableData("+125", 14, 18, 35, 6, 2))
+        table8.add(TechniqueTableData("+150", 16, 20, 40, 8, 2))
+        table8.add(TechniqueTableData("+175", 18, 22, 45, 10, 3))
+        table8.add(TechniqueTableData("+200", 20, 24, 50, 12, 3))
 
-    table7.add(TechniqueTableData("x2", 10, 15, 25, 4, 1))
-    table7.add(TechniqueTableData("x3", 15, 20, 40, 8, 2))
-    table7.add(TechniqueTableData("x4", 20, 30, 80, 12, 3))
+        table8a.add(TechniqueTableData("Vital Sacrifice", 4, 4, 15, 3, 1))
+        table8a.add(TechniqueTableData("Double Vital Sacrifice", 10, 10, 50, 4, 1))
+        table8a.add(TechniqueTableData("Health Sacrifice", 2, 2, 10, 2, 1))
+        table8a.add(TechniqueTableData("Characteristic Sacrifice", 2, 2, 10, 2, 1))
 
-    table8.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
-    table8.add(TechniqueTableData("+25", 2, 4, 5, 1, 1))
-    table8.add(TechniqueTableData("+40", 3, 5, 10, 1, 1))
-    table8.add(TechniqueTableData("+50", 4, 6, 15, 2, 1))
-    table8.add(TechniqueTableData("+75", 6, 9, 20, 3, 1))
-    table8.add(TechniqueTableData("+90", 8, 11, 25, 4, 1))
-    table8.add(TechniqueTableData("+100", 10, 13, 30, 5, 1))
-    table8.add(TechniqueTableData("+125", 14, 18, 35, 6, 2))
-    table8.add(TechniqueTableData("+150", 16, 20, 40, 8, 2))
-    table8.add(TechniqueTableData("+175", 18, 22, 45, 10, 3))
-    table8.add(TechniqueTableData("+200", 20, 24, 50, 12, 3))
+        table9.add(TechniqueTableData("+1", 6, 9, 20, 3, 1))
+        table9.add(TechniqueTableData("+2", 12, 15, 30, 6, 1))
+        table9.add(TechniqueTableData("+3", 18, 22, 40, 9, 1))
+        table9.add(TechniqueTableData("+4", 24, 29, 50, 12, 2))
+        table9.add(TechniqueTableData("+5", 30, 36, 60, 15, 3))
 
-    table8a.add(TechniqueTableData("Vital Sacrifice", 4, 4, 15, 3, 1))
-    table8a.add(TechniqueTableData("Double Vital Sacrifice", 10, 10, 50, 4, 1))
-    table8a.add(TechniqueTableData("Health Sacrifice", 2, 2, 10, 2, 1))
-    table8a.add(TechniqueTableData("Characteristic Sacrifice", 2, 2, 10, 2, 1))
+        table10.add(TechniqueTableData("+1", 3, 5, 5, 1, 1))
+        table10.add(TechniqueTableData("+2", 6, 9, 10, 2, 1))
+        table10.add(TechniqueTableData("+3", 9, 12, 15, 3, 1))
+        table10.add(TechniqueTableData("+4", 12, 15, 20, 4, 1))
+        table10.add(TechniqueTableData("+5", 15, 19, 30, 6, 1))
+        table10.add(TechniqueTableData("+6", 18, 22, 40, 8, 2))
+        table10.add(TechniqueTableData("+8", 22, 26, 50, 10, 2))
+        table10.add(TechniqueTableData("+10", 26, 32, 60, 12, 3))
 
-    table9.add(TechniqueTableData("+1", 6, 9, 20, 3, 1))
-    table9.add(TechniqueTableData("+2", 12, 15, 30, 6, 1))
-    table9.add(TechniqueTableData("+3", 18, 22, 40, 9, 1))
-    table9.add(TechniqueTableData("+4", 24, 29, 50, 12, 2))
-    table9.add(TechniqueTableData("+5", 30, 36, 60, 15, 3))
+        table11.add(TechniqueTableData("+1", 1, 2, 5, 1, 1))
+        table11.add(TechniqueTableData("+2", 2, 4, 5, 2, 1))
+        table11.add(TechniqueTableData("+3", 3, 5, 10, 3, 1))
+        table11.add(TechniqueTableData("+4", 4, 6, 15, 4, 1))
+        table11.add(TechniqueTableData("+6", 5, 8, 20, 6, 1))
+        table11.add(TechniqueTableData("+8", 6, 9, 25, 8, 1))
+        table11.add(TechniqueTableData("+10", 7, 10, 30, 10, 2))
+        table11.add(TechniqueTableData("Unlimited", 8, 11, 35, 12, 3))
 
-    table10.add(TechniqueTableData("+1", 3, 5, 5, 1, 1))
-    table10.add(TechniqueTableData("+2", 6, 9, 10, 2, 1))
-    table10.add(TechniqueTableData("+3", 9, 12, 15, 3, 1))
-    table10.add(TechniqueTableData("+4", 12, 15, 20, 4, 1))
-    table10.add(TechniqueTableData("+5", 15, 19, 30, 6, 1))
-    table10.add(TechniqueTableData("+6", 18, 22, 40, 8, 2))
-    table10.add(TechniqueTableData("+8", 22, 26, 50, 10, 2))
-    table10.add(TechniqueTableData("+10", 26, 32, 60, 12, 3))
+        table12.add(TechniqueTableData("+1", 1, 2, 5, 1, 1))
+        table12.add(TechniqueTableData("+2", 2, 4, 5, 2, 1))
+        table12.add(TechniqueTableData("+3", 3, 5, 10, 3, 1))
+        table12.add(TechniqueTableData("+4", 4, 6, 15, 4, 1))
+        table12.add(TechniqueTableData("+5", 5, 8, 20, 6, 1))
+        table12.add(TechniqueTableData("+6", 6, 9, 25, 8, 1))
+        table12.add(TechniqueTableData("+8", 7, 10, 30, 10, 2))
+        table12.add(TechniqueTableData("+10", 8, 11, 35, 12, 3))
 
-    table11.add(TechniqueTableData("+1", 1, 2, 5, 1, 1))
-    table11.add(TechniqueTableData("+2", 2, 4, 5, 2, 1))
-    table11.add(TechniqueTableData("+3", 3, 5, 10, 3, 1))
-    table11.add(TechniqueTableData("+4", 4, 6, 15, 4, 1))
-    table11.add(TechniqueTableData("+6", 5, 8, 20, 6, 1))
-    table11.add(TechniqueTableData("+8", 6, 9, 25, 8, 1))
-    table11.add(TechniqueTableData("+10", 7, 10, 30, 10, 2))
-    table11.add(TechniqueTableData("Unlimited", 8, 11, 35, 12, 3))
+        table13.add(TechniqueTableData("+25", 1, 2, 5, 1, 1))
+        table13.add(TechniqueTableData("+50", 2, 4, 10, 1, 1))
+        table13.add(TechniqueTableData("+75", 4, 6, 15, 2, 1))
+        table13.add(TechniqueTableData("+100", 6, 9, 20, 3, 1))
+        table13.add(TechniqueTableData("+125", 8, 11, 25, 4, 2))
+        table13.add(TechniqueTableData("+150", 10, 13, 30, 5, 2))
+        table13.add(TechniqueTableData("+175", 12, 15, 35, 6, 3))
+        table13.add(TechniqueTableData("+200", 14, 18, 40, 7, 3))
 
-    table12.add(TechniqueTableData("+1", 1, 2, 5, 1, 1))
-    table12.add(TechniqueTableData("+2", 2, 4, 5, 2, 1))
-    table12.add(TechniqueTableData("+3", 3, 5, 10, 3, 1))
-    table12.add(TechniqueTableData("+4", 4, 6, 15, 4, 1))
-    table12.add(TechniqueTableData("+5", 5, 8, 20, 6, 1))
-    table12.add(TechniqueTableData("+6", 6, 9, 25, 8, 1))
-    table12.add(TechniqueTableData("+8", 7, 10, 30, 10, 2))
-    table12.add(TechniqueTableData("+10", 8, 11, 35, 12, 3))
+        table14.add(TechniqueTableData("40", 1, 2, 5, 1, 1))
+        table14.add(TechniqueTableData("60", 2, 4, 5, 1, 1))
+        table14.add(TechniqueTableData("80", 3, 5, 10, 2, 1))
+        table14.add(TechniqueTableData("100", 5, 8, 15, 3, 1))
+        table14.add(TechniqueTableData("120", 6, 9, 20, 4, 1))
+        table14.add(TechniqueTableData("140", 8, 11, 20, 5, 2))
+        table14.add(TechniqueTableData("180", 10, 13, 30, 6, 2))
+        table14.add(TechniqueTableData("200", 14, 18, 50, 8, 3))
+        table14.add(TechniqueTableData("240", 18, 22, 80, 10, 3))
 
-    table13.add(TechniqueTableData("+25", 1, 2, 5, 1, 1))
-    table13.add(TechniqueTableData("+50", 2, 4, 10, 1, 1))
-    table13.add(TechniqueTableData("+75", 4, 6, 15, 2, 1))
-    table13.add(TechniqueTableData("+100", 6, 9, 20, 3, 1))
-    table13.add(TechniqueTableData("+125", 8, 11, 25, 4, 2))
-    table13.add(TechniqueTableData("+150", 10, 13, 30, 5, 2))
-    table13.add(TechniqueTableData("+175", 12, 15, 35, 6, 3))
-    table13.add(TechniqueTableData("+200", 14, 18, 40, 7, 3))
+        table14a.add(TechniqueTableData("PhR Reduction", 2, 2, 10, 0, 1))
+        table14a.add(TechniqueTableData("Blindness", 5, 5, 15, 0, 1))
+        table14a.add(TechniqueTableData("Characteristic Reduction", 2, 2, 10, 0, 1))
+        table14a.add(TechniqueTableData("Partial Paralysis", 6, 6, 10, 0, 1))
+        table14a.add(TechniqueTableData("Damage", 5, 5, 10, 0, 1))
+        table14a.add(TechniqueTableData("Unconscious", 8, 8, 15, 0, 1))
+        table14a.add(TechniqueTableData("Coma", 10, 10, 30, 0, 2))
+        table14a.add(TechniqueTableData("Total Paralysis", 8, 8, 20, 0, 2))
+        table14a.add(TechniqueTableData("Life Drain", 8, 8, 15, 0, 2))
+        table14a.add(TechniqueTableData("Control", 10, 10, 40, 0, 3))
+        table14a.add(TechniqueTableData("Death", 12, 12, 50, 0, 3))
 
-    table14.add(TechniqueTableData("40", 1, 2, 5, 1, 1))
-    table14.add(TechniqueTableData("60", 2, 4, 5, 1, 1))
-    table14.add(TechniqueTableData("80", 3, 5, 10, 2, 1))
-    table14.add(TechniqueTableData("100", 5, 8, 15, 3, 1))
-    table14.add(TechniqueTableData("120", 6, 9, 20, 4, 1))
-    table14.add(TechniqueTableData("140", 8, 11, 20, 5, 2))
-    table14.add(TechniqueTableData("180", 10, 13, 30, 6, 2))
-    table14.add(TechniqueTableData("200", 14, 18, 50, 8, 3))
-    table14.add(TechniqueTableData("240", 18, 22, 80, 10, 3))
+        table15.add(TechniqueTableData("-10", 1, 2, 5, 1, 1))
+        table15.add(TechniqueTableData("-25", 2, 4, 5, 1, 1))
+        table15.add(TechniqueTableData("-50", 3, 5, 10, 2, 1))
+        table15.add(TechniqueTableData("-75", 4, 6, 10, 2, 2))
+        table15.add(TechniqueTableData("-100", 6, 9, 15, 3, 2))
+        table15.add(TechniqueTableData("-120", 8, 11, 20, 3, 3))
 
-    table14a.add(TechniqueTableData("PhR Reduction", 2, 2, 10, 0, 1))
-    table14a.add(TechniqueTableData("Blindness", 5, 5, 15, 0, 1))
-    table14a.add(TechniqueTableData("Characteristic Reduction", 2, 2, 10, 0, 1))
-    table14a.add(TechniqueTableData("Partial Paralysis", 6, 6, 10, 0, 1))
-    table14a.add(TechniqueTableData("Damage", 5, 5, 10, 0, 1))
-    table14a.add(TechniqueTableData("Unconscious", 8, 8, 15, 0, 1))
-    table14a.add(TechniqueTableData("Coma", 10, 10, 30, 0, 2))
-    table14a.add(TechniqueTableData("Total Paralysis", 8, 8, 20, 0, 2))
-    table14a.add(TechniqueTableData("Life Drain", 8, 8, 15, 0, 2))
-    table14a.add(TechniqueTableData("Control", 10, 10, 40, 0, 3))
-    table14a.add(TechniqueTableData("Death", 12, 12, 50, 0, 3))
+        table16.add(TechniqueTableData("1", 1, 2, 5, 1, 1))
+        table16.add(TechniqueTableData("2", 2, 4, 5, 1, 1))
+        table16.add(TechniqueTableData("3", 4, 6, 10, 2, 1))
+        table16.add(TechniqueTableData("4", 6, 9, 15, 2, 1))
+        table16.add(TechniqueTableData("5", 8, 11, 20, 3, 2))
+        table16.add(TechniqueTableData("6", 10, 13, 25, 3, 2))
+        table16.add(TechniqueTableData("7", 12, 15, 30, 4, 2))
+        table16.add(TechniqueTableData("8", 14, 18, 40, 5, 3))
 
-    table15.add(TechniqueTableData("-10", 1, 2, 5, 1, 1))
-    table15.add(TechniqueTableData("-25", 2, 4, 5, 1, 1))
-    table15.add(TechniqueTableData("-50", 3, 5, 10, 2, 1))
-    table15.add(TechniqueTableData("-75", 4, 6, 10, 2, 2))
-    table15.add(TechniqueTableData("-100", 6, 9, 15, 3, 2))
-    table15.add(TechniqueTableData("-120", 8, 11, 20, 3, 3))
+        table17.add(TechniqueTableData("-1 AT", 1, 2, 5, 1, 1))
+        table17.add(TechniqueTableData("-2 AT", 2, 4, 5, 1, 1))
+        table17.add(TechniqueTableData("-3 AT", 3, 5, 10, 2, 1))
+        table17.add(TechniqueTableData("-4 AT", 4, 6, 10, 2, 1))
+        table17.add(TechniqueTableData("-5 AT", 5, 8, 15, 3, 2))
+        table17.add(TechniqueTableData("-6 AT", 6, 9, 20, 3, 2))
+        table17.add(TechniqueTableData("-7 AT", 8, 11, 25, 4, 2))
+        table17.add(TechniqueTableData("-8 AT", 10, 13, 30, 5, 3))
 
-    table16.add(TechniqueTableData("1", 1, 2, 5, 1, 1))
-    table16.add(TechniqueTableData("2", 2, 4, 5, 1, 1))
-    table16.add(TechniqueTableData("3", 4, 6, 10, 2, 1))
-    table16.add(TechniqueTableData("4", 6, 9, 15, 2, 1))
-    table16.add(TechniqueTableData("5", 8, 11, 20, 3, 2))
-    table16.add(TechniqueTableData("6", 10, 13, 25, 3, 2))
-    table16.add(TechniqueTableData("7", 12, 15, 30, 4, 2))
-    table16.add(TechniqueTableData("8", 14, 18, 40, 5, 3))
+        table18.add(TechniqueTableData("+5", 1, 2, 5, 1, 1))
+        table18.add(TechniqueTableData("+10", 2, 4, 10, 1, 1))
+        table18.add(TechniqueTableData("+15", 4, 6, 15, 2, 1))
+        table18.add(TechniqueTableData("+20", 6, 9, 20, 3, 1))
+        table18.add(TechniqueTableData("+25", 8, 11, 25, 4, 2))
+        table18.add(TechniqueTableData("+30", 12, 15, 30, 5, 2))
+        table18.add(TechniqueTableData("+35", 13, 18, 35, 6, 2))
+        table18.add(TechniqueTableData("+40", 18, 22, 40, 8, 3))
 
-    table17.add(TechniqueTableData("-1 AT", 1, 2, 5, 1, 1))
-    table17.add(TechniqueTableData("-2 AT", 2, 4, 5, 1, 1))
-    table17.add(TechniqueTableData("-3 AT", 3, 5, 10, 2, 1))
-    table17.add(TechniqueTableData("-4 AT", 4, 6, 10, 2, 1))
-    table17.add(TechniqueTableData("-5 AT", 5, 8, 15, 3, 2))
-    table17.add(TechniqueTableData("-6 AT", 6, 9, 20, 3, 2))
-    table17.add(TechniqueTableData("-7 AT", 8, 11, 25, 4, 2))
-    table17.add(TechniqueTableData("-8 AT", 10, 13, 30, 5, 3))
+        table19.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
+        table19.add(TechniqueTableData("+15", 2, 4, 5, 1, 1))
+        table19.add(TechniqueTableData("+20", 3, 5, 10, 2, 1))
+        table19.add(TechniqueTableData("+25", 4, 6, 10, 2, 1))
+        table19.add(TechniqueTableData("+30", 5, 8, 15, 3, 2))
+        table19.add(TechniqueTableData("+35", 6, 9, 20, 3, 2))
+        table19.add(TechniqueTableData("+40", 7, 10, 25, 4, 3))
 
-    table18.add(TechniqueTableData("+5", 1, 2, 5, 1, 1))
-    table18.add(TechniqueTableData("+10", 2, 4, 10, 1, 1))
-    table18.add(TechniqueTableData("+15", 4, 6, 15, 2, 1))
-    table18.add(TechniqueTableData("+20", 6, 9, 20, 3, 1))
-    table18.add(TechniqueTableData("+25", 8, 11, 25, 4, 2))
-    table18.add(TechniqueTableData("+30", 12, 15, 30, 5, 2))
-    table18.add(TechniqueTableData("+35", 13, 18, 35, 6, 2))
-    table18.add(TechniqueTableData("+40", 18, 22, 40, 8, 3))
+        table20.add(TechniqueTableData("5m", 1, 2, 5, 1, 1))
+        table20.add(TechniqueTableData("10m", 2, 4, 10, 1, 1))
+        table20.add(TechniqueTableData("20m", 3, 5, 10, 2, 1))
+        table20.add(TechniqueTableData("50m", 4, 6, 15, 3, 1))
+        table20.add(TechniqueTableData("100m", 5, 8, 20, 4, 1))
+        table20.add(TechniqueTableData("250m", 6, 9, 25, 5, 2))
+        table20.add(TechniqueTableData("500m", 8, 11, 30, 6, 2))
+        table20.add(TechniqueTableData("1km", 10, 13, 35, 8, 2))
+        table20.add(TechniqueTableData("5km", 14, 18, 40, 10, 3))
+        table20.add(TechniqueTableData("10km", 18, 22, 45, 12, 3))
+        table20.add(TechniqueTableData("100km", 22, 26, 50, 14, 3))
 
-    table19.add(TechniqueTableData("+10", 1, 2, 5, 1, 1))
-    table19.add(TechniqueTableData("+15", 2, 4, 5, 1, 1))
-    table19.add(TechniqueTableData("+20", 3, 5, 10, 2, 1))
-    table19.add(TechniqueTableData("+25", 4, 6, 10, 2, 1))
-    table19.add(TechniqueTableData("+30", 5, 8, 15, 3, 2))
-    table19.add(TechniqueTableData("+35", 6, 9, 20, 3, 2))
-    table19.add(TechniqueTableData("+40", 7, 10, 25, 4, 3))
+        table21.add(TechniqueTableData("1m", 1, 2, 5, 1, 1))
+        table21.add(TechniqueTableData("5m", 2, 4, 10, 1, 1))
+        table21.add(TechniqueTableData("10m", 3, 5, 15, 2, 1))
+        table21.add(TechniqueTableData("25m", 4, 6, 20, 3, 1))
+        table21.add(TechniqueTableData("50m", 6, 9, 25, 4, 2))
+        table21.add(TechniqueTableData("100m", 8, 11, 30, 5, 2))
+        table21.add(TechniqueTableData("500m", 10, 13, 40, 6, 2))
+        table21.add(TechniqueTableData("1km", 12, 15, 50, 8, 3))
+        table21.add(TechniqueTableData("5km", 16, 20, 60, 10, 3))
 
-    table20.add(TechniqueTableData("5m", 1, 2, 5, 1, 1))
-    table20.add(TechniqueTableData("10m", 2, 4, 10, 1, 1))
-    table20.add(TechniqueTableData("20m", 3, 5, 10, 2, 1))
-    table20.add(TechniqueTableData("50m", 4, 6, 15, 3, 1))
-    table20.add(TechniqueTableData("100m", 5, 8, 20, 4, 1))
-    table20.add(TechniqueTableData("250m", 6, 9, 25, 5, 2))
-    table20.add(TechniqueTableData("500m", 8, 11, 30, 6, 2))
-    table20.add(TechniqueTableData("1km", 10, 13, 35, 8, 2))
-    table20.add(TechniqueTableData("5km", 14, 18, 40, 10, 3))
-    table20.add(TechniqueTableData("10km", 18, 22, 45, 12, 3))
-    table20.add(TechniqueTableData("100km", 22, 26, 50, 14, 3))
+        table22.add(TechniqueTableData("10m", 2, 4, 5, 1, 1))
+        table22.add(TechniqueTableData("20m", 3, 5, 10, 2, 1))
+        table22.add(TechniqueTableData("50m", 4, 6, 10, 3, 1))
+        table22.add(TechniqueTableData("100m", 5, 8, 15, 4, 1))
+        table22.add(TechniqueTableData("250m", 6, 9, 20, 5, 1))
+        table22.add(TechniqueTableData("500m", 8, 11, 25, 6, 2))
+        table22.add(TechniqueTableData("1km", 10, 13, 30, 7, 2))
+        table22.add(TechniqueTableData("5km", 14, 18, 35, 8, 2))
+        table22.add(TechniqueTableData("10km", 18, 22, 40, 10, 3))
+        table22.add(TechniqueTableData("100km", 22, 26, 50, 12, 3))
 
-    table21.add(TechniqueTableData("1m", 1, 2, 5, 1, 1))
-    table21.add(TechniqueTableData("5m", 2, 4, 10, 1, 1))
-    table21.add(TechniqueTableData("10m", 3, 5, 15, 2, 1))
-    table21.add(TechniqueTableData("25m", 4, 6, 20, 3, 1))
-    table21.add(TechniqueTableData("50m", 6, 9, 25, 4, 2))
-    table21.add(TechniqueTableData("100m", 8, 11, 30, 5, 2))
-    table21.add(TechniqueTableData("500m", 10, 13, 40, 6, 2))
-    table21.add(TechniqueTableData("1km", 12, 15, 50, 8, 3))
-    table21.add(TechniqueTableData("5km", 16, 20, 60, 10, 3))
+        table23.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
+        table23.add(TechniqueTableData("+25", 3, 5, 5, 2, 1))
+        table23.add(TechniqueTableData("+40", 4, 6, 10, 3, 1))
+        table23.add(TechniqueTableData("+50", 5, 8, 15, 4, 1))
+        table23.add(TechniqueTableData("+75", 8, 11, 20, 6, 1))
+        table23.add(TechniqueTableData("+90", 12, 15, 25, 8, 1))
+        table23.add(TechniqueTableData("+100", 14, 18, 30, 10, 1))
+        table23.add(TechniqueTableData("+125", 18, 22, 35, 12, 2))
+        table23.add(TechniqueTableData("+150", 22, 26, 40, 14, 2))
+        table23.add(TechniqueTableData("+175", 26, 32, 45, 16, 3))
+        table23.add(TechniqueTableData("+200", 30, 36, 50, 18, 3))
 
-    table22.add(TechniqueTableData("10m", 2, 4, 5, 1, 1))
-    table22.add(TechniqueTableData("20m", 3, 5, 10, 2, 1))
-    table22.add(TechniqueTableData("50m", 4, 6, 10, 3, 1))
-    table22.add(TechniqueTableData("100m", 5, 8, 15, 4, 1))
-    table22.add(TechniqueTableData("250m", 6, 9, 20, 5, 1))
-    table22.add(TechniqueTableData("500m", 8, 11, 25, 6, 2))
-    table22.add(TechniqueTableData("1km", 10, 13, 30, 7, 2))
-    table22.add(TechniqueTableData("5km", 14, 18, 35, 8, 2))
-    table22.add(TechniqueTableData("10km", 18, 22, 40, 10, 3))
-    table22.add(TechniqueTableData("100km", 22, 26, 50, 12, 3))
+        table24.add(TechniqueTableData("+0", 2, 4, 5, 1, 1))
+        table24.add(TechniqueTableData("+5", 4, 6, 5, 1, 1))
+        table24.add(TechniqueTableData("+10", 6, 9, 10, 2, 1))
+        table24.add(TechniqueTableData("+15", 8, 11, 15, 3, 2))
+        table24.add(TechniqueTableData("+20", 10, 13, 20, 4, 3))
 
-    table23.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
-    table23.add(TechniqueTableData("+25", 3, 5, 5, 2, 1))
-    table23.add(TechniqueTableData("+40", 4, 6, 10, 3, 1))
-    table23.add(TechniqueTableData("+50", 5, 8, 15, 4, 1))
-    table23.add(TechniqueTableData("+75", 8, 11, 20, 6, 1))
-    table23.add(TechniqueTableData("+90", 12, 15, 25, 8, 1))
-    table23.add(TechniqueTableData("+100", 14, 18, 30, 10, 1))
-    table23.add(TechniqueTableData("+125", 18, 22, 35, 12, 2))
-    table23.add(TechniqueTableData("+150", 22, 26, 40, 14, 2))
-    table23.add(TechniqueTableData("+175", 26, 32, 45, 16, 3))
-    table23.add(TechniqueTableData("+200", 30, 36, 50, 18, 3))
+        table25.add(TechniqueTableData("4", 2, 4, 5, 1, 1))
+        table25.add(TechniqueTableData("6", 3, 5, 10, 2, 1))
+        table25.add(TechniqueTableData("8", 4, 6, 10, 3, 1))
+        table25.add(TechniqueTableData("10", 5, 8, 15, 4, 1))
+        table25.add(TechniqueTableData("12", 6, 9, 20, 5, 1))
+        table25.add(TechniqueTableData("14", 8, 11, 25, 6, 2))
+        table25.add(TechniqueTableData("16", 10, 13, 30, 7, 2))
+        table25.add(TechniqueTableData("18", 14, 18, 35, 8, 3))
+        table25.add(TechniqueTableData("20", 18, 22, 40, 10, 3))
 
-    table24.add(TechniqueTableData("+0", 2, 4, 5, 1, 1))
-    table24.add(TechniqueTableData("+5", 4, 6, 5, 1, 1))
-    table24.add(TechniqueTableData("+10", 6, 9, 10, 2, 1))
-    table24.add(TechniqueTableData("+15", 8, 11, 15, 3, 2))
-    table24.add(TechniqueTableData("+20", 10, 13, 20, 4, 3))
+        table26.add(TechniqueTableData("4", 1, 2, 5, 1, 1))
+        table26.add(TechniqueTableData("6", 2, 4, 5, 2, 1))
+        table26.add(TechniqueTableData("8", 3, 5, 10, 3, 1))
+        table26.add(TechniqueTableData("10", 4, 6, 10, 4, 1))
+        table26.add(TechniqueTableData("12", 5, 8, 15, 5, 1))
+        table26.add(TechniqueTableData("14", 6, 9, 20, 6, 2))
+        table26.add(TechniqueTableData("16", 8, 11, 25, 7, 2))
+        table26.add(TechniqueTableData("18", 10, 13, 30, 8, 3))
+        table26.add(TechniqueTableData("20", 12, 15, 35, 10, 3))
 
-    table25.add(TechniqueTableData("4", 2, 4, 5, 1, 1))
-    table25.add(TechniqueTableData("6", 3, 5, 10, 2, 1))
-    table25.add(TechniqueTableData("8", 4, 6, 10, 3, 1))
-    table25.add(TechniqueTableData("10", 5, 8, 15, 4, 1))
-    table25.add(TechniqueTableData("12", 6, 9, 20, 5, 1))
-    table25.add(TechniqueTableData("14", 8, 11, 25, 6, 2))
-    table25.add(TechniqueTableData("16", 10, 13, 30, 7, 2))
-    table25.add(TechniqueTableData("18", 14, 18, 35, 8, 3))
-    table25.add(TechniqueTableData("20", 18, 22, 40, 10, 3))
+        table27.add(TechniqueTableData("100", 2, 4, 5, 1, 1))
+        table27.add(TechniqueTableData("200", 3, 5, 5, 1, 1))
+        table27.add(TechniqueTableData("300", 4, 6, 10, 2, 1))
+        table27.add(TechniqueTableData("400", 5, 8, 15, 3, 1))
+        table27.add(TechniqueTableData("500", 8, 11, 20, 4, 1))
+        table27.add(TechniqueTableData("800", 12, 15, 25, 5, 2))
+        table27.add(TechniqueTableData("1000", 14, 18, 30, 8, 2))
+        table27.add(TechniqueTableData("1250", 18, 22, 35, 10, 2))
+        table27.add(TechniqueTableData("1500", 22, 26, 40, 12, 3))
+        table27.add(TechniqueTableData("2000", 26, 32, 45, 14, 3))
 
-    table26.add(TechniqueTableData("4", 1, 2, 5, 1, 1))
-    table26.add(TechniqueTableData("6", 2, 4, 5, 2, 1))
-    table26.add(TechniqueTableData("8", 3, 5, 10, 3, 1))
-    table26.add(TechniqueTableData("10", 4, 6, 10, 4, 1))
-    table26.add(TechniqueTableData("12", 5, 8, 15, 5, 1))
-    table26.add(TechniqueTableData("14", 6, 9, 20, 6, 2))
-    table26.add(TechniqueTableData("16", 8, 11, 25, 7, 2))
-    table26.add(TechniqueTableData("18", 10, 13, 30, 8, 3))
-    table26.add(TechniqueTableData("20", 12, 15, 35, 10, 3))
+        table29.add(TechniqueTableData("1", 1, 2, 5, 1, 1))
+        table29.add(TechniqueTableData("2", 2, 4, 5, 2, 1))
+        table29.add(TechniqueTableData("4", 4, 6, 10, 3, 1))
+        table29.add(TechniqueTableData("6", 6, 9, 10, 4, 1))
+        table29.add(TechniqueTableData("10", 8, 11, 15, 6, 2))
+        table29.add(TechniqueTableData("15", 10, 13, 20, 8, 2))
+        table29.add(TechniqueTableData("20", 12, 15, 25, 10, 2))
+        table29.add(TechniqueTableData("25", 14, 18, 30, 12, 3))
 
-    table27.add(TechniqueTableData("100", 2, 4, 5, 1, 1))
-    table27.add(TechniqueTableData("200", 3, 5, 5, 1, 1))
-    table27.add(TechniqueTableData("300", 4, 6, 10, 2, 1))
-    table27.add(TechniqueTableData("400", 5, 8, 15, 3, 1))
-    table27.add(TechniqueTableData("500", 8, 11, 20, 4, 1))
-    table27.add(TechniqueTableData("800", 12, 15, 25, 5, 2))
-    table27.add(TechniqueTableData("1000", 14, 18, 30, 8, 2))
-    table27.add(TechniqueTableData("1250", 18, 22, 35, 10, 2))
-    table27.add(TechniqueTableData("1500", 22, 26, 40, 12, 3))
-    table27.add(TechniqueTableData("2000", 26, 32, 45, 14, 3))
+        table29a.add(TechniqueTableData("Moderate", 1, 1, 5, 0, 1))
+        table29a.add(TechniqueTableData("Difficult", 2, 2, 10, 0, 1))
+        table29a.add(TechniqueTableData("Very Difficult", 3, 3, 10, 0, 1))
+        table29a.add(TechniqueTableData("Absurd", 4, 4, 15, 0, 1))
+        table29a.add(TechniqueTableData("Almost Impossible", 5, 5, 15, 0, 1))
+        table29a.add(TechniqueTableData("Impossible", 6, 6, 20, 0, 2))
+        table29a.add(TechniqueTableData("Inhuman", 7, 7, 25, 0, 2))
+        table29a.add(TechniqueTableData("Zen", 8, 8, 30, 0, 3))
 
-    table29.add(TechniqueTableData("1", 1, 2, 5, 1, 1))
-    table29.add(TechniqueTableData("2", 2, 4, 5, 2, 1))
-    table29.add(TechniqueTableData("4", 4, 6, 10, 3, 1))
-    table29.add(TechniqueTableData("6", 6, 9, 10, 4, 1))
-    table29.add(TechniqueTableData("10", 8, 11, 15, 6, 2))
-    table29.add(TechniqueTableData("15", 10, 13, 20, 8, 2))
-    table29.add(TechniqueTableData("20", 12, 15, 25, 10, 2))
-    table29.add(TechniqueTableData("25", 14, 18, 30, 12, 3))
+        table34.add(TechniqueTableData("100", 2, 4, 5, 1, 1))
+        table34.add(TechniqueTableData("200", 3, 5, 5, 1, 1))
+        table34.add(TechniqueTableData("300", 4, 6, 10, 2, 1))
+        table34.add(TechniqueTableData("400", 5, 8, 15, 3, 1))
+        table34.add(TechniqueTableData("600", 8, 11, 20, 4, 1))
+        table34.add(TechniqueTableData("800", 12, 15, 25, 5, 1))
+        table34.add(TechniqueTableData("1000", 14, 18, 30, 8, 2))
+        table34.add(TechniqueTableData("1200", 18, 22, 35, 10, 2))
+        table34.add(TechniqueTableData("1400", 22, 26, 40, 12, 3))
 
-    table29a.add(TechniqueTableData("Moderate", 1, 1, 5, 0, 1))
-    table29a.add(TechniqueTableData("Difficult", 2, 2, 10, 0, 1))
-    table29a.add(TechniqueTableData("Very Difficult", 3, 3, 10, 0, 1))
-    table29a.add(TechniqueTableData("Absurd", 4, 4, 15, 0, 1))
-    table29a.add(TechniqueTableData("Almost Impossible", 5, 5, 15, 0, 1))
-    table29a.add(TechniqueTableData("Impossible", 6, 6, 20, 0, 2))
-    table29a.add(TechniqueTableData("Inhuman", 7, 7, 25, 0, 2))
-    table29a.add(TechniqueTableData("Zen", 8, 8, 30, 0, 3))
+        table35.add(TechniqueTableData("Single Element", 0, 0, -15, 0, 1))
+        table35.add(TechniqueTableData("Two Elements", 0, 0, -10, 0, 1))
 
-    table34.add(TechniqueTableData("100", 2, 4, 5, 1, 1))
-    table34.add(TechniqueTableData("200", 3, 5, 5, 1, 1))
-    table34.add(TechniqueTableData("300", 4, 6, 10, 2, 1))
-    table34.add(TechniqueTableData("400", 5, 8, 15, 3, 1))
-    table34.add(TechniqueTableData("600", 8, 11, 20, 4, 1))
-    table34.add(TechniqueTableData("800", 12, 15, 25, 5, 1))
-    table34.add(TechniqueTableData("1000", 14, 18, 30, 8, 2))
-    table34.add(TechniqueTableData("1200", 18, 22, 35, 10, 2))
-    table34.add(TechniqueTableData("1400", 22, 26, 40, 12, 3))
+        table36.add(TechniqueTableData("No Damage", 0, 0, -20, 0, 1))
+        table36.add(TechniqueTableData("Half Damage", 0, 0, -10, 0, 1))
 
-    table35.add(TechniqueTableData("Single Element", 0, 0, -15, 0, 1))
-    table35.add(TechniqueTableData("Two Elements", 0, 0, -10, 0, 1))
+        table37.add(TechniqueTableData("Simple Intensity", 0, 0, -15, 0, 1))
+        table37.add(TechniqueTableData("Major Intensity", 0, 0, -10, 0, 1))
+        table37.add(TechniqueTableData("Determined Condition", 0, 0, -5, 0, 1))
 
-    table36.add(TechniqueTableData("No Damage", 0, 0, -20, 0, 1))
-    table36.add(TechniqueTableData("Half Damage", 0, 0, -10, 0, 1))
-
-    table37.add(TechniqueTableData("Simple Intensity", 0, 0, -15, 0, 1))
-    table37.add(TechniqueTableData("Major Intensity", 0, 0, -10, 0, 1))
-    table37.add(TechniqueTableData("Determined Condition", 0, 0, -5, 0, 1))
-
-    Column(Modifier.verticalScroll(rememberScrollState())){
-        val kiIndex = when(index){
+        //define primary index for each effect
+        val kiIndex = when(techniqueIndex.value){
             7, 8, 17, 18, 19, 25, 26 -> 0
             1, 2, 3, 4, 9, 10, 12, 15 -> 1
             5, 6, 11, 13, 22 -> 2
@@ -1104,1003 +1188,467 @@ private fun TechniqueTable(
             else -> 5
         }
 
+        //initialize effects' associated elements
         val elementList = mutableListOf<Element>()
 
-        if(listOf(1, 7, 8, 17, 18, 19, 20, 21, 23, 26, 31).contains(index)){
-           elementList.add(Element.Fire)
+        //add elements for any effect that applies
+        if(listOf(1, 7, 8, 17, 18, 19, 20, 21, 23, 26, 31).contains(techniqueIndex.value)){
+            elementList.add(Element.Fire)
         }
-        if(listOf(2, 3, 4, 5, 9, 10, 16, 20, 27, 28, 29, 30).contains(index)){
+        if(listOf(2, 3, 4, 5, 9, 10, 16, 20, 27, 28, 29, 30).contains(techniqueIndex.value)){
             elementList.add(Element.Water)
         }
-        if(listOf(1, 2, 5, 6, 9, 10, 12, 13, 15, 20, 22).contains(index)){
+        if(listOf(1, 2, 5, 6, 9, 10, 12, 13, 15, 20, 22).contains(techniqueIndex.value)){
             elementList.add(Element.Air)
         }
-        if(listOf(2, 3, 4, 7, 8, 16, 18, 19, 23, 24, 25, 26, 34).contains(index)){
+        if(listOf(2, 3, 4, 7, 8, 16, 18, 19, 23, 24, 25, 26, 34).contains(techniqueIndex.value)){
             elementList.add(Element.Earth)
         }
-        if(listOf(3, 4, 5, 6, 11, 14, 16, 21, 22, 24, 27, 28, 30, 31, 33).contains(index)){
+        if(listOf(3, 4, 5, 6, 11, 14, 16, 21, 22, 24, 27, 28, 30, 31, 33).contains(techniqueIndex.value)){
             elementList.add(Element.Light)
         }
-        if(listOf(1, 6, 10, 14, 17, 21, 22, 24, 28, 29, 30, 31, 33).contains(index)){
+        if(listOf(1, 6, 10, 14, 17, 21, 22, 24, 28, 29, 30, 31, 33).contains(techniqueIndex.value)){
             elementList.add(Element.Dark)
         }
-        if(listOf(36, 37, 38).contains(index)){
+        if(listOf(36, 37, 38).contains(techniqueIndex.value)){
             elementList.add(Element.Free)
         }
 
-        if(!listOf(0, 32, 35, 36, 37, 38).contains(index))
-            ElementDisplayRow(elementList)
+        //display elements for any technique with these exceptions
+        if(!listOf(0, 32, 35, 36, 37, 38).contains(techniqueIndex.value))
+            Text(text = getElementString(elementList))
 
-        when(index){
+        //apply build, title, and table for each technique index
+        when(techniqueIndex.value){
             //Attack Ability
             1 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                TechniqueTableHeader("Attack Bonus")
-
-                table1.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining) }
-                }
+                header.value = "Attack Bonus"
+                useTable.value = table1
             }
 
             //Counterattack Ability
             2 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                TechniqueTableHeader("Attack Bonus")
-
-                table2.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Attack Bonus"
+                useTable.value = table2
             }
 
             //Block Ability
             3 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                TechniqueTableHeader("Block Bonus")
-
-                table3.forEach{ tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    { effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(
-                            effectInput,
-                            charInstance.kiList.martialKnowledgeRemaining
-                        )
-                    }
-
-                }
+                header.value = "Block Bonus"
+                useTable.value = table3
             }
 
             //Limited Block Ability
             4 -> {
                 buildArray.value = listOf(2, 0, 2, null, 2, 3)
-                TechniqueTableHeader("Block Bonus")
-
-                table4.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Block Bonus"
+                useTable.value = table4
             }
 
             //Dodge Ability
             5 -> {
                 buildArray.value = listOf(null, 2, 0, 2, 2, 3)
-                TechniqueTableHeader("Dodge Bonus")
-
-                table5.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Dodge Bonus"
+                useTable.value = table5
             }
 
             //Limited Dodge Ability
             6 -> {
                 buildArray.value = listOf(null, 2, 0, 2, 2, 3)
-                TechniqueTableHeader("Dodge Bonus")
-
-                table6.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Dodge Bonus"
+                useTable.value = table6
             }
 
             //Damage Multiplier
             7 -> {
                 buildArray.value = listOf(0, 3, null, 2, 1, 1)
-                TechniqueTableHeader("Multiplier")
-
-                table7.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Multiplier"
+                useTable.value = table7
             }
 
             //Damage Augmentation
             8 -> {
                 buildArray.value = listOf(0, 3, null, 1, 2, 1)
-                TechniqueTableHeader("Damage Bonus")
-
-                table8.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Text(text = "Optional Advantage: Sacrifice")
-                table8a.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-
-                }
+                header.value = "Damage Bonus"
+                useTable.value = table8
+                optHeader1.value = "Optional Advantage: Sacrifice"
+                optTable1.value = table8a
             }
 
             //Additional Attack
             9 -> {
                 buildArray.value = listOf(null, 0, 2, 1, 3, 3)
-                TechniqueTableHeader("Attacks")
-
-                table9.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Continuous Attack")}
-                TechniqueTableRow(
-                    TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-
-                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                TechniqueTableRow(
-                    TechniqueTableData("Added Fatigue Bonus", 8, 8, 30, 2, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck2
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Attacks"
+                useTable.value = table9
+                optHeader1.value = "Optional Advantage: Continuous Attack"
+                optTable1.value = listOf(TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1))
+                optHeader2.value = "Optional Advantage: Added Fatigue Bonus"
+                optTable2.value = listOf(TechniqueTableData("Added Fatigue Bonus", 8, 8, 30, 2, 1))
             }
 
             //Limited Additional Attack
             10 -> {
                 buildArray.value = listOf(null, 0, 2, 1, 3, 3)
-                TechniqueTableHeader("Attacks")
-
-                table10.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Continuous Attack")}
-                TechniqueTableRow(
-                    TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Attacks"
+                useTable.value = table10
+                optHeader1.value = "Optional Advantage: Continuous Attack"
+                optTable1.value = listOf(TechniqueTableData("Continuous Attack", 10, 10, 30, 5, 1))
             }
 
             //Additional Defense
             11 -> {
                 buildArray.value = listOf(null, 1, 0, 1, 3, 3)
-                TechniqueTableHeader("Defenses")
-
-                table11.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                TechniqueTableRow(
-                    TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 2, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Defenses"
+                useTable.value = table11
+                optHeader1.value = "Optional Advantage: Added Fatigue Bonus"
+                optTable1.value = listOf(TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 2, 1))
             }
 
             //Additional Action
             12 -> {
                 buildArray.value = listOf(null, 0, 1, 1, 3, 3)
-                TechniqueTableHeader("Actions")
-
-                table12.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Added Fatigue Bonus")}
-                TechniqueTableRow(
-                    TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Actions"
+                useTable.value = table12
+                optHeader1.value = "Optional Advantage: Added Fatigue Bonus"
+                optTable1.value = listOf(TechniqueTableData("Added Fatigue Bonus", 6, 6, 20, 1, 1))
             }
 
             //Initiative Augmentation
             13 -> {
                 buildArray.value = listOf(null, 1, 0, 2, 3, 3)
-                TechniqueTableHeader("Initiative Bonus")
-
-                table13.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Initiative Bonus"
+                useTable.value = table13
             }
 
             //States
             14 -> {
                 buildArray.value = listOf(4, 4, null, 4, 0, 1)
-                TechniqueTableHeader("PhR Check")
-
-                table14.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Added State")}
-                table14a.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "PhR Check"
+                useTable.value = table14
+                optHeader1.value = "Optional Advantage: Added State"
+                optTable1.value = table14a
             }
 
             //Combat Maneuvers and Aiming
             15 -> {
                 buildArray.value = listOf(null, 0, 1, 2, 2, 2)
-                TechniqueTableHeader("Precision")
-
-                table15.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Precision"
+                useTable.value = table15
             }
 
             //Armor Increase
             16 -> {
                 buildArray.value = listOf(2, null, 3, 0, 1, 2)
-                TechniqueTableHeader("AT")
-
-                table16.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "AT"
+                useTable.value = table16
             }
 
             //Armor Destruction
             17 -> {
                 buildArray.value = listOf(0, 2, null, 2, 1, 2)
-                TechniqueTableHeader("Reduction")
-
-                table17.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Reduction"
+                useTable.value = table17
             }
 
             //Breakage Augmentation
             18 -> {
                 buildArray.value = listOf(0, 4, null, 2, 2, 1)
-                TechniqueTableHeader("Breakage")
-
-                table18.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Breakage"
+                useTable.value = table18
             }
 
             //Fortitude Augmentation
             19 -> {
                 buildArray.value = listOf(0, 4, null, 2, 2, 1)
-                TechniqueTableHeader("Fortitude")
-
-                table19.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Fortitude"
+                useTable.value = table19
             }
 
             //Long-Distance Attack
             20 -> {
                 buildArray.value = listOf(null, 2, 3, 4, 0, 1)
-                TechniqueTableHeader("Distance")
-
-                table20.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Distance"
+                useTable.value = table20
             }
 
             //Area Attack
             21 -> {
                 buildArray.value = listOf(null, 2, 3, 3, 0, 1)
-                TechniqueTableHeader("Radius")
-
-                table21.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Target Choice")}
-                TechniqueTableRow(
-                    TechniqueTableData("Target Choice", 2, 2, 10, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Radius"
+                useTable.value = table21
+                optHeader1.value = "Optional Advantage: Target Choice"
+                optTable1.value = listOf(TechniqueTableData("Target Choice", 2, 2, 10, 1, 1))
             }
 
             //Automatic Transportation
             22 -> {
                 buildArray.value = listOf(2, 2, 0, 2, 3, null)
-                TechniqueTableHeader("Distance")
-
-                table22.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Distance"
+                useTable.value = table22
             }
 
             //Critical Enhancement
             23 -> {
                 buildArray.value = listOf(1, 2, null, 2, 0, 1)
-                TechniqueTableHeader("Critical")
-
-                table23.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Automatic Critical")}
-                TechniqueTableRow(
-                    TechniqueTableData("Automatic Critical", 8, 8, 30, 4, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Critical"
+                useTable.value = table23
+                optHeader1.value = "Optional Advantage: Automatic Critical"
+                optTable1.value = listOf(TechniqueTableData("Automatic Critical", 8, 8, 30, 4, 1))
             }
 
             //Physical Ki Weapons
             24 -> {
                 buildArray.value = listOf(2, 3, null, 1, 0, 1)
-                TechniqueTableHeader("Quality")
-
-                table24.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional Advantage: Projectiles")}
-                TechniqueTableRow(
-                    TechniqueTableData("Projectile Weapon", 2, 2, 10, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Quality"
+                useTable.value = table24
+                optHeader1.value = "Optional Advantage: Projectiles"
+                optTable1.value = listOf(TechniqueTableData("Projectile Weapon", 2, 2, 10, 1, 1))
             }
 
             //Trapping
             25 -> {
                 buildArray.value = listOf(0, 1, null, 2, 2, 2)
-                TechniqueTableHeader("Trap")
-
-                table25.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Trap"
+                useTable.value = table25
             }
 
             //Projection
             26 -> {
                 buildArray.value = listOf(0, 3, null, 2, 1, 1)
-                TechniqueTableHeader("Projection")
-
-                table26.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Projection"
+                useTable.value = table26
             }
 
             //Energy Shield
             27 -> {
                 buildArray.value = listOf(2, 3, null, 2, 0, 1)
-                TechniqueTableHeader("LP")
-
-                table27.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "LP"
+                useTable.value = table27
             }
 
             //Intangibility
             28 -> {
                 buildArray.value = listOf(3, 3, null, 3, 0, 1)
-                TechniqueTableHeader("Effect")
-
-                TechniqueTableRow(
-                    TechniqueTableData("Intangibility", 3, 5, 10, 2, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Effect"
+                useTable.value = listOf(TechniqueTableData("Intangibility", 3, 5, 10, 2, 1))
             }
 
             //Mirage
             29 -> {
                 buildArray.value = listOf(null, 3, 2, 3, 1, 0)
-                TechniqueTableHeader("Mirages")
-
-                table29.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Optional advantage: Non-Detection")}
-                table29a.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        optionalCheck1
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "Mirages"
+                useTable.value = table29
+                optHeader1.value = "Optional advantage: Non-Detection"
+                optTable1.value = table29a
             }
 
             //Attack Mirroring
             30 -> {
                 buildArray.value = listOf(2, 3, 3, null, 0, 1)
-                TechniqueTableHeader("Effect")
-
-                TechniqueTableRow(
-                    TechniqueTableData("Attack Mirroring", 12, 15, 30, 8, 2),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-
-                Row{Text(text = "Optional Advantage: Target Choice")}
-                TechniqueTableRow(
-                    TechniqueTableData("Target Choice", 2, 2, 10, 2, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck1
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-
-                Row{Text(text = "Optional Advantage: Mirroring Esoteric Abilities")}
-                TechniqueTableRow(
-                    TechniqueTableData("Mirror Esoteric Abilities", 4, 4, 20, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    optionalCheck2
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Effect"
+                useTable.value = listOf(TechniqueTableData("Attack Mirroring", 12, 15, 30, 8, 2))
+                optHeader1.value = "Optional Advantage: Target Choice"
+                optTable1.value = listOf(TechniqueTableData("Target Choice", 2, 2, 10, 2, 1))
+                optHeader2.value = "Optional Advantage: Mirroring Esoteric Abilities"
+                optTable2.value = listOf(TechniqueTableData("Mirror Esoteric Abilities", 4, 4, 20, 1, 1))
             }
 
             //Energy Damaging Attack
             31 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                TechniqueTableHeader("Attack")
-
-                TechniqueTableRow(
-                    TechniqueTableData("Energy", 1, 2, 5, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Attack"
+                useTable.value = listOf(TechniqueTableData("Energy", 1, 2, 5, 1, 1))
             }
 
             //Elemental Attack
             32 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                TechniqueTableHeader("Attack")
-
-                TechniqueTableRow(
-                    TechniqueTableData("2", 2, 4, 5, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-
-                Row{Text(text = "Select Element: ")}
-                elementAttackList.forEach{element ->
-                    ElementalRow(
-                        element,
-                        allEffectChecks,
-                        elementChecks
-                    )
-                }
+                header.value = "Attack"
+                useTable.value = listOf(TechniqueTableData("2", 2, 4, 5, 1, 1))
+                optHeader1.value = "Select Element: "
+                optElement.value = elementAttackList
             }
 
             //Supernatural Attack
             33 -> {
                 buildArray.value = listOf(3, 3, null, 2, 0, 1)
-                TechniqueTableHeader("Attack")
-
-                TechniqueTableRow(
-                    TechniqueTableData("Energy", 5, 8, 10, 1, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                header.value = "Attack"
+                useTable.value = listOf(TechniqueTableData("Energy", 5, 8, 10, 1, 1))
             }
 
             //Damage Resistance
             34 -> {
                 buildArray.value = listOf(3, 3, null, 0, 3, 1)
-                TechniqueTableHeader("LP")
-
-                table34.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                header.value = "LP"
+                useTable.value = table34
             }
 
             //ElementalBinding
             35 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
-
-                table35.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
-
-                Row{Text(text = "Select Element(s): ")}
-                elementBindList.forEach{element ->
-                    ElementalRow(element, allEffectChecks, elementChecks)
-                }
+                useTable.value = table35
+                optHeader1.value = "Select Element(s): "
+                optElement.value = elementBindList
             }
 
             //Reduce Damage
             36 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
-
-                table36.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                useTable.value = table36
             }
 
             //Special Requirements
             37 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
-
-                table37.forEach{tableRow ->
-                    TechniqueTableRow(
-                        tableRow,
-                        elementList,
-                        index,
-                        kiIndex,
-                        isPrimary,
-                        buildArray.value,
-                        allEffectChecks
-                    )
-                    {effectInput: TechniqueEffect ->
-                        customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
-                }
+                useTable.value = table37
             }
 
             //Predetermination
             38 -> {
                 buildArray.value = listOf(null, null, null, null, null, null)
-
-                TechniqueTableRow(
-                    TechniqueTableData("Predetermination", 0, 0, -20, 0, 1),
-                    elementList,
-                    index,
-                    kiIndex,
-                    isPrimary,
-                    buildArray.value,
-                    allEffectChecks
-                )
-                {effectInput: TechniqueEffect ->
-                    customTechnique.validEffectAddition(effectInput, charInstance.kiList.martialKnowledgeRemaining)}
+                useTable.value = listOf(TechniqueTableData("Predetermination", 0, 0, -20, 0, 1))
             }
 
-            else -> {}
+            else -> {
+                header.value = null
+                useTable.value = null
+                optHeader1.value = null
+                optTable1.value = null
+                optHeader2.value = null
+                optTable2.value = null
+                optElement.value = null
+            }
+        }
+
+        //produce booleans for main check item
+        val mainCheckList =
+            if(useTable.value != null)
+                useTable.value!!.map{mutableStateOf(false)}
+            else null
+
+        //produce booleans for first optional effect
+        val opt1CheckList =
+            if(optTable1.value != null)
+                optTable1.value!!.map{mutableStateOf(false)}
+            else null
+
+        //produce booleans for second optional effect
+        val opt2CheckList =
+            if(optTable2.value != null)
+                optTable2.value!!.map{mutableStateOf(false)}
+            else null
+
+        //produce booleans for elemental effects
+        val elementCheckList =
+            if(optElement.value != null)
+                optElement.value!!.map{mutableStateOf(false)}
+            else null
+
+        LazyColumn {
+            //display header if one given
+            if (header.value != null)
+                item{TechniqueTableHeader(header.value!!)}
+
+            //display effect table if one given
+            if(useTable.value != null) {
+                items(useTable.value!!) {
+                    TechniqueTableRow(
+                        it,
+                        elementList,
+                        techniqueIndex.value,
+                        kiIndex,
+                        isPrimary,
+                        buildArray.value,
+                        mainCheckList!![useTable.value!!.indexOf(it)],
+                        allEffectChecks,
+                        elementChecks
+                    ) { effectInput: TechniqueEffect ->
+                        customTechnique.validEffectAddition(
+                            effectInput,
+                            charInstance.kiList.martialKnowledgeRemaining
+                        )
+                    }
+                }
+            }
+
+            //display optional effect table if one given
+            if (optTable1.value != null) {
+                item { Text(text = optHeader1.value!!) }
+                items(optTable1.value!!) {
+                    TechniqueTableRow(
+                        it,
+                        elementList,
+                        techniqueIndex.value,
+                        kiIndex,
+                        isPrimary,
+                        buildArray.value,
+                        opt1CheckList!![optTable1.value!!.indexOf(it)],
+                        optionalCheck1,
+                        elementChecks
+                    ) { effectInput: TechniqueEffect ->
+                        customTechnique.validEffectAddition(
+                            effectInput,
+                            charInstance.kiList.martialKnowledgeRemaining
+                        )
+                    }
+                }
+            }
+
+            //display second optional effect table if one given
+            if (optTable2.value != null) {
+                item { Text(text = optHeader2.value!!) }
+                items(optTable2.value!!) {
+                    TechniqueTableRow(
+                        it,
+                        elementList,
+                        techniqueIndex.value,
+                        kiIndex,
+                        isPrimary,
+                        buildArray.value,
+                        opt2CheckList!![optTable2.value!!.indexOf(it)],
+                        optionalCheck2,
+                        elementChecks
+                    ) { effectInput: TechniqueEffect ->
+                        customTechnique.validEffectAddition(
+                            effectInput,
+                            charInstance.kiList.martialKnowledgeRemaining
+                        )
+                    }
+                }
+            }
+
+            //display element table if one given
+            if (optElement.value != null) {
+                item { Text(text = optHeader1.value!!) }
+                items(optElement.value!!) {
+                    ElementalRow(it, elementCheckList!![optElement.value!!.indexOf(it)], allEffectChecks, elementChecks)
+                }
+            }
         }
     }
 }
 
-@Composable
-private fun ElementDisplayRow(
-    elementList: List<Element>
-){
-    var elementString = ""
-
-    elementList.forEach{
-        elementString += it.name
-        if(elementList.indexOf(it) < elementList.size)
-            elementString += ", "
-    }
-
-    Row {
-        Text(text = "Elements: $elementString")
-    }
-}
-
+/**
+ * Header for the table of technique effects
+ *
+ * description: unique descriptor for the associated technique effect
+ */
 @Composable
 private fun TechniqueTableHeader(
     description: String
 ){
     Row(verticalAlignment = Alignment.CenterVertically)
     {
+        //space for effect degree
         Spacer(Modifier.weight(0.1f))
+
+        //display individual value description
         Text(text = description, textAlign = TextAlign.Center, modifier = Modifier.weight(0.4f))
+
+        //labels for primary and secondary costs, MK cost, maintenance cost, and effect level
         Text(text = "P", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
         Text(text = "S", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
         Text(text = "MK", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
@@ -2109,6 +1657,19 @@ private fun TechniqueTableHeader(
     }
 }
 
+/**
+ * Displays a single row for the effect table
+ *
+ * input: table data to be displayed
+ * elementList: effect's associated elements
+ * techniqueIndex: index to denote the effect chosen
+ * kiIndex: primary characteristic of the effect's build
+ * isPrimary: whether to use the primary or secondary cost
+ * buildArray: additional costs for each characteristic build
+ * inputBox: checkbox boolean to utilize in the row
+ * allChecksList: master list of checkboxes for this table
+ * getValidInput: function that tests validity of effect's addition
+ */
 @Composable
 private fun TechniqueTableRow(
     input: TechniqueTableData,
@@ -2118,53 +1679,71 @@ private fun TechniqueTableRow(
     isPrimary: Boolean,
     buildArray: List<Int?>,
 
+    inputBox: MutableState<Boolean>,
     allChecksList: MutableMap<TechniqueEffect, MutableState<Boolean>>,
+    elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>,
     getValidInput: (TechniqueEffect) -> String?
 ){
+    //get context for toast displays
     val context = LocalContext.current
 
+    //prepare default ki build
     val defaultArray = mutableListOf(0, 0, 0, 0, 0, 0)
+
+    //apply initial cost to build array
     defaultArray[kiIndex] =
         if(isPrimary)
             input.primaryCost
         else
             input.secondaryCost
 
+    //get name of the effect
     val useString =
         if(techniqueIndex < 35)
             stringArrayResource(R.array.techniqueAbilities)[techniqueIndex]
         else
             stringArrayResource(R.array.techniqueDisadvantages)[techniqueIndex - 35]
 
+    //construct row's associated effect
     val thisEffect =
         TechniqueEffect(useString, input.effect, input.mkCost, input.maintCost, Pair(input.primaryCost, input.secondaryCost),
             defaultArray, buildArray, elementList, input.level)
 
-    val thisCheck = remember{mutableStateOf(false)}
-
-    allChecksList += Pair(thisEffect, thisCheck)
+    //add effect and checkbox to master list
+    allChecksList += Pair(thisEffect, inputBox)
 
     Row(verticalAlignment = Alignment.CenterVertically)
     {
+        //display checkbox
         Checkbox(
-            checked = thisCheck.value,
+            checked = inputBox.value,
             onCheckedChange = {
-                val textOut = getValidInput(thisEffect)
+                //clear any selected elements
+                elementChecks.forEach{elementPair ->
+                    elementPair.second.value = false
+                }
 
+                //if user attempts to add effect
                 if(it) {
+                    //determine if effect is a valid addition
+                    val textOut = getValidInput(thisEffect)
+
+                    //indicate viable addition
                     if(textOut == null) {
                         allChecksList.forEach { boxVal -> boxVal.value.value = false }
-
-                        thisCheck.value = true
+                        inputBox.value = true
                     }
+                    //display reason for invalid addition
                     else
                         Toast.makeText(context, textOut, Toast.LENGTH_SHORT).show()
                 }
+                //remove addition state
                 else
-                    thisCheck.value = false
+                    inputBox.value = false
             },
             modifier = Modifier.weight(0.1f)
         )
+        //display effect value, costs, and level
         Text(text = input.effect, textAlign = TextAlign.Center, modifier = Modifier.weight(0.4f))
         Text(text = input.primaryCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
         Text(text = input.secondaryCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
@@ -2174,80 +1753,119 @@ private fun TechniqueTableRow(
     }
 }
 
+/**
+ * Displays a table row for adding element effects
+ *
+ * elementType: the associated element of the row
+ * checkStatus: mutable boolean for the checkbox
+ * allEffectChecks: master list of main effect checkboxes
+ * elementChecks: master list of element checkboxes
+ */
 @Composable
 private fun ElementalRow(
     elementType: Element,
+    checkStatus: MutableState<Boolean>,
     allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>
 ){
-    val checkStatus = remember{ mutableStateOf(false) }
-    elementChecks += Pair(elementType, checkStatus)
-
+    //get context of dialog
     val context = LocalContext.current
+
+    //add row data to the element master list
+    elementChecks += Pair(elementType, checkStatus)
 
     Row{
         Checkbox(
             checked = checkStatus.value,
             onCheckedChange = {
+                //get selected effect that may not have an element
                 val selection = getSelectedEffect(allEffectChecks, elementChecks, false)
+
+                //clear dummy effect of existing elements
+                if(selection != null) selection.elements = mutableListOf()
+
+                //notify of selection needed if none given
                 if(selection == null)
                     Toast.makeText(context, "Please select an effect first", Toast.LENGTH_SHORT).show()
-                else if(selection.name == "Two Elements"){
-                    checkStatus.value = it && selection.elements.size < 2
-                }
+
+                //if two elements selected for Elemental Binding
+                else if(selection.effect == "Two Elements")
+                    //change checkbox if input is valid
+                    checkStatus.value = it && getSelectedElement(selection, elementChecks).size < 2
+
+
+                //any other selection
                 else{
+                    //if trying to add
                     if(it) {
+                        //clear other elements first
                         elementChecks.forEach { item ->
                             item.second.value = false
                         }
                     }
 
+                    //apply user's desired state
                     checkStatus.value = it
                 }
             }
         )
 
+        //Display element name
         Text(text = elementType.name)
     }
 }
-        
+
+/**
+ * Create a row for when the user is editing their technique's effects
+ *
+ * effect: the currently applied effect to display
+ * deletionCheck: checkbox boolean associated with the item
+ * removeEffects: master list of chosen effects to remove
+ */
 @Composable
 private fun EditEffectRow(
     effect: TechniqueEffect,
+    deletionCheck: MutableState<Boolean>,
     removeEffects: MutableList<TechniqueEffect>
 ){
-    val deleteCheck = remember{mutableStateOf(false)}
-    var elementString = ""
-    effect.elements.forEach{
-        elementString += it.name
-
-        if(effect.elements.indexOf(it) != effect.elements.size - 1)
-            elementString += "/"
-    }
-
     Row {
+        //checkbox to indicate effect deletion
         Checkbox(
-            checked = deleteCheck.value,
+            checked = deletionCheck.value,
             onCheckedChange = {
-                deleteCheck.value = it
+                //change deletion status accordingly
+                deletionCheck.value = it
 
+                //add or remove from deletion list accordingly
                 if(it)
                     removeEffects += effect
                 else
                     removeEffects -= effect
             }
         )
+        //display effect
         Text(text = effect.name)
         Text(text = effect.effect)
 
     }
 
+    //display effect's cost and elements
     Row {
         Text(text = effect.mkCost.toString())
-        Text(text = elementString)
+        Text(text = getElementString(effect.elements))
     }
 }
 
+/**
+ * Row that displays an effect's ki build needed for the indicated characteristic and allows the
+ * user to alter that value
+ *
+ * effect: the associated effect for the row
+ * index: characteristic's corresponding index number
+ * workArray: initial build to start with and alter
+ * statName: name of the characteristic for the row
+ * changeAccString: hoisting function for a change in the build value
+ */
 @Composable
 private fun EditBuildRow(
     effect: TechniqueEffect,
@@ -2257,9 +1875,12 @@ private fun EditBuildRow(
     changeAccString: () -> Unit
 ){
     Row {
+        //if the characteristic has a valid input
         if (effect.buildAdditions[index] != null) {
+            //display characteristic name
             Text(text = "$statName: ", modifier = Modifier.weight(0.4f))
 
+            //initialize build value
             val buildVal = remember { mutableStateOf(workArray[index].toString()) }
             TextField(
                 value = buildVal.value,
@@ -2269,11 +1890,13 @@ private fun EditBuildRow(
                 onValueChange = { input ->
                     numberCatcher(input,
                         { catchIn: String ->
+                            //change value to given input
                             workArray[index] = catchIn.toInt()
                             changeAccString()
                             buildVal.value = catchIn
                         },
                         {
+                            //change value to 0 if nothing given
                             workArray[index] = 0
                             changeAccString()
                             buildVal.value = ""
@@ -2283,22 +1906,33 @@ private fun EditBuildRow(
                 modifier = Modifier.weight(0.2f)
             )
 
+            //display characteristic's additional cost
             Text(text = "+" + effect.buildAdditions[index], modifier = Modifier.weight(0.4f))
         }
     }
 }
 
+/**
+ * Displays a primary characteristic's current maintenance value and allows the user to alter it
+ *
+ * index: index of the primary characteristic used
+ * customTechnique: the technique the user is creating with this dialog
+ * statName: indicator of the primary characteristic used
+ */
 @Composable
 private fun MaintenanceInput(
     index: Int,
     customTechnique: Technique,
     statName: String
 ){
+    //initialize maintained value's display
     val maintInput = remember{mutableStateOf(customTechnique.maintArray[index].toString())}
 
     Row{
+        //display characteristic
         Text(text = statName, modifier = Modifier.weight(0.5f))
 
+        //maintenance input
         TextField(
             value = maintInput.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -2306,6 +1940,7 @@ private fun MaintenanceInput(
                 numberCatcher(
                     it,
                     { input ->
+                        //change maintenance and display with user's input
                         customTechnique.maintArray[index] = input.toInt()
                         maintInput.value = input
                     },
@@ -2320,60 +1955,120 @@ private fun MaintenanceInput(
     }
 }
 
+/**
+ * Displays the elements associated with the displayed effect table
+ *
+ * elementList: effect's associated elements
+ */
+private fun getElementString(
+    elementList: List<Element>
+): String{
+    //initialize display string
+    var elementString = ""
+
+    //add each element's name to the string
+    elementList.forEach{
+        elementString += it.name
+        if(elementList.indexOf(it) < elementList.size)
+            elementString += ", "
+    }
+
+    return elementString
+}
+
+/**
+ * Retrieves the effect the user has selected
+ *
+ * effectList: master list of the effects to check
+ * elementList: master list of elements to check for elemental effects
+ * elementRequired: whether there must be elements associated with the output
+ */
 private fun getSelectedEffect(
     effectList: MutableMap<TechniqueEffect, MutableState<Boolean>>,
     elementList: MutableList<Pair<Element, MutableState<Boolean>>>,
     elementRequired: Boolean
 ): TechniqueEffect?{
     effectList.forEach{
+        //if effect is selection
         if(it.value.value){
+            //initialize dummy effect
             val dummyEffect = it.key
+
+            //determine effect's elements form element inputs
             dummyEffect.elements = getSelectedElement(it.key, elementList)
 
+            //return if either no element is required or effect gives elements
             if(!elementRequired || dummyEffect.elements.isNotEmpty())
                 return dummyEffect
         }
     }
 
+    //return for no valid selection
     return null
 }
 
-
+/**
+ * Retrieves either the effect's elements or the user's elemental selection
+ *
+ * effect: effect to find or apply elements at
+ * elementChecks: master list of element checkboxes user can select from
+ */
 private fun getSelectedElement(
     effect: TechniqueEffect,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>
 ): List<Element>{
+    //return the effect's given elements if any found
     if(effect.elements.isNotEmpty())
         return effect.elements
 
+    //initialize output
     val output = mutableListOf<Element>()
 
+    //retrieve any given element inputs
     elementChecks.forEach{
         if(it.second.value && !output.contains(it.first))
             output.add(it.first)
     }
 
+    //return user's selection
     return output
 }
 
+/**
+ * Retrieves the total ki accumulation for a characteristic from all implemented technique effects
+ *
+ * index: characteristic's corresponding index
+ * allKiBuilds: master list of kibuild arrays to look through
+ */
 private fun getAccTotal(
     index: Int,
     allKiBuilds: MutableList<Pair<String, MutableList<Int>>>
 ): String{
+    //initialize build total
     val total = mutableStateOf(0)
 
+    //add each build's corresponding value
     allKiBuilds.forEach{
         total.value += it.second[index]
     }
 
+    //return total
     return total.value.toString()
 }
 
+/**
+ * Finds the ki build with the given effect name
+ *
+ * token: name of the effect to find
+ * allKiBuilds: master list of the kibuild items
+ */
 private fun findBuild(
     token: String,
     allKiBuilds: MutableList<Pair<String, MutableList<Int>>>
 ): Pair<String, MutableList<Int>>?{
+    //search through kibuild list
     allKiBuilds.forEach{
+        //return it if found
         if(token == it.first)
             return it
     }
@@ -2381,6 +2076,16 @@ private fun findBuild(
     return null
 }
 
+/**
+ * Data to utilize in a technique table row
+ *
+ * effect: degree of the effect
+ * primaryCost: ki cost as a primary effect
+ * secondaryCost: ki cost as a secondary effect
+ * mkCost: martial knowledge needed to add this effect
+ * maintCost: cost to maintain this effect
+ * level: level technique needs to be to acquire this effect
+ */
 private data class TechniqueTableData(
     val effect: String,
     val primaryCost: Int,

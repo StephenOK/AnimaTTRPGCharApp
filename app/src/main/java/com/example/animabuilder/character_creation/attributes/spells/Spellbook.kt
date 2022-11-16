@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.spells
 
+import androidx.compose.ui.text.font.emptyCacheFontFamilyResolver
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
@@ -1260,6 +1261,266 @@ class Spellbook(): Serializable {
         "+50 DP",
         30,
         "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val concealmentFromMagic = Spell(
+        "Concealment from Magic",
+        Element.Dark,
+        false,
+        86,
+        200,
+        "Hides the presence of the individual from Automatic spells, causing him to be " +
+                "directly unaffected by them. As an exception to the general rule, an opposing " +
+                "caster maintaining any Automatic spell must succeed in fixing his Magic " +
+                "Projection on the caster who is defending himself using Concealment from Magic, " +
+                "as though the Automatic spell were a Spiritual one (even if the caster of " +
+                "Concealment from Magic meets the condition for being subject to the Automatic " +
+                "spell). The maximum Presence that can be affected is 80.",
+        "+5 to the maximum Presence that can be affected",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val darknessKingdom = Spell(
+        "Kingdom of Darkness",
+        Element.Dark,
+        true,
+        88,
+        200,
+        "Creates a 45 meter radius zone around the caster in which total darkness reigns. " +
+                "The body of the spellcaster blends into the shadows, increasing his resistance " +
+                "to all kinds of detection by +40. To locate him using the senses requires " +
+                "passing a check of Impossible difficulty with Search, or Inhumane using Notice. " +
+                "Even while using Ki Detection, it is still necessary to beat an Inhuman level " +
+                "check. In addition, as long as he is one with the Darkness, the caster can " +
+                "transport himself each Combat Turn anywhere he wishes within the Kingdom of " +
+                "Darkness. The MA of the caster is also increased by 20 points when using spells " +
+                "of darkness, and any living being (except Dark Elementals) within the covered " +
+                "area automatically loses 10 points of Zeon per combat turn (20 points per turn " +
+                "if a Light Elemental). The spell is stationary in the place it was cast.",
+        "+45 meters to radius",
+        30,
+        "1 every 20",
+        listOf(SpellType.Automatic)
+    )
+
+    val undetectable = Spell(
+        "Undetectable",
+        Element.Dark,
+        true,
+        90,
+        380,
+        "The target of this spell becomes completely immune to supernatural detection, " +
+                "whether mystical, psychic, or based on Ki. The only way to locate the person is " +
+                "through the physical senses such as sight, hearing, or smell. The maximum " +
+                "Presence that can be affected is 60.",
+        "+5 to the maximum Presence that can be affected",
+        30,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val prisonOfDarkness = Spell(
+        "Prison of Darkness",
+        Element.Dark,
+        true,
+        92,
+        200,
+        "Encloses the victim in an inescapable world of Darkness, a separate universe which " +
+                "has no interaction with our own. While the victim is imprisoned, he will have " +
+                "no knowledge of anything that happens outside the prison, nor does anyone " +
+                "outside have any knowledge of the prisoner's status or activities. If the " +
+                "prisoner tries to break out from within, the prison will resist damage points up " +
+                "to 100 times the Zeon value of the spell, which defends itself according to the " +
+                "rules of Damage Resistance with an AT of 10. From the outside, the prison can " +
+                "resist only double the Zeon value spent. It can only be damaged by Energy-based " +
+                "Attacks with a Presence greater than 180. The prison recovers from any damage " +
+                "with a Regeneration of 19. The spell can be avoided by passing a MR Check with a " +
+                "Difficulty of 140, but if that fails, the prisoner has no chance to check again " +
+                "later, if he wants to get out, he better be able to break through the spell.",
+        "+10 to the MR Difficulty",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val oneWithDarkness = Spell(
+        "One With the Darkness",
+        Element.Dark,
+        true,
+        96,
+        100,
+        "Permits the caster to enter a state of utter meditation in which his body becomes " +
+                "one with the Dark. He abandons this world and ascends to the Flow of Souls to " +
+                "nourish himself from their energies. Apart from, and without knowledge of " +
+                "anything happening elsewhere, he multiplies his Zeon Regeneration rate by 10, " +
+                "and cures his wounds with a with a Healing Regeneration of 16. Although there " +
+                "is no maintenance cost for the spell, the caster can be in the Flow of Souls " +
+                "for the equivalent of one day.",
+        "One day additional stay in the Flow of Souls",
+        20,
+        null,
+        listOf(SpellType.Effect)
+    )
+
+    val darkAscension = Spell(
+        "Dark Ascension",
+        Element.Dark,
+        true,
+        98,
+        300,
+        "This spell exchanges the material essence of a person for divine energy, modifying " +
+                "his spirit through pure supernatural power. The affects of Ascension are " +
+                "different depending on whether the spell is cast on himself, or on another. When " +
+                "increasing his own power, the spell increases his Gnosis by 10 points. If used " +
+                "on another person, it can give him as much Gnosis as desired, up to a level 10 " +
+                "points below that of the caster. For instance, a caster with a Gnosis of 45 can " +
+                "raise another individual to at most a Gnosis of 35. This spell can affect as " +
+                "many targets as desired as long as their accumulated Presence is no higher than 80.",
+        "+10 to the maximum Presence that can be affected",
+        30,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val darkHolocaust = Spell(
+        "Holocaust of Darkness",
+        Element.Dark,
+        true,
+        100,
+        600,
+        "This spell unleashes the power of Darkness in its purest state, sweeping away " +
+                "all before it in the spiritual as well as the material world. The freed energy " +
+                "sweeps up and devours everything, unifying its existence to the Darkness. The " +
+                "Holocaust of Darkness creates a great dome of darkness within which everything " +
+                "is dissolved. It has a radius of 100 meters, attacks the Energy AT, and causes " +
+                "a Base Damage of 350 points. Anyone receiving damage, no matter how small, must " +
+                "beat a MR Check with a Difficulty of 160 or be joined with the Darkness, and " +
+                "automatically destroyed in body and soul. It is not possible to designate " +
+                "specific targets within the Holocaust; all except the caster are equally affected.",
+        "+10 to Base Damage and doubles the radius of the spell",
+        50,
+        null,
+        listOf(SpellType.Attack, SpellType.Spiritual)
+    )
+
+    val minorCreation = Spell(
+        "Minor Creation",
+        Element.Creation,
+        true,
+        2,
+        30,
+        "Creates a simple object with a Presence of no more than 25.",
+        "Creates one additional object",
+        10,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val reconstruct = Spell(
+        "Reconstruct",
+        Element.Creation,
+        true,
+        6,
+        40,
+        "Restores a non-organic object to its original form from parts or pieces that " +
+                "remain. Note that it is necessary to either have all the pieces, or enough of " +
+                "the prime material to rebuild the complete object, otherwise it will be only " +
+                "partly reconstructed. This spell affects objects with a Presence of no more than 20.",
+        "+5 to the maximum Presence of the object",
+        20,
+        null,
+        listOf(SpellType.Effect)
+    )
+
+    val createEnergy = Spell(
+        "Create Energy",
+        Element.Creation,
+        true,
+        8,
+        40,
+        "Creates one Intensity of one of the three types of existing energies (Cold, Fire, or Electricity).",
+        "+1 additional Intensity",
+        20,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val regeneration = Spell(
+        "Regeneration",
+        Element.Creation,
+        true,
+        10,
+        60,
+        "Increases the ability of a body to heal all types of wounds. This spell provides " +
+                "a base Regeneration Level of 4 to anyone designated by the caster, substituting " +
+                "it for the person's natural Regeneration Level. If it increases above 14, two " +
+                "more Added Effects are necessary instead of one to continue increasing it more. " +
+                "A Regeneration level of more than 18 cannot be achieved through this spell " +
+                "unless the caster has sufficient Gnosis.",
+        "+1 to the base Regeneration Level",
+        10,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val inorganicModification = Spell(
+        "Inorganic Modification",
+        Element.Creation,
+        true,
+        12,
+        60,
+        "Through control of magic, the caster can alter the form and nature of an inorganic " +
+                "object, transforming it into a completely different thing but of similar spiritual " +
+                "power. This permits the caster to transform something with a Presence of 20 or " +
+                "less into something else of equal or lesser Presence.",
+        "+5 to the maximum Presence that can be affected",
+        10,
+        "1 every 20",
+        listOf(SpellType.Effect)
+    )
+
+    val increaseResistances = Spell(
+        "Increase Resistances",
+        Element.Creation,
+        true,
+        16,
+        80,
+        "Supernaturally increases all resistances by +10 (Disease, Magic, Physical, Psychic," +
+                " and Venom) of an individual. Multiple castings of this spell on a single target" +
+                " are not cumulative.",
+        "+5 to all Resistances",
+        10,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val royalShield = Spell(
+        "Royal Shield",
+        Element.Creation,
+        false,
+        18,
+        40,
+        "Forms a barrier of Energy that protects the caster from any source of attack. " +
+                "The shield will absorb 500 points of damage before breaking.",
+        "+150 Resistance Points",
+        30,
+        "1 every 20",
+        listOf(SpellType.Defense)
+    )
+
+    val heal = Spell(
+        "Heal",
+        Element.Creation,
+        true,
+        20,
+        80,
+        "Causes whomever the spell is directed at to recover 50 Life Points. The spell does not permit recovery of permanently lost or destroyed limbs, but does eliminate the temporary penalties caused by Criticals, up to a quantity equivalent to half the Life Points returned.",
+        "+5 Life Points",
+        10,
+        null,
         listOf(SpellType.Effect)
     )
 }

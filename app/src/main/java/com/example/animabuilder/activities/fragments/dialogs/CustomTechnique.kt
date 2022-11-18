@@ -58,7 +58,7 @@ fun CustomTechnique(
     val pageNum = remember{mutableStateOf(1)}
 
     //custom technique to be created
-    val customTechnique = Technique("", "", 1, mutableListOf(0, 0, 0, 0, 0, 0), listOf())
+    val customTechnique = Technique("", "", 1, mutableListOf(0, 0, 0, 0, 0, 0), mutableListOf())
 
     //tracker for technique effect dropdown index
     val techniqueIndex = remember{mutableStateOf(0)}
@@ -169,7 +169,7 @@ fun CustomTechnique(
                             isPrimary.value = true
 
                             //clear custom technique's effects
-                            customTechnique.givenAbilities = listOf()
+                            customTechnique.givenAbilities.clear()
                             allKiBuilds.clear()
 
                             //set dropdown's default index
@@ -395,7 +395,7 @@ fun CustomTechnique(
                         TextButton(
                             onClick = {
                                 //remove selected effects from the technique
-                                customTechnique.givenAbilities = customTechnique.givenAbilities - removeEffects.toSet()
+                                customTechnique.givenAbilities -= removeEffects.toSet()
 
                                 //remove selected effects from the kiBuild list
                                 removeEffects.forEach removeItem@{removable ->
@@ -585,14 +585,14 @@ fun CustomTechnique(
                                 val currSpent = mutableStateOf(0)
 
                                 //make certain custom technique has no effects before addition
-                                customTechnique.givenAbilities = listOf()
+                                customTechnique.givenAbilities.clear()
 
                                 //for each potential effect addition
                                 selectedEffects.forEach{
                                     //if there is a valid addition
                                     if(it != null){
                                         //add it to the technique
-                                        customTechnique.givenAbilities = customTechnique.givenAbilities + it
+                                        customTechnique.givenAbilities += it
 
                                         //track its build
                                         allKiBuilds += Pair(it.name, it.kiBuild)
@@ -651,8 +651,10 @@ fun CustomTechnique(
                                     }
 
                                     //set effect's ki build if total matches needed accumulation
-                                    if(total == accTotal)
-                                        effect.kiBuild = it.second
+                                    if(total == accTotal) {
+                                        for(index in 0 .. 5)
+                                            effect.kiBuild[index] = it.second[index]
+                                    }
 
                                     //notify of invalid ki build
                                     else
@@ -687,7 +689,8 @@ fun CustomTechnique(
 
                                 //set default input for no maintenance
                                 else
-                                    customTechnique.maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+                                    for(index in 0..5)
+                                        customTechnique.maintArray[index] = 0
 
                                 //go to next page if input is valid
                                 if(toNext)
@@ -856,7 +859,7 @@ private fun TechniqueAbilityDropdown(
         val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
         //initialize build addition list
-        val buildArray = remember{ mutableStateOf(listOf<Int?>()) }
+        val buildArray = mutableListOf<Int?>()
 
         //create all tables for data
         table1.add(TechniqueTableData("+10", 2, 4, 5, 1, 1))
@@ -1222,56 +1225,64 @@ private fun TechniqueAbilityDropdown(
         when(techniqueIndex.value){
             //Attack Ability
             1 -> {
-                buildArray.value = listOf(2, 0, 2, null, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 0, 2, null, 2, 3))
                 header.value = "Attack Bonus"
                 useTable.value = table1
             }
 
             //Counterattack Ability
             2 -> {
-                buildArray.value = listOf(2, 0, 2, null, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 0, 2, null, 2, 3))
                 header.value = "Attack Bonus"
                 useTable.value = table2
             }
 
             //Block Ability
             3 -> {
-                buildArray.value = listOf(2, 0, 2, null, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 0, 2, null, 2, 3))
                 header.value = "Block Bonus"
                 useTable.value = table3
             }
 
             //Limited Block Ability
             4 -> {
-                buildArray.value = listOf(2, 0, 2, null, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 0, 2, null, 2, 3))
                 header.value = "Block Bonus"
                 useTable.value = table4
             }
 
             //Dodge Ability
             5 -> {
-                buildArray.value = listOf(null, 2, 0, 2, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 2, 0, 2, 2, 3))
                 header.value = "Dodge Bonus"
                 useTable.value = table5
             }
 
             //Limited Dodge Ability
             6 -> {
-                buildArray.value = listOf(null, 2, 0, 2, 2, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 2, 0, 2, 2, 3))
                 header.value = "Dodge Bonus"
                 useTable.value = table6
             }
 
             //Damage Multiplier
             7 -> {
-                buildArray.value = listOf(0, 3, null, 2, 1, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 3, null, 2, 1, 1))
                 header.value = "Multiplier"
                 useTable.value = table7
             }
 
             //Damage Augmentation
             8 -> {
-                buildArray.value = listOf(0, 3, null, 1, 2, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 3, null, 1, 2, 1))
                 header.value = "Damage Bonus"
                 useTable.value = table8
                 optHeader1.value = "Optional Advantage: Sacrifice"
@@ -1280,7 +1291,8 @@ private fun TechniqueAbilityDropdown(
 
             //Additional Attack
             9 -> {
-                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 0, 2, 1, 3, 3))
                 header.value = "Attacks"
                 useTable.value = table9
                 optHeader1.value = "Optional Advantage: Continuous Attack"
@@ -1291,7 +1303,8 @@ private fun TechniqueAbilityDropdown(
 
             //Limited Additional Attack
             10 -> {
-                buildArray.value = listOf(null, 0, 2, 1, 3, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 0, 2, 1, 3, 3))
                 header.value = "Attacks"
                 useTable.value = table10
                 optHeader1.value = "Optional Advantage: Continuous Attack"
@@ -1300,7 +1313,8 @@ private fun TechniqueAbilityDropdown(
 
             //Additional Defense
             11 -> {
-                buildArray.value = listOf(null, 1, 0, 1, 3, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 1, 0, 1, 3, 3))
                 header.value = "Defenses"
                 useTable.value = table11
                 optHeader1.value = "Optional Advantage: Added Fatigue Bonus"
@@ -1309,7 +1323,8 @@ private fun TechniqueAbilityDropdown(
 
             //Additional Action
             12 -> {
-                buildArray.value = listOf(null, 0, 1, 1, 3, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 0, 1, 1, 3, 3))
                 header.value = "Actions"
                 useTable.value = table12
                 optHeader1.value = "Optional Advantage: Added Fatigue Bonus"
@@ -1318,14 +1333,16 @@ private fun TechniqueAbilityDropdown(
 
             //Initiative Augmentation
             13 -> {
-                buildArray.value = listOf(null, 1, 0, 2, 3, 3)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 1, 0, 2, 3, 3))
                 header.value = "Initiative Bonus"
                 useTable.value = table13
             }
 
             //States
             14 -> {
-                buildArray.value = listOf(4, 4, null, 4, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(4, 4, null, 4, 0, 1))
                 header.value = "PhR Check"
                 useTable.value = table14
                 optHeader1.value = "Optional Advantage: Added State"
@@ -1334,49 +1351,56 @@ private fun TechniqueAbilityDropdown(
 
             //Combat Maneuvers and Aiming
             15 -> {
-                buildArray.value = listOf(null, 0, 1, 2, 2, 2)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 0, 1, 2, 2, 2))
                 header.value = "Precision"
                 useTable.value = table15
             }
 
             //Armor Increase
             16 -> {
-                buildArray.value = listOf(2, null, 3, 0, 1, 2)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, null, 3, 0, 1, 2))
                 header.value = "AT"
                 useTable.value = table16
             }
 
             //Armor Destruction
             17 -> {
-                buildArray.value = listOf(0, 2, null, 2, 1, 2)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 2, null, 2, 1, 2))
                 header.value = "Reduction"
                 useTable.value = table17
             }
 
             //Breakage Augmentation
             18 -> {
-                buildArray.value = listOf(0, 4, null, 2, 2, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 4, null, 2, 2, 1))
                 header.value = "Breakage"
                 useTable.value = table18
             }
 
             //Fortitude Augmentation
             19 -> {
-                buildArray.value = listOf(0, 4, null, 2, 2, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 4, null, 2, 2, 1))
                 header.value = "Fortitude"
                 useTable.value = table19
             }
 
             //Long-Distance Attack
             20 -> {
-                buildArray.value = listOf(null, 2, 3, 4, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 2, 3, 4, 0, 1))
                 header.value = "Distance"
                 useTable.value = table20
             }
 
             //Area Attack
             21 -> {
-                buildArray.value = listOf(null, 2, 3, 3, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 2, 3, 3, 0, 1))
                 header.value = "Radius"
                 useTable.value = table21
                 optHeader1.value = "Optional Advantage: Target Choice"
@@ -1385,14 +1409,16 @@ private fun TechniqueAbilityDropdown(
 
             //Automatic Transportation
             22 -> {
-                buildArray.value = listOf(2, 2, 0, 2, 3, null)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 2, 0, 2, 3, null))
                 header.value = "Distance"
                 useTable.value = table22
             }
 
             //Critical Enhancement
             23 -> {
-                buildArray.value = listOf(1, 2, null, 2, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(1, 2, null, 2, 0, 1))
                 header.value = "Critical"
                 useTable.value = table23
                 optHeader1.value = "Optional Advantage: Automatic Critical"
@@ -1401,7 +1427,8 @@ private fun TechniqueAbilityDropdown(
 
             //Physical Ki Weapons
             24 -> {
-                buildArray.value = listOf(2, 3, null, 1, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 3, null, 1, 0, 1))
                 header.value = "Quality"
                 useTable.value = table24
                 optHeader1.value = "Optional Advantage: Projectiles"
@@ -1410,35 +1437,40 @@ private fun TechniqueAbilityDropdown(
 
             //Trapping
             25 -> {
-                buildArray.value = listOf(0, 1, null, 2, 2, 2)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 1, null, 2, 2, 2))
                 header.value = "Trap"
                 useTable.value = table25
             }
 
             //Projection
             26 -> {
-                buildArray.value = listOf(0, 3, null, 2, 1, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(0, 3, null, 2, 1, 1))
                 header.value = "Projection"
                 useTable.value = table26
             }
 
             //Energy Shield
             27 -> {
-                buildArray.value = listOf(2, 3, null, 2, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 3, null, 2, 0, 1))
                 header.value = "LP"
                 useTable.value = table27
             }
 
             //Intangibility
             28 -> {
-                buildArray.value = listOf(3, 3, null, 3, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(3, 3, null, 3, 0, 1))
                 header.value = "Effect"
                 useTable.value = listOf(TechniqueTableData("Intangibility", 3, 5, 10, 2, 1))
             }
 
             //Mirage
             29 -> {
-                buildArray.value = listOf(null, 3, 2, 3, 1, 0)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, 3, 2, 3, 1, 0))
                 header.value = "Mirages"
                 useTable.value = table29
                 optHeader1.value = "Optional advantage: Non-Detection"
@@ -1447,7 +1479,8 @@ private fun TechniqueAbilityDropdown(
 
             //Attack Mirroring
             30 -> {
-                buildArray.value = listOf(2, 3, 3, null, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(2, 3, 3, null, 0, 1))
                 header.value = "Effect"
                 useTable.value = listOf(TechniqueTableData("Attack Mirroring", 12, 15, 30, 8, 2))
                 optHeader1.value = "Optional Advantage: Target Choice"
@@ -1458,37 +1491,42 @@ private fun TechniqueAbilityDropdown(
 
             //Energy Damaging Attack
             31 -> {
-                buildArray.value = listOf(3, 3, null, 2, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(3, 3, null, 2, 0, 1))
                 header.value = "Attack"
                 useTable.value = listOf(TechniqueTableData("Energy", 1, 2, 5, 1, 1))
             }
 
             //Elemental Attack
             32 -> {
-                buildArray.value = listOf(3, 3, null, 2, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(3, 3, null, 2, 0, 1))
                 header.value = "Attack"
-                useTable.value = listOf(TechniqueTableData("2", 2, 4, 5, 1, 1))
+                useTable.value = listOf(TechniqueTableData("", 2, 4, 5, 1, 1))
                 optHeader1.value = "Select Element: "
                 optElement.value = elementAttackList
             }
 
             //Supernatural Attack
             33 -> {
-                buildArray.value = listOf(3, 3, null, 2, 0, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(3, 3, null, 2, 0, 1))
                 header.value = "Attack"
                 useTable.value = listOf(TechniqueTableData("Energy", 5, 8, 10, 1, 1))
             }
 
             //Damage Resistance
             34 -> {
-                buildArray.value = listOf(3, 3, null, 0, 3, 1)
+                buildArray.clear()
+                buildArray.addAll(listOf(3, 3, null, 0, 3, 1))
                 header.value = "LP"
                 useTable.value = table34
             }
 
             //ElementalBinding
             35 -> {
-                buildArray.value = listOf(null, null, null, null, null, null)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, null, null, null, null, null))
                 useTable.value = table35
                 optHeader1.value = "Select Element(s): "
                 optElement.value = elementBindList
@@ -1496,19 +1534,22 @@ private fun TechniqueAbilityDropdown(
 
             //Reduce Damage
             36 -> {
-                buildArray.value = listOf(null, null, null, null, null, null)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, null, null, null, null, null))
                 useTable.value = table36
             }
 
             //Special Requirements
             37 -> {
-                buildArray.value = listOf(null, null, null, null, null, null)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, null, null, null, null, null))
                 useTable.value = table37
             }
 
             //Predetermination
             38 -> {
-                buildArray.value = listOf(null, null, null, null, null, null)
+                buildArray.clear()
+                buildArray.addAll(listOf(null, null, null, null, null, null))
                 useTable.value = listOf(TechniqueTableData("Predetermination", 0, 0, -20, 0, 1))
             }
 
@@ -1561,7 +1602,7 @@ private fun TechniqueAbilityDropdown(
                         techniqueIndex.value,
                         kiIndex,
                         isPrimary,
-                        buildArray.value,
+                        buildArray,
                         mainCheckList!![useTable.value!!.indexOf(it)],
                         allEffectChecks,
                         elementChecks
@@ -1584,7 +1625,7 @@ private fun TechniqueAbilityDropdown(
                         techniqueIndex.value,
                         kiIndex,
                         isPrimary,
-                        buildArray.value,
+                        buildArray,
                         opt1CheckList!![optTable1.value!!.indexOf(it)],
                         optionalCheck1,
                         elementChecks
@@ -1607,7 +1648,7 @@ private fun TechniqueAbilityDropdown(
                         techniqueIndex.value,
                         kiIndex,
                         isPrimary,
-                        buildArray.value,
+                        buildArray,
                         opt2CheckList!![optTable2.value!!.indexOf(it)],
                         optionalCheck2,
                         elementChecks
@@ -1673,11 +1714,11 @@ private fun TechniqueTableHeader(
 @Composable
 private fun TechniqueTableRow(
     input: TechniqueTableData,
-    elementList: List<Element>,
+    elementList: MutableList<Element>,
     techniqueIndex: Int,
     kiIndex: Int,
     isPrimary: Boolean,
-    buildArray: List<Int?>,
+    buildArray: MutableList<Int?>,
 
     inputBox: MutableState<Boolean>,
     allChecksList: MutableMap<TechniqueEffect, MutableState<Boolean>>,
@@ -1782,7 +1823,7 @@ private fun ElementalRow(
                 val selection = getSelectedEffect(allEffectChecks, elementChecks, false)
 
                 //clear dummy effect of existing elements
-                if(selection != null) selection.elements = mutableListOf()
+                selection?.elements?.clear()
 
                 //notify of selection needed if none given
                 if(selection == null)
@@ -2016,7 +2057,7 @@ private fun getSelectedEffect(
 private fun getSelectedElement(
     effect: TechniqueEffect,
     elementChecks: MutableList<Pair<Element, MutableState<Boolean>>>
-): List<Element>{
+): MutableList<Element>{
     //return the effect's given elements if any found
     if(effect.elements.isNotEmpty())
         return effect.elements

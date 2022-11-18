@@ -3,11 +3,17 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities
 import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
-import com.google.android.material.resources.TextAppearance
 import java.io.BufferedReader
 import java.io.Serializable
 
-class KiList: Serializable {
+/**
+ * Component that holds a character's ki abilities and dominion techniques
+ * Also holds the data for default ki abilities and techniques
+ */
+
+class KiList(private val charInstance: BaseCharacter) : Serializable {
+    //initialize all ki abilities
+
     val useOfKi = KiAbility(
         "Use of Ki",
         null,
@@ -173,7 +179,7 @@ class KiList: Serializable {
     )
 
     val kiHealing = KiAbility(
-        "Ki Healaing",
+        "Ki Healing",
         kiTransmission,
         10,
         "This ability allows a character to restore 2 Life Points to a wounded creature " +
@@ -294,33 +300,52 @@ class KiList: Serializable {
                 "Difficulty in their Checks and Abilities."
     )
 
+    //compile all ki abilities together
     val allKiAbilities = listOf(useOfKi, kiControl, kiDetection, erudition, weightElimination,
         levitation, objectMotion, flight, presenceExtrusion, energyArmor, auraExtension,
         destructionByKi, kiTransmission, kiHealing, useOfNecessaryEnergy, kiConcealment, falseDeath,
         eliminateNecessities, penaltyReduction, recovery, charAugmentation, inhumanity, zen)
 
-    var takenAbilities: List<KiAbility> = listOf()
+    //initialize list of taken ki abilities
+    val takenAbilities = mutableListOf<KiAbility>()
 
+    /**
+     * Attempt to add the Ki Ability the user desires
+     *
+     * newIn: Ki Ability to attempt to add
+     */
     fun attemptAbilityAdd(newIn: KiAbility): Boolean{
+        //check if character has the necessary martial knowledge for the ability
         if(martialKnowledgeRemaining - newIn.mkCost >= 0) {
-            takenAbilities = takenAbilities + newIn
+            takenAbilities += newIn
             updateMkSpent()
             return true
         }
 
+        //indicate failed addition
         return false
     }
 
+    /**
+     * Removes the Ki Ability as indicated by the user
+     *
+     * item: Ki Ability to remove
+     */
     fun removeAbility(item: KiAbility){
-        takenAbilities = takenAbilities - item
+        //remove the item from the list
+        takenAbilities -= item
 
+        //make sure any other ability is not disqualified by this one's removal
         takenAbilities.forEach{
             if(it.prerequisites != null && !takenAbilities.contains(it.prerequisites))
-                takenAbilities = takenAbilities - it
+                takenAbilities -= it
         }
 
+        //update martial knowledge expenditure
         updateMkSpent()
     }
+
+    //initialize prebuilt techniques
 
     val excisumAeris = Technique(
         "Excisum Aeris",
@@ -329,13 +354,13 @@ class KiList: Serializable {
                 "advances to attack. This technique uses the Base Damage of the user's weapon.",
         1,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect(
                 "Long-Distance Attack", "+50m", 15, 3, Pair(4, 6),
-                mutableListOf(0, 4, 0, 0, 2, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air), 1),
+                mutableListOf(0, 4, 0, 0, 2, 0), mutableListOf(null, 2, 3, 4, 0, 1), mutableListOf(Element.Air), 1),
             TechniqueEffect(
                 "Initiative Augmentation", "+50", 10, 1, Pair(2, 4),
-                mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 4, 0, 0, 0), mutableListOf(null, 1, 0, 2, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -346,11 +371,11 @@ class KiList: Serializable {
                 "Combat Turn while also adding a bonus to his Final Initiative.",
         1,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Limited Additional Attack", "+3", 15, 3, Pair(9, 12),
-                mutableListOf(0, 7, 3, 0, 4, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 1),
+                mutableListOf(0, 7, 3, 0, 4, 0), mutableListOf(null, 0, 2, 1, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Dark), 1),
             TechniqueEffect("Initiative Augmentation", "+50", 10, 1, Pair(2, 4),
-                mutableListOf(0, 0, 4, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 4, 0, 0, 0), mutableListOf(null, 1, 0, 2, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -361,11 +386,11 @@ class KiList: Serializable {
                 "increases both Base Initiative and Attack Ability.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Initiative Augmentation", "+125", 25, 4, Pair(8, 11),
-                mutableListOf(0, 0, 8, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2),
+                mutableListOf(0, 0, 8, 0, 0, 0), mutableListOf(null, 1, 0, 2, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Fire), 2),
             TechniqueEffect("Attack Ability", "+75", 20, 6, Pair(8, 11),
-                mutableListOf(0, 8, 0, 0, 5, 0), listOf(2, 1, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1)
+                mutableListOf(0, 8, 0, 0, 5, 0), mutableListOf(2, 1, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 1)
         )
     )
 
@@ -377,11 +402,11 @@ class KiList: Serializable {
                 "uses the Base Damage of the user's weapon.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Area Attack", "10m radius", 15, 2, Pair(3, 5),
-                mutableListOf(0, 0, 0, 0, 3, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1),
+                mutableListOf(0, 0, 0, 0, 3, 0), mutableListOf(null, 2, 3, 3, 0, 1), mutableListOf(Element.Dark, Element.Light, Element.Fire), 1),
             TechniqueEffect("Initiative Augmentation", "+150", 30, 5, Pair(10, 13),
-                mutableListOf(0, 7, 7, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 2)
+                mutableListOf(0, 7, 7, 0, 0, 0), mutableListOf(null, 1, 0, 2, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Fire), 2)
         )
     )
 
@@ -396,11 +421,11 @@ class KiList: Serializable {
                 "due to its reaction speed.",
         3,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Limited Additional Attack", "+8", 50, 10, Pair(22, 26),
-                mutableListOf(0, 17, 0, 0, 8, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water, Element.Dark), 2),
+                mutableListOf(0, 17, 0, 0, 8, 0), mutableListOf(null, 0, 2, 1, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Dark), 2),
             TechniqueEffect("Initiative Augmentation", "+175", 35, 6, Pair(12, 15),
-                mutableListOf(0, 0, 15, 0, 0, 0), listOf(null, 1, 0, 2, 3, 3), listOf(Element.Air, Element.Water, Element.Fire), 3,)
+                mutableListOf(0, 0, 15, 0, 0, 0), mutableListOf(null, 1, 0, 2, 3, 3), mutableListOf(Element.Air, Element.Water, Element.Fire), 3,)
         )
     )
 
@@ -413,11 +438,11 @@ class KiList: Serializable {
                 "Technique for performing subsequent attacks of greater power.",
         1,
         mutableListOf(1, 0, 0, 0, 0, 1),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Damage Augmentation", "+25", 5, 1, Pair(2, 4),
-                mutableListOf(2, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(2, 0, 0, 0, 0, 0), mutableListOf(0, 3, null, 1, 2, 1), mutableListOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Elemental Attack", "Heat", 5, 1, Pair(2, 4),
-                mutableListOf(0, 0, 0, 0, 1, 4), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire),1)
+                mutableListOf(0, 0, 0, 0, 1, 4), mutableListOf(3, 3, null, 2, 0, 1), mutableListOf(Element.Fire),1)
         )
     )
 
@@ -428,11 +453,11 @@ class KiList: Serializable {
                 "Base Presence plus his Power Bonus.",
         1,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Attack Ability", "+40", 10, 3, Pair(4, 6),
-                mutableListOf(1, 3, 0, 0, 4, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(1, 3, 0, 0, 4, 0), mutableListOf(2, 0, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Long-Distance Attack", "20m", 10, 2, Pair(3, 5),
-                mutableListOf(0, 0, 0, 0, 1, 5), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 1)
+                mutableListOf(0, 0, 0, 0, 1, 5), mutableListOf(null, 2, 3, 4, 0, 1), mutableListOf(Element.Air, Element.Water, Element.Fire), 1)
         )
     )
 
@@ -444,13 +469,13 @@ class KiList: Serializable {
                 "maintain the first-level Technique, Feuer.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Damage Multiplier", "x2", 25, 4, Pair(10, 15),
-                mutableListOf(2, 0, 0, 0, 2, 8), listOf(0, 3, null, 2, 1, 1), listOf(Element.Light, Element.Water, Element.Earth), 1),
+                mutableListOf(2, 0, 0, 0, 2, 8), mutableListOf(0, 3, null, 2, 1, 1), mutableListOf(Element.Light, Element.Water, Element.Earth), 1),
             TechniqueEffect("Area Attack", "50m radius", 30, 5, Pair(4, 6),
-                mutableListOf(0, 6, 0, 0, 4, 2), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
+                mutableListOf(0, 6, 0, 0, 4, 2), mutableListOf(null, 2, 3, 3, 0, 1), mutableListOf(Element.Dark, Element.Light, Element.Fire), 2),
             TechniqueEffect("Special Requirements", "Determined Condition", -15, 0, Pair(0, 0),
-                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
+                mutableListOf(0, 0, 0, 0, 0, 0), mutableListOf(null, null, null, null, null, null), mutableListOf(Element.Free), 1)
         )
     )
 
@@ -462,15 +487,15 @@ class KiList: Serializable {
                 "Vatra requires a character to maintain the first-level Technique, Feuer.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Attack Ability", "+75", 20, 6, Pair(8, 11),
-                mutableListOf(0, 6, 0, 0, 0, 5), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 6, 0, 0, 0, 5), mutableListOf(2, 0, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Damage Augmentation", "+75", 20, 3, Pair(6, 9),
-                mutableListOf(1, 0, 0, 3, 0, 7), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(1, 0, 0, 3, 0, 7), mutableListOf(0, 3, null, 1, 2, 1), mutableListOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Critical Enhancement", "+40", 10, 3, Pair(4, 6),
-                mutableListOf(0, 0, 0, 0, 6, 0), listOf(1, 2, null, 2, 0, 1), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(0, 0, 0, 0, 6, 0), mutableListOf(1, 2, null, 2, 0, 1), mutableListOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Special Requirements", "Determined Condition", -10, 0, Pair(0, 0),
-                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
+                mutableListOf(0, 0, 0, 0, 0, 0), mutableListOf(null, null, null, null, null, null), mutableListOf(Element.Free), 1)
         )
     )
 
@@ -484,13 +509,13 @@ class KiList: Serializable {
                 "to maintain the first-level Technique, Feuer.",
         3,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Sacrifice", "Double Vital Sacrifice", 50, 4, Pair(10, 10),
-                mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(10, 0, 0, 0, 0, 0), mutableListOf(0, 3, null, 1, 2, 1), mutableListOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Attack Ability", "+150", 40, 14, Pair(22, 26),
-                mutableListOf(0, 10, 0, 0, 0, 19), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 2),
+                mutableListOf(0, 10, 0, 0, 0, 19), mutableListOf(2, 0, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 2),
             TechniqueEffect("Special Requirements", "Determined Condition", -30, 0, Pair(0, 0),
-                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
+                mutableListOf(0, 0, 0, 0, 0, 0), mutableListOf(null, null, null, null, null, null), mutableListOf(Element.Free), 1)
         )
     )
 
@@ -501,9 +526,9 @@ class KiList: Serializable {
                 "repel seven attacks without compromising his ability.",
         1,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Additional Defense", "+6", 20, 6, Pair(5, 8),
-                mutableListOf(0, 3, 1, 3, 0, 0), listOf(null, 1, 0, 1, 3, 3), listOf(Element.Light), 1)
+                mutableListOf(0, 3, 1, 3, 0, 0), mutableListOf(null, 1, 0, 1, 3, 3), mutableListOf(Element.Light), 1)
         )
     )
 
@@ -513,11 +538,11 @@ class KiList: Serializable {
                 "permits the user to make two attacks, each with a 40-point bonus to Base Damage.",
         1,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Additional Attack", "+1", 20, 3, Pair(6, 9),
-                mutableListOf(0, 4, 4, 0, 0, 0), listOf(null, 0, 2, 1, 3, 3), listOf(Element.Air, Element.Water), 1),
+                mutableListOf(0, 4, 4, 0, 0, 0), mutableListOf(null, 0, 2, 1, 3, 3), mutableListOf(Element.Air, Element.Water), 1),
             TechniqueEffect("Damage Augmentation", "+40", 10, 1, Pair(3, 5),
-                mutableListOf(2, 0, 0, 4, 0, 0), listOf(0, 3, null, 1, 2, 1), listOf(Element.Fire, Element.Earth), 1)
+                mutableListOf(2, 0, 0, 4, 0, 0), mutableListOf(0, 3, null, 1, 2, 1), mutableListOf(Element.Fire, Element.Earth), 1)
         )
     )
 
@@ -527,13 +552,13 @@ class KiList: Serializable {
                 "ability and reducing penalties for performing aimed Attacks.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Attack Ability", "+50", 15, 4, Pair(5, 8),
-                mutableListOf(0, 5, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 5, 0, 0, 0, 0), mutableListOf(2, 0, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Armor Destruction", "-6", 20, 3, Pair(6, 9),
-                mutableListOf(3, 0, 0, 8, 0, 0), listOf(0, 2, null, 2, 1, 2), listOf(Element.Dark, Element.Fire), 2),
+                mutableListOf(3, 0, 0, 8, 0, 0), mutableListOf(0, 2, null, 2, 1, 2), mutableListOf(Element.Dark, Element.Fire), 2),
             TechniqueEffect("Combat Maneuvers and Aiming", "-50", 10, 2, Pair(3, 5),
-                mutableListOf(0, 0, 6, 0, 0, 0), listOf(null, 0, 1, 2, 2, 2), listOf(Element.Air), 1)
+                mutableListOf(0, 0, 6, 0, 0, 0), mutableListOf(null, 0, 1, 2, 2, 2), mutableListOf(Element.Air), 1)
         )
     )
 
@@ -545,13 +570,13 @@ class KiList: Serializable {
                 "Technique must make and Opposed Check against Strength 16 or be knocked to the ground.",
         2,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Projection", "16", 25, 7, Pair(8, 11),
-                mutableListOf(2, 0, 0, 8, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Earth, Element.Fire), 2),
+                mutableListOf(2, 0, 0, 8, 0, 0), mutableListOf(0, 3, null, 2, 1, 1), mutableListOf(Element.Earth, Element.Fire), 2),
             TechniqueEffect("Attack Ability", "+40", 10, 3, Pair(4, 6),
-                mutableListOf(0, 6, 0, 0, 0, 0), listOf(2, 0, 2, null, 2, 3), listOf(Element.Air, Element.Fire, Element.Dark), 1),
+                mutableListOf(0, 6, 0, 0, 0, 0), mutableListOf(2, 0, 2, null, 2, 3), mutableListOf(Element.Air, Element.Fire, Element.Dark), 1),
             TechniqueEffect("Area Attack", "25m radius", 20, 3, Pair(4, 6),
-                mutableListOf(0, 0, 0, 0, 6, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 1)
+                mutableListOf(0, 0, 0, 0, 6, 0), mutableListOf(null, 2, 3, 3, 0, 1), mutableListOf(Element.Dark, Element.Light, Element.Fire), 1)
         )
     )
 
@@ -564,111 +589,156 @@ class KiList: Serializable {
                 "Predetermined Technique and must be declared before it is used.",
         3,
         mutableListOf(0, 0, 0, 0, 0, 0),
-        listOf(
+        mutableListOf(
             TechniqueEffect("Long-Distance Attack", "1km", 35, 8, Pair(10, 13),
-                mutableListOf(0, 0, 6, 10, 4, 0), listOf(null, 2, 3, 4, 0, 1), listOf(Element.Air, Element.Water, Element.Fire), 2),
+                mutableListOf(0, 0, 6, 10, 4, 0), mutableListOf(null, 2, 3, 4, 0, 1), mutableListOf(Element.Air, Element.Water, Element.Fire), 2),
             TechniqueEffect("Area Attack", "100m radius", 30, 5, Pair(8, 11),
-                mutableListOf(0, 10, 4, 0, 2, 0), listOf(null, 2, 3, 3, 0, 1), listOf(Element.Dark, Element.Light, Element.Fire), 2),
+                mutableListOf(0, 10, 4, 0, 2, 0), mutableListOf(null, 2, 3, 3, 0, 1), mutableListOf(Element.Dark, Element.Light, Element.Fire), 2),
             TechniqueEffect("Energy Damaging Attack", "", 5, 1, Pair(1, 2),
-                mutableListOf(5, 0, 0, 0, 0, 0), listOf(3, 3, null, 2, 0, 1), listOf(Element.Fire, Element.Light, Element.Dark), 1),
+                mutableListOf(5, 0, 0, 0, 0, 0), mutableListOf(3, 3, null, 2, 0, 1), mutableListOf(Element.Fire, Element.Light, Element.Dark), 1),
             TechniqueEffect("Damage Multiplier", "x2", 25, 4, Pair(10, 15),
-                mutableListOf(10, 0, 0, 0, 0, 0), listOf(0, 3, null, 2, 1, 1), listOf(Element.Fire, Element.Earth), 1),
+                mutableListOf(10, 0, 0, 0, 0, 0), mutableListOf(0, 3, null, 2, 1, 1), mutableListOf(Element.Fire, Element.Earth), 1),
             TechniqueEffect("Predetermination", "", -20, 0, Pair(0, 0),
-                mutableListOf(0, 0, 0, 0, 0, 0), listOf(null, null, null, null, null, null), listOf(Element.Free), 1)
+                mutableListOf(0, 0, 0, 0, 0, 0), mutableListOf(null, null, null, null, null, null), mutableListOf(Element.Free), 1)
         )
     )
 
+    //compile prebuilt techniques into a single list
     val allTechniques = listOf(excisumAeris, velocitasVentas, excisumMagister, magnusExacter,
         summum, feuer, leFeu, horecka, vatra, eld, theScales, theClaws, theFang, theTail, dragonsBreath)
 
-    var takenFirstTechniques: List<Technique> = listOf()
-    var takenSecondTechniques: List<Technique> = listOf()
-    var takenThirdTechniques: List<Technique> = listOf()
+    //initialize character's techniques of each level
+    val takenFirstTechniques = mutableListOf<Technique>()
+    val takenSecondTechniques = mutableListOf<Technique>()
+    val takenThirdTechniques = mutableListOf<Technique>()
 
-    var customTechniques: List<Technique> = listOf()
+    //initialize character's custom techniques
+    val customTechniques = mutableListOf<Technique>()
 
-    var takenTechniques: List<Technique> = takenFirstTechniques + takenSecondTechniques + takenThirdTechniques
+    //compile all of the character's techniques
+    val takenTechniques = (takenFirstTechniques + takenSecondTechniques + takenThirdTechniques).toMutableList()
 
+    /**
+     * Attempts to add a technique to the character
+     *
+     * input: the technique to attempt to add
+     */
     fun addTechnique(input: Technique): Boolean{
         when(input.level){
+            //inputting a level one technique only requires enough MK
             1 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0){
-                    takenFirstTechniques = takenFirstTechniques + input
+                    takenFirstTechniques += input
                     if(customCheck(input))
-                        customTechniques = customTechniques + input
+                        customTechniques += input
                     updateFullList()
                     return true
                 }
+
+            //inputting a level two technique requires two level one techniques
             2 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenFirstTechniques.size >= 2){
-                    takenSecondTechniques = takenSecondTechniques + input
+                    takenSecondTechniques += input
                     if(customCheck(input))
-                        customTechniques = customTechniques + input
+                        customTechniques += input
                     updateFullList()
                     return true
                 }
+
+            //inputting a level three technique requires two level two techniques
             3 ->
                 if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenSecondTechniques.size >= 2){
-                    takenThirdTechniques = takenThirdTechniques + input
+                    takenThirdTechniques += input
                     if(customCheck(input))
-                        customTechniques = customTechniques + input
+                        customTechniques += input
                     updateFullList()
                     return true
                 }
             else -> {}
         }
 
+        //notify of failed addition
         return false
     }
 
+    /**
+     * Determines if the technique is custom or prebuilt
+     *
+     * input: the technique to check
+     */
     fun customCheck(input: Technique): Boolean{
+        //look through all default techniques
         allTechniques.forEach{
+            //return false if match found
             if(it.equivalentTo(input))
                 return false
         }
 
+        //return that the technique is custom
         return true
     }
 
+    /**
+     * Removes a technique from the character
+     *
+     * input: the technique to remove from the character
+     */
     fun removeTechnique(input: Technique){
         when(input.level){
-            1 -> takenFirstTechniques = takenFirstTechniques - input
-            2 -> takenSecondTechniques = takenSecondTechniques - input
-            3 -> takenThirdTechniques = takenThirdTechniques - input
+            1 -> takenFirstTechniques -= input
+            2 -> takenSecondTechniques -= input
+            3 -> takenThirdTechniques -= input
             else -> {}
         }
-        customTechniques = customTechniques - input
+        customTechniques -= input
         removeExtra()
         updateFullList()
     }
 
+    /**
+     * Checks if second and third level techniques are still valid for the character to take
+     */
     fun removeExtra(){
+        //remove second level techniques if not enough first level techniques
         if(takenFirstTechniques.size < 2)
-            takenSecondTechniques = listOf()
+            takenSecondTechniques.clear()
+        //remove third level techniques if not enough second level techniques
         if(takenSecondTechniques.size < 2)
-            takenThirdTechniques = listOf()
+            takenThirdTechniques.clear()
     }
 
+    /**
+     * Recompiles the full technique list after a change in one of them
+     */
     fun updateFullList(){
-        takenTechniques = takenFirstTechniques + takenSecondTechniques + takenThirdTechniques
+        takenTechniques.clear()
+        takenTechniques += takenFirstTechniques + takenSecondTechniques + takenThirdTechniques
         updateMkSpent()
     }
 
+    /**
+     * Sets martial knowledge to the appropriate amount for each taken item
+     */
     fun updateMkSpent(){
+        //reset martial knowledge remaining to its maximum value
         martialKnowledgeRemaining = martialKnowledgeMax
 
+        //removes martial knowledge for each ki ability taken
         takenAbilities.forEach{
             martialKnowledgeRemaining -= it.mkCost
         }
 
+        //removes martial knowledge for each dominion technique taken
         takenTechniques.forEach{
             martialKnowledgeRemaining -= it.mkCost()
         }
     }
 
+    //initialize martial knowledge values
     var martialKnowledgeMax = 0
     var martialKnowledgeRemaining = martialKnowledgeMax
 
+    //initialize ki points for each pertinent characteristic
     var kiSTR = 0
     var kiDEX = 0
     var kiAGI = 0
@@ -676,8 +746,10 @@ class KiList: Serializable {
     var kiPOW = 0
     var kiWP = 0
 
+    //initialize total ki points
     var totalKi = 0
 
+    //initialize ki accumulation for each pertinent characteristic
     var accSTR = 0
     var accDEX = 0
     var accAGI = 0
@@ -685,8 +757,10 @@ class KiList: Serializable {
     var accPOW = 0
     var accWP = 0
 
+    //initialize total accumulation value
     var totalAcc = 0
 
+    //initialize ki points bought for each characteristic
     var boughtStrPoint = 0
     var boughtDexPoint = 0
     var boughtAgiPoint = 0
@@ -694,81 +768,77 @@ class KiList: Serializable {
     var boughtPowPoint = 0
     var boughtWpPoint = 0
 
+    //make a function for a change in each characteristic's bought point value
     val setBoughtStr = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtStrPoint = input
-        updateStr(charIn)
-        updateTotals(charIn)
+        updateStr()
+        updateTotals()
         statFinal.value = kiSTR.toString()
         changeDisplay(totalKi.toString())
-        //totalDisplay.value = totalKi.toString()
     }
 
     val setBoughtDex = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtDexPoint = input
-        updateDex(charIn)
-        updateTotals(charIn)
+        updateDex()
+        updateTotals()
         statFinal.value = kiDEX.toString()
         changeDisplay(totalKi.toString())
     }
 
     val setBoughtAgi = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtAgiPoint = input
-        updateAgi(charIn)
-        updateTotals(charIn)
+        updateAgi()
+        updateTotals()
         statFinal.value = kiAGI.toString()
         changeDisplay(totalKi.toString())
     }
 
     val setBoughtCon = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtConPoint = input
-        updateCon(charIn)
-        updateTotals(charIn)
+        updateCon()
+        updateTotals()
         statFinal.value = kiCON.toString()
         changeDisplay(totalKi.toString())
     }
 
     val setBoughtPow = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtPowPoint = input
-        updatePow(charIn)
-        updateTotals(charIn)
+        updatePow()
+        updateTotals()
         statFinal.value = kiPOW.toString()
         changeDisplay(totalKi.toString())
     }
 
     val setBoughtWp = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtWpPoint = input
-        updateWp(charIn)
-        updateTotals(charIn)
+        updateWp()
+        updateTotals()
         statFinal.value = kiWP.toString()
         changeDisplay(totalKi.toString())
     }
 
+    //initialize value for total ki points bought
     var totalPointBuy = 0
 
+    //initialize ki accumulation bought for each characteristic
     var boughtStrAcc = 0
     var boughtDexAcc = 0
     var boughtAgiAcc = 0
@@ -776,122 +846,142 @@ class KiList: Serializable {
     var boughtPowAcc = 0
     var boughtWpAcc = 0
 
+    //make a function for a change in each characteristic's bought accumulation value
     val setStrAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtStrAcc = input
-        updateStr(charIn)
-        updateTotals(charIn)
+        updateStr()
+        updateTotals()
         statFinal.value = accSTR.toString()
         changeDisplay(totalAcc.toString())
     }
 
     val setDexAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtDexAcc = input
-        updateDex(charIn)
-        updateTotals(charIn)
+        updateDex()
+        updateTotals()
         statFinal.value = accDEX.toString()
         changeDisplay(totalAcc.toString())
     }
 
     val setAgiAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtAgiAcc = input
-        updateAgi(charIn)
-        updateTotals(charIn)
+        updateAgi()
+        updateTotals()
         statFinal.value = accAGI.toString()
         changeDisplay(totalAcc.toString())
     }
 
     val setConAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtConAcc = input
-        updateCon(charIn)
-        updateTotals(charIn)
+        updateCon()
+        updateTotals()
         statFinal.value = accCON.toString()
         changeDisplay(totalAcc.toString())
     }
 
     val setPowAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtPowAcc = input
-        updatePow(charIn)
-        updateTotals(charIn)
+        updatePow()
+        updateTotals()
         statFinal.value = accPOW.toString()
         changeDisplay(totalAcc.toString())
     }
 
     val setWpAcc = {
             input: Int,
-            charIn: BaseCharacter,
             statFinal: MutableState<String>,
             changeDisplay: (String) -> Unit ->
         boughtWpAcc = input
-        updateWp(charIn)
-        updateTotals(charIn)
+        updateWp()
+        updateTotals()
         statFinal.value = accWP.toString()
         changeDisplay(totalAcc.toString())
     }
 
+    //initialize total bought accumulation value
     var totalAccBuy = 0
 
-    fun updateKiStats(charInstance: BaseCharacter){
-        updateStr(charInstance)
-        updateDex(charInstance)
-        updateAgi(charInstance)
-        updateCon(charInstance)
-        updatePow(charInstance)
-        updateWp(charInstance)
+    /**
+     * Updates the ki values for stats when a primary characteristic changes
+     */
+    fun updateKiStats() {
+        updateStr()
+        updateDex()
+        updateAgi()
+        updateCon()
+        updatePow()
+        updateWp()
 
-        updateTotals(charInstance)
+        updateTotals()
     }
 
-    fun updateStr(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the strength characteristic
+     */
+    fun updateStr() {
         kiSTR = getStatKi(charInstance.str) + boughtStrPoint
         accSTR = getStatKiAcc(charInstance.str) + boughtStrAcc
     }
 
-    fun updateDex(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the dexterity characteristic
+     */
+    fun updateDex() {
         kiDEX = getStatKi(charInstance.dex) + boughtDexPoint
         accDEX = getStatKiAcc(charInstance.dex) + boughtDexAcc
     }
 
-    fun updateAgi(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the agility characteristic
+     */
+    fun updateAgi() {
         kiAGI = getStatKi(charInstance.agi) + boughtAgiPoint
         accAGI = getStatKiAcc(charInstance.agi) + boughtAgiAcc
     }
 
-    fun updateCon(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the constitution characteristic
+     */
+    fun updateCon() {
         kiCON = getStatKi(charInstance.con) + boughtConPoint
         accCON =  getStatKiAcc(charInstance.con) + boughtConAcc
     }
 
-    fun updatePow(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the power characteristic
+     */
+    fun updatePow() {
         kiPOW = getStatKi(charInstance.pow) + boughtPowPoint
         accPOW = getStatKiAcc(charInstance.pow) + boughtPowAcc
     }
 
-    fun updateWp(charInstance: BaseCharacter){
+    /**
+     * Updates ki for the willpower characteristic
+     */
+    fun updateWp() {
         kiWP = getStatKi(charInstance.wp) + boughtWpPoint
         accWP = getStatKiAcc(charInstance.wp) + boughtWpAcc
     }
 
-    fun updateTotals(charInstance: BaseCharacter){
+    /**
+     * Updates all totals in relation to ki points and accumulation
+     */
+    fun updateTotals() {
         totalKi = kiSTR + kiDEX + kiAGI + kiCON + kiPOW + kiWP
         totalAcc = accSTR + accDEX + accAGI + accCON + accPOW + accWP
 
@@ -900,6 +990,11 @@ class KiList: Serializable {
         charInstance.updateTotalSpent()
     }
 
+    /**
+     * Gets the ki point value from the inputted stat value
+     *
+     * input: value of the primary characteristic
+     */
     fun getStatKi(input: Int): Int {
         return if (input <= 10)
                 input
@@ -907,6 +1002,11 @@ class KiList: Serializable {
                 10 + ((input - 10) * 2)
     }
 
+    /**
+     * Gets the ki accumulation value from the inputted stat value
+     *
+     * input: value of the primary characteristic
+     */
     fun getStatKiAcc(input: Int): Int{
         return if(input <= 9)
                 1
@@ -917,7 +1017,10 @@ class KiList: Serializable {
             else 4
     }
 
-    fun calculateSpent(charInstance: BaseCharacter): Int{
+    /**
+     * Determines the development points spent in ki point and accumulation purchases
+     */
+    fun calculateSpent(): Int{
         var total = 0
 
         total += totalPointBuy * charInstance.ownClass.kiGrowth
@@ -927,10 +1030,9 @@ class KiList: Serializable {
     }
 
 
-
-
-
-
+    /**
+     * Loads data in regards to this section from saved file data
+     */
     fun loadKiAttributes(fileReader: BufferedReader){
         boughtStrPoint = fileReader.readLine().toInt()
         boughtStrAcc = fileReader.readLine().toInt()
@@ -948,7 +1050,7 @@ class KiList: Serializable {
         var loops = fileReader.readLine().toInt()
 
         while(loops > 0){
-            takenAbilities = takenAbilities + listOf(getAbility(fileReader.readLine())!!)
+            takenAbilities += listOf(getAbility(fileReader.readLine())!!)
             loops--
         }
 
@@ -966,7 +1068,7 @@ class KiList: Serializable {
                 fileReader.readLine().toInt(),
                 fileReader.readLine().toInt()
             )
-            var techEffects: List<TechniqueEffect> = listOf()
+            val techEffects: MutableList<TechniqueEffect> = mutableListOf()
 
             var techLoops = fileReader.readLine().toInt()
 
@@ -987,7 +1089,7 @@ class KiList: Serializable {
                     fileReader.readLine().toInt()
                 )
 
-                val teAdditions = listOf(
+                val teAdditions = mutableListOf(
                     fileReader.readLine().toIntOrNull(),
                     fileReader.readLine().toIntOrNull(),
                     fileReader.readLine().toIntOrNull(),
@@ -996,15 +1098,15 @@ class KiList: Serializable {
                     fileReader.readLine().toIntOrNull()
                 )
 
-                var teElements: List<Element> = listOf()
+                val teElements = mutableListOf<Element>()
 
                 var effectLoops = fileReader.readLine().toInt()
                 while(effectLoops > 0){
-                    teElements = teElements + Element.fromString(fileReader.readLine())
+                    teElements += Element.fromString(fileReader.readLine())
                     effectLoops--
                 }
 
-                techEffects = techEffects +
+                techEffects +=
                         TechniqueEffect(
                             teName,
                             teEffect,
@@ -1033,7 +1135,10 @@ class KiList: Serializable {
         updateMkSpent()
     }
 
-    fun writeKiAttributes(charInstance: BaseCharacter){
+    /**
+     * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation
+     */
+    fun writeKiAttributes() {
         charInstance.addNewData(boughtStrPoint)
         charInstance.addNewData(boughtStrAcc)
         charInstance.addNewData(boughtDexPoint)
@@ -1058,6 +1163,11 @@ class KiList: Serializable {
         }
     }
 
+    /**
+     * Finds a ki ability based on its name
+     *
+     * toFind: name of the ki ability to find
+     */
     fun getAbility(toFind: String): KiAbility?{
         allKiAbilities.forEach{
             if(it.name == toFind)
@@ -1067,6 +1177,11 @@ class KiList: Serializable {
         return null
     }
 
+    /**
+     * Determines if a technique from file is equivalent to a prebuilt technique
+     *
+     * compareTo: technique to check against prebuilt techniques
+     */
     fun techEquivalent(compareTo: Technique): Pair<Boolean, Technique?>{
         allTechniques.forEach{
             if(it.equivalentTo(compareTo))

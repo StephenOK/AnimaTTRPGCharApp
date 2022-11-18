@@ -2,11 +2,9 @@ package com.example.animabuilder.character_creation.attributes.secondary_abiliti
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import kotlin.Throws
-import com.example.animabuilder.serializables.SerialOutputStream
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.Serializable
-import java.nio.charset.StandardCharsets
 
 /**
  * Object for a single secondary characteristic

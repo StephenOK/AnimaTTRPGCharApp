@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.ki_abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
 
@@ -290,10 +289,10 @@ private fun KiFromStatRow(
             onValueChange = {
                 numberCatcher(it,
                     {input: String ->
-                        kiRowData.pointUpdate(input.toInt(), charInstance, pointTotalString, changePointDisplay)
+                        kiRowData.pointUpdate(input.toInt(), pointTotalString, changePointDisplay)
                         pointString.value = input
                         updateFunc()},
-                    {kiRowData.pointUpdate(0, charInstance, pointTotalString, changePointDisplay)
+                    {kiRowData.pointUpdate(0, pointTotalString, changePointDisplay)
                         pointString.value = ""},
                 )
             },
@@ -314,10 +313,10 @@ private fun KiFromStatRow(
             onValueChange = {
                 numberCatcher(it,
                     {input: String ->
-                        kiRowData.accUpdate(input.toInt(), charInstance, accTotalString, changeAccDisplay)
+                        kiRowData.accUpdate(input.toInt(), accTotalString, changeAccDisplay)
                         accString.value = input
                         updateFunc()},
-                    {kiRowData.accUpdate(0, charInstance, accTotalString, changeAccDisplay)
+                    {kiRowData.accUpdate(0, accTotalString, changeAccDisplay)
                         accString.value = ""}
                 )
             },
@@ -501,7 +500,7 @@ val KiContents = @Composable
     Column{
         val preString =
             if(ability.prerequisites != null)
-                ability.prerequisites!!.name
+                ability.prerequisites.name
             else
                 "null"
 
@@ -570,9 +569,9 @@ private data class KiRowData(
     val title: String,
     val statVal: Int,
     val boughtPoint: Int,
-    val pointUpdate: (Int, BaseCharacter, MutableState<String>, (String) -> Unit) -> Unit,
+    val pointUpdate: (Int, MutableState<String>, (String) -> Unit) -> Unit,
     val boughtAcc: Int,
-    val accUpdate: (Int, BaseCharacter, MutableState<String>, (String) -> Unit) -> Unit,
+    val accUpdate: (Int, MutableState<String>, (String) -> Unit) -> Unit,
     val pointTotal: Int,
     val accTotal: Int
 )

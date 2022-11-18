@@ -4,17 +4,24 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
-class TechniqueEffect(
-    var name: String,
-    var effect: String,
-    var mkCost: Int,
-    var maintTotal: Int,
-    var costPair: Pair<Int, Int>,
-    var kiBuild: MutableList<Int>,
-    var buildAdditions: List<Int?>,
-    var elements: List<Element>,
-    var lvl: Int
+/**
+ * Holds data in regards to an individual aspect of a technique
+ */
+
+data class TechniqueEffect(
+    val name: String,
+    val effect: String,
+    val mkCost: Int,
+    val maintTotal: Int,
+    val costPair: Pair<Int, Int>,
+    val kiBuild: MutableList<Int>,
+    val buildAdditions: MutableList<Int?>,
+    var elements: MutableList<Element>,
+    val lvl: Int
 ): Serializable{
+    /**
+     * Writes held data to the save file for the character
+     */
     fun write(charInstance: BaseCharacter){
         charInstance.addNewData(name)
         charInstance.addNewData(effect)
@@ -40,6 +47,11 @@ class TechniqueEffect(
         charInstance.addNewData(lvl)
     }
 
+    /**
+     * Checks if the inputted effect is identical to this one
+     *
+     * compareTo: effect to check equivalency with
+     */
     fun equivalentTo(compareTo: TechniqueEffect): Boolean{
         return compareTo.name == name &&
                 compareTo.effect == effect &&

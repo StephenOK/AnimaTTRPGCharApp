@@ -5,7 +5,15 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Clas
 import java.io.BufferedReader
 import java.io.Serializable
 
-class WeaponProficiencies(): Serializable {
+/**
+ * Class that operates on the character's various proficiencies
+ * Holds data on all of the available weapons
+ * Holds data on all of the available martial arts
+ */
+
+class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializable {
+    //initialize all weapon data
+
     val bastardSword = Weapon(
         "Bastard Sword",
         70,
@@ -1301,6 +1309,9 @@ class WeaponProficiencies(): Serializable {
                 "make it burst."
     )
 
+
+    //initialize all data for the martial arts
+
     val kempo = MartialArt(
         "Kempo",
         "This is a freewheeling style of combat that uses combinations of " +
@@ -1344,7 +1355,7 @@ class WeaponProficiencies(): Serializable {
         "Shotokan is a martial art that employs forceful strikes with either the fists " +
                 "or the legs. The style consists of taking advantage of the weak points of an " +
                 "opponent's defenses to defeat him with a single attack. It is an offensive " +
-                "martial art capable of inflicting enormousdamage. Shotokan has a Base Damage " +
+                "martial art capable of inflicting enormous damage. Shotokan has a Base Damage " +
                 "of 30, plus the character's Strength bonus. It uses the Blunt Table.",
         "None",
         10
@@ -1370,7 +1381,7 @@ class WeaponProficiencies(): Serializable {
                 "movements while adapting them to human combat. Because its techniques are highly " +
                 "varied, it is an art capable of adapting itself to situations as they arise. " +
                 "Thus, its practitioners can modify their style with great ease. Every combat " +
-                "turn, a master of Kung Fu cana choose a bonus of +10 to his Attack, Block, " +
+                "turn, a master of Kung Fu can choose a bonus of +10 to his Attack, Block, " +
                 "Dodge, Damage, or Initiative, as he finds convenient. He should declare the " +
                 "ability to which his bonus is dedicated before Initiative is calculated for " +
                 "the Combat Turn. If he uses it to improve his Attack, Block, or Dodge ability, " +
@@ -1584,107 +1595,149 @@ class WeaponProficiencies(): Serializable {
         10
     )
 
+    //initialize character's primary weapon
     var primaryWeapon = unarmed
-    var individualModules: List<Weapon> = listOf()
-    var fullModWeapons: List<Weapon> = listOf()
 
-    var shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
+    //initialize weapons individually taken and given from group modules
+    val individualModules = mutableListOf<Weapon>()
+    val fullModWeapons = mutableListOf<Weapon>()
+
+    //create weapon class modules
+    val shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,
         parryDagger, pick, raven, sai, shortSword, shuko, shuriken, sickle, stiletto, tanto, tessen, tonfa)
 
-    var axes = listOf(battleAxe, handAxe, hoe, woodAxe)
+    val axes = listOf(battleAxe, handAxe, hoe, woodAxe)
 
-    var maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)
+    val maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)
 
-    var swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)
+    val swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)
 
-    var twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)
+    val twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)
 
-    var poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)
+    val poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)
 
-    var cords = listOf(chain, gladNet, lasso, nunchakus, whip)
+    val cords = listOf(chain, gladNet, lasso, nunchakus, whip)
 
     val mixed = listOf(bastardSword, flail, foil, halberd, heavyBattleMace, kusariGama,
         largeMultiFlail, scythe, twoHandAxe)
 
-    var shields = listOf(buckler, shield, fullShield)
+    val shields = listOf(buckler, shield, fullShield)
 
-    var projectiles = listOf(arquebus, blowgun, compositeBow, crossbow, darts, repeatingCrossbow,
+    val projectiles = listOf(arquebus, blowgun, compositeBow, crossbow, darts, repeatingCrossbow,
         heavyCrossbow, miniCrossbow, shortBow, longBow, matchlock, sling, lightBallista, heavyBallista, cannon)
 
-    var thrown = listOf(bolas, chakram, spikedBall)
+    val thrown = listOf(bolas, chakram, spikedBall)
 
+    //make list of every weapon
     val allWeapons = shortArms + axes + maces + swords + twoHanded + poles + cords + mixed +
             shields + projectiles + thrown
 
+    /**
+     * Finds the weapon from the given string input
+     *
+     * weaponName: Name of the weapon the caller is looking for
+     */
     fun findWeapon(weaponName: String): Weapon{
+        //search through all weapons until match is found
         allWeapons.forEach{
             if(it.name == weaponName)
                 return it
         }
 
+        //return unarmed if not found
         return unarmed
     }
 
-    var improvised = listOf(brokenBottle, chair, kitchenKnife, hammer, hoe, metalBar, pick,
+    //gather all archetype modules
+    val improvised = listOf(brokenBottle, chair, kitchenKnife, hammer, hoe, metalBar, pick,
         sickle, torch, vase, woodenPole, woodAxe)
-    var barbarianWeapons = listOf(twoHandAxe, battleAxe, twoHandSword, bastardSword, heavyBattleMace)
-    var ninjaWeapons = listOf(katana, tanto, claws, shuriken, kusariGama)
-    var duelWeapons = listOf(rapier, foil, parryDagger, dagger, saber, longSword)
-    var pirateWeapons = listOf(harpoon, gladNet, hook, saber, handAxe)
-    var nomadWeapons = listOf(dagger, chakram, longBow, scimitar, lance)
-    var huntWeapons = listOf(javelin, shortBow, shortSword, lance, bolas)
-    var knightWeapons = listOf(longSword, cavLance, mace, bastardSword, shield)
-    var gladiatorWeapons = listOf(shortSword, gladNet, buckler, trident, whip)
-    var assassinWeapons = listOf(shortSword, miniCrossbow, club, blowgun, stiletto)
-    var soldierWeapons = listOf(crossbow, longSword, halberd, lance, shield)
-    var indigenousWeapons = listOf(javelin, lance, fullShield, shortBow, blowgun)
-    var banditWeapons = listOf(dagger, crossbow, shortSword, mace, club)
+    val barbarianWeapons = listOf(twoHandAxe, battleAxe, twoHandSword, bastardSword, heavyBattleMace)
+    val ninjaWeapons = listOf(katana, tanto, claws, shuriken, kusariGama)
+    val duelWeapons = listOf(rapier, foil, parryDagger, dagger, saber, longSword)
+    val pirateWeapons = listOf(harpoon, gladNet, hook, saber, handAxe)
+    val nomadWeapons = listOf(dagger, chakram, longBow, scimitar, lance)
+    val huntWeapons = listOf(javelin, shortBow, shortSword, lance, bolas)
+    val knightWeapons = listOf(longSword, cavLance, mace, bastardSword, shield)
+    val gladiatorWeapons = listOf(shortSword, gladNet, buckler, trident, whip)
+    val assassinWeapons = listOf(shortSword, miniCrossbow, club, blowgun, stiletto)
+    val soldierWeapons = listOf(crossbow, longSword, halberd, lance, shield)
+    val indigenousWeapons = listOf(javelin, lance, fullShield, shortBow, blowgun)
+    val banditWeapons = listOf(dagger, crossbow, shortSword, mace, club)
 
-    var takenModules: List<List<Weapon>> = mutableListOf()
+    //list of modules the character has taken
+    val takenModules = mutableListOf<List<Weapon>>()
 
-    fun updateModulesTaken(weaponCheck: List<Weapon>, isAdded: Boolean): List<Weapon>{
-        fullModWeapons = listOf()
+    /**
+     * Changes the character's taken weapon modules as desired
+     *
+     * weaponCheck: module to add or remove
+     * isAdded: whether to add weaponCheck or remove it
+     */
+    fun updateModulesTaken(weaponCheck: List<Weapon>, isAdded: Boolean){
+        //empty individual weapons from modules list
+        fullModWeapons.clear()
 
-        takenModules =
-            if(isAdded)
-                takenModules + listOf(weaponCheck)
-            else
-                takenModules - listOf(weaponCheck).toSet()
+        //add or remove module list
+        if(isAdded)
+            takenModules += listOf(weaponCheck)
+        else
+            takenModules -= listOf(weaponCheck).toSet()
 
+        //apply weapons to individual weapon list
         takenModules.forEach{list ->
             list.forEach{
-                fullModWeapons = fullModWeapons + it
+                fullModWeapons += it
             }
         }
-        individualModules = individualModules - fullModWeapons.toSet()
 
-        return fullModWeapons
+        //remove any individual weapon module costs from added archetype weapons
+        individualModules -= fullModWeapons.toSet()
     }
 
-    var styleMods: List<String> = listOf()
+    //initialize list of taken style modules
+    val styleMods = mutableListOf<String>()
 
+    //compile list of martial arts available
     val allMartialArts = listOf(kempo, capoeira, taiChi, shotokan, sambo, kungFu, taekwondo,
         aikido, muayThai, grappling, melkaiah, seraphite, dumah, emp, enuth, shephon, asakusen,
         velez, selene, hakyoukuken)
 
-    var takenMartialList: List<MartialArt> = mutableListOf()
+    //initialize taken martial arts and maximum martial art quantity
+    var takenMartialList = mutableListOf<MartialArt>()
     var martialMax = 0
 
-    fun changeMartial(charInstance:BaseCharacter, changeItem: MartialArt, isInput: Boolean): Boolean{
-        takenMartialList = if(isInput){
-            if(takenMartialList.size >= martialMax || !qualifies(changeItem, charInstance))
+    /**
+     * Attempts to add or remove a martial art from the character's taken martial arts
+     *
+     * changeItem: martial art to add or remove
+     * isInput: whether to add or remove the inputted martial art
+     */
+    fun changeMartial(changeItem: MartialArt, isInput: Boolean): Boolean{
+        //if user tries to add the item
+        if(isInput){
+            //check that character qualifies for this addition
+            if(takenMartialList.size >= martialMax || !qualifies(changeItem))
                 return false
             else
-                takenMartialList + changeItem
-        } else
-            takenMartialList - changeItem
+                takenMartialList += changeItem
+        }
+        //always allow martial art removal
+        else
+            takenMartialList -= changeItem
 
+        //update martial knowledge accordingly
         charInstance.updateMK()
 
+        //return successful process
         return true
     }
 
-    fun qualifies(input: MartialArt, charInstance: BaseCharacter): Boolean{
+    /**
+     * Checks whether the given martial art qualifies to be taken by the character
+     *
+     * input: the martial art to check
+     */
+    fun qualifies(input: MartialArt): Boolean{
         when(input){
             kempo, shotokan, sambo, taekwondo -> return true
             capoeira -> return charInstance.secondaryList.dance.total >= 40
@@ -1741,26 +1794,36 @@ class WeaponProficiencies(): Serializable {
         }
     }
 
-    fun doubleCheck(charInstance: BaseCharacter){
+    /**
+     * Check that all taken martial arts still qualify
+     */
+    fun doubleCheck() {
         takenMartialList.forEach{
-            if(!qualifies(it, charInstance))
-                takenMartialList = takenMartialList - it
+            if(!qualifies(it))
+                takenMartialList -= it
         }
     }
 
-    fun updateMartialMax(charInstance: BaseCharacter){
+    /**
+     * Updates the maximum number of martial arts the character can take
+     */
+    fun updateMartialMax() {
+        //determine martial art number based on attack and highest defense abilities
         martialMax = charInstance.attack +
                 if (charInstance.block > charInstance.dodge)
                     charInstance.block
                 else
                     charInstance.dodge
-
         martialMax /= 40
 
+        //remove martial arts that exceed the new found limit
         if(takenMartialList.size > martialMax)
-            takenMartialList = takenMartialList.slice(0 until martialMax)
+            takenMartialList.dropLast(takenMartialList.size - martialMax)
     }
 
+    /**
+     * Determines the amount of martial knowledge gained from taken martial arts
+     */
     fun mkFromArts(): Int{
         var total = 0
 
@@ -1771,14 +1834,15 @@ class WeaponProficiencies(): Serializable {
         return total
     }
 
-    fun calculateSpent(charInstance: BaseCharacter): Int{
-        var total = 0
+    /**
+     * Determines development points spent in modules, martial arts, and weapon styles
+     */
+    fun calculateSpent(): Int{
+        //initialize total as number of archetype modules taken
+        var total = takenModules.size * 50
 
+        //retrieve list of individual weapons
         val toCheck = individualModules.toMutableList() - fullModWeapons.toSet()
-
-        takenModules.forEach{
-            total += 50
-        }
 
         toCheck.forEach{
             //if primary weapon is mixed
@@ -1802,14 +1866,21 @@ class WeaponProficiencies(): Serializable {
                 else
                     total += 20
             }
+
+            //if primary weapon is not mixed
+            //add mixed cost if secondary is mixed with one matching type
             else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
                 total += 15
+            //add identical cost for identical type
             else if(it.type == primaryWeapon.type)
                 total += 10
+
+            //add no matching type amount
             else
                 total += 20
         }
 
+        //add amount for different style modules
         styleMods.forEach{
             total += when(it){
                 "Batto Jutsu/Iai Jutsu"-> 30
@@ -1820,15 +1891,21 @@ class WeaponProficiencies(): Serializable {
             }
         }
 
+        //if character has martial arts taken
         if(takenMartialList.isNotEmpty()){
+            //determine cost of first art depending on
             total +=
+                //if character is a Tao
                 if(charInstance.ownClass.heldClass == ClassName.tao)
                     10
+                //if character is primarily unarmed
                 else if(primaryWeapon == unarmed)
                     25
+                //if neither are factors
                 else
                     50
 
+            //add 50 for every other martial art taken
             total += (takenMartialList.size - 1) * 50
         }
 
@@ -1836,43 +1913,36 @@ class WeaponProficiencies(): Serializable {
     }
 
 
-
-
-
-
-
+    /**
+     * Retrieves save data to apply to the character for this category
+     */
     fun loadProficiencies(fileReader: BufferedReader){
         primaryWeapon = findWeapon(fileReader.readLine())
 
         var loops = fileReader.readLine().toInt()
 
-        while(loops > 0){
-            individualModules = individualModules + findWeapon(fileReader.readLine())
-            loops--
-        }
+        for(loopNum in 1 .. loops)
+            individualModules += findWeapon(fileReader.readLine())
 
         loops = fileReader.readLine().toInt()
 
-        while(loops > 0){
+        for(loopNum in 1 .. loops)
             loadModule(fileReader)
-            loops--
-        }
 
         loops = fileReader.readLine().toInt()
 
-        while(loops > 0){
-            styleMods = styleMods + fileReader.readLine()
-            loops--
-        }
+        for(loopNum in 1 .. loops)
+            styleMods += fileReader.readLine()
 
         loops = fileReader.readLine().toInt()
 
-        while(loops > 0){
-            takenMartialList = takenMartialList + listOf(loadMartial(fileReader.readLine())!!)
-            loops--
-        }
+        for(loopNum in 1 .. loops)
+            takenMartialList += listOf(loadMartial(fileReader.readLine())!!)
     }
 
+    /**
+     * Saves the data found in this category
+     */
     fun writeProficiencies(charInstance: BaseCharacter){
         charInstance.addNewData(primaryWeapon.name)
 
@@ -1895,6 +1965,9 @@ class WeaponProficiencies(): Serializable {
         }
     }
 
+    /**
+     * Converts a loaded number into an archetype module
+     */
     private fun loadModule(fileReader: BufferedReader){
         val addList = when(fileReader.readLine().toInt()){
             0 -> shortArms
@@ -1926,6 +1999,9 @@ class WeaponProficiencies(): Serializable {
         updateModulesTaken(addList, true)
     }
 
+    /**
+     * Converts a taken archetype module into a number to save
+     */
     private fun writeModules(charInstance: BaseCharacter){
         takenModules.forEach{
             val listNum = when(it){
@@ -1959,6 +2035,11 @@ class WeaponProficiencies(): Serializable {
         }
     }
 
+    /**
+     * Finds a martial art of the given name
+     *
+     * name: martial art to find
+     */
     fun loadMartial(name: String): MartialArt?{
         allMartialArts.forEach{
             if(name == it.name)

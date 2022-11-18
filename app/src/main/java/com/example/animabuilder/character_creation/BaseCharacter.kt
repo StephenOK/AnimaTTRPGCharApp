@@ -18,7 +18,7 @@ import kotlin.Throws
 import kotlin.math.ceil
 
 /**
- * Character being built by the player
+ * Character being built by the user
  * Holder class of all other character creation objects
  */
 
@@ -29,7 +29,7 @@ class BaseCharacter: Serializable {
     //list of secondary abilities
     val secondaryList = SecondaryList()
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
-    val kiList = KiList()
+    val kiList = KiList(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
 
@@ -80,7 +80,6 @@ class BaseCharacter: Serializable {
 
     //character's maximum hp
     var lifeMax = 0
-    var lifeAt = 0
 
     var lifeBase = 0
     var lifeMultsTaken = 0
@@ -100,8 +99,6 @@ class BaseCharacter: Serializable {
     //character's wear armor stat
     var wearArmor = 0
     var pointInWear = 0
-
-    var allActionPenalty = 0
 
     //maximum fatigue value
     var maxFatigue = 0
@@ -127,7 +124,7 @@ class BaseCharacter: Serializable {
     var rmMult = 1.0
     var rpsyMult = 1.0
 
-    val weaponProficiencies = WeaponProficiencies()
+    val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
 
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
@@ -158,6 +155,7 @@ class BaseCharacter: Serializable {
         updateMK()
     }
 
+    //setter for class with Integer input
     fun setOwnClass(classInt: Int?){
         ownClass = CharClass(ClassName.fromInt(classInt))
 
@@ -165,6 +163,7 @@ class BaseCharacter: Serializable {
         updateMK()
     }
 
+    //updates class values when the character's class changes
     fun updateClassInputs(){
         updateLifePoints()
 
@@ -188,6 +187,7 @@ class BaseCharacter: Serializable {
         ownRace = CharRace(RaceName.fromString(raceName), advantageRecord)
     }
 
+    //setter for race with Integer input
     fun setOwnRace(raceNum: Int?){
         ownRace = CharRace(RaceName.fromInt(raceNum), advantageRecord)
     }
@@ -237,12 +237,14 @@ class BaseCharacter: Serializable {
         maxPsyDP = (devPT * percPsyDP).toInt()
     }
 
+    //updates the total development points spent
     fun updateTotalSpent(){
-        weaponProficiencies.doubleCheck(this@BaseCharacter)
+        weaponProficiencies.doubleCheck()
         updateCombatSpent()
         spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }
 
+    //updates the total development points spent in combat abilities
     private fun updateCombatSpent(){
         ptInCombat =
             lifeMultsTaken * ownClass.lifePointMultiple +
@@ -250,8 +252,8 @@ class BaseCharacter: Serializable {
             pointInBlock * ownClass.blockGrowth +
             pointInDodge * ownClass.dodgeGrowth +
             pointInWear * ownClass.armorGrowth +
-            weaponProficiencies.calculateSpent(this@BaseCharacter) +
-            kiList.calculateSpent(this@BaseCharacter)
+            weaponProficiencies.calculateSpent() +
+            kiList.calculateSpent()
     }
 
     //setters for each primary characteristic
@@ -261,7 +263,7 @@ class BaseCharacter: Serializable {
 
         updateWear()
         secondaryList.updateSTR(modSTR)
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setDEX = { dexVal: Int ->
         dex = dexVal
@@ -270,7 +272,7 @@ class BaseCharacter: Serializable {
         secondaryList.updateDEX(modDEX)
         updateAttack()
         updateBlock()
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
@@ -278,7 +280,7 @@ class BaseCharacter: Serializable {
 
         secondaryList.updateAGI(modAGI)
         updateDodge()
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setCON = { conVal: Int ->
         con = conVal
@@ -287,7 +289,7 @@ class BaseCharacter: Serializable {
         updateLifeBase()
         updateLifePoints()
         updateResistances()
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setINT = { intVal: Int ->
         int = intVal
@@ -299,14 +301,14 @@ class BaseCharacter: Serializable {
         modPOW = getModVal(pow)
         secondaryList.updatePOW(modPOW)
         updateResistances()
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setWP = { wpVal: Int ->
         wp = wpVal
         modWP = getModVal(wp)
         secondaryList.updateWP(modWP)
         updateResistances()
-        kiList.updateKiStats(this@BaseCharacter)
+        kiList.updateKiStats()
     }
     var setPER = { perVal: Int ->
         per = perVal
@@ -330,6 +332,7 @@ class BaseCharacter: Serializable {
         return output
     }
 
+    //update the base number of life points based on the character's constitution
     fun updateLifeBase(){
         lifeBase = when(con){
             1 -> 5
@@ -356,16 +359,19 @@ class BaseCharacter: Serializable {
         }
     }
 
+    //updates the number of life multiples the user is taking for their character
     fun takeLifeMult(multTake: Int){
         lifeMultsTaken = multTake
         updateTotalSpent()
         updateLifePoints()
     }
 
+    //updates the character's total life points
     fun updateLifePoints(){
         lifeMax = lifeBase + (lifeMultsTaken * con) + (ownClass.lifePointsPerLevel * lvl)
     }
 
+    //updates attack points and updates a string item if one given
     val applyAttackPoint = {score: Int, textChange: MutableState<String>? ->
         pointInAttack = score
         updateTotalSpent()
@@ -377,22 +383,25 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    //updates the character's attack value
     fun updateAttack(){
         attack = pointInAttack + modDEX + attackClassVal()
-        weaponProficiencies.updateMartialMax(this@BaseCharacter)
+        weaponProficiencies.updateMartialMax()
     }
 
+    //gets the character's class values for attack
     fun attackClassVal(): Int{
         var total = ownClass.atkPerLevel * lvl
         if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.capoeira))
             total += 10
 
-        if(total > 50)
-            return 50
+        return if(total > 50)
+            50
         else
-            return total
+            total
     }
 
+    //updates block points and updates a string item if one given
     val applyBlockPoint = {score: Int, textChange: MutableState<String>? ->
         pointInBlock = score
         updateTotalSpent()
@@ -404,11 +413,13 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    //updates the character's block value
     fun updateBlock(){
         block = pointInBlock + modDEX + (ownClass.blockPerLevel * lvl)
-        weaponProficiencies.updateMartialMax(this@BaseCharacter)
+        weaponProficiencies.updateMartialMax()
     }
 
+    //updates dodge points and updates a string item if one given
     val applyDodgePoint = {score: Int, textChange: MutableState<String>? ->
         pointInDodge = score
         updateTotalSpent()
@@ -420,11 +431,13 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    //updates the character's dodge value
     fun updateDodge(){
         dodge = pointInDodge + modAGI + (ownClass.dodgePerLevel * lvl)
-        weaponProficiencies.updateMartialMax(this@BaseCharacter)
+        weaponProficiencies.updateMartialMax()
     }
 
+    //determines if the attack, block, and dodge the user has taken is valid
     fun validAttackDodgeBlock(): Boolean{
         //if only one stat developed, cannot exceed 25% of overall devPT
         return ((pointInBlock == 0 && pointInDodge == 0 && pointInAttack * ownClass.atkGrowth <= devPT/4) ||
@@ -441,6 +454,7 @@ class BaseCharacter: Serializable {
                 (block - attack <= 50 && dodge - attack <= 50))
     }
 
+    //updates wear armor points and updates a string item if one given
     val applyWearPoint = {score: Int, textChange: MutableState<String>? ->
         pointInWear = score
         updateTotalSpent()
@@ -452,10 +466,12 @@ class BaseCharacter: Serializable {
         true
     }
 
+    //updates the character's wear armor value
     fun updateWear(){
         wearArmor = pointInWear + modSTR + (ownClass.armorPerLevel * lvl)
     }
 
+    //updates the character's resistances
     fun updateResistances(){
         resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
         resistDisease = ((presence + modCON + rdSpec) * rdMult).toInt()
@@ -464,6 +480,7 @@ class BaseCharacter: Serializable {
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
     }
 
+    //updates the character's martial knowledge
     fun updateMK(){
         kiList.martialKnowledgeMax = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
         kiList.updateMkSpent()
@@ -566,7 +583,7 @@ class BaseCharacter: Serializable {
 
             secondaryList.writeList(this@BaseCharacter)
             weaponProficiencies.writeProficiencies(this@BaseCharacter)
-            kiList.writeKiAttributes(this@BaseCharacter)
+            kiList.writeKiAttributes()
 
             byteArray.close()
 

@@ -231,6 +231,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
                         MagicFragment()
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to psychic page

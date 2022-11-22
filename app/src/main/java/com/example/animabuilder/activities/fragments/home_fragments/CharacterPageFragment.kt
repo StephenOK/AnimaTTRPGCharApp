@@ -68,6 +68,7 @@ fun CharacterPageFragment(
     val presence = remember{mutableStateOf(charInstance.presence)}
 
     //initialize life point data
+    val baseLife = remember{mutableStateOf(charInstance.lifeBase.toString())}
     val lifeTotal = remember{mutableStateOf(charInstance.lifeMax)}
     val lifeMults = remember{mutableStateOf(charInstance.lifeMultsTaken.toString())}
 
@@ -171,7 +172,12 @@ fun CharacterPageFragment(
         charInstance.modAGI
     })
     primaryList.add(PrimaryData(stringResource(R.string.conText), remember{mutableStateOf(charInstance.con)}, conMod)
-    { newCON -> charInstance.setCON(newCON); charInstance.modCON })
+    { newCON ->
+        charInstance.setCON(newCON)
+        baseLife.value = charInstance.lifeBase.toString()
+        lifeTotal.value = charInstance.lifeMax
+        charInstance.modCON
+    })
     primaryList.add(PrimaryData(stringResource(R.string.intText), remember{mutableStateOf(charInstance.int)}, remember{mutableStateOf(charInstance.modINT)})
     {newINT -> charInstance.setINT(newINT); charInstance.modINT})
     primaryList.add(PrimaryData(stringResource(R.string.powText), remember{mutableStateOf(charInstance.pow)}, powMod)
@@ -355,7 +361,7 @@ fun CharacterPageFragment(
                 Text(text = "Life Points: ", modifier = Modifier.weight(0.2f))
 
                 //display life points from base and class values
-                Text(text = charInstance.lifeBase.toString(), modifier = Modifier.weight(0.2f))
+                Text(text = baseLife.value, modifier = Modifier.weight(0.2f))
                 Text(
                     text = (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl).toString(),
                     modifier = Modifier.weight(0.2f)

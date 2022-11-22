@@ -1,6 +1,5 @@
-package com.example.animabuilder.character_creation.attributes.spells
+package com.example.animabuilder.character_creation.attributes.magic.spells
 
-import androidx.compose.ui.text.font.emptyCacheFontFamilyResolver
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
@@ -1517,10 +1516,205 @@ class Spellbook(): Serializable {
         true,
         20,
         80,
-        "Causes whomever the spell is directed at to recover 50 Life Points. The spell does not permit recovery of permanently lost or destroyed limbs, but does eliminate the temporary penalties caused by Criticals, up to a quantity equivalent to half the Life Points returned.",
+        "Causes whomever the spell is directed at to recover 50 Life Points. The spell does " +
+                "not permit recovery of permanently lost or destroyed limbs, but does eliminate " +
+                "the temporary penalties caused by Criticals, up to a quantity equivalent to half " +
+                "the Life Points returned.",
         "+5 Life Points",
         10,
         null,
         listOf(SpellType.Effect)
+    )
+
+    val damageBarrier = Spell(
+        "Damage Barrier",
+        Element.Creation,
+        true,
+        22,
+        60,
+        "The supernatural energies governed by this spell adhere to the body of the " +
+                "designated individual, and provide him with certain immunity to damage. In " +
+                "game terms, he obtains a Damage Barrier of 30 points (see Chapter 14).",
+        "+5 to the Damage Barrier",
+        10,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val homunculus = Spell(
+        "Create Homunculus",
+        Element.Creation,
+        true,
+        26,
+        60,
+        "Homunculus are small magical elementals that casters use at times for various " +
+                "purposes, from espionage to housework. The spell creates a zero-level mystical " +
+                "being under complete control of the caster, as per the rules in Chapter 26. " +
+                "It is a Being Between Worlds with a Gnosis of 5, but given its minor nature, " +
+                "the following rules apply: " +
+                "\n1 - First of all, its characteristics can never be higher than 5, nor can it " +
+                "have any Primary Ability or Secondary Ability higher than 50." +
+                "\n2 - It also suffers a -2 penalty to size, and it cannot choose Uncommon Size." +
+                "\n3 - It can't contain any Zeon points" +
+                "\nEach Homunculus created might be completely different",
+        "+1 additional Homunculus",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val minorChange = Spell(
+        "Minor Change",
+        Element.Creation,
+        true,
+        28,
+        60,
+        "This spell permits altering the appearance of an object or being by modifying its " +
+                "form. The change is limited to varying its exterior appearance, and never alters " +
+                "its original qualities or nature. In this way, a shining short sword might " +
+                "become old and rusty, but could never become a walking stick. In the case of " +
+                "living things, this spell can change things by no more than two points of size, " +
+                "perhaps making an ugly and overweight man into a young good looking one. The MR " +
+                "Difficulty to avoid the change is 80. Regarding objects, once affected they have " +
+                "no further right to make Resistance Checks, but people can repeat the Check once " +
+                "a day if they wish to be free of the effects. It is possible to affect various " +
+                "targets, as long as the sum of all their Presences is no higher than 60.",
+        "+5 to the MR and +10 to the maximum Presence that can be affected",
+        10,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val imitate = Spell(
+        "Imitate",
+        Element.Creation,
+        true,
+        30,
+        100,
+        "Creates an exact copy of an already existing inorganic object within reach of the " +
+                "caster. It creates a perfect imitation of the original that retains all its " +
+                "qualities, including the supernatural ones. The copied object can not have " +
+                "Presence greater than 30. The spell has no effect on magically animated " +
+                "creatures, but can affect mechanical constructions as long as they have no soul.",
+        "+5 to the maximum Presence that can be duplicated",
+        20,
+        "1 every 20 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val immunity = Spell(
+        "Immunity",
+        Element.Creation,
+        true,
+        32,
+        80,
+        "This spell permits the caster, or those people designated by him, to be immune " +
+                "to 5 Intensities of a given type of Energy, whether it is Fire, Electricity, " +
+                "or Cold. If an attack is made using the type of Energy to which they are " +
+                "immune, each intensity of immunity reduces the Base Damage by 5 points and " +
+                "provides a +5 to the Resistances against its effects.",
+        "+1 to the Intensity immunity",
+        20,
+        "1 every 10 (Daily)",
+        listOf(SpellType.Effect)
+    )
+
+    val reduceDamage = Spell(
+        "Reduction of Damage",
+        Element.Creation,
+        false,
+        36,
+        80,
+        "The magic of this spell affects the power of an attack, reducing the force of its " +
+                "impact. Upon being cast, this spell reduces the Base Damage of an attack by 40 " +
+                "points. If the damage is lowered to zero, the attack produces no effect. If, for " +
+                "example, this spell is used against an attack with Base Damage 60, when it " +
+                "actually hits, it does so as if it were an attack of only 20. Reduction of " +
+                "Damage must be cast before rolling any dice.",
+        "-5 to the Base Damage of the attack",
+        10,
+        null,
+        listOf(SpellType.Automatic)
+    )
+
+    val physicalControl = Spell(
+        "Physical Control",
+        Element.Creation,
+        true,
+        38,
+        120,
+        "Using this spell, the caster is able to control the body of a being as though it " +
+                "were a simple puppet. Since the control is purely physical, not spiritual, the " +
+                "subject being controlled is not obliged to use any Supernatural Ability (Magic, " +
+                "Ki, and Psychic Powers) against his will, although any natural fighting abilities " +
+                "are under the caster's control. Resisting the spell requires beating a MR Check " +
+                "with a Difficulty of 80. The person being controlled has the right to one new " +
+                "Resistance Check per day, and also any time he receives orders that are entirely " +
+                "against his nature.",
+        "+5 to the MR",
+        20,
+        "1 every 5 (Daily)",
+        listOf(SpellType.Spiritual)
+    )
+
+    val raiseAbilities = Spell(
+        "Raise Abilities",
+        Element.Creation,
+        true,
+        40,
+        80,
+        "This spell temporarily increases the Secondary Abilities of an individual, " +
+                "providing him with a +40 bonus to divide freely among them, except for those " +
+                "Abilities requiring knowledge.",
+        "+10 to bonus",
+        20,
+        "1 every 20",
+        listOf(SpellType.Effect)
+    )
+
+    val fuse = Spell(
+        "Fuse",
+        Element.Creation,
+        true,
+        42,
+        140,
+        "Unites two beings in a single body, creating a new individual who possesses the " +
+                "characteristics and abilities of both. The caster designates which capacities " +
+                "prevail, selecting those that he is interested in from each. If the spell joins " +
+                "a fighter and a psychic, for example, the resulting individual could have the " +
+                "fighting ability of the warrior, the mental powers of the mentalist, and the " +
+                "highest Secondary Abilities of each one. Control of the resulting united body " +
+                "falls to whichever of the two wins an Opposed Check of Willpower, although some " +
+                "characteristics typical of the other personality can be retained. The original " +
+                "bodies remain in the state they were in before the fusion and so, when the spell " +
+                "lapses, return to the state and condition they were in before it was cast. The " +
+                "death of the joint entity causes the death of both original people. The total " +
+                "Presence of both originals cannot be more than 80. It is also possible to Fuse " +
+                "an individual with objects, in which case the GM can award the result the " +
+                "advantages and abilities he considers appropriate.",
+        "+5 to the MR and +5 to the maximum Presence affected",
+        20,
+        "1 every 10",
+        listOf(SpellType.Effect)
+    )
+
+    val createMemories = Spell(
+        "Create Memories",
+        Element.Creation,
+        true,
+        46,
+        140,
+        "Permits creation of new memories in the target, without necessarily erasing the " +
+                "pre-existing ones. Most of the time, unless very deeply-rooted memories are " +
+                "modified, the person affected will feel slightly confused, but will be " +
+                "convinced that his memories are real. The caster determines what information " +
+                "he is trying to introduce, regardless of its complexity or duration. Resisting " +
+                "the spell requires beating a MR or PsR Check with a Difficulty of 100. Although " +
+                "this spell doesn't require maintenance, the individual affected has the right to " +
+                "a new Resistance Check any time something makes him suspect his memory might be inaccurate.",
+        "+5 to the MR or PsR Difficulty",
+        20,
+        null,
+        listOf(SpellType.Spiritual)
     )
 }

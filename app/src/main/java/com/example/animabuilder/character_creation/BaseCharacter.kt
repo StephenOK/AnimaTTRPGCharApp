@@ -9,6 +9,7 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Char
 import com.example.animabuilder.character_creation.attributes.race_objects.CharRace
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
+import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponProficiencies
@@ -30,6 +31,7 @@ class BaseCharacter: Serializable {
     val secondaryList = SecondaryList()
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
     val kiList = KiList(this@BaseCharacter)
+    val magic = Magic(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
 
@@ -142,25 +144,19 @@ class BaseCharacter: Serializable {
     //setter for class with ClassName input
     fun setOwnClass(classIn: ClassName?) {
         ownClass = CharClass(classIn!!)
-
         updateClassInputs()
-        updateMK()
     }
 
     //setter for class with String input
     fun setOwnClass(className: String?) {
         ownClass = CharClass(ClassName.fromString(className))
-
         updateClassInputs()
-        updateMK()
     }
 
     //setter for class with Integer input
     fun setOwnClass(classInt: Int?){
         ownClass = CharClass(ClassName.fromInt(classInt))
-
         updateClassInputs()
-        updateMK()
     }
 
     //updates class values when the character's class changes
@@ -174,6 +170,10 @@ class BaseCharacter: Serializable {
 
         adjustMaxValues()
         secondaryList.classUpdate(ownClass)
+        updateMK()
+
+        magic.calcMaxZeon()
+
         updateTotalSpent()
     }
 
@@ -241,6 +241,7 @@ class BaseCharacter: Serializable {
     fun updateTotalSpent(){
         weaponProficiencies.doubleCheck()
         updateCombatSpent()
+        updateMagicSpent()
         spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }
 
@@ -254,6 +255,10 @@ class BaseCharacter: Serializable {
             pointInWear * ownClass.armorGrowth +
             weaponProficiencies.calculateSpent() +
             kiList.calculateSpent()
+    }
+
+    private fun updateMagicSpent(){
+        ptInMag = magic.calculateSpent()
     }
 
     //setters for each primary characteristic
@@ -273,6 +278,7 @@ class BaseCharacter: Serializable {
         updateAttack()
         updateBlock()
         kiList.updateKiStats()
+        magic.calcMagProj()
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
@@ -295,6 +301,7 @@ class BaseCharacter: Serializable {
         int = intVal
         modINT = getModVal(int)
         secondaryList.updateINT(modINT)
+        magic.setMagicLevel()
     }
     var setPOW = { powVal: Int ->
         pow = powVal
@@ -302,6 +309,8 @@ class BaseCharacter: Serializable {
         secondaryList.updatePOW(modPOW)
         updateResistances()
         kiList.updateKiStats()
+        magic.setBaseZeon()
+        magic.setBaseZeonAcc()
     }
     var setWP = { wpVal: Int ->
         wp = wpVal
@@ -320,11 +329,10 @@ class BaseCharacter: Serializable {
     private fun getModVal(statVal: Int): Int {
         val output: Int = if (statVal <= 5) {
             when (statVal) {
-                1 -> -30
                 2 -> -20
                 3 -> -10
                 4 -> -5
-                else -> 0
+                else -> -30
             }
         } else {
             (15 * (statVal / 5 - 1) + 5 * ceil(statVal % 5 / 2.0)).toInt()
@@ -334,29 +342,10 @@ class BaseCharacter: Serializable {
 
     //update the base number of life points based on the character's constitution
     fun updateLifeBase(){
-        lifeBase = when(con){
-            1 -> 5
-            2 -> 20
-            3 -> 40
-            4 -> 55
-            5 -> 70
-            6 -> 85
-            7 -> 95
-            8 -> 110
-            9 -> 120
-            10 -> 135
-            11 -> 150
-            12 -> 160
-            13 -> 175
-            14 -> 185
-            15 -> 200
-            16 -> 215
-            17 -> 225
-            18 -> 240
-            19 -> 250
-            20 -> 265
-            else -> 0
-        }
+        lifeBase = if(con == 1)
+            5
+        else
+            20 + (con * 10) + modCON
     }
 
     //updates the number of life multiples the user is taking for their character

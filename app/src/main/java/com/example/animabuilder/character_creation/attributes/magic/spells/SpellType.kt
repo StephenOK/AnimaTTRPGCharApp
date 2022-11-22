@@ -1,4 +1,4 @@
-package com.example.animabuilder.character_creation.attributes.spells
+package com.example.animabuilder.character_creation.attributes.magic.spells
 
 enum class SpellType {
     Attack,

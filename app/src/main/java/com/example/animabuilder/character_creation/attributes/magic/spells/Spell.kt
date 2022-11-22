@@ -1,4 +1,4 @@
-package com.example.animabuilder.character_creation.attributes.spells
+package com.example.animabuilder.character_creation.attributes.magic.spells
 
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable

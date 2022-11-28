@@ -3,15 +3,16 @@ package com.example.animabuilder.character_creation.attributes.magic.spells
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
-class Spell(
-    var name: String,
-    var inBook: Element,
-    var isActive: Boolean,
-    var level: Int,
-    var zCost: Int,
-    var effect: String,
-    var addedEffect: String,
-    var zMax: Int,
-    var maintenance: String?,
-    var type: List<SpellType>
+data class Spell(
+    val name: String,
+    val inBook: Element,
+    val isActive: Boolean,
+    val level: Int,
+    val zCost: Int,
+    val effect: String,
+    val addedEffect: String,
+    val zMax: Int,
+    val maintenance: Int?,
+    val isDaily: Boolean,
+    val type: List<SpellType>
 ): Serializable

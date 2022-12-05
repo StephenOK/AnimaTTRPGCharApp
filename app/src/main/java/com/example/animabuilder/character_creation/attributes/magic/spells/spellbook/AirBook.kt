@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.magic.spells.spellbook
 
-import android.media.effect.Effect
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.SpellType

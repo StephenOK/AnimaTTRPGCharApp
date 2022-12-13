@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class CreationBook: Serializable {
-    val minorCreation = Spell(
+    private val minorCreation = Spell(
         "Minor Creation",
         Element.Creation,
         true,
@@ -20,7 +20,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reconstruct = Spell(
+    private val reconstruct = Spell(
         "Reconstruct",
         Element.Creation,
         true,
@@ -37,13 +37,14 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createEnergy = Spell(
+    private val createEnergy = Spell(
         "Create Energy",
         Element.Creation,
         true,
         8,
         40,
-        "Creates one Intensity of one of the three types of existing energies (Cold, Fire, or Electricity).",
+        "Creates one Intensity of one of the three types of existing energies (Cold, Fire, or " +
+                "Electricity).",
         "+1 additional Intensity",
         20,
         10,
@@ -51,7 +52,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val regeneration = Spell(
+    private val regeneration = Spell(
         "Regeneration",
         Element.Creation,
         true,
@@ -59,7 +60,7 @@ class CreationBook: Serializable {
         60,
         "Increases the ability of a body to heal all types of wounds. This spell provides " +
                 "a base Regeneration Level of 4 to anyone designated by the caster, substituting " +
-                "it for the person's natural Regeneration Level. If it increases above 14, two " +
+                "it for the person\'s natural Regeneration Level. If it increases above 14, two " +
                 "more Added Effects are necessary instead of one to continue increasing it more. " +
                 "A Regeneration level of more than 18 cannot be achieved through this spell " +
                 "unless the caster has sufficient Gnosis.",
@@ -70,7 +71,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val inorganicModification = Spell(
+    private val inorganicModification = Spell(
         "Inorganic Modification",
         Element.Creation,
         true,
@@ -87,7 +88,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val increaseResistances = Spell(
+    private val increaseResistances = Spell(
         "Increase Resistances",
         Element.Creation,
         true,
@@ -103,7 +104,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val royalShield = Spell(
+    private val royalShield = Spell(
         "Royal Shield",
         Element.Creation,
         false,
@@ -118,7 +119,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val heal = Spell(
+    private val heal = Spell(
         "Heal",
         Element.Creation,
         true,
@@ -135,7 +136,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val damageBarrier = Spell(
+    private val damageBarrier = Spell(
         "Damage Barrier",
         Element.Creation,
         true,
@@ -151,7 +152,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val homunculus = Spell(
+    private val homunculus = Spell(
         "Create Homunculus",
         Element.Creation,
         true,
@@ -165,8 +166,8 @@ class CreationBook: Serializable {
                 "\n1 - First of all, its characteristics can never be higher than 5, nor can it " +
                 "have any Primary Ability or Secondary Ability higher than 50." +
                 "\n2 - It also suffers a -2 penalty to size, and it cannot choose Uncommon Size." +
-                "\n3 - It can't contain any Zeon points" +
-                "\nEach Homunculus created might be completely different",
+                "\n3 - It can\'t contain any Zeon points" +
+                "\nEach Homunculus created might be completely different.",
         "+1 additional Homunculus",
         20,
         10,
@@ -174,7 +175,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val minorChange = Spell(
+    private val minorChange = Spell(
         "Minor Change",
         Element.Creation,
         true,
@@ -187,7 +188,7 @@ class CreationBook: Serializable {
                 "living things, this spell can change things by no more than two points of size, " +
                 "perhaps making an ugly and overweight man into a young good looking one. The MR " +
                 "Difficulty to avoid the change is 80. Regarding objects, once affected they have " +
-                "no further right to make Resistance Checks, but people can repeat the Check once " +
+                "no further right to make Resistance Checks, but people can repeat the check once " +
                 "a day if they wish to be free of the effects. It is possible to affect various " +
                 "targets, as long as the sum of all their Presences is no higher than 60.",
         "+5 to the MR and +10 to the maximum Presence that can be affected",
@@ -197,7 +198,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val imitate = Spell(
+    private val imitate = Spell(
         "Imitate",
         Element.Creation,
         true,
@@ -215,7 +216,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val immunity = Spell(
+    private val immunity = Spell(
         "Immunity",
         Element.Creation,
         true,
@@ -233,7 +234,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reduceDamage = Spell(
+    private val reduceDamage = Spell(
         "Reduction of Damage",
         Element.Creation,
         false,
@@ -252,7 +253,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val physicalControl = Spell(
+    private val physicalControl = Spell(
         "Physical Control",
         Element.Creation,
         true,
@@ -262,7 +263,7 @@ class CreationBook: Serializable {
                 "were a simple puppet. Since the control is purely physical, not spiritual, the " +
                 "subject being controlled is not obliged to use any Supernatural Ability (Magic, " +
                 "Ki, and Psychic Powers) against his will, although any natural fighting abilities " +
-                "are under the caster's control. Resisting the spell requires beating a MR Check " +
+                "are under the caster\'s control. Resisting the spell requires beating a MR Check " +
                 "with a Difficulty of 80. The person being controlled has the right to one new " +
                 "Resistance Check per day, and also any time he receives orders that are entirely " +
                 "against his nature.",
@@ -273,7 +274,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val raiseAbilities = Spell(
+    private val raiseAbilities = Spell(
         "Raise Abilities",
         Element.Creation,
         true,
@@ -289,7 +290,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val fuse = Spell(
+    private val fuse = Spell(
         "Fuse",
         Element.Creation,
         true,
@@ -316,7 +317,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createMemories = Spell(
+    private val createMemories = Spell(
         "Create Memories",
         Element.Creation,
         true,
@@ -328,7 +329,7 @@ class CreationBook: Serializable {
                 "convinced that his memories are real. The caster determines what information " +
                 "he is trying to introduce, regardless of its complexity or duration. Resisting " +
                 "the spell requires beating a MR or PsR Check with a Difficulty of 100. Although " +
-                "this spell doesn't require maintenance, the individual affected has the right to " +
+                "this spell doesn\'t require maintenance, the individual affected has the right to " +
                 "a new Resistance Check any time something makes him suspect his memory might be inaccurate.",
         "+5 to the MR or PsR Difficulty",
         20,
@@ -337,7 +338,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val recover = Spell(
+    private val recover = Spell(
         "Recover",
         Element.Creation,
         true,
@@ -354,7 +355,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val acquirePowers = Spell(
+    private val acquirePowers = Spell(
         "Acquire Powers",
         Element.Creation,
         true,
@@ -374,7 +375,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createMonstrosity = Spell(
+    private val createMonstrosity = Spell(
         "Create Monstrosity",
         Element.Creation,
         true,
@@ -384,7 +385,7 @@ class CreationBook: Serializable {
                 "control of the caster. The being is developed as a Being Between Worlds using the " +
                 "rules described in Chapter 26. The creature is first-level with the equivalent of " +
                 "Gnosis 20. The spell does not permit the creation of a creature of higher level " +
-                "than the caster, since it is based on the caster's spiritual presence. The " +
+                "than the caster, since it is based on the caster\'s spiritual presence. The " +
                 "Monstrosity is not able to receive a soul, so it is not possible to give it independent life.",
         "+1 level",
         10,
@@ -393,24 +394,24 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val protectiveAura = Spell(
+    private val protectiveAura = Spell(
         "Protective Aura",
         Element.Creation,
         false,
         56,
         120,
         "Supernaturally increases all the Resistances (VR, PhR, DR, MR, and PsR) of all " +
-                "the designated individuals within 450 meters of the caster by +20. The effects " +
+                "the designated individuals within 500 meters of the caster by +20. The effects " +
                 "of this spell are not cumulative, and a subject can only be affected by one " +
                 "Protective Aura at a time.",
-        "+5 to the Resistances and +45 meter radius",
+        "+5 to the Resistances and +50 meters to radius",
         30,
         20,
         false,
         listOf(SpellType.Effect)
     )
 
-    val spiritualStandstill = Spell(
+    private val spiritualStandstill = Spell(
         "Spiritual Standstill",
         Element.Creation,
         true,
@@ -431,7 +432,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val perfectShield = Spell(
+    private val perfectShield = Spell(
         "Perfect Shield",
         Element.Creation,
         true,
@@ -447,7 +448,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val vitality = Spell(
+    private val vitality = Spell(
         "Vitality",
         Element.Creation,
         true,
@@ -465,7 +466,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val completeCreation = Spell(
+    private val completeCreation = Spell(
         "Complete Creation",
         Element.Creation,
         true,
@@ -485,7 +486,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reinforceMagic = Spell(
+    private val reinforceMagic = Spell(
         "Reinforce Magic",
         Element.Creation,
         false,
@@ -501,7 +502,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val transmute = Spell(
+    private val transmute = Spell(
         "Transmute",
         Element.Creation,
         true,
@@ -521,7 +522,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val metamorphism = Spell(
+    private val metamorphism = Spell(
         "Metamorphism",
         Element.Creation,
         true,
@@ -529,7 +530,7 @@ class CreationBook: Serializable {
         150,
         "Using this spell, the caster can transform a person or object into anything he " +
                 "wishes (a mouse, a statue, etc.) as long as the Presence of the new form is " +
-                "not higher than the target's original Presence. Living things metamorphized " +
+                "not higher than the target\'s original Presence. Living things metamorphized " +
                 "into non-living objects continue to be alive in their new forms even if it " +
                 "happens they cannot move or breathe. When the spell lapses, the individual or " +
                 "object returns to its original form. Metamorphism does not permit the " +
@@ -544,7 +545,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val recreate = Spell(
+    private val recreate = Spell(
         "Recreate",
         Element.Creation,
         true,
@@ -572,7 +573,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createBeing = Spell(
+    private val createBeing = Spell(
         "Create Being",
         Element.Creation,
         true,
@@ -599,13 +600,13 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val chimera = Spell(
+    private val chimera = Spell(
         "Chimera",
         Element.Creation,
         true,
         80,
         250,
-        "The caster, or whomever he designates, ceases to be a natural being to become a " +
+        "The caster, or whomever he designates, ceases to be a Natural being to become a " +
                 "Being Between Worlds with a Gnosis of 25, enjoying all the advantages and " +
                 "disadvantages that implies. He also obtains 150 additional DP to use to choose " +
                 "between Essential Abilities and powers from the Creation of Beings, described " +
@@ -626,7 +627,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val safetyZone = Spell(
+    private val safetyZone = Spell(
         "Zone of Safety",
         Element.Creation,
         true,
@@ -647,7 +648,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val maintainMagic = Spell(
+    private val maintainMagic = Spell(
         "Maintain Magic",
         Element.Creation,
         true,
@@ -655,7 +656,7 @@ class CreationBook: Serializable {
         250,
         "Affects an existing active spell, tying it to the world in a more lasting way. In " +
                 "game terms, it adds 500 points of Zeon to keep up maintenance of the designated " +
-                "spell. Remember these points do not add to the spell's power, only to its maintenance.",
+                "spell. Remember these points do not add to the spell\'s power, only to its maintenance.",
         "+50 toward the Maintenance of the designated spell",
         40,
         null,
@@ -663,7 +664,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val provideSoul = Spell(
+    private val provideSoul = Spell(
         "Provide Soul",
         Element.Creation,
         true,
@@ -672,7 +673,7 @@ class CreationBook: Serializable {
         "Through this spell, the caster is able to create a complete soul, giving the " +
                 "breath of life to an object or body able to contain one. If the soul is " +
                 "provided to a magically engendered creature such as those developed with the " +
-                "level 78 spell of this Path, or with the level 82 elemental spells. Provide " +
+                "level 78 spell of this Path, or with the level 82 elemental spells, Provide " +
                 "Soul makes it unnecessary to continue maintaining those spells to sustain the " +
                 "creature. The creature thereby breaks any bond it has with its creator, " +
                 "obtaining free will as just one more Being Between Worlds.\nNot all souls " +
@@ -687,7 +688,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val greaterCreation = Spell(
+    private val greaterCreation = Spell(
         "Greater Creation",
         Element.Creation,
         true,
@@ -704,18 +705,18 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val eternalMagic = Spell(
+    private val eternalMagic = Spell(
         "Eternal Magic",
         Element.Creation,
         true,
         92,
         600,
         "As the name indicates, this spell affects another existing one, enormously " +
-                "reducing (or even eliminating) its Maintenance Cost. Eternal Magic effects vary " +
+                "reducing (or even eliminating) its Maintenance Cost. Eternal Magic\'s effects vary " +
                 "according to whether or not it affects a spell with Daily maintenance. If the " +
                 "spell in question is Daily, Eternal Magic stabilizes it, making maintenance " +
                 "unnecessary. The spell continues being controlled by its caster, but it will " +
-                "continue in effect even after his death. If the spell's maintenance requirement " +
+                "continue in effect even after his death. If the spell\'s maintenance requirement " +
                 "is \"per Combat turn,\" it becomes one requiring only Daily maintenance. " +
                 "Eternal Magic only influences spells with a Zeonic value 100 or less and that " +
                 "have a Path Level less than 80.",
@@ -726,7 +727,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val barrier = Spell(
+    private val barrierSpell = Spell(
         "The Barrier",
         Element.Creation,
         true,
@@ -752,7 +753,7 @@ class CreationBook: Serializable {
                 "it. To start with, it must be someone with a Gnosis greater than 25 who knows of " +
                 "The Barrier and its exact location. If both conditions are fulfilled, he must " +
                 "pass a MR Check with a Difficulty of 120 to get through. If he fails, he can " +
-                "only repeat the check once per day. The spell can affect the territory of 100 " +
+                "only repeat the check once per day.\nThe spell can affect the territory of 100 " +
                 "square kilometers, or be extended in a line of the same length. Once cast, it " +
                 "remains in the same location.",
         "+5 to the MR Difficulty and +100 km",
@@ -762,7 +763,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val giftOfLife = Spell(
+    private val giftOfLife = Spell(
         "The Gift of Life",
         Element.Creation,
         true,
@@ -770,7 +771,7 @@ class CreationBook: Serializable {
         800,
         "The caster is imbued with the ability to create a new form of life, the newborn of " +
                 "a race that never existed before. The creation can be of any class (Natural, " +
-                "Spiritual, or Between Worlds)and can be tied to a particular element. The " +
+                "Spiritual, or Between Worlds) and can be tied to a particular element. The " +
                 "maximum level of the creature cannot be higher than that of his creator. The " +
                 "creator should choose the Gnosis of his creation, awarding it no more than ten " +
                 "points less than his own.\nIn the beginning it will be a first level creature, " +
@@ -785,7 +786,7 @@ class CreationBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val create = Spell(
+    private val createSpell = Spell(
         "Create",
         Element.Creation,
         true,
@@ -794,7 +795,7 @@ class CreationBook: Serializable {
         "Permits the caster to obtain absolute power over creation, giving him the ability " +
                 "to create anything he wishes: Continents, oceans, and even entire worlds. In " +
                 "game terms, it grants 5,000 Presence Points to create whatever the caster " +
-                "wishes, as long as it doesn't exceed 350 points of presence.\nThis spell can " +
+                "wishes, as long as it doesn\'t exceed 350 points of presence.\nThis spell can " +
                 "also impose new rules of reality: alter gravity, modify the rate at which time " +
                 "passes, and so forth. Anyone with a Gnosis of less than half that of the caster " +
                 "is affected by such changes.",
@@ -803,5 +804,48 @@ class CreationBook: Serializable {
         null,
         false,
         listOf(SpellType.Effect)
+    )
+
+    val fullBook = listOf(
+        minorCreation,
+        reconstruct,
+        createEnergy,
+        regeneration,
+        inorganicModification,
+        increaseResistances,
+        royalShield,
+        heal,
+        damageBarrier,
+        homunculus,
+        minorChange,
+        imitate,
+        immunity,
+        reduceDamage,
+        physicalControl,
+        raiseAbilities,
+        fuse,
+        createMemories,
+        recover,
+        acquirePowers,
+        createMonstrosity,
+        protectiveAura,
+        spiritualStandstill,
+        perfectShield,
+        vitality,
+        completeCreation,
+        reinforceMagic,
+        transmute,
+        metamorphism,
+        recreate,
+        createBeing,
+        chimera,
+        safetyZone,
+        maintainMagic,
+        provideSoul,
+        greaterCreation,
+        eternalMagic,
+        barrierSpell,
+        giftOfLife,
+        createSpell
     )
 }

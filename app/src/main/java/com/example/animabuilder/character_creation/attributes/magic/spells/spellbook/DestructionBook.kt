@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class DestructionBook: Serializable {
-    val fragility = Spell(
+    private val fragility = Spell(
         "Fragility",
         Element.Destruction,
         true,
@@ -23,7 +23,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val dismantle = Spell(
+    private val dismantle = Spell(
         "Dismantle",
         Element.Destruction,
         true,
@@ -38,7 +38,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destroyIntensities = Spell(
+    private val destroyIntensities = Spell(
         "Destroy Intensities",
         Element.Destruction,
         true,
@@ -53,7 +53,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val minorDestruction = Spell(
+    private val minorDestruction = Spell(
         "Minor Destruction",
         Element.Destruction,
         true,
@@ -68,7 +68,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destructionSphere = Spell(
+    private val destructionSphere = Spell(
         "Sphere of Destruction",
         Element.Destruction,
         true,
@@ -83,7 +83,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val increaseWeakness = Spell(
+    private val increaseWeakness = Spell(
         "Increase Weakness",
         Element.Destruction,
         true,
@@ -104,7 +104,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val magicDestruction = Spell(
+    private val magicDestruction = Spell(
         "Magic Destruction",
         Element.Destruction,
         false,
@@ -119,7 +119,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val aggravateDamage = Spell(
+    private val aggravateDamage = Spell(
         "Aggravate Damage",
         Element.Destruction,
         false,
@@ -137,7 +137,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destructMatrices = Spell(
+    private val destructMatrices = Spell(
         "Destruction of Matrices",
         Element.Destruction,
         false,
@@ -153,7 +153,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val wound = Spell(
+    private val woundSpell = Spell(
         "Wound",
         Element.Destruction,
         true,
@@ -169,7 +169,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val destroyKi = Spell(
+    private val destroyKi = Spell(
         "Destroy Ki",
         Element.Destruction,
         true,
@@ -186,7 +186,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val produceDamage = Spell(
+    private val produceDamage = Spell(
         "Produce Damage",
         Element.Destruction,
         true,
@@ -203,7 +203,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val senseDestroy = Spell(
+    private val senseDestroy = Spell(
         "Destruction of Senses",
         Element.Destruction,
         true,
@@ -218,7 +218,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val mysticBolt = Spell(
+    private val mysticBolt = Spell(
         "Mystic Bolt",
         Element.Destruction,
         true,
@@ -233,7 +233,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val unravelTies = Spell(
+    private val unravelTies = Spell(
         "Unravel Ties",
         Element.Destruction,
         true,
@@ -252,7 +252,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val destroyResistances = Spell(
+    private val destroyResistances = Spell(
         "Destroy Resistances",
         Element.Destruction,
         true,
@@ -267,12 +267,12 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val undoState = Spell(
+    private val undoState = Spell(
         "Undo States",
         Element.Destruction,
         true,
         42,
-        100,
+        120,
         "Immediately undoes any of the States described in Chapter 14, or others that are " +
                 "equivalent to them. This spell can affect as many targets as desired as long as " +
                 "their accumulated Presence is no higher than 120. The spell cannot undo the " +
@@ -285,7 +285,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destructionDome = Spell(
+    private val destructionDome = Spell(
         "Dome of Destruction",
         Element.Destruction,
         true,
@@ -301,7 +301,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val decayZone = Spell(
+    private val decayZone = Spell(
         "Zone of Decay",
         Element.Destruction,
         true,
@@ -320,7 +320,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val destructionAura = Spell(
+    private val destructionAura = Spell(
         "Aura of Destruction",
         Element.Destruction,
         true,
@@ -339,7 +339,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destroyMemories = Spell(
+    private val destroyMemories = Spell(
         "Destroy Memories",
         Element.Destruction,
         true,
@@ -355,7 +355,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val blockLearning = Spell(
+    private val blockLearning = Spell(
         "Block Learning",
         Element.Destruction,
         true,
@@ -374,7 +374,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val forbid = Spell(
+    private val forbid = Spell(
         "Forbid",
         Element.Destruction,
         true,
@@ -392,7 +392,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val destroyPowers = Spell(
+    private val destroyPowers = Spell(
         "Destroy Powers",
         Element.Destruction,
         true,
@@ -410,7 +410,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val greatMysticBolt = Spell(
+    private val greatMysticBolt = Spell(
         "Greater Mystic Bolt",
         Element.Destruction,
         true,
@@ -425,13 +425,13 @@ class DestructionBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val destroyWill = Spell(
+    private val destroyWill = Spell(
         "Destroy Will",
         Element.Destruction,
         true,
         66,
         160,
-        "This spell affects a 10 meter radius area, within which any individual who does " +
+        "This spell affects a 10-meter radius area, within which any individual who does " +
                 "not beat a MR Check with a Difficulty of 120 automatically loses the ability to " +
                 "make decisions. While a person is influenced by this spell, he cannot undertake " +
                 "any Active Action, even moving, except in case of necessity.",
@@ -442,7 +442,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val weaknessZone = Spell(
+    private val weaknessZone = Spell(
         "Zone of Weakness",
         Element.Destruction,
         true,
@@ -466,7 +466,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val destructionEssence = Spell(
+    private val destructionEssence = Spell(
         "Essence of Destruction",
         Element.Destruction,
         true,
@@ -485,7 +485,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val death = Spell(
+    private val deathSpell = Spell(
         "Death",
         Element.Destruction,
         true,
@@ -503,7 +503,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val devouringZone = Spell(
+    private val devouringZone = Spell(
         "Devouring Zone",
         Element.Destruction,
         true,
@@ -527,7 +527,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val destroyCapabilities = Spell(
+    private val destroyCapabilities = Spell(
         "Destroy Capabilities",
         Element.Destruction,
         true,
@@ -549,7 +549,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val severExistence = Spell(
+    private val severExistence = Spell(
         "Sever Existence",
         Element.Destruction,
         true,
@@ -572,25 +572,25 @@ class DestructionBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val destructionRain = Spell(
+    private val destructionRain = Spell(
         "Rain of Destruction",
         Element.Destruction,
         true,
         82,
         250,
         "This spell unleashes a storm of selective blasts that destroy only the targets " +
-                "designated by the caster within a 50 meter radius. It has a Base Damage of 200, " +
+                "designated by the caster within a 50-meter radius. It has a Base Damage of 200, " +
                 "and attacks on Energy AT. Additionally, if it impacts a target and causes damage " +
                 "to him, the victim must beat a MR Check with a Difficulty of 140, or he loses a " +
                 "quantity of Life Points equal to the Margin of Failure.",
-        "+10 meter radius, +5 to Base Damage, and +5 to MR Difficulty",
+        "+10 meters to radius, +5 to Base Damage, and +5 to MR Difficulty",
         30,
         null,
         false,
         listOf(SpellType.Attack)
     )
 
-    val zeonDestruction = Spell(
+    private val zeonDestruction = Spell(
         "Destruction of Zeon",
         Element.Destruction,
         true,
@@ -606,7 +606,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val heavenSweep = Spell(
+    private val heavenSweep = Spell(
         "Sweep from the Heavens",
         Element.Destruction,
         true,
@@ -626,17 +626,17 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val void = Spell(
+    private val void = Spell(
         "Void",
         Element.Destruction,
         true,
         90,
         250,
         "This spell forms a sphere of absolute void that absorbs into itself all physical and " +
-                "spiritual matter around it, unmaking them completely. The dome has a 5 meter " +
+                "spiritual matter around it, unmaking them completely. The dome has a 5-meter " +
                 "radius and must be located in an open space. Once cast, it remains fixed in that " +
                 "location until the spell ends. Once created, it begins to suck in anything within " +
-                "a 50 meter radius. The power of attraction of the spell employs an equivalent " +
+                "a 50-meter radius. The power of attraction of the spell employs an equivalent " +
                 "Strength of 14, and anyone failing in an Opposed Check of characteristics will " +
                 "be drawn toward it at a rate of 10 meters for every point of difference. The " +
                 "void is so powerful that anything coming into contact with the sphere weakens " +
@@ -658,7 +658,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val greaterDestruction = Spell(
+    private val greaterDestruction = Spell(
         "Greater Destruction",
         Element.Destruction,
         true,
@@ -675,25 +675,25 @@ class DestructionBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val destroySouls = Spell(
+    private val destroySouls = Spell(
         "Destroy Souls",
         Element.Destruction,
         true,
         96,
         500,
-        "The power unleashed by the destruction of souls sweeps away the spiritual matter " +
+        "The power unleashed by Destroy Souls sweeps away the spiritual matter " +
                 "around the caster, ending the existence of anyone who does not resist its " +
                 "effects. Any individual within an area of 5 kilometers from the point where the " +
                 "spell is unleashed by the caster must make a MR Check against a Difficulty of " +
                 "100 or have his soul completely disintegrated causing immediate death.",
-        "+3 kilometer radius and +5 to MR Difficulty",
+        "+5 kilometer radius and +5 to MR Difficulty",
         40,
         null,
         false,
         listOf(SpellType.Automatic)
     )
 
-    val chaos = Spell(
+    private val chaos = Spell(
         "Chaos",
         Element.Destruction,
         true,
@@ -725,7 +725,7 @@ class DestructionBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val uncreation = Spell(
+    private val uncreation = Spell(
         "Uncreation",
         Element.Destruction,
         true,
@@ -750,5 +750,48 @@ class DestructionBook: Serializable {
         null,
         false,
         listOf(SpellType.Automatic)
+    )
+
+    val fullBook = listOf(
+        fragility,
+        dismantle,
+        destroyIntensities,
+        minorDestruction,
+        destructionSphere,
+        increaseWeakness,
+        magicDestruction,
+        aggravateDamage,
+        destructMatrices,
+        woundSpell,
+        destroyKi,
+        produceDamage,
+        senseDestroy,
+        mysticBolt,
+        unravelTies,
+        destroyResistances,
+        undoState,
+        destructionDome,
+        decayZone,
+        destructionAura,
+        destroyMemories,
+        blockLearning,
+        forbid,
+        destroyPowers,
+        greatMysticBolt,
+        destroyWill,
+        weaknessZone,
+        destructionEssence,
+        deathSpell,
+        devouringZone,
+        destroyCapabilities,
+        severExistence,
+        destructionRain,
+        zeonDestruction,
+        heavenSweep,
+        void,
+        greaterDestruction,
+        destroySouls,
+        chaos,
+        uncreation
     )
 }

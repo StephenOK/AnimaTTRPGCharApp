@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class FreeBook: Serializable {
-    val tie = FreeSpell(
+    private val tieSpell = FreeSpell(
         "Tie",
         true,
         5,
@@ -15,7 +15,7 @@ class FreeBook: Serializable {
                 "Base Ability in Sleight of Hand. The caster may command strings to tie a subject " +
                 "up, in which case the target will have to fight off an automatic attack of " +
                 "Absurd Difficulty, following the rules of Trapping (this is to say, he would " +
-                "receive a direct attack with a final ability of 180). The Strength of the " +
+                "receive a direct attack with a Final Ability of 180). The Strength of the " +
                 "binding depends on the material used. Just as a reference, a very thick rope " +
                 "would have Strength of 10, whereas metallic chains would have Strength 12. Note " +
                 "that strings are not created by the spell.",
@@ -27,12 +27,12 @@ class FreeBook: Serializable {
         listOf(Element.Destruction, Element.Illusion)
     )
 
-    val createFire = FreeSpell(
+    private val createFire = FreeSpell(
         "Create Fire",
         true,
         5,
         40,
-        "This spell creates a single fire intensity if cast upon a flammable substance. If " +
+        "This spell creates a single fire Intensity if cast upon a flammable substance. If " +
                 "fire catches on, it will not be necessary to maintain the spell.",
         "+1 fire Intensity",
         10,
@@ -42,7 +42,7 @@ class FreeBook: Serializable {
         listOf(Element.Water)
     )
 
-    val opening = FreeSpell(
+    private val opening = FreeSpell(
         "Opening",
         true,
         5,
@@ -57,7 +57,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction, Element.Fire)
     )
 
-    val moveObjects = FreeSpell(
+    private val moveObjects = FreeSpell(
         "Move Objects",
         true,
         5,
@@ -72,13 +72,13 @@ class FreeBook: Serializable {
         listOf(Element.Destruction, Element.Earth)
     )
 
-    val stopFall = FreeSpell(
+    private val stopFall = FreeSpell(
         "Stop Fall",
         false,
         5,
         40,
         "This spell cancels the effects of falling from great heights. In game terms, it " +
-                "completely eliminates the impact of falling from a 50 meter distance. It may " +
+                "completely eliminates the impact of falling from a 50-meter distance. It may " +
                 "affect several individuals simultaneously, provided the total of their Presences " +
                 "is not higher than 60.",
         "+10 extra meters of fall and +10 to the maximum Presence affected",
@@ -89,13 +89,13 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val cleanliness = FreeSpell(
+    private val cleanliness = FreeSpell(
         "Cleanliness",
         true,
         5,
         30,
         "This spell removes any minor physical impurity (such as dirt or bad smell) in the " +
-                "target's body and clothes. It can also be used to clean places or objects. It " +
+                "target\'s body and clothes. It can also be used to clean places or objects. It " +
                 "can affect up to a maximum Presence of 50.",
         "+10 to the maximum Presence affected",
         10,
@@ -105,7 +105,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val magicDetection = FreeSpell(
+    private val magicDetection = FreeSpell(
         "Magic Detection",
         true,
         5,
@@ -121,7 +121,7 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val createMusic = FreeSpell(
+    private val createMusic = FreeSpell(
         "Create Music",
         true,
         5,
@@ -130,21 +130,23 @@ class FreeBook: Serializable {
                 "performed with a Music Ability of 80. This spell can only play pieces the caster " +
                 "is familiar with, even if only in a vague way.",
         "+25 meters to range and +5 to Music Ability",
-        20,
+        10,
         20,
         false,
         listOf(SpellType.Effect),
         listOf(Element.Destruction)
     )
 
-    val undoWriting = FreeSpell(
+    private val undoWriting = FreeSpell(
         "Undo Writing",
         true,
         5,
         40,
         "The spell will erase a text up to 500 characters or letters. The material upon " +
                 "which the text is imprinted in could be altered by this spell, but not in a " +
-                "damaging way. For instance, the spell causes ink to fade away, or the space created by engraving to be refilled. This spell can only affect objects with a Presence less than 30.",
+                "damaging way. For instance, the spell causes ink to fade away, or the space " +
+                "created by engraving to be refilled. This spell can only affect objects with a " +
+                "Presence less than 30.",
         "+5 to maximum Presence and +100 characters",
         10,
         null,
@@ -153,7 +155,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val staticMessage = FreeSpell(
+    private val staticMessage = FreeSpell(
         "Static Message",
         true,
         5,
@@ -170,13 +172,13 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val jump = FreeSpell(
+    private val jump = FreeSpell(
         "Jump",
         true,
         5,
         50,
         "The targeted individual can supernaturally enhance his Jump Ability. The spell adds " +
-                "a +50 bonus to the base of a character's Jump Ability, and allows him to reach " +
+                "a +50 bonus to the base of a character\'s Jump Ability, and allows him to reach " +
                 "Inhuman Difficulty Levels when making Jump Checks.",
         "+20 to Jump Ability",
         10,
@@ -186,7 +188,7 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val changeColor = FreeSpell(
+    private val changeColor = FreeSpell(
         "Change Color",
         true,
         5,
@@ -202,7 +204,22 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val createSounds = FreeSpell(
+    val firstBook = listOf(
+        tieSpell,
+        createFire,
+        opening,
+        moveObjects,
+        stopFall,
+        cleanliness,
+        magicDetection,
+        createMusic,
+        undoWriting,
+        staticMessage,
+        jump,
+        changeColor
+    )
+
+    private val createSounds = FreeSpell(
         "Create Sounds",
         true,
         15,
@@ -217,7 +234,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val fog = FreeSpell(
+    private val fog = FreeSpell(
         "Fog",
         true,
         15,
@@ -233,7 +250,7 @@ class FreeBook: Serializable {
         listOf(Element.Fire)
     )
 
-    val breatheLiquids = FreeSpell(
+    private val breatheLiquids = FreeSpell(
         "Breathe Liquids",
         true,
         15,
@@ -249,7 +266,7 @@ class FreeBook: Serializable {
         listOf(Element.Earth, Element.Fire)
     )
 
-    val enchantSpell = FreeSpell(
+    private val enchantSpell = FreeSpell(
         "Enchant",
         true,
         15,
@@ -257,7 +274,7 @@ class FreeBook: Serializable {
         "This spell turns an object or place with a Presence of 50 or below into a " +
                 "supernatural element. The newly enchanted substance affects intangible beings and " +
                 "spells. For instance, if cast upon a weapon, the weapon will be able to inflict " +
-                "damage upon immaterial beings (employing the object's Presence). Likewise, " +
+                "damage upon immaterial beings (employing the object\'s Presence). Likewise, " +
                 "ethereal beings could not pass through an enchanted wall.",
         "+10 to the maximum Presence affected",
         10,
@@ -267,7 +284,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val recreateImage = FreeSpell(
+    private val recreateImage = FreeSpell(
         "Recreate Image",
         true,
         15,
@@ -283,7 +300,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val repair = FreeSpell(
+    private val repair = FreeSpell(
         "Repair",
         true,
         15,
@@ -300,13 +317,13 @@ class FreeBook: Serializable {
         listOf(Element.Destruction, Element.Illusion)
     )
 
-    val climb = FreeSpell(
+    private val climb = FreeSpell(
         "Climb",
         true,
         15,
         50,
         "The targeted individual has his Climb Ability supernaturally enhanced. The spell " +
-                "adds a +50 bonus to the base of a character's Climb Ability and allows him to " +
+                "adds a +50 bonus to the base of a character\'s Climb Ability and allows him to " +
                 "reach Inhuman Difficulty Levels when making Climb Checks.",
         "+20 to the Climb Ability",
         10,
@@ -316,7 +333,7 @@ class FreeBook: Serializable {
         listOf(Element.Air)
     )
 
-    val passWithoutTrace = FreeSpell(
+    private val passWithoutTrace = FreeSpell(
         "Pass Without Leaving Trace",
         true,
         15,
@@ -333,7 +350,7 @@ class FreeBook: Serializable {
         listOf(Element.Light)
     )
 
-    val slipperyArea = FreeSpell(
+    private val slipperyArea = FreeSpell(
         "Slippery Area",
         true,
         15,
@@ -349,7 +366,7 @@ class FreeBook: Serializable {
         listOf(Element.Fire)
     )
 
-    val attractMinorVermin = FreeSpell(
+    private val attractMinorVermin = FreeSpell(
         "Attract Minor Vermin",
         true,
         15,
@@ -365,7 +382,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val infiniteBag = FreeSpell(
+    private val infiniteBag = FreeSpell(
         "Infinite Bag",
         true,
         15,
@@ -386,7 +403,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val inhumanity = FreeSpell(
+    private val inhumanity = FreeSpell(
         "Inhumanity",
         true,
         15,
@@ -405,7 +422,22 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val closeWithMagic = FreeSpell(
+    val secondBook = listOf(
+        createSounds,
+        fog,
+        breatheLiquids,
+        enchantSpell,
+        recreateImage,
+        repair,
+        climb,
+        passWithoutTrace,
+        slipperyArea,
+        attractMinorVermin,
+        infiniteBag,
+        inhumanity
+    )
+
+    private val closeWithMagic = FreeSpell(
         "Close with Magic",
         true,
         25,
@@ -413,7 +445,7 @@ class FreeBook: Serializable {
         "This spell automatically closes any door or lock, increasing the necessary " +
                 "Difficulty to open it by one degree - up to an Inhuman maximum. In other words, " +
                 "a door requiring a Medium-Difficulty Lock Picking Check to open would now require " +
-                "a Difficult Check. Although the lock itself is enchanted, the caster doesn't " +
+                "a Difficult Check. Although the lock itself is enchanted, the caster doesn\'t " +
                 "need to pay for maintenance; the spell will be active until the door opens. " +
                 "This spell will only affect one lock at a time.",
         "+1 to Difficulty Level for opening",
@@ -424,14 +456,14 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val causeFear = FreeSpell(
+    private val causeFear = FreeSpell(
         "Cause Fear",
         true,
         25,
         100,
         "All creatures within a 5-meter radius of the caster fall prey to a terrible " +
                 "magical fear - unless they pass a MR Check with a Difficulty of 100. Those who " +
-                "fail the Check are subjected to the Fear State.",
+                "fail the check are subjected to the Fear State.",
         "+5 meters to radius and +5 to MR Difficulty",
         10,
         10,
@@ -440,7 +472,7 @@ class FreeBook: Serializable {
         listOf(Element.Light)
     )
 
-    val understandLanguage = FreeSpell(
+    private val understandLanguage = FreeSpell(
         "Understand Languages",
         true,
         25,
@@ -452,20 +484,20 @@ class FreeBook: Serializable {
                 "designated, provided their total Presence scores do not exceed 80.",
         "+10 to maximum Presence affected",
         20,
-        20,
+        5,
         true,
         listOf(SpellType.Effect),
         listOf()
     )
 
-    val net = FreeSpell(
+    private val net = FreeSpell(
         "Net",
         true,
         25,
         60,
         "This spell will create high density magical fibers that form a very sticky net. " +
                 "The caster can use this net for whatever he may desire, such as blocking a " +
-                "passage or entrapping creatures. The net's maximum radius is 3 meters. It Traps " +
+                "passage or entrapping creatures. The net\'s maximum radius is 3 meters. It Traps " +
                 "with a Strength of 10, and it can endure 500 points of damage before breaking " +
                 "using an AT 4. Since its substance is of a mystical nature, only heat, cold, " +
                 "electricity, or supernatural attacks will harm it.",
@@ -477,7 +509,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val serenity = FreeSpell(
+    private val serenity = FreeSpell(
         "Serenity",
         true,
         25,
@@ -495,7 +527,7 @@ class FreeBook: Serializable {
         listOf(Element.Fire, Element.Dark)
     )
 
-    val magicShield = FreeSpell(
+    private val magicShield = FreeSpell(
         "Magic Shield",
         false,
         25,
@@ -511,13 +543,13 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val magicalProtection = FreeSpell(
+    private val magicalProtection = FreeSpell(
         "Magical Protection",
         true,
         25,
         60,
         "This spell grants armor protection with an AT 2 against all attacks except for " +
-                "Energy-based attacks. It can beb used in conjunction with any other form of " +
+                "Energy-based attacks. It can be used in conjunction with any other form of " +
                 "protection as an additional layer. However, it does not cause special penalties " +
                 "to be applied to the Initiative.",
         "+1 AT",
@@ -528,7 +560,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val clouds = FreeSpell(
+    private val clouds = FreeSpell(
         "Clouds",
         true,
         25,
@@ -544,7 +576,7 @@ class FreeBook: Serializable {
         listOf(Element.Fire, Element.Earth)
     )
 
-    val sendMessage = FreeSpell(
+    private val sendMessage = FreeSpell(
         "Send Message",
         true,
         25,
@@ -560,12 +592,12 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val speed = FreeSpell(
+    private val speed = FreeSpell(
         "Speed",
         true,
         25,
         80,
-        "This spell raises a subject's Movement Value by one degree and also applies a +20 " +
+        "This spell raises a subject\'s Movement Value by one degree and also applies a +20 " +
                 "bonus to his Initiative. Increasing Movement Value beyond 12 requires two Added " +
                 "Effects for each additional degree of increase.",
         "+10 to Initiative and +1 to Movement Value",
@@ -576,7 +608,7 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val levitation = FreeSpell(
+    private val levitation = FreeSpell(
         "Levitation",
         true,
         25,
@@ -592,7 +624,7 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val contraceptiveProtection = FreeSpell(
+    private val contraceptiveProtection = FreeSpell(
         "Contraceptive Protection",
         true,
         25,
@@ -608,12 +640,27 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val painResistance = FreeSpell(
+    val thirdBook = listOf(
+        closeWithMagic,
+        causeFear,
+        understandLanguage,
+        net,
+        serenity,
+        magicShield,
+        magicalProtection,
+        clouds,
+        sendMessage,
+        speed,
+        levitation,
+        contraceptiveProtection
+    )
+
+    private val painResistance = FreeSpell(
         "Resistance to Pain",
         true,
         35,
         60,
-        "This spell increases a living being's endurance, applying a +60 bonus to its " +
+        "This spell increases a living being\'s endurance, applying a +60 bonus to its " +
                 "Withstand Pain Checks.",
         "+20 to Withstand Pain",
         10,
@@ -623,7 +670,7 @@ class FreeBook: Serializable {
         listOf(Element.Essence)
     )
 
-    val trueClose = FreeSpell(
+    private val trueClose = FreeSpell(
         "True Close",
         true,
         35,
@@ -641,7 +688,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val purification = FreeSpell(
+    private val purification = FreeSpell(
         "Purification",
         true,
         35,
@@ -650,7 +697,7 @@ class FreeBook: Serializable {
                 "such as poisons. It automatically eradicates any substance of Level 30 or below. " +
                 "Purification only affects the harmful elements of an organism, and those alien " +
                 "to it. In this way, a Purification spell cast upon a poisonous snake would not " +
-                "remove the snake's own poison, but the same spell cast upon a person bitten by " +
+                "remove the snake\'s own poison, but the same spell cast upon a person bitten by " +
                 "the snake would be purified. The spell may affect as many individuals as " +
                 "designated, provided the total of their Presence scores does not exceed 80.",
         "+10 to Poison Level affected and +10 to the maximum Presence affected",
@@ -661,7 +708,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val extendPresence = FreeSpell(
+    private val extendPresence = FreeSpell(
         "Extend Presence",
         true,
         35,
@@ -675,7 +722,7 @@ class FreeBook: Serializable {
                 "some other means of seeing ethereal bodies. However, if the Presence is holding " +
                 "an object, that object will be perfectly visible. The Presence is intangible " +
                 "and can only be harmed by Energy-based attacks. Any Life Points lost will also " +
-                "affect the caster's body.",
+                "affect the caster\'s body.",
         "+5 meters to range",
         20,
         5,
@@ -684,12 +731,12 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val alterSize = FreeSpell(
+    private val alterSize = FreeSpell(
         "Alter Size",
         true,
         35,
         80,
-        "This spell increases or decreases the target's Size up to 2 points. No matter how " +
+        "This spell increases or decreases the target\'s Size up to 2 points. No matter how " +
                 "many added effects are employed, the lowest value for size is 1. In order to " +
                 "resist the spell, characters must pass a MR with a Difficulty of 120.",
         "Increase of decrease 1 additional size point and +5 to MR Difficulty",
@@ -700,7 +747,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val invokeAggressiveness = FreeSpell(
+    private val invokeAggressiveness = FreeSpell(
         "Invoke Aggressiveness",
         true,
         35,
@@ -717,14 +764,14 @@ class FreeBook: Serializable {
         listOf(Element.Light)
     )
 
-    val outlookChange = FreeSpell(
-        "Outlook Change",
+    private val outlookChange = FreeSpell(
+        "Change of Outlook",
         true,
         35,
         80,
         "This spell modifies the face and body of its target. It can alter skin color or " +
                 "physiognomy, but it cannot change height or weight beyond the limits set by the " +
-                "character's Size. In order to resist the makeover, a character must pass a MR " +
+                "character\'s Size. In order to resist the makeover, a character must pass a MR " +
                 "Check with a Difficulty of 100. If he fails the check, he receives a new one each day.",
         "+5 to MR Difficulty",
         10,
@@ -734,7 +781,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val healDiseases = FreeSpell(
+    private val healDiseases = FreeSpell(
         "Heal Diseases",
         true,
         35,
@@ -750,12 +797,12 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val magicBeam = FreeSpell(
+    private val magicBeam = FreeSpell(
         "Magic Beam",
         true,
         35,
         60,
-        "This spell projects a magical energy discharge that uses the Energy AT and " +
+        "This spell projects a magical Energy discharge that uses the Energy AT and " +
                 "possesses a Base Damage of 40.",
         "+5 to Base Damage",
         10,
@@ -765,12 +812,12 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val eliminateDreams = FreeSpell(
+    private val eliminateDreams = FreeSpell(
         "Eliminate Dreams",
         true,
         35,
         80,
-        "The spell suppresses an individual's ability to dream. This spell affects anyone " +
+        "The spell suppresses an individual\'s ability to dream. This spell affects anyone " +
                 "with a Presence of 60 or below. Those wishing to resist must pass a MR Check " +
                 "with a Difficulty of 120. The check may be repeated every time the character " +
                 "falls asleep.",
@@ -782,7 +829,7 @@ class FreeBook: Serializable {
         listOf(Element.Light, Element.Dark)
     )
 
-    val senseFeelings = FreeSpell(
+    private val senseFeelings = FreeSpell(
         "Sense Feelings",
         true,
         35,
@@ -799,7 +846,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val eliminateSpells = FreeSpell(
+    private val eliminateSpells = FreeSpell(
         "Eliminate Spells",
         true,
         35,
@@ -813,14 +860,29 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val friendship = FreeSpell(
+    val fourthBook = listOf(
+        painResistance,
+        trueClose,
+        purification,
+        extendPresence,
+        alterSize,
+        invokeAggressiveness,
+        outlookChange,
+        healDiseases,
+        magicBeam,
+        eliminateDreams,
+        senseFeelings,
+        eliminateSpells
+    )
+
+    private val friendship = FreeSpell(
         "Friendship",
         true,
         45,
         80,
         "This spell creates a bond of friendship between two characters designated by the " +
                 "caster. Keep in mind that the affected characters do not become stupid, meaning " +
-                "they will not follow their new friend's advice blindly. At any rate, they will " +
+                "they will not follow their new friend\'s advice blindly. At any rate, they will " +
                 "act according to their ethics and personality. Characters wishing to resist this " +
                 "spell need to pass a MR or PsR Check with a Difficulty of 120. The check will " +
                 "only be repeated once a day, or in a case where something sheds doubt on the " +
@@ -833,14 +895,14 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val quickTransport = FreeSpell(
+    private val quickTransport = FreeSpell(
         "Quick Transport",
         true,
         45,
         60,
         "This spell transports the target up to a distance of 25 meters. The spell allows " +
                 "characters to pass through physical bodies, provided they are not based on " +
-                "energy. Maximum quantity of material mass to be transported cannot have a " +
+                "Energy. Maximum quantity of material mass to be transported cannot have a " +
                 "Presence higher than 50.",
         "+25 meters to range and +5 to maximum Presence affected",
         10,
@@ -850,16 +912,16 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val sendDreams = FreeSpell(
+    private val sendDreams = FreeSpell(
         "Send Dreams",
         true,
         45,
         120,
-        "This spell allows the caster to send images and words to a sleeping person's " +
+        "This spell allows the caster to send images and words to a sleeping person\'s " +
                 "subconscious. The spell does not constitute a means of communication, since the " +
                 "caster will have no feedback on the actions or words of the target. The message " +
                 "may be delivered to any subject designated by the caster, regardless of distance, " +
-                "provided the target's Presence does not exceed 50. The target must beb asleep to " +
+                "provided the target\'s Presence does not exceed 50. The target must beb asleep to " +
                 "receive the message.",
         "+5 to maximum Presence affected",
         20,
@@ -869,17 +931,17 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val readMinds = FreeSpell(
+    private val readMinds = FreeSpell(
         "Read Minds",
         true,
         45,
         100,
-        "This spell enables the caster to delve into a subject's memories or thoughts. It " +
-                "is left to the GM's best judgement to decide the number of Combat Turns needed " +
+        "This spell enables the caster to delve into a subject\'s memories or thoughts. It " +
+                "is left to the GM\'s best judgement to decide the number of Combat Turns needed " +
                 "to find the desired information, depending on how deep it is buried in the " +
-                "character's memory. The target may resist the spell by passing a PsR or MR Check " +
+                "character\'s memory. The target may resist the spell by passing a PsR or MR Check " +
                 "with a Difficulty of 80. The caster will apply a +30 bonus to all Opposed " +
-                "Checks against him for as long as he can read his opponent's intentions.",
+                "Checks against him for as long as he can read his opponent\'s intentions.",
         "5 to MR or PsR Difficulty",
         20,
         10,
@@ -888,12 +950,12 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val cancelMagic = FreeSpell(
+    private val cancelMagic = FreeSpell(
         "Cancel Magic",
         true,
         45,
         150,
-        "This spell cancels the effects of all spells in a 10 meter radius that have a " +
+        "This spell cancels the effects of all spells in a 10-meter radius that have a " +
                 "Zeonic value below 60. Keep in mind that the spells are not destroyed; the " +
                 "effects are merely neutralized within the area for the duration of the spell.",
         "+5 to Zeonic value affected and +5 meters to radius",
@@ -904,7 +966,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val curse = FreeSpell(
+    private val curse = FreeSpell(
         "Curse",
         true,
         45,
@@ -919,7 +981,7 @@ class FreeBook: Serializable {
                 "each person is entitled to their own MR Check. For instance, a young girl " +
                 "romantically interested in a boy who is affected by a curse that prevents anyone " +
                 "from falling in love with him would feel discouraged in her endeavor, unless she " +
-                "passes the MR Check. The basic MR Difficulty is 120. New Checks can be made only " +
+                "passes the MR Check. The basic MR Difficulty is 120. New checks can be made only " +
                 "after their effects are re-activated.",
         "+5 to MR Difficulty",
         20,
@@ -929,7 +991,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val absorbInfo = FreeSpell(
+    private val absorbInfo = FreeSpell(
         "Absorb Information",
         true,
         45,
@@ -938,7 +1000,7 @@ class FreeBook: Serializable {
                 "that is within sight or at hand. In this way, he can read a book in a few " +
                 "seconds and remember the details as if he had studied it carefully. He may read " +
                 "up to 500 words (or an equivalent amount of information) for every turn the " +
-                "spell is maintained. Once the spell is finished, the caster's memory will be " +
+                "spell is maintained. Once the spell is finished, the caster\'s memory will be " +
                 "responsible for storing the information correctly.",
         "+500 words per turn",
         20,
@@ -948,7 +1010,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val showInvisible = FreeSpell(
+    private val showInvisible = FreeSpell(
         "Show the Invisible",
         true,
         45,
@@ -966,7 +1028,7 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val undo = FreeSpell(
+    private val undo = FreeSpell(
         "Undo",
         true,
         45,
@@ -982,12 +1044,13 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val causeSickness = FreeSpell(
+    private val causeSickness = FreeSpell(
         "Cause Sickness",
         true,
         45,
         60,
-        "This spell causes a Level 30 sickness in any individuals who fails the required DR check.",
+        "This spell causes a Level 30 sickness in any individual who fails the required DR " +
+                "Check.",
         "+5 to the Disease Level",
         10,
         null,
@@ -996,7 +1059,7 @@ class FreeBook: Serializable {
         listOf(Element.Illusion, Element.Water)
     )
 
-    val slow = FreeSpell(
+    private val slow = FreeSpell(
         "Slow",
         true,
         45,
@@ -1011,7 +1074,7 @@ class FreeBook: Serializable {
         listOf(Element.Air)
     )
 
-    val alterEnergy = FreeSpell(
+    private val alterEnergy = FreeSpell(
         "Alter Energy",
         true,
         45,
@@ -1028,7 +1091,22 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val blindness = FreeSpell(
+    val fifthBook = listOf(
+        friendship,
+        quickTransport,
+        sendDreams,
+        readMinds,
+        cancelMagic,
+        curse,
+        absorbInfo,
+        showInvisible,
+        undo,
+        causeSickness,
+        slow,
+        alterEnergy
+    )
+
+    private val blindness = FreeSpell(
         "Blindness",
         true,
         55,
@@ -1043,7 +1121,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation, Element.Light)
     )
 
-    val deafness = FreeSpell(
+    private val deafness = FreeSpell(
         "Deafness",
         true,
         55,
@@ -1058,8 +1136,8 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val muteness = FreeSpell(
-        "Inability to Speak",
+    private val muteness = FreeSpell(
+        "Muteness",
         true,
         55,
         80,
@@ -1073,7 +1151,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val healWounds = FreeSpell(
+    private val healWounds = FreeSpell(
         "Heal Wounds",
         true,
         55,
@@ -1089,7 +1167,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val visualizeCartography = FreeSpell(
+    private val visualizeCartography = FreeSpell(
         "Visualize Cartography",
         true,
         55,
@@ -1097,7 +1175,7 @@ class FreeBook: Serializable {
         "This spell enables the caster to visualize the surrounding landscape in a " +
                 "25-kilometer radius. The spell is effective for locating cities, rivers, and " +
                 "mountains; however, specific individuals or constructions cannot be placed.",
-        "+25-kilometer to radius",
+        "+25 kilometer to radius",
         10,
         null,
         false,
@@ -1105,7 +1183,7 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val sleep = FreeSpell(
+    private val sleep = FreeSpell(
         "Sleep",
         true,
         55,
@@ -1124,7 +1202,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val walkOnWalls = FreeSpell(
+    private val walkOnWalls = FreeSpell(
         "Walk on Walls",
         true,
         55,
@@ -1139,7 +1217,7 @@ class FreeBook: Serializable {
         listOf(Element.Water)
     )
 
-    val magicSaddle = FreeSpell(
+    private val magicSaddle = FreeSpell(
         "Magic Saddle",
         true,
         55,
@@ -1158,7 +1236,7 @@ class FreeBook: Serializable {
         listOf(Element.Illusion)
     )
 
-    val bodyMerge = FreeSpell(
+    private val bodyMerge = FreeSpell(
         "Merge with Body",
         true,
         55,
@@ -1169,7 +1247,7 @@ class FreeBook: Serializable {
                 "disclose it. The maximum Presence of objects merged cannot exceed 100. As long " +
                 "as they remain hidden, no weight or size penalties are applied to the bearer, " +
                 "but neither will the bearer receive any bonuses or advantages from hidden " +
-                "objects. No object exceeding ten times the bearer's size can be merged. It takes " +
+                "objects. No object exceeding ten times the bearer\'s size can be merged. It takes " +
                 "a full turn for a merged object to materialize and detach from a character.",
         "+10 to the maximum Presence affected",
         10,
@@ -1179,7 +1257,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val eliminateFatigue = FreeSpell(
+    private val eliminateFatigue = FreeSpell(
         "Eliminate Fatigue",
         true,
         55,
@@ -1194,18 +1272,18 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val acidCloud = FreeSpell(
+    private val acidCloud = FreeSpell(
         "Acid Cloud",
         true,
         55,
         100,
         "This spell forms a corrosive cloud that melts any substance by mere contact. All " +
                 "bodies in contact with the cloud must pass a PhR Check with a Difficulty of 120 " +
-                "or lose a number of Life Points equal to the Failure Level of the Check. Those " +
+                "or lose a number of Life Points equal to the Failure Level of the check. Those " +
                 "objects that fail the resistance by 50 points lose 1 level of quality. For every " +
                 "turn that bodies are exposed to the cloud and fail the check, they receive a " +
-                "-10 cumulative penalty to their subsequent checks.\nThe cloud has a 5 meter " +
-                "radius, and it moves at the caster's will at a Movement Value of 6. The caster " +
+                "-10 cumulative penalty to their subsequent checks.\nThe cloud has a 5-meter " +
+                "radius, and it moves at the caster\'s will at a Movement Value of 6. The caster " +
                 "cannot select targets within the area of the cloud and may even be affected himself.",
         "+1 meter to radius, +1 to cloud Movement Value, and +5 to PhR Difficulty",
         10,
@@ -1215,12 +1293,12 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val leaveUnprotected = FreeSpell(
+    private val leaveUnprotected = FreeSpell(
         "Leave Unprotected",
         true,
         55,
         80,
-        "This spell lowers the victim's AT by 2 levels if he, or his armor, fails a MR " +
+        "This spell lowers the victim\'s AT by 2 levels if he, or his armor, fails a MR " +
                 "Check with a Difficulty of 140.",
         "-1 to AT and +10 to MR Difficulty",
         10,
@@ -1230,7 +1308,22 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val increasePsyChar = FreeSpell(
+    val sixthBook = listOf(
+        blindness,
+        deafness,
+        muteness,
+        healWounds,
+        visualizeCartography,
+        sleep,
+        walkOnWalls,
+        magicSaddle,
+        bodyMerge,
+        eliminateFatigue,
+        acidCloud,
+        leaveUnprotected
+    )
+
+    private val increasePsyChar = FreeSpell(
         "Increase Psychic Characteristics",
         true,
         65,
@@ -1248,14 +1341,14 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val magicalWeapon = FreeSpell(
+    private val magicalWeapon = FreeSpell(
         "Magical Weapon",
         true,
         65,
         140,
         "The caster uses magic to devise a supernatural weapon. His work is treated as a " +
-                "Quality +10 Energy damaging object. The Presence of the weapon cannot exceed 25. " +
-                "The object's quality has no effect on its Presence at the time of creation.",
+                "Quality +10 Energy-damaging object. The Presence of the weapon cannot exceed 25. " +
+                "The object\'s quality has no effect on its Presence at the time of creation.",
         "+5 maximum Presence of weapon",
         20,
         10,
@@ -1264,7 +1357,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val increasePhysChar = FreeSpell(
+    private val increasePhysChar = FreeSpell(
         "Increase Physical Characteristic",
         true,
         65,
@@ -1281,7 +1374,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val minorAlteration = FreeSpell(
+    private val minorAlteration = FreeSpell(
         "Minor Alteration",
         true,
         65,
@@ -1300,10 +1393,10 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val bodyToMagic = FreeSpell(
+    private val bodyToMagic = FreeSpell(
         "Body to Magic",
         true,
-        656,
+        65,
         100,
         "The designated body transforms into magical energy, thus becoming intangible to all " +
                 "matters and non-Energy-based attacks. The maximum Presence affected by this spell " +
@@ -1316,12 +1409,12 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val paralyze = FreeSpell(
+    private val paralyze = FreeSpell(
         "Paralyze",
         true,
         65,
         140,
-        "Any subject in a 10 meter radius is exposed to the effects of Total Paralysis " +
+        "Any subject in a 10-meter radius is exposed to the effects of Total Paralysis " +
                 "unless they pass a MR with a Difficulty of 80.",
         "+5 meters to radius and +5 to MR Difficulty",
         20,
@@ -1331,7 +1424,7 @@ class FreeBook: Serializable {
         listOf(Element.Air)
     )
 
-    val createEmotion = FreeSpell(
+    private val createEmotion = FreeSpell(
         "Create Emotion",
         true,
         65,
@@ -1348,17 +1441,17 @@ class FreeBook: Serializable {
         listOf(Element.Illusion)
     )
 
-    val forgetfulness = FreeSpell(
+    private val forgetfulness = FreeSpell(
         "Forgetfulness",
         true,
         65,
         160,
-        "This spell affects the target's memory, causing him to forget whatever the caster " +
+        "This spell affects the target\'s memory, causing him to forget whatever the caster " +
                 "desires if he fails a MR or PsR Check with a Difficulty of 120. If the memories " +
                 "being targeted are deeply rooted in the character, a +40 may apply to his MR " +
                 "Check. The spell has no maintenance, but the target is entitled to make another " +
                 "check when faced with potential reminders. The spell does not affect a " +
-                "character's abilities, only conscious memory.",
+                "character\'s abilities, only conscious memory.",
         "+5 to MR or PsR Difficulty",
         20,
         null,
@@ -1367,7 +1460,7 @@ class FreeBook: Serializable {
         listOf(Element.Essence)
     )
 
-    val weakness = FreeSpell(
+    private val weakness = FreeSpell(
         "Weakness",
         true,
         65,
@@ -1382,13 +1475,13 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val resistSpell = FreeSpell(
+    private val resistSpell = FreeSpell(
         "Resist",
         false,
         65,
         80,
-        "This spell enhances one type resistance, bestowing a +20 bonus for the duration of " +
-                "the spell",
+        "This spell enhances one type of Resistance, bestowing a +20 bonus for the duration " +
+                "of the spell",
         "+10 to one Resistance",
         10,
         5,
@@ -1397,7 +1490,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val plague = FreeSpell(
+    private val plague = FreeSpell(
         "Plague",
         true,
         65,
@@ -1407,7 +1500,7 @@ class FreeBook: Serializable {
                 "kilometer. Affected beings are entitled to a DR Check to avoid the contagion. " +
                 "The Plague can also be avoided by passing a MR Check with a Difficulty of 100. " +
                 "The selected Disease Level cannot be higher than 20.",
-        "+5 maximum Disease Level, +1 kilometer to radius and +5 to MR Difficulty",
+        "+5 maximum Disease Level, +1 kilometer to radius, and +5 to MR Difficulty",
         20,
         null,
         false,
@@ -1415,7 +1508,7 @@ class FreeBook: Serializable {
         listOf(Element.Illusion)
     )
 
-    val rejection = FreeSpell(
+    private val rejection = FreeSpell(
         "Rejection",
         true,
         65,
@@ -1424,7 +1517,7 @@ class FreeBook: Serializable {
                 "anyone coming into contact with it. When such an impact occurs, the two affected " +
                 "beings make an Opposed Agility or Strength Check. The difference between that " +
                 "check, along with possible additional effects of the surrounding environment, " +
-                "determine the severity of damage, at the GM's discretion. Increasing the spell's " +
+                "determine the severity of damage, at the GM\'s discretion. Increasing the spell\'s " +
                 "Strength beyond 14 requires two Added Effects per point of increase. The " +
                 "designated body cannot have a Presence higher than 30.",
         "+5 to the maximum Presence affected and +1 to Strength",
@@ -1435,7 +1528,22 @@ class FreeBook: Serializable {
         listOf(Element.Essence, Element.Water)
     )
 
-    val invisibility = FreeSpell(
+    val seventhBook = listOf(
+        increasePsyChar,
+        magicalWeapon,
+        increasePhysChar,
+        minorAlteration,
+        bodyToMagic,
+        paralyze,
+        createEmotion,
+        forgetfulness,
+        weakness,
+        resistSpell,
+        plague,
+        rejection
+    )
+
+    private val invisibility = FreeSpell(
         "Invisibility",
         true,
         75,
@@ -1452,12 +1560,12 @@ class FreeBook: Serializable {
         listOf(Element.Essence)
     )
 
-    val levitationSphere = FreeSpell(
+    private val levitationSphere = FreeSpell(
         "Levitation Sphere",
         true,
         75,
         150,
-        "This spell causes objects and creatures in a 25 meter radius to levitate. The " +
+        "This spell causes objects and creatures in a 25-meter radius to levitate. The " +
                 "caster can decide what will levitate and what will not, regardless of weight or " +
                 "size. Objects or people suspended in the air are moved by the caster with a " +
                 "Flight Value 6. Those wishing to resist the effects must pass a MR or PsR with a " +
@@ -1471,15 +1579,15 @@ class FreeBook: Serializable {
         listOf(Element.Earth, Element.Water)
     )
 
-    val uselessness = FreeSpell(
+    private val uselessness = FreeSpell(
         "Uselessness",
         true,
         75,
         120,
         "The target becomes clumsy and unable to perform physical maneuvers. He must roll a " +
                 "MR Check with a Difficulty of 120 or suffer penalties to his actions equivalent " +
-                "to the number by which he failed the check. The spell cannot affect magical," +
-                " psychic, or perceptive abilities.",
+                "to the number by which he failed the check. The spell cannot affect magical, " +
+                "psychic, or perceptive abilities.",
         "+5 to MR Difficulty",
         20,
         10,
@@ -1488,14 +1596,14 @@ class FreeBook: Serializable {
         listOf(Element.Water)
     )
 
-    val dominion = FreeSpell(
+    private val dominion = FreeSpell(
         "Dominion",
         true,
         75,
-        1606,
+        160,
         "This spell bends the will of anyone who does not pass a MR or PsR with a " +
                 "Difficulty of 100. The affected party is entitled to a new check only when " +
-                "ordered to perform an action completely against its nature. A +20 may beb " +
+                "ordered to perform an action completely against its nature. A +20 may be " +
                 "applied to his roll if the order is exceptionally adverse.",
         "+5 to MR or PsR Difficulty",
         20,
@@ -1505,12 +1613,12 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val deflectTrajectory = FreeSpell(
+    private val deflectTrajectory = FreeSpell(
         "Deflect Trajectory",
         false,
         75,
         100,
-        "The caster can alter a moving body's trajectory, redirecting its course as he " +
+        "The caster can alter a moving body\'s trajectory, redirecting its course as he " +
                 "pleases. This spell can affect objects of any mass, from an arrow to a large " +
                 "ship. However, this spell does not cause stationary objects to move; it " +
                 "modifies the direction of those objects already in motion. Deflect Trajectory " +
@@ -1525,7 +1633,7 @@ class FreeBook: Serializable {
         listOf(Element.Fire)
     )
 
-    val stallSpell = FreeSpell(
+    private val stallSpell = FreeSpell(
         "Stall Spell",
         true,
         75,
@@ -1551,13 +1659,13 @@ class FreeBook: Serializable {
         listOf(Element.Air)
     )
 
-    val detectionMark = FreeSpell(
+    private val detectionMark = FreeSpell(
         "Detection Mark",
         true,
         75,
         100,
         "This spell allows the caster to inscribe an arcane mark on a person, creature, or " +
-                "object. The mark channels the caster's five senses, allowing him to experience " +
+                "object. The mark channels the caster\'s five senses, allowing him to experience " +
                 "the sights, sounds, smells, tastes, and physical sensations surrounding the mark, " +
                 "regardless of its location. The caster is also always aware of the exact " +
                 "location of the mark. The target may not have a Presence higher than 50. Living " +
@@ -1571,7 +1679,7 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val flight = FreeSpell(
+    private val flight = FreeSpell(
         "Flight",
         true,
         75,
@@ -1585,7 +1693,7 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val offenseErudition = FreeSpell(
+    private val offenseErudition = FreeSpell(
         "Offensive Erudition",
         true,
         75,
@@ -1601,7 +1709,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val defenseErudition = FreeSpell(
+    private val defenseErudition = FreeSpell(
         "Defensive Erudition",
         true,
         75,
@@ -1617,7 +1725,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val containment = FreeSpell(
+    private val containment = FreeSpell(
         "Containment",
         true,
         75,
@@ -1625,7 +1733,7 @@ class FreeBook: Serializable {
         "This spell haunts a given place, making it impossible for anyone entering it or, " +
                 "for those already within its boundaries, to leave the area unless they pass a MR " +
                 "with a Difficulty of 120. Beings within the area of the Containment can move and " +
-                "act normally within the spell's boundaries. Subjects are not allowed to repeat " +
+                "act normally within the spell\'s boundaries. Subjects are not allowed to repeat " +
                 "the check for as long as the spell is being maintained - unless they increase " +
                 "their resistances. The caster cannot select targets in the area and may even be " +
                 "subject to the spell himself. Area of coverage cannot exceed a 10-meter radius, " +
@@ -1639,7 +1747,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val perfectTarget = FreeSpell(
+    private val perfectTarget = FreeSpell(
         "Perfect Target",
         true,
         75,
@@ -1650,7 +1758,7 @@ class FreeBook: Serializable {
                 "the supernatural nature of the spell grants the offender a +60 bonus to the " +
                 "Attack allowing the thrower to bypass the shooting difficulties in Table 45. " +
                 "Range is not a factor; as long as the caster has line of sight to the target, it " +
-                "can be hit. The projectile's Presence cannot exceed 40. Perfect Target must be " +
+                "can be hit. The projectile\'s Presence cannot exceed 40. Perfect Target must be " +
                 "cast in the same round as the projectile is fired.",
         "+10 to the maximum Presence of the projectile",
         10,
@@ -1660,7 +1768,22 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val spellReturn = FreeSpell(
+    val eighthBook = listOf(
+        invisibility,
+        levitationSphere,
+        uselessness,
+        dominion,
+        deflectTrajectory,
+        stallSpell,
+        detectionMark,
+        flight,
+        offenseErudition,
+        defenseErudition,
+        containment,
+        perfectTarget
+    )
+
+    private val spellReturn = FreeSpell(
         "Spell Return",
         false,
         85,
@@ -1669,7 +1792,7 @@ class FreeBook: Serializable {
                 "selected. The returned spell uses the same Magic Projection as the person who " +
                 "cast it. Return is an automatic effect. The spell in question must have a " +
                 "Zeonic value of 100 or less.",
-        "+5 to the spell's Zeonic value",
+        "+5 to the spell\'s Zeonic value",
         20,
         null,
         false,
@@ -1677,7 +1800,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val disenchantment = FreeSpell(
+    private val disenchantment = FreeSpell(
         "Disenchantment",
         true,
         85,
@@ -1693,7 +1816,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val naturalSpell = FreeSpell(
+    private val naturalSpell = FreeSpell(
         "Natural Spell",
         true,
         85,
@@ -1701,7 +1824,7 @@ class FreeBook: Serializable {
         "Natural Spell allows the caster to tie his essence to one or more spells prepared " +
                 "in advance, thus enabling him to cast them later as many times as he likes with " +
                 "zero Zeonic cost. In this way, the spellcaster can perform one of these spells " +
-                "innately per turn. At the time of using this natural spell, the caster can't " +
+                "innately per turn. At the time of using this natural spell, the caster can\'t " +
                 "accumulate magic or prepare any other spells. The total Zeonic value of the " +
                 "natural spell(s) cannot exceed 100 points. Only one Natural Spell at a time may " +
                 "be kept active at a time.",
@@ -1713,13 +1836,13 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val stealSpell = FreeSpell(
+    private val stealSpell = FreeSpell(
         "Steal Spell",
         true,
         85,
         200,
         "This spell allows the caster to take control of another spell that does not belong " +
-                "to him and treat it as if he had cast it himself. The stolen spell's Zeonic " +
+                "to him and treat it as if he had cast it himself. The stolen spell\'s Zeonic " +
                 "value cannot exceed 80 points. Only maintenance spells can be stolen, not " +
                 "automatic action spells. The original spellcaster can attempt to prevent this " +
                 "theft by passing a MR Check with a Difficulty of 120.",
@@ -1731,7 +1854,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val immortality = FreeSpell(
+    private val immortality = FreeSpell(
         "Immortality",
         true,
         85,
@@ -1750,7 +1873,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val magicPrism = FreeSpell(
+    private val magicPrism = FreeSpell(
         "Magic Prism",
         true,
         85,
@@ -1758,7 +1881,7 @@ class FreeBook: Serializable {
         "This spell solidifies magic, creating a supernatural container for Zeon. In game " +
                 "terms, it creates a magic container with a maximum capacity of 400 Zeon points. " +
                 "The container appears empty. Only one Magic Prism spell at a time may be kept active.",
-        "+25 to the the container's Zeon capacity",
+        "+25 to the the container\'s Zeon capacity",
         20,
         20,
         true,
@@ -1766,14 +1889,14 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val eliminateNeeds = FreeSpell(
+    private val eliminateNeeds = FreeSpell(
         "Eliminate Needs",
         true,
         85,
         300,
         "This spell completely removes most physical needs from one or more individuals. As " +
                 "long as the spell is kept active, the targets do not need to eat, drink, or sleep " +
-                "and can easily cope with any weather conditions. This spell may beb applied to " +
+                "and can easily cope with any weather conditions. This spell may be applied to " +
                 "as many individuals as the caster wishes, as long as their total Presence " +
                 "scores remain under 120.",
         "+5 to the maximum Presence affected",
@@ -1784,7 +1907,7 @@ class FreeBook: Serializable {
         listOf(Element.Essence)
     )
 
-    val prepareSpell = FreeSpell(
+    private val prepareSpell = FreeSpell(
         "Prepare Spell",
         true,
         85,
@@ -1792,11 +1915,11 @@ class FreeBook: Serializable {
         "This spell allows the caster to introduce a second spell inside an object or " +
                 "person, so that it can automatically be cast later, without preparation or " +
                 "accumulation. Prepare Spell must be cast at the same time as the spell it will " +
-                "affect. The prepared spell may beb activated by the caster, the subject hosting " +
+                "affect. The prepared spell may be activated by the caster, the subject hosting " +
                 "it, or the bearer of the enchanted object. It uses the Magic Projection of the " +
                 "original caster, unless the bearer decides to use his own. Once cast, the spell " +
                 "vanishes. The maximum Zeonic value of the spell cannot exceed 100. If maintenance " +
-                "payment of Prepare Spell is discontinued, the second spell will beb lost as well. " +
+                "payment of Prepare Spell is discontinued, the second spell will be lost as well. " +
                 "Only one prepared spell may be cast per turn, regardless of how many spells there " +
                 "are stored inside an object. An object or person may contain up to four times its " +
                 "Presence in Zeonic value. This means an individual with a Presence of 50 could " +
@@ -1809,7 +1932,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val physicalImmunity = FreeSpell(
+    private val physicalImmunity = FreeSpell(
         "Physical Immunity",
         true,
         85,
@@ -1825,7 +1948,7 @@ class FreeBook: Serializable {
         listOf(Element.Essence)
     )
 
-    val gate = FreeSpell(
+    private val gate = FreeSpell(
         "Gate",
         true,
         85,
@@ -1847,17 +1970,17 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val teletransportation = FreeSpell(
+    private val teletransportation = FreeSpell(
         "Teletransportation",
         true,
         85,
         300,
         "The caster, or whomever the caster designates, can instantly travel anywhere, up " +
-                "to a maximum distance of 1000 kilometers. The spell allows characters to pass " +
+                "to a maximum distance of 50 kilometers. The spell allows characters to pass " +
                 "through physical bodies, provided they are not based on Energy. It may be " +
                 "applied to as many individuals as the conjurer wishes, as long as their total " +
                 "Presence scores do not exceed 80.",
-        "+1000 kilometers to range and +5 to maximum Presence affected",
+        "+50 kilometers to range and +5 to maximum Presence affected",
         40,
         null,
         false,
@@ -1865,18 +1988,18 @@ class FreeBook: Serializable {
         listOf(Element.Earth)
     )
 
-    val location = FreeSpell(
+    private val location = FreeSpell(
         "Location",
         true,
         85,
         300,
-        "Location can be used for finding the exact position of a person, place, or object at " +
+        "This spell can be used for finding the exact position of a person, place, or object at " +
                 "a specified time, provided it is not more than 100 kilometers away from the " +
                 "caster. The caster must be able to identify a specific target; general inquiries " +
-                "do work with this spell. For example, he will not be able to find his brother's " +
+                "do work with this spell. For example, he will not be able to find his brother\'s " +
                 "murderer unless he knows exactly who it is. Characters wishing to avoid detection " +
                 "must pass a MR Check with a Difficulty of 120. Very spacious areas impose a -40 " +
-                "penalty to this Check.",
+                "penalty to this check.",
         "+5 to MR Difficulty and +100 kilometers to range",
         30,
         null,
@@ -1885,7 +2008,22 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val eyeOfTime = FreeSpell(
+    val ninthBook = listOf(
+        spellReturn,
+        disenchantment,
+        naturalSpell,
+        stealSpell,
+        immortality,
+        magicPrism,
+        eliminateNeeds,
+        prepareSpell,
+        physicalImmunity,
+        gate,
+        teletransportation,
+        location
+    )
+
+    private val eyeOfTime = FreeSpell(
         "Eye of Time",
         true,
         95,
@@ -1903,20 +2041,20 @@ class FreeBook: Serializable {
         listOf(Element.Dark)
     )
 
-    val possession = FreeSpell(
+    private val possession = FreeSpell(
         "Possession",
         true,
         95,
         300,
-        "This spell enables the caster to take control of another individual's body, " +
+        "This spell enables the caster to take control of another individual\'s body, " +
                 "temporarily relocating part of his spirit in the host. This allows the caster to " +
                 "use all the abilities of the invaded subject freely or his own. In this second " +
                 "case, the spellcaster uses the physical Characteristics and bonuses of the host. " +
                 "If the victim and the caster have very dissimilar bodies, the GM can apply a " +
                 "penalty between -20 and -40 on account of the difficulty involved in the change. " +
-                "The caster can decide to use either his own abilities or his host's every turn, " +
-                "but he cannot mix them at the same time. The spellcaster's body remains in a coma " +
-                "for as long as Possession is active. Non-Energy damaging attacks will affect the " +
+                "The caster can decide to use either his own abilities or his host\'s every turn, " +
+                "but he cannot mix them at the same time. The spellcaster\'s body remains in a coma " +
+                "for as long as Possession is active. Non-Energy-damaging attacks will affect the " +
                 "possessed body only, whereas supernatural attacks will subtract Life Points from " +
                 "both. If the body in question is that of a creature with Damage Resistance, the " +
                 "caster suffers only one-tenth (or less, in case the creature has a Damage " +
@@ -1934,7 +2072,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val powerShield = FreeSpell(
+    private val powerShield = FreeSpell(
         "Shield Against Powers",
         true,
         95,
@@ -1953,7 +2091,7 @@ class FreeBook: Serializable {
         listOf(Element.Creation)
     )
 
-    val seal = FreeSpell(
+    private val seal = FreeSpell(
         "Seal",
         true,
         95,
@@ -1974,7 +2112,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val imitateSpell = FreeSpell(
+    private val imitateSpell = FreeSpell(
         "Imitate Spell",
         false,
         95,
@@ -1985,7 +2123,7 @@ class FreeBook: Serializable {
                 "spell can even imitate High or Divine Magic without the need of the caster having " +
                 "the required Gnosis level to cast them. The caster determines whether to use his " +
                 "own Magic Projection or that of the original caster. The caster can maintain the " +
-                "imitated spell using that spell's Maintenance Value.",
+                "imitated spell using that spell\'s Maintenance Value.",
         "+5 to Zeonic value affected",
         30,
         null,
@@ -1994,7 +2132,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val conditioning = FreeSpell(
+    private val conditioning = FreeSpell(
         "Conditioning",
         true,
         95,
@@ -2013,7 +2151,7 @@ class FreeBook: Serializable {
                 "disappear. Any number of spells may be Conditioned as long as the total number " +
                 "of Zeon points is 100 or below. Only one Conditioning spell at a time may be " +
                 "kept active. Spell action will be Active or Passive depending on its own nature.",
-        "+5 to the spell's Zeonic value",
+        "+5 to the spell\'s Zeonic value",
         40,
         5,
         true,
@@ -2021,7 +2159,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val linkMaintenance = FreeSpell(
+    private val linkMaintenance = FreeSpell(
         "Link Maintenance",
         true,
         95,
@@ -2044,7 +2182,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val magistrate = FreeSpell(
+    private val magistrate = FreeSpell(
         "The Magistrate",
         true,
         95,
@@ -2055,7 +2193,7 @@ class FreeBook: Serializable {
                 "MR Check with a Difficulty of 140. This check must be repeated each round in " +
                 "which an Active Action is attempted, unless the caster chooses to allow the " +
                 "action to occur. Only Active Actions may be prohibited, so affected targets may " +
-                "still perform Passive Actions, such as repelling attack. In order the prohibit " +
+                "still perform Passive Actions, such as repelling attack. In order to prohibit " +
                 "an action, the caster must be aware of it, so some individuals may be able to " +
                 "overcome the effects of this spell through deception or subterfuge. Prohibiting " +
                 "another\'s Active Action counts as a Passive Action for the caster. This spell\'s " +
@@ -2068,7 +2206,7 @@ class FreeBook: Serializable {
         listOf()
     )
 
-    val giftOfKnowledge = FreeSpell(
+    private val giftOfKnowledge = FreeSpell(
         "The Gift of Knowledge",
         true,
         95,
@@ -2084,7 +2222,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val strengthenMagic = FreeSpell(
+    private val strengthenMagic = FreeSpell(
         "Strengthen Magic",
         true,
         95,
@@ -2106,7 +2244,7 @@ class FreeBook: Serializable {
         listOf(Element.Destruction)
     )
 
-    val innateMagic = FreeSpell(
+    private val innateMagic = FreeSpell(
         "Innate Magic",
         true,
         95,
@@ -2131,15 +2269,15 @@ class FreeBook: Serializable {
         600,
         "This spell allows the caster to modify future events according to his plan, thus " +
                 "predestining several circumstances in the future. The complexity of the events " +
-                "is left to the caster's own design. He may preordain one event, leaving the " +
+                "is left to the caster\'s own design. He may preordain one event, leaving the " +
                 "different small happenings that lead up to its realization to chance, or quite " +
                 "on the contrary, he may try to determine each one of the aspects involved in " +
                 "producing a final result. The spell is not meant to cause a completely impossible " +
-                "outcome. However, the odds are limited only by the caster's imagination. " +
+                "outcome. However, the odds are limited only by the caster\'s imagination. " +
                 "Preordained events may be set for a specific date or they may be scheduled to " +
-                "repeat eternally through time - solstices in leap years, for example.\nGiven the " +
+                "repeat eternally through time - solstices and leap years, for example.\nGiven the " +
                 "huge complexity of the spell, let\'s look at a few examples of what it could be " +
-                "used for: An imprecise Predestination would be a caster's prediction of " +
+                "used for: An imprecise Predestination would be a caster\'s prediction of " +
                 "misfortune befalling an entire family and their offspring, condemning all their " +
                 "members to a horrible death before reaching a certain age. On the other hand, " +
                 "should the caster wish to be more explicit, he could condemn their first born " +
@@ -2156,7 +2294,7 @@ class FreeBook: Serializable {
                 "person, creature, or object with the highest resistance of those directly " +
                 "affected by the spell passes a MR Check with a Difficulty of 140 at the time the " +
                 "spell is being cast. Those influenced by its effects will not be able to do " +
-                "anything to stop it from happening; chance will inevitable play against them in " +
+                "anything to stop it from happening; chance will inevitably play against them in " +
                 "the most unavoidable of ways. The MR can be repeated only when some of the " +
                 "predestined events have come true. Therefore, the greater the detail, the " +
                 "greater the chances of preventing the event. If any of the preordained events " +
@@ -2167,5 +2305,20 @@ class FreeBook: Serializable {
         true,
         listOf(SpellType.Automatic),
         listOf()
+    )
+
+    val tenthBook = listOf(
+        eyeOfTime,
+        possession,
+        powerShield,
+        seal,
+        imitateSpell,
+        conditioning,
+        linkMaintenance,
+        magistrate,
+        giftOfKnowledge,
+        strengthenMagic,
+        innateMagic,
+        predestination
     )
 }

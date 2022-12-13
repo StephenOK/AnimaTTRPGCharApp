@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class LightBook: Serializable {
-    val createLight = Spell(
+    private val createLight = Spell(
         "Create Light",
         Element.Light,
         true,
@@ -20,14 +20,14 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val induceCalm = Spell(
+    private val induceCalm = Spell(
         "Induce Calm",
         Element.Light,
         true,
         6,
         40,
         "Calms individuals feeling fear or hatred within 15 meters of the caster. Makes any " +
-                "Fear, Anger, or Terror States disappear, even if of supernatural origin. It does " +
+                "Fear, Terror, or Anger States disappear, even if of supernatural origin. It does " +
                 "not prevent violent actions deliberately done in cold blood. The MR or PsR Check " +
                 "to overcome this spell has a Difficulty of 80.",
         "+10 meters to radius and +5 to MR or PsR Difficulty",
@@ -37,7 +37,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val blindingFlash = Spell(
+    private val blindingFlash = Spell(
         "Blinding Flash",
         Element.Light,
         true,
@@ -56,7 +56,7 @@ class LightBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val lightShield = Spell(
+    private val lightShield = Spell(
         "Shield of Light",
         Element.Light,
         false,
@@ -72,7 +72,7 @@ class LightBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val perceive = Spell(
+    private val perceiveSpell = Spell(
         "Perceive",
         Element.Light,
         true,
@@ -89,7 +89,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lightArmor = Spell(
+    private val lightArmor = Spell(
         "Armor of Light",
         Element.Light,
         true,
@@ -105,7 +105,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val banishShadows = Spell(
+    private val banishShadows = Spell(
         "Banish Shadows",
         Element.Light,
         true,
@@ -116,14 +116,14 @@ class LightBook: Serializable {
                 "Failure level in Life Points (Damage Resistance creatures increases this amount " +
                 "by its Damage Resistance multiple). As long as the spell is maintained over " +
                 "the creatures, they must do a new MR Check each combat turn.",
-        "+20 meters to radius and 10 to the MR Difficulty.",
+        "+20 meters to radius and 10 to the MR Difficulty",
         10,
         10,
         false,
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val detectNegativeEmotions = Spell(
+    private val detectNegativeEmotions = Spell(
         "Detect Negative Emotions",
         Element.Light,
         true,
@@ -139,13 +139,13 @@ class LightBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val lightBeam = Spell(
+    private val lightBeam = Spell(
         "Light Beam",
         Element.Light,
         true,
         22,
         50,
-        "Projects a beam of Light based magical energy. Light Beam is an Energy Attack Type " +
+        "Projects a beam of Light-based magical energy. Light Beam is an Energy Attack Type " +
                 "with a Base Damage of 60.",
         "+5 to Base Damage",
         10,
@@ -154,18 +154,18 @@ class LightBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val hologram = Spell(
+    private val hologram = Spell(
         "Hologram",
         Element.Light,
         true,
         26,
         40,
-        "Creates a immaterial luminous form with a maximum size of one square meter. The " +
-                "caster can give the hologram the appearance he desires making it very difficult " +
+        "Creates an immaterial luminous form with a maximum size of one square meter. The " +
+                "caster can give the hologram the appearance he desires, making it very difficult " +
                 "to tell it from something real. If he creates a creature, it can perform any " +
                 "inhuman action the caster wishes, but will mimic the physical abilities of the " +
                 "caster. If, for example, the hologram is used to simulate an attack, it uses " +
-                "the combat ability of the caster. The hologram can not tough anyone nor be " +
+                "the combat ability of the caster. The hologram can not touch anyone nor be " +
                 "touched, but if it receives any damage, based on Energy, it disappears. To " +
                 "detect that a hologram is not real, it is necessary to beat a Notice check " +
                 "against a Difficulty of Almost Impossible, or Search against Very Difficult.",
@@ -176,7 +176,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lightBond = Spell(
+    private val lightBond = Spell(
         "Bonds of Light",
         Element.Light,
         true,
@@ -185,7 +185,7 @@ class LightBook: Serializable {
         "It casts bonds of light that hold the designated target immobile. An attack is made " +
                 "using the rules for Trapping, although the caster suffers no penalty to his " +
                 "Ability for performing this maneuver. The bonds use a Strength of 8 for any " +
-                "Check. If anyone tries to help free the person Trapped, the Bonds of Light are " +
+                "check. If anyone tries to help free the person Trapped, the Bonds of Light are " +
                 "treated as an Energy weapon with a Fortitude of 20.",
         "+1 to Strength for all checks",
         10,
@@ -194,13 +194,13 @@ class LightBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val controlLight = Spell(
+    private val controlLight = Spell(
         "Control Light",
         Element.Light,
         true,
         30,
         50,
-        "Modifies and controls the form, color, or intensity of light in a 20 meter radius. " +
+        "Modifies and controls the form, color, and intensity of light in a 20 meter radius. " +
                 "If cast at Light-based beings, they must pass a MR Check with a Difficulty of 80 " +
                 "or they will fall under the control of the caster. A creature can only repeat " +
                 "the check if it is ordered to do something against its nature.",
@@ -211,7 +211,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val detectLife = Spell(
+    private val detectLife = Spell(
         "Detect Life",
         Element.Light,
         true,
@@ -227,7 +227,7 @@ class LightBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val lightSpy = Spell(
+    private val lightSpy = Spell(
         "Spy of Light",
         Element.Light,
         true,
@@ -235,7 +235,7 @@ class LightBook: Serializable {
         100,
         "Creates a small light of energy that moves as wished by the caster, with a Flight " +
                 "Value of 14, for a maximum distance of one kilometer. Through it, the caster can see " +
-                "and hear as though he were present, but doing so overwhelms his body's senses, " +
+                "and hear as though he were present, but doing so overwhelms his body\'s senses, " +
                 "and he can only perceive the world through the Spy of Light. Each combat turn, " +
                 "the caster decides if he will see through the Spy of Light or his own senses. " +
                 "The Spy of Light has an ability of 100 at Notice and Search. If attacked, it " +
@@ -249,16 +249,16 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val ecstasy = Spell(
+    private val ecstasy = Spell(
         "Ecstasy",
         Element.Light,
         true,
         38,
         60,
         "This spell intoxicates anyone affected with a feeling of utter ecstasy. The " +
-                "sensation of pleasure is so powerful that the victim's senses are completely " +
+                "sensation of pleasure is so powerful that the victim\'s senses are completely " +
                 "clouded, and he receives a -20 All Action Penalty while affected. However, the " +
-                "spell's victims are also completely oblivious and immune to any pain or other " +
+                "spell\'s victims are also completely oblivious and immune to any pain or other " +
                 "affliction based penalty, except those for actually being physically " +
                 "incapacitated. The MR Check to resist this spell has a Difficulty of 80, and " +
                 "affects a radius of 10 meters.",
@@ -269,7 +269,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val banishNegativeEmotions = Spell(
+    private val banishNegativeEmotions = Spell(
         "Banish Negative Emotions",
         Element.Light,
         true,
@@ -285,7 +285,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val healingLight = Spell(
+    private val healingLight = Spell(
         "Healing Light",
         Element.Light,
         true,
@@ -301,7 +301,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val seekingSphere = Spell(
+    private val seekingSphere = Spell(
         "Seeking Sphere",
         Element.Light,
         true,
@@ -321,7 +321,7 @@ class LightBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val detectionZone = Spell(
+    private val detectionZone = Spell(
         "Zone of Detection",
         Element.Light,
         true,
@@ -329,7 +329,7 @@ class LightBook: Serializable {
         140,
         "This spell allows the caster to detect any being within the area of the spell who " +
                 "does not beat a MR Check with a Difficulty of 180. The Zone of Detection only " +
-                "tells the caster how many individuals are in the zone, and their exact " +
+                "tells the caster how many individuals are in the zone and their exact " +
                 "location. It also senses spells of Detection that attempt to enter into the " +
                 "area, as long as the spellcaster using them does not beat the MR (regardless " +
                 "of his actual location). The affected zone can be no larger than 20 meters in " +
@@ -341,23 +341,23 @@ class LightBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val enterDreams = Spell(
-        "Enter Another's Dreams",
+    private val enterDreams = Spell(
+        "Enter Another\'s Dreams",
         Element.Light,
         true,
         50,
         120,
-        "This allows the caster to physically enter a sleeper's dreams. The caster has no " +
+        "This allows the caster to physically enter a sleeper\'s dreams. The caster has no " +
                 "control over the dream world of the dreamer, and anything that happens there " +
                 "will be real to the caster. The person must have peaceful dreams to be affected " +
                 "by this spell, and the moment the dream turns into a nightmare, or he awakens " +
                 "or dies, the mage abandons the dream world and returns to reality. Any Spiritual " +
                 "spell cast on the dreamer while the caster is present in his dreams will also " +
                 "affect the caster. The MR or PsR Check has a Difficulty of 140. Once he is in " +
-                "the target person's dreams, the caster can jump to the unconscious of yet another " +
+                "the target person\'s dreams, the caster can jump to the unconscious of yet another " +
                 "dreamer who is physically no more than 10 meters from the original sleeper. " +
                 "Naturally, this new dreamer will have the right to his own MR Check. If the " +
-                "dreamer's consciousness happens to be in the world of The Wake, the caster is " +
+                "dreamer\'s consciousness happens to be in the world of The Wake, the caster is " +
                 "trapped there even when the spell expires.",
         "+10 meters additional to jumping range and +5 to MR or PsR Difficulty",
         20,
@@ -366,17 +366,17 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val lightForm = Spell(
+    private val lightForm = Spell(
         "Light Form",
         Element.Light,
         true,
         52,
         100,
         "The body designated by the caster is transformed into pure luminous energy and " +
-                "becomes intangible to matter and non-energy attacks. While in this state, the " +
+                "becomes intangible to matter and non-Energy attacks. While in this state, the " +
                 "transformed person gains a +50 bonus to his abilities of Notice and Search, and " +
                 "a +30 to his Resistance against affects based on Light. In this state, the " +
-                "damage caused by Darkness based attacks is doubled. The maximum presence that " +
+                "damage caused by Darkness-based attacks is doubled. The maximum presence that " +
                 "can be affected is 100.",
         "+10 to the maximum Presence that can be affected",
         10,
@@ -385,7 +385,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val blessing = Spell(
+    private val blessingSpell = Spell(
         "Blessing",
         Element.Light,
         true,
@@ -401,7 +401,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createGoodFeelings = Spell(
+    private val createGoodFeelings = Spell(
         "Create Good Feelings",
         Element.Light,
         true,
@@ -418,7 +418,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val seeTruth = Spell(
+    private val seeTruth = Spell(
         "See Truth",
         Element.Light,
         true,
@@ -426,7 +426,7 @@ class LightBook: Serializable {
         100,
         "Permits the affected person to perceive supernatural forces that are invisible to " +
                 "the human eye, including magic, psychic matrices, and invisible or spiritual " +
-                "beings. Although this spell does not directly work against illusion spells " +
+                "beings. Although this spell does not directly work against Illusion spells, " +
                 "because they affect the mind, not the vision, anyone using See Truth against " +
                 "visual illusions can apply a +50 bonus to the MR Check, since it would help " +
                 "detect the falseness. The maximum Presence that can be affected is 80.",
@@ -437,7 +437,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val shieldFromNegative = Spell(
+    private val shieldFromNegative = Spell(
         "Shield From Negative",
         Element.Light,
         true,
@@ -456,17 +456,17 @@ class LightBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val find = Spell(
+    private val findSpell = Spell(
         "Find",
         Element.Light,
         true,
         66,
         160,
-        "By means of Find, the finder can locate any person, place, or thing, and know its " +
+        "By means of Find, the caster can locate any person, place, or thing, and know its " +
                 "exact location in that moment regardless of the distance separating them. " +
-                "Anything can be found, whether an individual object, or a type of object, or " +
+                "Anything can be found, whether an individual object, a type of object, or " +
                 "simply something that fulfills a specified condition. For example, the caster " +
-                "can try to locate a city, the thief who stole his crosier (even if he doesn't " +
+                "can try to locate a city, the thief who stole his crosier (even if he doesn\'t " +
                 "know who did it), or the closest eligible maiden of royal blood. Objects, " +
                 "places, or people affected must make a dice roll against a MR Check with a " +
                 "Difficulty of 140 to avoid being located. Large places apply a -40 penalty to " +
@@ -478,17 +478,17 @@ class LightBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val restore = Spell(
+    private val restoreSpell = Spell(
         "Restore",
         Element.Light,
         true,
-        70,
-        140,
+        68,
+        160,
         "This spell allows the person affected to recover from any penalties including " +
                 "those caused by fatigue, hunger, physical damage, and even spells, although not " +
                 "from actual physical loss such as from the loss of a limb or other body part. " +
                 "Restore automatically restores any number of Fatigue points lost due to fatigue. " +
-                "The maximum Presence that can be affected iss 100.",
+                "The maximum Presence that can be affected is 100.",
         "+10 to the maximum Presence affected",
         20,
         null,
@@ -496,15 +496,15 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val hypnoticDisplay = Spell(
+    private val hypnoticDisplay = Spell(
         "Hypnotic Display",
         Element.Light,
         true,
         70,
         140,
-        "The spell creates a spectacle of lights in a specified place that has a fascinating " +
+        "This spell creates a spectacle of lights in a specified place that has a fascinating " +
                 "and dumbfounding affect. All the characters that see the display cannot help but " +
-                "continue watching it. It is visible for a radius of half a kilometer, and anyone " +
+                "continue watching it. It is visible for a radius of one kilometer, and anyone " +
                 "seeing it must make a MR or PsR Check with a Difficulty of 120 to resist its " +
                 "effects. Those affected can perform Passive Actions, but cannot move. They can " +
                 "make a new Resistance Check every time they are attacked. The condition for being " +
@@ -516,7 +516,7 @@ class LightBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val catastrophicLight = Spell(
+    private val catastrophicLight = Spell(
         "Catastrophic Light",
         Element.Light,
         true,
@@ -531,24 +531,24 @@ class LightBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val luminousMaterial = Spell(
+    private val luminousMaterial = Spell(
         "Luminous Material Objects",
         Element.Light,
         true,
         76,
         150,
         "Forms a material object from luminous energy. Whether it is something as complex " +
-                "as a clock, or as simple as a sword, the object created can not have a Presence " +
+                "as a clock or as simple as a sword, the object created can not have a Presence " +
                 "of more than 60, but for all purposes it is treated as having a quality of +10. " +
                 "As an exceptional rule, the quality of the object does not affect its Presence.",
-        "+10 to the object's presence",
+        "+10 to the object\'s presence",
         20,
         10,
         false,
         listOf(SpellType.Effect)
     )
 
-    val lightTravel = Spell(
+    private val lightTravel = Spell(
         "Travel by Light",
         Element.Light,
         true,
@@ -565,18 +565,18 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val dreamLordship = Spell(
+    private val dreamLordship = Spell(
         "Lordship Over Dreams",
         Element.Light,
         true,
         80,
         300,
         "Permits the control of any type of dream. The caster has the ability to control the " +
-                "sleeper's dream world, modifying it as if he had a Gnosis of 45 (although it is " +
+                "sleeper\'s dream world, modifying it as if he had a Gnosis of 45 (although it is " +
                 "not real). If the dream is fed by negative energy, in other words, if it turns " +
                 "into a nightmare, his Gnosis becomes only 30. If the dreamer wishes to resist " +
                 "the spell, it requires beating a MR Check with a Difficulty of 140. This spell " +
-                "also has a second use, depending on whether or now the caster is in the Wake. " +
+                "also has a second use, depending on whether or not the caster is in the Wake. " +
                 "Within the Wake, the caster can control his surroundings and acquires the powers " +
                 "of a creature with a Gnosis of 40, as long as he is in an area strongly " +
                 "influenced by positive energies. If he is in an area of neutral energies, he " +
@@ -588,7 +588,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val createLightBeing = Spell(
+    private val createLightBeing = Spell(
         "Create Being of Light",
         Element.Light,
         true,
@@ -606,13 +606,21 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reflectingPrism = Spell(
+    private val reflectingPrism = Spell(
         "Reflecting Prism",
         Element.Light,
         false,
         86,
         160,
-        "Creates a body of light that works like a prismatic shield, reflecting any spell, psychic attack, or Ki technique back at the caster. For the charge to be reflected back, it must lose a Clashing Spells check against an equivalent of 100 Base Damage. It is also necessary to make a successful Block using the Prism. If defending against an Area Attack, the prism does not reflect the entire spell; it will still affect anyone in the area of the spell except the caster of the Reflecting Prism. This spell does not reflect Spiritual spells. The caster can use his Magic Projection to redirect the attack. It will absorb 800 points of damage before breaking.",
+        "Creates a body of light that works like a prismatic shield, reflecting any spell, " +
+                "psychic attack, or Ki technique back at the caster. For the charge to be reflected " +
+                "back, it must lose a Clashing Spells Check against an equivalent of 100 Base " +
+                "Damage. It is also necessary to make a successful Block using the Prism. If " +
+                "defending against an Area Attack, the prism does not reflect the entire spell; " +
+                "it will still affect anyone in the area of the spell except the caster of the " +
+                "Reflecting Prism. This spell does not reflect Spiritual spells. The caster can " +
+                "use his Magic Projection to redirect the attack. It will absorb 800 points of " +
+                "damage before breaking.",
         "+5 to damage for clashing spells and +100 Resistance Points",
         20,
         10,
@@ -620,31 +628,31 @@ class LightBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val omniscienceRadius = Spell(
+    private val omniscienceRadius = Spell(
         "Radius of Omniscience",
         Element.Light,
         true,
         88,
         200,
         "Permits the caster to be omniscient concerning any occurrence or thought within a " +
-                "radius of 450 meters from his location. Affects only individuals whose Presence " +
-                "is less than 60 and who do not have higher Gnosis than the caster. The caster " +
-                "will automatically know everything that is happening and everything thought " +
-                "within the radius. No Resistance is possible.",
-        "+450 meters to radius and +5 to the affected Base Presence",
+                "radius of 500 meters from his location. This spell only affects individuals " +
+                "whose Presence is less than 60 and who do not have higher Gnosis than the caster. " +
+                "The caster will automatically know everything that is happening and everything " +
+                "thought within the radius. No Resistance is possible.",
+        "+500 meters to radius and +5 to the affected Base Presence",
         20,
         5,
         false,
         listOf(SpellType.Effect)
     )
 
-    val predict = Spell(
+    private val predict = Spell(
         "Predict",
         Element.Light,
         true,
         90,
         200,
-        "Permits the caster to forsee future events that will happen around a given person, " +
+        "Permits the caster to foresee future events that will happen around a given person, " +
                 "place, or thing. Predict shows the caster the most probable destiny awaiting " +
                 "someone or something, providing him with detailed information about future " +
                 "events. The period of time covered can never be more than a year from the moment " +
@@ -659,7 +667,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val lightPrison = Spell(
+    private val lightPrison = Spell(
         "Prison of Light",
         Element.Light,
         true,
@@ -684,7 +692,7 @@ class LightBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val oneWithLight = Spell(
+    private val oneWithLight = Spell(
         "One with the Light",
         Element.Light,
         true,
@@ -704,7 +712,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val ascension = Spell(
+    private val ascension = Spell(
         "Ascension",
         Element.Light,
         true,
@@ -712,7 +720,7 @@ class LightBook: Serializable {
         300,
         "This spell exchanges the material essence of a person for divine energy, modifying " +
                 "his spirit through supernatural power. The effects of Ascension are different " +
-                "depending on whether the caster is casting it on himself, or on another. When " +
+                "depending on whether the caster is casting it on himself or on another. When " +
                 "increasing his own power, the spell increases his Gnosis by 10 points. If used " +
                 "on another person, it can give the target as much Gnosis as desired, up to a " +
                 "level 10 points below that of the caster. For instance, a caster with a Gnosis " +
@@ -725,7 +733,7 @@ class LightBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lightHolocaust = Spell(
+    private val lightHolocaust = Spell(
         "Holocaust of Light",
         Element.Light,
         true,
@@ -746,5 +754,48 @@ class LightBook: Serializable {
         null,
         false,
         listOf(SpellType.Attack, SpellType.Spiritual)
+    )
+
+    val fullBook = listOf(
+        createLight,
+        induceCalm,
+        blindingFlash,
+        lightShield,
+        perceiveSpell,
+        lightArmor,
+        banishShadows,
+        detectNegativeEmotions,
+        lightBeam,
+        hologram,
+        lightBond,
+        controlLight,
+        detectLife,
+        lightSpy,
+        ecstasy,
+        banishNegativeEmotions,
+        healingLight,
+        seekingSphere,
+        detectionZone,
+        enterDreams,
+        lightForm,
+        blessingSpell,
+        createGoodFeelings,
+        seeTruth,
+        shieldFromNegative,
+        findSpell,
+        restoreSpell,
+        hypnoticDisplay,
+        catastrophicLight,
+        luminousMaterial,
+        lightTravel,
+        dreamLordship,
+        createLightBeing,
+        reflectingPrism,
+        omniscienceRadius,
+        predict,
+        lightPrison,
+        oneWithLight,
+        ascension,
+        lightHolocaust
     )
 }

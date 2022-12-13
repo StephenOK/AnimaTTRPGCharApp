@@ -6,28 +6,28 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class DarkBook: Serializable {
-    val createDark = Spell(
+    private val createDark = Spell(
         "Create Darkness",
         Element.Dark,
         true,
         2,
         20,
-        "Completely darkens the area within a 5m radius. Everything within the area is " +
+        "Completely darkens the area within a 5-meter radius. Everything within the area is " +
                 "perceived as though on a dark and moonless night.",
-        "+5m radius",
+        "+5 meters to radius",
         20,
         10,
         true,
         listOf(SpellType.Effect)
     )
 
-    val induceFear = Spell(
+    private val induceFear = Spell(
         "Induce Fear",
         Element.Dark,
         true,
         6,
         40,
-        "Temporarily causes a Fear State in all people within 15m of the caster. The " +
+        "Temporarily causes a Fear State in all people within 15-meters of the caster. The " +
                 "spellcaster decides what the victims are afraid of. The MR or PsR Check to " +
                 "overcome this spell has a Difficulty of 80.",
         "+5 to MR or PsR Difficulty and +10 meters radius",
@@ -37,7 +37,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val seeInDarkness = Spell(
+    private val seeInDarkness = Spell(
         "See in Darkness",
         Element.Dark,
         true,
@@ -53,7 +53,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darkShield = Spell(
+    private val darkShield = Spell(
         "Shield of Darkness",
         Element.Dark,
         false,
@@ -69,13 +69,13 @@ class DarkBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val shadow = Spell(
+    private val shadow = Spell(
         "Shadow",
         Element.Dark,
         false,
         12,
         50,
-        "This spell increases the caster's ability to conceal, boosting his Secondary " +
+        "This spell increases the caster\'s ability to conceal, boosting his Secondary " +
                 "Abilities of Stealth and Hide by +50. It also increases his Magic Appraisal by " +
                 "+50, but only for the purpose of hiding the magical potency of something or " +
                 "someone, not to detect it.",
@@ -86,7 +86,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darkArmor = Spell(
+    private val darkArmor = Spell(
         "Armor of Darkness",
         Element.Dark,
         true,
@@ -102,25 +102,25 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val banishLight = Spell(
+    private val banishLight = Spell(
         "Banish Light",
         Element.Dark,
         true,
         18,
         60,
-        "Destroys ambient light within a radius of 10 meters. Any light-based creatures " +
+        "Destroys ambient light within a radius of 10 meters. Any Light-based creatures " +
                 "within the radius must pass a MR Check with a Difficulty of 120, or lose double " +
                 "their Failure level in Life Points (Damage Resistance creatures increase this " +
                 "amount by its Damage Resistance multiple). As long as the spell is maintained " +
                 "over the creatures, they must make a new MR Check each combat turn.",
-        "+10 to the MR Difficulty and +20 meter radius",
+        "+10 to the MR Difficulty and +20 meters to radius",
         10,
         10,
         false,
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val hideMagic = Spell(
+    private val hideMagic = Spell(
         "Hide Magic",
         Element.Dark,
         false,
@@ -137,7 +137,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darkBeam = Spell(
+    private val darkBeam = Spell(
         "Dark Beam",
         Element.Dark,
         true,
@@ -152,7 +152,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val darkzone = Spell(
+    private val darkzone = Spell(
         "Darkzone",
         Element.Dark,
         true,
@@ -162,14 +162,14 @@ class DarkBook: Serializable {
                 "Darkzone increases the difficulty of any Perceptive check within it by 2 levels. " +
                 "This ability also affects Ki Detection. The spell has a radius of 20 meters, and " +
                 "it is not possible to designate targets within it. No Resistance is possible.",
-        "+20 meter radius",
+        "+20 meters to radius",
         20,
         20,
         false,
         listOf(SpellType.Effect)
     )
 
-    val darkBond = Spell(
+    private val darkBond = Spell(
         "Bonds of Darkness",
         Element.Dark,
         true,
@@ -187,7 +187,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val controlDark = Spell(
+    private val controlDark = Spell(
         "Control Darkness",
         Element.Dark,
         true,
@@ -197,14 +197,14 @@ class DarkBook: Serializable {
                 "meters. If cast at Darkness-based beings, they must pass a MR Check with a " +
                 "Difficulty of 80 or they will fall under the control of the caster. A creature " +
                 "can only repeat the check if it is ordered to do something against its nature.",
-        "+10 meter radius and +5 to MR Difficulty",
+        "+10 meters to radius and +5 to MR Difficulty",
         20,
         10,
         false,
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val concealment = Spell(
+    private val concealment = Spell(
         "Concealment",
         Element.Dark,
         false,
@@ -222,17 +222,17 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val obfuscate = Spell(
+    private val obfuscate = Spell(
         "Obfuscate",
         Element.Dark,
         true,
         36,
         100,
-        "Modifies the body of the individual, blending him in to the background and " +
+        "The caster modifies the body of an individual, blending him in to the background and " +
                 "permitting him to hide himself naturally. While the spell is active, the person " +
                 "can exchange his own level of ability at Stealth and Hide for a base of 100. " +
                 "It also offers the same level of ability at Ki Concealment, even if he has not " +
-                "developed that ability. Remember that these numbers are not added to the person's " +
+                "developed that ability. Remember that these numbers are not added to the person\'s " +
                 "Secondary Ability, but are substituted for them if they are lower.",
         "+5 Stealth, Hide, and Ki Concealment",
         20,
@@ -241,24 +241,24 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val enrage = Spell(
+    private val enrage = Spell(
         "Enrage",
         Element.Dark,
         true,
         38,
         60,
         "Provokes a Rage State in those affected, making them lose control and attack the " +
-                "person closest to them. The spell's victim applies a bonus of +10 to their " +
+                "person closest to them. The spell\'s victim applies a bonus of +10 to their " +
                 "offensive abilities and a -30 to all other checks. Enrage has a radius of 5 " +
                 "meters and can be resisted by beating a MR Check with a Difficulty of 80.",
-        "+5 meter radius and +5 to the MR Difficulty",
+        "+5 meters to radius and +5 to the MR Difficulty",
         10,
         10,
         false,
         listOf(SpellType.Spiritual)
     )
 
-    val banishPositiveEmotions = Spell(
+    private val banishPositiveEmotions = Spell(
         "Banish Positive Emotions",
         Element.Dark,
         true,
@@ -267,14 +267,14 @@ class DarkBook: Serializable {
         "Temporarily banishes any positive sentiments such as inner peace, calm, or joy " +
                 "within 100 meters of the caster. Resisting this spell requires beating a MR or " +
                 "PsR Check with a Difficulty of 100.",
-        "+45 meter radius and +5 to MR or PsR Difficulty",
+        "+45 meters to radius and +5 to MR or PsR Difficulty",
         20,
         null,
         false,
         listOf(SpellType.Spiritual)
     )
 
-    val night = Spell(
+    private val night = Spell(
         "Night",
         Element.Dark,
         true,
@@ -284,20 +284,20 @@ class DarkBook: Serializable {
                 "interior area, except the caster, is subject to the rules for Vision Totally " +
                 "Obscured. To see through the darkness, whether from inside or outside the dome, " +
                 "requires a difficulty check of Inhuman in Notice, or Almost Impossible in Search.",
-        "+25 meter radius",
+        "+25 meters to radius",
         20,
         10,
         false,
         listOf(SpellType.Effect)
     )
 
-    val darkSphere = Spell(
+    private val darkSphere = Spell(
         "Dark Sphere",
         Element.Dark,
         true,
         46,
         120,
-        "Unleashes a sphere of dark energy with Base Damage of 100. The caster can control " +
+        "Unleashes a sphere of Dark energy with Base Damage of 100. The caster can control " +
                 "it using his Magic Projection until it hits the target. If the target " +
                 "successfully dodges, the Dark Sphere can continue attacking the following turn, " +
                 "since it has not been destroyed. When Dark Sphere causes damage, or is blocked, " +
@@ -311,7 +311,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val concealZone = Spell(
+    private val concealZone = Spell(
         "Zone of Concealment",
         Element.Dark,
         true,
@@ -332,23 +332,23 @@ class DarkBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val enterNightmare = Spell(
-        "Enter Another's Nightmares",
+    private val enterNightmare = Spell(
+        "Enter Another\'s Nightmares",
         Element.Dark,
         true,
         50,
         120,
-        "This allows the caster to physically enter in a sleeper's nightmares. The " +
+        "This allows the caster to physically enter a sleeper\'s nightmares. The " +
                 "spellcaster has no control over the dream world of the dreamer, and anything " +
                 "that happen there will be real to him. The person must have terrible nightmares " +
                 "to be affected by this spell, and the moment the dream turns into a peaceful " +
                 "dream, or he awakens or dies, the mage abandons the dream world and returns to " +
                 "reality. Any Spiritual spell cast on the dreamer will also affect the caster. " +
                 "The MR or PsR Check for the sleeper has a has a Difficulty of 140. Once he is in " +
-                "the other person's nightmares, the caster can jump to the unconscious of yet " +
+                "the other person\'s nightmares, the caster can jump to the unconscious of yet " +
                 "another dreamer who is physically no more than 10 meters from the original " +
                 "sleeper. Naturally, this new sleeper will have the right to his own MR Check. " +
-                "If the dreamer's consciousness happens to be in the world of the Wake, the " +
+                "If the dreamer\'s consciousness happens to be in the world of the Wake, the " +
                 "caster is trapped there even when the spell expires.",
         "+5 to MR or PsR Difficulty, +10 meters to jumping range",
         20,
@@ -357,14 +357,14 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val darkForm = Spell(
+    private val darkForm = Spell(
         "Dark Form",
         Element.Dark,
         true,
         52,
         100,
-        "The body designated by the caster is transformed to pure dark energy and becomes " +
-                "intangible to matter and non-energy attacks. While in this state, the transformed " +
+        "The body designated by the caster is transformed to pure Dark energy and becomes " +
+                "intangible to matter and non-Energy attacks. While in this state, the transformed " +
                 "person gains a +50 bonus to his abilities of Stealth and Hide, and a +30 to his " +
                 "Resistance against effects based on Darkness. In this state, the damage caused " +
                 "by any attacks based on Light are doubled. The maximum Presence that can be affected is 100.",
@@ -375,7 +375,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val perdition = Spell(
+    private val perdition = Spell(
         "Perdition",
         Element.Dark,
         true,
@@ -394,7 +394,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val createNegativeFeelings = Spell(
+    private val createNegativeFeelings = Spell(
         "Create Negative Feelings",
         Element.Dark,
         true,
@@ -411,27 +411,27 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val eliminateTraces = Spell(
+    private val eliminateTraces = Spell(
         "Eliminate Traces",
         Element.Dark,
         true,
         60,
         100,
         "The caster can erase the evidence that he has been in a certain place. In fact, " +
-                "any sign whatsoever of his passing, whether detectable naturally, or by " +
+                "any sign whatsoever of his passing, whether detectable naturally or by " +
                 "supernatural means, disappears completely. This spell even provides immunity " +
                 "from spells that permit someone to see the past of a place or an object, hiding " +
                 "the presence of the caster of Eliminate Traces from the recording of past " +
                 "events. The only way to overcome the effects of this spell is by achieving a Zen " +
-                "level at Track. The spell erases all such traces within a 45 meter radius.",
-        "+45 meters to radius",
+                "level at Track. The spell erases all such traces within a 50-meter radius.",
+        "+50 meters to radius",
         20,
         10,
         true,
         listOf(SpellType.Effect)
     )
 
-    val shieldFromPositive = Spell(
+    private val shieldFromPositive = Spell(
         "Shield From Positive",
         Element.Dark,
         true,
@@ -450,8 +450,8 @@ class DarkBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val dark = Spell(
-        "Dark",
+    private val devouringDark = Spell(
+        "Devouring Dark",
         Element.Dark,
         false,
         66,
@@ -470,7 +470,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val devastate = Spell(
+    private val devastate = Spell(
         "Devastate",
         Element.Dark,
         true,
@@ -489,7 +489,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val markOfFear = Spell(
+    private val markOfFear = Spell(
         "Mark of Fear",
         Element.Dark,
         true,
@@ -506,7 +506,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val catastrophicDarkness = Spell(
+    private val catastrophicDarkness = Spell(
         "Catastrophic Darkness",
         Element.Dark,
         true,
@@ -514,58 +514,58 @@ class DarkBook: Serializable {
         120,
         "Creates a deadly discharge of Darkness with a Bases Damage of 150. The Catastrophic " +
                 "Darkness has a radius of 25 meters and is an Energy Attack Type spell.",
-        "+5 Base Damage and 10 meters radius",
+        "+5 Base Damage and +10 meters to radius",
         20,
         null,
         false,
         listOf(SpellType.Attack)
     )
 
-    val darkMaterialObjects = Spell(
+    private val darkMaterialObjects = Spell(
         "Dark Material Objects",
         Element.Dark,
         true,
         76,
         150,
-        "Forms a material object from dark energy. Whether it is something as complex as a " +
+        "Forms a material object from Dark energy. Whether it is something as complex as a " +
                 "clock, or as simple as a sword, the object created cannot have a Presence of more " +
                 "than 60, but for all purposes it is treated as having a quality of +10. As an " +
                 "exceptional rule, the quality of the object does not affect its Presence.",
-        "+10 to the object's Presence",
+        "+10 to the object\'s Presence",
         20,
         10,
         false,
         listOf(SpellType.Effect)
     )
 
-    val shadowTravel = Spell(
+    private val shadowTravel = Spell(
         "Travel by Shadow",
         Element.Dark,
         true,
         78,
         250,
         "Transports individuals or objects designated by the caster from one shadow to " +
-                "another that must be less than 100 km away. The quantity of Presence that can " +
+                "another that must be less than 100 kilometers away. The quantity of Presence that can " +
                 "be transported cannot be greater than 250. If someone wishes to resist, the MR " +
                 "Check has a Difficulty of 120.",
-        "+5 to MR Difficulty, +20 to transportable Presence, and +100 km",
+        "+5 to MR Difficulty, +20 to transportable Presence, and +100 kilometers",
         30,
         null,
         false,
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val nightmareLord = Spell(
+    private val nightmareLord = Spell(
         "Lord of Nightmares",
         Element.Dark,
         true,
         80,
         300,
         "Permits the control of any type of nightmare. The caster has the ability to control " +
-                "a sleeper's dream world, modifying it as if he had a Gnosis of 45 (although is " +
+                "a sleeper\'s dream world, modifying it as if he had a Gnosis of 45 (although is " +
                 "not real). If the dream is fed by positive energy, in other words, if it stops " +
                 "being a nightmare, his Gnosis becomes only 30. If the dreamer wishes to resist " +
-                "the spell, it requires beating a MR Check with a Difficulty of 140. This spell " +
+                "the spell, it requires beating a MR Check with a Difficulty of 140.\nThis spell " +
                 "also has a second use, depending on whether or not the caster is in the Wake. " +
                 "Within the Wake, the caster can control his surroundings and acquires the " +
                 "powers of a creature with a Gnosis of 40, as long as he is in an area strongly " +
@@ -578,13 +578,13 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
-    val createDarkBeing = Spell(
+    private val createDarkBeing = Spell(
         "Create Being of Darkness",
         Element.Dark,
         true,
         82,
         250,
-        "Creates a dark being with the appearance of life, but completely under the control " +
+        "Creates a Dark being with the appearance of life, but completely under the control " +
                 "of the caster. The entity is developed as a Being Between Worlds using the " +
                 "powers and limitations of Dark Elementals explained in Chapter 26. The being " +
                 "has 600 DP, and to calculate its maximum level the same rules are used as for " +
@@ -596,7 +596,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val concealmentFromMagic = Spell(
+    private val concealmentFromMagic = Spell(
         "Concealment from Magic",
         Element.Dark,
         false,
@@ -616,31 +616,31 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darknessKingdom = Spell(
+    private val darknessKingdom = Spell(
         "Kingdom of Darkness",
         Element.Dark,
         true,
         88,
         200,
-        "Creates a 45 meter radius zone around the caster in which total darkness reigns. " +
+        "Creates a 50-meter radius zone around the caster in which total darkness reigns. " +
                 "The body of the spellcaster blends into the shadows, increasing his resistance " +
                 "to all kinds of detection by +40. To locate him using the senses requires " +
-                "passing a check of Impossible difficulty with Search, or Inhumane using Notice. " +
-                "Even while using Ki Detection, it is still necessary to beat an Inhuman level " +
-                "check. In addition, as long as he is one with the Darkness, the caster can " +
+                "passing a check of Impossible Difficulty with Search, or Inhumane using Notice. " +
+                "Even while using Ki Detection, it is still necessary to beat an Inhuman-level " +
+                "Check. In addition, as long as he is one with the Darkness, the caster can " +
                 "transport himself each Combat Turn anywhere he wishes within the Kingdom of " +
                 "Darkness. The MA of the caster is also increased by 20 points when using spells " +
-                "of darkness, and any living being (except Dark Elementals) within the covered " +
+                "of Darkness, and any living being (except Dark Elementals) within the covered " +
                 "area automatically loses 10 points of Zeon per combat turn (20 points per turn " +
                 "if a Light Elemental). The spell is stationary in the place it was cast.",
-        "+45 meters to radius",
+        "+50 meters to radius",
         30,
         20,
         false,
         listOf(SpellType.Automatic)
     )
 
-    val undetectable = Spell(
+    private val undetectable = Spell(
         "Undetectable",
         Element.Dark,
         true,
@@ -657,7 +657,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val prisonOfDarkness = Spell(
+    private val prisonOfDarkness = Spell(
         "Prison of Darkness",
         Element.Dark,
         true,
@@ -666,7 +666,7 @@ class DarkBook: Serializable {
         "Encloses the victim in an inescapable world of Darkness, a separate universe which " +
                 "has no interaction with our own. While the victim is imprisoned, he will have " +
                 "no knowledge of anything that happens outside the prison, nor does anyone " +
-                "outside have any knowledge of the prisoner's status or activities. If the " +
+                "outside have any knowledge of the prisoner\'s status or activities. If the " +
                 "prisoner tries to break out from within, the prison will resist damage points up " +
                 "to 100 times the Zeon value of the spell, which defends itself according to the " +
                 "rules of Damage Resistance with an AT of 10. From the outside, the prison can " +
@@ -674,7 +674,7 @@ class DarkBook: Serializable {
                 "Attacks with a Presence greater than 180. The prison recovers from any damage " +
                 "with a Regeneration of 19. The spell can be avoided by passing a MR Check with a " +
                 "Difficulty of 140, but if that fails, the prisoner has no chance to check again " +
-                "later, if he wants to get out, he better be able to break through the spell.",
+                "later; if he wants to get out, he better be able to break through the spell.",
         "+10 to the MR Difficulty",
         20,
         5,
@@ -682,7 +682,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val oneWithDarkness = Spell(
+    private val oneWithDarkness = Spell(
         "One With the Darkness",
         Element.Dark,
         true,
@@ -702,7 +702,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darkAscension = Spell(
+    private val darkAscension = Spell(
         "Dark Ascension",
         Element.Dark,
         true,
@@ -723,7 +723,7 @@ class DarkBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val darkHolocaust = Spell(
+    private val darkHolocaust = Spell(
         "Holocaust of Darkness",
         Element.Dark,
         true,
@@ -743,5 +743,48 @@ class DarkBook: Serializable {
         null,
         false,
         listOf(SpellType.Attack, SpellType.Spiritual)
+    )
+
+    val fullBook = listOf(
+        createDark,
+        induceFear,
+        seeInDarkness,
+        darkShield,
+        shadow,
+        darkArmor,
+        banishLight,
+        hideMagic,
+        darkBeam,
+        darkzone,
+        darkBond,
+        controlDark,
+        concealment,
+        obfuscate,
+        enrage,
+        banishPositiveEmotions,
+        night,
+        darkSphere,
+        concealZone,
+        enterNightmare,
+        darkForm,
+        perdition,
+        createNegativeFeelings,
+        eliminateTraces,
+        shieldFromPositive,
+        devouringDark,
+        devastate,
+        markOfFear,
+        catastrophicDarkness,
+        darkMaterialObjects,
+        shadowTravel,
+        nightmareLord,
+        createDarkBeing,
+        concealmentFromMagic,
+        darknessKingdom,
+        undetectable,
+        prisonOfDarkness,
+        oneWithDarkness,
+        darkAscension,
+        darkHolocaust
     )
 }

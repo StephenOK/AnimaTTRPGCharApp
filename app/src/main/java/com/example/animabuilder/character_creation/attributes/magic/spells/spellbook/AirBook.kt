@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class AirBook: Serializable {
-    val raiseWind = Spell(
+    private val raiseWind = Spell(
         "Raise Wind",
         Element.Air,
         true,
@@ -22,7 +22,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val moveSpell = Spell(
+    private val moveSpell = Spell(
         "Move",
         Element.Air,
         true,
@@ -38,13 +38,13 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reduceWeight = Spell(
+    private val reduceWeight = Spell(
         "Weight Reduction",
         Element.Air,
         true,
         10,
         40,
-        "It reduces a material body weight by 30 kilograms.",
+        "It reduces a material\'s body weight by 30 kilograms.",
         "-10 kilograms",
         30,
         10,
@@ -52,7 +52,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val stopBreathing = Spell(
+    private val stopBreathing = Spell(
         "Stop Breathing",
         Element.Air,
         false,
@@ -68,7 +68,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val freeMotion = Spell(
+    private val freeMotion = Spell(
         "Free Motion",
         Element.Air,
         true,
@@ -86,7 +86,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val airBlow = Spell(
+    private val airBlow = Spell(
         "Air Blow",
         Element.Air,
         true,
@@ -97,11 +97,11 @@ class AirBook: Serializable {
                 "cover a maximum area of 5 meters wide and exert pressure equivalent to Strength " +
                 "6. When directed at a single target, a +4 bonus to Strength is applied. Though " +
                 "modest, a blow of air can cause real damage equivalent to twice the bonus of the " +
-                "blow's Strength; such an attack uses the Impact Attack Type.\nSince this is an " +
-                "air-produced blow, only those who pass an Absurd  level Notice Check, or who are " +
+                "blow\'s Strength; such an attack uses the Impact Attack Type.\nSince this is an " +
+                "air-produced blow, only those who pass an Absurd level Notice Check, or who are " +
                 "able to see magic, will perceive the attack. Once a spellcaster raises the " +
                 "impact Strength over 12, he will have to use 2 added effects to increase the " +
-                "spell's Strength by 1 point thereafter.",
+                "spell\'s Strength by 1 point thereafter.",
         "+1 Strength and +5 meters wide",
         10,
         null,
@@ -109,7 +109,7 @@ class AirBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val airScreen = Spell(
+    private val airScreen = Spell(
         "Air Screen",
         Element.Air,
         false,
@@ -118,7 +118,7 @@ class AirBook: Serializable {
         "This spell forms an air barrier that offers protection against all kinds of attacks, " +
                 "except those based on Electricity or Energy. In addition, the strong winds raised " +
                 "will hinder any physical projectile fired or thrown by the enemy, causing a -50 " +
-                "penalty to the projectile's Final Attack. The shield can take up to 300 damage " +
+                "penalty to the projectile\'s Final Attack. The shield can take up to 300 damage " +
                 "points before breaking.",
         "+100 Resistance Points",
         20,
@@ -127,7 +127,7 @@ class AirBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val autoTransport = Spell(
+    private val autoTransport = Spell(
         "Automatic Transportation",
         Element.Air,
         true,
@@ -135,7 +135,7 @@ class AirBook: Serializable {
         50,
         "The recipient of this spell can be transported up to a maximum distance of 50 " +
                 "meters. This spell allows individuals to pass through physical objects, such as " +
-                "walls or doors - provided these are not based on energy. A spellcaster may apply " +
+                "walls or doors - provided these are not based on Energy. A spellcaster may apply " +
                 "this spell to as many individuals as he wishes, as long as the sum of their " +
                 "combined Presence is 60 or below.",
         "+10 to maximum Presence affected and +50 meters",
@@ -145,7 +145,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val flight = Spell(
+    private val flight = Spell(
         "Flight",
         Element.Air,
         true,
@@ -161,13 +161,13 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val reactionIncrease = Spell(
+    private val reactionIncrease = Spell(
         "Reaction Increase",
         Element.Air,
         true,
         32,
         60,
-        "This spell increases a subject's reaction time by adding a +30 bonus to his " +
+        "This spell increases a subject\'s reaction time by adding a +30 bonus to his " +
                 "Initiative. If Initiative is increased over 200, the caster must use two " +
                 "added effects to increase it by 10.",
         "+10 bonus to initiative",
@@ -177,7 +177,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val electrify = Spell(
+    private val electrify = Spell(
         "Electrify",
         Element.Air,
         true,
@@ -188,7 +188,7 @@ class AirBook: Serializable {
                 "including the caster himself, must pass a Physical Resistance Check (against a " +
                 "Difficulty of 100) per Combat Turn to avoid losing a number of Life Points equal " +
                 "to half his level of failure. This effect is considered an Electricity Attack " +
-                "Type. The electrified body can't have a Presence greater than 40 and must be " +
+                "Type. The electrified body can\'t have a Presence greater than 40 and must be " +
                 "less than 1 meter in size.",
         "+5 to PhR Check difficulty, +5 to maximum Presence affected, and +1 meter to size affected",
         10,
@@ -197,7 +197,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val airCut = Spell(
+    private val airCut = Spell(
         "Air Cut",
         Element.Air,
         true,
@@ -214,13 +214,13 @@ class AirBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val speedSpell = Spell(
+    private val speedSpell = Spell(
         "Speed",
         Element.Air,
         true,
         42,
         80,
-        "This spell increases its target's speed. In game terms, it doubles the " +
+        "This spell increases its target\'s speed. In game terms, it doubles the " +
                 "meters-per-round ratio allowed to characters by their Movement Value. A " +
                 "spellcaster may apply this spell to as many individuals as he wishes, as long " +
                 "as the sum of their combined Presence is 50 or below.",
@@ -231,14 +231,14 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lightning = Spell(
+    private val lightning = Spell(
         "Lightning",
         Element.Air,
         true,
         46,
         80,
         "This spell sets off a 100 point Base Damage lightning strike. After hitting its " +
-                "target, electricity bounces once to the nearest body in a 5 meter radius, causing " +
+                "target, electricity bounces once to the nearest body in a 5-meter radius, causing " +
                 "a new attack with identical characteristics. Although the caster cannot choose " +
                 "the second target, he is exempt from the second attack. If the surrounding area " +
                 "is empty, lightning will either vanish harmlessly or hit the ground.",
@@ -249,41 +249,41 @@ class AirBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val whirlwind = Spell(
+    private val whirlwind = Spell(
         "Whirlwind",
         Element.Air,
         true,
         50,
         140,
-        "The caster raises a whirlwind with a maximum 3 meter radius that leaves nothing " +
+        "The caster raises a whirlwind with a maximum 3-meter radius that leaves nothing " +
                 "but a trail of destruction behind it. Any subject within its area will " +
                 "automatically receive an attack (with a 180 Final Attack score and a 40 point " +
                 "Base Damage on the Impact Table). In addition, all those affected will have to " +
                 "pass an Opposed Strength or Agility Check against the equivalent of Strength " +
                 "12. Otherwise, the whirlwind sucks them into the air. Victims trapped within " +
                 "the whirlwind suffer a -60 All Action Penalty for as long as they remain " +
-                "inside. Once the spell ends, suspended bodies will fall from a distance of " +
+                "inside.\nOnce the spell ends, suspended bodies will fall from a distance of " +
                 "between 30-40 meters. The only condition for being affected by the whirlwind is " +
                 "being inside the area from the first round after the whirlwind has been " +
                 "created. The caster may propel the spell with speed 8. It has no effect upon " +
                 "immaterial bodies or those not affected by air.",
-        "+3 meters to the spell's radius",
+        "+3 meters to the spell\'s radius",
         20,
         5,
         false,
         listOf(SpellType.Automatic)
     )
 
-    val etherealForm = Spell(
+    private val etherealForm = Spell(
         "Ethereal Form",
         Element.Air,
         true,
         52,
         100,
         "This spell transforms a designated body into air, rendering it intangible and " +
-                "therefore immune to all matter and non-energy based attacks. For as long as the " +
+                "therefore immune to all matter and non-Energy based attacks. For as long as the " +
                 "spell lasts, the subject can move through the air with a speed equivalent to " +
-                "his natural Movement Value, and he will only beb visible to individuals who " +
+                "his natural Movement Value, and he will only be visible to individuals who " +
                 "pass an Almost Impossible Notice Check or a Very Difficult Search Check. Those " +
                 "who can see magic can also see the ethereal individual. Although unable to pass " +
                 "through physical matter, ethereal bodies may travel through any cracks or gaps " +
@@ -295,14 +295,14 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val airControl = Spell(
+    private val airControl = Spell(
         "Air Control",
         Element.Air,
         true,
         56,
         80,
         "This spell endows the caster with dominion over air and any other gaseous " +
-                "substance in a 50 meter radius. The wizard can manipulate wind currents and " +
+                "substance in a 50-meter radius. The wizard can manipulate wind currents and " +
                 "gaseous elements, using them at will. For instance, he could deprive an entire " +
                 "area of air or change the course of a tornado. If cast against a being made of " +
                 "air, the caster can attempt to control it - provided the creature fails a MR " +
@@ -314,7 +314,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
-    val electricityControl = Spell(
+    private val electricityControl = Spell(
         "Electricity Control",
         Element.Air,
         true,
@@ -331,14 +331,14 @@ class AirBook: Serializable {
         listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
-    val defensiveMovement = Spell(
+    private val defensiveMovement = Spell(
         "Defensive Movement",
         Element.Air,
         false,
         62,
         120,
         "This spell allows the magician to move away from the reach of an attack. When " +
-                "cast, this spell uses the caster's Magic Projection Ability in place of his " +
+                "cast, this spell uses the caster\'s Magic Projection Ability in place of his " +
                 "Dodge Ability. A mage can defend himself this way a maximum of three times " +
                 "per Combat Turn. For the purpose of counting penalties against Area Attacks, " +
                 "the spell grants the caster a speed equivalent to Movement Value 8.",
@@ -349,7 +349,7 @@ class AirBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val teletransportation = Spell(
+    private val teletransportation = Spell(
         "Teletransportation",
         Element.Air,
         true,
@@ -367,18 +367,18 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val immateriality = Spell(
+    private val immateriality = Spell(
         "Immateriality",
         Element.Air,
         true,
         70,
         120,
         "The designated body becomes completely immaterial, thus turning intangible to all " +
-                "non-energy based creatures, objects, and attacks. While remaining in this state, " +
+                "non-Energy based creatures, objects, and attacks. While remaining in this state, " +
                 "the subject in question will not be able to touch or be touched, and he can pass " +
                 "through any material not of a supernatural origin. If a mage casts this spell on " +
                 "an unwilling target, the subject in question will have to pass a MR against 100 " +
-                "in order to avoid being affected. Should the target fail the Check and become " +
+                "in order to avoid being affected. Should the target fail the check and become " +
                 "immaterial, he will be entitled to a new Check each day. The caster can affect " +
                 "creatures up to a maximum Presence of 80.",
         "+10 to maximum Presence affected and +5 MR Difficulty",
@@ -388,23 +388,23 @@ class AirBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val hurricane = Spell(
-        "Hurricant",
+    private val hurricane = Spell(
+        "Hurricane",
         Element.Air,
         true,
         72,
         200,
-        "This spell creates a tremendous gale that sweeps away everything in a one kilometer " +
-                "radius area. All characters inside the area must pass a Opposed Strength Check " +
+        "This spell creates a tremendous gale that sweeps away everything in a 500-meter " +
+                "radius area. All characters inside the area must pass an Opposed Strength Check " +
                 "against Strength 12 or be taken by the wind. All constructions with a Damage " +
                 "Barrier lower than 60 shatters automatically, while those with a Barrier under " +
                 "120 suffer 10 points of damage per round until they are utterly destroyed. " +
                 "Constructions with a Damage Barrier higher than 120 remains unaffected by the " +
                 "eldritch hurricane.\nBodies dragged by the wind remain in the air until " +
                 "the spell wears off, at which time they plunge to the ground. Distance to the " +
-                "ground may vary according to the environment and the magician's will - although " +
+                "ground may vary according to the environment and the magician\'s will - although " +
                 "under no circumstance can it exceed 100 meters. Characters who pass the Opposed " +
-                "Strength Check are safe and will not have to make further Checks as long as they " +
+                "Strength Check are safe and will not have to make further checks as long as they " +
                 "remain immobile. It is up to the GM to apply whatever bonus he deems fit to the " +
                 "Strength Check of those affected.",
         "+50 meters to radius",
@@ -414,7 +414,7 @@ class AirBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val solidAir = Spell(
+    private val solidAir = Spell(
         "Solid Air",
         Element.Air,
         true,
@@ -422,16 +422,16 @@ class AirBook: Serializable {
         140,
         "This spell solidifies the very air, producing resistant, compact matter. The " +
                 "magician may choose its form and location, but the area of the solidified air " +
-                "is limited to an 25 meter radius. Possible uses of this spell are obstructing " +
+                "is limited to a 25-meter radius. Possible uses of this spell are obstructing " +
                 "an entrance with a solid block of air or building an invisible bridge to cover " +
-                "a gap, for example. Only energy damaging weapons can harm solid air, and it " +
+                "a gap, for example. Only Energy damaging weapons can harm solid air, and it " +
                 "will resist up to 150 points of damage every 5 meters before breaking. The only " +
                 "way this substance can be seen is by the viewer passing an Inhuman level Notice " +
                 "Check or an Absurd level Search Check.\nThe spell could also be used to fence " +
                 "people in, preventing them from moving about freely. When used with this " +
                 "purpose, attacks may be performed following the Trapping rules; no penalties " +
-                "apply to the magician's Projection Ability for performing this maneuver. Solid " +
-                "Air affects all individuals inside the spell area as if possessed Strength 14.",
+                "apply to the magician\'s Projection Ability for performing this maneuver. Solid " +
+                "Air affects all individuals inside the spell area as if it possessed Strength 14.",
         "+25 meters to radius",
         20,
         20,
@@ -439,13 +439,13 @@ class AirBook: Serializable {
         listOf(SpellType.Effect, SpellType.Attack)
     )
 
-    val weatherControl = Spell(
+    private val weatherControl = Spell(
         "Weather Control",
         Element.Air,
         true,
         80,
         220,
-        "With this spell, a magician can fully control the weather within a 5 kilometer " +
+        "With this spell, a magician can fully control the weather within a 5-kilometer " +
                 "radius. He has the power to modify any meteorological element at will, thus " +
                 "gradually creating the desired climatic situation.",
         "+5 kilometers to radius",
@@ -455,13 +455,13 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val createSylph = Spell(
+    private val createSylph = Spell(
         "Create Sylph",
         Element.Air,
         true,
         82,
         250,
-        "This spell creates a seemingly live creature completely under the magician's " +
+        "This spell creates a seemingly live creature completely under the magician\'s " +
                 "control. This entity shall be developed as a Being Between Worlds, subject to " +
                 "the elemental powers and limitations of Air elementals established in Chapter " +
                 "26. The creature shall have 600 DP and its maximum level will be calculated " +
@@ -473,7 +473,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val superiorPsychokinesis = Spell(
+    private val superiorPsychokinesis = Spell(
         "Superior Psychokinesis",
         Element.Air,
         true,
@@ -491,7 +491,7 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val relocateMagic = Spell(
+    private val relocateMagic = Spell(
         "Relocate Magic",
         Element.Air,
         true,
@@ -513,13 +513,13 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val passiveMagic = Spell(
+    private val passiveMagic = Spell(
         "Passive Magic",
         Element.Air,
         true,
         92,
         300,
-        "This spell envelops the magician's essence, allowing magic to flow within him in " +
+        "This spell envelops the magician\'s essence, allowing magic to flow within him in " +
                 "an instinctive manner. The caster is at one with magic, and they respond to " +
                 "events as a single entity. As long as he maintains this spell, all other spells " +
                 "that he performs occur as a Passive Actions - including Attack and Spiritual " +
@@ -531,19 +531,19 @@ class AirBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val airLord = Spell(
+    private val airLord = Spell(
         "Lord of the Air",
         Element.Air,
         true,
         96,
         300,
         "This spell grants a character control of all air or electricity nuclei, regardless " +
-                "of the number of intensities they are composed of, within a 100 kilometer radius. " +
+                "of the number of intensities they are composed of, within a 100-kilometer radius. " +
                 "The dominion also allows for weather manipulation and the creation of gales, " +
                 "storms, or gusts of wind of all sizes. All air-based creatures within the spell " +
                 "area will be immediately controlled by the caster unless they pass a MR Check " +
                 "with a target Difficulty of 140. Once passed, they will not be required to make " +
-                "another Check. The affected parties are entitled to a new roll only if they " +
+                "another check. The affected parties are entitled to a new roll only if they " +
                 "alter their base Resistance.",
         "+100 kilometers to radius and +5 to MR Difficulty",
         30,
@@ -552,7 +552,7 @@ class AirBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val placeInTheWorld = Spell(
+    private val placeInTheWorld = Spell(
         "A Place in the World",
         Element.Air,
         true,
@@ -563,9 +563,9 @@ class AirBook: Serializable {
                 "or their shape, the spell grants the caster the ability to move them around and " +
                 "place them anywhere he wishes - with no other limit than his own will. Any " +
                 "object or being, both physical and spiritual, can be teletransported anywhere. " +
-                "There is no per round limit ot the number or condition of things that can be " +
+                "There is no per round limit to the number or condition of things that can be " +
                 "moved and relocated. The only way a character or creature can avoid the effects " +
-                "of the spell is to succeed on a MR Check with a Difficulty of 140. This spell's " +
+                "of the spell is to succeed on a MR Check with a Difficulty of 140. This spell\'s " +
                 "area of influence is 50 kilometers. All beings or creatures within the area are " +
                 "automatically affected.",
         "+10 kilometers to radius and +5 to the MR Difficulty",
@@ -573,5 +573,38 @@ class AirBook: Serializable {
         10,
         false,
         listOf(SpellType.Automatic)
+    )
+
+    val fullBook = listOf(
+        raiseWind,
+        moveSpell,
+        reduceWeight,
+        stopBreathing,
+        freeMotion,
+        airBlow,
+        airScreen,
+        autoTransport,
+        flight,
+        reactionIncrease,
+        electrify,
+        airCut,
+        speedSpell,
+        lightning,
+        whirlwind,
+        etherealForm,
+        airControl,
+        electricityControl,
+        defensiveMovement,
+        teletransportation,
+        immateriality,
+        hurricane,
+        solidAir,
+        weatherControl,
+        createSylph,
+        superiorPsychokinesis,
+        relocateMagic,
+        passiveMagic,
+        airLord,
+        placeInTheWorld
     )
 }

@@ -6,7 +6,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import java.io.Serializable
 
 class NecromancyBook: Serializable {
-    val feelDeath = Spell(
+    private val feelDeath = Spell(
         "Feel Death",
         Element.Necromancy,
         true,
@@ -22,7 +22,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val seeBeyond = Spell(
+    private val seeBeyond = Spell(
         "See the Great Beyond",
         Element.Necromancy,
         true,
@@ -38,14 +38,14 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val controlScavengers = Spell(
+    private val controlScavengers = Spell(
         "Control Scavengers",
         Element.Necromancy,
         true,
         8,
         40,
         "This spell grants the caster control over creatures that feed mostly on the dead. " +
-                "The affected creatures must all be within a 10 meter radius and have a " +
+                "The affected creatures must all be within a 10-meter radius and have a " +
                 "combined Presence less than 20. Some possible examples include vultures, crows, " +
                 "and maggots.",
         "+10 meters to radius",
@@ -55,14 +55,14 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val spectralShield = Spell(
+    private val spectralShield = Spell(
         "Spectral Shield",
         Element.Necromancy,
         false,
         10,
         40,
-        "This spell creates a shield of necromantic energy capable of stopping Spiritual " +
-                "assaults that affect the character's supernatural Resistances. The spell does " +
+        "This spell creates a shield of necromantic Energy capable of stopping Spiritual " +
+                "assaults that affect the character\'s supernatural Resistances. The spell does " +
                 "not stop physical attacks. Spectral Shield offers protection against mystical " +
                 "effects, as long as they do not force the character to make a Resistance Check " +
                 "with a Difficulty greater than 140.",
@@ -73,7 +73,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val drainLife = Spell(
+    private val drainLife = Spell(
         "Drain Life",
         Element.Necromancy,
         true,
@@ -96,7 +96,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val necromanticDetection = Spell(
+    private val necromanticDetection = Spell(
         "Necromantic Detection",
         Element.Necromancy,
         true,
@@ -112,7 +112,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Detection)
     )
 
-    val talkToDead = Spell(
+    private val talkToDead = Spell(
         "Talk to the Dead",
         Element.Necromancy,
         true,
@@ -120,8 +120,8 @@ class NecromancyBook: Serializable {
         60,
         "This spell allows the necromancer to communicate with dead souls and spirits around " +
                 "him. The spell automatically affects all spirits within 25 meters of the caster " +
-                "that have a Presence less than 40. The caster doesn't need to be aware of a " +
-                "spirit's exact location.",
+                "that have a Presence less than 40. The caster doesn\'t need to be aware of a " +
+                "spirit\'s exact location.",
         "+10 to the maximum Presence affected",
         10,
         20,
@@ -129,14 +129,14 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val necromanticParalysis = Spell(
+    private val necromanticParalysis = Spell(
         "Necromantic Paralysis",
         Element.Necromancy,
         true,
         20,
         60,
         "This spell freezes the supernatural essence of undead creatures, rendering them " +
-                "unable to move. Any undead being in a 20 meter radius form the caster is " +
+                "unable to move. Any undead being in a 20-meter radius form the caster is " +
                 "automatically subject to Total Paralysis if unable to pass a MR Check with a " +
                 "Difficulty of 120.",
         "+10 meters to radius and +5 to MR Difficulty",
@@ -146,7 +146,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val necromitude = Spell(
+    private val necromitude = Spell(
         "Necromitude",
         Element.Necromancy,
         true,
@@ -161,7 +161,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val deathBeam = Spell(
+    private val deathBeam = Spell(
         "Death Beam",
         Element.Necromancy,
         true,
@@ -176,18 +176,18 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val raiseCorpses = Spell(
+    private val raiseCorpses = Spell(
         "Raise Corpses",
         Element.Necromancy,
         true,
         28,
         80,
-        "Through necromantic energy manipulation, the caster can animate corpses and turn " +
+        "Through necromantic Energy manipulation, the caster can animate corpses and turn " +
                 "them into zombies or skeletons under his control. The dead do not keep the " +
                 "Special Abilities or knowledge they had while alive. But, they maintain their " +
                 "basic abilities - such as those associated with natural weapons and some of " +
-                "their physical Characteristics. The creature's Power and Resistances vary " +
-                "according to its body. For instance, a bear's cadaver would be considerably more " +
+                "their physical Characteristics. The creature\'s Power and Resistances vary " +
+                "according to its body. For instance, a bear\'s cadaver would be considerably more " +
                 "dangerous than that of a human. Basic information on zombies is included in the " +
                 "Bestiary as reference for the GM. A caster can raise a number of corpses equal " +
                 "to 100 Presence points, as long as none of them are individually higher than 20.",
@@ -198,13 +198,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val deadBody = Spell(
+    private val deadBody = Spell(
         "Dead Body",
         Element.Necromancy,
         true,
         30,
         80,
-        "This spell temporarily stops an individual's bodily functions without causing his " +
+        "This spell temporarily stops an individual\'s bodily functions without causing his " +
                 "death. The affected target can still move and act normally and becomes extremely " +
                 "resistant to damage effects and consequences for as long as the spell stays " +
                 "active. Any physical penalty he incurs is reduced by half, and he remains " +
@@ -218,7 +218,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val drainMagic = Spell(
+    private val drainMagic = Spell(
         "Drain Magic",
         Element.Necromancy,
         true,
@@ -227,7 +227,7 @@ class NecromancyBook: Serializable {
         "This spell drains the magical energy out of an individual or an object and " +
                 "transfers it to the necromancer. Any individual affected by this spell is " +
                 "forced to pass a MR Check with a Difficulty of 100 or lose a number of Zeon " +
-                "points equal to twice the number by which he failed the Check. The caster " +
+                "points equal to twice the number by which he failed the check. The caster " +
                 "immediately absorbs this Zeon.",
         "+5 to MR Difficulty",
         20,
@@ -236,7 +236,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val destroyUndead = Spell(
+    private val destroyUndead = Spell(
         "Destroy the Undead",
         Element.Necromancy,
         true,
@@ -244,7 +244,7 @@ class NecromancyBook: Serializable {
         80,
         "This spell completely destroys the essence of the undead. Any necromantic entity " +
                 "targeted by this spell is forced to pass a MR Check with a Difficulty of 120 or " +
-                "suffer damage equivalent to twice the number by which he failed the Check. " +
+                "suffer damage equivalent to twice the number by which he failed the check. " +
                 "Creatures with Damage Resistance increase this amount by their Damage Resistance " +
                 "multiple.",
         "+5 to MR Difficulty",
@@ -254,19 +254,19 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val drainCharacteristic = Spell(
+    private val drainCharacteristic = Spell(
         "Drain Characteristic",
         Element.Necromancy,
         true,
         38,
         80,
-        "By touching a living creature, the necromancer can absorb one of the individual's " +
+        "By touching a living creature, the necromancer can absorb one of the individual\'s " +
                 "Characteristics, increasing his own in the process. The necromancer must decide " +
                 "the Characteristic that he will drain before executing the spell. The designated " +
                 "target loses 1 point from that Characteristic for every 10 points by which he " +
-                "fails the 120 Difficulty MR Check. If the natural value of the victim's drained " +
-                "Characteristic is higher than that of the necromancer's, the necromancer adds " +
-                "that drained point to his own Characteristic. If the target's Characteristic is " +
+                "fails the 120 Difficulty MR Check. If the natural value of the victim\'s drained " +
+                "Characteristic is higher than that of the necromancer\'s, the necromancer adds " +
+                "that drained point to his own Characteristic. If the target\'s Characteristic is " +
                 "lower, the necromancer needs to absorb 3 Characteristic points to increase his " +
                 "own by 1. The increased attributes remain for as long as the spell is maintained. " +
                 "Lost Characteristics are recovered at a rate of 1 per hour once the caster " +
@@ -278,13 +278,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val controlDead = Spell(
+    private val controlDead = Spell(
         "Control the Dead",
         Element.Necromancy,
         true,
         40,
         100,
-        "The necromancer obtains absolute control of any undead creature in a 20 meter " +
+        "The necromancer obtains absolute control of any undead creature in a 20-meter " +
                 "radius. Dominion over the undead stays active for as long as the spell is " +
                 "maintained, but it does not affect other necromantic creatures that might " +
                 "approach the area later. The undead can attempt to avoid being controlled by " +
@@ -298,13 +298,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val witherLife = Spell(
+    private val witherLife = Spell(
         "Wither Life",
         Element.Necromancy,
         true,
         42,
         80,
-        "This spell creates a necromantic energy area that immediately kills any inferior " +
+        "This spell creates a necromantic Energy area that immediately kills any inferior " +
                 "life form - such as small animals and plants - around the caster. Any living " +
                 "being with a Presence less than 20 that is within 10 meters from the caster " +
                 "automatically rots away.",
@@ -315,13 +315,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val necromanticShield = Spell(
+    private val necromanticShield = Spell(
         "Necromantic Shield",
         Element.Necromancy,
         false,
         46,
         80,
-        "This spell creates an energy shield from the essence of dead souls that protects " +
+        "This spell creates an Energy shield from the essence of dead souls that protects " +
                 "against all kinds of attacks. The shield can absorb up to 1000 points of damage " +
                 "before breaking.",
         "+100 Resistance Points",
@@ -331,15 +331,15 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Defense)
     )
 
-    val dominateLife = Spell(
+    private val dominateLife = Spell(
         "Dominate Life",
         Element.Necromancy,
         false,
         48,
         140,
-        "This spell allows the caster to enslave a living being's soul. The targeted victim " +
+        "This spell allows the caster to enslave a living being\'s soul. The targeted victim " +
                 "can resist the spell if he passes a MR Check with a Difficulty of 100. The " +
-                "controlled individual receives a new Check each day, and he also receives the " +
+                "controlled individual receives a new check each day, and he also receives the " +
                 "chance to make another MR Check every time he receives an order completely " +
                 "against his behavior.",
         "+5 to MR Target Number Difficulty",
@@ -349,7 +349,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val vampireStigma = Spell(
+    private val vampireStigma = Spell(
         "Vampire Stigma",
         Element.Necromancy,
         true,
@@ -366,18 +366,18 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val spectralForm = Spell(
+    private val spectralForm = Spell(
         "Spectral Form",
         Element.Necromancy,
         true,
         52,
         100,
-        "The necromancer's physical body becomes a burning, spectral mass that damages the " +
+        "The necromancer\'s physical body becomes a burning, spectral mass that damages the " +
                 "essence of all living beings that comes into contact with it. Anyone touching " +
                 "its body feels the chill of death and is forced to make a PhR or MR Check with " +
-                "a Difficulty equal to twice the necromancer's Presence. If the affected character " +
-                "fails the Check, he suffers an All Action Penalty and loses a number of Life " +
-                "Points equal to half the number by which he failed the Check. The necromancer " +
+                "a Difficulty equal to twice the necromancer\'s Presence. If the affected character " +
+                "fails the check, he suffers an All Action Penalty and loses a number of Life " +
+                "Points equal to half the number by which he failed the check. The necromancer " +
                 "can only be hit by Energy damaging attacks for as long as he remains in this " +
                 "condition. The maximum Presence affected by this spell is 100.",
         "+5 to the maximum Presence affected",
@@ -387,7 +387,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val necromanticModification = Spell(
+    private val necromanticModification = Spell(
         "Necromantic Modification",
         Element.Necromancy,
         true,
@@ -406,7 +406,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val summonDead = Spell(
+    private val summonDead = Spell(
         "Summon the Dead",
         Element.Necromancy,
         true,
@@ -425,7 +425,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val raiseSpecters = Spell(
+    private val raiseSpecters = Spell(
         "Raise Specters",
         Element.Necromancy,
         true,
@@ -443,21 +443,21 @@ class NecromancyBook: Serializable {
                 "than 30.",
         "+20 to the number of Presences and +5 to their maximum value",
         20,
-        20,
+        10,
         true,
         listOf(SpellType.Effect)
     )
 
-    val drainLifeForce = Spell(
+    private val drainLifeForce = Spell(
         "Drain Life Force",
         Element.Necromancy,
         true,
         62,
         180,
-        "This spell absorbs an individual's vital force and transmits it to whoever the " +
+        "This spell absorbs an individual\'s vital force and transmits it to whoever the " +
                 "necromancer designates. The target must pass a MR Check with a Difficulty of " +
                 "100 or lose 1 Constitution and 1 Power Point for every 10 points by which he " +
-                "fails the Check. The affected individual also ages gradually, according to his " +
+                "fails the check. The affected individual also ages gradually, according to his " +
                 "Failure Level. Absorbed points allow the necromancer (or the subject absorbing " +
                 "them) to rejuvenate and recover part of his lost vitality, up to starting " +
                 "levels. Characters deprived of their vital force can never recover it, except " +
@@ -469,13 +469,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val kill = Spell(
+    private val kill = Spell(
         "Kill",
         Element.Necromancy,
         true,
         66,
         100,
-        "This spell stops a subject's bodily functions causing immediate death. It only " +
+        "This spell stops a subject\'s bodily functions causing immediate death. It only " +
                 "works on living beings and is useless against spirits and some inanimate Beings " +
                 "Between Worlds. The affected character must pass a MR or PhR Check with a " +
                 "Difficulty of 80 to survive.",
@@ -486,13 +486,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val soulBeam = Spell(
+    private val soulBeam = Spell(
         "Soul Beam",
         Element.Necromancy,
         true,
         68,
         140,
-        "This spell projects a magical energy discharge composed of withered souls. The " +
+        "This spell projects a magical Energy discharge composed of withered souls. The " +
                 "spell hits on the Energy AT and has a 100 point Base Damage. It only affects " +
                 "beings with a soul; lifeless physical bodies, such as walls or golems, are " +
                 "ignored. Given the nature of the discharge, only those with the capacity of " +
@@ -504,20 +504,20 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Attack)
     )
 
-    val necromanticChimera = Spell(
+    private val necromanticChimera = Spell(
         "Necromantic Chimera",
         Element.Necromancy,
         true,
         70,
         250,
-        "This spell creates an undead creature subject to the caster's control. This entity " +
+        "This spell creates an undead creature subject to the caster\'s control. This entity " +
                 "is developed as a Being Between Worlds with 600 DP and a Gnosis of 25. However, " +
                 "the necromancer cannot create the entity from scratch; in order to develop it, " +
                 "he must gather pieces from several corpses. If looking to endow any power or " +
                 "essential ability, he must first find the bodies of beings that possessed those " +
                 "powers. For instance, if wanting to confer Natural Flight, he must find the " +
                 "corpse of a creature who had that specific ability in life. The existence of " +
-                "the chimera is directly linked to the necromancer's soul. Therefore, its " +
+                "the chimera is directly linked to the necromancer\'s soul. Therefore, its " +
                 "maximum level is calculated using the same rules as in the spell Create Being " +
                 "of the path of Creation.",
         "+50 DP",
@@ -527,7 +527,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lifePerversion = Spell(
+    private val lifePerversion = Spell(
         "Life Perversion",
         Element.Necromancy,
         true,
@@ -546,15 +546,15 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val vassalage = Spell(
+    private val vassalage = Spell(
         "Vassalage",
         Element.Necromancy,
         true,
         76,
         250,
-        "This spell permanently ties an undead creature's soul to that of the necromancer. " +
+        "This spell permanently ties an undead creature\'s soul to that of the necromancer. " +
                 "Thus, the spellcaster automatically becomes its hierarchical superior, and the " +
-                "monster's existence depends upon him. Although this spell does not endow the " +
+                "monster\'s existence depends upon him. Although this spell does not endow the " +
                 "necromancer with real control upon the creature, their lives are tied together " +
                 "in a manner such that if the master is destroyed, the creature will perish too. " +
                 "The affected undead may resist Vassalage by passing a MR or PhR Check with a " +
@@ -566,19 +566,19 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val drainSouls = Spell(
+    private val drainSouls = Spell(
         "Drain Souls",
         Element.Necromancy,
         true,
         78,
         200,
-        "This spell allows the necromancer to snatch another individual's soul so he may " +
+        "This spell allows the necromancer to snatch another individual\'s soul so he may " +
                 "feed on its essence and power. The stronger the absorbed spirit, the greater the " +
                 "energy received. The targeted individual must pass a MR Check with a Difficulty " +
                 "of 120 or lose an amount of Presence equal to half the number by which he failed " +
-                "the Check. For every 5 Presence points lost, the target loses 1 level and all " +
+                "the check. For every 5 Presence points lost, the target loses 1 level and all " +
                 "the capacities or powers dependent upon it (with the exception of knowledge-based " +
-                "abilities). If the target's Presence ever reaches zero, its soul is considered " +
+                "abilities). If the target\'s Presence ever reaches zero, its soul is considered " +
                 "to be completely extinguished and he dies. For every 10 points of Presence " +
                 "absorbed, the necromancer temporarily increases one of his Characteristics by 1, " +
                 "or he can choose to receive 10 DP to acquire any Power or Essential creature " +
@@ -591,7 +591,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Spiritual)
     )
 
-    val surpassDeath = Spell(
+    private val surpassDeath = Spell(
         "Surpass Death",
         Element.Necromancy,
         true,
@@ -599,7 +599,7 @@ class NecromancyBook: Serializable {
         300,
         "This spell allows a living person to defeat death. The target becomes an undead " +
                 "entity without ties and can therefore exist in the world on his own power. The " +
-                "spell must be cast at the exact moment of the person's death - or a few seconds " +
+                "spell must be cast at the exact moment of the person\'s death - or a few seconds " +
                 "before (it will not cause death by itself). The caster is free to decide if the " +
                 "target in question becomes a Being Between Worlds or a Spirit, but in any case " +
                 "it will have a Gnosis of 25. The spell confers 150 extra DP to use for any of " +
@@ -616,7 +616,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val trueRise = Spell(
+    private val trueRise = Spell(
         "True Rise",
         Element.Necromancy,
         true,
@@ -627,7 +627,7 @@ class NecromancyBook: Serializable {
                 "becomes an undead being lacking true soul. The spell affects deceased characters " +
                 "or creatures with a Presence score less than 30 whose bodies are at the reach of " +
                 "the caster. If death occurred a long time before the spell is cast, the raised " +
-                "creature's physical abilities might be damaged. Characters resurrected once " +
+                "creature\'s physical abilities might be damaged. Characters resurrected once " +
                 "through this spell cannot be resurrected again. Keep in mind that, even though " +
                 "the character is an undead entity, it is not under the control of the necromancer.",
         "+5 to the maximum Presence affected",
@@ -637,13 +637,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val wellOfLife = Spell(
+    private val wellOfLife = Spell(
         "Well of Life",
         Element.Necromancy,
         true,
         86,
         300,
-        "This spell creates a field of dark energy centered on the necromancer that allows " +
+        "This spell creates a field of dark Energy centered on the necromancer that allows " +
                 "him to absorb half the Life Points lost by all living beings within 50 meters of " +
                 "him. These Life Points go towards healing any sort of wounds he may have " +
                 "suffered. Well of Life itself does not inflict damage, but necromancers usually " +
@@ -652,10 +652,10 @@ class NecromancyBook: Serializable {
         30,
         10,
         false,
-        listOf(SpellType.Effect)
+        listOf(SpellType.Automatic)
     )
 
-    val cursedLand = Spell(
+    private val cursedLand = Spell(
         "Cursed Land",
         Element.Necromancy,
         true,
@@ -667,7 +667,7 @@ class NecromancyBook: Serializable {
                 "become animated corpses, but one out of a hundred are resurrected as a specter. " +
                 "These undead creatures only act inside the cursed land (see Level 28 and Level " +
                 "60 spells of this Path as a reference). The magic sustaining them will vanish " +
-                "if they leave the area. The spell haunts a one kilometer radius, stationary to " +
+                "if they leave the area. The spell haunts a one-kilometer radius, stationary to " +
                 "the place where it was cast.",
         "+1 kilometer to radius",
         40,
@@ -676,7 +676,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val sustenance = Spell(
+    private val sustenance = Spell(
         "Sustenance",
         Element.Necromancy,
         true,
@@ -695,7 +695,7 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val rawMaterial = Spell(
+    private val rawMaterial = Spell(
         "Raw Material",
         Element.Necromancy,
         true,
@@ -713,15 +713,15 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Effect)
     )
 
-    val lordOfTheDead = Spell(
+    private val lordOfTheDead = Spell(
         "Lord of the Dead",
         Element.Necromancy,
         true,
         96,
         300,
         "The Lord of the Dead extends its presence in the world, subduing all undead " +
-                "creatures in a 100 kilometer radius. All creatures within the spell area are " +
-                "subjected to the spellcaster's control unless they pass a MR Check with a " +
+                "creatures in a 100-kilometer radius. All creatures within the spell area are " +
+                "subjected to the spellcaster\'s control unless they pass a MR Check with a " +
                 "Difficulty of 140. Once they do, no rerolls are necessary. Affected individuals " +
                 "are not entitles to a new check unless they alter their Resistances.",
         "+100 kilometers to radius and +5 to MR Difficulty",
@@ -731,13 +731,13 @@ class NecromancyBook: Serializable {
         listOf(SpellType.Automatic)
     )
 
-    val comeBackFromDead = Spell(
+    private val comeBackFromDead = Spell(
         "Come Back from the Dead",
         Element.Necromancy,
         true,
         98,
         400,
-        "This spell returns a deceased creature's spirit to the world, even after it has " +
+        "This spell returns a deceased creature\'s spirit to the world, even after it has " +
                 "gone back to the Flow of Souls or has been scattered. The character returns as " +
                 "an undead being, with his soul and essence untouched. If the body of the " +
                 "deceased character still exists, it will come back to it. If it does not, he " +
@@ -747,14 +747,14 @@ class NecromancyBook: Serializable {
                 "Presence higher than 30, and the elapsed time since death cannot exceed one " +
                 "month. Destroyed or resurrected souls cannot be affected by this spell.",
         "+5 to the maximum Presence affected and twice the time elapsed since the " +
-                "subject's death",
+                "subject\'s death",
         40,
         null,
         false,
         listOf(SpellType.Automatic)
     )
 
-    val awakening = Spell(
+    private val awakening = Spell(
         "The Awakening",
         Element.Necromancy,
         true,
@@ -772,5 +772,48 @@ class NecromancyBook: Serializable {
         null,
         false,
         listOf(SpellType.Automatic)
+    )
+
+    val fullBook = listOf(
+        feelDeath,
+        seeBeyond,
+        controlScavengers,
+        spectralShield,
+        drainLife,
+        necromanticDetection,
+        talkToDead,
+        necromanticParalysis,
+        necromitude,
+        deathBeam,
+        raiseCorpses,
+        deadBody,
+        drainMagic,
+        destroyUndead,
+        drainCharacteristic,
+        controlDead,
+        witherLife,
+        necromanticShield,
+        dominateLife,
+        vampireStigma,
+        spectralForm,
+        necromanticModification,
+        summonDead,
+        raiseSpecters,
+        drainLifeForce,
+        kill,
+        soulBeam,
+        necromanticChimera,
+        lifePerversion,
+        vassalage,
+        drainSouls,
+        surpassDeath,
+        trueRise,
+        wellOfLife,
+        cursedLand,
+        sustenance,
+        rawMaterial,
+        lordOfTheDead,
+        comeBackFromDead,
+        awakening
     )
 }

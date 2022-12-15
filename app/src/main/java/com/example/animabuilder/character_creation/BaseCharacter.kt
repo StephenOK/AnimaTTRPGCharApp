@@ -301,7 +301,7 @@ class BaseCharacter: Serializable {
         int = intVal
         modINT = getModVal(int)
         secondaryList.updateINT(modINT)
-        magic.setMagicLevel()
+        magic.setMagicLevelMax()
     }
     var setPOW = { powVal: Int ->
         pow = powVal

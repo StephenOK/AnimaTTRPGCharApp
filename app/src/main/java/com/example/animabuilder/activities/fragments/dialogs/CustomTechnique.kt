@@ -104,7 +104,8 @@ fun CustomTechnique(
                 Row(
                     Modifier
                         .align(Alignment.TopCenter)
-                        .height(100.dp)){Text(text = "Create Custom Technique")}
+                        .height(100.dp)
+                ){Text(text = "Create Custom Technique")}
 
                 //content box
                 Row(

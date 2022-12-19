@@ -1,26 +1,18 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.numberCatcher
+import com.example.animabuilder.activities.*
+import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
 @Composable
@@ -36,11 +28,12 @@ fun MagicFragment(updateFunc: () -> Unit) {
 
     val projectionImbalance = remember{mutableStateOf(charInstance.magic.magProjImbalance.toString())}
     val imbalanceIsAttack = remember{mutableStateOf(charInstance.magic.imbalanceIsAttack)}
-    val imbalanceTypeString =
+    val imbalanceTypeString = remember{mutableStateOf(
         if(imbalanceIsAttack.value)
-            remember{mutableStateOf("Attack")}
+            "Attack"
         else
-            remember{mutableStateOf("Defense")}
+            "Defense"
+    )}
 
     val offenseImbalance = remember{mutableStateOf(determineImbalanceValue(imbalanceIsAttack.value).toString())}
     val defenseImbalance = remember{mutableStateOf(determineImbalanceValue(!imbalanceIsAttack.value).toString())}
@@ -48,9 +41,18 @@ fun MagicFragment(updateFunc: () -> Unit) {
     val magicLevelMax = remember{mutableStateOf(charInstance.magic.magicLevelMax.toString())}
     val magicLevelSpent = remember{mutableStateOf(charInstance.magic.magicLevelSpent.toString())}
 
-    val primaryElementBoxes = remember{ mutableMapOf<Element, MutableState<Boolean>>() }
+    val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
 
     val spellTable = mutableListOf<SpellRowData>()
+
+    val spellList = remember{mutableStateOf(charInstance.magic.spellList.toList())}
+
+    val freeExchangeOpen = remember{mutableStateOf(false)}
+    val freeElement = remember{mutableStateOf(Element.Light)}
+    val freeLevel = remember{mutableStateOf(4)}
+    val freeIndex = remember{mutableStateOf(1)}
+
+    val textChange = remember{mutableStateOf<(String) -> Unit>({})}
 
     spellTable.add(SpellRowData(
         Element.Light,
@@ -298,12 +300,33 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 it,
                 primaryElementBoxes,
                 {magicLevelSpent.value = charInstance.magic.magicLevelSpent.toString()},
+                {spellList.value = charInstance.magic.spellList.toList() },
                 {element: Element, box: MutableState<Boolean> ->
                     primaryElementBoxes += Pair(element, box)
                 }
             )
         }
+
+        item{Text(text = "Current Taken Spells: ")}
+        items(spellList.value){
+            if(it is FreeSpell)
+                FreeSpellExchange(
+                    it,
+                    spellList.value[spellList.value.indexOf(it) - 1].inBook,
+                    it.level,
+                    {input: Element -> freeElement.value = input},
+                    {input: Int -> freeLevel.value = input},
+                    {input: Int -> freeIndex.value = input},
+                    {input: (String) -> Unit -> textChange.value = input}
+                ) { freeExchangeOpen.value = true }
+            else
+                SpellRow(it)
+        }
     }
+
+    if(freeExchangeOpen.value)
+        FreeSpellPick(freeElement.value, freeLevel.value, freeIndex.value, textChange.value)
+        {spellList.value = charInstance.magic.spellList; freeExchangeOpen.value = false}
 }
 
 @Composable
@@ -311,6 +334,7 @@ private fun SpellBookInvestment(
     spellData: SpellRowData,
     allElementList: MutableMap<Element, MutableState<Boolean>>,
     updateMgLvlSpent: () -> Unit,
+    updateSpellList: () -> Unit,
     addElementBox: (Element, MutableState<Boolean>) -> Unit
 ){
     val displayActive = remember{mutableStateOf(false)}
@@ -319,49 +343,59 @@ private fun SpellBookInvestment(
         charInstance.magic.primarySpellList.contains(spellData.spellElement))}
     addElementBox(spellData.spellElement, isPrimaryElement)
 
-    Row{
-        Checkbox(
-            checked = isPrimaryElement.value,
-            onCheckedChange = {
-                charInstance.magic.changePrimaryBook(spellData.spellElement, it)
-                reflectPrimaryElements(allElementList)
+    Column {
+        Row {
+            Checkbox(
+                checked = isPrimaryElement.value,
+                onCheckedChange = {
+                    charInstance.magic.changePrimaryBook(spellData.spellElement, it)
+                    reflectPrimaryElements(allElementList)
+                },
+                modifier = Modifier.weight(0.1f)
+            )
+
+            Text(text = spellData.spellElement.name, modifier = Modifier.weight(0.3f))
+
+            TextField(
+                value = spellData.elementInvestment.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = {
+                    numberCatcher(
+                        it,
+                        { input ->
+                            charInstance.magic.buyBookLevels(input.toInt(), spellData.spellElement)
+                            updateMgLvlSpent()
+                            spellData.elementInvestment.value = input
+                        },
+                        {
+                            charInstance.magic.buyBookLevels(0, spellData.spellElement)
+                            updateMgLvlSpent()
+                            spellData.elementInvestment.value = ""
+                        }
+                    )
+
+                    reflectPrimaryElements(allElementList)
+                    updateSpellList()
+                },
+                modifier = Modifier.weight(0.2f)
+            )
+            Button(
+                onClick = { displayActive.value = !displayActive.value },
+                modifier = Modifier.weight(0.3f)
+            ) {
+                Text(text = if(displayActive.value) "Hide Spells" else "Show Spells")
             }
-        )
-
-        Text(text = spellData.spellElement.name)
-
-        TextField(
-            value = spellData.elementInvestment.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = {
-                numberCatcher(
-                    it,
-                    {input ->
-                        charInstance.magic.buyBookLevels(input.toInt(), spellData.spellElement)
-                        updateMgLvlSpent()
-                        spellData.elementInvestment.value = input
-                    },
-                    {
-                        charInstance.magic.buyBookLevels(0, spellData.spellElement)
-                        updateMgLvlSpent()
-                        spellData.elementInvestment.value = ""
+        }
+        AnimatedVisibility(visible = displayActive.value) {
+            Column {
+                var freeSpellLevel = 0
+                spellData.spellList.forEach {
+                    if (it != null) {
+                        SpellRow(it)
+                        freeSpellLevel = it.level + 2
+                    } else {
+                        FreeSpellRow(freeSpellLevel)
                     }
-                )
-
-                reflectPrimaryElements(allElementList)
-            }
-        )
-        //Button(onClick = {displayActive.value = !displayActive.value}) {
-        //    Text(text = "Show Spells")
-        //}
-    }
-    AnimatedVisibility(visible = displayActive.value) {
-        Column {
-            spellData.spellList.forEach {
-                if (it != null) {
-                    SpellRow()
-                } else {
-                    FreeSpellRow()
                 }
             }
         }
@@ -369,15 +403,90 @@ private fun SpellBookInvestment(
 }
 
 @Composable
-private fun SpellRow(){
+private fun SpellRow(displayItem: Spell){
     Row{
-
+        Text(text = displayItem.name)
+        TextButton(
+            onClick ={
+                detailItem.value = displayItem.name
+                contents.value = @Composable{SpellDetails(displayItem)}
+                detailAlertOn.value = true
+            }
+        ) {
+            Text(text = "Details")
+        }
     }
 }
 
 @Composable
-private fun FreeSpellRow(){
+private fun FreeSpellRow(lvlVal: Int){
+    Row{Text(text = "Free Spell (Lvl $lvlVal)")}
+}
 
+@Composable
+private fun FreeSpellExchange(
+    currentFreeSpell: FreeSpell,
+    associatedElement: Element,
+    associatedLevel: Int,
+    setFreeElement: (Element) -> Unit,
+    setFreeLevel: (Int) -> Unit,
+    setFreeIndex: (Int) -> Unit,
+    setTextChange: ((String) -> Unit) -> Unit,
+    openChoice: () -> Unit
+){
+    val spellName = remember{mutableStateOf(
+        if(currentFreeSpell.name != "PlaceHolder") currentFreeSpell.name
+        else "Empty Free Slot"
+    )}
+
+    Row{
+        Text(text = spellName.value)
+        Text(text = "(" + associatedElement.name + " Lvl $associatedLevel)")
+        Button(
+            onClick = {
+                setFreeElement(associatedElement)
+                setFreeLevel(associatedLevel)
+                setFreeIndex(charInstance.magic.spellList.indexOf(currentFreeSpell))
+                setTextChange { input -> spellName.value = input }
+                openChoice()
+            }
+        )
+        {Text(text = "Change Free Spell")}
+    }
+}
+
+@Composable
+private fun SpellDetails(spell: Spell){
+    val action =
+        if(spell.isActive)
+            "Active"
+        else
+            "Passive"
+    val daily =
+        if(spell.isDaily)
+            " (Daily)"
+        else
+            ""
+
+    val spellType = remember{mutableStateOf("")}
+    spell.type.forEach{
+        spellType.value += it.name + " "
+    }
+
+    Column{
+        Row{Text(text = "Action: $action")}
+        Row{Text(text = "Element: " + spell.inBook.name)}
+        Row{Text(text = "Level: " + spell.level.toString())}
+        Row{Text(text = "Cost: " + spell.zCost.toString())}
+        Row{Text(text = spell.effect)}
+        Row{Text(text = "Added Effect: " + spell.addedEffect)}
+        Row{Text(text = "Maximum Zeon: Intelligence x " + spell.zMax)}
+        if(spell.maintenance != null)
+            Row{Text(text = "Maintenance: 1 every " + spell.maintenance + daily)}
+        else
+            Row{Text(text = "None")}
+        Row{Text(text = "Type: " + spellType.value)}
+    }
 }
 
 private fun determineImbalanceValue(

@@ -2,6 +2,7 @@ package com.example.animabuilder.character_creation.attributes.magic
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.spellbook.*
 import java.io.Serializable
@@ -64,8 +65,8 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var individualNecroPoints = 0
     var individualFreePoints = 0
 
-    val individualSpells = mutableListOf<Spell?>()
-    val spellList = mutableListOf<Spell?>()
+    val individualSpells = mutableListOf<Spell>()
+    val spellList = mutableListOf<Spell>()
 
 
 
@@ -207,6 +208,30 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         magicLevelSpent += pointValue
 
         if(pointValue > 1) {
+            val copySpellBook = mutableListOf<Spell>()
+            spellBook.forEach{
+                if(it != null) {
+                    copySpellBook.add(it)
+                }
+                else{
+                    copySpellBook.add(
+                        FreeSpell(
+                            "PlaceHolder",
+                            false,
+                            (copySpellBook.size + 1) * 2,
+                            0,
+                            "This is not a real spell. This is a placeholder object.",
+                            "This is not a spell. You can't add more Zeon to it.",
+                            0,
+                            null,
+                            false,
+                            listOf(),
+                            listOf(inputElement)
+                        )
+                    )
+                }
+            }
+
             val spellRange =
                 if (!oppositeElementFound(inputElement))
                     pointValue / 2
@@ -214,9 +239,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
                     pointValue / 4
 
             if(pointValue < 50)
-                spellList.addAll(spellBook.slice(0..spellRange))
+                spellList.addAll(copySpellBook.slice(0 until spellRange))
             else
-                spellList.addAll(spellBook)
+                spellList.addAll(copySpellBook)
         }
     }
 

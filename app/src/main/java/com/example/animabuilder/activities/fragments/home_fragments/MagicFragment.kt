@@ -45,7 +45,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
 
     val spellTable = mutableListOf<SpellRowData>()
 
-    val spellList = remember{mutableStateOf(charInstance.magic.spellList.toList())}
+    val spellList = remember{charInstance.magic.spellList.toMutableStateList()}
 
     val freeExchangeOpen = remember{mutableStateOf(false)}
     val freeElement = remember{mutableStateOf(Element.Light)}
@@ -300,7 +300,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 it,
                 primaryElementBoxes,
                 {magicLevelSpent.value = charInstance.magic.magicLevelSpent.toString()},
-                {spellList.value = charInstance.magic.spellList.toList() },
+                {spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList())},
                 {element: Element, box: MutableState<Boolean> ->
                     primaryElementBoxes += Pair(element, box)
                 }
@@ -308,11 +308,11 @@ fun MagicFragment(updateFunc: () -> Unit) {
         }
 
         item{Text(text = "Current Taken Spells: ")}
-        items(spellList.value){
+        items(spellList){
             if(it is FreeSpell)
                 FreeSpellExchange(
                     it,
-                    spellList.value[spellList.value.indexOf(it) - 1].inBook,
+                    charInstance.magic.findFreeSpellElement(it),
                     it.level,
                     {input: Element -> freeElement.value = input},
                     {input: Int -> freeLevel.value = input},
@@ -320,13 +320,16 @@ fun MagicFragment(updateFunc: () -> Unit) {
                     {input: (String) -> Unit -> textChange.value = input}
                 ) { freeExchangeOpen.value = true }
             else
-                SpellRow(it)
+                SpellRow(
+                    it,
+                    false
+                ) { spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList()) }
         }
     }
 
     if(freeExchangeOpen.value)
-        FreeSpellPick(freeElement.value, freeLevel.value, freeIndex.value, textChange.value)
-        {spellList.value = charInstance.magic.spellList; freeExchangeOpen.value = false}
+        FreeSpellPick(freeElement.value, freeLevel.value, textChange.value)
+        {spellList.clear(); spellList.addAll(charInstance.magic.spellList); freeExchangeOpen.value = false}
 }
 
 @Composable
@@ -350,6 +353,8 @@ private fun SpellBookInvestment(
                 onCheckedChange = {
                     charInstance.magic.changePrimaryBook(spellData.spellElement, it)
                     reflectPrimaryElements(allElementList)
+                    updateMgLvlSpent()
+                    updateSpellList()
                 },
                 modifier = Modifier.weight(0.1f)
             )
@@ -360,6 +365,7 @@ private fun SpellBookInvestment(
                 value = spellData.elementInvestment.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
+                    displayActive.value = false
                     numberCatcher(
                         it,
                         { input ->
@@ -391,10 +397,14 @@ private fun SpellBookInvestment(
                 var freeSpellLevel = 0
                 spellData.spellList.forEach {
                     if (it != null) {
-                        SpellRow(it)
+                        SpellRow(
+                            it,
+                            true
+                        ) { reflectPrimaryElements(allElementList); updateMgLvlSpent(); updateSpellList() }
                         freeSpellLevel = it.level + 2
                     } else {
-                        FreeSpellRow(freeSpellLevel)
+                        FreeSpellRow(freeSpellLevel, spellData.spellElement)
+                        { reflectPrimaryElements(allElementList); updateMgLvlSpent(); updateSpellList() }
                     }
                 }
             }
@@ -403,8 +413,9 @@ private fun SpellBookInvestment(
 }
 
 @Composable
-private fun SpellRow(displayItem: Spell){
+private fun SpellRow(displayItem: Spell, buyable: Boolean, updateList: () -> Unit){
     Row{
+        if(buyable) BuySingleSpellButton(displayItem, updateList)
         Text(text = displayItem.name)
         TextButton(
             onClick ={
@@ -419,8 +430,37 @@ private fun SpellRow(displayItem: Spell){
 }
 
 @Composable
-private fun FreeSpellRow(lvlVal: Int){
-    Row{Text(text = "Free Spell (Lvl $lvlVal)")}
+private fun FreeSpellRow(lvlVal: Int, eleVal: Element, updateList: () -> Unit){
+    Row{
+        BuySingleFreeSpellButton(lvlVal, eleVal, updateList)
+        Text(text = "Free Spell (Lvl $lvlVal)")
+    }
+}
+
+@Composable
+private fun BuySingleSpellButton(inputSpell: Spell, updateList: () -> Unit){
+    val isBought = remember{mutableStateOf(charInstance.magic.individualSpells.contains(inputSpell))}
+    Button(
+        onClick = {
+            isBought.value = charInstance.magic.changeIndividualSpell(inputSpell, !isBought.value)
+            updateList()
+        }
+    ){
+        Text(text = if(isBought.value) "Remove Spell" else "Buy Spell")
+    }
+}
+
+@Composable
+private fun BuySingleFreeSpellButton(spellLevel: Int, spellElement: Element, updateList: () -> Unit){
+    val isBought = remember{mutableStateOf(false)}
+    Button(
+        onClick = {
+            isBought.value = charInstance.magic.changeIndividualFreeSpell(spellLevel, spellElement, !isBought.value)
+            updateList()
+        }
+    ){
+        Text(text = if(isBought.value) "Remove Spell" else "Buy Spell")
+    }
 }
 
 @Composable
@@ -473,11 +513,18 @@ private fun SpellDetails(spell: Spell){
         spellType.value += it.name + " "
     }
 
+    var forbiddenList = ""
+    if(spell is FreeSpell){
+        (spell as FreeSpell).forbiddenElements.forEach {
+            forbiddenList += it.name + " "
+        }
+    }
+
     Column{
         Row{Text(text = "Action: $action")}
         Row{Text(text = "Element: " + spell.inBook.name)}
         Row{Text(text = "Level: " + spell.level.toString())}
-        Row{Text(text = "Cost: " + spell.zCost.toString())}
+        Row{Text(text = "Zeon Cost: " + spell.zCost.toString())}
         Row{Text(text = spell.effect)}
         Row{Text(text = "Added Effect: " + spell.addedEffect)}
         Row{Text(text = "Maximum Zeon: Intelligence x " + spell.zMax)}
@@ -486,6 +533,8 @@ private fun SpellDetails(spell: Spell){
         else
             Row{Text(text = "None")}
         Row{Text(text = "Type: " + spellType.value)}
+        if(spell is FreeSpell)
+            Row{Text(text = "Forbidden Elements: $forbiddenList")}
     }
 }
 

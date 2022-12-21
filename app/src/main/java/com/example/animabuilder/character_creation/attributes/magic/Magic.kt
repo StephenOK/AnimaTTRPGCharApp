@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.magic
 
+import android.hardware.lights.Light
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
@@ -25,6 +26,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var magicLevelMax = 0
     var magicLevelSpent = 0
 
+    //retreive all available spells
     val lightBook = LightBook()
     val darkBook = DarkBook()
     val creationBook = CreationBook()
@@ -38,8 +40,10 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     val necromancyBook = NecromancyBook()
     val freeBook = FreeBook()
 
+    //initialize character's known spells
     val primarySpellList = mutableListOf<Element>()
 
+    //initialize points invested in each book
     var pointsInLightBook = 0
     var pointsInDarkBook = 0
     var pointsInCreateBook = 0
@@ -52,19 +56,21 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var pointsInIllusionBook = 0
     var pointsInNecroBook = 0
 
-    var individualLightPoints = 0
-    var individualDarkPoints = 0
-    var individualCreatePoints = 0
-    var individualDestructPoints = 0
-    var individualAirPoints = 0
-    var individualEarthPoints = 0
-    var individualWaterPoints = 0
-    var individualFirePoints = 0
-    var individualEssencePoints = 0
-    var individualIllusionPoints = 0
-    var individualNecroPoints = 0
-    var individualFreePoints = 0
+    //initialize lists of free spells taken for each spell category
+    val lightBookFreeSpells = mutableListOf<FreeSpell>()
+    val darkBookFreeSpells = mutableListOf<FreeSpell>()
+    val creationBookFreeSpells = mutableListOf<FreeSpell>()
+    val destructionBookFreeSpells = mutableListOf<FreeSpell>()
+    val airBookFreeSpells = mutableListOf<FreeSpell>()
+    val earthBookFreeSpells = mutableListOf<FreeSpell>()
+    val waterBookFreeSpells = mutableListOf<FreeSpell>()
+    val fireBookFreeSpells = mutableListOf<FreeSpell>()
+    val essenceBookFreeSpells = mutableListOf<FreeSpell>()
+    val illusionBookFreeSpells = mutableListOf<FreeSpell>()
+    val necromancyBookFreeSpells = mutableListOf<FreeSpell>()
+    val individualFreeSpells = mutableListOf<FreeSpell>()
 
+    //initialize list of individually acquired spells
     val individualSpells = mutableListOf<Spell>()
     val spellList = mutableListOf<Spell>()
 
@@ -138,7 +144,14 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         }
     }
 
+    /**
+     * Spend magic levels in the given element
+     *
+     * spent: Amount of magic levels to spend
+     * book: Which book to buy points in
+     */
     fun buyBookLevels(spent: Int, book: Element){
+        //adjust points spent depending on the inputted element
         when(book){
             Element.Light -> pointsInLightBook = spent
             Element.Dark -> pointsInDarkBook = spent
@@ -154,11 +167,32 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             else -> {}
         }
 
+        //add book to primary list if neither it nor its opposite are present and there is a spent value given
         if(!primarySpellList.contains(book) && !oppositeElementFound(book) && spent != 0)
             primarySpellList.add(book)
 
-        if (getElementInvestment(book) == 0 && primarySpellList.contains(book))
+        //attempt to set opposite as primary if spent value is 0 and there previously was a value
+        else if (getElementInvestment(book) == 0 && primarySpellList.contains(book))
             setOppositeAsPrimary(book)
+
+        //remove individually bought spells obtained in this purchase
+        individualSpells.removeIf{it.inBook == book && it.level >= spent}
+
+        //update full spell list
+        updateSpellList()
+    }
+
+    fun addFreeSpell(addItem: FreeSpell, intoElement: Element){
+        val addToList = getElementFreeSpells(intoElement)
+        addToList.forEach{
+            if(it.level == addItem.level) {
+                addToList[addToList.indexOf(it)] = addItem
+                updateSpellList()
+                return
+            }
+        }
+
+        addToList.add(addItem)
 
         updateSpellList()
     }
@@ -196,8 +230,16 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         addSpellsFromBook(pointsInIllusionBook, Element.Illusion, illusionBook.fullBook)
         addSpellsFromBook(pointsInNecroBook, Element.Necromancy, necromancyBook.fullBook)
 
-        spellList.addAll(individualSpells)
-        addIndividualCost()
+        individualSpells.forEach{
+            if(it is FreeSpell) {
+                magicLevelSpent += getIndividualCost(it.level, findFreeSpellElement(it))
+                spellList.add(getFreeSpell(it.level, findFreeSpellElement(it)))
+            }
+            else {
+                magicLevelSpent += getIndividualCost(it.level, it.inBook)
+                spellList.add(it)
+            }
+        }
     }
 
     fun addSpellsFromBook(
@@ -205,63 +247,117 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         inputElement: Element,
         spellBook: List<Spell?>
     ){
+        //add spent points value to cumulative value
         magicLevelSpent += pointValue
 
+        //if at least 2 points spent in the book
         if(pointValue > 1) {
-            val copySpellBook = mutableListOf<Spell>()
-            spellBook.forEach{
-                if(it != null) {
-                    copySpellBook.add(it)
-                }
-                else{
-                    copySpellBook.add(
-                        FreeSpell(
-                            "PlaceHolder",
-                            false,
-                            (copySpellBook.size + 1) * 2,
-                            0,
-                            "This is not a real spell. This is a placeholder object.",
-                            "This is not a spell. You can't add more Zeon to it.",
-                            0,
-                            null,
-                            false,
-                            listOf(),
-                            listOf(inputElement)
-                        )
-                    )
-                }
-            }
-
+            //determine how many spells are bought depending on if opposite element is primary
             val spellRange =
                 if (!oppositeElementFound(inputElement))
-                    pointValue / 2
+                    (pointValue / 2) - 1
                 else
-                    pointValue / 4
+                    (pointValue / 4) - 1
 
-            if(pointValue < 50)
-                spellList.addAll(copySpellBook.slice(0 until spellRange))
-            else
-                spellList.addAll(copySpellBook)
+            for(index in 0 .. spellRange) {
+                if(spellBook[index] != null)
+                    spellList.add(spellBook[index]!!)
+                else
+                    spellList.add(getFreeSpell((index + 1) * 2, inputElement))
+            }
         }
     }
 
-    fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean){
-        if(isBought)
-            individualSpells.add(targetSpell)
-        else
+    fun getFreeSpell(inputLevel: Int, inputElement: Element): FreeSpell{
+        getElementFreeSpells(inputElement).forEach {
+            if (it.level == inputLevel)
+                return it
+        }
+
+
+        return FreeSpell(
+            "PlaceHolder",
+            false,
+            inputLevel,
+            0,
+            "This is not a real spell. This is a placeholder object.",
+            "This is not a spell. You can't add more Zeon to it.",
+            0,
+            null,
+            false,
+            listOf(),
+            listOf(inputElement)
+        )
+    }
+
+    fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean): Boolean{
+        return if(isBought){
+            if(!spellList.contains(targetSpell)){
+                individualSpells.add(targetSpell)
+
+                if(!primarySpellList.contains(targetSpell.inBook) && !oppositeElementFound(targetSpell.inBook))
+                    primarySpellList.add(targetSpell.inBook)
+
+                updateSpellList()
+                true
+            } else
+                false
+        } else{
             individualSpells.remove(targetSpell)
+
+            if(getElementInvestment(targetSpell.inBook) == 0)
+                primarySpellList.remove(targetSpell.inBook)
+
+            updateSpellList()
+            false
+        }
     }
 
-    fun addIndividualCost(){
-        individualSpells.forEach{
-            val cost = (ceil((it!!.level/10).toDouble()).toInt() * 2)
+    fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean): Boolean{
+        val placeHolderSpell = FreeSpell(
+            "PlaceHolder",
+            false,
+            levelInput,
+            0,
+            "This is not a real spell. This is a placeholder object.",
+            "This is not a spell. You can't add more Zeon to it.",
+            0,
+            null,
+            false,
+            listOf(),
+            listOf(elementInput)
+        )
 
-            magicLevelSpent +=
-                if(primarySpellList.contains(it.inBook))
-                    cost
-                else
-                    cost * 2
+        return if(isBought) {
+            if(!individualSpells.contains(getFreeSpell(levelInput, elementInput))) {
+                individualSpells.add(placeHolderSpell)
+
+                if(!primarySpellList.contains(elementInput) && !oppositeElementFound(elementInput))
+                    primarySpellList.add(elementInput)
+
+                updateSpellList()
+                true
+            } else
+                false
+        } else{
+            individualSpells.remove(placeHolderSpell)
+            getElementFreeSpells(elementInput).remove(getFreeSpell(levelInput, elementInput))
+
+            if(getElementInvestment(elementInput) == 0)
+                primarySpellList.remove(elementInput)
+
+            updateSpellList()
+            false
         }
+    }
+
+    fun getIndividualCost(inputLevel: Int, inputElement: Element): Int{
+        var cost = (ceil(inputLevel.toDouble()/10.0).toInt() * 2)
+
+        if(oppositeElementFound(inputElement))
+            cost *= 2
+
+        return cost
     }
 
     fun oppositeElementFound(element: Element): Boolean{
@@ -282,20 +378,49 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         return false
     }
 
+    fun getIndividualPoints(inputElement: Element): Int{
+        var elementTotal = 0
+        individualSpells.forEach{
+            if(it is FreeSpell && findFreeSpellElement(it) == inputElement)
+                elementTotal += getIndividualCost(it.level, inputElement)
+            else if(it.inBook == inputElement)
+                elementTotal += getIndividualCost(it.level, inputElement)
+        }
+
+        return elementTotal
+    }
+
     fun getElementInvestment(inputElement: Element): Int{
-        return when(inputElement){
-            Element.Light -> pointsInLightBook + individualLightPoints
-            Element.Dark -> pointsInDarkBook + individualDarkPoints
-            Element.Creation -> pointsInCreateBook + individualCreatePoints
-            Element.Destruction -> pointsInDestructBook + individualDestructPoints
-            Element.Air -> pointsInAirBook + individualAirPoints
-            Element.Earth -> pointsInEarthBook + individualEarthPoints
-            Element.Water -> pointsInWaterBook + individualWaterPoints
-            Element.Fire -> pointsInFireBook + individualFirePoints
-            Element.Essence -> pointsInEssenceBook + individualEssencePoints
-            Element.Illusion -> pointsInIllusionBook + individualIllusionPoints
-            Element.Necromancy -> pointsInNecroBook + individualNecroPoints
+        return getIndividualPoints(inputElement) + when(inputElement){
+            Element.Light -> pointsInLightBook
+            Element.Dark -> pointsInDarkBook
+            Element.Creation -> pointsInCreateBook
+            Element.Destruction -> pointsInDestructBook
+            Element.Air -> pointsInAirBook
+            Element.Earth -> pointsInEarthBook
+            Element.Water -> pointsInWaterBook
+            Element.Fire -> pointsInFireBook
+            Element.Essence -> pointsInEssenceBook
+            Element.Illusion -> pointsInIllusionBook
+            Element.Necromancy -> pointsInNecroBook
             else -> 0
+        }
+    }
+
+    fun getElementFreeSpells(inputElement: Element): MutableList<FreeSpell>{
+        return when(inputElement){
+            Element.Light -> lightBookFreeSpells
+            Element.Dark -> darkBookFreeSpells
+            Element.Creation -> creationBookFreeSpells
+            Element.Destruction -> destructionBookFreeSpells
+            Element.Air -> airBookFreeSpells
+            Element.Earth -> earthBookFreeSpells
+            Element.Water -> waterBookFreeSpells
+            Element.Fire -> fireBookFreeSpells
+            Element.Essence -> essenceBookFreeSpells
+            Element.Illusion -> illusionBookFreeSpells
+            Element.Necromancy -> necromancyBookFreeSpells
+            else -> mutableListOf()
         }
     }
 
@@ -356,6 +481,43 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
                 Element.Essence, Element.Illusion)
             else -> listOf()
         }
+    }
+
+    fun findFreeSpellElement(find: FreeSpell): Element{
+        lightBookFreeSpells.forEach{
+            if(it == find) return Element.Light
+        }
+        darkBookFreeSpells.forEach{
+            if(it == find) return Element.Dark
+        }
+        creationBookFreeSpells.forEach{
+            if(it == find) return Element.Creation
+        }
+        destructionBookFreeSpells.forEach{
+            if(it == find) return Element.Destruction
+        }
+        airBookFreeSpells.forEach{
+            if(it == find) return Element.Air
+        }
+        earthBookFreeSpells.forEach{
+            if(it == find) return Element.Earth
+        }
+        waterBookFreeSpells.forEach{
+            if(it == find) return Element.Water
+        }
+        fireBookFreeSpells.forEach{
+            if(it == find) return Element.Fire
+        }
+        essenceBookFreeSpells.forEach{
+            if(it == find) return Element.Essence
+        }
+        illusionBookFreeSpells.forEach{
+            if(it == find) return Element.Illusion
+        }
+        necromancyBookFreeSpells.forEach{
+            if(it == find) return Element.Necromancy
+        }
+        return find.forbiddenElements[0]
     }
 
 

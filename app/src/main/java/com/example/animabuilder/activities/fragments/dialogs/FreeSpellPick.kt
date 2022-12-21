@@ -23,7 +23,6 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.FreeS
 fun FreeSpellPick(
     spellElement: Element,
     spellLevel: Int,
-    changeIndex: Int,
     textChange: (String) -> Unit,
     closeDialog: () -> Unit
 ){
@@ -79,7 +78,7 @@ fun FreeSpellPick(
                 ){
                     TextButton(onClick = {
                         if(selectedSpell.value != null) {
-                            charInstance.magic.spellList[changeIndex] = FreeSpell(
+                            charInstance.magic.addFreeSpell(FreeSpell(
                                 selectedSpell.value!!.name,
                                 selectedSpell.value!!.isActive,
                                 spellLevel,
@@ -91,7 +90,7 @@ fun FreeSpellPick(
                                 selectedSpell.value!!.isDaily,
                                 selectedSpell.value!!.type,
                                 selectedSpell.value!!.forbiddenElements
-                            )
+                            ), spellElement)
                             textChange(selectedSpell.value!!.name)
                             closeDialog()
                         }

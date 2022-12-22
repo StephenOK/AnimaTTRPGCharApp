@@ -16,14 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.activities.contents
+import com.example.animabuilder.activities.detailAlertOn
+import com.example.animabuilder.activities.detailItem
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
+import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
 @Composable
 fun FreeSpellPick(
     spellElement: Element,
     spellLevel: Int,
     textChange: (String) -> Unit,
+    detailContents: @Composable (Spell) -> Unit,
     closeDialog: () -> Unit
 ){
     val freeList = when (spellLevel){
@@ -61,11 +66,10 @@ fun FreeSpellPick(
                 ){
                     LazyColumn{
                         items(freeList){
-                            if(!it.forbiddenElements.contains(spellElement) && !charInstance.magic.spellList.contains(it)){
-                                PickFreeRow(it, selectedSpell.value)
-                                {input: FreeSpell ->
+                            if(!it.forbiddenElements.contains(spellElement) && !charInstance.magic.hasCopyOf(it)){
+                                PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
                                     selectedSpell.value = input
-                                }
+                                }, detailContents)
                             }
                         }
                     }
@@ -110,7 +114,8 @@ fun FreeSpellPick(
 private fun PickFreeRow(
     displayItem: FreeSpell,
     radioCheck: FreeSpell?,
-    changeRadioCheck: (FreeSpell) -> Unit
+    changeRadioCheck: (FreeSpell) -> Unit,
+    detailContents: @Composable (Spell) -> Unit
 ){
     Row{
         RadioButton(
@@ -118,5 +123,12 @@ private fun PickFreeRow(
             onClick = {changeRadioCheck(displayItem)}
         )
         Text(text = displayItem.name)
+        TextButton(onClick = {
+            detailItem.value = displayItem.name
+            contents.value = @Composable{ detailContents(displayItem) }
+            detailAlertOn.value = true
+        }) {
+            Text(text = "Details")
+        }
     }
 }

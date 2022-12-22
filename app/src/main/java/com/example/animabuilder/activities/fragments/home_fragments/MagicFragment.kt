@@ -328,7 +328,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
     }
 
     if(freeExchangeOpen.value)
-        FreeSpellPick(freeElement.value, freeLevel.value, textChange.value)
+        FreeSpellPick(freeElement.value, freeLevel.value, textChange.value, SpellDetails)
         {spellList.clear(); spellList.addAll(charInstance.magic.spellList); freeExchangeOpen.value = false}
 }
 
@@ -452,7 +452,7 @@ private fun BuySingleSpellButton(inputSpell: Spell, updateList: () -> Unit){
 
 @Composable
 private fun BuySingleFreeSpellButton(spellLevel: Int, spellElement: Element, updateList: () -> Unit){
-    val isBought = remember{mutableStateOf(false)}
+    val isBought = remember{mutableStateOf(charInstance.magic.hasCopyOf(charInstance.magic.getFreeSpell(spellLevel, spellElement)))}
     Button(
         onClick = {
             isBought.value = charInstance.magic.changeIndividualFreeSpell(spellLevel, spellElement, !isBought.value)
@@ -482,6 +482,16 @@ private fun FreeSpellExchange(
     Row{
         Text(text = spellName.value)
         Text(text = "(" + associatedElement.name + " Lvl $associatedLevel)")
+        if(currentFreeSpell.name == "PlaceHolder"){Spacer(Modifier.weight(0.1f))}
+        else{
+            TextButton(onClick = {
+                detailItem.value = currentFreeSpell.name
+                contents.value = @Composable{SpellDetails(currentFreeSpell)}
+                detailAlertOn.value = true
+            }) {
+                Text(text = "Details")
+            }
+        }
         Button(
             onClick = {
                 setFreeElement(associatedElement)
@@ -495,8 +505,7 @@ private fun FreeSpellExchange(
     }
 }
 
-@Composable
-private fun SpellDetails(spell: Spell){
+val SpellDetails = @Composable {spell: Spell ->
     val action =
         if(spell.isActive)
             "Active"
@@ -515,7 +524,7 @@ private fun SpellDetails(spell: Spell){
 
     var forbiddenList = ""
     if(spell is FreeSpell){
-        (spell as FreeSpell).forbiddenElements.forEach {
+        spell.forbiddenElements.forEach {
             forbiddenList += it.name + " "
         }
     }

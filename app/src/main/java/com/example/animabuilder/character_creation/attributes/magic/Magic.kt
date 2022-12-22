@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.magic
 
-import android.hardware.lights.Light
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
@@ -26,7 +25,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var magicLevelMax = 0
     var magicLevelSpent = 0
 
-    //retreive all available spells
+    //retrieve all available spells
     val lightBook = LightBook()
     val darkBook = DarkBook()
     val creationBook = CreationBook()
@@ -68,7 +67,6 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     val essenceBookFreeSpells = mutableListOf<FreeSpell>()
     val illusionBookFreeSpells = mutableListOf<FreeSpell>()
     val necromancyBookFreeSpells = mutableListOf<FreeSpell>()
-    val individualFreeSpells = mutableListOf<FreeSpell>()
 
     //initialize list of individually acquired spells
     val individualSpells = mutableListOf<Spell>()
@@ -177,6 +175,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
 
         //remove individually bought spells obtained in this purchase
         individualSpells.removeIf{it.inBook == book && it.level >= spent}
+        individualSpells.removeIf{it is FreeSpell && findFreeSpellElement(it) == book && it.level >= spent}
 
         //update full spell list
         updateSpellList()
@@ -255,11 +254,11 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             //determine how many spells are bought depending on if opposite element is primary
             val spellRange =
                 if (!oppositeElementFound(inputElement))
-                    (pointValue / 2) - 1
+                    (pointValue / 2)
                 else
-                    (pointValue / 4) - 1
+                    (pointValue / 4)
 
-            for(index in 0 .. spellRange) {
+            for(index in 0 until spellRange) {
                 if(spellBook[index] != null)
                     spellList.add(spellBook[index]!!)
                 else
@@ -314,22 +313,10 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     }
 
     fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean): Boolean{
-        val placeHolderSpell = FreeSpell(
-            "PlaceHolder",
-            false,
-            levelInput,
-            0,
-            "This is not a real spell. This is a placeholder object.",
-            "This is not a spell. You can't add more Zeon to it.",
-            0,
-            null,
-            false,
-            listOf(),
-            listOf(elementInput)
-        )
+        val placeHolderSpell = getFreeSpell(levelInput, elementInput)
 
         return if(isBought) {
-            if(!individualSpells.contains(getFreeSpell(levelInput, elementInput))) {
+            if(!hasCopyOf(placeHolderSpell)) {
                 individualSpells.add(placeHolderSpell)
 
                 if(!primarySpellList.contains(elementInput) && !oppositeElementFound(elementInput))
@@ -340,8 +327,12 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             } else
                 false
         } else{
-            individualSpells.remove(placeHolderSpell)
-            getElementFreeSpells(elementInput).remove(getFreeSpell(levelInput, elementInput))
+            individualSpells.forEach{
+                if(it.name == "PlaceHolder" && it.level == levelInput && findFreeSpellElement(it as FreeSpell) == elementInput){
+                    individualSpells.remove(it)
+                }
+            }
+            getElementFreeSpells(elementInput).remove(placeHolderSpell)
 
             if(getElementInvestment(elementInput) == 0)
                 primarySpellList.remove(elementInput)
@@ -518,6 +509,19 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             if(it == find) return Element.Necromancy
         }
         return find.forbiddenElements[0]
+    }
+
+    fun hasCopyOf(check: Spell): Boolean{
+        spellList.forEach{
+            if(check is FreeSpell && it is FreeSpell && check.name == "PlaceHolder"){
+                if(it.level == check.level && findFreeSpellElement(it) == findFreeSpellElement(check))
+                    return true
+            }
+            else if(it.name == check.name)
+                return true
+        }
+
+        return false
     }
 
 

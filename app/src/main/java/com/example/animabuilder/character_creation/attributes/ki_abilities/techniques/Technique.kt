@@ -1,7 +1,8 @@
-package com.example.animabuilder.character_creation.attributes.ki_abilities
+package com.example.animabuilder.character_creation.attributes.ki_abilities.techniques
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
 import java.io.Serializable
 import java.util.Collections
 

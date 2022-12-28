@@ -23,6 +23,18 @@ import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
+
+/**
+ * Dialog for the player to choose their character's Free Spells
+ * Shows spells that are available to the indicated element that the character does not already have
+ * Allows display of description of the available spells
+ *
+ * spellElement: book that the associated spell is a part of
+ * spellLevel: level of free spell that is being taken
+ * textChange: function that changes which text item display to change on spell acquisition
+ * detailContents: composable for detail alert for the spell
+ * closeDialog: function to run on dialog's close
+ */
 @Composable
 fun FreeSpellPick(
     spellElement: Element,
@@ -31,6 +43,7 @@ fun FreeSpellPick(
     detailContents: @Composable (Spell) -> Unit,
     closeDialog: () -> Unit
 ){
+    //determine which level of spells to display
     val freeList = when (spellLevel){
         4, 8 -> charInstance.magic.freeBook.firstBook
         14, 18 -> charInstance.magic.freeBook.secondBook
@@ -45,27 +58,35 @@ fun FreeSpellPick(
         else -> listOf()
     }
 
+    //initialize user's selection
     val selectedSpell = remember{mutableStateOf<FreeSpell?>(null)}
 
     Dialog(
+        //close dialog on dismissal
         onDismissRequest = {closeDialog()},
+
         content = {
             Box(
                 Modifier
                     .background(Color.White)
                     .size(600.dp, 600.dp)){
+                //dialog title
                 Row(
                     Modifier
                         .align(Alignment.TopCenter)
                         .height(100.dp)
                 ) { Text(text = "Choose Free Spell") }
+
+                //choice contents
                 Row(
                     Modifier
                         .align(Alignment.Center)
                         .height(400.dp)
                 ){
                     LazyColumn{
+                        //create selection item for each available spell
                         items(freeList){
+                            //determine that spell is legal for the book and not already taken
                             if(!it.forbiddenElements.contains(spellElement) && !charInstance.magic.hasCopyOf(it)){
                                 PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
                                     selectedSpell.value = input
@@ -74,12 +95,15 @@ fun FreeSpellPick(
                         }
                     }
                 }
+
+                //bottom button row
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .height(100.dp)
                 ){
+                    //confirmation button adds spell to character
                     TextButton(onClick = {
                         if(selectedSpell.value != null) {
                             charInstance.magic.addFreeSpell(FreeSpell(
@@ -101,6 +125,8 @@ fun FreeSpellPick(
                     }) {
                         Text(text = "Confirm")
                     }
+
+                    //back button closes dialog
                     TextButton(onClick = closeDialog) {
                         Text(text = "Back")
                     }
@@ -110,6 +136,14 @@ fun FreeSpellPick(
     )
 }
 
+/**
+ * Creates a row with a free spell for the user to select for their character
+ *
+ * displayItem: spell associated with this row
+ * radioCheck: player's currently selected free spell
+ * changeRadioCheck: function to run when the user changes their selection
+ * detailContents: composable to send to the DetailAlert when called
+ */
 @Composable
 private fun PickFreeRow(
     displayItem: FreeSpell,
@@ -118,11 +152,14 @@ private fun PickFreeRow(
     detailContents: @Composable (Spell) -> Unit
 ){
     Row{
+        //radio button to denote user's selection
         RadioButton(
             selected = displayItem == radioCheck,
             onClick = {changeRadioCheck(displayItem)}
         )
+        //spell's name
         Text(text = displayItem.name)
+        //button to show the spell's details
         TextButton(onClick = {
             detailItem.value = displayItem.name
             contents.value = @Composable{ detailContents(displayItem) }

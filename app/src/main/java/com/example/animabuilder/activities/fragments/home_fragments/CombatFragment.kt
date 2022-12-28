@@ -39,57 +39,57 @@ fun CombatFragment(
     val weaponButtonList = mutableListOf<WeaponListData>()
     weaponButtonList.add(WeaponListData(
         "Short",
-        charInstance.weaponProficiencies.shortArms,
+        charInstance.weaponProficiencies.shortArms.shortArms,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Axes",
-        charInstance.weaponProficiencies.axes,
+        charInstance.weaponProficiencies.axes.axes,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Maces",
-        charInstance.weaponProficiencies.maces,
+        charInstance.weaponProficiencies.maces.maces,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Swords",
-        charInstance.weaponProficiencies.swords,
+        charInstance.weaponProficiencies.swords.swords,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Two-Handed",
-        charInstance.weaponProficiencies.twoHanded,
+        charInstance.weaponProficiencies.twoHanded.twoHanded,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Pole",
-        charInstance.weaponProficiencies.poles,
+        charInstance.weaponProficiencies.poles.poles,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Cords",
-        charInstance.weaponProficiencies.cords,
+        charInstance.weaponProficiencies.cords.cords,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Mixed",
-        charInstance.weaponProficiencies.mixed,
+        charInstance.weaponProficiencies.mixed.mixed,
         false
     ))
     weaponButtonList.add(WeaponListData(
         "Shields",
-        charInstance.weaponProficiencies.shields,
+        charInstance.weaponProficiencies.shields.shields,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Projectile",
-        charInstance.weaponProficiencies.projectiles,
+        charInstance.weaponProficiencies.projectiles.projectiles,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Thrown",
-        charInstance.weaponProficiencies.thrown,
+        charInstance.weaponProficiencies.thrown.thrown,
         true
     ))
 
@@ -378,7 +378,7 @@ private fun MartialButton(
             //display number of marital arts character can take
             Text(text = "Max Martial Arts: " + charInstance.weaponProficiencies.martialMax)
 
-            charInstance.weaponProficiencies.allMartialArts.forEach{
+            charInstance.weaponProficiencies.martials.allMartialArts.forEach{
                 MartialArtRow(
                     it,
                     allMartials,

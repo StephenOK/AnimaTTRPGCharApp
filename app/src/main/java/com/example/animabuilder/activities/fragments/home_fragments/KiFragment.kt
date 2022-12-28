@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
-import com.example.animabuilder.character_creation.attributes.ki_abilities.KiAbility
-import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
+import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
+import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 
 /**
  * Fragment that displays items related to martial knowledge
@@ -34,7 +34,7 @@ fun KiFragment(
     val context = LocalContext.current
 
     //prepare remaining MK display
-    val remainingMK = remember{mutableStateOf(charInstance.kiList.martialKnowledgeRemaining.toString())}
+    val remainingMK = remember{mutableStateOf(charInstance.ki.martialKnowledgeRemaining.toString())}
 
     //prepare lists of ki abilities and techniques
     val allKiAbilities = mutableListOf<Pair<KiAbility, MutableState<Boolean>>>()
@@ -44,8 +44,8 @@ fun KiFragment(
     val techListOpen = remember{mutableStateOf(false)}
 
     //prepare ki point and accumulation displays
-    val kiPointTotal = remember{mutableStateOf(charInstance.kiList.totalKi.toString())}
-    val kiAccTotal = remember{mutableStateOf(charInstance.kiList.totalAcc.toString())}
+    val kiPointTotal = remember{mutableStateOf(charInstance.ki.totalKi.toString())}
+    val kiAccTotal = remember{mutableStateOf(charInstance.ki.totalAcc.toString())}
 
     //initialize ki ability list's open state
     val kiListOpen = remember{mutableStateOf(false)}
@@ -57,62 +57,62 @@ fun KiFragment(
     kiRowTable.add(KiRowData(
         "STR",
         charInstance.str,
-        charInstance.kiList.boughtStrPoint,
-        charInstance.kiList.setBoughtStr,
-        charInstance.kiList.boughtStrAcc,
-        charInstance.kiList.setStrAcc,
-        charInstance.kiList.kiSTR,
-        charInstance.kiList.accSTR
+        charInstance.ki.boughtStrPoint,
+        charInstance.ki.setBoughtStr,
+        charInstance.ki.boughtStrAcc,
+        charInstance.ki.setStrAcc,
+        charInstance.ki.kiSTR,
+        charInstance.ki.accSTR
     ))
     kiRowTable.add(KiRowData(
         "DEX",
         charInstance.dex,
-        charInstance.kiList.boughtDexPoint,
-        charInstance.kiList.setBoughtDex,
-        charInstance.kiList.boughtDexAcc,
-        charInstance.kiList.setDexAcc,
-        charInstance.kiList.kiDEX,
-        charInstance.kiList.accDEX
+        charInstance.ki.boughtDexPoint,
+        charInstance.ki.setBoughtDex,
+        charInstance.ki.boughtDexAcc,
+        charInstance.ki.setDexAcc,
+        charInstance.ki.kiDEX,
+        charInstance.ki.accDEX
     ))
     kiRowTable.add(KiRowData(
         "AGI",
         charInstance.agi,
-        charInstance.kiList.boughtAgiPoint,
-        charInstance.kiList.setBoughtAgi,
-        charInstance.kiList.boughtAgiAcc,
-        charInstance.kiList.setAgiAcc,
-        charInstance.kiList.kiAGI,
-        charInstance.kiList.accAGI
+        charInstance.ki.boughtAgiPoint,
+        charInstance.ki.setBoughtAgi,
+        charInstance.ki.boughtAgiAcc,
+        charInstance.ki.setAgiAcc,
+        charInstance.ki.kiAGI,
+        charInstance.ki.accAGI
     ))
     kiRowTable.add(KiRowData(
         "CON",
         charInstance.con,
-        charInstance.kiList.boughtConPoint,
-        charInstance.kiList.setBoughtCon,
-        charInstance.kiList.boughtConAcc,
-        charInstance.kiList.setConAcc,
-        charInstance.kiList.kiCON,
-        charInstance.kiList.accCON
+        charInstance.ki.boughtConPoint,
+        charInstance.ki.setBoughtCon,
+        charInstance.ki.boughtConAcc,
+        charInstance.ki.setConAcc,
+        charInstance.ki.kiCON,
+        charInstance.ki.accCON
     ))
     kiRowTable.add(KiRowData(
         "POW",
         charInstance.pow,
-        charInstance.kiList.boughtPowPoint,
-        charInstance.kiList.setBoughtPow,
-        charInstance.kiList.boughtPowAcc,
-        charInstance.kiList.setPowAcc,
-        charInstance.kiList.kiPOW,
-        charInstance.kiList.accPOW
+        charInstance.ki.boughtPowPoint,
+        charInstance.ki.setBoughtPow,
+        charInstance.ki.boughtPowAcc,
+        charInstance.ki.setPowAcc,
+        charInstance.ki.kiPOW,
+        charInstance.ki.accPOW
     ))
     kiRowTable.add(KiRowData(
         "WP",
         charInstance.wp,
-        charInstance.kiList.boughtWpPoint,
-        charInstance.kiList.setBoughtWp,
-        charInstance.kiList.boughtWpAcc,
-        charInstance.kiList.setWpAcc,
-        charInstance.kiList.kiWP,
-        charInstance.kiList.accWP
+        charInstance.ki.boughtWpPoint,
+        charInstance.ki.setBoughtWp,
+        charInstance.ki.boughtWpAcc,
+        charInstance.ki.setWpAcc,
+        charInstance.ki.kiWP,
+        charInstance.ki.accWP
     ))
 
     LazyColumn(
@@ -121,7 +121,7 @@ fun KiFragment(
             .fillMaxWidth()
     ){
         //display martial knowledge values
-        item{InfoRow("Max Martial Knowledge: ", charInstance.kiList.martialKnowledgeMax.toString())}
+        item{InfoRow("Max Martial Knowledge: ", charInstance.ki.martialKnowledgeMax.toString())}
         item{InfoRow("Martial Knowledge Remaining: ", remainingMK.value)}
 
         //header for ki point and accumulation table
@@ -183,10 +183,10 @@ fun KiFragment(
         item {
             AnimatedVisibility(visible = kiListOpen.value) {
                 Column {
-                    charInstance.kiList.allKiAbilities.forEach {
+                    charInstance.ki.kiRecord.allKiAbilities.forEach {
                         KiAbilityRow(it, allKiAbilities, {
                             remainingMK.value =
-                                charInstance.kiList.martialKnowledgeRemaining.toString()
+                                charInstance.ki.martialKnowledgeRemaining.toString()
                         }, techListOpen.value) { techListOpen.value = false }
                     }
                 }
@@ -198,7 +198,7 @@ fun KiFragment(
             Button(
                 onClick = {
                     //check that character can take a dominion technique
-                    if (charInstance.kiList.takenAbilities.contains(charInstance.kiList.kiControl))
+                    if (charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl))
                         techListOpen.value = !techListOpen.value
                     //notify user of invalid action
                     else
@@ -219,10 +219,10 @@ fun KiFragment(
             AnimatedVisibility(visible = techListOpen.value) {
                 Column {
                     //display each prebuilt technique
-                    charInstance.kiList.allTechniques.forEach {
+                    charInstance.ki.allTechniques.forEach {
                         TechniqueRow(it, allTechniques) {
                             remainingMK.value =
-                                charInstance.kiList.martialKnowledgeRemaining.toString()
+                                charInstance.ki.martialKnowledgeRemaining.toString()
                         }
                     }
 
@@ -236,10 +236,10 @@ fun KiFragment(
                     }
 
                     //display custom techniques
-                    charInstance.kiList.customTechniques.forEach {
+                    charInstance.ki.customTechniques.forEach {
                         TechniqueRow(it, allTechniques) {
                             remainingMK.value =
-                                charInstance.kiList.martialKnowledgeRemaining.toString()
+                                charInstance.ki.martialKnowledgeRemaining.toString()
                         }
                     }
                 }
@@ -280,7 +280,7 @@ private fun KiFromStatRow(
         Text(text = kiRowData.title, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //get stat's inherit ki points
-        Text(text = charInstance.kiList.getStatKi(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(text = charInstance.ki.getStatKi(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki points purchased input
         TextField(
@@ -304,7 +304,7 @@ private fun KiFromStatRow(
         Text(text = pointTotalString.value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //get stat's inherit accumulation
-        Text(text = charInstance.kiList.getStatKiAcc(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(text = charInstance.ki.getStatKiAcc(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki accumulation purchased input
         TextField(
@@ -347,7 +347,7 @@ private fun KiAbilityRow(
     closeList: () -> Unit
 ){
     //get taken state of ki ability
-    val abilityTaken = remember{mutableStateOf(charInstance.kiList.takenAbilities.contains(ability))}
+    val abilityTaken = remember{mutableStateOf(charInstance.ki.takenAbilities.contains(ability))}
 
     //add checkbox to master list
     allKiAbilities += Pair(ability, abilityTaken)
@@ -361,14 +361,14 @@ private fun KiAbilityRow(
                 if(it){
                     //accept if all prerequisites are met
                     if(ability.prerequisites == null ||
-                        charInstance.kiList.takenAbilities.contains(ability.prerequisites))
-                        abilityTaken.value = charInstance.kiList.attemptAbilityAdd(ability)
+                        charInstance.ki.takenAbilities.contains(ability.prerequisites))
+                        abilityTaken.value = charInstance.ki.attemptAbilityAdd(ability)
                 }
                 //user attempts to remove
                 else{
                     //remove ability and change checkbox accordingly
                     abilityTaken.value = false
-                    charInstance.kiList.removeAbility(ability)
+                    charInstance.ki.removeAbility(ability)
                     updateKiTaken(allKiAbilities, techListOpen, closeList)
                 }
 
@@ -411,12 +411,12 @@ private fun updateKiTaken(
     //for each ki ability checkbox
     allKiAbilities.forEach{
         //check if the ability is still held by the character
-        if(charInstance.kiList.takenAbilities.contains(it.first) != it.second.value)
+        if(charInstance.ki.takenAbilities.contains(it.first) != it.second.value)
             it.second.value = false
     }
 
     //close technique list if ki control is no longer present
-    if(techListOpen && !charInstance.kiList.takenAbilities.contains(charInstance.kiList.kiControl))
+    if(techListOpen && !charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl))
         closeList()
 }
 
@@ -434,7 +434,7 @@ private fun TechniqueRow(
     updateMKRemaining: () -> Unit
 ) {
     //instantiate checkbox boolean
-    val techCheck = remember{mutableStateOf(charInstance.kiList.takenTechniques.contains(toShow))}
+    val techCheck = remember{mutableStateOf(charInstance.ki.takenTechniques.contains(toShow))}
 
     //add boolean and associated technique to the master list
     allTechniques += Pair(toShow, techCheck)
@@ -447,13 +447,13 @@ private fun TechniqueRow(
                 //if user attempts to take technique
                 if(it) {
                     //give if applicable
-                    if(charInstance.kiList.addTechnique(toShow))
+                    if(charInstance.ki.addTechnique(toShow))
                         techCheck.value = true
                 }
                 //if user attempts to remove technique
                 else{
                     //remove technique from character and change checkbox
-                    charInstance.kiList.removeTechnique(toShow)
+                    charInstance.ki.removeTechnique(toShow)
                     techCheck.value = false
                     updateTechTaken(allTechniques)
                 }
@@ -489,7 +489,7 @@ private fun updateTechTaken(allTechniques: MutableList<Pair<Technique, MutableSt
     //check each technique checkbox
     allTechniques.forEach{
         //make sure character still has the checked technique
-        if(charInstance.kiList.takenTechniques.contains(it.first) != it.second.value)
+        if(charInstance.ki.takenTechniques.contains(it.first) != it.second.value)
             it.second.value = false
     }
 }

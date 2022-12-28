@@ -34,8 +34,8 @@ import com.example.animabuilder.R
 import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.numberCatcher
 import com.example.animabuilder.character_creation.Element
-import com.example.animabuilder.character_creation.attributes.ki_abilities.Technique
-import com.example.animabuilder.character_creation.attributes.ki_abilities.TechniqueEffect
+import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
+import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
 
 /**
  * Dialog that gives the user a sequence of pages to develop their own custom dominion technique
@@ -468,7 +468,7 @@ fun CustomTechnique(
                                         //get if effect is valid and add to return list
                                         val newInput = customTechnique.validEffectAddition(
                                             it,
-                                            charInstance.kiList.martialKnowledgeRemaining - addedCost
+                                            charInstance.ki.martialKnowledgeRemaining - addedCost
                                         )
                                         validAddition.add(newInput)
 
@@ -554,9 +554,9 @@ fun CustomTechnique(
                         when(pageNum.value){
                             1 -> {
                                 //if character can take technique of this level
-                                if((customTechLevelSelection.value == 1 && charInstance.kiList.martialKnowledgeRemaining >= 20) ||
-                                    (customTechLevelSelection.value == 2 && charInstance.kiList.takenFirstTechniques.size >= 2 && charInstance.kiList.martialKnowledgeRemaining >= 40) ||
-                                    (customTechLevelSelection.value == 3 && charInstance.kiList.takenSecondTechniques.size >= 2 && charInstance.kiList.martialKnowledgeRemaining >= 60)) {
+                                if((customTechLevelSelection.value == 1 && charInstance.ki.martialKnowledgeRemaining >= 20) ||
+                                    (customTechLevelSelection.value == 2 && charInstance.ki.takenFirstTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 40) ||
+                                    (customTechLevelSelection.value == 3 && charInstance.ki.takenSecondTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 60)) {
 
                                     //set technique's level
                                     customTechnique.level = customTechLevelSelection.value
@@ -703,7 +703,7 @@ fun CustomTechnique(
 
                             //add technique to character and close dialog
                             8 -> {
-                                charInstance.kiList.addTechnique(customTechnique)
+                                charInstance.ki.addTechnique(customTechnique)
                                 deactivate()
                             }
                             else -> {}
@@ -1610,7 +1610,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.kiList.martialKnowledgeRemaining
+                            charInstance.ki.martialKnowledgeRemaining
                         )
                     }
                 }
@@ -1633,7 +1633,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.kiList.martialKnowledgeRemaining
+                            charInstance.ki.martialKnowledgeRemaining
                         )
                     }
                 }
@@ -1656,7 +1656,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.kiList.martialKnowledgeRemaining
+                            charInstance.ki.martialKnowledgeRemaining
                         )
                     }
                 }

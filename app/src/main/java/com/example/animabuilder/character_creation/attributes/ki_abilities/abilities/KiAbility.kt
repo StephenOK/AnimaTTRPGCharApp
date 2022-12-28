@@ -1,4 +1,4 @@
-package com.example.animabuilder.character_creation.attributes.ki_abilities
+package com.example.animabuilder.character_creation.attributes.ki_abilities.abilities
 
 import java.io.Serializable
 //Data class for a ki ability a character can take

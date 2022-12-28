@@ -1,7 +1,7 @@
 package com.example.animabuilder.character_creation
 
 import androidx.compose.runtime.MutableState
-import com.example.animabuilder.character_creation.attributes.ki_abilities.KiList
+import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
@@ -30,7 +30,7 @@ class BaseCharacter: Serializable {
     //list of secondary abilities
     val secondaryList = SecondaryList()
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
-    val kiList = KiList(this@BaseCharacter)
+    val ki = Ki(this@BaseCharacter)
     val magic = Magic(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
@@ -254,7 +254,7 @@ class BaseCharacter: Serializable {
             pointInDodge * ownClass.dodgeGrowth +
             pointInWear * ownClass.armorGrowth +
             weaponProficiencies.calculateSpent() +
-            kiList.calculateSpent()
+            ki.calculateSpent()
     }
 
     private fun updateMagicSpent(){
@@ -268,7 +268,7 @@ class BaseCharacter: Serializable {
 
         updateWear()
         secondaryList.updateSTR(modSTR)
-        kiList.updateKiStats()
+        ki.updateKiStats()
     }
     var setDEX = { dexVal: Int ->
         dex = dexVal
@@ -277,7 +277,7 @@ class BaseCharacter: Serializable {
         secondaryList.updateDEX(modDEX)
         updateAttack()
         updateBlock()
-        kiList.updateKiStats()
+        ki.updateKiStats()
         magic.calcMagProj()
     }
     var setAGI = { agiVal: Int ->
@@ -286,7 +286,7 @@ class BaseCharacter: Serializable {
 
         secondaryList.updateAGI(modAGI)
         updateDodge()
-        kiList.updateKiStats()
+        ki.updateKiStats()
     }
     var setCON = { conVal: Int ->
         con = conVal
@@ -295,7 +295,7 @@ class BaseCharacter: Serializable {
         updateLifeBase()
         updateLifePoints()
         updateResistances()
-        kiList.updateKiStats()
+        ki.updateKiStats()
     }
     var setINT = { intVal: Int ->
         int = intVal
@@ -308,7 +308,7 @@ class BaseCharacter: Serializable {
         modPOW = getModVal(pow)
         secondaryList.updatePOW(modPOW)
         updateResistances()
-        kiList.updateKiStats()
+        ki.updateKiStats()
         magic.setBaseZeon()
         magic.setBaseZeonAcc()
     }
@@ -317,7 +317,7 @@ class BaseCharacter: Serializable {
         modWP = getModVal(wp)
         secondaryList.updateWP(modWP)
         updateResistances()
-        kiList.updateKiStats()
+        ki.updateKiStats()
     }
     var setPER = { perVal: Int ->
         per = perVal
@@ -327,7 +327,7 @@ class BaseCharacter: Serializable {
 
     //calculate the corresponding mod value for the given characteristic value
     private fun getModVal(statVal: Int): Int {
-        val output: Int = if (statVal <= 5) {
+        val output: Int = if (statVal < 5) {
             when (statVal) {
                 2 -> -20
                 3 -> -10
@@ -381,7 +381,7 @@ class BaseCharacter: Serializable {
     //gets the character's class values for attack
     fun attackClassVal(): Int{
         var total = ownClass.atkPerLevel * lvl
-        if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.capoeira))
+        if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.martials.capoeira))
             total += 10
 
         return if(total > 50)
@@ -471,8 +471,8 @@ class BaseCharacter: Serializable {
 
     //updates the character's martial knowledge
     fun updateMK(){
-        kiList.martialKnowledgeMax = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
-        kiList.updateMkSpent()
+        ki.martialKnowledgeMax = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
+        ki.updateMkSpent()
     }
 
 
@@ -534,7 +534,8 @@ class BaseCharacter: Serializable {
 
         secondaryList.loadList(fileReader)
         weaponProficiencies.loadProficiencies(fileReader)
-        kiList.loadKiAttributes(fileReader)
+        ki.loadKiAttributes(fileReader)
+        magic.loadMagic(fileReader)
 
         restoreChar.close()
 
@@ -572,7 +573,8 @@ class BaseCharacter: Serializable {
 
             secondaryList.writeList(this@BaseCharacter)
             weaponProficiencies.writeProficiencies(this@BaseCharacter)
-            kiList.writeKiAttributes()
+            ki.writeKiAttributes()
+            magic.writeMagic()
 
             byteArray.close()
 

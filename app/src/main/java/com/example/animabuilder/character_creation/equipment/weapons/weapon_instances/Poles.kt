@@ -1,9 +1,10 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
 class Poles: Serializable {
@@ -12,56 +13,51 @@ class Poles: Serializable {
         80,
         -30,
         8, null,
-        AttackType.Thrust, null,
-        WeaponType.Pole, null,
+        AttackType.Thrust, null, WeaponType.Pole,
         12, 7, 25,
-        null, null, null,
         listOf(WeaponAbility.Special), null,
-        "A longer and heavier version of the traditional lance, it measures from nine " +
-                "to twelve feet long and can only be wielded from horseback. If it is used to " +
+        "A longer and heavier version of the traditional lance, it measures from three " +
+                "to four meters long and can only be wielded from horseback. If it is used to " +
                 "block an attack, the defender applies a -30 penalty to his ability."
     )
 
-    val harpoon = Weapon(
+    val harpoon = ProjectileWeapon(
         "Harpoon",
         35,
         -5,
         5, null,
-        AttackType.Thrust, null,
-        WeaponType.Pole, null,
+        AttackType.Thrust, null, WeaponType.Pole,
         11, 0, 15,
-        100, null, 20,
+        100, 20,
         listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
-        "This is a short-hafted weapon similar to a javelin, but with a barbed tip."
+        "This is a short-hafted weapon similar to a Javelin, but with a barbed tip."
     )
 
-    val javelin = Weapon(
+    val javelin = ProjectileWeapon(
         "Javelin",
         35,
         5,
         4, null,
-        AttackType.Thrust, null,
-        WeaponType.Pole, null,
+        AttackType.Thrust, null, WeaponType.Pole,
         10, -2, 20,
-        80, null, 30,
+        80,  30,
         listOf(WeaponAbility.Throwable), null,
         "A short spear used almost exclusively for throwing."
     )
 
-    val lance = Weapon(
+    val lance = ProjectileWeapon(
         "Lance",
         40,
         5,
         6, 4,
-        AttackType.Thrust, null,
-        WeaponType.Pole, null,
+        AttackType.Thrust, null, WeaponType.Pole,
         13, 2, 25,
-        80, null, 30,
+        80, 30,
         listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
         "The lance is the quintessential pole weapon. It consists of a long shaft of " +
                 "wood or metal ending in a fine two-edged point. It is very suitable for use " +
-                "from horseback, or for keeping enemies at a distance. It can measure from five " +
-                "to over seven feet long. Although it can be used with just one hand, fighting " +
+                "from horseback, or for keeping enemies at a distance. It can measure from 150 " +
+                "to 220 centimeters long. Although it can be used with just one hand, fighting " +
                 "in that fashion brings on a -10 penalty to the attack, unless being used to " +
                 "resist a charge."
     )
@@ -71,25 +67,22 @@ class Poles: Serializable {
         30,
         10,
         4, null,
-        AttackType.Impact, null,
-        WeaponType.Pole, null,
+        AttackType.Impact, null, WeaponType.Pole,
         11, 0, 30,
-        null, null, null,
         listOf(WeaponAbility.TwoHanded), null,
-        "This weapon is a pole of wood or metal that may be as long as three feet. " +
+        "This weapon is a pole of wood or metal that may be as long as two meters. " +
                 "Although it can be used with just one hand, fighting that way causes a -10 " +
                 "penalty to a character's Attack ability."
     )
 
-    val trident = Weapon(
+    val trident = ProjectileWeapon(
         "Trident",
         40,
         -10,
         7, 6,
-        AttackType.Thrust, null,
-        WeaponType.Pole, null,
+        AttackType.Thrust, null, WeaponType.Pole,
         12, 3, 15,
-        100, null, 15,
+        100,  15,
         listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
         "A spear or lance with a three part tip resembling a fork. Its design does " +
                 "allow it to be thrown. It is slightly larger than the trident used for fishing."
@@ -100,10 +93,8 @@ class Poles: Serializable {
         35,
         15,
         4, null,
-        AttackType.Cut, AttackType.Thrust,
-        WeaponType.Pole, null,
+        AttackType.Cut, AttackType.Thrust, WeaponType.Pole,
         12, 2, 25,
-        null, null, null,
         listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special), null,
         "A weapon of oriental origin, it consists of two long poles connected by chains " +
                 "to a third, shorter section. Each of the longer poles ends in a blade like that " +

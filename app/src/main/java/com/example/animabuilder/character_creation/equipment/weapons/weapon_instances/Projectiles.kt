@@ -1,20 +1,19 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
 class Projectiles: Serializable {
-    val arquebus = Weapon(
+    val arquebus = ProjectileWeapon(
         "Arquebus",
         null,
         -20,
         6, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         9, -3, 20,
-        null, 4, 80,
+        4, 80,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 11,
         "The arquebus is a firearm made from a long metal tube through which a ball of " +
                 "lead shot is propelled by an explosion of gunpowder. The arquebus is basically a " +
@@ -28,46 +27,43 @@ class Projectiles: Serializable {
                 "fires, and also adds 15 to the level of Fumble required to make it burst."
     )
 
-    val blowgun = Weapon(
+    val blowgun = ProjectileWeapon(
         "Blowgun",
         null,
         -10,
         4, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         3, -3, 15,
-        null, 1, 50,
+        1, 50,
         null, null,
-        "This is a hollow tube of wood or metal from one to three feet long. It is " +
+        "This is a hollow tube of wood or metal from 30 to 90 centimeters long. It is " +
                 "used to shoot small darts, which are usually poisoned. As a special rule, the " +
                 "blowgun does not apply the Strength of the person to calculate the damage " +
                 "caused. It requires both hands for use."
     )
 
-    val compositeBow = Weapon(
+    val compositeBow = ProjectileWeapon(
         "Composite Bow",
         null,
         -30,
         7, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         8, -2, 25,
-        null, 1, 90,
+        1, 90,
         listOf(WeaponAbility.TwoHanded), null,
         "This is the largest and most powerful type of bow. It is made of three pieces " +
-                "and measures more than 8 feet. It requires two hands to use, but its Strength " +
-                "bonus is not doubled."
+                "and measures about two and a half meters long. It requires two hands to use, but " +
+                "its Strength bonus is not doubled."
     )
 
-    val crossbow = Weapon(
+    val crossbow = ProjectileWeapon(
         "Crossbow",
         null,
         0,
         8, 4,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         8, -2, 20,
-        null, 2, 60,
+        2, 60,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
         "A bow mounted on a stock with a groove from which crossbow bolts are fired. It " +
                 "is cocked using a small winch. Crossbows do not depend on the Strength of the " +
@@ -78,15 +74,14 @@ class Projectiles: Serializable {
                 "It requires both hands for use."
     )
 
-    val repeatingCrossbow = Weapon(
+    val repeatingCrossbow = ProjectileWeapon(
         "Repeating Crossbow",
         null,
         0,
         8, 5,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         6, -2, 20,
-        null, 3, 60,
+        3, 60,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
         "In reality, this is not a different class of weapon from the normal crossbow, " +
                 "so it can be used without any need to develop a separate expertise. It is simply " +
@@ -95,29 +90,27 @@ class Projectiles: Serializable {
                 "between 4 to 8 quarrels. It requires both hands to use."
     )
 
-    val heavyCrossbow = Weapon(
+    val heavyCrossbow = ProjectileWeapon(
         "Heavy Crossbow",
         null,
         -20,
         10, 7,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         8, -1, 20,
-        null, 2, 80,
+        2, 80,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 10,
         "A large and heavy crossbow. It has a Strength of 10 and so it possesses a " +
                 "bonus of +15 to the Base Damage of its quarrels. It requires both hands for use."
     )
 
-    val miniCrossbow = Weapon(
+    val miniCrossbow = ProjectileWeapon(
         "Miniature Crossbow",
         null,
         10,
         3, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         5, -4, 15,
-        null, 2, 30,
+        2, 30,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 5,
         "A crossbow of very small size which may be fired with just one hand. It has " +
                 "a Strength of 5, and so no bonus is added to the Base Damage. In game terms, " +
@@ -125,77 +118,72 @@ class Projectiles: Serializable {
                 "its use separately."
     )
 
-    val shortBow = Weapon(
+    val shortBow = ProjectileWeapon(
         "Short Bow",
         null,
         -10,
         4, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         7, -3, 15,
-        null, 1, 40,
+        1, 40,
         listOf(WeaponAbility.TwoHanded), null,
         "This weapon consists of a taut cord attached to either end of a singular " +
-                "curved piece of flexible wood and is less than about four feet tall. It " +
+                "curved piece of flexible wood and is less than 120 centimeters tall. It " +
                 "requires two hands to use, but its Strength bonus is not doubled."
     )
 
-    val longBow = Weapon(
+    val longBow = ProjectileWeapon(
         "Longbow",
         null,
         -30,
         7, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         8, -2, 20,
-        null, 1, 60,
+        1, 60,
         listOf(WeaponAbility.TwoHanded), null,
-        "Like the Short Bow, but with a size of between four-and-a-half and six feet " +
+        "Like the Short Bow, but with a size of between one-and-a-half and two meters " +
                 "tall. It requires two hands to use, but its Strength Bonus is not doubled."
     )
 
-    val matchlock = Weapon(
+    val matchlock = ProjectileWeapon(
         "Matchlock Pistol",
         null,
         0,
         4, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         8, -3, 20,
-        null, 4, 50,
+        4, 50,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 9,
-        "A smaller and more complex version of the arquebus that can be fired with one" +
-                " hand. Like its larger counterpart, it has its own Strength score (9), for which" +
-                " a bonus of +10 is added to the Base Damage of the shot it fires. If a Fumble" +
-                " is rolled with a level of less than 80, the weapon misfires. If the Fumble is" +
-                " 80 or higher, it bursts, which ruins the weapon. For each +5 to the weapon's" +
-                " quality, a point is added to the Strength with which it fires, and also adds" +
-                " 15 to the level of Fumble required to make it burst."
+        "A smaller and more complex version of the arquebus that can be fired with one " +
+                "hand. Like its larger counterpart, it has its own Strength score (9), for which " +
+                "a bonus of +10 is added to the Base Damage of the shot it fires. If a Fumble " +
+                "is rolled with a level of less than 80, the weapon misfires. If the Fumble is " +
+                "80 or higher, it bursts, which ruins the weapon. For each +5 to the weapon's " +
+                "quality, a point is added to the Strength with which it fires, and also adds " +
+                "15 to the level of Fumble required to make it burst."
     )
 
-    val sling = Weapon(
+    val sling = ProjectileWeapon(
         "Sling",
         null,
         -40,
         4, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         3, -6, 10,
-        null, 1, 50,
+        1, 50,
         null, null,
         "This is a small leather pouch tied to a cord. It is used with a spinning motion " +
                 "to throw stones."
     )
 
-    val lightBallista = Weapon(
+    val lightBallista = ProjectileWeapon(
         "Light Ballista",
         null,
         -80,
         null, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         18, null, 25,
-        null, 10, 150,
+        10, 150,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 12,
         "The ballista is a crossbow of enormous proportions that is used as a siege " +
                 "weapon. It is moved on wheels because its large size makes it impossible to " +
@@ -206,40 +194,38 @@ class Projectiles: Serializable {
                 "Damage of the quarrels fired. Each +5 to the weapon's quality, aside from " +
                 "improving its accuracy, adds a point to the Strength with which it fires. As a " +
                 "special rule, the tremendous penetrating power of the quarrel fired by the " +
-                "ballista allows it to make a type of area attack in a straight line 10 feet " +
+                "ballista allows it to make a type of area attack in a straight line 3 meters " +
                 "long from its initial point of impact."
     )
 
-    val heavyBallista = Weapon(
+    val heavyBallista = ProjectileWeapon(
         "Heavy Ballista",
         null,
         -100,
         null, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         20, null, 30,
-        null, 12, 200,
+        12, 200,
         listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 13,
         "A larger version of the Light Ballista that requires five persons to manage. " +
                 "It has a Strength of 13, and so adds a +25 to the Base Damage from its quarrels. " +
                 "Each +5 to the weapon's quality, aside from improving its accuracy, adds a point " +
-                "to the Strength with which it fires. Its area attack extends for 15 feet in a " +
+                "to the Strength with which it fires. Its area attack extends for 5 meters in a " +
                 "straight line from its initial point of impact."
     )
 
-    val cannon = Weapon(
+    val cannon = ProjectileWeapon(
         "Cannon",
         null,
         -100,
         null, null,
-        null, null,
-        WeaponType.Projectile, null,
+        null, null, WeaponType.Projectile,
         24, null, 30,
-        null, 12, 250,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 13,
+        12, 250,
+        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 14,
         "A firearm made of a large metal tube from which a large metal shell is " +
                 "propelled by gunpowder. The shell is made to explode, creating a cloud of " +
-                "shrapnel with a radius of 15-30 feet. Although the shell itself attacks in " +
+                "shrapnel with a radius of 5 to 10 meters. Although the shell itself attacks in " +
                 "a conventional way, the explosion does not. The accuracy is checked to see " +
                 "if the shell hits where intended (using Table 45). After that, if a victim " +
                 "attempts to Dodge or Block, he must pass a Dodge or Athleticism check of " +

@@ -2,6 +2,7 @@ package com.example.animabuilder.character_creation.equipment.weapons
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_instances.*
 import java.io.BufferedReader
 import java.io.Serializable
@@ -60,7 +61,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
      *
      * weaponName: Name of the weapon the caller is looking for
      */
-    fun findWeapon(weaponName: String): Weapon{
+    fun findWeapon(weaponName: String): Weapon {
         //search through all weapons until match is found
         allWeapons.forEach{
             if(it.name == weaponName)

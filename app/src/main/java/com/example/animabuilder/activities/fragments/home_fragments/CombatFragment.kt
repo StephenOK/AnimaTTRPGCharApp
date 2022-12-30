@@ -14,9 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 
 
 /**
@@ -695,33 +697,33 @@ val WeaponContents = @Composable
 
         //display primary attack type
         if(input.primaryType != null)
-            InfoRow("Weapon Type:", input.primaryType!!.name)
+            InfoRow("Weapon Type:", input.primaryType.name)
 
         //display secondary attack type
         if(input.secondaryType != null)
-            InfoRow("Secondary Type:", input.secondaryType!!.name)
+            InfoRow("Secondary Type:", input.secondaryType.name)
 
         //display weapon category
-        if(input.type == WeaponType.Mixed)
-            InfoRow("Weapon Type:", input.mixedType!![0].name + "/" + input.mixedType!![1].name)
+        if(input is MixedWeapon)
+            InfoRow("Weapon Type:", input.mixedType[0].name + "/" + input.mixedType[1].name)
         else
             InfoRow("WeaponType:", input.type.name)
 
         //display weapon's fortitude, breakage, and presence
-        if(input.fortitude != null)
-            InfoRow("Fortitude:", input.fortitude.toString())
+        InfoRow("Fortitude:", input.fortitude.toString())
         if(input.breakage != null)
             InfoRow("Breakage:", input.breakage.toString())
-        if(input.presence != null)
-            InfoRow("Presence:", input.presence.toString())
+        InfoRow("Presence:", input.presence.toString())
 
         //display weapon's rate of fire, reload rate, and range
-        if(input.rateOfFire != null)
-            InfoRow("Fire Rate:", input.rateOfFire.toString())
-        if(input.reload != null)
-            InfoRow("Reload:", input.reload.toString())
-        if(input.range != null)
-            InfoRow("Range", input.range.toString() + "m")
+        if(input is ProjectileWeapon) {
+            if (input.type == WeaponType.Throwing)
+                InfoRow("Fire Rate:", input.reloadOrRate.toString())
+            else
+                InfoRow("Reload:", input.reloadOrRate.toString())
+            if (input.range != null)
+                InfoRow("Range", input.range.toString() + "m")
+        }
 
         //initialize ability output and loop counter
         var abilityString = ""
@@ -729,7 +731,7 @@ val WeaponContents = @Composable
 
         //if there are abilities given
         if(input.ability != null){
-            input.ability!!.forEach{
+            input.ability.forEach{
                 //add ability to the output string
                 abilityString += it.name
 
@@ -738,7 +740,7 @@ val WeaponContents = @Composable
                     abilityString += "(" + input.ownStrength + ")"
 
                 //delimit the separation between abilities
-                if(counter < input.ability!!.count() - 1){
+                if(counter < input.ability.count() - 1){
                     abilityString += "/"
                     counter++
                 }

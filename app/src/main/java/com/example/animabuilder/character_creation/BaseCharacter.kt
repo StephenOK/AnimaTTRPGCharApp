@@ -11,7 +11,7 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Clas
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.equipment.Armor
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponProficiencies
 import java.io.*
 import java.nio.charset.StandardCharsets

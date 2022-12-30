@@ -1,9 +1,10 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
 class ShortArms: Serializable {
@@ -12,26 +13,23 @@ class ShortArms: Serializable {
         25,
         10,
         3, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         11, -2, 15,
-        null, null, null,
         null, null,
         "Metal covering for the hands, kneecaps, elbows, or forearms that includes " +
                 "knives or spikes used for striking an enemy."
     )
 
-    val dagger = Weapon(
+    val dagger = ProjectileWeapon(
         "Dagger",
         30,
         20,
         3, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         10, -2, 15,
-        50, null, 20,
+        50,  20,
         listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        "A combat knife roughly eight to twelve inches long. It is usually sharpened " +
+        "A combat knife roughly 20 to 30 centimeters long. It is usually sharpened " +
                 "on both edges and balanced for throwing."
     )
 
@@ -40,23 +38,20 @@ class ShortArms: Serializable {
         30,
         10,
         3, null,
-        AttackType.Thrust, null,
-        WeaponType.Short, null,
+        AttackType.Thrust, null, WeaponType.Short,
         11, -2, 15,
-        null, null, null,
         null, null,
         "A weapon that is small and curved with a sharp point."
     )
 
-    val parryDagger = Weapon(
+    val parryDagger = ProjectileWeapon(
         "Parrying Dagger",
         30,
         15,
         3, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         12, 0, 20,
-        50, null, 15,
+        50, 15,
         listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision), null,
         "A variation on the traditional dagger designed to block the attacks of enemy " +
                 "weapons and trap them with the hilt. At its base are two sharp edges."
@@ -67,42 +62,38 @@ class ShortArms: Serializable {
         40,
         15,
         4, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         12, 1, 20,
-        null, null, null,
         listOf(WeaponAbility.Precision), null,
-        "A straight sharp blade about a foot and a half long. Although it can cut, it " +
+        "A straight sharp blade about 50 centimeters long. Although it can cut, it " +
                 "is used principally as a Thrust weapon. Its reduced size makes it a very " +
                 "discrete weapon."
     )
 
-    val stiletto = Weapon(
+    val stiletto = ProjectileWeapon(
         "Stiletto",
         25,
         20,
         3, null,
-        AttackType.Thrust, null,
-        WeaponType.Short, null,
+        AttackType.Thrust, null, WeaponType.Short,
         8, -3, 15,
-        30, null, 30,
+        30, 30,
         listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
         "A sharp needle-like knife whose main purpose is for throwing, although it can " +
                 "be used in hand-to-hand combat."
     )
 
-    val boomerang = Weapon(
+    val boomerang = ProjectileWeapon(
         "Boomerang",
         30,
         10,
         4, null,
-        AttackType.Impact, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Impact, AttackType.Cut, WeaponType.Short,
         10, 0, 15,
-        60, null, 20,
+        60, 20,
         listOf(WeaponAbility.Throwable, WeaponAbility.Special), null,
         "A curved stick of wood or metal designed to be thrown and to return if it " +
-                "doesn't hit anything. To catch it requires a Difficult Sleight of Hand check."
+                "doesn't hit anything. To catch it requires a Difficult Sleight of Hand Check."
     )
 
     val claws = Weapon(
@@ -110,10 +101,8 @@ class ShortArms: Serializable {
         30,
         15,
         4, null,
-        AttackType.Cut, AttackType.Thrust,
-        WeaponType.Short, null,
+        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
         12, 2, 15,
-        null, null, null,
         null, null,
         "Knives on a glove made to resemble animal claws."
     )
@@ -123,12 +112,10 @@ class ShortArms: Serializable {
         40,
         10,
         8, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         13, 3, 25,
-        null, null, null,
         listOf(WeaponAbility.Complex, WeaponAbility.Special), null,
-        "A gauntlet equipped with knife blades 10 to 12 inches long. It possesses a " +
+        "A gauntlet equipped with knife blades 25 to 30 centimeters long. It possesses a " +
                 "complex mechanism that allows the blades to be extended and spun. In those " +
                 "cases, they can block projectiles like a buckler."
     )
@@ -138,10 +125,8 @@ class ShortArms: Serializable {
         35,
         10,
         4, null,
-        AttackType.Impact, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Impact, AttackType.Cut, WeaponType.Short,
         11, 2, 25,
-        null, null, null,
         listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special), null,
         "A multi-bladed knife in the shape of a star with a hole in the center. The " +
                 "thumb is placed in the hole and the knife is spun hard. As it spins, it can " +
@@ -153,10 +138,8 @@ class ShortArms: Serializable {
         35,
         15,
         4, null,
-        AttackType.Thrust, AttackType.Cut,
-        WeaponType.Short, null,
+        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         12, 0, 25,
-        null, null, null,
         listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), null,
         "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to " +
                 "resemble a trident. It is used primarily to block an opponent's weapon."
@@ -167,25 +150,22 @@ class ShortArms: Serializable {
         20,
         10,
         4, null,
-        AttackType.Thrust, null,
-        WeaponType.Short, null,
+        AttackType.Thrust, null, WeaponType.Short,
         9, -2, 25,
-        null, null, null,
         listOf(WeaponAbility.Special), null,
         "This is a claw-like device held in the palms of the hands. It is used both as " +
-                "a weapon and as a tool for climbing. Shuko adds a +10 to a character's climbing " +
+                "a weapon and as a tool for climbing. Shuko adds a +10 to a character's Climb " +
                 "ability."
     )
 
-    val shuriken = Weapon(
+    val shuriken = ProjectileWeapon(
         "Shuriken",
         25,
         20,
         4, null,
-        AttackType.Cut, AttackType.Thrust,
-        WeaponType.Short, null,
+        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
         10, 1, 20,
-        30, null, 20,
+        30, 20,
         listOf(WeaponAbility.Throwable), null,
         "Small Asian metal weapons used exclusively for throwing. They can be " +
                 "various shapes, from simple sharp-edged disks to star-shaped knives."
@@ -196,23 +176,20 @@ class ShortArms: Serializable {
         40,
         20,
         3, null,
-        AttackType.Cut, null,
-        WeaponType.Short, null,
+        AttackType.Cut, null, WeaponType.Short,
         9, 1, 40,
-        null, null, null,
         listOf(WeaponAbility.Precision), null,
         "Another oriental weapon, it resembles the Katana but is much smaller."
     )
 
-    val tessen = Weapon(
+    val tessen = ProjectileWeapon(
         "Tessen (War Fan)",
         30,
         20,
         4, null,
-        AttackType.Cut, AttackType.Impact,
-        WeaponType.Short, null,
+        AttackType.Cut, AttackType.Impact, WeaponType.Short,
         8, 0, 25,
-        40, null, 20,
+        40, 20,
         listOf(WeaponAbility.Precision, WeaponAbility.Throwable), null,
         "An especially exotic oriental weapon, its appearance is that of a fan, but " +
                 "sharp knives have replaced the wooden slates of the fan. The base of the fan is " +
@@ -224,10 +201,8 @@ class ShortArms: Serializable {
         30,
         20,
         4, null,
-        AttackType.Impact, null,
-        WeaponType.Short, null,
+        AttackType.Impact, null, WeaponType.Short,
         13, 0, 25,
-        null, null, null,
         listOf(WeaponAbility.Precision), null,
         "This is a club with a short handle sticking out in the middle used while " +
                 "being held along the line of the forearm."
@@ -238,10 +213,8 @@ class ShortArms: Serializable {
         15,
         10,
         3, null,
-        AttackType.Cut, AttackType.Impact,
-        WeaponType.Short, null,
+        AttackType.Cut, AttackType.Impact, WeaponType.Short,
         5, -3, 15,
-        null, null, null,
         null, null,
         ""
     )
@@ -251,10 +224,8 @@ class ShortArms: Serializable {
         25,
         10,
         4, null,
-        AttackType.Cut, null,
-        WeaponType.Short, null,
+        AttackType.Cut, null, WeaponType.Short,
         9, -1, 10,
-        null, null, null,
         null, null,
         ""
     )
@@ -264,10 +235,8 @@ class ShortArms: Serializable {
         40,
         -20,
         5, null,
-        AttackType.Thrust, null,
-        WeaponType.Short, null,
+        AttackType.Thrust, null, WeaponType.Short,
         10, 3, 15,
-        null, null, null,
         null, null,
         ""
     )
@@ -277,10 +246,8 @@ class ShortArms: Serializable {
         35,
         -10,
         4, null,
-        AttackType.Cut, AttackType.Thrust,
-        WeaponType.Short, null,
+        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
         8, 0, 15,
-        null, null, null,
         null, null,
         ""
     )

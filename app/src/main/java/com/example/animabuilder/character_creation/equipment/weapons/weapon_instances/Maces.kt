@@ -1,9 +1,10 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
 class Maces: Serializable {
@@ -12,10 +13,8 @@ class Maces: Serializable {
         30,
         0,
         5, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         11, -2, 15,
-        null, null, null,
         null, null,
         "Made of wood or just stone, the Club is the quintessential Impact weapon."
     )
@@ -25,10 +24,8 @@ class Maces: Serializable {
         70,
         -35,
         10, 7,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         16, 6, 20,
-        null, null, null,
         listOf(WeaponAbility.OneOrTwoHanded), null,
         "A very large two-handed Impact weapon. It consists of a straight shaft " +
                 "crowned with an enormous metal hammer. Some have sharp pointed tips on the " +
@@ -41,12 +38,10 @@ class Maces: Serializable {
         40,
         0,
         6, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         14, 4, 15,
-        null, null, null,
         null, null,
-        "This weapon consists of a wood or metal shaft about 18 inches long topped " +
+        "This weapon consists of a wood or metal shaft about half a meter long topped " +
                 "with a heavy round or spherical head."
     )
 
@@ -55,10 +50,8 @@ class Maces: Serializable {
         50,
         -5,
         6, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         15, 4, 15,
-        null, null, null,
         null, null,
         "A crushing weapon consisting of a shaft topped by a great steel hammerhead."
     )
@@ -68,10 +61,8 @@ class Maces: Serializable {
         30,
         -20,
         4, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         12, 2, 10,
-        null, null, null,
         null, null,
         ""
     )
@@ -81,10 +72,8 @@ class Maces: Serializable {
         25,
         -5,
         5, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         12, 2, 15,
-        null, null, null,
         null, null,
         ""
     )
@@ -94,23 +83,20 @@ class Maces: Serializable {
         20,
         -10,
         4, null,
-        AttackType.Impact, AttackType.Heat,
-        WeaponType.Mace, null,
+        AttackType.Impact, AttackType.Heat, WeaponType.Mace,
         10, -2, 20,
-        null, null, null,
         null, null,
         ""
     )
 
-    val vase = Weapon(
+    val vase = ProjectileWeapon(
         "Vase",
         15,
         -10,
         4, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         6, -2, 20,
-        null, null, null,
+        null, null,
         listOf(WeaponAbility.Throwable), null,
         ""
     )
@@ -120,10 +106,8 @@ class Maces: Serializable {
         20,
         0,
         4, null,
-        AttackType.Impact, null,
-        WeaponType.Mace, null,
+        AttackType.Impact, null, WeaponType.Mace,
         8, -1, 10,
-        null, null, null,
         null, null,
         ""
     )

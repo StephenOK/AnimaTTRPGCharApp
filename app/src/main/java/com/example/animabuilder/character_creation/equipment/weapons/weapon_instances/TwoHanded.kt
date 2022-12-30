@@ -1,7 +1,7 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.Serializable
@@ -12,14 +12,12 @@ class TwoHanded: Serializable {
         90,
         -60,
         10, 8,
-        AttackType.Cut, AttackType.Impact,
-        WeaponType.TwoHanded, null,
+        AttackType.Cut, AttackType.Impact, WeaponType.TwoHanded,
         18, 6, 30,
-        null, null, null,
         listOf(WeaponAbility.OneOrTwoHanded), null,
         "The Two-handed Sword is the greatest of swords and can be measured more than " +
-                "5 feet long. Used almost exclusively with two hands, it is an awkward, but very " +
-                "deadly weapon."
+                "160 centimeters long. Used almost exclusively with two hands, it is an awkward, " +
+                "but very deadly weapon."
     )
 
     val nodachi = Weapon(
@@ -27,10 +25,8 @@ class TwoHanded: Serializable {
         80,
         -35,
         10, 8,
-        AttackType.Cut, null,
-        WeaponType.TwoHanded, null,
+        AttackType.Cut, null, WeaponType.TwoHanded,
         14, 4, 40,
-        null, null, null,
         listOf(WeaponAbility.OneOrTwoHanded), null,
         "A larger version of the Katana. It is used in a similar way, but it is much " +
                 "longer and thicker."
@@ -41,13 +37,11 @@ class TwoHanded: Serializable {
         50,
         -20,
         10, 8,
-        AttackType.Impact, AttackType.Cut,
-        WeaponType.TwoHanded, null,
+        AttackType.Impact, AttackType.Cut, WeaponType.TwoHanded,
         16, 8, 25,
-        null, null, null,
         listOf(WeaponAbility.OneOrTwoHanded), null,
-        "This is a short sword of great weight, containing a blade of almost 10 " +
-                "inches wide. Due to its enormous Impact potential, it is often used to break " +
+        "This is a short sword of great weight, containing a blade of almost 25 " +
+                "centimeters wide. Due to its enormous Impact potential, it is often used to break " +
                 "weapons or break through an enemy's armor."
     )
 
@@ -56,10 +50,8 @@ class TwoHanded: Serializable {
         25,
         -20,
         5, null,
-        AttackType.Impact, null,
-        WeaponType.TwoHanded, null,
+        AttackType.Impact, null, WeaponType.TwoHanded,
         9, 0, 20,
-        null, null, null,
         listOf(WeaponAbility.TwoHanded), null,
         ""
     )

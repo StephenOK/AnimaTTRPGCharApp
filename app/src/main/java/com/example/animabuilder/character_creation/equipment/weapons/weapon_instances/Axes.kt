@@ -1,39 +1,38 @@
 package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
 
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
-import com.example.animabuilder.character_creation.equipment.weapons.Weapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
 class Axes: Serializable {
-    val battleAxe = Weapon(
+    val battleAxe = ProjectileWeapon(
         "Battle Axe",
         70,
         -30,
         7, null,
-        AttackType.Cut, AttackType.Impact,
-        WeaponType.Axe, null,
+        AttackType.Cut, AttackType.Impact, WeaponType.Axe,
         15, 5, 25,
-        100, null, 5,
+        100, 5,
         listOf(WeaponAbility.Throwable), null,
-        "A more manageable version of the Two-handed Axe, a battle axe can be wielded " +
+        "A more manageable version of the Two-handed Axe, a Battle Axe can be wielded " +
                 "with just one hand."
     )
 
-    val handAxe = Weapon(
+    val handAxe = ProjectileWeapon(
         "Hand Axe",
         45,
         0,
         5, null,
-        AttackType.Cut, null,
-        WeaponType.Axe, null,
+        AttackType.Cut, null, WeaponType.Axe,
         13, 4, 15,
-        80, null, 10,
+        80, 10,
         listOf(WeaponAbility.Throwable), null,
         "These are light axes used with a single hand. They usually have a " +
                 "counterweight that facilitates their use as thrown weapons. They measure from " +
-                "one to two feet in length."
+                "30 to 60 centimeters in length."
     )
 
     val hoe = Weapon(
@@ -41,10 +40,8 @@ class Axes: Serializable {
         30,
         -20,
         4, null,
-        AttackType.Cut, AttackType.Impact,
-        WeaponType.Axe, null,
+        AttackType.Cut, AttackType.Impact, WeaponType.Axe,
         10, 1, 15,
-        null, null, null,
         null, null,
         ""
     )
@@ -54,10 +51,8 @@ class Axes: Serializable {
         40,
         -10,
         7, 5,
-        AttackType.Cut, null,
-        WeaponType.Axe, null,
+        AttackType.Cut, null, WeaponType.Axe,
         12, 3, 15,
-        null, null, null,
         listOf(WeaponAbility.OneOrTwoHanded), null,
         ""
     )

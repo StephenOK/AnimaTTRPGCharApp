@@ -19,9 +19,9 @@ open class Weapon(
 
     val type: WeaponType,
 
-    val fortitude: Int,
+    val fortitude: Int?,
     val breakage: Int?,
-    val presence: Int,
+    val presence: Int?,
 
     val ability: List<WeaponAbility>?,
     val ownStrength: Int?,

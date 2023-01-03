@@ -54,6 +54,7 @@ class HomeActivity : AppCompatActivity() {
         Weapon_Modules,
         Ki,
         Magic,
+        Summoning,
         Psychic,
         Equipment
     }
@@ -231,6 +232,12 @@ class HomeActivity : AppCompatActivity() {
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
                         MagicFragment()
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                    }
+
+                    //route to summoning page
+                    composable(route = ScreenPage.Summoning.name){
+                        SummoningFragment()
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 

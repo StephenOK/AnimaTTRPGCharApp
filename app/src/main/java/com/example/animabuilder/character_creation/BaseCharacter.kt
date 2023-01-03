@@ -10,6 +10,7 @@ import com.example.animabuilder.character_creation.attributes.race_objects.CharR
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.attributes.magic.Magic
+import com.example.animabuilder.character_creation.attributes.summoning.Summoning
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponProficiencies
@@ -32,6 +33,7 @@ class BaseCharacter: Serializable {
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
     val ki = Ki(this@BaseCharacter)
     val magic = Magic(this@BaseCharacter)
+    val summoning = Summoning(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
 
@@ -174,6 +176,11 @@ class BaseCharacter: Serializable {
 
         magic.calcMaxZeon()
 
+        summoning.updateSummon()
+        summoning.updateControl()
+        summoning.updateBind()
+        summoning.updateBanish()
+
         updateTotalSpent()
     }
 
@@ -258,7 +265,7 @@ class BaseCharacter: Serializable {
     }
 
     private fun updateMagicSpent(){
-        ptInMag = magic.calculateSpent()
+        ptInMag = magic.calculateSpent() + summoning.calculateSpent()
     }
 
     //setters for each primary characteristic
@@ -311,6 +318,9 @@ class BaseCharacter: Serializable {
         ki.updateKiStats()
         magic.setBaseZeon()
         magic.setBaseZeonAcc()
+        summoning.updateSummon()
+        summoning.updateBind()
+        summoning.updateBanish()
     }
     var setWP = { wpVal: Int ->
         wp = wpVal
@@ -318,6 +328,7 @@ class BaseCharacter: Serializable {
         secondaryList.updateWP(modWP)
         updateResistances()
         ki.updateKiStats()
+        summoning.updateControl()
     }
     var setPER = { perVal: Int ->
         per = perVal
@@ -536,6 +547,7 @@ class BaseCharacter: Serializable {
         weaponProficiencies.loadProficiencies(fileReader)
         ki.loadKiAttributes(fileReader)
         magic.loadMagic(fileReader)
+        summoning.loadSummoning(fileReader)
 
         restoreChar.close()
 
@@ -575,6 +587,7 @@ class BaseCharacter: Serializable {
             weaponProficiencies.writeProficiencies(this@BaseCharacter)
             ki.writeKiAttributes()
             magic.writeMagic()
+            summoning.writeSummoning()
 
             byteArray.close()
 

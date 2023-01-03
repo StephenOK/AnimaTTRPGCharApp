@@ -344,26 +344,29 @@ fun CharacterPageFragment(
             ResistanceRow(resistanceItem)
         }
 
+        item{SpaceObjects()}
+
         //create header row for combat items
         item {
             Row {
                 Spacer(modifier = Modifier.weight(0.2f))
-                Text(text = "Base", modifier = Modifier.weight(0.2f))
-                Text(text = "Class", modifier = Modifier.weight(0.2f))
-                Text(text = "Multiplier", modifier = Modifier.weight(0.2f))
-                Text(text = "Total", modifier = Modifier.weight(0.2f))
+                Text(text = "Base", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+                Text(text = "Class", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+                Text(text = "Multiplier", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+                Text(text = "Total", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
             }
         }
 
         //character life point row
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Life Points: ", modifier = Modifier.weight(0.2f))
+                Text(text = "Life Points: ", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
 
                 //display life points from base and class values
-                Text(text = baseLife.value, modifier = Modifier.weight(0.2f))
+                Text(text = baseLife.value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
                 Text(
                     text = (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl).toString(),
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.weight(0.2f)
                 )
 

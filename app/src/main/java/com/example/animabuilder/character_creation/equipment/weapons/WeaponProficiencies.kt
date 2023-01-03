@@ -2,6 +2,7 @@ package com.example.animabuilder.character_creation.equipment.weapons
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_instances.*
 import java.io.BufferedReader
@@ -20,9 +21,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
         10,
         20,
         0, null,
-        AttackType.Impact, null,
-        WeaponType.Unarmed, null,
-        null, null, null,
+        AttackType.Impact, null, WeaponType.Unarmed,
         null, null, null,
         listOf(WeaponAbility.Precision), null,
         "This is not a weapon, of course. Rather, these are the numbers used for a " +
@@ -276,21 +275,23 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
         toCheck.forEach{
             //if primary weapon is mixed
-            if(primaryWeapon.type == WeaponType.Mixed){
+            if(primaryWeapon is MixedWeapon){
+                val copyPrime = primaryWeapon as MixedWeapon
+
                 //apply same type for exactly matching weapons
-                if(it.type == WeaponType.Mixed) {
-                    if ((primaryWeapon.mixedType!! - it.mixedType).isEmpty())
+                if(it is MixedWeapon) {
+                    if ((copyPrime.mixedType - it.mixedType.toSet()).isEmpty())
                         total += 10
 
                     //apply mixed type for one matching type
-                    else if (primaryWeapon.mixedType!!.contains(it.mixedType!![0]) ||
-                        primaryWeapon.mixedType!!.contains(it.mixedType!![1])
+                    else if (copyPrime.mixedType.contains(it.mixedType[0]) ||
+                        copyPrime.mixedType.contains(it.mixedType[1])
                     )
                         total += 15
                 }
 
                 //apply mixed type for it belonging to one mixed type
-                else if(primaryWeapon.mixedType!!.contains(it.type))
+                else if(copyPrime.mixedType.contains(it.type))
                     total += 15
 
                 else
@@ -299,7 +300,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
             //if primary weapon is not mixed
             //add mixed cost if secondary is mixed with one matching type
-            else if(it.type == WeaponType.Mixed && it.mixedType!!.contains(primaryWeapon.type))
+            else if(it is MixedWeapon && it.mixedType.contains(primaryWeapon.type))
                 total += 15
             //add identical cost for identical type
             else if(it.type == primaryWeapon.type)

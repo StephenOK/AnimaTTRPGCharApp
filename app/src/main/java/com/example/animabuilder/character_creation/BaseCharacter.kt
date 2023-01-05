@@ -10,6 +10,7 @@ import com.example.animabuilder.character_creation.attributes.race_objects.CharR
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.attributes.magic.Magic
+import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.summoning.Summoning
 import com.example.animabuilder.character_creation.equipment.Armor
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
@@ -34,6 +35,7 @@ class BaseCharacter: Serializable {
     val ki = Ki(this@BaseCharacter)
     val magic = Magic(this@BaseCharacter)
     val summoning = Summoning(this@BaseCharacter)
+    val psychic = Psychic(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
 
@@ -181,6 +183,8 @@ class BaseCharacter: Serializable {
         summoning.updateBind()
         summoning.updateBanish()
 
+        psychic.setInnatePsy()
+
         updateTotalSpent()
     }
 
@@ -226,6 +230,8 @@ class BaseCharacter: Serializable {
 
         updateMK()
 
+        psychic.setInnatePsy()
+
         secondaryList.levelUpdate(lvl, ownClass)
     }
 
@@ -249,6 +255,7 @@ class BaseCharacter: Serializable {
         weaponProficiencies.doubleCheck()
         updateCombatSpent()
         updateMagicSpent()
+        updatePsychicSpent()
         spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }
 
@@ -266,6 +273,10 @@ class BaseCharacter: Serializable {
 
     private fun updateMagicSpent(){
         ptInMag = magic.calculateSpent() + summoning.calculateSpent()
+    }
+
+    private fun updatePsychicSpent(){
+        ptInPsy = psychic.calculateSpent()
     }
 
     //setters for each primary characteristic
@@ -286,6 +297,7 @@ class BaseCharacter: Serializable {
         updateBlock()
         ki.updateKiStats()
         magic.calcMagProj()
+        psychic.updatePsyProjection()
     }
     var setAGI = { agiVal: Int ->
         agi = agiVal
@@ -329,6 +341,7 @@ class BaseCharacter: Serializable {
         updateResistances()
         ki.updateKiStats()
         summoning.updateControl()
+        psychic.setBasePotential()
     }
     var setPER = { perVal: Int ->
         per = perVal

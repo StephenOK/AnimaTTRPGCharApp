@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Cryokinesis {
+class Cryokinesis: Discipline(), Serializable {
     val createChill = PsychicPower(
         "Create Chill",
         1,
@@ -289,7 +291,7 @@ class Cryokinesis {
         )
     )
 
-    val allPowers = listOf(createChill, freeze, senseTemperature, eliminateCold, coldDominion,
+    override var allPowers = listOf(createChill, freeze, senseTemperature, eliminateCold, coldDominion,
         crystallize, iceSplinters, decreaseTemperature, iceShield, absoluteZero, everlastingMoment,
         majorCold)
 }

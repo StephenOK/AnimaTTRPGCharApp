@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Sentience {
+class Sentience: Discipline(), Serializable {
     val senseFeelings = PsychicPower(
         "Sense Feelings",
         1,
@@ -263,6 +265,6 @@ class Sentience {
         )
     )
 
-    val allPowers = listOf(senseFeelings, intensifyFeelings, detectFeelings, connectSenses,
+    override var allPowers = listOf(senseFeelings, intensifyFeelings, detectFeelings, connectSenses,
         projectSenses, eliminateSenses, createFeelings, infuseFeelings, destroyFeelings, area)
 }

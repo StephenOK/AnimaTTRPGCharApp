@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Telepathy {
+class Telepathy: Discipline(), Serializable {
     val areaScanning = PsychicPower(
         "Area Scanning",
         1,
@@ -398,7 +400,7 @@ class Telepathy {
         )
     )
 
-    val allPowers = listOf(areaScanning, mentalRestraint, mindReading, mentalCommunication,
+    override var allPowers = listOf(areaScanning, mentalRestraint, mindReading, mentalCommunication,
         psychicShield, psychicIllusion, mentalResearch, psychicAssault, psychicConnection,
         alterMemory, astralShape, psychicTracking, mindControl, psychicDeath, area)
 }

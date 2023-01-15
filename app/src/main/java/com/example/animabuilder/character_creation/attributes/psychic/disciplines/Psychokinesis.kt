@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Psychokinesis {
+class Psychokinesis: Discipline(), Serializable {
     val minorKinesis = PsychicPower(
         "Minor Psychokinesis",
         1,
@@ -374,7 +376,7 @@ class Psychokinesis {
         )
     )
 
-    val allPowers = listOf(minorKinesis, kineticImpact, kineticTrap, kineticShield, kineticArmor,
+    override var allPowers = listOf(minorKinesis, kineticImpact, kineticTrap, kineticShield, kineticArmor,
         motionDetection, repulsion, ballistics, shatter, kineticFlight, organicKinesis,
         groundControl, atomicRestructuring, majorKinesis)
 }

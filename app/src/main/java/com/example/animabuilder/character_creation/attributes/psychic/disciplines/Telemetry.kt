@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Telemetry {
+class Telemetry: Discipline(), Serializable {
     val senseResidues = PsychicPower(
         "Sense Residues",
         1,
@@ -96,5 +98,5 @@ class Telemetry {
         )
     )
 
-    val allPowers = listOf(senseResidues, readPast, humanErudition, seeHistory)
+    override var allPowers = listOf(senseResidues, readPast, humanErudition, seeHistory)
 }

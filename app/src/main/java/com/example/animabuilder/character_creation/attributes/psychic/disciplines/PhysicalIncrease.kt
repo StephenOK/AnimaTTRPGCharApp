@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class PhysicalIncrease {
+class PhysicalIncrease: Discipline(), Serializable {
     val increaseJump = PsychicPower(
         "Increase Jump Ability",
         1,
@@ -292,7 +294,7 @@ class PhysicalIncrease {
         )
     )
 
-    val allPowers = listOf(increaseJump, increaseAbility, increaseAcrobatics, increaseStrength,
+    override var allPowers = listOf(increaseJump, increaseAbility, increaseAcrobatics, increaseStrength,
         inhumanity, increaseMotion, increaseReaction, perceptionIncrease, increaseEndurance,
         regeneration, fatigueElimination, totalIncrease, imbue)
 }

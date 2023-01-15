@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -14,10 +16,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -258,7 +263,7 @@ class HomeActivity : AppCompatActivity() {
             if(exitOpen.value)
                 ExitAlert(exitOpen)
             if(detailAlertOn.value)
-                DetailAlert(contents.value!!)
+                DetailAlert()
         }
     }
 
@@ -376,12 +381,34 @@ class HomeActivity : AppCompatActivity() {
      * contents: item's details specific to the type of item being displayed
      */
     @Composable
-    private fun DetailAlert(contents: @Composable () -> Unit){
-        AlertDialog(
+    private fun DetailAlert() {
+        Dialog(
             onDismissRequest = {detailAlertOn.value = false},
-            title = {Text(text = "Description of " + detailItem.value)},
-            text = {contents()},
-            confirmButton = {TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")} }
+            content = {
+                Box(
+                    Modifier
+                        .background(Color.White)
+                        .size(600.dp, 600.dp)
+                ){
+                    Row(
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .height(100.dp)
+                    ) {Text(text = "Description of " + detailItem.value)}
+
+                    Row(
+                        Modifier
+                            .align(Alignment.Center)
+                            .height(400.dp)
+                    ){ LazyColumn{item{contents.value!!()}} }
+
+                    Row(
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .height(100.dp)
+                    ){TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")}}
+                }
+            }
         )
     }
 

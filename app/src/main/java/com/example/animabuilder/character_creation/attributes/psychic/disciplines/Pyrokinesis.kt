@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class Pyrokinesis {
+class Pyrokinesis: Discipline(), Serializable {
     val createFire = PsychicPower(
         "Create Fire",
         2,
@@ -271,6 +273,6 @@ class Pyrokinesis {
         )
     )
 
-    val allPowers = listOf(createFire, extinguishFire, controlFire, immolate, igneousMaintenance,
+    override var allPowers = listOf(createFire, extinguishFire, controlFire, immolate, igneousMaintenance,
         fireImmunity, igneousBarrier, raiseTemperature, consume, nova, majorFire)
 }

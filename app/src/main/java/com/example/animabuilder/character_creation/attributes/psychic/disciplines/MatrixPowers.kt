@@ -1,11 +1,13 @@
 package com.example.animabuilder.character_creation.attributes.psychic.disciplines
 
+import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import java.io.Serializable
 
-class MatrixPowers {
+class MatrixPowers: Discipline(), Serializable {
     val senseMatrices = PsychicPower(
         "Sense Matrices",
-        1,
+        0,
         true,
         true,
         "The psychic is able to sense the use of Powers and notice the Presence of individuals who share this ability. In this way, characters \"see\" the energy of the matrices. Therefore, they suffer no Blindness penalty against invisible Psychic Abilities. For instance, anyone reaching a Medium-level Difficulty will be able to sense active Psychic Matrices and detect latent Powers in people, all within a 25-meter area.",
@@ -25,7 +27,7 @@ class MatrixPowers {
 
     val destroyMatrices = PsychicPower(
         "Destroy Matrices",
-        1,
+        0,
         false,
         true,
         "This ability will destroy active Psychic Powers - provided they are not of a " +
@@ -46,7 +48,7 @@ class MatrixPowers {
 
     val hideMatrices = PsychicPower(
         "Hide Matrices",
-        1,
+        0,
         false,
         true,
         "This Power hides the psychic's mental abilities from the Sense Matrices Power. " +
@@ -72,7 +74,7 @@ class MatrixPowers {
 
     val linkMatrices = PsychicPower(
         "Link Matrices",
-        1,
+        0,
         true,
         true,
         "This Power enables the psychic to connect the minds of several other psychic " +
@@ -96,5 +98,5 @@ class MatrixPowers {
         )
     )
 
-    val allPowers = listOf(senseMatrices, destroyMatrices, hideMatrices, linkMatrices)
+    override var allPowers = listOf(senseMatrices, destroyMatrices, hideMatrices, linkMatrices)
 }

@@ -561,6 +561,7 @@ class BaseCharacter: Serializable {
         ki.loadKiAttributes(fileReader)
         magic.loadMagic(fileReader)
         summoning.loadSummoning(fileReader)
+        psychic.loadPsychic(fileReader)
 
         restoreChar.close()
 
@@ -601,6 +602,7 @@ class BaseCharacter: Serializable {
             ki.writeKiAttributes()
             magic.writeMagic()
             summoning.writeSummoning()
+            psychic.writePsychic()
 
             byteArray.close()
 

@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
@@ -17,6 +19,8 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
 @Composable
 fun MagicFragment(updateFunc: () -> Unit) {
+    val context = LocalContext.current
+
     //initialize strings for maximum Zeon purchase and total
     val boughtZeonString = remember{mutableStateOf(charInstance.magic.boughtZeon.toString())}
     val maxZeonString = remember{mutableStateOf(charInstance.magic.zeonMax.toString())}
@@ -337,7 +341,12 @@ fun MagicFragment(updateFunc: () -> Unit) {
                     {input: Element -> freeElement.value = input},
                     {input: Int -> freeLevel.value = input},
                     {input: (String) -> Unit -> textChange.value = input}
-                ) { freeExchangeOpen.value = true }
+                ) {
+                    if(charInstance.magic.magicTies)
+                        Toast.makeText(context, "Magic Ties prevents getting Free Spells", Toast.LENGTH_LONG).show()
+                    else
+                        freeExchangeOpen.value = true
+                }
             else
                 SpellRow(
                     it,

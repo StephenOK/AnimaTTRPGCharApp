@@ -214,7 +214,7 @@ private fun MakeRow(
                 checkedState.value = it
 
                 //if user is applying a natural bonus
-                if (checkedState.value) {
+                if (it) {
                     //check if either no points are applied or if no more bonuses are available
                     if (item.pointsApplied == 0 || !charList.incrementNat(true))
                         //prevent bonus from applying

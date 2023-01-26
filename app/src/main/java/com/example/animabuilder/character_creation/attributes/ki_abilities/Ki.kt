@@ -189,6 +189,7 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
 
     //initialize martial knowledge values
     var martialKnowledgeMax = 0
+    var martialKnowledgeSpec = 0
     var martialKnowledgeRemaining = martialKnowledgeMax
 
     //initialize ki points for each pertinent characteristic
@@ -220,6 +221,18 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     var boughtConPoint = 0
     var boughtPowPoint = 0
     var boughtWpPoint = 0
+
+    fun updateMKSpec(input: Int){
+        martialKnowledgeSpec += input
+        updateMK()
+    }
+
+    //updates the character's martial knowledge
+    fun updateMK(){
+        martialKnowledgeMax = (charInstance.ownClass.mkPerLevel * charInstance.lvl) +
+                charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec
+        updateMkSpent()
+    }
 
     //make a function for a change in each characteristic's bought point value
     val setBoughtStr = {
@@ -387,48 +400,48 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
      * Updates ki for the strength characteristic
      */
     fun updateStr() {
-        kiSTR = getStatKi(charInstance.str) + boughtStrPoint
-        accSTR = getStatKiAcc(charInstance.str) + boughtStrAcc
+        kiSTR = getStatKi(charInstance.totalSTR) + boughtStrPoint
+        accSTR = getStatKiAcc(charInstance.totalSTR) + boughtStrAcc
     }
 
     /**
      * Updates ki for the dexterity characteristic
      */
     fun updateDex() {
-        kiDEX = getStatKi(charInstance.dex) + boughtDexPoint
-        accDEX = getStatKiAcc(charInstance.dex) + boughtDexAcc
+        kiDEX = getStatKi(charInstance.totalDEX) + boughtDexPoint
+        accDEX = getStatKiAcc(charInstance.totalDEX) + boughtDexAcc
     }
 
     /**
      * Updates ki for the agility characteristic
      */
     fun updateAgi() {
-        kiAGI = getStatKi(charInstance.agi) + boughtAgiPoint
-        accAGI = getStatKiAcc(charInstance.agi) + boughtAgiAcc
+        kiAGI = getStatKi(charInstance.totalAGI) + boughtAgiPoint
+        accAGI = getStatKiAcc(charInstance.totalAGI) + boughtAgiAcc
     }
 
     /**
      * Updates ki for the constitution characteristic
      */
     fun updateCon() {
-        kiCON = getStatKi(charInstance.con) + boughtConPoint
-        accCON =  getStatKiAcc(charInstance.con) + boughtConAcc
+        kiCON = getStatKi(charInstance.totalCON) + boughtConPoint
+        accCON =  getStatKiAcc(charInstance.totalCON) + boughtConAcc
     }
 
     /**
      * Updates ki for the power characteristic
      */
     fun updatePow() {
-        kiPOW = getStatKi(charInstance.pow) + boughtPowPoint
-        accPOW = getStatKiAcc(charInstance.pow) + boughtPowAcc
+        kiPOW = getStatKi(charInstance.totalPOW) + boughtPowPoint
+        accPOW = getStatKiAcc(charInstance.totalPOW) + boughtPowAcc
     }
 
     /**
      * Updates ki for the willpower characteristic
      */
     fun updateWp() {
-        kiWP = getStatKi(charInstance.wp) + boughtWpPoint
-        accWP = getStatKiAcc(charInstance.wp) + boughtWpAcc
+        kiWP = getStatKi(charInstance.totalWP) + boughtWpPoint
+        accWP = getStatKiAcc(charInstance.totalWP) + boughtWpAcc
     }
 
     /**

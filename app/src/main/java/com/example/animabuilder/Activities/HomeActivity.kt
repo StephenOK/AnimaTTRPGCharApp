@@ -219,7 +219,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        Advantages()
+                        AdvantageFragment()
                     }
 
                     //route to combat page

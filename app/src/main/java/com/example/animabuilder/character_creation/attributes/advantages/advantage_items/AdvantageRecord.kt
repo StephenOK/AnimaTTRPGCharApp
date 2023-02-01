@@ -14,21 +14,24 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
     val magicAdvantages = MagicAdvantages(charInstance)
     val psychicAdvantages = PsychicAdvantages()
 
-    fun acquireAdvantage(toAdd: Advantage, taken: Int?, takenCost: Int): Boolean{
+    fun acquireAdvantage(toAdd: Advantage, taken: Int?, takenCost: Int): String?{
         when(charInstance.ownRace.heldRace){
             RaceName.sylvain -> {
                 when(toAdd){
                     commonAdvantages.sickly,
                     commonAdvantages.seriousIllness,
-                    commonAdvantages.magicSusceptibility -> return false
+                    commonAdvantages.magicSusceptibility -> return "Forbidden for Sylvain"
 
-                    magicAdvantages.elementalCompatibility -> if(taken == 1) return false
+                    magicAdvantages.elementalCompatibility -> if(taken == 1)
+                        return "Cannot take Dark as a Sylvain"
                 }
             }
             RaceName.jayan -> {
                 when(toAdd){
-                    commonAdvantages.uncommonSize -> if(taken!! < 5) return false
-                    commonAdvantages.deductCharacteristic -> if(taken == 0) return false
+                    commonAdvantages.uncommonSize -> if(taken!! < 5)
+                        return "Cannot reduce size as Jayan"
+                    commonAdvantages.deductCharacteristic -> if(taken == 0)
+                        return "Cannot reduce Strength as Jayan"
                 }
             }
             RaceName.dukzarist -> {
@@ -41,13 +44,14 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                     commonAdvantages.physicalWeakness,
                     commonAdvantages.seriousIllness,
                     commonAdvantages.sickly,
-                    commonAdvantages.poisonSusceptibility -> return false
+                    commonAdvantages.poisonSusceptibility -> return "Forbidden for Duk\'zarist"
 
-                    magicAdvantages.elementalCompatibility -> if(taken == 0) return false
+                    magicAdvantages.elementalCompatibility -> if(taken == 0)
+                        return "Cannot take Light as Duk\'zarist"
 
                     commonAdvantages.psyDisciplineAccess ->{
                         if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis))
-                            return false
+                            return "Duk\'zarist must take Pyrokinesis first"
                     }
                 }
             }
@@ -57,26 +61,26 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
         when(toAdd){
             commonAdvantages.characteristicPoint -> {
                 when(taken) {
-                    0 -> if(charInstance.totalSTR + 1 > 11) return false
-                    1 -> if(charInstance.totalDEX + 1 > 11) return false
-                    2 -> if(charInstance.totalAGI + 1 > 11) return false
-                    3 -> if(charInstance.totalCON + 1 > 11) return false
-                    4 -> if(charInstance.totalINT + 1 > 13) return false
-                    5 -> if(charInstance.totalPOW + 1 > 13) return false
-                    6 -> if(charInstance.totalWP + 1 > 13) return false
-                    7 -> if(charInstance.totalPER + 1 > 13) return false
-                    else -> return false
+                    0 -> if(charInstance.totalSTR + 1 > 11) return "Cannot increase Strength further"
+                    1 -> if(charInstance.totalDEX + 1 > 11) return "Cannot increase Dexterity further"
+                    2 -> if(charInstance.totalAGI + 1 > 11) return "Cannot increase Agility further"
+                    3 -> if(charInstance.totalCON + 1 > 11) return "Cannot increase Constitution further"
+                    4 -> if(charInstance.totalINT + 1 > 13) return "Cannot increase Intelligence further"
+                    5 -> if(charInstance.totalPOW + 1 > 13) return "Cannot increase Power further"
+                    6 -> if(charInstance.totalWP + 1 > 13) return "Cannot increase Willpower further"
+                    7 -> if(charInstance.totalPER + 1 > 13) return "Cannot increase Perception further"
+                    else -> return "Invalid input"
                 }
             }
 
             commonAdvantages.subjectAptitude -> {
                 if(charInstance.secondaryList.intToCharacteristic(taken!!)!!.devPerPoint - toAdd.cost[takenCost] <= 0)
-                    return false
+                    return "Cannot reduce below zero"
             }
 
             commonAdvantages.psyDisciplineAccess -> {
                 if(containsAny("Free Access to Any Psychic Discipline") != null)
-                    return false
+                    return "Already have access to all Disciplines"
             }
 
             commonAdvantages.exclusiveWeapon -> {
@@ -84,15 +88,21 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                         !charInstance.ownClass.archetype.contains(Archetype.Domine) ||
                         !charInstance.ownClass.archetype.contains(Archetype.Prowler) ||
                         !charInstance.ownClass.archetype.contains(Archetype.Novel))
-                    return false
+                    return "Disadvantage forbidden to your class"
             }
 
             commonAdvantages.unattractive ->
-                if(charInstance.appearance < 7) return false
+                if(charInstance.appearance < 7) return "Minimum appearance of 7 required"
 
             magicAdvantages.magicBlockage ->
-                if(takenAdvantages.contains(magicAdvantages.slowMagicRecovery)) return false
+                if(takenAdvantages.contains(magicAdvantages.slowMagicRecovery))
+                    return "Cannot take this with Slow Recovery of Magic"
         }
+
+        if(toAdd.special == null && containsEquivalent(toAdd))
+            return "You cannot have multiple copies of this Advantage"
+        else if(contains("Natural Knowledge of a Path", toAdd.picked, toAdd.pickedCost))
+            return "You cannot take the same Path multiple times"
 
         val copyAdvantage = Advantage(
             toAdd.name,
@@ -100,8 +110,11 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
             toAdd.effect,
             toAdd.restriction,
             toAdd.special,
-            taken, toAdd.cost,
-            takenCost, toAdd.onTake,
+            toAdd.options,
+            taken,
+            toAdd.cost,
+            takenCost,
+            toAdd.onTake,
             toAdd.onRemove
         )
 
@@ -110,10 +123,10 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
             if(copyAdvantage.onTake != null)
                 copyAdvantage.onTake!!(taken, copyAdvantage.cost[takenCost])
             refreshSpent()
-            return true
+            return null
         }
 
-        return false
+        return "Cannot buy this advantage"
     }
 
     fun removeAdvantage(toRemove: Advantage){

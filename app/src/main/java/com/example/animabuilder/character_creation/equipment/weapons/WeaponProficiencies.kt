@@ -155,7 +155,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
             takenMartialList -= changeItem
 
         //update martial knowledge accordingly
-        charInstance.updateMK()
+        charInstance.ki.updateMK()
 
         //return successful process
         return true

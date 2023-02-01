@@ -3,11 +3,12 @@ package com.example.animabuilder.character_creation.attributes.advantages
 import java.io.Serializable
 
 open class Advantage(
-    val name: String?,
+    val name: String,
     val description: String,
     val effect: String?,
     val restriction: String?,
     val special: String?,
+    val options: List<String>?,
     val picked: Int?,
     val cost: List<Int>,
     val pickedCost: Int,

@@ -40,7 +40,7 @@ class CharRace(var heldRace: RaceName, private val charInstance: BaseCharacter) 
                 raceIndex = 6
                 raceAdvantages = advantageRecord.dukzaristAdvantages
             }
-            else -> 0
+            else -> {raceIndex = 0; raceAdvantages = listOf()}
         }
     }
 }

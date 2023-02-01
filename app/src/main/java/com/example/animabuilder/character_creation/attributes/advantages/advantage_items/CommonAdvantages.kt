@@ -5,6 +5,51 @@ import com.example.animabuilder.character_creation.attributes.advantages.Advanta
 import java.io.Serializable
 
 class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
+    val characteristicList = listOf("STR", "DEX", "AGI", "CON", "INT", "POW", "WP", "PER")
+    val secondariesList = listOf(
+        "Acrobatics",
+        "Athleticism",
+        "Climb",
+        "Jump",
+        "Ride",
+        "Swim",
+        "Art",
+        "Dance",
+        "Forging",
+        "Music",
+        "Sleight of Hand",
+        "Notice",
+        "Search",
+        "Track",
+        "Intimidate",
+        "Leadership",
+        "Persuasion",
+        "Style",
+        "Disguise",
+        "Hide",
+        "Lock Pick",
+        "Poisons",
+        "Theft",
+        "Stealth",
+        "Trap Lore",
+        "Animals",
+        "Appraisal",
+        "Herbal Lore",
+        "History",
+        "Memorize",
+        "Magic Appraisal",
+        "Medic",
+        "Navigate",
+        "Occult",
+        "Sciences",
+        "Composure",
+        "Feats of Strength",
+        "Withstand Pain"
+    )
+
+    val fieldNames = listOf("Athletics", "Creative", "Perceptive", "Social", "Subterfuge",
+        "Intellectual", "Vigor")
+
     val characteristicPoint = Advantage(
         "Add One Point to a Characteristic",
         "One of the character's attributes is greater than before.",
@@ -13,6 +58,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "to more than 11 through this Advantage. Intelligence, Power, Willpower, and " +
                 "Perception cannot be increased to more than 13 through this Advantage.",
         "You may take this Advantage as many times as you wish.",
+        characteristicList,
         0,
         listOf(1),
         0,
@@ -50,6 +96,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         {_, _ ->
@@ -70,6 +117,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -81,6 +129,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "An ambidextrous person can use both hands equally well.",
         "An ambidextrous character can perform maneuvers with either hand. In combat, " +
                 "he suffers only -10 to attacks with an additional weapon.",
+        null,
         null,
         null,
         null,
@@ -97,6 +146,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Substitute one Characteristic's value for a 9, no matter what its original value was.",
         null,
         "You may take this Advantage as many times as you wish.",
+        characteristicList,
         0,
         listOf(2),
         0,
@@ -136,6 +186,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "and the matrix powers.",
         null,
         null,
+        listOf(
+            "Telepathy",
+            "Psychokinesis",
+            "Pyrokinesis",
+            "Cryokinesis",
+            "Physical Increase",
+            "Energy",
+            "Sentience",
+            "Telemetry"
+        ),
         0,
         listOf(1),
         0,
@@ -157,6 +217,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -169,6 +230,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "can also discourage violence against himself or force intimidating people to " +
                 "agree with him.",
         "The limits of this Advantage must be decided by the Game Master.",
+        null,
         null,
         null,
         null,
@@ -191,6 +253,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -204,6 +267,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "able to detect the origin or nature of the danger until they see it.",
         "The character cannot be taken by surprise, unless his opponent's Initiative score " +
                 "is 150 points or more higher than his.",
+        null,
         null,
         null,
         null,
@@ -224,6 +288,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -241,6 +306,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Development Costs cannot be reduced below 1. This Advantage works only for " +
                 "Secondary Abilities.",
         null,
+        secondariesList,
         0,
         listOf(1, 2),
         0,
@@ -268,6 +334,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "Difficult (VDF) and Absurd (ABS), respectively.",
         null,
         null,
+        listOf(),
         0,
         listOf(1, 2, 3),
         0,
@@ -287,6 +354,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "normally costs 2, will now cost only 1.",
         "Development Costs cannot be reduced below 1. This Advantage works only for Secondary Abilities.",
         null,
+        fieldNames,
         0,
         listOf(2),
         0,
@@ -308,6 +376,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "less than the character's lowest roll.",
         "This Advantage is not compatible with the fourth method of generating Characteristics.",
         "You may take this Advantage as many times as you wish.",
+        characteristicList,
         0,
         listOf(1),
         0,
@@ -325,6 +394,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "increase this amount to 80 and 120 points, respectively. For example, a " +
                 "character whose player spends 2 Creation Points would receive 80 additional " +
                 "points to his Martial Knowledge.",
+        null,
         null,
         null,
         null,
@@ -357,6 +427,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -369,6 +440,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "The character recovers 1 point of Ki every ten minutes, instead of every hour. " +
                 "Spending additional Creation Points decreases the recovery time to five minutes " +
                 "and one minute, respectively.",
+        null,
         null,
         null,
         null,
@@ -386,6 +458,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "in that situation.",
         "The character never applies the -30 penalty for not spending DP in a Secondary " +
                 "Ability, and he also receives a special bonus of +10 in all his Secondary Abilities.",
+        null,
         null,
         null,
         null,
@@ -410,6 +483,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -422,6 +496,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "supernatural attacks.",
         "Grants a character a natural armor of 4 against Energy-based attacks. Although it " +
                 "counts as armor, penalties are not applied for using additional armor layers.",
+        null,
         null,
         null,
         null,
@@ -438,6 +513,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "A player can add 3 points to his character's Fatigue. Spending additional " +
                 "Creation Points adds 6 and 9 points respectively. Thus a character whose player " +
                 "spends 2 Creation Points on this Advantage would add 6 to his Fatigue score.",
+        null,
         null,
         null,
         null,
@@ -472,6 +548,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "character creation.",
         null,
         null,
+        listOf("-5", "-4", "-3", "-2", "-1", "1", "2", "3", "4", "5"),
         0,
         listOf(1),
         0,
@@ -492,6 +569,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "game. In this case, both the GM and the player should decide the amount.",
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -503,6 +581,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Wounds suffered byb the character heal easily.",
         "This Advantage increases the character's Regeneration by two levels. Spending " +
                 "additional points increases Regeneration by four and six levels, respectively.",
+        null,
         null,
         null,
         null,
@@ -543,6 +622,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -554,6 +634,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "A character with this Advantage is especially resistant to the effects of pain " +
                 "and fatigue.",
         "Penalties caused by pain and Fatigue are reduced by half.",
+        null,
         null,
         null,
         null,
@@ -573,6 +654,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         null,
@@ -585,6 +667,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "time perceive the energy of psychic matrices.",
         "The character sees supernatural things - including magic and psychic matrices - as " +
                 "spiritual creatures. He does not apply the blinded penalty in any of these situations.",
+        null,
         null,
         null,
         null,
@@ -604,6 +687,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -620,6 +704,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -631,6 +716,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Characters with this Advantage may use any type of psychic discipline and its abilities.",
         "This Advantage enables the character to use as many Psychic Disciplines as he " +
                 "wishes using his Psychic Points.",
+        null,
         null,
         null,
         null,
@@ -658,6 +744,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "additional Creation Points will increase this bonus to +45 and +60, respectively. " +
                 "Thus, a character whose player spends 2 Creation Points on this Advantage " +
                 "receives a +45 bonus to his Initiative score.",
+        null,
         null,
         null,
         null,
@@ -690,6 +777,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -707,6 +795,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "a single Secondary Ability.",
         null,
         null,
+        secondariesList,
         0,
         listOf(1, 2, 3),
         0,
@@ -741,6 +830,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "a modifier of +10 per level to all Secondary Abilities in Athletics, for example.",
         null,
         null,
+        fieldNames,
         0,
         listOf(2, 3),
         0,
@@ -769,6 +859,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Characters with this Advantage possess heightened resistance to magical attacks and effects.",
         "Add a special bonus of +25 to Magic Resistance (MR). Spending a second Creation " +
                 "Point increases the bonus to +50.",
+        null,
         null,
         null,
         null,
@@ -803,6 +894,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1, 2),
         0,
         {_, cost ->
@@ -829,6 +921,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "barriers that protect him from psychic attacks and other negative psychic effects.",
         "This Advantage adds a special bonus of +25 to a character's Psychic Resistance " +
                 "(PsR). Spending a second Creation Point increases the bonus to +50.",
+        null,
         null,
         null,
         null,
@@ -860,11 +953,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
         null
     )
+
+    val advantages = listOf(characteristicPoint, acuteSenses, artifact, ambidextrous, characteristicToNine,
+        psyDisciplineAccess, charm, disquieting, animalAffinity, dangerSense, beenAround,
+        subjectAptitude, naturalPsychicPower, fieldAptitude, characteristicReroll, martialMastery,
+        goodLuck, kiRecovery, jackOfAllTrades, naturalArmor, mysticalArmor, untiring, uncommonSize,
+        startingWealth, increasedRegeneration, elan, painImmunity, gift, seeSupernatural, nightVision,
+        fortunate, freePsychicDiscipline, quickReflexes, learning, naturalLearner, fieldLearner,
+        exceptionalMagicResistance, exceptionalPhysicalResistance, exceptionalPsychicResistance,
+        lightSleeper)
 
 
 
@@ -877,6 +980,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "The required number for a fumble increases by 2 points. Normal abilities, " +
                 "therefore, fumble on a result of 5 (4 if the character possesses mastery in that " +
                 "ability).",
+        null,
         null,
         null,
         null,
@@ -894,6 +998,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-2),
         0,
         null,
@@ -907,6 +1012,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -917,6 +1023,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Mute",
         "A character with this Disadvantage is incapable of speaking.",
         "The character cannot speak.",
+        null,
         null,
         null,
         null,
@@ -937,6 +1044,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -951,6 +1059,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "than his preferred one.",
         "Only classes in the Domine, Fighter, Prowler, and Novel Archetypes can acquire " +
                 "this Disadvantage.",
+        null,
         null,
         null,
         listOf(-1),
@@ -971,6 +1080,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -988,6 +1098,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1000,6 +1111,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "This limb may shake all the time, or it may not respond when most needed.",
         "The character applies a penalty of -80 to all physical actions that require the " +
                 "use of the atrophied limb.",
+        null,
         null,
         null,
         null,
@@ -1023,6 +1135,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-2),
         0,
         null,
@@ -1035,6 +1148,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "he receives a critical wound, he has a strong possibility of dying or of " +
                 "suffering irreversible damage.",
         "Reduce the Physical Resistance (PhR) of a character by half.",
+        null,
         null,
         null,
         null,
@@ -1060,6 +1174,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1074,6 +1189,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Characters can only acquire this Disadvantage once. You cannot reduce a " +
                 "Characteristic below 3.",
         null,
+        characteristicList,
         0,
         listOf(-1),
         0,
@@ -1113,6 +1229,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1129,6 +1246,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1141,6 +1259,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "tire more easily than others, but he particularly suffers the effects of Fatigue.",
         "Doubles Fatigue penalties to actions and reduces the base Fatigue of the character " +
                 "by 1 point.",
+        null,
         null,
         null,
         null,
@@ -1165,6 +1284,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1179,6 +1299,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1189,6 +1310,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Sickly",
         "A character with this Disadvantage suffers from bad health and sickens easily.",
         "Reduce the character's Disease Resistance (DR) by half.",
+        null,
         null,
         null,
         null,
@@ -1213,6 +1335,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
@@ -1234,6 +1357,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1, -2),
         0,
         null,
@@ -1245,6 +1369,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "The character's reflexes leave him ill-prepared to respond quickly to events.",
         "The character applies a special penalty of -30 to his Initiative. An additional " +
                 "point in this Disadvantage increases the penalty to -60.",
+        null,
         null,
         null,
         null,
@@ -1275,6 +1400,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
@@ -1292,6 +1418,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "A character with this Disadvantage cannot combat the negative effects of any " +
                 "type of harmful substance.",
         "Reduce the character's Venom Resistance (VR) by half.",
+        null,
         null,
         null,
         null,
@@ -1316,6 +1443,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "generated by means of a die roll, not chosen by the player.",
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
@@ -1332,10 +1460,17 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "element and -30 to all actions in extreme climates.",
         null,
         null,
+        listOf("Heat", "Cold"),
         0,
         listOf(-1),
         0,
         null,
         null
     )
+
+    val disadvantages = listOf(badLuck, blind, deafness, mute, nearsighted, exclusiveWeapon, severeAllergy,
+        seriousVice, atrophiedLimb, seriousIllness, physicalWeakness, deepSleeper, deductCharacteristic,
+        unfortunate, easilyPossessed, exhausted, severePhobia, painVulnerability, sickly, slowHealer,
+        slowLearner, slowReactions, magicSusceptibility, poisonSusceptibility, unattractive,
+        temperatureVulnerability)
 }

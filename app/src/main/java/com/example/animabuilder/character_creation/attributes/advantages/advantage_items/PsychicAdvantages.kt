@@ -1,13 +1,15 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
 import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import java.io.Serializable
 
-class PsychicAdvantages {
+class PsychicAdvantages: Serializable {
     val amplifySustainedPower = Advantage(
         "Amplify Sustained Power",
         "A character with this Advantage can maintain his psychic powers with more force.",
         "Any powers maintained in this way are one difficulty level higher than what the " +
                 "psychic could normally attain.",
+        null,
         null,
         null,
         null,
@@ -23,6 +25,7 @@ class PsychicAdvantages {
         "The character's recovery rate for Psychic Points is 1 point every 10 minutes. " +
                 "Spending additional Creation Points increases the rate to 1 point every five " +
                 "minutes or every minute, respectively.",
+        null,
         null,
         null,
         null,
@@ -42,6 +45,7 @@ class PsychicAdvantages {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         null,
@@ -53,6 +57,7 @@ class PsychicAdvantages {
         "A character with this Advantage can concentrate in any situation, no matter the " +
                 "difficulty or complications.",
         "The psychic can concentrate to harness a power even while executing active actions.",
+        null,
         null,
         null,
         null,
@@ -70,6 +75,16 @@ class PsychicAdvantages {
                 "using the powers of a specific discipline.",
         null,
         null,
+        listOf(
+            "Telepathy",
+            "Psychokinesis",
+            "Pyrokinesis",
+            "Cryokinesis",
+            "Physical Increase",
+            "Energy",
+            "Sentience",
+            "Telemetry"
+        ),
         0,
         listOf(2),
         0,
@@ -83,6 +98,7 @@ class PsychicAdvantages {
                 "focus their powers on a particular objective.",
         "Psychic Points spent to improve Psychic Projection increase the ability by +20 " +
                 "instead of +10.",
+        null,
         null,
         null,
         null,
@@ -101,12 +117,15 @@ class PsychicAdvantages {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         null,
         null
     )
 
+    val advantages = listOf(amplifySustainedPower, psychicPointRecovery, psychicFatigueResistance,
+        passiveConcentration, psychicInclination, focus, extremeConcentration)
 
 
 
@@ -117,6 +136,7 @@ class PsychicAdvantages {
                 "stress upon his body, leaving him terribly exhausted even when using his " +
                 "low-level psychic abilities.",
         "The character loses double the points of Fatigue indicated whenever using psychic powers.",
+        null,
         null,
         null,
         null,
@@ -132,6 +152,7 @@ class PsychicAdvantages {
                 "feedback in his body, causing internal damage.",
         "If the character suffers a psychic failure, he automatically loses the same " +
                 "number of Life Points as the number by which he failed.",
+        null,
         null,
         null,
         null,
@@ -152,6 +173,7 @@ class PsychicAdvantages {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -167,9 +189,12 @@ class PsychicAdvantages {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
         null
     )
+
+    val disadvantages = listOf(psychicExhaustion, psychicConsumption, onePowerAtATime, noConcentration)
 }

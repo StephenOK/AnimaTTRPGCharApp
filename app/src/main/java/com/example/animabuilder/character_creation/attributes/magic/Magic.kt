@@ -349,8 +349,12 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         var startIndex = 0
 
         if(naturalPaths.contains(inputElement)){
-            for(index in 0 until 20)
-                spellList.add(spellBook[index]!!)
+            for(index in 0 until 20) {
+                if (spellBook[index] != null)
+                    spellList.add(spellBook[index]!!)
+                else
+                    spellList.add(getFreeSpell((index + 1) * 2, inputElement))
+            }
 
             startIndex = 20
         }

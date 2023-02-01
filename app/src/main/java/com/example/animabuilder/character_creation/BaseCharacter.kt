@@ -43,7 +43,7 @@ class BaseCharacter: Serializable {
     lateinit var ownClass: CharClass
 
     //initialize character's class and race
-    lateinit var ownRace: CharRace
+    var ownRace = CharRace(RaceName.human, this@BaseCharacter)
 
     //character's level
     var lvl = 0

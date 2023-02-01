@@ -3,8 +3,22 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import java.io.Serializable
 
-class MagicAdvantages(private val charInstance: BaseCharacter) {
+class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
+    val elementNames = listOf(
+        "Light",
+        "Dark",
+        "Creation",
+        "Destruction",
+        "Air",
+        "Earth",
+        "Water",
+        "Fire",
+        "Essence",
+        "Illusion"
+    )
+
     val elementalCompatibility = Advantage(
         "Elemental Compatibility",
         "A character with this Advantage is naturally compatible with the powers of a " +
@@ -17,6 +31,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
                 "penalty to all other paths.",
         null,
         null,
+        (elementNames.toSet() + "Necromancy").toList(),
         0,
         listOf(1),
         0,
@@ -36,6 +51,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
                 "develop it beyond level 40 by spending new Magic Level points.",
         null,
         "This Advantage can be acquired again for different Paths.",
+        elementNames,
         0,
         listOf(1),
         0,
@@ -84,6 +100,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -97,6 +114,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         "A player can add 3 points to his character's Intelligence to determine the maximum " +
                 "potential of the spell. This bonus is not applied to any other ability - not " +
                 "even to calculate the character's level of magic.",
+        null,
         null,
         null,
         null,
@@ -115,6 +133,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
                 "and his MR.",
         "Necromancy is not included in this Advantage.",
         null,
+        elementNames,
         0,
         listOf(2),
         0,
@@ -134,6 +153,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -148,6 +168,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -159,6 +180,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         "A character with this Advantage does not need to make physical gestures to use " +
                 "his magic; he can take any type of physical action without affecting his powers.",
         "The character does not reduce his MA if unable to gesture.",
+        null,
         null,
         null,
         null,
@@ -178,6 +200,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         {_, cost ->
@@ -192,6 +215,9 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         }
     )
 
+    val advantages = listOf(elementalCompatibility, naturalPath, contestedSpellMastery, magicDevelopmentAptitude,
+        halfTreeAttuned, improvedInnateMagic, unspokenCasting, gesturelessCasting, superiorMagicRecovery)
+
 
 
 
@@ -200,6 +226,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         "Oral Requirement",
         "A character with this Disadvantage cna only cast spells if he can speak",
         "The character must be able to speak to accumulate magic and to cast his spells.",
+        null,
         null,
         null,
         null,
@@ -217,6 +244,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -230,6 +258,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
                 "weakening if he uses his abilities too much.",
         "The mage loses 1 point of Fatigue when casting a spell with a potential greater " +
                 "than 100, 2 if it is greater than 200, and 3 if it is greater than 300.",
+        null,
         null,
         null,
         null,
@@ -250,6 +279,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-2),
         0,
         null,
@@ -264,6 +294,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
                 "cannot research his own spells.",
         "The magician cannot choose free spells of his magical paths or freely access " +
                 "chosen spells.",
+        null,
         null,
         null,
         null,
@@ -282,6 +313,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         "Magic has problems passing through the wizard\'s essence; he experiences " +
                 "difficulties recovering power he has used.",
         "Reduce the Zeonic regeneration of the character by half.",
+        null,
         null,
         null,
         null,
@@ -308,6 +340,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         "This Disadvantage cannot be combined with Slow Recovery of Magic",
         null,
         null,
+        null,
         listOf(-2),
         0,
         {_, _ ->
@@ -331,9 +364,13 @@ class MagicAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
         null
     )
+
+    val disadvantages = listOf(oralRequirement, requireGestures, magicalExhaustion, shamanism, magicalTies,
+        slowMagicRecovery, magicBlockage, actionRequirement)
 }

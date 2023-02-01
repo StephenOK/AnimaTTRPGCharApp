@@ -121,7 +121,7 @@ fun CharacterPageFragment(
         updateFunc()
     })
 
-    dropdownList.add(DropdownData(stringResource(R.string.raceText), remember{mutableStateOf(charInstance.ownRace!!.raceIndex)},
+    dropdownList.add(DropdownData(stringResource(R.string.raceText), remember{mutableStateOf(charInstance.ownRace.raceIndex)},
         stringArrayResource(id = R.array.raceArray)
     )
     //set character's race by the given index number
@@ -152,39 +152,39 @@ fun CharacterPageFragment(
     })
 
     //define primary characteristic items
-    primaryList.add(PrimaryData(stringResource(R.string.strText), remember{mutableStateOf(charInstance.totalSTR)}, strMod)
+    primaryList.add(PrimaryData(stringResource(R.string.strText), remember{mutableStateOf(charInstance.str)}, strMod)
     { newSTR ->
         charInstance.setSTR(newSTR)
         totalWear.value = charInstance.wearArmor.toString()
         charInstance.modSTR
     })
-    primaryList.add(PrimaryData(stringResource(R.string.dexText), remember{mutableStateOf(charInstance.totalDEX)}, dexMod)
+    primaryList.add(PrimaryData(stringResource(R.string.dexText), remember{mutableStateOf(charInstance.dex)}, dexMod)
     { newDEX ->
         charInstance.setDEX(newDEX)
         totalAttack.value = charInstance.attack.toString()
         totalBlock.value = charInstance.block.toString()
         charInstance.modDEX
     })
-    primaryList.add(PrimaryData(stringResource(R.string.agiText), remember{mutableStateOf(charInstance.totalAGI)}, agiMod)
+    primaryList.add(PrimaryData(stringResource(R.string.agiText), remember{mutableStateOf(charInstance.agi)}, agiMod)
     { newAGI ->
         charInstance.setAGI(newAGI)
         totalDodge.value = charInstance.dodge.toString()
         charInstance.modAGI
     })
-    primaryList.add(PrimaryData(stringResource(R.string.conText), remember{mutableStateOf(charInstance.totalCON)}, conMod)
+    primaryList.add(PrimaryData(stringResource(R.string.conText), remember{mutableStateOf(charInstance.con)}, conMod)
     { newCON ->
         charInstance.setCON(newCON)
         baseLife.value = charInstance.lifeBase.toString()
         lifeTotal.value = charInstance.lifeMax
         charInstance.modCON
     })
-    primaryList.add(PrimaryData(stringResource(R.string.intText), remember{mutableStateOf(charInstance.totalINT)}, remember{mutableStateOf(charInstance.modINT)})
+    primaryList.add(PrimaryData(stringResource(R.string.intText), remember{mutableStateOf(charInstance.int)}, remember{mutableStateOf(charInstance.modINT)})
     {newINT -> charInstance.setINT(newINT); charInstance.modINT})
-    primaryList.add(PrimaryData(stringResource(R.string.powText), remember{mutableStateOf(charInstance.totalPOW)}, powMod)
+    primaryList.add(PrimaryData(stringResource(R.string.powText), remember{mutableStateOf(charInstance.pow)}, powMod)
     {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW})
-    primaryList.add(PrimaryData(stringResource(R.string.wpText), remember{mutableStateOf(charInstance.totalWP)}, wpMod)
+    primaryList.add(PrimaryData(stringResource(R.string.wpText), remember{mutableStateOf(charInstance.wp)}, wpMod)
     {newWP -> charInstance.setWP(newWP); charInstance.modWP})
-    primaryList.add(PrimaryData(stringResource(R.string.perText), remember{mutableStateOf(charInstance.totalPER)}, remember{mutableStateOf(charInstance.modPER)})
+    primaryList.add(PrimaryData(stringResource(R.string.perText), remember{mutableStateOf(charInstance.per)}, remember{mutableStateOf(charInstance.modPER)})
     {newPER -> charInstance.setPER(newPER); charInstance.modPER})
 
     //define resistance items

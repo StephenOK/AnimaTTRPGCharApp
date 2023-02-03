@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -17,16 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 @Composable
 fun AdvantageCostPick(
     item: Advantage,
     startPage: Int,
-    closeDialog: () -> Unit
+    closeDialog: (String?) -> Unit
 ){
-    val optionPicked = remember{mutableStateOf(0)}
-    val costPicked = remember{mutableStateOf(0)}
+    val optionPicked = remember{mutableStateOf(item.picked)}
+    val costPicked = remember{mutableStateOf(item.pickedCost)}
     val pageNum = remember{mutableStateOf(startPage)}
 
     Dialog(
@@ -50,43 +51,46 @@ fun AdvantageCostPick(
                         .align(Alignment.Center)
                         .height(400.dp)
                 ){
-                    when(pageNum.value){
-                        1 ->{
-                            if(item.options!!.isNotEmpty()){
-                                item.options.forEach{
-                                    RadioButton(
-                                        selected = optionPicked.value == item.options.indexOf(it),
-                                        onClick = {optionPicked.value = item.options.indexOf(it)}
-                                    )
-                                    Text(text = it)
+                    LazyColumn {
+                        when (pageNum.value) {
+                            1 -> {
+                                if (item.options!!.isNotEmpty()) {
+                                    item.options.forEach {
+                                        item {
+                                            Row {
+                                                RadioButton(
+                                                    selected = optionPicked.value == item.options.indexOf(
+                                                        it
+                                                    ),
+                                                    onClick = {
+                                                        optionPicked.value =
+                                                            item.options.indexOf(it)
+                                                    }
+                                                )
+
+                                                Text(text = it)
+                                            }
+                                        }
+                                    }
+                                } else {
+
                                 }
                             }
-                            else{
-                                val psychicPowerList = charInstance.psychic.telepathy.allPowers +
-                                        charInstance.psychic.psychokinesis.allPowers +
-                                        charInstance.psychic.pyrokinesis.allPowers +
-                                        charInstance.psychic.cryokinesis.allPowers +
-                                        charInstance.psychic.physicalIncrease.allPowers +
-                                        charInstance.psychic.energyPowers.allPowers +
-                                        charInstance.psychic.sentiencePowers.allPowers +
-                                        charInstance.psychic.telemetry.allPowers
 
-                                psychicPowerList.forEach{
-                                    RadioButton(
-                                        selected = optionPicked.value == psychicPowerList.indexOf(it),
-                                        onClick = {optionPicked.value = psychicPowerList.indexOf(it)}
-                                    )
-                                    Text(text = it.name)
+                            2 -> {
+                                item.cost.forEach {
+                                    item {
+                                        Row {
+                                            RadioButton(
+                                                selected = costPicked.value == item.cost.indexOf(it),
+                                                onClick = {
+                                                    costPicked.value = item.cost.indexOf(it)
+                                                }
+                                            )
+                                        }
+                                        Text(text = it.toString())
+                                    }
                                 }
-                            }
-                        }
-
-                        2 ->{
-                            item.cost.forEach{
-                                RadioButton(
-                                    selected = costPicked.value == item.cost.indexOf(it),
-                                    onClick = {costPicked.value = item.cost.indexOf(it)}
-                                )
                             }
                         }
                     }
@@ -102,26 +106,22 @@ fun AdvantageCostPick(
                             1 -> {
                                 if(item.cost.size > 1)
                                     pageNum.value = 2
-                                else {
-                                    charInstance.advantageRecord.acquireAdvantage(
+                                else
+                                    closeDialog(charInstance.advantageRecord.acquireAdvantage(
                                         item,
                                         optionPicked.value,
                                         costPicked.value
-                                    )
-                                    closeDialog()
-                                }
+                                    ))
                             }
 
-                            2 -> {
-                                charInstance.advantageRecord.acquireAdvantage(item, optionPicked.value, costPicked.value)
-                                closeDialog()
-                            }
+                            2 ->
+                                closeDialog(charInstance.advantageRecord.acquireAdvantage(item, optionPicked.value, costPicked.value))
                         }
                     }) {
                         Text(text = "Select")
                     }
 
-                    TextButton(onClick = {closeDialog()}) {
+                    TextButton(onClick = {closeDialog(null)}) {
                         Text(text = "Cancel")
                     }
                 }

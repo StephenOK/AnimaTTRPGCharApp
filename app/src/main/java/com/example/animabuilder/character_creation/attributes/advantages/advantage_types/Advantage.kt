@@ -1,4 +1,4 @@
-package com.example.animabuilder.character_creation.attributes.advantages
+package com.example.animabuilder.character_creation.attributes.advantages.advantage_types
 
 import java.io.Serializable
 

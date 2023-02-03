@@ -202,6 +202,29 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         }
     }
 
+    @JvmName("setMagicTies1")
+    fun setMagicTies(input: Boolean){
+        if(input){
+            lightBookFreeSpells.clear()
+            darkBookFreeSpells.clear()
+            creationBookFreeSpells.clear()
+            destructionBookFreeSpells.clear()
+            airBookFreeSpells.clear()
+            earthBookFreeSpells.clear()
+            waterBookFreeSpells.clear()
+            fireBookFreeSpells.clear()
+            essenceBookFreeSpells.clear()
+            illusionBookFreeSpells.clear()
+            necromancyBookFreeSpells.clear()
+
+            while(individualSpells.size > 0){
+                changeIndividualSpell(individualSpells[0], false)
+            }
+        }
+
+        magicTies = input
+    }
+
     /**
      * Spend magic levels in the given element
      *

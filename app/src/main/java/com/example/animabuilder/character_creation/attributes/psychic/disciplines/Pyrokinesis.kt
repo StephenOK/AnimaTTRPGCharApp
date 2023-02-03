@@ -7,7 +7,7 @@ import java.io.Serializable
 class Pyrokinesis: Discipline(), Serializable {
     val createFire = PsychicPower(
         "Create Fire",
-        2,
+        1,
         true,
         true,
         "This Power creates Fire Intensities or arouses an existing flame to equal " +

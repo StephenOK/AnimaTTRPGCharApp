@@ -1,6 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
 
 class PsychicAdvantages: Serializable {

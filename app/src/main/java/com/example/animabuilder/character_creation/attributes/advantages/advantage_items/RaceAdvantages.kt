@@ -1,8 +1,8 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
-import com.example.animabuilder.character_creation.attributes.advantages.RacialAdvantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import java.io.Serializable
 
 class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
@@ -14,7 +14,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "Resistance (DR), and a +5 to Physical Resistance (PhR) and Venom Resistance (VR). " +
                 "In addition, a Nephilim cannot choose the following Disadvantages: Sickly, " +
                 "Serious Illness, or Susceptible to Magic.",
-        {
+        {_, _ ->
             charInstance.rphysSpec += 5
             charInstance.rdSpec += 20
             charInstance.rvSpec += 5
@@ -27,7 +27,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
 
             charInstance.updateResistances()
         },
-        {
+        {_, _ ->
             charInstance.rphysSpec -= 5
             charInstance.rdSpec -= 20
             charInstance.rvSpec -= 5
@@ -43,7 +43,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "gives them a special resistance of +10 against any effect based on The Light. " +
                 "However, that inclination also impedes them from choosing the Elemental " +
                 "Compatibility (Dark) Advantage.",
-        {
+        {_, _ ->
             val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
 
             val dummyAdvantage = Advantage(
@@ -69,11 +69,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Quick Healing (Sylvain)",
         "Sylvain possess an incredible capacity for recovering from physical injury. " +
                 "They add one point to their natural Regeneration.",
-        {
+        {_, _ ->
             charInstance.specRegen += 1
             charInstance.updateRegeneration()
         },
-        {
+        {_, _ ->
             charInstance.specRegen -= 1
             charInstance.updateRegeneration()
         }
@@ -104,14 +104,14 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Giant",
         "Jayan add 2 points to their Size Characteristic and may not choose to reduce it " +
                 "using the Uncommon Size Advantage.",
-        {
+        {_, _ ->
             val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage("Uncommon Size")
             if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
                 charInstance.advantageRecord.removeAdvantage(uncommonSizeHeld)
 
             charInstance.changeSize(6)
         },
-        {
+        {_, _ ->
             charInstance.changeSize(3)
         }
     )
@@ -120,11 +120,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Withstand Fatigue",
         "The Jayan tire less than other characters with the same Constitution, and " +
                 "therefore they add 1 point to their maximum Fatigue number.",
-        {
+        {_, _ ->
             charInstance.specFatigue += 1
             charInstance.updateFatigue()
         },
-        {
+        {_, _ ->
             charInstance.specFatigue -= 1
             charInstance.updateFatigue()
         }
@@ -134,11 +134,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Resistance to Damage",
         "Jayan souls make their bodies much more resistant to the shock produced by " +
                 "damage. As a result, they apply a +15 bonus to their Physical Resistance (PhR).",
-        {
+        {_, _ ->
             charInstance.rphysSpec += 15
             charInstance.updateResistances()
         },
-        {
+        {_, _ ->
             charInstance.rphysSpec -= 15
             charInstance.updateResistances()
         }
@@ -149,8 +149,8 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Because of their enhanced muscular development, Jayan add 1 point to their " +
                 "Strength. Additionally, Jayan may not use the Deduct Two Points from a " +
                 "Characteristic Disadvantage to lower their Strength.",
-        {
-            charInstance.setStrBonus(charInstance.strBonus + 1)
+        {_, _ ->
+            charInstance.setStrBonus(1)
             val reference = charInstance.advantageRecord.commonAdvantages.deductCharacteristic
 
             val dummyAdvantage = Advantage(
@@ -169,7 +169,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
 
             charInstance.advantageRecord.removeAdvantage(dummyAdvantage)
         },
-        {charInstance.setStrBonus(charInstance.strBonus - 1)}
+        {_, _ -> charInstance.setStrBonus(-1)}
     )
 
     private val spiritualVision = RacialAdvantage(
@@ -188,11 +188,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Susceptibility to Magic",
         "Spells and mystical effects are especially effective against Jayan, who suffer " +
                 "a -10 penalty to their Magic Resistance (MR).",
-        {
+        {_, _ ->
             charInstance.rmSpec -= 10
             charInstance.updateResistances()
         },
-        {
+        {_, _ ->
             charInstance.rmSpec += 10
             charInstance.updateResistances()
         }
@@ -241,7 +241,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Common Appearance",
         "Because of their average looks, D\'Anjayni never possess an Appearance of less " +
                 "than 3 nor more than 7.",
-        { if(charInstance.appearance !in 3..7) charInstance.setAppearance(5)},
+        {_, _ -> if(charInstance.appearance !in 3..7) charInstance.setAppearance(5)},
         null
     )
 
@@ -358,11 +358,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Small Size",
         "The Daimah are not usually tall or heavily built. They subtract 1 from their " +
                 "Size Characteristic.",
-        {
+        {_, _ ->
             charInstance.sizeSpecial -= 1
             charInstance.updateSize()
         },
-        {
+        {_, _ ->
             charInstance.sizeSpecial += 1
             charInstance.updateSize()
         }
@@ -386,7 +386,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "rolls except Physical Resistance (PhR), for which they receive +20. Female " +
                 "Duk\'zarist gain a +15 to all Resistance rolls except Magic Resistance (MR), for " +
                 "which they receive +20.",
-        {
+        {_, _ ->
             charInstance.rphysSpec += 15
             charInstance.rdSpec += 15
             charInstance.rvSpec += 15
@@ -398,7 +398,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
 
             charInstance.updateResistances()
         },
-        {
+        {_, _ ->
             charInstance.rphysSpec -= 15
             charInstance.rdSpec -= 15
             charInstance.rvSpec -= 15
@@ -418,7 +418,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "natural inclination gives them a special resistance of +10 against any effect " +
                 "based on The Dark. However, that inclination also impedes them from choosing " +
                 "the Elemental Compatibility (Light) Advantage.",
-        {
+        {_, _ ->
             val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
 
             val dummyAdvantage = Advantage(
@@ -453,11 +453,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Quick Healing (Duk\'zarist)",
         "Duk\'zarist possess an incredible capacity for recovering from any physical " +
                 "injury. They add one point to their natural Regeneration.",
-        {
+        {_, _ ->
             charInstance.specRegen += 1
             charInstance.updateRegeneration()
         },
-        {
+        {_, _ ->
             charInstance.specRegen -= 1
             charInstance.updateRegeneration()
         }
@@ -497,15 +497,25 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "The psychic powers of the Duk\'zarist are naturally tied to fire. If they " +
                 "develop their mental abilities, the first one they must acquire is the " +
                 "discipline of Pyrokinesis.",
-        {
+        {_, _ ->
             if(charInstance.psychic.totalPsychicPoints > 0) {
                 if (charInstance.psychic.getFreePsyPoints() == 0) {
-                    val powerRemoved = charInstance.psychic.masteredPowers.last()
-                    charInstance.psychic.masterPower(
-                        powerRemoved,
-                        charInstance.psychic.getPowerDiscipline(powerRemoved)!!,
-                        false
-                    )
+                    val powerRemoved =
+                        if (charInstance.psychic.masteredPowers.size > 0) charInstance.psychic.masteredPowers.last()
+                        else null
+                    if(powerRemoved != null)
+                        charInstance.psychic.masterPower(
+                            powerRemoved,
+                            charInstance.psychic.getPowerDiscipline(powerRemoved)!!,
+                            false
+                        )
+                    else{
+                        val disciplineRemoved =
+                            if (charInstance.psychic.disciplineInvestment.size > 0) charInstance.psychic.disciplineInvestment.last()
+                            else null
+                        if(disciplineRemoved != null)
+                            charInstance.psychic.updateInvestment(disciplineRemoved, false)
+                    }
                 }
 
                 charInstance.psychic.updateInvestment(charInstance.psychic.pyrokinesis, true)
@@ -520,7 +530,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "natural malformation. A Duk\'zarist cannot choose the following Disadvantages: " +
                 "Atrophied Limb, Blind, Deafness, Mute, Nearsighted, Physical Weakness, Serious " +
                 "Illness, Sickly, and Susceptible to Poisons.",
-        {
+        {_, _ ->
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.atrophiedLimb)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.blind)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.deafness)

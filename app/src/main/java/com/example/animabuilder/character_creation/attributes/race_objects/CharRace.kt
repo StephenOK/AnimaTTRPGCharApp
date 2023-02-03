@@ -1,7 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.race_objects
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.RaceAdvantages
 import java.io.Serializable
 

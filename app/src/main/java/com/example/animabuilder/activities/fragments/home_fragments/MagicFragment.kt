@@ -29,6 +29,8 @@ fun MagicFragment(updateFunc: () -> Unit) {
     val boughtAccString = remember{mutableStateOf(charInstance.magic.zeonAccMult.toString())}
     val totalAccString = remember{mutableStateOf(charInstance.magic.zeonAccTotal.toString())}
 
+    val zeonRecoverText = remember{mutableStateOf(charInstance.magic.magicRecoveryTotal.toString())}
+
     //initialize strings for Magic Projection purchase and total
     val boughtProjString = remember{mutableStateOf(charInstance.magic.boughtMagProjection.toString())}
     val totalMagProjectString = remember{mutableStateOf(charInstance.magic.magProjTotal.toString())}
@@ -75,6 +77,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 boughtAccString.value = input
                 totalAccString.value =
                     charInstance.magic.zeonAccTotal.toString()
+                zeonRecoverText.value = charInstance.magic.magicRecoveryTotal.toString()
                 updateFunc()
             }
         },
@@ -82,6 +85,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
             charInstance.magic.buyZeonAcc(1)
             boughtAccString.value = ""
             totalAccString.value = charInstance.magic.zeonAccTotal.toString()
+            zeonRecoverText.value = charInstance.magic.magicRecoveryTotal.toString()
             updateFunc()
         }
     ))
@@ -241,6 +245,8 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 Text(text = maxZeonString.value, modifier = Modifier.weight(0.25f))
             }
         }
+
+        item{Text(text = "Zeon Recovery: " + zeonRecoverText.value)}
 
         //display zeon accumulation and magic projection tables
         items(zeonPurchaseItemTable){

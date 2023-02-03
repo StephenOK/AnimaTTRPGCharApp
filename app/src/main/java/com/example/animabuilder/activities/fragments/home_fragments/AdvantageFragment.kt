@@ -14,21 +14,20 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.contents
 import com.example.animabuilder.activities.detailAlertOn
 import com.example.animabuilder.activities.detailItem
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 @Composable
-fun AdvantageFragment(){
+fun AdvantageFragment(updateBottomBar: () -> Unit){
     val context = LocalContext.current
+
+    val creationPoints = remember{mutableStateOf((3 - charInstance.advantageRecord.creationPointSpent).toString())}
 
     val advantageAdjustOn = remember{mutableStateOf(false)}
     val advantageToAdjust = remember{mutableStateOf<Advantage?>(null)}
@@ -47,8 +46,14 @@ fun AdvantageFragment(){
     advantageTable.add(AdvantageList("Psychic Disadvantages", charInstance.advantageRecord.psychicAdvantages.disadvantages))
 
     LazyColumn{
+        item{Text(text = "Creation Points: " + creationPoints.value)}
+
         items(advantageTable){
-            AdvantageDisplay(it, context, {takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())})
+            AdvantageDisplay(
+                it,
+                context,
+                creationPoints,
+                {updateBottomBar(); takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())})
             {input, pageNum ->
                 advantageAdjustOn.value = true
                 advantageToAdjust.value = input
@@ -57,16 +62,27 @@ fun AdvantageFragment(){
         }
 
         items(takenAdvantages){
-            HeldAdvantageDisplay(it)
-            { takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList()) }
+            HeldAdvantageDisplay(it, creationPoints)
+            { updateBottomBar(); takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList()) }
+        }
+
+        item{Text(text = "Racial Advantages")}
+        items(charInstance.ownRace.raceAdvantages){
+            AdvantageRow(it, null, {}, {})
         }
     }
 
     if(advantageAdjustOn.value)
         AdvantageCostPick(advantageToAdjust.value!!, advantageAdjustInput.value)
-        {
+        {input: String? ->
+            if(input != null)
+                Toast.makeText(context, input, Toast.LENGTH_LONG).show()
+
+            updateBottomBar()
+
             takenAdvantages.clear()
             takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
+            creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
             advantageAdjustOn.value = false
         }
 }
@@ -75,6 +91,7 @@ fun AdvantageFragment(){
 private fun AdvantageDisplay(
     advantageList: AdvantageList,
     context: Context,
+    creationPoints: MutableState<String>,
     updateTaken: () -> Unit,
     activateAdjustment: (Advantage, Int) -> Unit
 ){
@@ -108,6 +125,8 @@ private fun AdvantageDisplay(
                             else
                                 updateTaken()
                         }
+
+                        creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
                     }
                 }
             }
@@ -143,14 +162,18 @@ private fun AdvantageRow(
 }
 
 @Composable
-private fun HeldAdvantageDisplay(item: Advantage, updateTaken: () -> Unit){
+private fun HeldAdvantageDisplay(item: Advantage, creationPoints: MutableState<String>, updateTaken: () -> Unit){
     val nameAddition =
         if(item.picked != null)
             " (" + item.options!![item.picked] + ")"
         else null
 
     AdvantageRow(item, nameAddition, {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")})
-    {charInstance.advantageRecord.removeAdvantage(item); updateTaken()}
+    {
+        charInstance.advantageRecord.removeAdvantage(item)
+        updateTaken()
+        creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
+    }
 }
 
 val AdvantageDetails = @Composable{item: Advantage ->

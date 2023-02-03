@@ -1,7 +1,8 @@
 package com.example.animabuilder.character_creation
 
 import androidx.compose.runtime.MutableState
-import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.AdvantageRecord
+import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
@@ -213,6 +214,7 @@ class BaseCharacter: Serializable {
         updateBlock()
         updateDodge()
         updateWear()
+        updateInitiative()
 
         adjustMaxValues()
         secondaryList.classUpdate(ownClass)
@@ -252,16 +254,16 @@ class BaseCharacter: Serializable {
     }
 
     fun applyRaceAdvantages(){
-        ownRace!!.raceAdvantages.forEach{
+        ownRace.raceAdvantages.forEach{
             if(it.onTake != null)
-                it.onTake!!(it.picked!!, it.cost[it.pickedCost])
+                it.onTake!!(it.picked, it.cost[it.pickedCost])
         }
     }
 
     fun removeRaceAdvantages(){
-        ownRace!!.raceAdvantages.forEach{
+        ownRace.raceAdvantages.forEach{
             if(it.onRemove != null)
-                it.onRemove!!(it.picked!!, it.cost[it.pickedCost])
+                it.onRemove!!(it.picked, it.cost[it.pickedCost])
         }
     }
 
@@ -289,6 +291,7 @@ class BaseCharacter: Serializable {
         updateBlock()
         updateDodge()
         updateWear()
+        updateInitiative()
 
         ki.updateMK()
 
@@ -344,6 +347,11 @@ class BaseCharacter: Serializable {
     //setters for each primary characteristic
     var setSTR = { strVal: Int ->
         str = strVal
+
+        while(str + strBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 0, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 0, 0)!!)
+        }
+
         updateStrValues()
     }
 
@@ -367,6 +375,11 @@ class BaseCharacter: Serializable {
 
     var setDEX = { dexVal: Int ->
         dex = dexVal
+
+        while(dex + dexBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 1, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 1, 0)!!)
+        }
+
         updateDexValues()
     }
 
@@ -385,6 +398,7 @@ class BaseCharacter: Serializable {
         secondaryList.updateDEX(modDEX)
         updateAttack()
         updateBlock()
+        updateInitiative()
         ki.updateKiStats()
         magic.calcMagProj()
         psychic.updatePsyProjection()
@@ -392,6 +406,11 @@ class BaseCharacter: Serializable {
 
     var setAGI = { agiVal: Int ->
         agi = agiVal
+
+        while(agi + agiBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 2, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 2, 0)!!)
+        }
+
         updateAgiValues()
     }
 
@@ -409,11 +428,17 @@ class BaseCharacter: Serializable {
 
         secondaryList.updateAGI(modAGI)
         updateDodge()
+        updateInitiative()
         ki.updateKiStats()
     }
 
     var setCON = { conVal: Int ->
         con = conVal
+
+        while(con + conBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 3, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 3, 0)!!)
+        }
+
         updateConValues()
     }
 
@@ -440,6 +465,11 @@ class BaseCharacter: Serializable {
 
     var setINT = { intVal: Int ->
         int = intVal
+
+        while(int + intBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 4, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 4, 0)!!)
+        }
+
         updateIntValues()
     }
 
@@ -461,6 +491,11 @@ class BaseCharacter: Serializable {
 
     var setPOW = { powVal: Int ->
         pow = powVal
+
+        while(pow + powBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 5, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 5, 0)!!)
+        }
+
         updatePowValues()
     }
 
@@ -488,6 +523,11 @@ class BaseCharacter: Serializable {
 
     var setWP = { wpVal: Int ->
         wp = wpVal
+
+        while(wp + wpBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 6, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 6, 0)!!)
+        }
+
         updateWpValues()
     }
 
@@ -511,13 +551,18 @@ class BaseCharacter: Serializable {
     }
 
     var setPER = { perVal: Int ->
-        per += perVal
+        per = perVal
+
+        while(per + perBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 7, 0)){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 7, 0)!!)
+        }
+
         updatePerValues()
     }
 
     @JvmName("setPerBonus1")
     fun setPerBonus(bonus: Int){
-        perBonus = bonus
+        perBonus += bonus
         updatePerValues()
     }
 
@@ -671,7 +716,7 @@ class BaseCharacter: Serializable {
     }
 
     fun updateInitiative(){
-        totalInitiative = (ownClass.initiativePerLevel * lvl) + specInitiative
+        totalInitiative = (ownClass.initiativePerLevel * lvl) + modDEX + modAGI + specInitiative
     }
 
     //updates the character's resistances
@@ -726,7 +771,7 @@ class BaseCharacter: Serializable {
 
     @JvmName("setAppearance1")
     fun setAppearance(input: Int){
-        if(advantageRecord.takenAdvantages.contains(advantageRecord.commonAdvantages.unattractive))
+        if(advantageRecord.containsAny("Unattractive") != null)
             appearance = 2
         else if(ownRace.heldRace != RaceName.danjayni || input in 3..7)
             appearance = input

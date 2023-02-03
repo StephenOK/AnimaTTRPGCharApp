@@ -1,7 +1,10 @@
-package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
+package com.example.animabuilder.character_creation.attributes.advantages
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.CommonAdvantages
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.MagicAdvantages
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.PsychicAdvantages
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.class_objects.Archetype
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import java.io.Serializable
@@ -94,14 +97,18 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
             commonAdvantages.unattractive ->
                 if(charInstance.appearance < 7) return "Minimum appearance of 7 required"
 
+            magicAdvantages.slowMagicRecovery ->
+                if(containsAny("Magic Blockage") != null)
+                    return "Cannot take this with Magic Blockage"
+
             magicAdvantages.magicBlockage ->
-                if(takenAdvantages.contains(magicAdvantages.slowMagicRecovery))
+                if(containsAny("Slow Recovery of Magic") != null)
                     return "Cannot take this with Slow Recovery of Magic"
         }
 
-        if(toAdd.special == null && containsEquivalent(toAdd))
+        if(toAdd.special == null && containsAny(toAdd.name) != null)
             return "You cannot have multiple copies of this Advantage"
-        else if(contains("Natural Knowledge of a Path", toAdd.picked, toAdd.pickedCost))
+        else if(contains("Natural Knowledge of a Path", taken, takenCost))
             return "You cannot take the same Path multiple times"
 
         val copyAdvantage = Advantage(
@@ -154,6 +161,14 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
     fun getAdvantage(itemName: String): Advantage?{
         takenAdvantages.forEach{
             if(it.name == itemName) return it
+        }
+
+        return null
+    }
+
+    fun getAdvantage(itemName: String, itemTaken: Int, itemCost: Int): Advantage?{
+        takenAdvantages.forEach{
+            if(it.name == itemName && it.picked == itemTaken && it.pickedCost == itemCost) return it
         }
 
         return null

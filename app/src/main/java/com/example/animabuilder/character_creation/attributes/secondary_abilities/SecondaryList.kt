@@ -12,7 +12,7 @@ import java.io.Serializable
  * Keeps track of natural bonuses taken by the player
  */
 
-class SecondaryList(private val charInstance: BaseCharacter) : Serializable {
+class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     var allTradesTaken = false
 
     //initialize current natural bonuses taken

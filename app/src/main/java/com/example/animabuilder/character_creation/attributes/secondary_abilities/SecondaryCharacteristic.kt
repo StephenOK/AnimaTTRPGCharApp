@@ -21,6 +21,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
     var advPerPoint = 0
     var pointsFromClass = 0
     var special = 0
+    var specialPerLevel = 0
     var bonusApplied = false
     var total = 0
 
@@ -35,6 +36,12 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
     @JvmName("setPointsApplied1")
     fun setPointsApplied(points: Int) {
         pointsApplied = points
+
+        if(points == 0 && bonusApplied) {
+            setBonusApplied(false)
+            parent.incrementNat(false)
+        }
+
         updateDevSpent()
         refreshTotal()
     }
@@ -65,6 +72,12 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
         refreshTotal()
     }
 
+    @JvmName("setSpecialPerLevel1")
+    fun setSpecialPerLevel(points: Int){
+        specialPerLevel += points
+        refreshTotal()
+    }
+
     //setter for natural bonus
     @JvmName("setBonusApplied1")
     fun setBonusApplied(bonus: Boolean) {
@@ -80,7 +93,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
 
     //recalculates the total value after any other setter is called
     fun refreshTotal() {
-        total = modVal + pointsApplied + pointsFromClass + special
+        total = modVal + pointsApplied + pointsFromClass + special + (specialPerLevel * parent.charInstance.lvl)
         if(parent.allTradesTaken) total += 10
         else if (pointsApplied == 0) total -= 30
 

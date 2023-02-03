@@ -1,7 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
 
 class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
@@ -311,10 +311,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(1, 2),
         0,
         {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setDevPerPoint(cost)
+            charInstance.secondaryList.fullList[input!!].setAdvPerPoint(cost)
+            charInstance.updateTotalSpent()
         },
         {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setDevPerPoint(cost * -1)
+            charInstance.secondaryList.fullList[input!!].setAdvPerPoint(cost * -1)
+            charInstance.updateTotalSpent()
         }
     )
 
@@ -334,7 +336,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
                 "Difficult (VDF) and Absurd (ABS), respectively.",
         null,
         null,
-        listOf(),
+        charInstance.psychic.getAllPowerNames(),
         0,
         listOf(1, 2, 3),
         0,
@@ -360,11 +362,13 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {input, _ ->
             val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setDevPerPoint(1)}
+            field.forEach{it.setAdvPerPoint(1)}
+            charInstance.updateTotalSpent()
         },
         {input, _ ->
             val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setDevPerPoint(1)}
+            field.forEach{it.setAdvPerPoint(-1)}
+            charInstance.updateTotalSpent()
         }
     )
 
@@ -578,7 +582,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
 
     val increasedRegeneration = Advantage(
         "Regeneration: Basic, Advanced, and Greater",
-        "Wounds suffered byb the character heal easily.",
+        "Wounds suffered by the character heal easily.",
         "This Advantage increases the character's Regeneration by two levels. Spending " +
                 "additional points increases Regeneration by four and six levels, respectively.",
         null,
@@ -803,18 +807,18 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
             val characteristic = charInstance.secondaryList.fullList[input!!]
 
             when(cost){
-                1 -> characteristic.setSpecial(10)
-                2 -> characteristic.setSpecial(20)
-                3 -> characteristic.setSpecial(30)
+                1 -> characteristic.setSpecialPerLevel(10)
+                2 -> characteristic.setSpecialPerLevel(20)
+                3 -> characteristic.setSpecialPerLevel(30)
             }
         },
         {input, cost ->
             val characteristic = charInstance.secondaryList.fullList[input!!]
 
             when(cost){
-                1 -> characteristic.setSpecial(-10)
-                2 -> characteristic.setSpecial(-20)
-                3 -> characteristic.setSpecial(-30)
+                1 -> characteristic.setSpecialPerLevel(-10)
+                2 -> characteristic.setSpecialPerLevel(-20)
+                3 -> characteristic.setSpecialPerLevel(-30)
             }
         }
     )
@@ -838,8 +842,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
             val charList = charInstance.secondaryList.intToField(input!!)
             charList.forEach{
                 when(cost){
-                    2 -> it.setSpecial(5)
-                    3 -> it.setSpecial(10)
+                    2 -> it.setSpecialPerLevel(5)
+                    3 -> it.setSpecialPerLevel(10)
                 }
             }
         },
@@ -847,8 +851,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
             val charList = charInstance.secondaryList.intToField(input!!)
             charList.forEach{
                 when(cost){
-                    2 -> it.setSpecial(-5)
-                    3 -> it.setSpecial(-10)
+                    2 -> it.setSpecialPerLevel(-5)
+                    3 -> it.setSpecialPerLevel(-10)
                 }
             }
         }

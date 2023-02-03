@@ -2,7 +2,7 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
-import com.example.animabuilder.character_creation.attributes.advantages.Advantage
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
 
 class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
@@ -301,10 +301,10 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.magic.magicTies = true
+            charInstance.magic.setMagicTies(true)
         },
         {_, _ ->
-            charInstance.magic.magicTies = false
+            charInstance.magic.setMagicTies(false)
         }
     )
 

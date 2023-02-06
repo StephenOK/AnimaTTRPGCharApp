@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import android.widget.Toast
 import com.example.animabuilder.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -54,8 +55,19 @@ fun CharacterPageFragment(
     //initialize screen size and keyboard
     val screenSize = LocalConfiguration.current
 
+    val context = LocalContext.current
+
     //initialize mutable name
     val inputName = remember{mutableStateOf(charInstance.charName)}
+
+    val strSpec = remember{mutableStateOf(charInstance.strBonus)}
+    val dexSpec = remember{mutableStateOf(charInstance.dexBonus)}
+    val agiSpec = remember{mutableStateOf(charInstance.agiBonus)}
+    val conSpec = remember{mutableStateOf(charInstance.conBonus)}
+    val intSpec = remember{mutableStateOf(charInstance.intBonus)}
+    val powSpec = remember{mutableStateOf(charInstance.powBonus)}
+    val wpSpec = remember{mutableStateOf(charInstance.wpBonus)}
+    val perSpec = remember{mutableStateOf(charInstance.perBonus)}
 
     val strMod = remember{mutableStateOf(charInstance.modSTR)}
     val agiMod = remember{mutableStateOf(charInstance.modAGI)}
@@ -66,6 +78,18 @@ fun CharacterPageFragment(
 
     //initialize mutable states for resistance display
     val presence = remember{mutableStateOf(charInstance.presence)}
+
+    val disSpec = remember{mutableStateOf(charInstance.rdSpec)}
+    val magSpec = remember{mutableStateOf(charInstance.rmSpec)}
+    val physSpec = remember{mutableStateOf(charInstance.rphysSpec)}
+    val venSpec = remember{mutableStateOf(charInstance.rvSpec)}
+    val psySpec = remember{mutableStateOf(charInstance.rpsySpec)}
+
+    val disTotal = remember{mutableStateOf(charInstance.resistDisease)}
+    val magTotal = remember{mutableStateOf(charInstance.resistMag)}
+    val physTotal = remember{mutableStateOf(charInstance.resistPhys)}
+    val venTotal = remember{mutableStateOf(charInstance.resistVen)}
+    val psyTotal = remember{mutableStateOf(charInstance.resistPsy)}
 
     //initialize life point data
     val baseLife = remember{mutableStateOf(charInstance.lifeBase.toString())}
@@ -90,6 +114,14 @@ fun CharacterPageFragment(
             remember{mutableStateOf(Color.Black)}
         else
             remember{mutableStateOf(Color.Red)}
+
+    val totalInitiative = remember{mutableStateOf(charInstance.totalInitiative.toString())}
+
+    val fatigueText = remember{mutableStateOf(charInstance.fatigue.toString())}
+    val sizeText = remember{mutableStateOf(charInstance.sizeCategory.toString())}
+    val regenText = remember{mutableStateOf(charInstance.totalRegen.toString())}
+
+    val appearanceText = remember{mutableStateOf(charInstance.appearance.toString())}
 
     //initialize list for items() displays
     val dropdownList = mutableListOf<DropdownData>()
@@ -118,14 +150,39 @@ fun CharacterPageFragment(
         classWear.value =
             (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
 
+        totalInitiative.value = charInstance.totalInitiative.toString()
+
         updateFunc()
     })
 
-    dropdownList.add(DropdownData(stringResource(R.string.raceText), remember{mutableStateOf(charInstance.ownRace!!.raceIndex)},
+    dropdownList.add(DropdownData(stringResource(R.string.raceText), remember{mutableStateOf(charInstance.ownRace.raceIndex)},
         stringArrayResource(id = R.array.raceArray)
     )
     //set character's race by the given index number
-    { index: Int -> charInstance.setOwnRace(index) })
+    { index: Int ->
+        charInstance.setOwnRace(index)
+
+        strSpec.value = charInstance.strBonus
+        strMod.value = charInstance.modSTR
+
+        disSpec.value = charInstance.rdSpec
+        magSpec.value = charInstance.rmSpec
+        physSpec.value = charInstance.rphysSpec
+        venSpec.value = charInstance.rvSpec
+        psySpec.value = charInstance.rpsySpec
+
+        disTotal.value = charInstance.resistDisease
+        magTotal.value = charInstance.resistMag
+        physTotal.value = charInstance.resistPhys
+        venTotal.value = charInstance.resistVen
+        psyTotal.value = charInstance.resistPsy
+
+        regenText.value = charInstance.totalRegen.toString()
+        sizeText.value = charInstance.sizeCategory.toString()
+        fatigueText.value = charInstance.fatigue.toString()
+
+        appearanceText.value = charInstance.appearance.toString()
+    })
 
     dropdownList.add(DropdownData(stringResource(R.string.levelText), remember{mutableStateOf(charInstance.lvl)},
         stringArrayResource(R.array.levelCountArray)
@@ -141,6 +198,18 @@ fun CharacterPageFragment(
         maxMagic.value = charInstance.maxMagDP
         maxPsychic.value = charInstance.maxPsyDP
 
+        disSpec.value = charInstance.rdSpec
+        magSpec.value = charInstance.rmSpec
+        physSpec.value = charInstance.rphysSpec
+        venSpec.value = charInstance.rvSpec
+        psySpec.value = charInstance.rpsySpec
+
+        disTotal.value = charInstance.resistDisease
+        magTotal.value = charInstance.resistMag
+        physTotal.value = charInstance.resistPhys
+        venTotal.value = charInstance.resistVen
+        psyTotal.value = charInstance.resistPsy
+
         classAttack.value =
             (charInstance.ownClass.atkPerLevel * charInstance.lvl).toString()
         classBlock.value =
@@ -149,79 +218,163 @@ fun CharacterPageFragment(
             (charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString()
         classWear.value =
             (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
+
+        totalInitiative.value = charInstance.totalInitiative.toString()
     })
 
     //define primary characteristic items
-    primaryList.add(PrimaryData(stringResource(R.string.strText), remember{mutableStateOf(charInstance.str)}, strMod)
+    primaryList.add(
+        PrimaryData(
+            stringResource(R.string.strText),
+            remember{mutableStateOf(charInstance.str.toString())},
+            strSpec,
+            strMod
+        )
     { newSTR ->
         charInstance.setSTR(newSTR)
+        strSpec.value = charInstance.strBonus
+
         totalWear.value = charInstance.wearArmor.toString()
+        sizeText.value = charInstance.sizeCategory.toString()
+
         charInstance.modSTR
     })
-    primaryList.add(PrimaryData(stringResource(R.string.dexText), remember{mutableStateOf(charInstance.dex)}, dexMod)
+
+    primaryList.add(
+        PrimaryData(stringResource(R.string.dexText),
+            remember{mutableStateOf(charInstance.dex.toString())},
+            dexSpec,
+            dexMod)
     { newDEX ->
         charInstance.setDEX(newDEX)
+        dexSpec.value = charInstance.dexBonus
+
         totalAttack.value = charInstance.attack.toString()
         totalBlock.value = charInstance.block.toString()
+        totalInitiative.value = charInstance.totalInitiative.toString()
         charInstance.modDEX
     })
-    primaryList.add(PrimaryData(stringResource(R.string.agiText), remember{mutableStateOf(charInstance.agi)}, agiMod)
+
+    primaryList.add(
+        PrimaryData(stringResource(R.string.agiText),
+            remember{mutableStateOf(charInstance.agi.toString())},
+            agiSpec,
+            agiMod
+        )
     { newAGI ->
         charInstance.setAGI(newAGI)
+        agiSpec.value = charInstance.agiBonus
+
         totalDodge.value = charInstance.dodge.toString()
+        totalInitiative.value = charInstance.totalInitiative.toString()
         charInstance.modAGI
     })
-    primaryList.add(PrimaryData(stringResource(R.string.conText), remember{mutableStateOf(charInstance.con)}, conMod)
+
+    primaryList.add(
+        PrimaryData(
+            stringResource(R.string.conText),
+            remember{mutableStateOf(charInstance.con.toString())},
+            conSpec,
+            conMod
+        )
     { newCON ->
         charInstance.setCON(newCON)
+        conSpec.value = charInstance.conBonus
+
         baseLife.value = charInstance.lifeBase.toString()
         lifeTotal.value = charInstance.lifeMax
+        fatigueText.value = charInstance.fatigue.toString()
+        sizeText.value = charInstance.sizeCategory.toString()
+        regenText.value = charInstance.totalRegen.toString()
+
         charInstance.modCON
     })
-    primaryList.add(PrimaryData(stringResource(R.string.intText), remember{mutableStateOf(charInstance.int)}, remember{mutableStateOf(charInstance.modINT)})
-    {newINT -> charInstance.setINT(newINT); charInstance.modINT})
-    primaryList.add(PrimaryData(stringResource(R.string.powText), remember{mutableStateOf(charInstance.pow)}, powMod)
-    {newPOW -> charInstance.setPOW(newPOW); charInstance.modPOW})
-    primaryList.add(PrimaryData(stringResource(R.string.wpText), remember{mutableStateOf(charInstance.wp)}, wpMod)
-    {newWP -> charInstance.setWP(newWP); charInstance.modWP})
-    primaryList.add(PrimaryData(stringResource(R.string.perText), remember{mutableStateOf(charInstance.per)}, remember{mutableStateOf(charInstance.modPER)})
-    {newPER -> charInstance.setPER(newPER); charInstance.modPER})
+
+    primaryList.add(
+        PrimaryData(
+            stringResource(R.string.intText),
+            remember{mutableStateOf(charInstance.int.toString())},
+            intSpec,
+            remember{mutableStateOf(charInstance.modINT)}
+        )
+    {newINT ->
+        charInstance.setINT(newINT)
+        intSpec.value = charInstance.intBonus
+        charInstance.modINT
+    })
+
+    primaryList.add(
+        PrimaryData(
+            stringResource(R.string.powText),
+            remember{mutableStateOf(charInstance.pow.toString())},
+            powSpec,
+            powMod
+        )
+    {newPOW ->
+        charInstance.setPOW(newPOW)
+        powSpec.value = charInstance.powBonus
+        charInstance.modPOW
+    })
+
+    primaryList.add(
+        PrimaryData(
+            stringResource(R.string.wpText),
+            remember{mutableStateOf(charInstance.wp.toString())},
+            wpSpec,
+            wpMod
+        )
+    {newWP ->
+        charInstance.setWP(newWP)
+        wpSpec.value = charInstance.wpBonus
+        charInstance.modWP
+    })
+
+    primaryList.add(
+        PrimaryData(stringResource(R.string.perText),
+            remember{mutableStateOf(charInstance.per.toString())},
+            perSpec,
+            remember{mutableStateOf(charInstance.modPER)}
+        )
+    {newPER ->
+        charInstance.setPER(newPER)
+        perSpec.value = charInstance.perBonus
+        charInstance.modPER})
 
     //define resistance items
     resistanceList.add(ResistanceData(
         "DR",
         presence,
         conMod,
-        charInstance.rdSpec,
-        charInstance.resistDisease
+        disSpec,
+        disTotal
     ))
     resistanceList.add(ResistanceData(
         "MR",
         presence,
         powMod,
-        charInstance.rmSpec,
-        charInstance.resistMag
+        magSpec,
+        magTotal
     ))
     resistanceList.add(ResistanceData(
         "PhR",
         presence,
         conMod,
-        charInstance.rphysSpec,
-        charInstance.resistPhys
+        physSpec,
+        physTotal
     ))
     resistanceList.add(ResistanceData(
         "VR",
         presence,
         conMod,
-        charInstance.rvSpec,
-        charInstance.resistVen
+        venSpec,
+        venTotal
     ))
     resistanceList.add(ResistanceData(
         "PsR",
         presence,
         wpMod,
-        charInstance.rpsySpec,
-        charInstance.resistPsy
+        psySpec,
+        psyTotal
     ))
 
     //define combat row items
@@ -277,20 +430,27 @@ fun CharacterPageFragment(
             //table header row
             Row {
                 //column buffer
-                Spacer(modifier = Modifier.weight(0.33f))
+                Spacer(modifier = Modifier.weight(0.25f))
 
                 //score header
                 Text(
                     text = stringResource(R.string.scoreLabel),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.33f)
+                    modifier = Modifier.weight(0.25f)
+                )
+
+                //bonus header
+                Text(
+                    text = "Spec",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.25f)
                 )
 
                 //mod header
                 Text(
                     text = stringResource(R.string.modLabel),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.33f)
+                    modifier = Modifier.weight(0.25f)
                 )
             }
         }
@@ -420,6 +580,39 @@ fun CharacterPageFragment(
         items(combatItemList){combatItem ->
             CombatItemRow(combatItem, updateFunc)
         }
+
+        item{Text(text = "Total Initiative: " + totalInitiative.value)}
+
+        item{Text(text = "Fatigue: " + fatigueText.value)}
+        item{Text(text = "Size Category: " + sizeText.value)}
+        item{Text(text = "Regeneration: " + regenText.value)}
+
+        item{
+            Text(text = "Appearance: ")
+            TextField(
+                value = appearanceText.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = {
+                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null)
+                        numberCatcher(
+                            it,
+                            {input ->
+                                if(input.toInt() <= 10) {
+                                    charInstance.setAppearance(input.toInt())
+                                    if(charInstance.appearance == input.toInt())
+                                        appearanceText.value = input
+                                    else
+                                        Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
+                                }
+                            },
+                            {
+                                charInstance.setAppearance(5)
+                                appearanceText.value = ""
+                            }
+                        )
+                }
+            )
+        }
     }
 }
 
@@ -503,39 +696,42 @@ private fun DropdownObject(item: DropdownData){
 @Composable
 private fun PrimaryRow(primeItem: PrimaryData){
     Row(verticalAlignment = Alignment.CenterVertically){
-        //make user input in textfield mutable
-        val statIn = remember{mutableStateOf(primeItem.statInput.value.toString())}
-
         //row label
         Text(
             text = primeItem.labelText,
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.33f))
+            modifier = Modifier.weight(0.25f))
 
         //user input section
         TextField(
-            value = statIn.value,
+            value = primeItem.statInput.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange ={
                 numberCatcher(it,
                     {input ->
                         if(input.toInt() in 1..20) {
                             //update display and mod values
-                            statIn.value = input
-                            primeItem.modOutput.value = primeItem.change(statIn.value.toInt())
+                            primeItem.statInput.value = input
+                            primeItem.modOutput.value = primeItem.change(primeItem.statInput.value.toInt())
                     }},
-                    {statIn.value = ""}
+                    {primeItem.statInput.value = ""}
                 )
             },
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            modifier = Modifier.weight(0.33f)
+            modifier = Modifier.weight(0.25f)
+        )
+
+        Text(
+            text = primeItem.statSpec.value.toString(),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(0.25f)
         )
 
         //mod display
         Text(
             text = primeItem.modOutput.value.toString(),
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.33f))
+            modifier = Modifier.weight(0.25f))
     }
 }
 
@@ -546,10 +742,6 @@ private fun PrimaryRow(primeItem: PrimaryData){
  */
 @Composable
 private fun ResistanceRow(resistance: ResistanceData){
-    //set modifiers for integer input
-    val specialStat = remember{mutableStateOf(resistance.special.toString())}
-    val resistStat = remember{mutableStateOf(resistance.total.toString())}
-
     Row(verticalAlignment = Alignment.CenterVertically){
         //name of the resistance type
         Text(
@@ -571,13 +763,13 @@ private fun ResistanceRow(resistance: ResistanceData){
         )
         //associated special addition
         Text(
-            text = specialStat.value,
+            text = resistance.special.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
         //total resistance value
         Text(
-            text = resistStat.value,
+            text = resistance.total.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
@@ -679,12 +871,14 @@ private data class DropdownData(
  *
  * labelText: name of the primary characteristic
  * statInput: initial score input
+ * statSpec: additional points in the characteristic
  * modOutput: mutable state of the mod display portion of the row
  * change: function to run on user input
  */
 private data class PrimaryData(
     val labelText: String,
-    val statInput: MutableState<Int>,
+    val statInput: MutableState<String>,
+    val statSpec: MutableState<Int>,
     val modOutput: MutableState<Int>,
     val change: (newVal:Int) -> Int
 )
@@ -702,8 +896,8 @@ private data class ResistanceData(
     val labelText: String,
     val presence: MutableState<Int>,
     val modStat: MutableState<Int>,
-    val special: Int,
-    val total: Int
+    val special: MutableState<Int>,
+    val total: MutableState<Int>
 )
 
 /**

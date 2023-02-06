@@ -11,6 +11,8 @@ class CharClass(var heldClass: ClassName) : Serializable {
     //initialize class index reference
     var classIndex = 0
 
+    lateinit var archetype: List<Archetype>
+
     //initialize class point values
     var lifePointMultiple = 0
     var lifePointsPerLevel = 0
@@ -166,6 +168,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
         when (heldClass) {
             ClassName.warrior -> {
                 classIndex = 1
+                archetype = listOf(Archetype.Fighter)
                 statBlock = intArrayOf(
                     15, 15, 5, 25, 3,
                     60, 2, 2, 2, 2, 2, 20,
@@ -181,6 +184,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.acroWarrior -> {
                 classIndex = 2
+                archetype = listOf(Archetype.Fighter)
                 statBlock = intArrayOf(
                     20, 10, 10, 25, 3,
                     60, 2, 3, 2, 2, 2, 20,
@@ -198,6 +202,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.paladin -> {
                 classIndex = 3
+                archetype = listOf(Archetype.Fighter)
                 statBlock = intArrayOf(
                     15, 15, 5, 20, 3,
                     60, 2, 2, 2, 2, 2, 20,
@@ -216,6 +221,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.darkPaladin -> {
                 classIndex = 4
+                archetype = listOf(Archetype.Fighter)
                 statBlock = intArrayOf(
                     15, 15, 5, 20, 3,
                     60, 2, 2, 2, 2, 2, 20,
@@ -235,6 +241,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.weaponMaster -> {
                 classIndex = 5
+                archetype = listOf(Archetype.Fighter)
                 statBlock = intArrayOf(
                     10, 20, 5, 10, 3,
                     60, 2, 2, 2, 1, 3, 30,
@@ -249,6 +256,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.technician -> {
                 classIndex = 6
+                archetype = listOf(Archetype.Domine)
                 statBlock = intArrayOf(
                     20, 5, 5, 50, 3,
                     60, 2, 2, 2, 2, 1, 10,
@@ -260,6 +268,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.tao -> {
                 classIndex = 7
+                archetype = listOf(Archetype.Fighter, Archetype.Domine)
                 statBlock = intArrayOf(
                     20, 10, 5, 30, 3,
                     60, 2, 2, 2, 2, 2, 15,
@@ -271,6 +280,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.ranger -> {
                 classIndex = 8
+                archetype = listOf(Archetype.Fighter, Archetype.Prowler)
                 statBlock = intArrayOf(
                     20, 10, 5, 20, 3,
                     60, 2, 2, 2, 2, 2, 25,
@@ -292,6 +302,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.shadow -> {
                 classIndex = 9
+                archetype = listOf(Archetype.Fighter, Archetype.Prowler)
                 statBlock = intArrayOf(
                     20, 5, 10, 25, 3,
                     60, 2, 3, 2, 2, 2, 20,
@@ -308,6 +319,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.thief -> {
                 classIndex = 10
+                archetype = listOf(Archetype.Prowler)
                 statBlock = intArrayOf(
                     20, 5, 10, 20, 3,
                     50, 2, 3, 2, 3, 2, 25,
@@ -327,6 +339,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.assassin -> {
                 classIndex = 11
+                archetype = listOf(Archetype.Prowler)
                 statBlock = intArrayOf(
                     20, 5, 10, 20, 3,
                     50, 2, 3, 2, 3, 2, 25,
@@ -348,6 +361,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.wizard -> {
                 classIndex = 12
+                archetype = listOf(Archetype.Mystic)
                 statBlock = intArrayOf(
                     20, 5, 5, 10, 3,
                     50, 3, 3, 2, 3, 3, 30,
@@ -362,6 +376,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.warlock -> {
                 classIndex = 13
+                archetype = listOf(Archetype.Fighter, Archetype.Mystic)
                 statBlock = intArrayOf(
                     20, 10, 5, 20, 3,
                     50, 2, 2, 2, 2, 2, 25,
@@ -377,6 +392,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.illusionist -> {
                 classIndex = 14
+                archetype = listOf(Archetype.Mystic, Archetype.Prowler)
                 statBlock = intArrayOf(
                     20, 5, 5, 20, 3,
                     50, 3, 3, 2, 3, 2, 25,
@@ -397,6 +413,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.wizMentalist -> {
                 classIndex = 15
+                archetype = listOf(Archetype.Mystic, Archetype.Psychic)
                 statBlock = intArrayOf(
                     20, 5, 5, 10, 1,
                     50, 3, 3, 2, 3, 3, 30,
@@ -410,6 +427,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.summoner -> {
                 classIndex = 16
+                archetype = listOf(Archetype.Mystic)
                 statBlock = intArrayOf(
                     20, 5, 5, 10, 3,
                     50, 3, 3, 2, 3, 3, 30,
@@ -428,6 +446,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.warSummoner -> {
                 classIndex = 17
+                archetype = listOf(Archetype.Fighter, Archetype.Mystic)
                 statBlock = intArrayOf(
                     20, 10, 5, 20, 3,
                     50, 2, 2, 2, 2, 2,
@@ -447,6 +466,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.mentalist -> {
                 classIndex = 18
+                archetype = listOf(Archetype.Psychic)
                 statBlock = intArrayOf(
                     20, 5, 5, 10, 1,
                     50, 3, 3, 2, 3, 3, 30,
@@ -457,6 +477,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             ClassName.warMentalist -> {
                 classIndex = 19
+                archetype = listOf(Archetype.Fighter, Archetype.Psychic)
                 statBlock = intArrayOf(
                     20, 10, 5, 20, 1,
                     50, 2, 2, 2, 2, 2, 25,
@@ -470,6 +491,7 @@ class CharClass(var heldClass: ClassName) : Serializable {
             }
             else -> {
                 classIndex = 0
+                archetype = listOf(Archetype.Novel)
                 statBlock = intArrayOf(
                     20, 5, 5, 20, 2,
                     60, 2, 2, 2, 2, 2, 20,

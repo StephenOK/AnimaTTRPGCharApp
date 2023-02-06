@@ -1,7 +1,11 @@
 package com.example.animabuilder.character_creation.attributes.psychic
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Text
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.disciplines.*
+import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import java.io.BufferedReader
 import java.io.Serializable
 
@@ -37,6 +41,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
     val matrixPowers = MatrixPowers()
 
     //initialize discipline and power lists
+    val legalDisciplines = mutableListOf<Discipline>()
     val disciplineInvestment = mutableListOf<Discipline>()
     val masteredPowers = mutableListOf<PsychicPower>()
 
@@ -49,10 +54,10 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      */
     fun setBasePotential(){
         //determine value exclusively from the character's willpower
-        psyPotentialBase = when(charInstance.wp){
+        psyPotentialBase = when(charInstance.totalWP){
             in 0..4 -> 0
-            in 5 .. 14 -> 10 * (charInstance.wp -4)
-            else -> 100 + ((charInstance.wp - 14) * 20)
+            in 5 .. 14 -> 10 * (charInstance.totalWP -4)
+            else -> 100 + ((charInstance.totalWP - 14) * 20)
         }
     }
 
@@ -76,6 +81,9 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
             if (charInstance.lvl == 0) 0
             //start character at 1 point and add more depending on additional levels
             else 1 + (charInstance.lvl - 1)/charInstance.ownClass.psyPerTurn
+
+        if(innatePsyPoints > 0 && charInstance.ownRace.heldRace == RaceName.dukzarist && !disciplineInvestment.contains(pyrokinesis))
+            updateInvestment(pyrokinesis, true)
 
         //update total
         updatePsyPointTotal()
@@ -121,10 +129,11 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      */
     fun updateInvestment(item: Discipline, into: Boolean): Boolean{
         //if attempting to acquire and points are available to
-        if(into && getFreePsyPoints() > 0) {
+        if(into && dukzaristAvailable(item) && getFreePsyPoints() > 0 && legalDisciplines.contains(item)) {
+
             //add item and spend points
             disciplineInvestment.add(item)
-            spentPsychicPoints += 1
+            recalcPsyPointsSpent()
 
             //notify of successful acquisition
             return true
@@ -132,19 +141,29 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
 
         //if attempting to remove the discipline
         else if (!into) {
-            //remove the discipline
-            disciplineInvestment.remove(item)
+            if(charInstance.ownRace.heldRace != RaceName.dukzarist || item != pyrokinesis) {
+                //remove the discipline
+                disciplineInvestment.remove(item)
 
-            //remove any associated powers
-            item.allPowers.forEach{
-                masterPower(it, item, false)
+                //remove any associated powers
+                removeIllegal(item)
             }
-
-            //regain Psychic Point
-            spentPsychicPoints -= 1
+            else
+                while(disciplineInvestment.size > 0){
+                    val current = disciplineInvestment[0]
+                    disciplineInvestment.remove(current)
+                    removeIllegal(current)
+                }
         }
 
         //notify of either successful removal or failed addition
+        return false
+    }
+
+    fun dukzaristAvailable(attemptedAddition: Discipline): Boolean{
+        if(charInstance.ownRace.heldRace != RaceName.dukzarist) return true
+        else if (disciplineInvestment.contains(pyrokinesis)) return true
+        else if (attemptedAddition == pyrokinesis) return true
         return false
     }
 
@@ -160,7 +179,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
         if(into && getFreePsyPoints() > 0 && legalBuy(item, discipline)){
             //add power to the character and spend the point
             masteredPowers.add(item)
-            spentPsychicPoints += 1
+            recalcPsyPointsSpent()
 
             //notify of successful purchase
             return true
@@ -170,9 +189,6 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
         else if(!into && masteredPowers.contains(item)){
             //remove the item from the character
             masteredPowers.remove(item)
-
-            //refund the point
-            spentPsychicPoints -= 1
 
             //remove any other Psychic Powers as needed
             removeIllegal(discipline)
@@ -189,32 +205,46 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      * discipline: Power's associated Psychic Discipline
      */
     fun legalBuy(item: PsychicPower, discipline: Discipline): Boolean{
-        //add no matter what if it is level 1 or 0
-        if(item.level <= 1)
-            return true
+        if(disciplineInvestment.contains(discipline)) {
+            //add no matter what if it is level 1 or 0
+            if (item.level <= 1)
+                return true
 
-        //if power is level 2
-        else if(item.level == 2){
-            //for each taken power
-            masteredPowers.forEach{
-                //determine if it is a level 1 power of the same discipline
-                if(it.level == 1 && discipline.allPowers.contains(it))
-                    return true
+            //if power is level 2
+            else if (item.level == 2) {
+                //for each taken power
+                masteredPowers.forEach {
+                    //determine if it is a level 1 power of the same discipline
+                    if (it.level == 1 && discipline.allPowers.contains(it))
+                        return true
+                }
             }
-        }
 
-        //if power is level 3
-        else if(item.level == 3){
-            //for each taken power
-            masteredPowers.forEach{
-                //determine if it is a level 2 power of the same discipline
-                if(it.level == 2 && discipline.allPowers.contains(it))
-                    return true
+            //if power is level 3
+            else if (item.level == 3) {
+                //for each taken power
+                masteredPowers.forEach {
+                    //determine if it is a level 2 power of the same discipline
+                    if (it.level == 2 && discipline.allPowers.contains(it))
+                        return true
+                }
             }
         }
 
         //notify of illegal buy
         return false
+    }
+
+    fun removeLegalDisciplineFromInt(input: Int){
+        val discipline = intToDiscipline(input)
+
+        removeLegalDiscipline(discipline)
+    }
+
+    fun removeLegalDiscipline(input: Discipline){
+        legalDisciplines.remove(input)
+        if(disciplineInvestment.contains(input))
+            updateInvestment(input, false)
     }
 
     /**
@@ -224,14 +254,32 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      */
     fun removeIllegal(discipline: Discipline){
         //for each taken power
-        masteredPowers.forEach{
-            //if presence is not legal
-            if(!legalBuy(it, discipline)){
-                //remove power and refund point
-                masteredPowers.remove(it)
-                spentPsychicPoints -= 1
-            }
+        masteredPowers.removeIf{!legalBuy(it, discipline)}
+        recalcPsyPointsSpent()
+    }
+
+    fun recalcPsyPointsSpent(){
+        spentPsychicPoints = disciplineInvestment.size + masteredPowers.size
+    }
+
+    fun getAllPowerNames(): List<String>{
+        val output = mutableListOf<String>()
+
+        val psychicPowerList =
+            telepathy.allPowers +
+                    psychokinesis.allPowers +
+                    pyrokinesis.allPowers +
+                    cryokinesis.allPowers +
+                    physicalIncrease.allPowers +
+                    energyPowers.allPowers +
+                    sentiencePowers.allPowers +
+                    telemetry.allPowers
+
+        psychicPowerList.forEach {
+            output.add(it.name)
         }
+
+        return output.toList()
     }
 
     /**
@@ -269,46 +317,46 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
 
         charInstance.addNewData(masteredPowers.size)
         masteredPowers.forEach{
-            val savePair = getPowerDiscipline(it)
-            charInstance.addNewData(savePair.first)
-            charInstance.addNewData(savePair.second)
+            val powerDiscipline = getPowerDiscipline(it)!!
+            charInstance.addNewData(disciplineToInt(powerDiscipline))
+            charInstance.addNewData(powerDiscipline.allPowers.indexOf(it))
         }
     }
 
     fun intToDiscipline(value: Int): Discipline{
         return when(value){
-            1 -> telepathy
-            2 -> psychokinesis
-            3 -> pyrokinesis
-            4 -> cryokinesis
-            5 -> physicalIncrease
-            6 -> energyPowers
-            7 -> sentiencePowers
-            8 -> telemetry
+            0 -> telepathy
+            1 -> psychokinesis
+            2 -> pyrokinesis
+            3 -> cryokinesis
+            4 -> physicalIncrease
+            5 -> energyPowers
+            6 -> sentiencePowers
+            7 -> telemetry
             else -> matrixPowers
         }
     }
 
     fun disciplineToInt(item: Discipline): Int{
         return when(item){
-            telepathy -> 1
-            psychokinesis -> 2
-            pyrokinesis -> 3
-            cryokinesis -> 4
-            physicalIncrease -> 5
-            energyPowers -> 6
-            sentiencePowers -> 7
-            telemetry ->  8
-            else -> 0
+            telepathy -> 0
+            psychokinesis -> 1
+            pyrokinesis -> 2
+            cryokinesis -> 3
+            physicalIncrease -> 4
+            energyPowers -> 5
+            sentiencePowers -> 6
+            telemetry ->  7
+            else -> 8
         }
     }
 
-    fun getPowerDiscipline(search: PsychicPower): Pair<Int, Int>{
+    fun getPowerDiscipline(search: PsychicPower): Discipline?{
         allDisciplines.forEach{
             if(it.allPowers.contains(search))
-                return Pair(disciplineToInt(it), it.allPowers.indexOf(search))
+                return it
         }
 
-        return Pair(-1, -1)
+        return null
     }
 }

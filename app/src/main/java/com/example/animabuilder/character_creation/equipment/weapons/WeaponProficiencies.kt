@@ -55,6 +55,10 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     val allWeapons = shortArms.shortArms + axes.axes + maces.maces + swords.swords + twoHanded.twoHanded +
             poles.poles + cords.cords + mixed.mixed + shields.shields + projectiles.projectiles + thrown.thrown
 
+    fun setPrimaryWeapon(input: String){
+        primaryWeapon = findWeapon(input)
+    }
+
     /**
      * Finds the weapon from the given string input
      *
@@ -155,7 +159,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
             takenMartialList -= changeItem
 
         //update martial knowledge accordingly
-        charInstance.updateMK()
+        charInstance.ki.updateMK()
 
         //return successful process
         return true
@@ -350,31 +354,23 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     fun loadProficiencies(fileReader: BufferedReader){
         primaryWeapon = findWeapon(fileReader.readLine())
 
-        var loops = fileReader.readLine().toInt()
-
-        for(loopNum in 1 .. loops)
+        for(loopNum in 0 until fileReader.readLine().toInt())
             individualModules += findWeapon(fileReader.readLine())
 
-        loops = fileReader.readLine().toInt()
-
-        for(loopNum in 1 .. loops)
+        for(loopNum in 0 until fileReader.readLine().toInt())
             loadModule(fileReader)
 
-        loops = fileReader.readLine().toInt()
-
-        for(loopNum in 1 .. loops)
+        for(loopNum in 0 until fileReader.readLine().toInt())
             styleMods += fileReader.readLine()
 
-        loops = fileReader.readLine().toInt()
-
-        for(loopNum in 1 .. loops)
+        for(loopNum in 0 until fileReader.readLine().toInt())
             takenMartialList += listOf(loadMartial(fileReader.readLine())!!)
     }
 
     /**
      * Saves the data found in this category
      */
-    fun writeProficiencies(charInstance: BaseCharacter){
+    fun writeProficiencies(){
         charInstance.addNewData(primaryWeapon.name)
 
         charInstance.addNewData(individualModules.size.toString())

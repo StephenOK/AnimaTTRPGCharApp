@@ -56,7 +56,7 @@ fun KiFragment(
     val kiRowTable = mutableListOf<KiRowData>()
     kiRowTable.add(KiRowData(
         "STR",
-        charInstance.str,
+        charInstance.totalSTR,
         charInstance.ki.boughtStrPoint,
         charInstance.ki.setBoughtStr,
         charInstance.ki.boughtStrAcc,
@@ -66,7 +66,7 @@ fun KiFragment(
     ))
     kiRowTable.add(KiRowData(
         "DEX",
-        charInstance.dex,
+        charInstance.totalDEX,
         charInstance.ki.boughtDexPoint,
         charInstance.ki.setBoughtDex,
         charInstance.ki.boughtDexAcc,
@@ -76,7 +76,7 @@ fun KiFragment(
     ))
     kiRowTable.add(KiRowData(
         "AGI",
-        charInstance.agi,
+        charInstance.totalAGI,
         charInstance.ki.boughtAgiPoint,
         charInstance.ki.setBoughtAgi,
         charInstance.ki.boughtAgiAcc,
@@ -86,7 +86,7 @@ fun KiFragment(
     ))
     kiRowTable.add(KiRowData(
         "CON",
-        charInstance.con,
+        charInstance.totalCON,
         charInstance.ki.boughtConPoint,
         charInstance.ki.setBoughtCon,
         charInstance.ki.boughtConAcc,
@@ -96,7 +96,7 @@ fun KiFragment(
     ))
     kiRowTable.add(KiRowData(
         "POW",
-        charInstance.pow,
+        charInstance.totalPOW,
         charInstance.ki.boughtPowPoint,
         charInstance.ki.setBoughtPow,
         charInstance.ki.boughtPowAcc,
@@ -106,7 +106,7 @@ fun KiFragment(
     ))
     kiRowTable.add(KiRowData(
         "WP",
-        charInstance.wp,
+        charInstance.totalWP,
         charInstance.ki.boughtWpPoint,
         charInstance.ki.setBoughtWp,
         charInstance.ki.boughtWpAcc,

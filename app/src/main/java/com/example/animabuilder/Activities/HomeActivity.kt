@@ -214,12 +214,14 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary.name){
-                        SecondaryAbilityFragment(usedDP)
+                        SecondaryAbilityFragment()
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        Advantages()
+                        AdvantageFragment()
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
                     //route to combat page

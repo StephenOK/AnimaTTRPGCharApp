@@ -25,6 +25,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var zeonAccMult = 1
     var zeonAccTotal = 0
 
+    var magicRecoveryMult = 1.0
+    var magicRecoveryTotal = 0
+
     //initialize Magic Projection stats
     var boughtMagProjection = 0
     var magProjTotal = 0
@@ -82,6 +85,8 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     val individualSpells = mutableListOf<Spell>()
     val spellList = mutableListOf<Spell>()
 
+    val naturalPaths = mutableListOf<Element>()
+    var magicTies = false
 
     /**
      * Get the character's base Zeon based on the character's Power
@@ -89,10 +94,10 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     fun setBaseZeon() {
         //determine the base Zeon
         baseZeon =
-            if(charInstance.pow == 1)
+            if(charInstance.totalPOW == 1)
                 5
             else
-                20 + (10 * charInstance.pow) + charInstance.modPOW
+                20 + (10 * charInstance.totalPOW) + charInstance.modPOW
 
         //recalculate the character's maximum Zeon
         calcMaxZeon()
@@ -122,7 +127,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      */
     fun setBaseZeonAcc() {
         //determine the base accumulation
-        baseZeonAcc = when(charInstance.pow){
+        baseZeonAcc = when(charInstance.totalPOW){
             in 5..7 -> 5
             in 8 .. 11 -> 10
             in 12..14 -> 15
@@ -154,6 +159,16 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      */
     private fun calcZeonAcc(){
         zeonAccTotal = baseZeonAcc * zeonAccMult
+        calcZeonRecovery()
+    }
+
+    fun changeRecoveryMult(input: Double){
+        magicRecoveryMult = input
+        calcZeonRecovery()
+    }
+
+    private fun calcZeonRecovery(){
+        magicRecoveryTotal = (zeonAccTotal * magicRecoveryMult).toInt()
     }
 
     /**
@@ -177,14 +192,37 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * Determine the character's Magic Level based on their intelligence
      */
     fun setMagicLevelMax(){
-        magicLevelMax = when(charInstance.int) {
-            in 6..10 -> (charInstance.int - 5) * 10
+        magicLevelMax = when(charInstance.totalINT) {
+            in 6..10 -> (charInstance.totalINT - 5) * 10
             11 -> 75
             12 -> 100
             13 -> 150
-            in 14..20 -> (charInstance.int - 12)* 100
+            in 14..20 -> (charInstance.totalINT - 12)* 100
             else -> 0
         }
+    }
+
+    @JvmName("setMagicTies1")
+    fun setMagicTies(input: Boolean){
+        if(input){
+            lightBookFreeSpells.clear()
+            darkBookFreeSpells.clear()
+            creationBookFreeSpells.clear()
+            destructionBookFreeSpells.clear()
+            airBookFreeSpells.clear()
+            earthBookFreeSpells.clear()
+            waterBookFreeSpells.clear()
+            fireBookFreeSpells.clear()
+            essenceBookFreeSpells.clear()
+            illusionBookFreeSpells.clear()
+            necromancyBookFreeSpells.clear()
+
+            while(individualSpells.size > 0){
+                changeIndividualSpell(individualSpells[0], false)
+            }
+        }
+
+        magicTies = input
     }
 
     /**
@@ -218,9 +256,11 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         else if (getElementInvestment(book) == 0 && primaryElementList.contains(book))
             setOppositeAsPrimary(book)
 
+        val cap = spent + if(naturalPaths.contains(book)) 40 else 0
+
         //remove individually bought spells obtained in this purchase
-        individualSpells.removeIf{it.inBook == book && it.level >= spent}
-        individualSpells.removeIf{it is FreeSpell && findFreeSpellElement(it) == book && it.level >= spent}
+        individualSpells.removeIf{it.inBook == book && it.level <= cap}
+        individualSpells.removeIf{it is FreeSpell && findFreeSpellElement(it) == book && it.level <= cap}
 
         //update full spell list
         updateSpellList()
@@ -286,7 +326,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     /**
      * Re-evaluates what spells the character has access to
      */
-    private fun updateSpellList(){
+    fun updateSpellList(){
         //clear magic level spent and list of usable spells
         magicLevelSpent = 0
         spellList.clear()
@@ -329,24 +369,46 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         inputElement: Element,
         spellBook: List<Spell?>
     ){
-        //add spent points value to cumulative value
-        magicLevelSpent += pointValue
+        var startIndex = 0
 
-        //if at least 2 points spent in the book
-        if(pointValue > 1) {
-            //determine how many spells are bought depending on if opposite element is primary
-            val spellRange =
-                if (!oppositeElementFound(inputElement))
-                    (pointValue / 2)
-                else
-                    (pointValue / 4)
-
-            //add indicated spells to the full list
-            for(index in 0 until spellRange) {
-                if(spellBook[index] != null)
+        if(naturalPaths.contains(inputElement)){
+            for(index in 0 until 20) {
+                if (spellBook[index] != null)
                     spellList.add(spellBook[index]!!)
                 else
                     spellList.add(getFreeSpell((index + 1) * 2, inputElement))
+            }
+
+            startIndex = 20
+        }
+
+        //add spent points value to cumulative value
+        magicLevelSpent += pointValue
+
+        //determine how many spells are bought depending on if opposite element is primary
+        val spellRange =
+            if (!oppositeElementFound(inputElement))
+                (pointValue / 2)
+            else
+                (pointValue / 4)
+
+        //if at least 1 spell gained from spent points
+        if(spellRange > 0) {
+            if(spellRange + startIndex <= 50) {
+                //add indicated spells to the full list
+                for (index in startIndex until spellRange + startIndex) {
+                    if (spellBook[index] != null)
+                        spellList.add(spellBook[index]!!)
+                    else
+                        spellList.add(getFreeSpell((index + 1) * 2, inputElement))
+                }
+            }
+            else{
+                for(index in startIndex until 50)
+                    if (spellBook[index] != null)
+                        spellList.add(spellBook[index]!!)
+                    else
+                        spellList.add(getFreeSpell((index + 1) * 2, inputElement))
             }
         }
     }
@@ -387,6 +449,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * isBought: whether spell is being bought or removed
      */
     fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean): Boolean{
+        if(magicTies)
+            return false
+
         //if spell is being bought
         return if(isBought){
             //check that spell isn't already owned from book investment
@@ -435,6 +500,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * isBought: true if acquiring the spell; false if removing it
      */
     fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean): Boolean{
+        if(magicTies)
+            return false
+
         //determine spell held by the character
         val spellItem = getFreeSpell(levelInput, elementInput)
 

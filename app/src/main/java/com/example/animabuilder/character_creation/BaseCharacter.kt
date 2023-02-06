@@ -1,8 +1,8 @@
 package com.example.animabuilder.character_creation
 
 import androidx.compose.runtime.MutableState
-import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
+import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
@@ -27,27 +27,29 @@ import kotlin.math.ceil
 
 class BaseCharacter: Serializable {
     //character's name
-    var charName: String = ""
+    var charName = ""
+
+    var isMale = true
 
     //list of secondary abilities
-    val secondaryList = SecondaryList()
-    val advantageRecord = AdvantageRecord(this@BaseCharacter)
+    val secondaryList = SecondaryList(this@BaseCharacter)
+    val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
     val ki = Ki(this@BaseCharacter)
     val magic = Magic(this@BaseCharacter)
     val summoning = Summoning(this@BaseCharacter)
     val psychic = Psychic(this@BaseCharacter)
+    val advantageRecord = AdvantageRecord(this@BaseCharacter)
 
     lateinit var ownClass: CharClass
 
     //initialize character's class and race
-    var ownRace: CharRace? = null
+    var ownRace = CharRace(RaceName.human, this@BaseCharacter)
 
     //character's level
     var lvl = 0
     var presence: Int = 20
 
-    //character creation and development points
-    var createPT = 0
+    //character development points
     var devPT = 0
     var spentTotal = 0
 
@@ -64,7 +66,6 @@ class BaseCharacter: Serializable {
     var percPsyDP = 0.0
     var ptInPsy = 0
 
-    //initialize character's primary characteristics
     var str = 0
     var dex = 0
     var agi = 0
@@ -73,6 +74,25 @@ class BaseCharacter: Serializable {
     var pow = 0
     var wp = 0
     var per = 0
+
+    var strBonus = 0
+    var dexBonus = 0
+    var agiBonus = 0
+    var conBonus = 0
+    var intBonus = 0
+    var powBonus = 0
+    var wpBonus = 0
+    var perBonus = 0
+
+    //initialize character's primary characteristics
+    var totalSTR = 0
+    var totalDEX = 0
+    var totalAGI = 0
+    var totalCON = 0
+    var totalINT = 0
+    var totalPOW = 0
+    var totalWP = 0
+    var totalPER = 0
 
     //initialize stat modifiers
     var modSTR = 0
@@ -106,10 +126,8 @@ class BaseCharacter: Serializable {
     var wearArmor = 0
     var pointInWear = 0
 
-    //maximum fatigue value
-    var maxFatigue = 0
-
-    var initiative = 0
+    var specInitiative = 0
+    var totalInitiative = 0
 
     //character resistance stats
     var resistPhys = 0
@@ -130,7 +148,17 @@ class BaseCharacter: Serializable {
     var rmMult = 1.0
     var rpsyMult = 1.0
 
-    val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
+    var fatigue = 0
+    var specFatigue = 0
+
+    var baseRegen = 0
+    var specRegen = 0
+    var totalRegen = 0
+
+    var sizeSpecial = 0
+    var sizeCategory = 0
+
+    var appearance = 5
 
     var equippedPiece: Armor? = null
     var equippedWeapon: Weapon? = null
@@ -144,6 +172,20 @@ class BaseCharacter: Serializable {
 
 
 
+
+    fun setGender(input: Boolean){
+        if(ownRace.heldRace == RaceName.dukzarist){
+            if(isMale) rphysSpec -= 5
+            else rmSpec -= 5
+        }
+
+        isMale = input
+
+        if(ownRace.heldRace == RaceName.dukzarist){
+            if(isMale) rphysSpec += 5
+            else rmSpec += 5
+        }
+    }
 
     //setter for class with ClassName input
     fun setOwnClass(classIn: ClassName?) {
@@ -171,10 +213,11 @@ class BaseCharacter: Serializable {
         updateBlock()
         updateDodge()
         updateWear()
+        updateInitiative()
 
         adjustMaxValues()
         secondaryList.classUpdate(ownClass)
-        updateMK()
+        ki.updateMK()
 
         magic.calcMaxZeon()
 
@@ -190,17 +233,37 @@ class BaseCharacter: Serializable {
 
     //setter for race with RaceName input
     fun setOwnRace(raceIn: RaceName) {
-        ownRace = CharRace(raceIn, advantageRecord)
+        removeRaceAdvantages()
+        ownRace = CharRace(raceIn, this@BaseCharacter)
+        applyRaceAdvantages()
     }
 
     //setter for race with String input
     fun setOwnRace(raceName: String?) {
-        ownRace = CharRace(RaceName.fromString(raceName), advantageRecord)
+        removeRaceAdvantages()
+        ownRace = CharRace(RaceName.fromString(raceName), this@BaseCharacter)
+        applyRaceAdvantages()
     }
 
     //setter for race with Integer input
     fun setOwnRace(raceNum: Int?){
-        ownRace = CharRace(RaceName.fromInt(raceNum), advantageRecord)
+        removeRaceAdvantages()
+        ownRace = CharRace(RaceName.fromInt(raceNum), this@BaseCharacter)
+        applyRaceAdvantages()
+    }
+
+    fun applyRaceAdvantages(){
+        ownRace.raceAdvantages.forEach{
+            if(it.onTake != null)
+                it.onTake!!(it.picked, it.cost[it.pickedCost])
+        }
+    }
+
+    fun removeRaceAdvantages(){
+        ownRace.raceAdvantages.forEach{
+            if(it.onRemove != null)
+                it.onRemove!!(it.picked, it.cost[it.pickedCost])
+        }
     }
 
     //update level and associated values
@@ -227,12 +290,13 @@ class BaseCharacter: Serializable {
         updateBlock()
         updateDodge()
         updateWear()
+        updateInitiative()
 
-        updateMK()
+        ki.updateMK()
 
         psychic.setInnatePsy()
 
-        secondaryList.levelUpdate(lvl, ownClass)
+        secondaryList.classUpdate(ownClass)
     }
 
     //get new dp maximums based on class change
@@ -282,49 +346,170 @@ class BaseCharacter: Serializable {
     //setters for each primary characteristic
     var setSTR = { strVal: Int ->
         str = strVal
-        modSTR = getModVal(str)
 
+        while(str + strBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 0, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 0, 0)!!)
+        }
+
+        updateStrValues()
+    }
+
+    @JvmName("setStrBonus1")
+    fun setStrBonus(bonus: Int){
+        strBonus += bonus
+        updateStrValues()
+    }
+
+    fun updateStrValues(){
+        totalSTR =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 0, 0) != null) 9
+            else str + strBonus
+        modSTR = getModVal(totalSTR)
         updateWear()
+        updateSize()
+
         secondaryList.updateSTR(modSTR)
         ki.updateKiStats()
     }
+
     var setDEX = { dexVal: Int ->
         dex = dexVal
-        modDEX = getModVal(dex)
+
+        while(dex + dexBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 1, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 1, 0)!!)
+        }
+
+        updateDexValues()
+    }
+
+    @JvmName("setDexBonus1")
+    fun setDexBonus(bonus: Int){
+        dexBonus += bonus
+        updateDexValues()
+    }
+
+    fun updateDexValues(){
+        totalDEX =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 1, 0) != null) 9
+            else dex + dexBonus
+        modDEX = getModVal(totalDEX)
 
         secondaryList.updateDEX(modDEX)
         updateAttack()
         updateBlock()
+        updateInitiative()
         ki.updateKiStats()
         magic.calcMagProj()
         psychic.updatePsyProjection()
     }
+
     var setAGI = { agiVal: Int ->
         agi = agiVal
-        modAGI = getModVal(agi)
+
+        while(agi + agiBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 2, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 2, 0)!!)
+        }
+
+        updateAgiValues()
+    }
+
+    @JvmName("setAgiBonus1")
+    fun setAgiBonus(bonus: Int){
+        agiBonus += bonus
+        updateAgiValues()
+    }
+
+    fun updateAgiValues(){
+        totalAGI =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 2, 0) != null) 9
+            else agi + agiBonus
+        modAGI = getModVal(totalAGI)
 
         secondaryList.updateAGI(modAGI)
         updateDodge()
+        updateInitiative()
         ki.updateKiStats()
     }
+
     var setCON = { conVal: Int ->
         con = conVal
-        modCON = getModVal(con)
+
+        while(con + conBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 3, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 3, 0)!!)
+        }
+
+        updateConValues()
+    }
+
+    @JvmName("setConBonus1")
+    fun setConBonus(bonus: Int){
+        conBonus += bonus
+        updateConValues()
+    }
+
+    fun updateConValues(){
+        totalCON =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 3, 0) != null) 9
+            else con + conBonus
+        modCON = getModVal(totalCON)
+        updateFatigue()
+        getBaseRegen()
+        updateSize()
 
         updateLifeBase()
         updateLifePoints()
         updateResistances()
         ki.updateKiStats()
     }
+
     var setINT = { intVal: Int ->
         int = intVal
-        modINT = getModVal(int)
+
+        while(int + intBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 4, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 4, 0)!!)
+        }
+
+        updateIntValues()
+    }
+
+    @JvmName("setIntBonus1")
+    fun setIntBonus(bonus: Int){
+        intBonus += bonus
+        updateIntValues()
+    }
+
+    fun updateIntValues(){
+        totalINT =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 4, 0) != null) 9
+            else int + intBonus
+        modINT = getModVal(totalINT)
+
         secondaryList.updateINT(modINT)
         magic.setMagicLevelMax()
     }
+
     var setPOW = { powVal: Int ->
         pow = powVal
-        modPOW = getModVal(pow)
+
+        while(pow + powBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 5, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 5, 0)!!)
+        }
+
+        updatePowValues()
+    }
+
+    @JvmName("setPowBonus1")
+    fun setPowBonus(bonus: Int){
+        powBonus += bonus
+        updatePowValues()
+    }
+
+    fun updatePowValues(){
+        totalPOW =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 5, 0) != null) 9
+            else pow + powBonus
+        modPOW = getModVal(totalPOW)
+
         secondaryList.updatePOW(modPOW)
         updateResistances()
         ki.updateKiStats()
@@ -334,18 +519,58 @@ class BaseCharacter: Serializable {
         summoning.updateBind()
         summoning.updateBanish()
     }
+
     var setWP = { wpVal: Int ->
         wp = wpVal
-        modWP = getModVal(wp)
+
+        while(wp + wpBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 6, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 6, 0)!!)
+        }
+
+        updateWpValues()
+    }
+
+    @JvmName("setWpBonus1")
+    fun setWpBonus(bonus: Int){
+        wpBonus += bonus
+        updateWpValues()
+    }
+
+    fun updateWpValues(){
+        totalWP =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 6, 0) != null) 9
+            else wp + wpBonus
+        modWP = getModVal(totalWP)
+
         secondaryList.updateWP(modWP)
         updateResistances()
         ki.updateKiStats()
         summoning.updateControl()
         psychic.setBasePotential()
     }
+
     var setPER = { perVal: Int ->
         per = perVal
-        modPER = getModVal(per)
+
+        while(per + perBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 7, 0) != null){
+            advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 7, 0)!!)
+        }
+
+        updatePerValues()
+    }
+
+    @JvmName("setPerBonus1")
+    fun setPerBonus(bonus: Int){
+        perBonus += bonus
+        updatePerValues()
+    }
+
+    fun updatePerValues(){
+        totalPER =
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 7, 0) != null) 9
+            else per + perBonus
+        modPER = getModVal(totalPER)
+
         secondaryList.updatePER(modPER)
     }
 
@@ -366,10 +591,10 @@ class BaseCharacter: Serializable {
 
     //update the base number of life points based on the character's constitution
     fun updateLifeBase(){
-        lifeBase = if(con == 1)
+        lifeBase = if(totalCON == 1)
             5
         else
-            20 + (con * 10) + modCON
+            20 + (totalCON * 10) + modCON
     }
 
     //updates the number of life multiples the user is taking for their character
@@ -381,7 +606,7 @@ class BaseCharacter: Serializable {
 
     //updates the character's total life points
     fun updateLifePoints(){
-        lifeMax = lifeBase + (lifeMultsTaken * con) + (ownClass.lifePointsPerLevel * lvl)
+        lifeMax = lifeBase + (lifeMultsTaken * totalCON) + (ownClass.lifePointsPerLevel * lvl)
     }
 
     //updates attack points and updates a string item if one given
@@ -484,6 +709,15 @@ class BaseCharacter: Serializable {
         wearArmor = pointInWear + modSTR + (ownClass.armorPerLevel * lvl)
     }
 
+    fun changeSpecInitiative(changeBy: Int){
+        specInitiative += changeBy
+        updateInitiative()
+    }
+
+    fun updateInitiative(){
+        totalInitiative = (ownClass.initiativePerLevel * lvl) + modDEX + modAGI + specInitiative
+    }
+
     //updates the character's resistances
     fun updateResistances(){
         resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
@@ -493,11 +727,55 @@ class BaseCharacter: Serializable {
         resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
     }
 
-    //updates the character's martial knowledge
-    fun updateMK(){
-        ki.martialKnowledgeMax = (ownClass.mkPerLevel * lvl) + weaponProficiencies.mkFromArts()
-        ki.updateMkSpent()
+    fun updateFatigue(){
+        fatigue = totalCON + specFatigue
     }
+
+    fun getBaseRegen(){
+        baseRegen = when(totalCON){
+            in 3..7 -> 1
+            in 8..9 -> 2
+            in 10..18 -> totalCON - 7
+            in 19..20 -> 12
+            else -> 0
+        }
+
+        updateRegeneration()
+    }
+
+    fun updateRegeneration(){
+        totalRegen = baseRegen + specRegen
+    }
+
+    fun changeSize(input: Int){
+        when(input){
+            0 -> sizeSpecial -= 5
+            1 -> sizeSpecial -= 4
+            2 -> sizeSpecial -= 3
+            3 -> sizeSpecial -= 2
+            4 -> sizeSpecial -= 1
+            5 -> sizeSpecial += 1
+            6 -> sizeSpecial += 2
+            7 -> sizeSpecial += 3
+            8 -> sizeSpecial += 4
+            9 -> sizeSpecial += 5
+        }
+
+        updateSize()
+    }
+
+    fun updateSize(){
+        sizeCategory = totalSTR + totalCON + sizeSpecial
+    }
+
+    @JvmName("setAppearance1")
+    fun setAppearance(input: Int){
+        if(advantageRecord.getAdvantage("Unattractive") != null)
+            appearance = 2
+        else if(ownRace.heldRace != RaceName.danjayni || input in 3..7)
+            appearance = input
+    }
+
 
 
 
@@ -513,8 +791,6 @@ class BaseCharacter: Serializable {
 
     //constructor for new character
     constructor() {
-        charName = ""
-
         setOwnClass(ClassName.freelancer)
         setOwnRace(RaceName.human)
         setLvl(0)
@@ -537,6 +813,8 @@ class BaseCharacter: Serializable {
 
         charName = fileReader.readLine()
 
+        setGender(fileReader.readLine().toBoolean())
+
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
@@ -556,12 +834,15 @@ class BaseCharacter: Serializable {
         applyDodgePoint(fileReader.readLine().toInt(), null)
         applyWearPoint(fileReader.readLine().toInt(), null)
 
+        setAppearance(fileReader.readLine().toInt())
+
         secondaryList.loadList(fileReader)
         weaponProficiencies.loadProficiencies(fileReader)
         ki.loadKiAttributes(fileReader)
         magic.loadMagic(fileReader)
         summoning.loadSummoning(fileReader)
         psychic.loadPsychic(fileReader)
+        advantageRecord.loadAdvantages(fileReader)
 
         restoreChar.close()
 
@@ -578,18 +859,20 @@ class BaseCharacter: Serializable {
 
             addNewData(charName)
 
+            addNewData(isMale.toString())
+
             addNewData(ownClass.heldClass.name)
-            addNewData(ownRace!!.heldRace.name)
+            addNewData(ownRace.heldRace.name)
             addNewData(lvl)
 
-            addNewData(str)
-            addNewData(dex)
-            addNewData(agi)
-            addNewData(con)
-            addNewData(int)
-            addNewData(pow)
-            addNewData(wp)
-            addNewData(per)
+            addNewData(totalSTR)
+            addNewData(totalDEX)
+            addNewData(totalAGI)
+            addNewData(totalCON)
+            addNewData(totalINT)
+            addNewData(totalPOW)
+            addNewData(totalWP)
+            addNewData(totalPER)
 
             addNewData(lifeMultsTaken)
             addNewData(pointInAttack)
@@ -597,12 +880,15 @@ class BaseCharacter: Serializable {
             addNewData(pointInDodge)
             addNewData(pointInWear)
 
+            addNewData(appearance)
+
             secondaryList.writeList(this@BaseCharacter)
-            weaponProficiencies.writeProficiencies(this@BaseCharacter)
+            weaponProficiencies.writeProficiencies()
             ki.writeKiAttributes()
             magic.writeMagic()
             summoning.writeSummoning()
             psychic.writePsychic()
+            advantageRecord.writeAdvantages()
 
             byteArray.close()
 

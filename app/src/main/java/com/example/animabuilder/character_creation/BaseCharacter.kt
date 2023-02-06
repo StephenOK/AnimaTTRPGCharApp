@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation
 
 import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
-import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
@@ -348,7 +347,7 @@ class BaseCharacter: Serializable {
     var setSTR = { strVal: Int ->
         str = strVal
 
-        while(str + strBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 0, 0)){
+        while(str + strBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 0, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 0, 0)!!)
         }
 
@@ -363,7 +362,7 @@ class BaseCharacter: Serializable {
 
     fun updateStrValues(){
         totalSTR =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 0, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 0, 0) != null) 9
             else str + strBonus
         modSTR = getModVal(totalSTR)
         updateWear()
@@ -376,7 +375,7 @@ class BaseCharacter: Serializable {
     var setDEX = { dexVal: Int ->
         dex = dexVal
 
-        while(dex + dexBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 1, 0)){
+        while(dex + dexBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 1, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 1, 0)!!)
         }
 
@@ -391,7 +390,7 @@ class BaseCharacter: Serializable {
 
     fun updateDexValues(){
         totalDEX =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 1, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 1, 0) != null) 9
             else dex + dexBonus
         modDEX = getModVal(totalDEX)
 
@@ -407,7 +406,7 @@ class BaseCharacter: Serializable {
     var setAGI = { agiVal: Int ->
         agi = agiVal
 
-        while(agi + agiBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 2, 0)){
+        while(agi + agiBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 2, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 2, 0)!!)
         }
 
@@ -422,7 +421,7 @@ class BaseCharacter: Serializable {
 
     fun updateAgiValues(){
         totalAGI =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 2, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 2, 0) != null) 9
             else agi + agiBonus
         modAGI = getModVal(totalAGI)
 
@@ -435,7 +434,7 @@ class BaseCharacter: Serializable {
     var setCON = { conVal: Int ->
         con = conVal
 
-        while(con + conBonus > 11 && advantageRecord.contains("Add One Point to a Characteristic", 3, 0)){
+        while(con + conBonus > 11 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 3, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 3, 0)!!)
         }
 
@@ -450,7 +449,7 @@ class BaseCharacter: Serializable {
 
     fun updateConValues(){
         totalCON =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 3, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 3, 0) != null) 9
             else con + conBonus
         modCON = getModVal(totalCON)
         updateFatigue()
@@ -466,7 +465,7 @@ class BaseCharacter: Serializable {
     var setINT = { intVal: Int ->
         int = intVal
 
-        while(int + intBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 4, 0)){
+        while(int + intBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 4, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 4, 0)!!)
         }
 
@@ -481,7 +480,7 @@ class BaseCharacter: Serializable {
 
     fun updateIntValues(){
         totalINT =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 4, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 4, 0) != null) 9
             else int + intBonus
         modINT = getModVal(totalINT)
 
@@ -492,7 +491,7 @@ class BaseCharacter: Serializable {
     var setPOW = { powVal: Int ->
         pow = powVal
 
-        while(pow + powBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 5, 0)){
+        while(pow + powBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 5, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 5, 0)!!)
         }
 
@@ -507,7 +506,7 @@ class BaseCharacter: Serializable {
 
     fun updatePowValues(){
         totalPOW =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 5, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 5, 0) != null) 9
             else pow + powBonus
         modPOW = getModVal(totalPOW)
 
@@ -524,7 +523,7 @@ class BaseCharacter: Serializable {
     var setWP = { wpVal: Int ->
         wp = wpVal
 
-        while(wp + wpBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 6, 0)){
+        while(wp + wpBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 6, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 6, 0)!!)
         }
 
@@ -539,7 +538,7 @@ class BaseCharacter: Serializable {
 
     fun updateWpValues(){
         totalWP =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 6, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 6, 0) != null) 9
             else wp + wpBonus
         modWP = getModVal(totalWP)
 
@@ -553,7 +552,7 @@ class BaseCharacter: Serializable {
     var setPER = { perVal: Int ->
         per = perVal
 
-        while(per + perBonus > 13 && advantageRecord.contains("Add One Point to a Characteristic", 7, 0)){
+        while(per + perBonus > 13 && advantageRecord.getAdvantage("Add One Point to a Characteristic", 7, 0) != null){
             advantageRecord.removeAdvantage(advantageRecord.getAdvantage("Add One Point to a Characteristic", 7, 0)!!)
         }
 
@@ -568,7 +567,7 @@ class BaseCharacter: Serializable {
 
     fun updatePerValues(){
         totalPER =
-            if(advantageRecord.contains("Increase One Characteristic to Nine", 7, 0)) 9
+            if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 7, 0) != null) 9
             else per + perBonus
         modPER = getModVal(totalPER)
 
@@ -771,7 +770,7 @@ class BaseCharacter: Serializable {
 
     @JvmName("setAppearance1")
     fun setAppearance(input: Int){
-        if(advantageRecord.containsAny("Unattractive") != null)
+        if(advantageRecord.getAdvantage("Unattractive") != null)
             appearance = 2
         else if(ownRace.heldRace != RaceName.danjayni || input in 3..7)
             appearance = input
@@ -814,6 +813,8 @@ class BaseCharacter: Serializable {
 
         charName = fileReader.readLine()
 
+        setGender(fileReader.readLine().toBoolean())
+
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
@@ -833,12 +834,15 @@ class BaseCharacter: Serializable {
         applyDodgePoint(fileReader.readLine().toInt(), null)
         applyWearPoint(fileReader.readLine().toInt(), null)
 
+        setAppearance(fileReader.readLine().toInt())
+
         secondaryList.loadList(fileReader)
         weaponProficiencies.loadProficiencies(fileReader)
         ki.loadKiAttributes(fileReader)
         magic.loadMagic(fileReader)
         summoning.loadSummoning(fileReader)
         psychic.loadPsychic(fileReader)
+        advantageRecord.loadAdvantages(fileReader)
 
         restoreChar.close()
 
@@ -855,8 +859,10 @@ class BaseCharacter: Serializable {
 
             addNewData(charName)
 
+            addNewData(isMale.toString())
+
             addNewData(ownClass.heldClass.name)
-            addNewData(ownRace!!.heldRace.name)
+            addNewData(ownRace.heldRace.name)
             addNewData(lvl)
 
             addNewData(totalSTR)
@@ -874,12 +880,15 @@ class BaseCharacter: Serializable {
             addNewData(pointInDodge)
             addNewData(pointInWear)
 
+            addNewData(appearance)
+
             secondaryList.writeList(this@BaseCharacter)
-            weaponProficiencies.writeProficiencies(this@BaseCharacter)
+            weaponProficiencies.writeProficiencies()
             ki.writeKiAttributes()
             magic.writeMagic()
             summoning.writeSummoning()
             psychic.writePsychic()
+            advantageRecord.writeAdvantages()
 
             byteArray.close()
 

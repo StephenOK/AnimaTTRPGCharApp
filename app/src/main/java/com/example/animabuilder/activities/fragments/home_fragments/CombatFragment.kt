@@ -111,7 +111,7 @@ fun CombatFragment(
                 allPrimaryBoxes,
                 allSecondaries,
                 allMartials,
-                { input: Weapon -> primaryWeapon.value = input},
+                {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
                 updateFunc
             )
         }
@@ -124,7 +124,7 @@ fun CombatFragment(
                 allPrimaryBoxes,
                 allSecondaries,
                 allMartials,
-                {input: Weapon -> primaryWeapon.value = input},
+                {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
                 updateFunc
             )
         }
@@ -150,7 +150,7 @@ private fun WeaponListButton(
     allPrimaryBoxes: MutableList<MutableState<Boolean>>,
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
-    primaryUpdate: (Weapon) -> Unit,
+    primaryUpdate: () -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize list's open state
@@ -404,7 +404,7 @@ private fun WeaponRow(
     allPrimaryBoxes: MutableList<MutableState<Boolean>>,
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
-    primaryUpdate: (Weapon) -> Unit,
+    primaryUpdate: () -> Unit,
     updateFunc: () -> Unit
 ){
     //checkboxes for when the weapon is taken as a primary, secondary, or archetype proficiency
@@ -437,8 +437,8 @@ private fun WeaponRow(
                 }
 
                 //update character's primary weapon
-                primaryUpdate(input)
-                charInstance.weaponProficiencies.primaryWeapon = primaryWeapon
+                charInstance.weaponProficiencies.setPrimaryWeapon(input.name)
+                primaryUpdate()
 
                 //update character's associated values
                 charInstance.updateTotalSpent()

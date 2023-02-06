@@ -593,7 +593,7 @@ fun CharacterPageFragment(
                 value = appearanceText.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
-                    if(charInstance.advantageRecord.containsAny("Unattractive") == null)
+                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null)
                         numberCatcher(
                             it,
                             {input ->

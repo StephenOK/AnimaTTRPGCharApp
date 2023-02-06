@@ -727,7 +727,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(2),
         0,
         {_, _ ->
-            val removable = charInstance.advantageRecord.containsAny("Access to One Psychic Discipline")
+            val removable = charInstance.advantageRecord.getAdvantage("Access to One Psychic Discipline")
             if(removable != null)
                 charInstance.advantageRecord.removeAdvantage(removable)
 

@@ -43,7 +43,7 @@ fun SummoningFragment(updateFunc: () -> Unit){
     summoningRowTable.add(SummoningAbilityItem(
         "Summoning",
         charInstance.modPOW.toString(),
-        (charInstance.ownClass.summonPerLevel * charInstance.lvl).toString(),
+        (charInstance.summoning.summonPerLevel * charInstance.lvl).toString(),
         boughtSummon,
         totalSummon
     ){
@@ -54,7 +54,7 @@ fun SummoningFragment(updateFunc: () -> Unit){
     summoningRowTable.add(SummoningAbilityItem(
         "Control",
         charInstance.modWP.toString(),
-        (charInstance.ownClass.controlPerLevel * charInstance.lvl).toString(),
+        (charInstance.summoning.controlPerLevel * charInstance.lvl).toString(),
         boughtControl,
         totalControl
     ){
@@ -65,7 +65,7 @@ fun SummoningFragment(updateFunc: () -> Unit){
     summoningRowTable.add(SummoningAbilityItem(
         "Bind",
         charInstance.modPOW.toString(),
-        (charInstance.ownClass.bindPerLevel * charInstance.lvl).toString(),
+        (charInstance.summoning.bindPerLevel * charInstance.lvl).toString(),
         boughtBind,
         totalBind
     ){
@@ -76,7 +76,7 @@ fun SummoningFragment(updateFunc: () -> Unit){
     summoningRowTable.add(SummoningAbilityItem(
         "Banish",
         charInstance.modPOW.toString(),
-        (charInstance.ownClass.banishPerLevel * charInstance.lvl).toString(),
+        (charInstance.summoning.banishPerLevel * charInstance.lvl).toString(),
         boughtBanish,
         totalBanish
     ){

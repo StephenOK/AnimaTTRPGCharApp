@@ -11,15 +11,19 @@ import java.io.Serializable
 class Summoning(private val charInstance: BaseCharacter): Serializable {
     //instantiate summoning action bought amounts and totals
     var summonBought = 0
+    var summonPerLevel = 0
     var summonTotal = 0
 
     var controlBought = 0
+    var controlPerLevel = 0
     var controlTotal = 0
 
     var bindBought = 0
+    var bindPerLevel = 0
     var bindTotal = 0
 
     var banishBought = 0
+    var banishPerLevel = 0
     var banishTotal = 0
 
 
@@ -33,11 +37,17 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
         updateSummon()
     }
 
+    @JvmName("setSummonPerLevel1")
+    fun setSummonPerLevel(amount: Int){
+        summonPerLevel = amount
+        updateSummon()
+    }
+
     /**
      * Updates the character's total summon value
      */
     fun updateSummon(){
-        summonTotal = summonBought + charInstance.modPOW + (charInstance.ownClass.summonPerLevel * charInstance.lvl)
+        summonTotal = summonBought + charInstance.modPOW + (summonPerLevel * charInstance.lvl)
     }
 
     /**
@@ -50,11 +60,17 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
         updateControl()
     }
 
+    @JvmName("setControlPerLevel1")
+    fun setControlPerLevel(amount: Int){
+        controlPerLevel = amount
+        updateControl()
+    }
+
     /**
      * Updates the character's total control value
      */
     fun updateControl(){
-        controlTotal = controlBought + charInstance.modWP + (charInstance.ownClass.controlPerLevel * charInstance.lvl)
+        controlTotal = controlBought + charInstance.modWP + (controlPerLevel * charInstance.lvl)
     }
 
     /**
@@ -67,11 +83,17 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
         updateBind()
     }
 
+    @JvmName("setBindPerLevel1")
+    fun setBindPerLevel(amount: Int){
+        bindPerLevel = amount
+        updateBind()
+    }
+
     /**
      * Updates the character's total bind value
      */
     fun updateBind(){
-        bindTotal = bindBought + charInstance.modPOW + (charInstance.ownClass.bindPerLevel * charInstance.lvl)
+        bindTotal = bindBought + charInstance.modPOW + (bindPerLevel * charInstance.lvl)
     }
 
     /**
@@ -84,11 +106,17 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
         updateBanish()
     }
 
+    @JvmName("setBanishPerLevel1")
+    fun setBanishPerLevel(amount: Int){
+        banishPerLevel = amount
+        updateBanish()
+    }
+
     /**
      * Updates the character's total banish value
      */
     fun updateBanish(){
-        banishTotal = banishBought + charInstance.modPOW + (charInstance.ownClass.banishPerLevel * charInstance.lvl)
+        banishTotal = banishBought + charInstance.modPOW + (banishPerLevel * charInstance.lvl)
     }
 
     /**

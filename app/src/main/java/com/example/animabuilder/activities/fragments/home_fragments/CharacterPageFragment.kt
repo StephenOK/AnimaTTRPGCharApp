@@ -97,10 +97,10 @@ fun CharacterPageFragment(
     val lifeMults = remember{mutableStateOf(charInstance.lifeMultsTaken.toString())}
 
     //determine class bonuses to combat abilities
-    val classAttack = remember{mutableStateOf((charInstance.ownClass.atkPerLevel * charInstance.lvl).toString())}
-    val classBlock = remember{mutableStateOf((charInstance.ownClass.blockPerLevel * charInstance.lvl).toString())}
-    val classDodge = remember{mutableStateOf((charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString())}
-    val classWear = remember{mutableStateOf((charInstance.ownClass.armorPerLevel * charInstance.lvl).toString())}
+    val classAttack = remember{mutableStateOf((charInstance.attackPerLevel * charInstance.lvl).toString())}
+    val classBlock = remember{mutableStateOf((charInstance.blockPerLevel * charInstance.lvl).toString())}
+    val classDodge = remember{mutableStateOf((charInstance.dodgePerLevel * charInstance.lvl).toString())}
+    val classWear = remember{mutableStateOf((charInstance.wearPerLevel * charInstance.lvl).toString())}
 
     //get current attack ability values
     val totalAttack = remember{mutableStateOf(charInstance.attack.toString())}
@@ -130,7 +130,7 @@ fun CharacterPageFragment(
     val combatItemList = mutableListOf<CombatItemData>()
 
     //define dropdown items
-    dropdownList.add(DropdownData(stringResource(R.string.classText), remember{mutableStateOf(charInstance.ownClass.classIndex)},
+    dropdownList.add(DropdownData(stringResource(R.string.classText), remember{mutableStateOf(charInstance.classes.allClasses.indexOf(charInstance.ownClass))},
         stringArrayResource(id = R.array.classArray)
     ) { index: Int ->
         //set character's class by the given index number
@@ -142,13 +142,13 @@ fun CharacterPageFragment(
         maxPsychic.value = charInstance.maxPsyDP
 
         classAttack.value =
-            (charInstance.ownClass.atkPerLevel * charInstance.lvl).toString()
+            (charInstance.attackPerLevel * charInstance.lvl).toString()
         classBlock.value =
-            (charInstance.ownClass.blockPerLevel * charInstance.lvl).toString()
+            (charInstance.blockPerLevel * charInstance.lvl).toString()
         classDodge.value =
-            (charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString()
+            (charInstance.dodgePerLevel * charInstance.lvl).toString()
         classWear.value =
-            (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
+            (charInstance.wearPerLevel * charInstance.lvl).toString()
 
         totalInitiative.value = charInstance.totalInitiative.toString()
 
@@ -211,13 +211,13 @@ fun CharacterPageFragment(
         psyTotal.value = charInstance.resistPsy
 
         classAttack.value =
-            (charInstance.ownClass.atkPerLevel * charInstance.lvl).toString()
+            (charInstance.attackPerLevel * charInstance.lvl).toString()
         classBlock.value =
-            (charInstance.ownClass.blockPerLevel * charInstance.lvl).toString()
+            (charInstance.blockPerLevel * charInstance.lvl).toString()
         classDodge.value =
-            (charInstance.ownClass.dodgePerLevel * charInstance.lvl).toString()
+            (charInstance.dodgePerLevel * charInstance.lvl).toString()
         classWear.value =
-            (charInstance.ownClass.armorPerLevel * charInstance.lvl).toString()
+            (charInstance.wearPerLevel * charInstance.lvl).toString()
 
         totalInitiative.value = charInstance.totalInitiative.toString()
     })

@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import kotlin.Throws
@@ -39,177 +40,91 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
 
     //Initialize all secondary characteristics in list
     //athletics
-    var acrobatics = SecondaryCharacteristic(this)
-    var athletics = SecondaryCharacteristic(this)
-    var climb = SecondaryCharacteristic(this)
-    var jump = SecondaryCharacteristic(this)
-    var ride = SecondaryCharacteristic(this)
-    var swim = SecondaryCharacteristic(this)
+    val acrobatics = SecondaryCharacteristic(R.string.acrobaticsLabel, this)
+    val athletics = SecondaryCharacteristic(R.string.athleticsLabel, this)
+    val climb = SecondaryCharacteristic(R.string.climbLabel, this)
+    val jump = SecondaryCharacteristic(R.string.jumpLabel, this)
+    val ride = SecondaryCharacteristic(R.string.rideLabel, this)
+    val swim = SecondaryCharacteristic(R.string.swimLabel, this)
 
     //creative
-    var art = SecondaryCharacteristic(this)
-    var dance = SecondaryCharacteristic(this)
-    var forging = SecondaryCharacteristic(this)
-    var music = SecondaryCharacteristic(this)
-    var sleightHand = SecondaryCharacteristic(this)
+    val art = SecondaryCharacteristic(R.string.artLabel, this)
+    val dance = SecondaryCharacteristic(R.string.danceLabel, this)
+    val forging = SecondaryCharacteristic(R.string.forgeLabel, this)
+    val music = SecondaryCharacteristic(R.string.musicLabel, this)
+    val sleightHand = SecondaryCharacteristic(R.string.sleightLabel, this)
 
     //perceptive
-    var notice = SecondaryCharacteristic(this)
-    var search = SecondaryCharacteristic(this)
-    var track = SecondaryCharacteristic(this)
+    val notice = SecondaryCharacteristic(R.string.noticeLabel, this)
+    val search = SecondaryCharacteristic(R.string.searchLabel, this)
+    val track = SecondaryCharacteristic(R.string.trackLabel, this)
 
     //social
-    var intimidate = SecondaryCharacteristic(this)
-    var leadership = SecondaryCharacteristic(this)
-    var persuasion = SecondaryCharacteristic(this)
-    var style = SecondaryCharacteristic(this)
+    val intimidate = SecondaryCharacteristic(R.string.intimidateLabel, this)
+    val leadership = SecondaryCharacteristic(R.string.leadershipLabel, this)
+    val persuasion = SecondaryCharacteristic(R.string.persuasionLabel, this)
+    val style = SecondaryCharacteristic(R.string.styleLabel, this)
 
     //subterfuge
-    var disguise = SecondaryCharacteristic(this)
-    var hide = SecondaryCharacteristic(this)
-    var lockPick = SecondaryCharacteristic(this)
-    var poisons = SecondaryCharacteristic(this)
-    var theft = SecondaryCharacteristic(this)
-    var stealth = SecondaryCharacteristic(this)
-    var trapLore = SecondaryCharacteristic(this)
+    val disguise = SecondaryCharacteristic(R.string.disguiseLabel, this)
+    val hide = SecondaryCharacteristic(R.string.hideLabel, this)
+    val lockPick = SecondaryCharacteristic(R.string.lockpickLabel, this)
+    val poisons = SecondaryCharacteristic(R.string.poisonLabel, this)
+    val theft = SecondaryCharacteristic(R.string.theftLabel, this)
+    val stealth = SecondaryCharacteristic(R.string.stealthLabel, this)
+    val trapLore = SecondaryCharacteristic(R.string.trapLabel, this)
 
     //intellectual
-    var animals = SecondaryCharacteristic(this)
-    var appraise = SecondaryCharacteristic(this)
-    var herbalLore = SecondaryCharacteristic(this)
-    var history = SecondaryCharacteristic(this)
-    var memorize = SecondaryCharacteristic(this)
-    var magicAppraise = SecondaryCharacteristic(this)
-    var medic = SecondaryCharacteristic(this)
-    var navigate = SecondaryCharacteristic(this)
-    var occult = SecondaryCharacteristic(this)
-    var sciences = SecondaryCharacteristic(this)
+    val animals = SecondaryCharacteristic(R.string.animalLabel, this)
+    val appraise = SecondaryCharacteristic(R.string.appraiseLabel, this)
+    val herbalLore = SecondaryCharacteristic(R.string.herbalLabel, this)
+    val history = SecondaryCharacteristic(R.string.histLabel, this)
+    val memorize = SecondaryCharacteristic(R.string.memLabel, this)
+    val magicAppraise = SecondaryCharacteristic(R.string.mAppraiseLabel, this)
+    val medic = SecondaryCharacteristic(R.string.medLabel, this)
+    val navigate = SecondaryCharacteristic(R.string.navLabel, this)
+    val occult = SecondaryCharacteristic(R.string.occultLabel, this)
+    val sciences = SecondaryCharacteristic(R.string.scienceLabel, this)
 
     //vigor
-    var composure = SecondaryCharacteristic(this)
-    var strengthFeat = SecondaryCharacteristic(this)
-    var resistPain = SecondaryCharacteristic(this)
+    val composure = SecondaryCharacteristic(R.string.composureLabel, this)
+    val strengthFeat = SecondaryCharacteristic(R.string.strFeatLabel, this)
+    val resistPain = SecondaryCharacteristic(R.string.resistPainLabel, this)
 
     val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, art, dance, forging, music,
     sleightHand, notice, search, track, intimidate, leadership, persuasion, style, disguise, hide,
     lockPick, poisons, theft, stealth, trapLore, animals, appraise, herbalLore, history, memorize,
     magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain)
 
+    fun intToField(input: Int): List<SecondaryCharacteristic>{
+        return when(input){
+            0 -> listOf(acrobatics, athletics, climb, jump, ride, swim)
+            1 -> listOf(art, dance, forging, music, sleightHand)
+            2 -> listOf(notice, search, track)
+            3 -> listOf(intimidate, leadership, persuasion, style)
+            4 -> listOf(disguise, hide, lockPick, poisons, theft, stealth, trapLore)
+            5 -> listOf(animals, appraise, herbalLore, history, memorize, magicAppraise, medic,
+                navigate, occult, sciences)
+            6 -> listOf(composure, strengthFeat, resistPain)
+            else -> listOf()
+        }
+    }
+
     //update values based on given class change
     fun classUpdate(newClass: CharClass) {
-        acrobatics.setPointsFromClass(newClass.acrobatPerLevel * charInstance.lvl)
-        acrobatics.setDevPerPoint(newClass.athGrowth)
+        updateGrowth(intToField(0), newClass.athGrowth)
+        updateGrowth(intToField(1), newClass.creatGrowth)
+        updateGrowth(intToField(2), newClass.percGrowth)
+        updateGrowth(intToField(3), newClass.socGrowth)
+        updateGrowth(intToField(4), newClass.subterGrowth)
+        updateGrowth(intToField(5), newClass.intellGrowth)
+        updateGrowth(intToField(6), newClass.vigGrowth)
 
-        athletics.setPointsFromClass(newClass.athletPerLevel * charInstance.lvl)
-        athletics.setDevPerPoint(newClass.athGrowth)
+        fullList.forEach{it.refreshTotal()}
+    }
 
-        climb.setPointsFromClass(newClass.climbPerLevel * charInstance.lvl)
-        climb.setDevPerPoint(newClass.athGrowth)
-
-        jump.setPointsFromClass(newClass.jumpPerLevel * charInstance.lvl)
-        jump.setDevPerPoint(newClass.athGrowth)
-
-        ride.setPointsFromClass(newClass.ridePerLevel * charInstance.lvl)
-        ride.setDevPerPoint(newClass.athGrowth)
-
-        swim.setPointsFromClass(newClass.swimPerLevel * charInstance.lvl)
-        swim.setDevPerPoint(newClass.athGrowth)
-
-        art.setPointsFromClass(newClass.artPerLevel * charInstance.lvl)
-        art.setDevPerPoint(newClass.creatGrowth)
-
-        dance.setPointsFromClass(newClass.dancePerLevel * charInstance.lvl)
-        dance.setDevPerPoint(newClass.creatGrowth)
-
-        forging.setPointsFromClass(newClass.forgePerLevel * charInstance.lvl)
-        forging.setDevPerPoint(newClass.creatGrowth)
-
-        music.setPointsFromClass(newClass.musicPerLevel * charInstance.lvl)
-        music.setDevPerPoint(newClass.creatGrowth)
-
-        sleightHand.setPointsFromClass(newClass.sleightPerLevel * charInstance.lvl)
-        sleightHand.setDevPerPoint(newClass.creatGrowth)
-
-        notice.setPointsFromClass(newClass.noticePerLevel * charInstance.lvl)
-        notice.setDevPerPoint(newClass.percGrowth)
-
-        search.setPointsFromClass(newClass.searchPerLevel * charInstance.lvl)
-        search.setDevPerPoint(newClass.percGrowth)
-
-        track.setPointsFromClass(newClass.trackPerLevel * charInstance.lvl)
-        track.setDevPerPoint(newClass.percGrowth)
-
-        intimidate.setPointsFromClass(newClass.intimidatePerLevel * charInstance.lvl)
-        intimidate.setDevPerPoint(newClass.socGrowth)
-
-        leadership.setPointsFromClass(newClass.leaderPerLevel * charInstance.lvl)
-        leadership.setDevPerPoint(newClass.socGrowth)
-
-        persuasion.setPointsFromClass(newClass.persuadePerLevel * charInstance.lvl)
-        persuasion.setDevPerPoint(newClass.socGrowth)
-
-        style.setPointsFromClass(newClass.stylePerLevel * charInstance.lvl)
-        style.setDevPerPoint(newClass.socGrowth)
-
-        disguise.setPointsFromClass(newClass.disguisePerLevel * charInstance.lvl)
-        disguise.setDevPerPoint(newClass.subterGrowth)
-
-        hide.setPointsFromClass(newClass.hidePerLevel * charInstance.lvl)
-        hide.setDevPerPoint(newClass.subterGrowth)
-
-        lockPick.setPointsFromClass(newClass.lockpickPerLevel * charInstance.lvl)
-        lockPick.setDevPerPoint(newClass.subterGrowth)
-
-        poisons.setPointsFromClass(newClass.poisonPerLevel * charInstance.lvl)
-        poisons.setDevPerPoint(newClass.subterGrowth)
-
-        theft.setPointsFromClass(newClass.theftPerLevel * charInstance.lvl)
-        theft.setDevPerPoint(newClass.subterGrowth)
-
-        stealth.setPointsFromClass(newClass.stealthPerLevel * charInstance.lvl)
-        stealth.setDevPerPoint(newClass.subterGrowth)
-
-        trapLore.setPointsFromClass(newClass.trapPerLevel * charInstance.lvl)
-        trapLore.setDevPerPoint(newClass.subterGrowth)
-
-        animals.setPointsFromClass(newClass.animalPerLevel * charInstance.lvl)
-        animals.setDevPerPoint(newClass.intellGrowth)
-
-        appraise.setPointsFromClass(newClass.appraisePerLevel * charInstance.lvl)
-        appraise.setDevPerPoint(newClass.intellGrowth)
-
-        herbalLore.setPointsFromClass(newClass.herbPerLevel * charInstance.lvl)
-        herbalLore.setDevPerPoint(newClass.intellGrowth)
-
-        history.setPointsFromClass(newClass.histPerLevel * charInstance.lvl)
-        history.setDevPerPoint(newClass.intellGrowth)
-
-        memorize.setPointsFromClass(newClass.memorizePerLevel * charInstance.lvl)
-        memorize.setDevPerPoint(newClass.intellGrowth)
-
-        magicAppraise.setPointsFromClass(newClass.magAppraisePerLevel * charInstance.lvl)
-        magicAppraise.setDevPerPoint(newClass.intellGrowth)
-
-        medic.setPointsFromClass(newClass.medicPerLevel * charInstance.lvl)
-        medic.setDevPerPoint(newClass.intellGrowth)
-
-        navigate.setPointsFromClass(newClass.navPerLevel * charInstance.lvl)
-        navigate.setDevPerPoint(newClass.intellGrowth)
-
-        occult.setPointsFromClass(newClass.occultPerLevel * charInstance.lvl)
-        occult.setDevPerPoint(newClass.intellGrowth)
-
-        sciences.setPointsFromClass(newClass.sciencePerLevel * charInstance.lvl)
-        sciences.setDevPerPoint(newClass.intellGrowth)
-
-        composure.setPointsFromClass(newClass.composePerLevel * charInstance.lvl)
-        composure.setDevPerPoint(newClass.vigGrowth)
-
-        strengthFeat.setPointsFromClass(newClass.strengthFeatPerLevel * charInstance.lvl)
-        strengthFeat.setDevPerPoint(newClass.vigGrowth)
-
-        resistPain.setPointsFromClass(newClass.standPainPerLevel * charInstance.lvl)
-        resistPain.setDevPerPoint(newClass.vigGrowth)
+    fun updateGrowth(items: List<SecondaryCharacteristic>, newNum: Int){
+        items.forEach{it.setDevPerPoint(newNum)}
     }
 
     //update needed values based on new strength modifier
@@ -295,69 +210,5 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         fullList.forEach{total += it.pointsIn}
 
         return total
-    }
-
-    fun intToCharacteristic(input: Int): SecondaryCharacteristic?{
-        return when(input){
-            0 -> charInstance.secondaryList.acrobatics
-            1 -> charInstance.secondaryList.athletics
-            2 -> charInstance.secondaryList.climb
-            3 -> charInstance.secondaryList.jump
-            4 -> charInstance.secondaryList.ride
-            5 -> charInstance.secondaryList.swim
-
-            6 -> charInstance.secondaryList.art
-            7 -> charInstance.secondaryList.dance
-            8 -> charInstance.secondaryList.forging
-            9 -> charInstance.secondaryList.music
-            10 -> charInstance.secondaryList.sleightHand
-
-            11 -> charInstance.secondaryList.notice
-            12 -> charInstance.secondaryList.search
-            13 -> charInstance.secondaryList.track
-
-            14 -> charInstance.secondaryList.intimidate
-            15 -> charInstance.secondaryList.leadership
-            16 -> charInstance.secondaryList.persuasion
-            17 -> charInstance.secondaryList.style
-
-            18 -> charInstance.secondaryList.disguise
-            19 -> charInstance.secondaryList.hide
-            20 -> charInstance.secondaryList.lockPick
-            21 -> charInstance.secondaryList.poisons
-            22 -> charInstance.secondaryList.theft
-            23 -> charInstance.secondaryList.stealth
-            24 -> charInstance.secondaryList.trapLore
-
-            25 -> charInstance.secondaryList.animals
-            26 -> charInstance.secondaryList.appraise
-            27 -> charInstance.secondaryList.herbalLore
-            28 -> charInstance.secondaryList.history
-            29 -> charInstance.secondaryList.memorize
-            30 -> charInstance.secondaryList.magicAppraise
-            31 -> charInstance.secondaryList.medic
-            32 -> charInstance.secondaryList.navigate
-            33 -> charInstance.secondaryList.occult
-            34 -> charInstance.secondaryList.sciences
-
-            35 -> charInstance.secondaryList.composure
-            36 -> charInstance.secondaryList.strengthFeat
-            37 -> charInstance.secondaryList.resistPain
-            else -> null
-        }
-    }
-
-    fun intToField(input: Int): List<SecondaryCharacteristic>{
-        return when(input){
-            0 -> listOf(acrobatics, athletics, climb, jump, ride, swim)
-            1 -> listOf(art, dance, forging, music, sleightHand)
-            2 -> listOf(notice, search, track)
-            3 -> listOf(intimidate, leadership, persuasion, style)
-            4 -> listOf(disguise, hide, lockPick, poisons, theft, stealth, trapLore)
-            5 -> listOf(animals, appraise, herbalLore, history, memorize, magicAppraise, medic,
-                navigate, occult, sciences)
-            6 -> listOf(composure, strengthFeat, resistPain)
-            else -> listOf()
-        }
     }
 }

@@ -5,7 +5,7 @@ import com.example.animabuilder.character_creation.attributes.advantages.Advanta
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
-import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
+import com.example.animabuilder.character_creation.attributes.class_objects.ClassInstances
 import com.example.animabuilder.character_creation.attributes.race_objects.CharRace
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
@@ -40,7 +40,8 @@ class BaseCharacter: Serializable {
     val psychic = Psychic(this@BaseCharacter)
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
 
-    lateinit var ownClass: CharClass
+    val classes = ClassInstances(this@BaseCharacter)
+    var ownClass = classes.mentalist
 
     //initialize character's class and race
     var ownRace = CharRace(RaceName.human, this@BaseCharacter)
@@ -113,18 +114,22 @@ class BaseCharacter: Serializable {
     //character's attack stat
     var attack = 0
     var pointInAttack = 0
+    var attackPerLevel = 0
 
     //character's block stat
     var block = 0
     var pointInBlock = 0
+    var blockPerLevel = 0
 
     //character's dodge stat
     var dodge = 0
     var pointInDodge = 0
+    var dodgePerLevel = 0
 
     //character's wear armor stat
     var wearArmor = 0
     var pointInWear = 0
+    var wearPerLevel = 0
 
     var specInitiative = 0
     var totalInitiative = 0
@@ -188,20 +193,26 @@ class BaseCharacter: Serializable {
     }
 
     //setter for class with ClassName input
-    fun setOwnClass(classIn: ClassName?) {
-        ownClass = CharClass(classIn!!)
+    fun setOwnClass(classIn: ClassName) {
+        ownClass.onRemove()
+        ownClass = classes.findClass(classIn)!!
+        ownClass.onTake()
         updateClassInputs()
     }
 
     //setter for class with String input
     fun setOwnClass(className: String?) {
-        ownClass = CharClass(ClassName.fromString(className))
+        ownClass.onRemove()
+        ownClass = classes.findClass(ClassName.fromString(className))!!
+        ownClass.onTake()
         updateClassInputs()
     }
 
     //setter for class with Integer input
     fun setOwnClass(classInt: Int?){
-        ownClass = CharClass(ClassName.fromInt(classInt))
+        ownClass.onRemove()
+        ownClass = classes.findClass(ClassName.fromInt(classInt))!!
+        ownClass.onTake()
         updateClassInputs()
     }
 
@@ -621,6 +632,12 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    @JvmName("setAttackPerLevel1")
+    fun setAttackPerLevel(newVal: Int){
+        attackPerLevel = newVal
+        updateAttack()
+    }
+
     //updates the character's attack value
     fun updateAttack(){
         attack = pointInAttack + modDEX + attackClassVal()
@@ -629,7 +646,7 @@ class BaseCharacter: Serializable {
 
     //gets the character's class values for attack
     fun attackClassVal(): Int{
-        var total = ownClass.atkPerLevel * lvl
+        var total = attackPerLevel * lvl
         if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.martials.capoeira))
             total += 10
 
@@ -651,9 +668,15 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    @JvmName("setBlockPerLevel1")
+    fun setBlockPerLevel(newNum: Int){
+        blockPerLevel = newNum
+        updateBlock()
+    }
+
     //updates the character's block value
     fun updateBlock(){
-        block = pointInBlock + modDEX + (ownClass.blockPerLevel * lvl)
+        block = pointInBlock + modDEX + (blockPerLevel * lvl)
         weaponProficiencies.updateMartialMax()
     }
 
@@ -669,9 +692,15 @@ class BaseCharacter: Serializable {
         validAttackDodgeBlock()
     }
 
+    @JvmName("setDodgePerLevel1")
+    fun setDodgePerLevel(newNum: Int){
+        dodgePerLevel = newNum
+        updateDodge()
+    }
+
     //updates the character's dodge value
     fun updateDodge(){
-        dodge = pointInDodge + modAGI + (ownClass.dodgePerLevel * lvl)
+        dodge = pointInDodge + modAGI + (dodgePerLevel * lvl)
         weaponProficiencies.updateMartialMax()
     }
 
@@ -704,9 +733,15 @@ class BaseCharacter: Serializable {
         true
     }
 
+    @JvmName("setWearPerLevel1")
+    fun setWearPerLevel(newNum: Int){
+        wearPerLevel = newNum
+        updateWear()
+    }
+
     //updates the character's wear armor value
     fun updateWear(){
-        wearArmor = pointInWear + modSTR + (ownClass.armorPerLevel * lvl)
+        wearArmor = pointInWear + modSTR + (wearPerLevel * lvl)
     }
 
     fun changeSpecInitiative(changeBy: Int){

@@ -1,12 +1,11 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import com.example.animabuilder.R
-import com.example.animabuilder.character_creation.BaseCharacter
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -32,21 +31,43 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 
 @Composable
 fun SecondaryAbilityFragment(updateBottomBar: () -> Unit) {
-    MaterialTheme{
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .fillMaxWidth()
-        ) {
-            //make tables for each of the secondary characteristic categories
-            MakeTableDisplay(athleticsTable(charInstance, updateBottomBar), R.string.athleticsLabel)
-            MakeTableDisplay(socialTable(charInstance, updateBottomBar), R.string.socialLabel)
-            MakeTableDisplay(percTable(charInstance, updateBottomBar), R.string.perceptionLabel)
-            MakeTableDisplay(intelTable(charInstance, updateBottomBar), R.string.intellectualLabel)
-            MakeTableDisplay(vigorTable(charInstance, updateBottomBar), R.string.vigorLabel)
-            MakeTableDisplay(subterTable(charInstance, updateBottomBar), R.string.subterfugeLabel)
-            MakeTableDisplay(creatTable(charInstance, updateBottomBar), R.string.creativeLabel)
+    val secondaryFieldTable = mutableListOf<SecondaryFieldData>()
+
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.athleticsLabel,
+        charInstance.secondaryList.intToField(0)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.creativeLabel,
+        charInstance.secondaryList.intToField(1)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.perceptionLabel,
+        charInstance.secondaryList.intToField(2)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.socialLabel,
+        charInstance.secondaryList.intToField(3)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.subterfugeLabel,
+        charInstance.secondaryList.intToField(4)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.intellectualLabel,
+        charInstance.secondaryList.intToField(5)
+    ))
+    secondaryFieldTable.add(SecondaryFieldData(
+        R.string.vigorLabel,
+        charInstance.secondaryList.intToField(6)
+    ))
+
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(secondaryFieldTable){
+            MakeTableDisplay(it, updateBottomBar)
         }
     }
 }
@@ -54,13 +75,12 @@ fun SecondaryAbilityFragment(updateBottomBar: () -> Unit) {
 /**
  * Creates a toggle button to display the associated secondary characteristic table
  *
- * tableFund: function for the table display
- * stringReference: name of the characteristic group
+ * input: data item for this field of information
  */
 @Composable
 private fun MakeTableDisplay(
-    tableFunc: @Composable () -> Unit,
-    stringReference: Int
+    input: SecondaryFieldData,
+    updateBottomBar: () -> Unit
 ){
     //open state of the table
     val active = remember{mutableStateOf(false)}
@@ -72,13 +92,19 @@ private fun MakeTableDisplay(
     ){
         //button label
         Text(
-            text = stringResource(stringReference)
+            text = stringResource(input.fieldName)
         )
     }
 
     //visibility group for the table
     AnimatedVisibility(visible = active.value){
-        tableFunc()
+        Column {
+            RowHead()
+
+            input.fieldItems.forEach {
+                MakeRow(it, updateBottomBar)
+            }
+        }
     }
 }
 
@@ -138,14 +164,9 @@ private fun RowHead(){
  */
 @Composable
 private fun MakeRow(
-    charInstance: BaseCharacter,
-    stringReference: Int,
     item: SecondaryCharacteristic,
     updateBottomBar: () -> Unit
 ){
-    //secondary characteristic list from the character
-    val charList = charInstance.secondaryList
-
     //initial score stat
     val userInput = remember{mutableStateOf(item.pointsApplied.toString())}
 
@@ -171,7 +192,7 @@ private fun MakeRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //row's label
-        Text(text = stringResource(stringReference),
+        Text(text = stringResource(item.name),
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(0.25f))
 
@@ -184,9 +205,9 @@ private fun MakeRow(
             onValueChange = {
                 numberCatcher(it,
                     {input: String ->
-                        secondaryInput(charInstance, item, input.toInt(), textColor, total)
+                        secondaryInput(item, input.toInt(), textColor, total)
                         userInput.value = input},
-                    {secondaryInput(charInstance, item, 0, textColor, total)
+                    {secondaryInput(item, 0, textColor, total)
                         userInput.value = ""}
                 )
 
@@ -204,7 +225,7 @@ private fun MakeRow(
             modifier = Modifier.weight(0.125f))
 
         //display associated class bonus value
-        Text(text = item.pointsFromClass.toString(),
+        Text(text = (item.pointsFromClass * charInstance.lvl).toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
 
@@ -218,7 +239,7 @@ private fun MakeRow(
                 //if user is applying a natural bonus
                 if (it) {
                     //check if either no points are applied or if no more bonuses are available
-                    if (item.pointsApplied == 0 || !charList.incrementNat(true))
+                    if (item.pointsApplied == 0 || !charInstance.secondaryList.incrementNat(true))
                         //prevent bonus from applying
                         checkedState.value = false
                     else {
@@ -231,7 +252,7 @@ private fun MakeRow(
                 //if user is removing a natural bonus
                 else {
                     //remove bonus and change text accordingly
-                    charList.incrementNat(false)
+                    charInstance.secondaryList.incrementNat(false)
                     item.setBonusApplied(false)
                     checkedText.value = R.string.natNotTaken
                 }
@@ -261,7 +282,6 @@ private fun MakeRow(
  * total: secondary characteristic's final value
  */
 private fun secondaryInput(
-    charInstance: BaseCharacter,
     item: SecondaryCharacteristic,
     input: Int,
     textColor: MutableState<Color>,
@@ -283,103 +303,14 @@ private fun secondaryInput(
         textColor.value = Color.Red
 }
 
-//composable for athletic characteristics
-private fun athleticsTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column {
-            RowHead()
-            MakeRow(charInstance, R.string.acrobaticsLabel, charInstance.secondaryList.acrobatics, updateBottomBar)
-            MakeRow(charInstance, R.string.athleticsLabel, charInstance.secondaryList.athletics, updateBottomBar)
-            MakeRow(charInstance, R.string.climbLabel, charInstance.secondaryList.climb, updateBottomBar)
-            MakeRow(charInstance, R.string.jumpLabel, charInstance.secondaryList.jump, updateBottomBar)
-            MakeRow(charInstance, R.string.rideLabel, charInstance.secondaryList.ride, updateBottomBar)
-            MakeRow(charInstance, R.string.swimLabel, charInstance.secondaryList.swim, updateBottomBar)
-        }
-    })
-}
-
-//composable for social characteristics
-private fun socialTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column {
-            RowHead()
-            MakeRow(charInstance, R.string.intimidateLabel, charInstance.secondaryList.intimidate, updateBottomBar)
-            MakeRow(charInstance, R.string.leadershipLabel, charInstance.secondaryList.leadership, updateBottomBar)
-            MakeRow(charInstance, R.string.persuasionLabel, charInstance.secondaryList.persuasion, updateBottomBar)
-            MakeRow(charInstance, R.string.styleLabel, charInstance.secondaryList.style, updateBottomBar)
-        }
-    })
-}
-
-//composable for perceptive characteristics
-private fun percTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column{
-            RowHead()
-            MakeRow(charInstance, R.string.noticeLabel, charInstance.secondaryList.notice, updateBottomBar)
-            MakeRow(charInstance, R.string.searchLabel, charInstance.secondaryList.search, updateBottomBar)
-            MakeRow(charInstance, R.string.trackLabel, charInstance.secondaryList.track, updateBottomBar)
-        }
-    })
-}
-
-//composable for intellectual characteristics
-private fun intelTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable {
-        Column{
-            RowHead()
-            MakeRow(charInstance, R.string.animalLabel, charInstance.secondaryList.animals, updateBottomBar)
-            MakeRow(charInstance, R.string.appraiseLabel, charInstance.secondaryList.appraise, updateBottomBar)
-            MakeRow(charInstance, R.string.herbalLabel, charInstance.secondaryList.herbalLore, updateBottomBar)
-            MakeRow(charInstance, R.string.histLabel, charInstance.secondaryList.history, updateBottomBar)
-            MakeRow(charInstance, R.string.memLabel, charInstance.secondaryList.memorize, updateBottomBar)
-            MakeRow(charInstance, R.string.mAppraiseLabel, charInstance.secondaryList.magicAppraise, updateBottomBar)
-            MakeRow(charInstance, R.string.medLabel, charInstance.secondaryList.medic, updateBottomBar)
-            MakeRow(charInstance, R.string.navLabel, charInstance.secondaryList.navigate, updateBottomBar)
-            MakeRow(charInstance, R.string.occultLabel, charInstance.secondaryList.occult, updateBottomBar)
-            MakeRow(charInstance, R.string.scienceLabel, charInstance.secondaryList.sciences, updateBottomBar)
-        }
-    })
-}
-
-//composable for vigor characteristics
-private fun vigorTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column{
-            RowHead()
-            MakeRow(charInstance, R.string.composureLabel, charInstance.secondaryList.composure, updateBottomBar)
-            MakeRow(charInstance, R.string.strFeatLabel, charInstance.secondaryList.strengthFeat, updateBottomBar)
-            MakeRow(charInstance, R.string.resistPainLabel, charInstance.secondaryList.resistPain, updateBottomBar)
-        }
-    })
-}
-
-//composable for subterfuge characteristics
-private fun subterTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column{
-            RowHead()
-            MakeRow(charInstance, R.string.disguiseLabel, charInstance.secondaryList.disguise, updateBottomBar)
-            MakeRow(charInstance, R.string.hideLabel, charInstance.secondaryList.hide, updateBottomBar)
-            MakeRow(charInstance, R.string.lockpickLabel, charInstance.secondaryList.lockPick, updateBottomBar)
-            MakeRow(charInstance, R.string.poisonLabel, charInstance.secondaryList.poisons, updateBottomBar)
-            MakeRow(charInstance, R.string.theftLabel, charInstance.secondaryList.theft, updateBottomBar)
-            MakeRow(charInstance, R.string.stealthLabel, charInstance.secondaryList.stealth, updateBottomBar)
-            MakeRow(charInstance, R.string.trapLabel, charInstance.secondaryList.trapLore, updateBottomBar)
-        }
-    })
-}
-
-//composable for creative characteristics
-private fun creatTable(charInstance: BaseCharacter, updateBottomBar: () -> Unit): @Composable () -> Unit{
-    return (@Composable{
-        Column{
-            RowHead()
-            MakeRow(charInstance, R.string.artLabel, charInstance.secondaryList.art, updateBottomBar)
-            MakeRow(charInstance, R.string.danceLabel, charInstance.secondaryList.dance, updateBottomBar)
-            MakeRow(charInstance, R.string.forgeLabel, charInstance.secondaryList.forging, updateBottomBar)
-            MakeRow(charInstance, R.string.musicLabel, charInstance.secondaryList.music, updateBottomBar)
-            MakeRow(charInstance, R.string.sleightLabel, charInstance.secondaryList.sleightHand, updateBottomBar)
-        }
-    })
-}
+/**
+ * Data class for information on a secondary field
+ *
+ * fieldName: name of the secondary characteristic field
+ * fieldItems: secondary abilities in this field
+ * itemNames: string names of the secondary characteristics
+ */
+private data class SecondaryFieldData(
+    val fieldName: Int,
+    val fieldItems: List<SecondaryCharacteristic>
+)

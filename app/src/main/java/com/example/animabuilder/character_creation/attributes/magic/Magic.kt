@@ -18,6 +18,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     //initialize Zeon total stats
     var baseZeon = 0
     var boughtZeon = 0
+    var zeonPerLevel = 0
     var zeonMax = 0
 
     //initialize Zeon Accumulation stats
@@ -115,11 +116,17 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
         charInstance.updateTotalSpent()
     }
 
+    @JvmName("setZeonPerLevel1")
+    fun setZeonPerLevel(amount: Int){
+        zeonPerLevel = amount
+        calcMaxZeon()
+    }
+
     /**
      * Recalculate the character's maximum Zeon
      */
     fun calcMaxZeon(){
-        zeonMax = baseZeon + (boughtZeon * 5) + (charInstance.lvl * charInstance.ownClass.zeonPerLevel)
+        zeonMax = baseZeon + (boughtZeon * 5) + (charInstance.lvl * zeonPerLevel)
     }
 
     /**

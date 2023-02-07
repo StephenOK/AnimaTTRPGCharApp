@@ -112,8 +112,25 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
 
             //forbid reduction of growth stat to below zero
             commonAdvantages.subjectAptitude -> {
-                if(charInstance.secondaryList.intToCharacteristic(taken!!)!!.devPerPoint - toAdd.cost[takenCost] <= 0)
-                    return "Cannot reduce below zero"
+                if(charInstance.secondaryList.fullList[taken!!].devPerPoint - toAdd.cost[takenCost] <= 0)
+                    return "Cannot reduce characteristic growth below zero"
+            }
+
+            commonAdvantages.fieldAptitude -> {
+                val prevGrowth =
+                    when(taken){
+                        0 -> charInstance.ownClass.athGrowth
+                        1 -> charInstance.ownClass.creatGrowth
+                        2 -> charInstance.ownClass.percGrowth
+                        3 -> charInstance.ownClass.socGrowth
+                        4 -> charInstance.ownClass.subterGrowth
+                        5 -> charInstance.ownClass.intellGrowth
+                        6 -> charInstance.ownClass.vigGrowth
+                        else -> 0
+                    }
+
+                if(prevGrowth - toAdd.cost[takenCost] <= 0)
+                    return "Cannot reduce field growth below zero"
             }
 
             //no need to acquire more disciplines if all are already taken
@@ -147,7 +164,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
         //check if able to take multiple times
         if(toAdd.special == null && this.getAdvantage(toAdd.name) != null)
             return "You cannot have multiple copies of this Advantage"
-        else if(getAdvantage("Natural Knowledge of a Path", taken!!, takenCost) != null)
+        else if(taken != null && getAdvantage("Natural Knowledge of a Path", taken, takenCost) != null)
             return "You cannot take the same Path multiple times"
 
         //create advantage to take

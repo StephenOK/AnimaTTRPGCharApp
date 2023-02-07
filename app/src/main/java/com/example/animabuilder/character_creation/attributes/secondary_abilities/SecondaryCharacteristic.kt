@@ -11,18 +11,34 @@ import java.io.Serializable
  * Updates total whenever there is a change in other any value
  */
 
-class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable {
+class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) : Serializable {
     var pointsIn: Int = 0
 
-    //initialize values associated with the secondary characteristic
+    //initialize points from the associated modifier
     var modVal = 0
+
+    //initialize points applied by the user
     var pointsApplied = 0
+
+    //initialize development cost
     var devPerPoint = 0
-    var advPerPoint = 0
+
+    //initialize reduction in cost due to advantages
+    var developmentDeduction = 0
+
+    //initialize points per level from class
     var pointsFromClass = 0
+
+    //initialize bonus points in this characteristic
     var special = 0
+
+    //initialize bonus points per level in this characteristic
     var specialPerLevel = 0
+
+    //initialize natural bonus application
     var bonusApplied = false
+
+    //initialize final total
     var total = 0
 
     //setter for characteristic's modifier
@@ -52,9 +68,9 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
         updateDevSpent()
     }
 
-    @JvmName("setAdvPerPoint1")
-    fun setAdvPerPoint(perPoints: Int){
-        advPerPoint += perPoints
+    @JvmName("setDevelopmentDeduction1")
+    fun setDevelopmentDeduction(perPoints: Int){
+        developmentDeduction += perPoints
         updateDevSpent()
     }
 
@@ -87,13 +103,14 @@ class SecondaryCharacteristic(private val parent: SecondaryList) : Serializable 
 
     private fun updateDevSpent(){
         pointsIn =
-            if(devPerPoint > advPerPoint) pointsApplied * (devPerPoint - advPerPoint)
+            if(devPerPoint > developmentDeduction) pointsApplied * (devPerPoint - developmentDeduction)
             else pointsApplied
     }
 
     //recalculates the total value after any other setter is called
     fun refreshTotal() {
-        total = modVal + pointsApplied + pointsFromClass + special + (specialPerLevel * parent.charInstance.lvl)
+        total = modVal + pointsApplied + special +
+                ((pointsFromClass + specialPerLevel) * parent.charInstance.lvl)
         if(parent.allTradesTaken) total += 10
         else if (pointsApplied == 0) total -= 30
 

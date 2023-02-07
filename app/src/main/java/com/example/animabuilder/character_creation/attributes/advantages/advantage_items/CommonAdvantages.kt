@@ -311,11 +311,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(1, 2),
         0,
         {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setAdvPerPoint(cost)
+            charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost)
             charInstance.updateTotalSpent()
         },
         {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setAdvPerPoint(cost * -1)
+            charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost * -1)
             charInstance.updateTotalSpent()
         }
     )
@@ -362,12 +362,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {input, _ ->
             val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setAdvPerPoint(1)}
+            field.forEach{it.setDevelopmentDeduction(1)}
             charInstance.updateTotalSpent()
         },
         {input, _ ->
             val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setAdvPerPoint(-1)}
+            field.forEach{it.setDevelopmentDeduction(-1)}
             charInstance.updateTotalSpent()
         }
     )

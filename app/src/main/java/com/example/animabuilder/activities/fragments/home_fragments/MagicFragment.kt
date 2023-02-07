@@ -237,7 +237,7 @@ fun MagicFragment(updateFunc: () -> Unit) {
 
                 //display zeon points from class levels
                 Text(
-                    text = (charInstance.lvl * charInstance.ownClass.zeonPerLevel).toString(),
+                    text = (charInstance.lvl * charInstance.magic.zeonPerLevel).toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 

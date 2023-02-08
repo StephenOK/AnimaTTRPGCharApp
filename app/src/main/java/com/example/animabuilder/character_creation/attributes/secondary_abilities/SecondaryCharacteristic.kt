@@ -12,8 +12,6 @@ import java.io.Serializable
  */
 
 class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) : Serializable {
-    var pointsIn: Int = 0
-
     //initialize points from the associated modifier
     var modVal = 0
 
@@ -38,6 +36,9 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     //initialize natural bonus application
     var bonusApplied = false
 
+    //initialize development points spent in this characteristic
+    var pointsIn: Int = 0
+
     //initialize final total
     var total = 0
 
@@ -53,10 +54,8 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     fun setPointsApplied(points: Int) {
         pointsApplied = points
 
-        if(points == 0 && bonusApplied) {
+        if(points == 0 && bonusApplied)
             setBonusApplied(false)
-            parent.incrementNat(false)
-        }
 
         updateDevSpent()
         refreshTotal()
@@ -101,7 +100,7 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
         refreshTotal()
     }
 
-    private fun updateDevSpent(){
+    fun updateDevSpent(){
         pointsIn =
             if(devPerPoint > developmentDeduction) pointsApplied * (devPerPoint - developmentDeduction)
             else pointsApplied
@@ -121,35 +120,18 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
      * Loads data for the characteristic from given file reader
      */
     @Throws(IOException::class)
-    fun load(
-        fileReader: BufferedReader,
-        caller: SecondaryList
-    ) {
-        //get and set the user's recorded applied points
+    fun load(fileReader: BufferedReader) {
+        //retrieve characteristic's applied points and natural bonus state
         setPointsApplied(fileReader.readLine().toInt())
-
-        //get and set the character's natural bonus status
-        val loadBoolean = fileReader.readLine()
-        if (loadBoolean == "true") {
-            setBonusApplied(true)
-            caller.incrementNat(true)
-        }
-        else setBonusApplied(false)
+        setBonusApplied(fileReader.readLine().toBoolean())
     }
 
     /**
      * Write characteristic data to the file output stream
      */
     fun write(charInstance: BaseCharacter) {
+        //record characteristic's applied points and natural bonus state
         charInstance.addNewData(pointsApplied)
-
-        //write natural bonus applied data
-        val booleanIn: String = if (bonusApplied) "true" else "false"
-
-        charInstance.addNewData(booleanIn)
-    }
-
-    init {
-        refreshTotal()
+        charInstance.addNewData(bonusApplied.toString())
     }
 }

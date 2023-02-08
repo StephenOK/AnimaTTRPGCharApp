@@ -233,29 +233,13 @@ private fun MakeRow(
         Checkbox(
             checked = checkedState.value,
             onCheckedChange = {
-                //update checkbox state
-                checkedState.value = it
+                //attempt to toggle natural bonus
+                checkedState.value = charInstance.secondaryList.toggleNatBonus(item)
 
-                //if user is applying a natural bonus
-                if (it) {
-                    //check if either no points are applied or if no more bonuses are available
-                    if (item.pointsApplied == 0 || !charInstance.secondaryList.incrementNat(true))
-                        //prevent bonus from applying
-                        checkedState.value = false
-                    else {
-                        //apply bonus and display stat change
-                        item.setBonusApplied(true)
-                        checkedText.value = R.string.natTaken
-                    }
-                }
-
-                //if user is removing a natural bonus
-                else {
-                    //remove bonus and change text accordingly
-                    charInstance.secondaryList.incrementNat(false)
-                    item.setBonusApplied(false)
-                    checkedText.value = R.string.natNotTaken
-                }
+                //change text to reflect value
+                checkedText.value =
+                    if(checkedState.value) R.string.natTaken
+                    else R.string.natNotTaken
 
                 //update total text
                 total.value = item.total.toString()

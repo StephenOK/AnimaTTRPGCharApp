@@ -14,29 +14,8 @@ import java.io.Serializable
  */
 
 class SecondaryList(val charInstance: BaseCharacter) : Serializable {
+    //initialize held state of jack of all trades advantage
     var allTradesTaken = false
-
-    //initialize current natural bonuses taken
-    var currentNatTaken = 0
-
-    /**
-     * Increments the number of natural bonuses the player has taken
-     * Direction indicates whether the player is adding or removing a bonus
-     */
-    fun incrementNat(direction: Boolean): Boolean {
-        //if user attempts to add a bonus
-        if (direction) {
-            //check if any bonuses available and grant if able
-            return if (currentNatTaken < charInstance.lvl) {
-                currentNatTaken++
-                true
-            } else false
-        }
-        //if user attempts to remove a bonus
-        else currentNatTaken--
-
-        return true
-    }
 
     //Initialize all secondary characteristics in list
     //athletics
@@ -110,21 +89,73 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         }
     }
 
-    //update values based on given class change
-    fun classUpdate(newClass: CharClass) {
-        updateGrowth(intToField(0), newClass.athGrowth)
-        updateGrowth(intToField(1), newClass.creatGrowth)
-        updateGrowth(intToField(2), newClass.percGrowth)
-        updateGrowth(intToField(3), newClass.socGrowth)
-        updateGrowth(intToField(4), newClass.subterGrowth)
-        updateGrowth(intToField(5), newClass.intellGrowth)
-        updateGrowth(intToField(6), newClass.vigGrowth)
+    /**
+     * Attempts to toggle the natural bonus of the inputted characteristic
+     *
+     * target: secondary characteristic to toggle the bonus of
+     */
+    fun toggleNatBonus(target: SecondaryCharacteristic): Boolean{
+        //if natural bonus is currently off
+        if(!target.bonusApplied){
+            //if characteristic is invested in and there are bonuses available
+            if(countNatBonuses() < charInstance.lvl && target.pointsApplied > 0)
+                target.setBonusApplied(true)
+        }
 
-        fullList.forEach{it.refreshTotal()}
+        //remove bonus if it is currently on
+        else
+            target.setBonusApplied(false)
+
+        //return final state of the bonus
+        return target.bonusApplied
     }
 
-    fun updateGrowth(items: List<SecondaryCharacteristic>, newNum: Int){
-        items.forEach{it.setDevPerPoint(newNum)}
+    /**
+     * Retrieves the number of currently held natural bonuses
+     */
+    fun countNatBonuses(): Int{
+        //initialize counter
+        var total = 0
+
+        //check each characteristic for a held bonus
+        fullList.forEach{
+            if(it.bonusApplied) total++
+        }
+
+        //return final count
+        return total
+    }
+
+    /**
+     * Update values based on given class change
+     *
+     * newClass: class the character now possesses
+     */
+    fun classUpdate(newClass: CharClass) {
+        //update field growth rates
+        updateGrowth(0, newClass.athGrowth)
+        updateGrowth(1, newClass.creatGrowth)
+        updateGrowth(2, newClass.percGrowth)
+        updateGrowth(3, newClass.socGrowth)
+        updateGrowth(4, newClass.subterGrowth)
+        updateGrowth(5, newClass.intellGrowth)
+        updateGrowth(6, newClass.vigGrowth)
+
+        //update all characteristic totals and expenditures
+        fullList.forEach{
+            it.updateDevSpent()
+            it.refreshTotal()
+        }
+    }
+
+    /**
+     * Updates the development point cost of the given field
+     *
+     * itemNum: number indicating which field to change
+     * newNum: number to set the development point cost to
+     */
+    fun updateGrowth(itemNum: Int, newNum: Int){
+        intToField(itemNum).forEach{it.setDevPerPoint(newNum)}
     }
 
     //update needed values based on new strength modifier
@@ -196,7 +227,7 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     //load characteristic values from a given file reader
     @Throws(IOException::class)
     fun loadList(fileReader: BufferedReader?) {
-        fullList.forEach{it.load(fileReader!!, this)}
+        fullList.forEach{it.load(fileReader!!)}
     }
 
     //save characteristic values to file

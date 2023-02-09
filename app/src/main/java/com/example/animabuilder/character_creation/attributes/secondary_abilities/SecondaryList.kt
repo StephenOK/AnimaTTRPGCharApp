@@ -231,8 +231,8 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     //save characteristic values to file
-    fun writeList(charInstance: BaseCharacter) {
-        fullList.forEach{it.write(charInstance)}
+    fun writeList() {
+        fullList.forEach{it.write() }
     }
 
     fun calculateSpent(): Int{

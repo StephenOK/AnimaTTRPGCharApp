@@ -8,6 +8,7 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassInstances
 import com.example.animabuilder.character_creation.attributes.race_objects.CharRace
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
+import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.psychic.Psychic
@@ -32,6 +33,7 @@ class BaseCharacter: Serializable {
     var isMale = true
 
     //list of secondary abilities
+    val combat = CombatAbilities(this@BaseCharacter)
     val secondaryList = SecondaryList(this@BaseCharacter)
     val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
     val ki = Ki(this@BaseCharacter)
@@ -48,7 +50,6 @@ class BaseCharacter: Serializable {
 
     //character's level
     var lvl = 0
-    var presence: Int = 20
 
     //character development points
     var devPT = 0
@@ -105,61 +106,6 @@ class BaseCharacter: Serializable {
     var modWP = 0
     var modPER = 0
 
-    //character's maximum hp
-    var lifeMax = 0
-
-    var lifeBase = 0
-    var lifeMultsTaken = 0
-
-    //character's attack stat
-    var attack = 0
-    var pointInAttack = 0
-    var attackPerLevel = 0
-
-    //character's block stat
-    var block = 0
-    var pointInBlock = 0
-    var blockPerLevel = 0
-
-    //character's dodge stat
-    var dodge = 0
-    var pointInDodge = 0
-    var dodgePerLevel = 0
-
-    //character's wear armor stat
-    var wearArmor = 0
-    var pointInWear = 0
-    var wearPerLevel = 0
-
-    var specInitiative = 0
-    var totalInitiative = 0
-
-    //character resistance stats
-    var resistPhys = 0
-    var resistDisease = 0
-    var resistVen = 0
-    var resistMag = 0
-    var resistPsy = 0
-
-    var rphysSpec = 0
-    var rdSpec = 0
-    var rvSpec = 0
-    var rmSpec = 0
-    var rpsySpec = 0
-
-    var rphysMult = 1.0
-    var rdMult = 1.0
-    var rvMult = 1.0
-    var rmMult = 1.0
-    var rpsyMult = 1.0
-
-    var fatigue = 0
-    var specFatigue = 0
-
-    var baseRegen = 0
-    var specRegen = 0
-    var totalRegen = 0
-
     var sizeSpecial = 0
     var sizeCategory = 0
 
@@ -180,15 +126,15 @@ class BaseCharacter: Serializable {
 
     fun setGender(input: Boolean){
         if(ownRace.heldRace == RaceName.dukzarist){
-            if(isMale) rphysSpec -= 5
-            else rmSpec -= 5
+            if(isMale) combat.rphysSpec -= 5
+            else combat.rmSpec -= 5
         }
 
         isMale = input
 
         if(ownRace.heldRace == RaceName.dukzarist){
-            if(isMale) rphysSpec += 5
-            else rmSpec += 5
+            if(isMale) combat.rphysSpec += 5
+            else combat.rmSpec += 5
         }
     }
 
@@ -218,13 +164,13 @@ class BaseCharacter: Serializable {
 
     //updates class values when the character's class changes
     fun updateClassInputs(){
-        updateLifePoints()
+        combat.updateLifePoints()
 
-        updateAttack()
-        updateBlock()
-        updateDodge()
-        updateWear()
-        updateInitiative()
+        combat.updateAttack()
+        combat.updateBlock()
+        combat.updateDodge()
+        combat.updateWear()
+        combat.updateInitiative()
 
         adjustMaxValues()
         secondaryList.classUpdate(ownClass)
@@ -286,22 +232,18 @@ class BaseCharacter: Serializable {
         //determine development point count
         devPT = 500 + lvl * 100
 
-        presence =
-            if(lvl == 0)
-                20
-            else
-                25 + (5 * lvl)
-        updateResistances()
+        combat.updatePresence()
+        combat.updateResistances()
 
         //recalculate maximum DP allotments
         dpAllotmentCalc()
 
-        updateLifePoints()
-        updateAttack()
-        updateBlock()
-        updateDodge()
-        updateWear()
-        updateInitiative()
+        combat.updateLifePoints()
+        combat.updateAttack()
+        combat.updateBlock()
+        combat.updateDodge()
+        combat.updateWear()
+        combat.updateInitiative()
 
         ki.updateMK()
 
@@ -337,11 +279,7 @@ class BaseCharacter: Serializable {
     //updates the total development points spent in combat abilities
     private fun updateCombatSpent(){
         ptInCombat =
-            lifeMultsTaken * ownClass.lifePointMultiple +
-            pointInAttack * ownClass.atkGrowth +
-            pointInBlock * ownClass.blockGrowth +
-            pointInDodge * ownClass.dodgeGrowth +
-            pointInWear * ownClass.armorGrowth +
+            combat.calculateSpent() +
             weaponProficiencies.calculateSpent() +
             ki.calculateSpent()
     }
@@ -376,7 +314,7 @@ class BaseCharacter: Serializable {
             if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 0, 0) != null) 9
             else str + strBonus
         modSTR = getModVal(totalSTR)
-        updateWear()
+        combat.updateWear()
         updateSize()
 
         secondaryList.updateSTR(modSTR)
@@ -406,9 +344,9 @@ class BaseCharacter: Serializable {
         modDEX = getModVal(totalDEX)
 
         secondaryList.updateDEX(modDEX)
-        updateAttack()
-        updateBlock()
-        updateInitiative()
+        combat.updateAttack()
+        combat.updateBlock()
+        combat.updateInitiative()
         ki.updateKiStats()
         magic.calcMagProj()
         psychic.updatePsyProjection()
@@ -437,8 +375,8 @@ class BaseCharacter: Serializable {
         modAGI = getModVal(totalAGI)
 
         secondaryList.updateAGI(modAGI)
-        updateDodge()
-        updateInitiative()
+        combat.updateDodge()
+        combat.updateInitiative()
         ki.updateKiStats()
     }
 
@@ -463,13 +401,13 @@ class BaseCharacter: Serializable {
             if(advantageRecord.getAdvantage("Increase One Characteristic to Nine", 3, 0) != null) 9
             else con + conBonus
         modCON = getModVal(totalCON)
-        updateFatigue()
-        getBaseRegen()
+        combat.updateFatigue()
+        combat.getBaseRegen()
         updateSize()
 
-        updateLifeBase()
-        updateLifePoints()
-        updateResistances()
+        combat.updateLifeBase()
+        combat.updateLifePoints()
+        combat.updateResistances()
         ki.updateKiStats()
     }
 
@@ -522,7 +460,7 @@ class BaseCharacter: Serializable {
         modPOW = getModVal(totalPOW)
 
         secondaryList.updatePOW(modPOW)
-        updateResistances()
+        combat.updateResistances()
         ki.updateKiStats()
         magic.setBaseZeon()
         magic.setBaseZeonAcc()
@@ -554,7 +492,7 @@ class BaseCharacter: Serializable {
         modWP = getModVal(totalWP)
 
         secondaryList.updateWP(modWP)
-        updateResistances()
+        combat.updateResistances()
         ki.updateKiStats()
         summoning.updateControl()
         psychic.setBasePotential()
@@ -598,188 +536,6 @@ class BaseCharacter: Serializable {
             (15 * (statVal / 5 - 1) + 5 * ceil(statVal % 5 / 2.0)).toInt()
         }
         return output
-    }
-
-    //update the base number of life points based on the character's constitution
-    fun updateLifeBase(){
-        lifeBase = if(totalCON == 1)
-            5
-        else
-            20 + (totalCON * 10) + modCON
-    }
-
-    //updates the number of life multiples the user is taking for their character
-    fun takeLifeMult(multTake: Int){
-        lifeMultsTaken = multTake
-        updateTotalSpent()
-        updateLifePoints()
-    }
-
-    //updates the character's total life points
-    fun updateLifePoints(){
-        lifeMax = lifeBase + (lifeMultsTaken * totalCON) + (ownClass.lifePointsPerLevel * lvl)
-    }
-
-    //updates attack points and updates a string item if one given
-    val applyAttackPoint = {score: Int, textChange: MutableState<String>? ->
-        pointInAttack = score
-        updateTotalSpent()
-        updateAttack()
-
-        if(textChange != null)
-            textChange.value = attack.toString()
-
-        validAttackDodgeBlock()
-    }
-
-    @JvmName("setAttackPerLevel1")
-    fun setAttackPerLevel(newVal: Int){
-        attackPerLevel = newVal
-        updateAttack()
-    }
-
-    //updates the character's attack value
-    fun updateAttack(){
-        attack = pointInAttack + modDEX + attackClassVal()
-        weaponProficiencies.updateMartialMax()
-    }
-
-    //gets the character's class values for attack
-    fun attackClassVal(): Int{
-        var total = attackPerLevel * lvl
-        if(weaponProficiencies.takenMartialList.contains(weaponProficiencies.martials.capoeira))
-            total += 10
-
-        return if(total > 50)
-            50
-        else
-            total
-    }
-
-    //updates block points and updates a string item if one given
-    val applyBlockPoint = {score: Int, textChange: MutableState<String>? ->
-        pointInBlock = score
-        updateTotalSpent()
-        updateBlock()
-
-        if(textChange != null)
-            textChange.value = block.toString()
-
-        validAttackDodgeBlock()
-    }
-
-    @JvmName("setBlockPerLevel1")
-    fun setBlockPerLevel(newNum: Int){
-        blockPerLevel = newNum
-        updateBlock()
-    }
-
-    //updates the character's block value
-    fun updateBlock(){
-        block = pointInBlock + modDEX + (blockPerLevel * lvl)
-        weaponProficiencies.updateMartialMax()
-    }
-
-    //updates dodge points and updates a string item if one given
-    val applyDodgePoint = {score: Int, textChange: MutableState<String>? ->
-        pointInDodge = score
-        updateTotalSpent()
-        updateDodge()
-
-        if(textChange != null)
-            textChange.value = dodge.toString()
-
-        validAttackDodgeBlock()
-    }
-
-    @JvmName("setDodgePerLevel1")
-    fun setDodgePerLevel(newNum: Int){
-        dodgePerLevel = newNum
-        updateDodge()
-    }
-
-    //updates the character's dodge value
-    fun updateDodge(){
-        dodge = pointInDodge + modAGI + (dodgePerLevel * lvl)
-        weaponProficiencies.updateMartialMax()
-    }
-
-    //determines if the attack, block, and dodge the user has taken is valid
-    fun validAttackDodgeBlock(): Boolean{
-        //if only one stat developed, cannot exceed 25% of overall devPT
-        return ((pointInBlock == 0 && pointInDodge == 0 && pointInAttack * ownClass.atkGrowth <= devPT/4) ||
-                (pointInAttack == 0 && pointInDodge == 0 && pointInBlock * ownClass.blockGrowth <= devPT/4) ||
-                (pointInAttack == 0 && pointInBlock == 0 && pointInDodge * ownClass.dodgeGrowth <= devPT/4)) ||
-
-                //attack, dodge, and block cannot equate to over 50% of overall devPT
-                (((pointInAttack * ownClass.atkGrowth) + (pointInBlock * ownClass.blockGrowth) + (pointInDodge * ownClass.dodgeGrowth) <= devPT/2) &&
-
-                //attack can not be more than 50 of either one of block or dodge
-                (attack - block <= 50 || attack - dodge <= 50) &&
-
-                //neither block nor dodge can be 50 more than attack
-                (block - attack <= 50 && dodge - attack <= 50))
-    }
-
-    //updates wear armor points and updates a string item if one given
-    val applyWearPoint = {score: Int, textChange: MutableState<String>? ->
-        pointInWear = score
-        updateTotalSpent()
-        updateWear()
-
-        if(textChange != null)
-            textChange.value = wearArmor.toString()
-
-        true
-    }
-
-    @JvmName("setWearPerLevel1")
-    fun setWearPerLevel(newNum: Int){
-        wearPerLevel = newNum
-        updateWear()
-    }
-
-    //updates the character's wear armor value
-    fun updateWear(){
-        wearArmor = pointInWear + modSTR + (wearPerLevel * lvl)
-    }
-
-    fun changeSpecInitiative(changeBy: Int){
-        specInitiative += changeBy
-        updateInitiative()
-    }
-
-    fun updateInitiative(){
-        totalInitiative = (ownClass.initiativePerLevel * lvl) + modDEX + modAGI + specInitiative
-    }
-
-    //updates the character's resistances
-    fun updateResistances(){
-        resistPhys = ((presence + modCON + rphysSpec) * rphysMult).toInt()
-        resistDisease = ((presence + modCON + rdSpec) * rdMult).toInt()
-        resistVen = ((presence + modCON + rvSpec) * rvMult).toInt()
-        resistMag = ((presence + modPOW + rmSpec) * rmMult).toInt()
-        resistPsy = ((presence + modWP + rpsySpec) * rpsyMult).toInt()
-    }
-
-    fun updateFatigue(){
-        fatigue = totalCON + specFatigue
-    }
-
-    fun getBaseRegen(){
-        baseRegen = when(totalCON){
-            in 3..7 -> 1
-            in 8..9 -> 2
-            in 10..18 -> totalCON - 7
-            in 19..20 -> 12
-            else -> 0
-        }
-
-        updateRegeneration()
-    }
-
-    fun updateRegeneration(){
-        totalRegen = baseRegen + specRegen
     }
 
     fun changeSize(input: Int){
@@ -863,11 +619,7 @@ class BaseCharacter: Serializable {
         setWP(fileReader.readLine().toInt())
         setPER(fileReader.readLine().toInt())
 
-        takeLifeMult(fileReader.readLine().toInt())
-        applyAttackPoint(fileReader.readLine().toInt(), null)
-        applyBlockPoint(fileReader.readLine().toInt(), null)
-        applyDodgePoint(fileReader.readLine().toInt(), null)
-        applyWearPoint(fileReader.readLine().toInt(), null)
+        combat.loadCombat(fileReader)
 
         setAppearance(fileReader.readLine().toInt())
 
@@ -909,15 +661,11 @@ class BaseCharacter: Serializable {
             addNewData(totalWP)
             addNewData(totalPER)
 
-            addNewData(lifeMultsTaken)
-            addNewData(pointInAttack)
-            addNewData(pointInBlock)
-            addNewData(pointInDodge)
-            addNewData(pointInWear)
+            combat.writeCombat()
 
             addNewData(appearance)
 
-            secondaryList.writeList(this@BaseCharacter)
+            secondaryList.writeList()
             weaponProficiencies.writeProficiencies()
             ki.writeKiAttributes()
             magic.writeMagic()

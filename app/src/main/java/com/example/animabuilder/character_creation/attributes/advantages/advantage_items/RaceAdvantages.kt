@@ -15,25 +15,25 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "In addition, a Nephilim cannot choose the following Disadvantages: Sickly, " +
                 "Serious Illness, or Susceptible to Magic.",
         {_, _ ->
-            charInstance.rphysSpec += 5
-            charInstance.rdSpec += 20
-            charInstance.rvSpec += 5
-            charInstance.rmSpec += 10
-            charInstance.rpsySpec += 10
+            charInstance.combat.rphysSpec += 5
+            charInstance.combat.rdSpec += 20
+            charInstance.combat.rvSpec += 5
+            charInstance.combat.rmSpec += 10
+            charInstance.combat.rpsySpec += 10
 
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.sickly)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.seriousIllness)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.magicSusceptibility)
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rphysSpec -= 5
-            charInstance.rdSpec -= 20
-            charInstance.rvSpec -= 5
-            charInstance.rmSpec -= 10
-            charInstance.rpsySpec -= 10
-            charInstance.updateResistances()
+            charInstance.combat.rphysSpec -= 5
+            charInstance.combat.rdSpec -= 20
+            charInstance.combat.rvSpec -= 5
+            charInstance.combat.rmSpec -= 10
+            charInstance.combat.rpsySpec -= 10
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -70,12 +70,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Sylvain possess an incredible capacity for recovering from physical injury. " +
                 "They add one point to their natural Regeneration.",
         {_, _ ->
-            charInstance.specRegen += 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen += 1
+            charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.specRegen -= 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen -= 1
+            charInstance.combat.updateRegeneration()
         }
     )
 
@@ -121,12 +121,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "The Jayan tire less than other characters with the same Constitution, and " +
                 "therefore they add 1 point to their maximum Fatigue number.",
         {_, _ ->
-            charInstance.specFatigue += 1
-            charInstance.updateFatigue()
+            charInstance.combat.specFatigue += 1
+            charInstance.combat.updateFatigue()
         },
         {_, _ ->
-            charInstance.specFatigue -= 1
-            charInstance.updateFatigue()
+            charInstance.combat.specFatigue -= 1
+            charInstance.combat.updateFatigue()
         }
     )
 
@@ -135,12 +135,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Jayan souls make their bodies much more resistant to the shock produced by " +
                 "damage. As a result, they apply a +15 bonus to their Physical Resistance (PhR).",
         {_, _ ->
-            charInstance.rphysSpec += 15
-            charInstance.updateResistances()
+            charInstance.combat.rphysSpec += 15
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rphysSpec -= 15
-            charInstance.updateResistances()
+            charInstance.combat.rphysSpec -= 15
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -189,12 +189,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Spells and mystical effects are especially effective against Jayan, who suffer " +
                 "a -10 penalty to their Magic Resistance (MR).",
         {_, _ ->
-            charInstance.rmSpec -= 10
-            charInstance.updateResistances()
+            charInstance.combat.rmSpec -= 10
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rmSpec += 10
-            charInstance.updateResistances()
+            charInstance.combat.rmSpec += 10
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -387,28 +387,28 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "Duk\'zarist gain a +15 to all Resistance rolls except Magic Resistance (MR), for " +
                 "which they receive +20.",
         {_, _ ->
-            charInstance.rphysSpec += 15
-            charInstance.rdSpec += 15
-            charInstance.rvSpec += 15
-            charInstance.rmSpec += 15
-            charInstance.rpsySpec += 15
+            charInstance.combat.rphysSpec += 15
+            charInstance.combat.rdSpec += 15
+            charInstance.combat.rvSpec += 15
+            charInstance.combat.rmSpec += 15
+            charInstance.combat.rpsySpec += 15
 
-            if(charInstance.isMale) charInstance.rphysSpec += 5
-            else charInstance.rmSpec += 5
+            if(charInstance.isMale) charInstance.combat.rphysSpec += 5
+            else charInstance.combat.rmSpec += 5
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rphysSpec -= 15
-            charInstance.rdSpec -= 15
-            charInstance.rvSpec -= 15
-            charInstance.rmSpec -= 15
-            charInstance.rpsySpec -= 15
+            charInstance.combat.rphysSpec -= 15
+            charInstance.combat.rdSpec -= 15
+            charInstance.combat.rvSpec -= 15
+            charInstance.combat.rmSpec -= 15
+            charInstance.combat.rpsySpec -= 15
 
-            if(charInstance.isMale) charInstance.rphysSpec -= 5
-            else charInstance.rmSpec -= 5
+            if(charInstance.isMale) charInstance.combat.rphysSpec -= 5
+            else charInstance.combat.rmSpec -= 5
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -454,12 +454,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Duk\'zarist possess an incredible capacity for recovering from any physical " +
                 "injury. They add one point to their natural Regeneration.",
         {_, _ ->
-            charInstance.specRegen += 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen += 1
+            charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.specRegen -= 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen -= 1
+            charInstance.combat.updateRegeneration()
         }
     )
 

@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
-import com.example.animabuilder.character_creation.BaseCharacter
 import kotlin.Throws
 import java.io.BufferedReader
 import java.io.IOException
@@ -129,9 +128,9 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     /**
      * Write characteristic data to the file output stream
      */
-    fun write(charInstance: BaseCharacter) {
+    fun write() {
         //record characteristic's applied points and natural bonus state
-        charInstance.addNewData(pointsApplied)
-        charInstance.addNewData(bonusApplied.toString())
+        parent.charInstance.addNewData(pointsApplied)
+        parent.charInstance.addNewData(bonusApplied.toString())
     }
 }

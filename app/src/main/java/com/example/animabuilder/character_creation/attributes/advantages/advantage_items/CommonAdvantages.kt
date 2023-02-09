@@ -525,21 +525,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.specFatigue += 3
-                2 -> charInstance.specFatigue += 6
-                3 -> charInstance.specFatigue += 9
+                1 -> charInstance.combat.specFatigue += 3
+                2 -> charInstance.combat.specFatigue += 6
+                3 -> charInstance.combat.specFatigue += 9
             }
 
-            charInstance.updateFatigue()
+            charInstance.combat.updateFatigue()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.specFatigue -= 3
-                2 -> charInstance.specFatigue -= 6
-                3 -> charInstance.specFatigue -= 9
+                1 -> charInstance.combat.specFatigue -= 3
+                2 -> charInstance.combat.specFatigue -= 6
+                3 -> charInstance.combat.specFatigue -= 9
             }
 
-            charInstance.updateFatigue()
+            charInstance.combat.updateFatigue()
         }
     )
 
@@ -593,21 +593,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.specRegen += 2
-                2 -> charInstance.specRegen += 4
-                3 -> charInstance.specRegen += 6
+                1 -> charInstance.combat.specRegen += 2
+                2 -> charInstance.combat.specRegen += 4
+                3 -> charInstance.combat.specRegen += 6
             }
 
-            charInstance.updateRegeneration()
+            charInstance.combat.updateRegeneration()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.specRegen -= 2
-                2 -> charInstance.specRegen -= 4
-                3 -> charInstance.specRegen -= 6
+                1 -> charInstance.combat.specRegen -= 2
+                2 -> charInstance.combat.specRegen -= 4
+                3 -> charInstance.combat.specRegen -= 6
             }
 
-            charInstance.updateRegeneration()
+            charInstance.combat.updateRegeneration()
         }
     )
 
@@ -756,16 +756,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.changeSpecInitiative(25)
-                2 -> charInstance.changeSpecInitiative(45)
-                3 -> charInstance.changeSpecInitiative(60)
+                1 -> charInstance.combat.changeSpecInitiative(25)
+                2 -> charInstance.combat.changeSpecInitiative(45)
+                3 -> charInstance.combat.changeSpecInitiative(60)
             }
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.changeSpecInitiative(-25)
-                2 -> charInstance.changeSpecInitiative(-45)
-                3 -> charInstance.changeSpecInitiative(-60)
+                1 -> charInstance.combat.changeSpecInitiative(-25)
+                2 -> charInstance.combat.changeSpecInitiative(-45)
+                3 -> charInstance.combat.changeSpecInitiative(-60)
             }
         }
     )
@@ -871,19 +871,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.rmSpec += 25
-                2 -> charInstance.rmSpec += 50
+                1 -> charInstance.combat.rmSpec += 25
+                2 -> charInstance.combat.rmSpec += 50
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.rmSpec -= 25
-                2 -> charInstance.rmSpec -= 50
+                1 -> charInstance.combat.rmSpec -= 25
+                2 -> charInstance.combat.rmSpec -= 50
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -903,19 +903,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> {charInstance.rphysSpec += 25; charInstance.rvSpec += 25; charInstance.rdSpec += 25}
-                2 -> {charInstance.rphysSpec += 50; charInstance.rvSpec += 50; charInstance.rdSpec += 50}
+                1 -> {charInstance.combat.rphysSpec += 25; charInstance.combat.rvSpec += 25; charInstance.combat.rdSpec += 25}
+                2 -> {charInstance.combat.rphysSpec += 50; charInstance.combat.rvSpec += 50; charInstance.combat.rdSpec += 50}
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> {charInstance.rphysSpec -= 25; charInstance.rvSpec -= 25; charInstance.rdSpec -= 25}
-                2 -> {charInstance.rphysSpec -= 50; charInstance.rvSpec -= 50; charInstance.rdSpec -= 50}
+                1 -> {charInstance.combat.rphysSpec -= 25; charInstance.combat.rvSpec -= 25; charInstance.combat.rdSpec -= 25}
+                2 -> {charInstance.combat.rphysSpec -= 50; charInstance.combat.rvSpec -= 50; charInstance.combat.rdSpec -= 50}
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -933,19 +933,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.rpsySpec += 25
-                2 -> charInstance.rpsySpec += 50
+                1 -> charInstance.combat.rpsySpec += 25
+                2 -> charInstance.combat.rpsySpec += 50
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.rpsySpec -= 25
-                2 -> charInstance.rpsySpec -= 50
+                1 -> charInstance.combat.rpsySpec -= 25
+                2 -> charInstance.combat.rpsySpec -= 50
             }
 
-            charInstance.updateResistances()
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -1159,12 +1159,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.rphysMult = 0.5
-            charInstance.updateResistances()
+            charInstance.combat.rphysMult = 0.5
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rphysMult = 1.0
-            charInstance.updateResistances()
+            charInstance.combat.rphysMult = 1.0
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -1270,12 +1270,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.specFatigue -= 1
-            charInstance.updateFatigue()
+            charInstance.combat.specFatigue -= 1
+            charInstance.combat.updateFatigue()
         },
         {_, _ ->
-            charInstance.specFatigue += 1
-            charInstance.updateFatigue()
+            charInstance.combat.specFatigue += 1
+            charInstance.combat.updateFatigue()
         }
     )
 
@@ -1321,12 +1321,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.rdMult = 0.5
-            charInstance.updateResistances()
+            charInstance.combat.rdMult = 0.5
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rdMult = 1.0
-            charInstance.updateResistances()
+            charInstance.combat.rdMult = 1.0
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -1343,12 +1343,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.specRegen -= 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen -= 1
+            charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.specRegen += 1
-            charInstance.updateRegeneration()
+            charInstance.combat.specRegen += 1
+            charInstance.combat.updateRegeneration()
         }
     )
 
@@ -1381,19 +1381,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                -1 -> charInstance.specInitiative -= 30
-                -2 -> charInstance.specInitiative -= 60
+                -1 -> charInstance.combat.specInitiative -= 30
+                -2 -> charInstance.combat.specInitiative -= 60
             }
 
-            charInstance.updateInitiative()
+            charInstance.combat.updateInitiative()
         },
         {_, cost ->
             when(cost){
-                -1 -> charInstance.specInitiative += 30
-                -2 -> charInstance.specInitiative += 60
+                -1 -> charInstance.combat.specInitiative += 30
+                -2 -> charInstance.combat.specInitiative += 60
             }
 
-            charInstance.updateInitiative()
+            charInstance.combat.updateInitiative()
         }
     )
 
@@ -1408,12 +1408,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.rmMult = 0.5
-            charInstance.updateResistances()
+            charInstance.combat.rmMult = 0.5
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rmMult = 1.0
-            charInstance.updateResistances()
+            charInstance.combat.rmMult = 1.0
+            charInstance.combat.updateResistances()
         }
     )
 
@@ -1429,12 +1429,12 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.rvMult = 0.5
-            charInstance.updateResistances()
+            charInstance.combat.rvMult = 0.5
+            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.rvMult = 1.0
-            charInstance.updateResistances()
+            charInstance.combat.rvMult = 1.0
+            charInstance.combat.updateResistances()
         }
     )
 

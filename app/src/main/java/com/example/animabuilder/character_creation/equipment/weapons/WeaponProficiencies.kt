@@ -183,44 +183,44 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
             martials.melkaiah -> return (takenMartialList.contains(martials.grappling) || takenMartialList.contains(martials.sambo)) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.inhumanity) &&
-                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    charInstance.combat.attack >= 160 && (charInstance.combat.block >= 160 || charInstance.combat.dodge >= 160) &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.seraphite -> return (takenMartialList.contains(martials.shotokan) || takenMartialList.contains(martials.kempo)) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion) &&
-                    charInstance.attack >= 180 &&
+                    charInstance.combat.attack >= 180 &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.dumah -> return (takenMartialList.contains(martials.kempo) || takenMartialList.contains(martials.capoeira)) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
 
             martials.emp -> return (takenMartialList.contains(martials.kempo) || takenMartialList.contains(martials.taekwondo)) &&
-                    charInstance.attack >= 200 &&
+                    charInstance.combat.attack >= 200 &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.enuth -> return (takenMartialList.contains(martials.sambo) || takenMartialList.contains(martials.shotokan)) &&
-                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    charInstance.combat.attack >= 160 && (charInstance.combat.block >= 160 || charInstance.combat.dodge >= 160) &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.shephon -> return takenMartialList.contains(martials.aikido) && takenMartialList.contains(martials.kungFu) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl) &&
-                    (charInstance.block >= 200 || charInstance.dodge >= 200) &&
+                    (charInstance.combat.block >= 200 || charInstance.combat.dodge >= 200) &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.asakusen -> return takenMartialList.contains(martials.kungFu) &&
-                    charInstance.attack >= 160 && (charInstance.block >= 160 || charInstance.dodge >= 160) &&
+                    charInstance.combat.attack >= 160 && (charInstance.combat.block >= 160 || charInstance.combat.dodge >= 160) &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.velez -> return (takenMartialList.contains(martials.taiChi) || takenMartialList.contains(martials.kungFu)) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
 
             martials.selene -> return takenMartialList.contains(martials.aikido) &&
-                    (charInstance.block >= 200 || charInstance.dodge >= 200) &&
+                    (charInstance.combat.block >= 200 || charInstance.combat.dodge >= 200) &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             martials.hakyoukuken -> return (takenMartialList.contains(martials.shotokan) || takenMartialList.contains(martials.muayThai)) &&
                     charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfNecessaryEnergy) &&
-                    charInstance.attack >= 200 &&
+                    charInstance.combat.attack >= 200 &&
                     (primaryWeapon == unarmed || individualModules.contains(unarmed))
 
             else -> return false
@@ -242,11 +242,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
      */
     fun updateMartialMax() {
         //determine martial art number based on attack and highest defense abilities
-        martialMax = charInstance.attack +
-                if (charInstance.block > charInstance.dodge)
-                    charInstance.block
+        martialMax = charInstance.combat.attack +
+                if (charInstance.combat.block > charInstance.combat.dodge)
+                    charInstance.combat.block
                 else
-                    charInstance.dodge
+                    charInstance.combat.dodge
         martialMax /= 40
 
         //remove martial arts that exceed the new found limit

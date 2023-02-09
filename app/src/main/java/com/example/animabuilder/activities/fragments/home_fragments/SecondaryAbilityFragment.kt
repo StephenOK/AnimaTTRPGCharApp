@@ -114,9 +114,6 @@ private fun MakeTableDisplay(
 @Composable
 private fun RowHead(){
     Row{
-        //column buffer
-        Spacer(modifier = Modifier.weight(0.25f))
-
         //input point label
         Text(
             text = stringResource(R.string.pointsLabel),
@@ -167,6 +164,12 @@ private fun MakeRow(
     item: SecondaryCharacteristic,
     updateBottomBar: () -> Unit
 ){
+    val pointMultiplier =
+        if(item.devPerPoint > item.developmentDeduction)
+            item.devPerPoint - item.developmentDeduction
+        else
+            1
+
     //initial score stat
     val userInput = remember{mutableStateOf(item.pointsApplied.toString())}
 
@@ -187,15 +190,20 @@ private fun MakeRow(
     val total = remember{mutableStateOf(item.total.toString())}
 
     Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        //characteristic label
+        Text(text = stringResource(item.name),
+            textAlign = TextAlign.Start)
+        Text(text = "($pointMultiplier)")
+    }
+
+    Row(
         //modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
-        //row's label
-        Text(text = stringResource(item.name),
-            textAlign = TextAlign.Start,
-            modifier = Modifier.weight(0.25f))
-
         //user input for the stat's score
         TextField(
             value = userInput.value,

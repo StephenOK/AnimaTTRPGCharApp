@@ -53,10 +53,11 @@ class HomeActivity : AppCompatActivity() {
 
     //private enumeration for current displayed page
     private enum class ScreenPage{
-        Primary,
-        Secondary,
+        Character,
+        Combat,
+        Secondary_Characteristics,
         Advantages,
-        Weapon_Modules,
+        Modules,
         Ki,
         Magic,
         Summoning,
@@ -88,7 +89,7 @@ class HomeActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             //set initial display page
-            val currentFragment = remember{ mutableStateOf(ScreenPage.Primary)}
+            val currentFragment = remember{ mutableStateOf(ScreenPage.Character)}
 
             //boolean for exit alert
             val exitOpen = remember{mutableStateOf(false)}
@@ -203,17 +204,23 @@ class HomeActivity : AppCompatActivity() {
                 //set navigation host in scaffold
                 NavHost(
                     navController = navController,
-                    startDestination = ScreenPage.Primary.name,
+                    startDestination = ScreenPage.Character.name,
                     modifier = Modifier.padding(it)
                 ){
                     //route to primary characteristics page
-                    composable(route = ScreenPage.Primary.name){
+                    composable(route = ScreenPage.Character.name){
                         CharacterPageFragment(maxDP, maxCombat, maxMagic, maxPsychic)
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 
+                    //route to combat abilities page
+                    composable(route = ScreenPage.Combat.name){
+                        CombatFragment()
+                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                    }
+
                     //route to secondary characteristics page
-                    composable(route = ScreenPage.Secondary.name){
+                    composable(route = ScreenPage.Secondary_Characteristics.name){
                         SecondaryAbilityFragment()
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
@@ -225,8 +232,8 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to combat page
-                    composable(route = ScreenPage.Weapon_Modules.name){
-                        CombatFragment()
+                    composable(route = ScreenPage.Modules.name){
+                        ModuleFragment()
                         {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
                     }
 

@@ -5,15 +5,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.InfoRow
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -283,21 +283,17 @@ private fun KiFromStatRow(
         Text(text = charInstance.ki.getStatKi(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki points purchased input
-        TextField(
-            value = pointString.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = {
-                numberCatcher(it,
-                    {input: String ->
-                        kiRowData.pointUpdate(input.toInt(), pointTotalString, changePointDisplay)
-                        pointString.value = input
-                        updateFunc()},
-                    {kiRowData.pointUpdate(0, pointTotalString, changePointDisplay)
-                        pointString.value = ""},
-                )
-            },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            modifier = Modifier.weight(0.13f)
+        UserInput(
+            pointString,
+            {},
+            {input: String ->
+                kiRowData.pointUpdate(input.toInt(), pointTotalString, changePointDisplay)
+                pointString.value = input
+                updateFunc()},
+            {kiRowData.pointUpdate(0, pointTotalString, changePointDisplay)
+                pointString.value = ""},
+            {},
+            Modifier
         )
 
         //display for ki points from this stat
@@ -307,21 +303,17 @@ private fun KiFromStatRow(
         Text(text = charInstance.ki.getStatKiAcc(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki accumulation purchased input
-        TextField(
-            value = accString.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = {
-                numberCatcher(it,
-                    {input: String ->
-                        kiRowData.accUpdate(input.toInt(), accTotalString, changeAccDisplay)
-                        accString.value = input
-                        updateFunc()},
-                    {kiRowData.accUpdate(0, accTotalString, changeAccDisplay)
-                        accString.value = ""}
-                )
-            },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            modifier = Modifier.weight(0.13f)
+        UserInput(
+            accString,
+            {},
+            {input: String ->
+                kiRowData.accUpdate(input.toInt(), accTotalString, changeAccDisplay)
+                accString.value = input
+                updateFunc()},
+            {kiRowData.accUpdate(0, accTotalString, changeAccDisplay)
+                accString.value = ""},
+            {},
+            Modifier
         )
 
         //display for ki accumulation from this stat

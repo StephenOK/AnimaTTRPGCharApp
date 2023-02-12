@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -23,13 +22,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.keyboardActive
-import com.example.animabuilder.activities.numberCatcher
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -305,28 +303,26 @@ fun CharacterPageFragment(
 
         item{
             Text(text = "Appearance: ")
-            TextField(
-                value = appearanceText.value,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = {
-                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null)
-                        numberCatcher(
-                            it,
-                            {input ->
-                                if(input.toInt() <= 10) {
-                                    charInstance.setAppearance(input.toInt())
-                                    if(charInstance.appearance == input.toInt())
-                                        appearanceText.value = input
-                                    else
-                                        Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
-                                }
-                            },
-                            {
-                                charInstance.setAppearance(5)
-                                appearanceText.value = ""
-                            }
-                        )
-                }
+            UserInput(
+                appearanceText,
+                {},
+                {input ->
+                    if(input.toInt() <= 10) {
+                        charInstance.setAppearance(input.toInt())
+                        if(charInstance.appearance == input.toInt())
+                            appearanceText.value = input
+                        else
+                            Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
+                    }
+                },
+                {
+                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null) {
+                        charInstance.setAppearance(5)
+                        appearanceText.value = ""
+                    }
+                },
+                {},
+                Modifier
             )
         }
     }
@@ -419,22 +415,18 @@ private fun PrimaryRow(primeItem: PrimaryData){
             modifier = Modifier.weight(0.25f))
 
         //user input section
-        TextField(
-            value = primeItem.statInput.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange ={
-                numberCatcher(it,
-                    {input ->
-                        if(input.toInt() in 1..20) {
-                            //update display and mod values
-                            primeItem.statInput.value = input
-                            primeItem.modOutput.value = primeItem.change(primeItem.statInput.value.toInt())
-                        }},
-                    {primeItem.statInput.value = ""}
-                )
-            },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            modifier = Modifier.weight(0.25f)
+        UserInput(
+            primeItem.statInput,
+            {},
+            {input ->
+                if(input.toInt() in 1..20) {
+                    //update display and mod values
+                    primeItem.statInput.value = input
+                    primeItem.modOutput.value = primeItem.change(primeItem.statInput.value.toInt())
+                }},
+            {primeItem.statInput.value = ""},
+            {},
+            Modifier.weight(0.25f)
         )
 
         Text(

@@ -5,19 +5,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.numberCatcher
 
 /**
  * Fragment that displays the character's summoning abilities
@@ -118,28 +114,21 @@ private fun SummoningAbilityRow(inputData: SummoningAbilityItem, updateFunc: () 
         Text(text = inputData.classPoints, textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
 
         //display points bought and give option to buy points
-        TextField(
-            value = inputData.boughtVal.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = {
-                numberCatcher(
-                    it,
-                    {input ->
-                        inputData.purchaseAct(input.toInt())
-                        inputData.boughtVal.value = it
-                        charInstance.updateTotalSpent()
-                    },
-                    {
-                        inputData.purchaseAct(0)
-                        inputData.boughtVal.value = ""
-                        charInstance.updateTotalSpent()
-                    }
-                )
-
-                updateFunc()
+        UserInput(
+            inputData.boughtVal,
+            {},
+            {input ->
+                inputData.purchaseAct(input.toInt())
+                inputData.boughtVal.value = input
+                charInstance.updateTotalSpent()
             },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-            modifier = Modifier.weight(0.3f)
+            {
+                inputData.purchaseAct(0)
+                inputData.boughtVal.value = ""
+                charInstance.updateTotalSpent()
+            },
+            {updateFunc()},
+            Modifier.weight(0.3f)
         )
 
         //display final total

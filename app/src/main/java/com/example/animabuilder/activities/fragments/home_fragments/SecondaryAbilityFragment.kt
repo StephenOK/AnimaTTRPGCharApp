@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -15,11 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.numberCatcher
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 
 /**
@@ -205,26 +203,20 @@ private fun MakeRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //user input for the stat's score
-        TextField(
-            value = userInput.value,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            onValueChange = {
-                numberCatcher(it,
-                    {input: String ->
-                        secondaryInput(item, input.toInt(), textColor, total)
-                        userInput.value = input},
-                    {secondaryInput(item, 0, textColor, total)
-                        userInput.value = ""}
-                )
-
+        UserInput(
+            userInput,
+            {},
+            {input: String ->
+                secondaryInput(item, input.toInt(), textColor, total)
+                userInput.value = input},
+            {secondaryInput(item, 0, textColor, total)
+                userInput.value = ""},
+            {
                 checkedState.value = item.bonusApplied
                 charInstance.updateTotalSpent()
                 updateBottomBar()
             },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, color = textColor.value),
-            modifier = Modifier.weight(0.25f)
+            Modifier.weight(0.25f)
         )
 
         //display associated mod value

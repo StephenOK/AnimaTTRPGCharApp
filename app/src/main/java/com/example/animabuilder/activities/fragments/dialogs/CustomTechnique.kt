@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,14 +24,13 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.Dialog
 import com.example.animabuilder.R
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.numberCatcher
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
@@ -1924,28 +1922,24 @@ private fun EditBuildRow(
 
             //initialize build value
             val buildVal = remember { mutableStateOf(workArray[index].toString()) }
-            TextField(
-                value = buildVal.value,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                onValueChange = { input ->
-                    numberCatcher(input,
-                        { catchIn: String ->
-                            //change value to given input
-                            workArray[index] = catchIn.toInt()
-                            changeAccString()
-                            buildVal.value = catchIn
-                        },
-                        {
-                            //change value to 0 if nothing given
-                            workArray[index] = 0
-                            changeAccString()
-                            buildVal.value = ""
-                        }
-                    )
+
+            UserInput(
+                buildVal,
+                {},
+                { catchIn: String ->
+                    //change value to given input
+                    workArray[index] = catchIn.toInt()
+                    changeAccString()
+                    buildVal.value = catchIn
                 },
-                modifier = Modifier.weight(0.2f)
+                {
+                    //change value to 0 if nothing given
+                    workArray[index] = 0
+                    changeAccString()
+                    buildVal.value = ""
+                },
+                {},
+                Modifier.weight(0.2f)
             )
 
             //display characteristic's additional cost
@@ -1975,24 +1969,20 @@ private fun MaintenanceInput(
         Text(text = statName, modifier = Modifier.weight(0.5f))
 
         //maintenance input
-        TextField(
-            value = maintInput.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = {
-                numberCatcher(
-                    it,
-                    { input ->
-                        //change maintenance and display with user's input
-                        customTechnique.maintArray[index] = input.toInt()
-                        maintInput.value = input
-                    },
-                    {
-                        customTechnique.maintArray[index] = 0
-                        maintInput.value = ""
-                    }
-                )
+        UserInput(
+            maintInput,
+            {},
+            { input ->
+                //change maintenance and display with user's input
+                customTechnique.maintArray[index] = input.toInt()
+                maintInput.value = input
             },
-            modifier = Modifier.weight(0.5f)
+            {
+                customTechnique.maintArray[index] = 0
+                maintInput.value = ""
+            },
+            {},
+            Modifier.weight(0.5f)
         )
     }
 }

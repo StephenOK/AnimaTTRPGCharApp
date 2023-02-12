@@ -5,12 +5,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
+import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
@@ -206,33 +205,26 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 )
 
                 //Zeon point purchase input
-                TextField(
-                    value = boughtZeonString.value,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    onValueChange = {
-                        numberCatcher(
-                            it,
-                            { input ->
-                                //take inputted number and buy that many Zeon points
-                                charInstance.magic.buyZeon(input.toInt())
-                                boughtZeonString.value = input
-
-                                //recalculate related values
-                                maxZeonString.value = charInstance.magic.zeonMax.toString()
-                                updateFunc()
-                            },
-                            {
-                                //clear bought Zeon amount
-                                charInstance.magic.buyZeon(0)
-                                boughtZeonString.value = ""
-
-                                //recalculate related values
-                                maxZeonString.value = charInstance.magic.zeonMax.toString()
-                                updateFunc()
-                            }
-                        )
-                    }, modifier = Modifier.weight(0.15f)
+                UserInput(
+                    boughtZeonString,
+                    {},
+                    { input ->
+                        //take inputted number and buy that many Zeon points
+                        charInstance.magic.buyZeon(input.toInt())
+                        boughtZeonString.value = input
+                    },
+                    {
+                        //clear bought Zeon amount
+                        charInstance.magic.buyZeon(0)
+                        boughtZeonString.value = ""
+                    },
+                    {
+                        maxZeonString.value = charInstance.magic.zeonMax.toString()
+                        updateFunc()
+                    },
+                    Modifier.weight(0.25f)
                 )
+
                 Text(text = "x 5", modifier = Modifier.weight(0.1f))
 
                 //display zeon points from class levels
@@ -260,35 +252,29 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 Text(text = "Projection Imbalance: ")
 
                 //input to change imbalance
-                TextField(
-                    value = projectionImbalance.value,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    onValueChange = {
-                        numberCatcher(
-                            it,
-                            { input ->
-                                //if imbalance is a legal input
-                                if (input.toInt() in 0..30) {
-                                    //set magic imbalance to input
-                                    charInstance.magic.magProjImbalance = input.toInt()
-                                    projectionImbalance.value = input
-                                    offenseImbalance.value =
-                                        determineImbalanceValue(imbalanceIsAttack.value).toString()
-                                    defenseImbalance.value =
-                                        determineImbalanceValue(!imbalanceIsAttack.value).toString()
-                                }
-                            },
-                            {
-                                //default imbalance to 0
-                                charInstance.magic.magProjImbalance = 0
-                                projectionImbalance.value = ""
-                                offenseImbalance.value =
-                                    determineImbalanceValue(imbalanceIsAttack.value).toString()
-                                defenseImbalance.value =
-                                    determineImbalanceValue(!imbalanceIsAttack.value).toString()
-                            }
-                        )
-                    }
+                UserInput(
+                    projectionImbalance,
+                    {},
+                    { input ->
+                        //if imbalance is a legal input
+                        if (input.toInt() in 0..30) {
+                            //set magic imbalance to input
+                            charInstance.magic.magProjImbalance = input.toInt()
+                            projectionImbalance.value = input
+                        }
+                    },
+                    {
+                        //default imbalance to 0
+                        charInstance.magic.magProjImbalance = 0
+                        projectionImbalance.value = ""
+                    },
+                    {
+                        offenseImbalance.value =
+                            determineImbalanceValue(imbalanceIsAttack.value).toString()
+                        defenseImbalance.value =
+                            determineImbalanceValue(!imbalanceIsAttack.value).toString()
+                    },
+                    Modifier
                 )
             }
         }
@@ -391,12 +377,13 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
             Text(text = tableItem.baseDisplay)
 
             //input for user to purchase these points
-            TextField(
-                value = tableItem.boughtValue.value,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = {
-                    numberCatcher(it, tableItem.functionInput, tableItem.functionZero)
-                }
+            UserInput(
+                tableItem.boughtValue,
+                {},
+                tableItem.functionInput,
+                tableItem.functionZero,
+                {},
+                Modifier
             )
 
             //display final total
@@ -455,27 +442,21 @@ private fun SpellBookInvestment(
             Text(text = spellData.spellElement.name, modifier = Modifier.weight(0.3f))
 
             //display book investment value
-            TextField(
-                value = spellData.elementInvestment.value,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = {
-                    //close spell display if book investment made
-                    displayActive.value = false
-                    numberCatcher(
-                        it,
-                        { input ->
-                            //buy levels in the associated book
-                            charInstance.magic.buyBookLevels(input.toInt(), spellData.spellElement)
-                            updateMgLvlSpent()
-                            spellData.elementInvestment.value = input
-                        },
-                        {
-                            //default purchase to 0
-                            charInstance.magic.buyBookLevels(0, spellData.spellElement)
-                            updateMgLvlSpent()
-                            spellData.elementInvestment.value = ""
-                        }
-                    )
+            UserInput(
+                spellData.elementInvestment,
+                { displayActive.value = false },
+                { input ->
+                    //buy levels in the associated book
+                    charInstance.magic.buyBookLevels(input.toInt(), spellData.spellElement)
+                    spellData.elementInvestment.value = input
+                },
+                {
+                    //default purchase to 0
+                    charInstance.magic.buyBookLevels(0, spellData.spellElement)
+                    spellData.elementInvestment.value = ""
+                },
+                {
+                    updateMgLvlSpent()
 
                     //reflect any primary book change
                     reflectPrimaryElements(allElementList)
@@ -483,7 +464,7 @@ private fun SpellBookInvestment(
                     //update spells taken
                     updateSpellList()
                 },
-                modifier = Modifier.weight(0.2f)
+                Modifier
             )
 
             //spell display button

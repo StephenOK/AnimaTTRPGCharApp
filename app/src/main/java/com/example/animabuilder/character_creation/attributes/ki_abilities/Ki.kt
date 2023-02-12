@@ -49,9 +49,8 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
         takenAbilities -= item
 
         //make sure any other ability is not disqualified by this one's removal
-        takenAbilities.forEach{
-            if(it.prerequisites != null && !takenAbilities.contains(it.prerequisites))
-                takenAbilities -= it
+        takenAbilities.removeIf{
+            it.prerequisites != null && !takenAbilities.contains(it.prerequisites)
         }
 
         //update martial knowledge expenditure

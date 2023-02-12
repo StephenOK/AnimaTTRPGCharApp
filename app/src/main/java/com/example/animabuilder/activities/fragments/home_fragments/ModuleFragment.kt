@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.equipment.weapons.MartialArt

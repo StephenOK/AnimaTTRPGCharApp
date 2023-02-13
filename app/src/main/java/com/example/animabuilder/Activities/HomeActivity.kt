@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -16,19 +14,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -272,7 +268,7 @@ class HomeActivity : AppCompatActivity() {
             if(exitOpen.value)
                 ExitAlert(exitOpen)
             if(detailAlertOn.value)
-                DetailAlert()
+                DetailAlert(detailItem.value, contents.value!!) { detailAlertOn.value = false }
         }
     }
 
@@ -384,42 +380,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Shows an alert that gives details on the item in question
-     *
-     * contents: item's details specific to the type of item being displayed
-     */
-    @Composable
-    private fun DetailAlert() {
-        Dialog(
-            onDismissRequest = {detailAlertOn.value = false},
-            content = {
-                Box(
-                    Modifier
-                        .background(Color.White)
-                        .size(600.dp, 600.dp)
-                ){
-                    Row(
-                        Modifier
-                            .align(Alignment.TopCenter)
-                            .height(100.dp)
-                    ) {Text(text = "Description of " + detailItem.value)}
-
-                    Row(
-                        Modifier
-                            .align(Alignment.Center)
-                            .height(400.dp)
-                    ){ LazyColumn{item{contents.value!!()}} }
-
-                    Row(
-                        Modifier
-                            .align(Alignment.BottomCenter)
-                            .height(100.dp)
-                    ){TextButton(onClick = {detailAlertOn.value = false}){Text(text = "Close")}}
-                }
-            }
-        )
-    }
 
     /**
      * Alert for when user wishes to leave the current activity

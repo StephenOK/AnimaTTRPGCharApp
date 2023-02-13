@@ -1,7 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,15 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import androidx.compose.ui.window.Dialog
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
@@ -90,633 +86,630 @@ fun CustomTechnique(
     //maintenance state of the custom technique
     val customTechMaintenanceSelection = remember{mutableStateOf(false)}
 
-    Dialog(
-        onDismissRequest = {},
-        content = {
-            Box(
-                Modifier
-                    .background(Color.White)
-                    .size(600.dp, 600.dp)) {
+    DialogFrame(
+        "Create Custom Technique",
+        {
+            when (pageNum.value) {
+                //page for determining technique level
+                1 -> {
+                    Column{
+                        //prompt for technique's level
+                        Row{Text(text = "Select the Technique's Level:")}
+                        Column{
+                            //selection for level 1 technique
+                            Row {
+                                RadioButton(
+                                    selected = customTechLevelSelection.value == 1,
+                                    onClick = { customTechLevelSelection.value = 1 })
+                                Text(text = "1")
+                            }
 
-                //title header
-                Row(
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .height(100.dp)
-                ){Text(text = "Create Custom Technique")}
+                            //selection for level 2 technique
+                            Row{
+                                RadioButton(
+                                    selected = customTechLevelSelection.value == 2,
+                                    onClick = {customTechLevelSelection.value = 2})
+                                Text(text = "2")
+                            }
 
-                //content box
-                Row(
-                    Modifier
-                        .align(Alignment.Center)
-                        .height(400.dp)) {
-                    when (pageNum.value) {
-                        //page for determining technique level
-                        1 -> {
-                            Column{
-                                //prompt for technique's level
-                                Row{Text(text = "Select the Technique's Level:")}
-                                Column{
-                                    //selection for level 1 technique
-                                    Row {
-                                        RadioButton(
-                                            selected = customTechLevelSelection.value == 1,
-                                            onClick = { customTechLevelSelection.value = 1 })
-                                        Text(text = "1")
-                                    }
-
-                                    //selection for level 2 technique
-                                    Row{
-                                        RadioButton(
-                                            selected = customTechLevelSelection.value == 2,
-                                            onClick = {customTechLevelSelection.value = 2})
-                                        Text(text = "2")
-                                    }
-
-                                    //selection for level 3 technique
-                                    Row{
-                                        RadioButton(
-                                            selected = customTechLevelSelection.value == 3,
-                                            onClick = {customTechLevelSelection.value = 3})
-                                        Text(text = "3")
-                                    }
-                                }
-
-                                //set minimum and maximum MK values for each level
-                                val minMK = when(customTechLevelSelection.value){
-                                    1 -> 20
-                                    2 -> 40
-                                    3 -> 60
-                                    else -> 0
-                                }
-
-                                val maxMK = when(customTechLevelSelection.value){
-                                    1 -> 50
-                                    2 -> 100
-                                    3 -> 200
-                                    else -> 0
-                                }
-
-                                //display minimums and maximums
-                                Text(text = "Martial Knowledge Range: $minMK - $maxMK")
+                            //selection for level 3 technique
+                            Row{
+                                RadioButton(
+                                    selected = customTechLevelSelection.value == 3,
+                                    onClick = {customTechLevelSelection.value = 3})
+                                Text(text = "3")
                             }
                         }
 
-                        //page for determining primary effect
-                        2 -> {
-                            //define added technique as primary
-                            isPrimary.value = true
-
-                            //clear custom technique's effects
-                            customTechnique.givenAbilities.clear()
-                            allKiBuilds.clear()
-
-                            //set dropdown's default index
-                            techniqueIndex.value = 0
-
-                            Column{
-                                //prompt for ability selection
-                                Text(text = "Select Primary Ability: ")
-
-                                //create dropdown and displayed table
-                                TechniqueAbilityDropdown(
-                                    isPrimary.value,
-                                    techniqueIndex,
-                                    allEffectChecks,
-                                    optionalCheck1,
-                                    optionalCheck2,
-                                    allElementChecks,
-                                    customTechnique
-                                ) { input: Int ->
-                                    techniqueIndex.value = input
-                                    allEffectChecks.forEach { it.value.value = false }
-                                    optionalCheck1.forEach { it.value.value = false }
-                                    optionalCheck1.forEach { it.value.value = false }
-                                    allElementChecks.forEach { it.second.value = false }
-                                }
-                            }
+                        //set minimum and maximum MK values for each level
+                        val minMK = when(customTechLevelSelection.value){
+                            1 -> 20
+                            2 -> 40
+                            3 -> 60
+                            else -> 0
                         }
 
-                        //page for determining secondary effects
-                        3 -> {
-                            //reset dropdown index
-                            techniqueIndex.value = 0
-
-                            Column{
-                                //prompt for ability addition
-                                Text(text = "Add Secondary Abilities: ")
-
-                                //create dropdown and displayed table
-                                TechniqueAbilityDropdown(
-                                    isPrimary.value,
-                                    techniqueIndex,
-                                    allEffectChecks,
-                                    optionalCheck1,
-                                    optionalCheck2,
-                                    allElementChecks,
-                                    customTechnique
-                                ) { input: Int ->
-                                    techniqueIndex.value = input
-                                    allEffectChecks.forEach { it.value.value = false }
-                                    optionalCheck1.forEach { it.value.value = false }
-                                    optionalCheck1.forEach { it.value.value = false }
-                                    allElementChecks.forEach { it.second.value = false }
-                                }
-                            }
+                        val maxMK = when(customTechLevelSelection.value){
+                            1 -> 50
+                            2 -> 100
+                            3 -> 200
+                            else -> 0
                         }
 
-                        //page for editing taken secondary effects
-                        4 -> {
-                            //initialize all deletion checkboxes
-                            val deletionCheckList = customTechnique.givenAbilities.map{mutableStateOf(false)}
-
-                            LazyColumn{
-                                //display each taken effect with their deletable checkboxes
-                                customTechnique.givenAbilities.forEach{
-                                    item{EditEffectRow(it, deletionCheckList[customTechnique.givenAbilities.indexOf(it)], removeEffects)}
-                                }
-
-                                //display total current MK cost
-                                item{Text(text = "MK: " + customTechnique.mkCost().toString())}
-                            }
-                        }
-
-                        //page for redistributing ki accumulations
-                        5 -> {
-                            //set initial accumulation total values
-                            strAccTotal.value = getAccTotal(0, allKiBuilds)
-                            dexAccTotal.value = getAccTotal(1, allKiBuilds)
-                            agiAccTotal.value = getAccTotal(2, allKiBuilds)
-                            conAccTotal.value = getAccTotal(3, allKiBuilds)
-                            powAccTotal.value = getAccTotal(4, allKiBuilds)
-                            wpAccTotal.value = getAccTotal(5, allKiBuilds)
-
-                            //gather all totals into a single list
-                            val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
-
-                            Column{
-                                Row{Text(text = "Accumulation Totals:")}
-
-                                //display each characteristic accumulation totals
-                                Row{
-                                    for(index in 0..5)
-                                        Text(text = statName[index], modifier = Modifier.weight(0.13f))
-                                }
-                                Row {
-                                    Text(text = strAccTotal.value, modifier = Modifier.weight(0.13f))
-                                    Text(text = dexAccTotal.value, modifier = Modifier.weight(0.13f))
-                                    Text(text = agiAccTotal.value, modifier = Modifier.weight(0.13f))
-                                    Text(text = conAccTotal.value, modifier = Modifier.weight(0.13f))
-                                    Text(text = powAccTotal.value, modifier = Modifier.weight(0.13f))
-                                    Text(text = wpAccTotal.value, modifier = Modifier.weight(0.13f))
-                                }
-
-                                LazyColumn{
-                                    //for each taken effect
-                                    customTechnique.givenAbilities.forEach {
-                                        //display the effect's name
-                                        item { Text(text = it.name) }
-
-                                        //create an input for the stat's accumulation input
-                                        for (index in 0..5) {
-                                            item{
-                                                EditBuildRow(
-                                                    it,
-                                                    index,
-                                                    findBuild(it.name, allKiBuilds)!!.second,
-                                                    statName[index]
-                                                )
-                                                {allAccs[index].value = getAccTotal(index, allKiBuilds)}
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        //page for determining maintenance values
-                        6 -> {
-                            Column(Modifier.verticalScroll(rememberScrollState())){
-                                //prompt for making technique maintainable
-                                Row { Text(text = "Make technique maintainable?") }
-
-                                //option for making it maintainable
-                                Row {
-                                    RadioButton(
-                                        selected = customTechMaintenanceSelection.value,
-                                        onClick = { customTechMaintenanceSelection.value = true }
-                                    )
-                                    Text(text = "Yes")
-                                }
-
-                                //option for technique not being maintained
-                                Row {
-                                    RadioButton(
-                                        selected = !customTechMaintenanceSelection.value,
-                                        onClick = { customTechMaintenanceSelection.value = false }
-                                    )
-                                    Text(text = "No")
-                                }
-
-                                //if user makes technique maintainable
-                                if (customTechMaintenanceSelection.value) {
-                                    //display required maintenance distribution
-                                    Row { Text(text = "Total Maintenance Cost: " + customTechnique.maintTotal().toString()) }
-
-                                    //make an input for each available stat
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        for (index in 0..5)
-                                            if(customTechnique.hasAccumulation(index))
-                                                MaintenanceInput(
-                                                    index,
-                                                    customTechnique,
-                                                    statName[index]
-                                                )
-                                    }
-                                }
-                            }
-                        }
-
-                        //page for naming and describing technique
-                        7 -> {
-                            val customName = remember{mutableStateOf("")}
-                            val customDescription = remember{mutableStateOf("")}
-
-                            Column{
-                                //prompt and input for technique's name
-                                Row{
-                                    Text(text = "Name your Technique: ")
-                                    TextField(
-                                        value = customName.value,
-                                        onValueChange = {
-                                            customTechnique.name = it
-                                            customName.value = it
-                                        }
-                                    )
-                                }
-                                //prompt and input for technique's description
-                                Row{
-                                    Text(text = "Description")
-                                    TextField(
-                                        value = customDescription.value,
-                                        onValueChange = {
-                                            customTechnique.description = it
-                                            customDescription.value = it
-                                        }
-                                    )
-                                }
-                            }
-                        }
-
-                        //confirmation page
-                        8 -> {
-                            Column {
-                                Row { Text(text = "Description of " + customTechnique.name) }
-                                techContents(customTechnique)
-                            }
-                        }
-
-                        else -> {deactivate()}
+                        //display minimums and maximums
+                        Text(text = "Martial Knowledge Range: $minMK - $maxMK")
                     }
                 }
 
-                //row for user's buttons
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .height(100.dp)){
+                //page for determining primary effect
+                2 -> {
+                    //define added technique as primary
+                    isPrimary.value = true
 
-                    //button to terminate process
-                    TextButton(onClick = {deactivate()}){Text(text = "Cancel")}
+                    //clear custom technique's effects
+                    customTechnique.givenAbilities.clear()
+                    allKiBuilds.clear()
 
-                    //if on edit page, button to delete selected items
-                    if(pageNum.value == 4){
-                        TextButton(
-                            onClick = {
-                                //remove selected effects from the technique
-                                customTechnique.givenAbilities -= removeEffects.toSet()
+                    //set dropdown's default index
+                    techniqueIndex.value = 0
 
-                                //remove selected effects from the kiBuild list
-                                removeEffects.forEach removeItem@{removable ->
-                                    allKiBuilds.forEach{
-                                        if(removable.name == it.first) {
-                                            allKiBuilds.remove(it)
-                                            return@removeItem
-                                        }
-                                    }
-                                }
+                    Column{
+                        //prompt for ability selection
+                        Text(text = "Select Primary Ability: ")
 
-                                //clear deletion list
-                                removeEffects.clear()
-
-                                //realign effects for removed primary ability
-                                customTechnique.fixPrimaryAbility()
-
-                                //go back to adding secondaries
-                                if (customTechnique.givenAbilities.isNotEmpty()) {
-                                    val newPrimary = customTechnique.givenAbilities[0]
-
-                                    for(index in 0..5){
-                                        findBuild(newPrimary.name, allKiBuilds)!!.second[index] = newPrimary.kiBuild[index]
-                                    }
-
-                                    pageNum.value = 3
-                                }
-                                //if effects list is empty, go back to primary effect page
-                                else {
-                                    pageNum.value = 2
-                                }
-                            }
-                        ) {
-                            Text(text = "Delete")
+                        //create dropdown and displayed table
+                        TechniqueAbilityDropdown(
+                            isPrimary.value,
+                            techniqueIndex,
+                            allEffectChecks,
+                            optionalCheck1,
+                            optionalCheck2,
+                            allElementChecks,
+                            customTechnique
+                        ) { input: Int ->
+                            techniqueIndex.value = input
+                            allEffectChecks.forEach { it.value.value = false }
+                            optionalCheck1.forEach { it.value.value = false }
+                            optionalCheck1.forEach { it.value.value = false }
+                            allElementChecks.forEach { it.second.value = false }
                         }
                     }
+                }
 
-                    //if on secondary page
-                    if(pageNum.value == 3){
-                        //option to edit taken effects
-                        TextButton(onClick = {pageNum.value = 4})
-                        {Text(text = "Edit")}
+                //page for determining secondary effects
+                3 -> {
+                    //reset dropdown index
+                    techniqueIndex.value = 0
 
-                        //option to add selected effect
-                        TextButton(
-                            onClick = {
-                                //get all selected effects
-                                val addedTechnique = listOf(
-                                    getSelectedEffect(allEffectChecks, allElementChecks, true),
-                                    getSelectedEffect(optionalCheck1, allElementChecks, true),
-                                    getSelectedEffect(optionalCheck2, allElementChecks, true)
-                                )
+                    Column{
+                        //prompt for ability addition
+                        Text(text = "Add Secondary Abilities: ")
 
-                                //initialize list of valid input returns
-                                val validAddition = mutableListOf<String?>()
+                        //create dropdown and displayed table
+                        TechniqueAbilityDropdown(
+                            isPrimary.value,
+                            techniqueIndex,
+                            allEffectChecks,
+                            optionalCheck1,
+                            optionalCheck2,
+                            allElementChecks,
+                            customTechnique
+                        ) { input: Int ->
+                            techniqueIndex.value = input
+                            allEffectChecks.forEach { it.value.value = false }
+                            optionalCheck1.forEach { it.value.value = false }
+                            optionalCheck1.forEach { it.value.value = false }
+                            allElementChecks.forEach { it.second.value = false }
+                        }
+                    }
+                }
 
-                                //initialize cost forecast
-                                var addedCost = 0
+                //page for editing taken secondary effects
+                4 -> {
+                    //initialize all deletion checkboxes
+                    val deletionCheckList = customTechnique.givenAbilities.map{mutableStateOf(false)}
 
-                                //initialize state of all selected items being legal
-                                var allAdd = false
+                    LazyColumn{
+                        //display each taken effect with their deletable checkboxes
+                        customTechnique.givenAbilities.forEach{
+                            item{EditEffectRow(it, deletionCheckList[customTechnique.givenAbilities.indexOf(it)], removeEffects)}
+                        }
 
-                                //for each selected effect
-                                addedTechnique.forEach {
-                                    if (it != null) {
-                                        //change continuation to true for at least one effect present
-                                        allAdd = true
+                        //display total current MK cost
+                        item{Text(text = "MK: " + customTechnique.mkCost().toString())}
+                    }
+                }
 
-                                        //get if effect is valid and add to return list
-                                        val newInput = customTechnique.validEffectAddition(
+                //page for redistributing ki accumulations
+                5 -> {
+                    //set initial accumulation total values
+                    strAccTotal.value = getAccTotal(0, allKiBuilds)
+                    dexAccTotal.value = getAccTotal(1, allKiBuilds)
+                    agiAccTotal.value = getAccTotal(2, allKiBuilds)
+                    conAccTotal.value = getAccTotal(3, allKiBuilds)
+                    powAccTotal.value = getAccTotal(4, allKiBuilds)
+                    wpAccTotal.value = getAccTotal(5, allKiBuilds)
+
+                    //gather all totals into a single list
+                    val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
+
+                    Column{
+                        Row{Text(text = "Accumulation Totals:")}
+
+                        //display each characteristic accumulation totals
+                        Row{
+                            for(index in 0..5)
+                                Text(text = statName[index], modifier = Modifier.weight(0.13f))
+                        }
+                        Row {
+                            Text(text = strAccTotal.value, modifier = Modifier.weight(0.13f))
+                            Text(text = dexAccTotal.value, modifier = Modifier.weight(0.13f))
+                            Text(text = agiAccTotal.value, modifier = Modifier.weight(0.13f))
+                            Text(text = conAccTotal.value, modifier = Modifier.weight(0.13f))
+                            Text(text = powAccTotal.value, modifier = Modifier.weight(0.13f))
+                            Text(text = wpAccTotal.value, modifier = Modifier.weight(0.13f))
+                        }
+
+                        LazyColumn{
+                            //for each taken effect
+                            customTechnique.givenAbilities.forEach {
+                                //display the effect's name
+                                item { Text(text = it.name) }
+
+                                //create an input for the stat's accumulation input
+                                for (index in 0..5) {
+                                    item{
+                                        EditBuildRow(
                                             it,
-                                            charInstance.ki.martialKnowledgeRemaining - addedCost
+                                            index,
+                                            findBuild(it.name, allKiBuilds)!!.second,
+                                            statName[index]
                                         )
-                                        validAddition.add(newInput)
-
-                                        //increment cost forecast if input is valid
-                                        if (newInput == null)
-                                            addedCost += it.mkCost
-
-                                        //stop addition process
-                                        else {
-                                            allAdd = false
-                                            return@forEach
-                                        }
-                                    }
-                                }
-
-                                //if no problem in adding effects
-                                if (allAdd){
-                                    //attempt to add each one to the character
-                                    addedTechnique.forEach {
-                                        //found effect to add
-                                        if(it != null) {
-                                            //get next valid statement
-                                            val validReturn = validAddition.removeFirst()
-
-                                            //addition is valid
-                                            if (validReturn == null) {
-                                                //add disadvantage marker to Elemental Binding list
-                                                if (techniqueIndex.value == 35)
-                                                    it.elements += Element.Free
-
-                                                //add effect to technique
-                                                customTechnique.givenAbilities += it
-
-                                                //add effect to ki build master list
-                                                allKiBuilds += Pair(
-                                                    it.name,
-                                                    it.kiBuild.toMutableList()
-                                                )
-
-                                                //reset dropdown index
-                                                techniqueIndex.value = 0
-                                            }
-
-                                            //display addition error
-                                            else
-                                                Toast.makeText(
-                                                    context,
-                                                    validReturn,
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                        }
+                                        {allAccs[index].value = getAccTotal(index, allKiBuilds)}
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                //page for determining maintenance values
+                6 -> {
+                    Column(Modifier.verticalScroll(rememberScrollState())){
+                        //prompt for making technique maintainable
+                        Row { Text(text = "Make technique maintainable?") }
+
+                        //option for making it maintainable
+                        Row {
+                            RadioButton(
+                                selected = customTechMaintenanceSelection.value,
+                                onClick = { customTechMaintenanceSelection.value = true }
+                            )
+                            Text(text = "Yes")
+                        }
+
+                        //option for technique not being maintained
+                        Row {
+                            RadioButton(
+                                selected = !customTechMaintenanceSelection.value,
+                                onClick = { customTechMaintenanceSelection.value = false }
+                            )
+                            Text(text = "No")
+                        }
+
+                        //if user makes technique maintainable
+                        if (customTechMaintenanceSelection.value) {
+                            //display required maintenance distribution
+                            Row { Text(text = "Total Maintenance Cost: " + customTechnique.maintTotal().toString()) }
+
+                            //make an input for each available stat
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                for (index in 0..5)
+                                    if(customTechnique.hasAccumulation(index))
+                                        MaintenanceInput(
+                                            index,
+                                            customTechnique,
+                                            statName[index]
+                                        )
+                            }
+                        }
+                    }
+                }
+
+                //page for naming and describing technique
+                7 -> {
+                    val customName = remember{mutableStateOf("")}
+                    val customDescription = remember{mutableStateOf("")}
+
+                    Column{
+                        //prompt and input for technique's name
+                        Row{
+                            Text(text = "Name your Technique: ")
+                            TextField(
+                                value = customName.value,
+                                onValueChange = {
+                                    customTechnique.name = it
+                                    customName.value = it
+                                }
+                            )
+                        }
+                        //prompt and input for technique's description
+                        Row{
+                            Text(text = "Description")
+                            TextField(
+                                value = customDescription.value,
+                                onValueChange = {
+                                    customTechnique.description = it
+                                    customDescription.value = it
+                                }
+                            )
+                        }
+                    }
+                }
+
+                //confirmation page
+                8 -> {
+                    Column {
+                        Row { Text(text = "Description of " + customTechnique.name) }
+                        techContents(customTechnique)
+                    }
+                }
+
+                else -> {deactivate()}
+            }
+        },
+        {
+            //button to terminate process
+            TextButton(onClick = { deactivate() }) { Text(text = "Cancel") }
+
+            //if on edit page, button to delete selected items
+            if (pageNum.value == 4) {
+                TextButton(
+                    onClick = {
+                        //remove selected effects from the technique
+                        customTechnique.givenAbilities -= removeEffects.toSet()
+
+                        //remove selected effects from the kiBuild list
+                        removeEffects.forEach removeItem@{ removable ->
+                            allKiBuilds.forEach {
+                                if (removable.name == it.first) {
+                                    allKiBuilds.remove(it)
+                                    return@removeItem
+                                }
+                            }
+                        }
+
+                        //clear deletion list
+                        removeEffects.clear()
+
+                        //realign effects for removed primary ability
+                        customTechnique.fixPrimaryAbility()
+
+                        //go back to adding secondaries
+                        if (customTechnique.givenAbilities.isNotEmpty()) {
+                            val newPrimary = customTechnique.givenAbilities[0]
+
+                            for (index in 0..5) {
+                                findBuild(newPrimary.name, allKiBuilds)!!.second[index] =
+                                    newPrimary.kiBuild[index]
+                            }
+
+                            pageNum.value = 3
+                        }
+                        //if effects list is empty, go back to primary effect page
+                        else {
+                            pageNum.value = 2
+                        }
+                    }
+                ) {
+                    Text(text = "Delete")
+                }
+            }
+
+            //if on secondary page
+            if (pageNum.value == 3) {
+                //option to edit taken effects
+                TextButton(onClick = { pageNum.value = 4 })
+                { Text(text = "Edit") }
+
+                //option to add selected effect
+                TextButton(
+                    onClick = {
+                        //get all selected effects
+                        val addedTechnique = listOf(
+                            getSelectedEffect(allEffectChecks, allElementChecks, true),
+                            getSelectedEffect(optionalCheck1, allElementChecks, true),
+                            getSelectedEffect(optionalCheck2, allElementChecks, true)
                         )
-                        {Text(text = "Add")}
-                    }
 
-                    //display back button on any page except the first and edit effect pages
-                    if(pageNum.value != 1 && pageNum.value != 4){
-                        TextButton(onClick = {
-                            //set back button function for each page
-                            when(pageNum.value){
-                                2 -> {
-                                    customTechLevelSelection.value = 1
-                                    pageNum.value = 1
-                                }
-                                3 -> {pageNum.value = 2}
-                                5 -> {
-                                    techniqueIndex.value = 0
-                                    pageNum.value = 3
-                                }
-                                6 -> {pageNum.value = 5}
-                                7 -> {pageNum.value = 6}
-                                8 -> {pageNum.value = 7}
-                                else -> {deactivate()}
-                            }
-                        }){Text(text = "Back")}
-                    }
+                        //initialize list of valid input returns
+                        val validAddition = mutableListOf<String?>()
 
-                    //next page button
-                    TextButton(onClick = {
-                        when(pageNum.value){
-                            1 -> {
-                                //if character can take technique of this level
-                                if((customTechLevelSelection.value == 1 && charInstance.ki.martialKnowledgeRemaining >= 20) ||
-                                    (customTechLevelSelection.value == 2 && charInstance.ki.takenFirstTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 40) ||
-                                    (customTechLevelSelection.value == 3 && charInstance.ki.takenSecondTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 60)) {
+                        //initialize cost forecast
+                        var addedCost = 0
 
-                                    //set technique's level
-                                    customTechnique.level = customTechLevelSelection.value
+                        //initialize state of all selected items being legal
+                        var allAdd = false
 
-                                    //proceed to next page
-                                    pageNum.value = 2
-                                }
-                            }
+                        //for each selected effect
+                        addedTechnique.forEach {
+                            if (it != null) {
+                                //change continuation to true for at least one effect present
+                                allAdd = true
 
-                            2 -> {
-                                //get any possible selected effects
-                                val selectedEffects = listOf(
-                                    getSelectedEffect(allEffectChecks, allElementChecks, true),
-                                    getSelectedEffect(optionalCheck1, allElementChecks, true),
-                                    getSelectedEffect(optionalCheck2, allElementChecks, true)
+                                //get if effect is valid and add to return list
+                                val newInput = customTechnique.validEffectAddition(
+                                    it,
+                                    charInstance.ki.martialKnowledgeRemaining - addedCost
                                 )
+                                validAddition.add(newInput)
 
-                                //get technique's maximum cost
-                                val mkMax = when(customTechnique.level){
-                                    1 -> 50
-                                    2 -> 100
-                                    3 -> 200
-                                    else -> 0
+                                //increment cost forecast if input is valid
+                                if (newInput == null)
+                                    addedCost += it.mkCost
+
+                                //stop addition process
+                                else {
+                                    allAdd = false
+                                    return@forEach
                                 }
+                            }
+                        }
 
-                                //get current expenditure of
-                                val currSpent = mutableStateOf(0)
+                        //if no problem in adding effects
+                        if (allAdd) {
+                            //attempt to add each one to the character
+                            addedTechnique.forEach {
+                                //found effect to add
+                                if (it != null) {
+                                    //get next valid statement
+                                    val validReturn = validAddition.removeFirst()
 
-                                //make certain custom technique has no effects before addition
-                                customTechnique.givenAbilities.clear()
+                                    //addition is valid
+                                    if (validReturn == null) {
+                                        //add disadvantage marker to Elemental Binding list
+                                        if (techniqueIndex.value == 35)
+                                            it.elements += Element.Free
 
-                                //for each potential effect addition
-                                selectedEffects.forEach{
-                                    //if there is a valid addition
-                                    if(it != null){
-                                        //add it to the technique
+                                        //add effect to technique
                                         customTechnique.givenAbilities += it
 
-                                        //track its build
-                                        allKiBuilds += Pair(it.name, it.kiBuild)
+                                        //add effect to ki build master list
+                                        allKiBuilds += Pair(
+                                            it.name,
+                                            it.kiBuild.toMutableList()
+                                        )
 
-                                        //determine cost of addition
-                                        currSpent.value += it.mkCost
-                                    }
-                                }
-
-                                //notify if maximum cost exceeded
-                                if(currSpent.value > mkMax)
-                                    Toast.makeText(context, "Cannot take all abilities: level cost exceeded", Toast.LENGTH_SHORT).show()
-                                //proceed to next page if any ability was added
-                                else if(customTechnique.givenAbilities.isNotEmpty()) {
-                                    isPrimary.value = false
-                                    pageNum.value = 3
-                                }
-                            }
-
-                            3 -> {
-                                //go to next page if minimum costs are met
-                                if((customTechnique.level == 1 && customTechnique.mkCost() >= 20) ||
-                                    (customTechnique.level == 2 && customTechnique.mkCost() >= 40) ||
-                                    (customTechnique.level == 3 && customTechnique.mkCost() >= 60))
-                                    pageNum.value = 5
-                            }
-
-                            //return to secondary additions page
-                            4 -> {pageNum.value = 3}
-
-                            5 -> {
-                                //initialize booleans for primary ability and valid inputs
-                                var isFirst = true
-                                var moveOn = true
-
-                                //for each effect build
-                                allKiBuilds.forEach{
-                                    //initialize build total
-                                    var total = 0
-
-                                    //retrieve associated effect
-                                    val effect = customTechnique.getAbility(it.first)
-
-                                    //determine accumulation total for the effect
-                                    var accTotal = if(isFirst) effect!!.costPair.first else effect!!.costPair.second
-
-                                    //for each accumulation index
-                                    for(index in 0..5){
-                                        //add amount to the total
-                                        total += it.second[index]
-
-                                        //if any points added to this stat
-                                        if(it.second[index] > 0)
-                                            //add stat's additional build value to required accumulation
-                                            accTotal += effect.buildAdditions[index]!!
+                                        //reset dropdown index
+                                        techniqueIndex.value = 0
                                     }
 
-                                    //set effect's ki build if total matches needed accumulation
-                                    if(total == accTotal) {
-                                        for(index in 0 .. 5)
-                                            effect.kiBuild[index] = it.second[index]
-                                    }
-
-                                    //notify of invalid ki build
+                                    //display addition error
                                     else
-                                        moveOn = false
-
-                                    //notify of no longer checking primary effect
-                                    isFirst = false
+                                        Toast.makeText(
+                                            context,
+                                            validReturn,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                 }
-
-                                //go to next page if all effects have valid builds
-                                if(moveOn)
-                                    pageNum.value = 6
                             }
-
-                            6 -> {
-                                //initialize valid input indicator
-                                var toNext = true
-
-                                //user makes technique maintainable
-                                if(customTechMaintenanceSelection.value){
-                                    //initialize maintenance input total
-                                    var total = 0
-
-                                    //add each index's value
-                                    customTechnique.maintArray.forEach{
-                                        total += it
-                                    }
-
-                                    //determine if input is valid
-                                    toNext = total == customTechnique.maintTotal()
-                                }
-
-                                //set default input for no maintenance
-                                else
-                                    for(index in 0..5)
-                                        customTechnique.maintArray[index] = 0
-
-                                //go to next page if input is valid
-                                if(toNext)
-                                    pageNum.value = 7
-                            }
-
-                            //go to next page if technique is named
-                            7 -> {if(customTechnique.name != "") pageNum.value = 8}
-
-                            //add technique to character and close dialog
-                            8 -> {
-                                charInstance.ki.addTechnique(customTechnique)
-                                deactivate()
-                            }
-                            else -> {}
                         }
-                    }) {
-                        Text(
-                            //set next button text depending on the active page
-                            text = when (pageNum.value) {
-                                4 -> "Return"
-                                8 -> "Confirm"
-                                else -> "Next"
-                            }
-                        )
                     }
+                )
+                { Text(text = "Add") }
+            }
+
+            //display back button on any page except the first and edit effect pages
+            if (pageNum.value != 1 && pageNum.value != 4) {
+                TextButton(onClick = {
+                    //set back button function for each page
+                    when (pageNum.value) {
+                        2 -> {
+                            customTechLevelSelection.value = 1
+                            pageNum.value = 1
+                        }
+                        3 -> {
+                            pageNum.value = 2
+                        }
+                        5 -> {
+                            techniqueIndex.value = 0
+                            pageNum.value = 3
+                        }
+                        6 -> {
+                            pageNum.value = 5
+                        }
+                        7 -> {
+                            pageNum.value = 6
+                        }
+                        8 -> {
+                            pageNum.value = 7
+                        }
+                        else -> {
+                            deactivate()
+                        }
+                    }
+                }) { Text(text = "Back") }
+            }
+
+            //next page button
+            TextButton(onClick = {
+                when (pageNum.value) {
+                    1 -> {
+                        //if character can take technique of this level
+                        if ((customTechLevelSelection.value == 1 && charInstance.ki.martialKnowledgeRemaining >= 20) ||
+                            (customTechLevelSelection.value == 2 && charInstance.ki.takenFirstTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 40) ||
+                            (customTechLevelSelection.value == 3 && charInstance.ki.takenSecondTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 60)
+                        ) {
+
+                            //set technique's level
+                            customTechnique.level = customTechLevelSelection.value
+
+                            //proceed to next page
+                            pageNum.value = 2
+                        }
+                    }
+
+                    2 -> {
+                        //get any possible selected effects
+                        val selectedEffects = listOf(
+                            getSelectedEffect(allEffectChecks, allElementChecks, true),
+                            getSelectedEffect(optionalCheck1, allElementChecks, true),
+                            getSelectedEffect(optionalCheck2, allElementChecks, true)
+                        )
+
+                        //get technique's maximum cost
+                        val mkMax = when (customTechnique.level) {
+                            1 -> 50
+                            2 -> 100
+                            3 -> 200
+                            else -> 0
+                        }
+
+                        //get current expenditure of
+                        val currSpent = mutableStateOf(0)
+
+                        //make certain custom technique has no effects before addition
+                        customTechnique.givenAbilities.clear()
+
+                        //for each potential effect addition
+                        selectedEffects.forEach {
+                            //if there is a valid addition
+                            if (it != null) {
+                                //add it to the technique
+                                customTechnique.givenAbilities += it
+
+                                //track its build
+                                allKiBuilds += Pair(it.name, it.kiBuild)
+
+                                //determine cost of addition
+                                currSpent.value += it.mkCost
+                            }
+                        }
+
+                        //notify if maximum cost exceeded
+                        if (currSpent.value > mkMax)
+                            Toast.makeText(
+                                context,
+                                "Cannot take all abilities: level cost exceeded",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        //proceed to next page if any ability was added
+                        else if (customTechnique.givenAbilities.isNotEmpty()) {
+                            isPrimary.value = false
+                            pageNum.value = 3
+                        }
+                    }
+
+                    3 -> {
+                        //go to next page if minimum costs are met
+                        if ((customTechnique.level == 1 && customTechnique.mkCost() >= 20) ||
+                            (customTechnique.level == 2 && customTechnique.mkCost() >= 40) ||
+                            (customTechnique.level == 3 && customTechnique.mkCost() >= 60)
+                        )
+                            pageNum.value = 5
+                    }
+
+                    //return to secondary additions page
+                    4 -> {
+                        pageNum.value = 3
+                    }
+
+                    5 -> {
+                        //initialize booleans for primary ability and valid inputs
+                        var isFirst = true
+                        var moveOn = true
+
+                        //for each effect build
+                        allKiBuilds.forEach {
+                            //initialize build total
+                            var total = 0
+
+                            //retrieve associated effect
+                            val effect = customTechnique.getAbility(it.first)
+
+                            //determine accumulation total for the effect
+                            var accTotal =
+                                if (isFirst) effect!!.costPair.first else effect!!.costPair.second
+
+                            //for each accumulation index
+                            for (index in 0..5) {
+                                //add amount to the total
+                                total += it.second[index]
+
+                                //if any points added to this stat
+                                if (it.second[index] > 0)
+                                //add stat's additional build value to required accumulation
+                                    accTotal += effect.buildAdditions[index]!!
+                            }
+
+                            //set effect's ki build if total matches needed accumulation
+                            if (total == accTotal) {
+                                for (index in 0..5)
+                                    effect.kiBuild[index] = it.second[index]
+                            }
+
+                            //notify of invalid ki build
+                            else
+                                moveOn = false
+
+                            //notify of no longer checking primary effect
+                            isFirst = false
+                        }
+
+                        //go to next page if all effects have valid builds
+                        if (moveOn)
+                            pageNum.value = 6
+                    }
+
+                    6 -> {
+                        //initialize valid input indicator
+                        var toNext = true
+
+                        //user makes technique maintainable
+                        if (customTechMaintenanceSelection.value) {
+                            //initialize maintenance input total
+                            var total = 0
+
+                            //add each index's value
+                            customTechnique.maintArray.forEach {
+                                total += it
+                            }
+
+                            //determine if input is valid
+                            toNext = total == customTechnique.maintTotal()
+                        }
+
+                        //set default input for no maintenance
+                        else
+                            for (index in 0..5)
+                                customTechnique.maintArray[index] = 0
+
+                        //go to next page if input is valid
+                        if (toNext)
+                            pageNum.value = 7
+                    }
+
+                    //go to next page if technique is named
+                    7 -> {
+                        if (customTechnique.name != "") pageNum.value = 8
+                    }
+
+                    //add technique to character and close dialog
+                    8 -> {
+                        charInstance.ki.addTechnique(customTechnique)
+                        deactivate()
+                    }
+                    else -> {}
                 }
+            }) {
+                Text(
+                    //set next button text depending on the active page
+                    text = when (pageNum.value) {
+                        4 -> "Return"
+                        8 -> "Confirm"
+                        else -> "Next"
+                    }
+                )
             }
         }
     )

@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
@@ -18,7 +19,10 @@ import com.example.animabuilder.character_creation.attributes.psychic.PsychicPow
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 
 @Composable
-fun PsychicFragment(updateFunc: () -> Unit) {
+fun PsychicFragment(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
+    updateFunc: () -> Unit
+) {
     //initialize Psychic Point display values
     val innatePsyPoints = remember{mutableStateOf(charInstance.psychic.innatePsyPoints.toString())}
     val psyPointsBought = remember{mutableStateOf(charInstance.psychic.boughtPsyPoints.toString())}
@@ -94,7 +98,8 @@ fun PsychicFragment(updateFunc: () -> Unit) {
                 {
                     disciplineMasterList.forEach{item -> item.value = false}
                     powerMasterList.forEach{item -> item.value = false}
-                }
+                },
+                openDetailAlert
             ){freePsyPoints.value = charInstance.psychic.getFreePsyPoints().toString()}
         }
     }
@@ -148,6 +153,7 @@ private fun DisciplineDisplay(
     addDiscipline: (MutableState<Boolean>) -> Unit,
     addPower: (MutableState<Boolean>) -> Unit,
     dukzaristClear: () -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFreePoints: () -> Unit
 ){
     //initialize discipline's open state
@@ -206,6 +212,7 @@ private fun DisciplineDisplay(
                                     charInstance.psychic.updateInvestment(discipline.item, input) },
                         {powerChecks.forEach{item ->
                             item.value.value = charInstance.psychic.masteredPowers.contains(item.key) }},
+                        openDetailAlert,
                         updateFreePoints
                     )
                 }
@@ -232,6 +239,7 @@ private fun PsyPowerRow(
     addPower: (MutableState<Boolean>) -> Unit,
     updateDisciplineInvestment: (Boolean) -> Unit,
     updateCheckboxes: () -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFreePoints: () -> Unit
 ){
     //initialize taken state of the power
@@ -260,13 +268,10 @@ private fun PsyPowerRow(
         Text(text = power.name)
 
         //power's detail button
-        Button(onClick = {
-            detailItem.value = power.name
-            contents.value = @Composable{ PowerDetails(power) }
-            detailAlertOn.value = true
-        }) {
-            Text(text = "Details")
-        }
+        DetailButton(
+            onClick = {openDetailAlert(power.name) @Composable{PowerDetails(power)}},
+            modifier = Modifier
+        )
     }
 }
 

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.animabuilder"
-        minSdk 24
+        minSdk 33
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -69,6 +69,7 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-appcompat-theme:0.25.1"
     implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.core:core-ktx:1.9.0'
 
     testImplementation 'junit:junit:4.13.2'

@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
@@ -17,7 +18,10 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.FreeS
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
 @Composable
-fun MagicFragment(updateFunc: () -> Unit) {
+fun MagicFragment(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
+    updateFunc: () -> Unit
+) {
     val context = LocalContext.current
 
     //initialize strings for maximum Zeon purchase and total
@@ -315,10 +319,10 @@ fun MagicFragment(updateFunc: () -> Unit) {
                 primaryElementBoxes,
                 {magicLevelSpent.value = charInstance.magic.magicLevelSpent.toString()},
                 {spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList())},
-                {element: Element, box: MutableState<Boolean> ->
-                    primaryElementBoxes += Pair(element, box)
-                }
-            )
+                openDetailAlert
+            ) { element: Element, box: MutableState<Boolean> ->
+                primaryElementBoxes += Pair(element, box)
+            }
         }
 
         //display all currently taken spells
@@ -332,7 +336,8 @@ fun MagicFragment(updateFunc: () -> Unit) {
                     it.level,
                     {input: Element -> freeElement.value = input},
                     {input: Int -> freeLevel.value = input},
-                    {input: (String) -> Unit -> textChange.value = input}
+                    {input: (String) -> Unit -> textChange.value = input},
+                    openDetailAlert
                 ) {
                     if(charInstance.magic.magicTies)
                         Toast.makeText(context, "Magic Ties prevents getting Free Spells", Toast.LENGTH_LONG).show()
@@ -342,14 +347,21 @@ fun MagicFragment(updateFunc: () -> Unit) {
             else
                 SpellRow(
                     it,
-                    false
+                    false,
+                    openDetailAlert
                 ) { spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList()) }
         }
     }
 
     //show free spell dialog if displayed
     if(freeExchangeOpen.value)
-        FreeSpellPick(freeElement.value, freeLevel.value, textChange.value, SpellDetails)
+        FreeSpellPick(
+            freeElement.value,
+            freeLevel.value,
+            textChange.value,
+            SpellDetails,
+            openDetailAlert
+        )
         {spellList.clear(); spellList.addAll(charInstance.magic.spellList); freeExchangeOpen.value = false}
 }
 
@@ -407,6 +419,7 @@ private fun SpellBookInvestment(
     allElementList: MutableMap<Element, MutableState<Boolean>>,
     updateMgLvlSpent: () -> Unit,
     updateSpellList: () -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     addElementBox: (Element, MutableState<Boolean>) -> Unit
 ){
     //initialize spell list display boolean
@@ -488,7 +501,8 @@ private fun SpellBookInvestment(
                     if (it != null) {
                         SpellRow(
                             it,
-                            true
+                            true,
+                            openDetailAlert
                         ) { reflectPrimaryElements(allElementList); updateMgLvlSpent(); updateSpellList() }
 
                         //increment free spell level
@@ -516,6 +530,7 @@ private fun SpellBookInvestment(
 private fun SpellRow(
     displayItem: Spell,
     buyable: Boolean,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateList: () -> Unit
 ){
     Row{
@@ -526,15 +541,10 @@ private fun SpellRow(
         Text(text = displayItem.name)
 
         //create display button
-        TextButton(
-            onClick ={
-                detailItem.value = displayItem.name
-                contents.value = @Composable{SpellDetails(displayItem)}
-                detailAlertOn.value = true
-            }
-        ) {
-            Text(text = "Details")
-        }
+        DetailButton(
+            onClick = {openDetailAlert(displayItem.name) @Composable{SpellDetails(displayItem)}},
+            modifier = Modifier
+        )
     }
 }
 
@@ -630,6 +640,7 @@ private fun FreeSpellExchange(
     setFreeElement: (Element) -> Unit,
     setFreeLevel: (Int) -> Unit,
     setTextChange: ((String) -> Unit) -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     openChoice: () -> Unit
 ){
     //set spell name if one given
@@ -649,15 +660,12 @@ private fun FreeSpellExchange(
         if(currentFreeSpell.name == "PlaceHolder"){Spacer(Modifier.weight(0.1f))}
 
         //show detail button if spell found
-        else{
-            TextButton(onClick = {
-                detailItem.value = currentFreeSpell.name
-                contents.value = @Composable{SpellDetails(currentFreeSpell)}
-                detailAlertOn.value = true
-            }) {
-                Text(text = "Details")
-            }
-        }
+        else
+            DetailButton(
+                onClick = {openDetailAlert(currentFreeSpell.name)
+                @Composable {SpellDetails(currentFreeSpell)}},
+                modifier = Modifier
+            )
 
         //button that opens free spell exchange dialog
         Button(

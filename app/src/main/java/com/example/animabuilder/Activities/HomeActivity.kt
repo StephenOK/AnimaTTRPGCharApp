@@ -18,24 +18,23 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
+import com.example.animabuilder.view_models.HomePageAlertViewModel
+import com.example.animabuilder.view_models.NavigationViewModel
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
 
 @OptIn(ExperimentalComposeUiApi::class)
 val keyboardActive: MutableState<SoftwareKeyboardController?> = mutableStateOf(null)
-
-//initialize detail alert values
-val detailAlertOn = mutableStateOf(false)
-val detailItem = mutableStateOf("")
-val contents: MutableState<(@Composable () -> Unit)?> = mutableStateOf(null)
 
 //initialize player's character
 lateinit var charInstance: BaseCharacter
@@ -48,7 +47,7 @@ lateinit var charInstance: BaseCharacter
 class HomeActivity : AppCompatActivity() {
 
     //private enumeration for current displayed page
-    private enum class ScreenPage{
+    enum class ScreenPage{
         Character,
         Combat,
         Secondary_Characteristics,
@@ -70,37 +69,35 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //get values from intent
-        charInstance = intent.getSerializableExtra("Character") as BaseCharacter
+        charInstance = intent.getSerializableExtra("Character", BaseCharacter::class.java)!!
         filename.value = intent.getStringExtra("filename")
 
         setContent{
             //define active keyboard
             keyboardActive.value = LocalSoftwareKeyboardController.current
 
-            //create scaffold state and coroutine scope
-            val scaffoldState = rememberScaffoldState()
-            val scope = rememberCoroutineScope()
+            val navVM = viewModel<NavigationViewModel>()
 
-            //create navigation controller
-            val navController = rememberNavController()
+            navVM.setScaffoldState(rememberScaffoldState())
+            val scaffoldState = navVM.scaffoldState.collectAsState().value!!
 
-            //set initial display page
-            val currentFragment = remember{ mutableStateOf(ScreenPage.Character)}
+            navVM.setCoroutineScope(rememberCoroutineScope())
+            val scope = navVM.coroutineScope.collectAsState().value!!
 
-            //boolean for exit alert
-            val exitOpen = remember{mutableStateOf(false)}
+            navVM.setNavHostController(rememberNavController())
+            val navController = navVM.navHostController.collectAsState().value!!
+
+            val currentFragment = navVM.currentFragment.collectAsState().value
 
             //displays for maximum development points
-            val maxDP = remember{mutableStateOf(charInstance.devPT)}
-            val maxCombat = remember{mutableStateOf(charInstance.maxCombatDP)}
-            val maxMagic = remember{mutableStateOf(charInstance.maxMagDP)}
-            val maxPsychic = remember{mutableStateOf(charInstance.maxPsyDP)}
+            val bottomBarVM = viewModel<BottomBarViewModel>()
+            bottomBarVM.setMaxDP(charInstance.devPT)
+            bottomBarVM.setMaxCombat(charInstance.maxCombatDP)
+            bottomBarVM.setMaxMagic(charInstance.maxMagDP)
+            bottomBarVM.setMaxPsychic(charInstance.maxPsyDP)
+            bottomBarVM.updateSpentValues(charInstance)
 
-            //displays for spent development points
-            val usedDP = remember { mutableStateOf(charInstance.spentTotal) }
-            val usedCombat = remember { mutableStateOf(charInstance.ptInCombat) }
-            val usedMagic = remember { mutableStateOf(charInstance.ptInMag) }
-            val usedPsychic = remember { mutableStateOf(charInstance.ptInPsy) }
+            val homeAlertsVM = viewModel<HomePageAlertViewModel>()
 
             //scaffold for the home page
             Scaffold(
@@ -109,7 +106,7 @@ class HomeActivity : AppCompatActivity() {
                 //home page's top bar
                 topBar = {TopAppBar (
                     //update title with any page change
-                    title = {Text(text = currentFragment.value.name)},
+                    title = {Text(text = currentFragment.name)},
 
                     //icon to open the navigation drawer
                     navigationIcon = {
@@ -134,7 +131,7 @@ class HomeActivity : AppCompatActivity() {
                             //create a drawer button with the given onclick function
                             DrawerButton(it.name)
                             {
-                                currentFragment.value = it
+                                navVM.setCurrentFragment(it)
                                 scope.launch{scaffoldState.drawerState.close()}
                                 navController.navigate(it.name)
                             }
@@ -148,7 +145,7 @@ class HomeActivity : AppCompatActivity() {
                         //drawer button for exiting the character creator
                         DrawerButton("Exit"){
                             scope.launch{scaffoldState.drawerState.close()}
-                            exitOpen.value = true }
+                            homeAlertsVM.setExitAlert(true) }
                     }
                 },
 
@@ -188,12 +185,21 @@ class HomeActivity : AppCompatActivity() {
                         }
 
                         //create row for maximum values
-                        BottomBarRow(stringResource(R.string.maxRowLabel), maxDP.value.toString(),
-                            maxCombat.value.toString(), maxMagic.value.toString(), maxPsychic.value.toString())
+                        BottomBarRow(
+                            stringResource(R.string.maxRowLabel),
+                            bottomBarVM.maxDP.collectAsState().value.toString(),
+                            bottomBarVM.maxCombat.collectAsState().value.toString(),
+                            bottomBarVM.maxMagic.collectAsState().value.toString(),
+                            bottomBarVM.maxPsychic.collectAsState().value.toString()
+                        )
 
                         //create row for spent values
-                        BottomBarRow(stringResource(R.string.usedRowLabel), usedDP.value.toString(),
-                            usedCombat.value.toString(), usedMagic.value.toString(), usedPsychic.value.toString())
+                        BottomBarRow(
+                            stringResource(R.string.usedRowLabel),
+                            bottomBarVM.spentDP.collectAsState().value.toString(),
+                            bottomBarVM.spentCombat.collectAsState().value.toString(),
+                            bottomBarVM.spentMagic.collectAsState().value.toString(),
+                            bottomBarVM.spentPsychic.collectAsState().value.toString())
                     }
                 }
             ) {
@@ -205,56 +211,56 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
-                        CharacterPageFragment(maxDP, maxCombat, maxMagic, maxPsychic)
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        CharacterPageFragment(bottomBarVM)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
                         CombatFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
                         SecondaryAbilityFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        AdvantageFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        AdvantageFragment(homeAlertsVM.openDetailAlert)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
-                        ModuleFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        ModuleFragment(homeAlertsVM.openDetailAlert)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
-                        KiFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        KiFragment(homeAlertsVM.openDetailAlert)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
-                        MagicFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        MagicFragment(homeAlertsVM.openDetailAlert)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
                         SummoningFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
-                        PsychicFragment()
-                        {updateBottomBar(usedDP, usedCombat, usedMagic, usedPsychic)}
+                        PsychicFragment(homeAlertsVM.openDetailAlert)
+                        {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to equipment page
@@ -264,11 +270,12 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
 
+
             //show exit alert if user opens it
-            if(exitOpen.value)
-                ExitAlert(exitOpen)
-            if(detailAlertOn.value)
-                DetailAlert(detailItem.value, contents.value!!) { detailAlertOn.value = false }
+            if(homeAlertsVM.exitOpen.collectAsState().value)
+                ExitAlert{homeAlertsVM.setExitAlert(false)}
+            if(homeAlertsVM.detailAlertOn.collectAsState().value)
+                DetailAlert(homeAlertsVM)
         }
     }
 
@@ -388,11 +395,11 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun ExitAlert(
-        isOpen: MutableState<Boolean>,
+        closeDialog: () -> Unit
     ){
         AlertDialog(
             //only close alert on dismissal
-            onDismissRequest = {isOpen.value = false},
+            onDismissRequest = {closeDialog()},
             title = {Text(text = "Save before exiting?")},
             confirmButton = {
                 //attempt to save then leave page
@@ -418,26 +425,5 @@ class HomeActivity : AppCompatActivity() {
     //transfer back to MainActivity
     private fun exitPage(){
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
-    }
-
-    /**
-     * Update the displayed totals for spent development points
-     *
-     * usedDP: total development points spent
-     * usedCombat: development points spent in combat items
-     * usedMagic: development points spent in magic items
-     * usedPsychic: development points spent in psychic items
-     */
-    private fun updateBottomBar(
-        usedDP: MutableState<Int>,
-        usedCombat: MutableState<Int>,
-        usedMagic: MutableState<Int>,
-        usedPsychic: MutableState<Int>
-    ){
-        //get spent values from the player's character
-        usedDP.value = charInstance.spentTotal
-        usedCombat.value = charInstance.ptInCombat
-        usedMagic.value = charInstance.ptInMag
-        usedPsychic.value = charInstance.ptInPsy
     }
 }

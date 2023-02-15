@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.keyboardActive
@@ -43,10 +44,7 @@ import com.example.animabuilder.activities.keyboardActive
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
-    maxDP: MutableState<Int>,
-    maxCombat: MutableState<Int>,
-    maxMagic: MutableState<Int>,
-    maxPsychic: MutableState<Int>,
+    maxNumVM: BottomBarViewModel,
     updateFunc: () -> Unit
 ){
     //initialize screen size and keyboard
@@ -198,9 +196,9 @@ fun CharacterPageFragment(
         charInstance.setOwnClass(index)
 
         //update point maximums appropriately
-        maxCombat.value = charInstance.maxCombatDP
-        maxMagic.value = charInstance.maxMagDP
-        maxPsychic.value = charInstance.maxPsyDP
+        maxNumVM.setMaxCombat(charInstance.maxCombatDP)
+        maxNumVM.setMaxMagic(charInstance.maxMagDP)
+        maxNumVM.setMaxPsychic(charInstance.maxPsyDP)
 
         updateFunc()
     })
@@ -228,10 +226,10 @@ fun CharacterPageFragment(
         charInstance.setLvl(index)
 
         //update appropriate display values
-        maxDP.value = charInstance.devPT
-        maxCombat.value = charInstance.maxCombatDP
-        maxMagic.value = charInstance.maxMagDP
-        maxPsychic.value = charInstance.maxPsyDP
+        maxNumVM.setMaxDP(charInstance.devPT)
+        maxNumVM.setMaxCombat(charInstance.maxCombatDP)
+        maxNumVM.setMaxMagic(charInstance.maxMagDP)
+        maxNumVM.setMaxPsychic(charInstance.maxPsyDP)
     })
 
 

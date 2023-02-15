@@ -10,16 +10,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.contents
-import com.example.animabuilder.activities.detailAlertOn
-import com.example.animabuilder.activities.detailItem
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
@@ -30,7 +28,10 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
  */
 
 @Composable
-fun AdvantageFragment(updateBottomBar: () -> Unit){
+fun AdvantageFragment(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
+    updateBottomBar: () -> Unit
+){
     //initialize local context
     val context = LocalContext.current
 
@@ -66,7 +67,13 @@ fun AdvantageFragment(updateBottomBar: () -> Unit){
                 it,
                 context,
                 creationPoints,
-                {updateBottomBar(); takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())})
+                openDetailAlert,
+                {
+                    updateBottomBar()
+                    takenAdvantages.clear()
+                    takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
+                }
+            )
             {input, pageNum ->
                 advantageAdjustOn.value = true
                 advantageToAdjust.value = input
@@ -76,14 +83,18 @@ fun AdvantageFragment(updateBottomBar: () -> Unit){
 
         //display all of the character's taken advantages
         items(takenAdvantages){
-            HeldAdvantageDisplay(it, creationPoints)
-            { updateBottomBar(); takenAdvantages.clear(); takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList()) }
+            HeldAdvantageDisplay(it, creationPoints, openDetailAlert)
+            {
+                updateBottomBar()
+                takenAdvantages.clear()
+                takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
+            }
         }
 
         //display all advantages acquired by their race
         item{Text(text = "Racial Advantages")}
         items(charInstance.ownRace.raceAdvantages){
-            AdvantageRow(it, null, {}, {})
+            AdvantageRow(it, null, openDetailAlert, {}, {})
         }
     }
 
@@ -117,6 +128,7 @@ private fun AdvantageDisplay(
     advantageList: AdvantageList,
     context: Context,
     creationPoints: MutableState<String>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateTaken: () -> Unit,
     activateAdjustment: (Advantage, Int) -> Unit
 ){
@@ -135,7 +147,11 @@ private fun AdvantageDisplay(
             Column {
                 advantageList.items.forEach {
                     //display advantage as an obtainable item
-                    AdvantageRow(it, null, {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Advantage")})
+                    AdvantageRow(
+                        it,
+                        null,
+                        openDetailAlert,
+                        {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Advantage")})
                     {
                         //activate dialog if multiple options available
                         if(it.options != null)
@@ -181,8 +197,9 @@ private fun AdvantageDisplay(
 private fun AdvantageRow(
     item: Advantage,
     takenAddition: String?,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     button: @Composable () -> Unit,
-    buttonAction:() -> Unit
+    buttonAction:() -> Unit,
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
@@ -197,13 +214,10 @@ private fun AdvantageRow(
         Text(text = nameString)
 
         //details button
-        TextButton(onClick = {
-            detailItem.value = item.name
-            contents.value = @Composable{ AdvantageDetails(item) }
-            detailAlertOn.value = true
-        }) {
-            Text(text = "Details")
-        }
+        DetailButton(
+            onClick = {openDetailAlert(item.name){AdvantageDetails(item)}},
+            modifier = Modifier
+        )
     }
 }
 
@@ -218,6 +232,7 @@ private fun AdvantageRow(
 private fun HeldAdvantageDisplay(
     item: Advantage,
     creationPoints: MutableState<String>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateTaken: () -> Unit
 ){
     //retrieve additional information on the advantage
@@ -227,7 +242,12 @@ private fun HeldAdvantageDisplay(
         else null
 
     //display the advantage row
-    AdvantageRow(item, nameAddition, {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")})
+    AdvantageRow(
+        item,
+        nameAddition,
+        openDetailAlert,
+        {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")}
+    )
     {
         charInstance.advantageRecord.removeAdvantage(item)
         updateTaken()

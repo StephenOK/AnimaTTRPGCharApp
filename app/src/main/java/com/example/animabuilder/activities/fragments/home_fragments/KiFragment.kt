@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.*
@@ -28,6 +29,7 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.techn
 
 @Composable
 fun KiFragment(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
     //get fragment's context
@@ -184,10 +186,16 @@ fun KiFragment(
             AnimatedVisibility(visible = kiListOpen.value) {
                 Column {
                     charInstance.ki.kiRecord.allKiAbilities.forEach {
-                        KiAbilityRow(it, allKiAbilities, {
+                        KiAbilityRow(
+                            it,
+                            allKiAbilities,
+                            {
                             remainingMK.value =
                                 charInstance.ki.martialKnowledgeRemaining.toString()
-                        }, techListOpen.value) { techListOpen.value = false }
+                            },
+                            techListOpen.value,
+                            openDetailAlert
+                        ) { techListOpen.value = false }
                     }
                 }
             }
@@ -220,7 +228,7 @@ fun KiFragment(
                 Column {
                     //display each prebuilt technique
                     charInstance.ki.allTechniques.forEach {
-                        TechniqueRow(it, allTechniques) {
+                        TechniqueRow(it, allTechniques, openDetailAlert) {
                             remainingMK.value =
                                 charInstance.ki.martialKnowledgeRemaining.toString()
                         }
@@ -237,7 +245,7 @@ fun KiFragment(
 
                     //display custom techniques
                     charInstance.ki.customTechniques.forEach {
-                        TechniqueRow(it, allTechniques) {
+                        TechniqueRow(it, allTechniques, openDetailAlert) {
                             remainingMK.value =
                                 charInstance.ki.martialKnowledgeRemaining.toString()
                         }
@@ -336,6 +344,7 @@ private fun KiAbilityRow(
     allKiAbilities: MutableList<Pair<KiAbility, MutableState<Boolean>>>,
     updateMKRemaining: () -> Unit,
     techListOpen: Boolean,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     closeList: () -> Unit
 ){
     //get taken state of ki ability
@@ -375,16 +384,10 @@ private fun KiAbilityRow(
         Text(text = ability.mkCost.toString(), modifier = Modifier.weight(0.2f))
 
         //button to display ki ability details
-        TextButton(
-            onClick = {
-                detailAlertOn.value = true
-                detailItem.value = ability.name
-                contents.value = @Composable{KiContents(ability)}
-            },
+        DetailButton(
+            onClick = {openDetailAlert(ability.name) @Composable { KiContents(ability) } },
             modifier = Modifier.weight(0.2f)
-        ) {
-            Text(text = "Details")
-        }
+        )
     }
 }
 
@@ -423,6 +426,7 @@ private fun updateKiTaken(
 private fun TechniqueRow(
     toShow: Technique,
     allTechniques: MutableList<Pair<Technique, MutableState<Boolean>>>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateMKRemaining: () -> Unit
 ) {
     //instantiate checkbox boolean
@@ -461,14 +465,10 @@ private fun TechniqueRow(
         Text(text = toShow.level.toString())
 
         //give button to display technique's details
-        TextButton(
-            onClick = {
-                detailAlertOn.value = true
-                detailItem.value = toShow.name
-                contents.value = @Composable{TechContents(toShow)}
-            }) {
-            Text(text = "Details")
-        }
+        DetailButton(
+            onClick = {openDetailAlert(toShow.name) @Composable {TechContents(toShow)}},
+            modifier = Modifier
+        )
     }
 }
 

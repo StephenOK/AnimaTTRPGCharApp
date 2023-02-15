@@ -273,7 +273,8 @@ class BaseCharacter: Serializable {
         updateCombatSpent()
         updateMagicSpent()
         updatePsychicSpent()
-        spentTotal = secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
+        spentTotal = combat.lifeMultsTaken * ownClass.lifePointMultiple +
+                secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
     }
 
     //updates the total development points spent in combat abilities

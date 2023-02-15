@@ -9,10 +9,9 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.contents
-import com.example.animabuilder.activities.detailAlertOn
-import com.example.animabuilder.activities.detailItem
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
@@ -35,6 +34,7 @@ fun FreeSpellPick(
     spellLevel: Int,
     textChange: (String) -> Unit,
     detailContents: @Composable (Spell) -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     closeDialog: () -> Unit
 ){
     //determine which level of spells to display
@@ -65,7 +65,7 @@ fun FreeSpellPick(
                     if(!it.forbiddenElements.contains(spellElement) && !charInstance.magic.hasCopyOf(it)){
                         PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
                             selectedSpell.value = input
-                        }, detailContents)
+                        }, openDetailAlert, detailContents)
                     }
                 }
             }
@@ -115,6 +115,7 @@ private fun PickFreeRow(
     displayItem: FreeSpell,
     radioCheck: FreeSpell?,
     changeRadioCheck: (FreeSpell) -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     detailContents: @Composable (Spell) -> Unit
 ){
     Row{
@@ -126,12 +127,9 @@ private fun PickFreeRow(
         //spell's name
         Text(text = displayItem.name)
         //button to show the spell's details
-        TextButton(onClick = {
-            detailItem.value = displayItem.name
-            contents.value = @Composable{ detailContents(displayItem) }
-            detailAlertOn.value = true
-        }) {
-            Text(text = "Details")
-        }
+        DetailButton(
+            onClick = {openDetailAlert(displayItem.name) @Composable{detailContents(displayItem)}},
+            modifier = Modifier
+        )
     }
 }

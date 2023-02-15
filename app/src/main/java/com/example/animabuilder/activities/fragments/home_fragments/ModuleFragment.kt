@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.*
@@ -31,6 +32,7 @@ import com.example.animabuilder.character_creation.equipment.weapons.weapon_clas
 
 @Composable
 fun ModuleFragment(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
     val primaryWeapon = remember{mutableStateOf(charInstance.weaponProficiencies.primaryWeapon)}
@@ -113,6 +115,7 @@ fun ModuleFragment(
                 allSecondaries,
                 allMartials,
                 {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
+                openDetailAlert,
                 updateFunc
             )
         }
@@ -126,14 +129,15 @@ fun ModuleFragment(
                 allSecondaries,
                 allMartials,
                 {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
+                openDetailAlert,
                 updateFunc
             )
         }
 
         //display archetype, martial art, and style buttons
-        item{ArchetypeButton(allSecondaries, updateFunc)}
-        item{MartialButton(allMartials, updateFunc)}
-        item{StyleButton(updateFunc)}
+        item{ArchetypeButton(allSecondaries, openDetailAlert, updateFunc)}
+        item{MartialButton(allMartials, openDetailAlert, updateFunc)}
+        item{StyleButton(openDetailAlert, updateFunc)}
     }
 }
 
@@ -152,6 +156,7 @@ private fun WeaponListButton(
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
     primaryUpdate: () -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize list's open state
@@ -172,7 +177,13 @@ private fun WeaponListButton(
         Column{
             //display whole class module if one is available
             if(button.wholeClass)
-                ArchetypeRow(button.name + " Module", button.options, allSecondaries, updateFunc)
+                ArchetypeRow(
+                    button.name + " Module",
+                    button.options,
+                    allSecondaries,
+                    openDetailAlert,
+                    updateFunc
+                )
 
             //display all weapons from the given list
             button.options.forEach{
@@ -183,6 +194,7 @@ private fun WeaponListButton(
                     allSecondaries,
                     allMartials,
                     primaryUpdate,
+                    openDetailAlert,
                     updateFunc
                 )
             }
@@ -198,6 +210,7 @@ private fun WeaponListButton(
 @Composable
 private fun ArchetypeButton(
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize open state
@@ -219,78 +232,91 @@ private fun ArchetypeButton(
                 "Barbarian",
                 charInstance.weaponProficiencies.barbarianWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Ninja",
                 charInstance.weaponProficiencies.ninjaWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Duel",
                 charInstance.weaponProficiencies.duelWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Pirate",
                 charInstance.weaponProficiencies.pirateWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Nomad",
                 charInstance.weaponProficiencies.nomadWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Hunter",
                 charInstance.weaponProficiencies.huntWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Knight",
                 charInstance.weaponProficiencies.knightWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Gladiator",
                 charInstance.weaponProficiencies.gladiatorWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Assassin",
                 charInstance.weaponProficiencies.assassinWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Soldier",
                 charInstance.weaponProficiencies.soldierWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Indigenous",
                 charInstance.weaponProficiencies.indigenousWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Bandit",
                 charInstance.weaponProficiencies.banditWeapons,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
                 "Improvised",
                 charInstance.weaponProficiencies.improvised,
                 allSecondaries,
+                openDetailAlert,
                 updateFunc
             )
         }
@@ -303,7 +329,10 @@ private fun ArchetypeButton(
  * updateFunc: bottom bar update function
  */
 @Composable
-private fun StyleButton(updateFunc: () -> Unit){
+private fun StyleButton(
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
+    updateFunc: () -> Unit
+){
     //initialize open state
     val open = remember{mutableStateOf(false)}
 
@@ -324,6 +353,7 @@ private fun StyleButton(updateFunc: () -> Unit){
                         "The character can unsheathe his weapon without applying the -25 penalty to " +
                         "the Attack or Block abilities. It has no effect for two-handed weapons.",
                 "30 DP",
+                openDetailAlert,
                 updateFunc
             )
             StyleRow(
@@ -333,6 +363,7 @@ private fun StyleButton(updateFunc: () -> Unit){
                         "maneuver by half. Therefore a character applies a -25 to his attack ability " +
                         "when using this attack.",
                 "40 DP",
+                openDetailAlert,
                 updateFunc
             )
             StyleRow(
@@ -341,6 +372,7 @@ private fun StyleButton(updateFunc: () -> Unit){
                         "Position. This reduces the penalty for a Put at Weapon's Point maneuver by " +
                         "half. Therefore a character applies -50 to his attack ability when using this attack.",
                 "50 DP",
+                openDetailAlert,
                 updateFunc
             )
             StyleRow(
@@ -348,6 +380,7 @@ private fun StyleButton(updateFunc: () -> Unit){
                 "A character with this ability has specialized in disarming his opponents. " +
                         "This reduces the penalty for a Disarm maneuver to -20.",
                 "40 DP",
+                openDetailAlert,
                 updateFunc
             )
         }
@@ -362,6 +395,7 @@ private fun StyleButton(updateFunc: () -> Unit){
 @Composable
 private fun MartialButton(
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize open state
@@ -385,6 +419,7 @@ private fun MartialButton(
                 MartialArtRow(
                     it,
                     allMartials,
+                    openDetailAlert,
                     updateFunc
                 )
             }
@@ -406,6 +441,7 @@ private fun WeaponRow(
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
     primaryUpdate: () -> Unit,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //checkboxes for when the weapon is taken as a primary, secondary, or archetype proficiency
@@ -483,16 +519,10 @@ private fun WeaponRow(
         Text(text = input.name, modifier = Modifier.weight(0.6f))
 
         //create a button to display the weapon's details
-        TextButton(
-            onClick = {
-                detailAlertOn.value = true
-                detailItem.value = input.name
-                contents.value = @Composable{WeaponContents(input)}
-            },
+        DetailButton(
+            onClick = {openDetailAlert(input.name) @Composable{WeaponContents(input)}},
             modifier = Modifier.weight(0.2f)
-        ) {
-            Text(text = "Details")
-        }
+        )
     }
 }
 
@@ -508,6 +538,7 @@ private fun ArchetypeRow(
     title: String,
     modList: List<Weapon>,
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize checked boolean
@@ -545,16 +576,10 @@ private fun ArchetypeRow(
         Text(text = "50 DP", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
 
         //create a button to display the archetype's contents
-        TextButton(
-            onClick = {
-                detailAlertOn.value = true
-                detailItem.value = title
-                contents.value = @Composable{ArchetypeContents(modList)}
-            },
+        DetailButton(
+            onClick = {openDetailAlert(title) @Composable {ArchetypeContents(modList)}},
             modifier = Modifier.weight(0.2f)
-        ) {
-            Text(text = "Details")
-        }
+        )
     }
 }
 
@@ -571,6 +596,7 @@ private fun StyleRow(
     title: String,
     description: String,
     cost: String,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //boolean for the checkbox of this style module
@@ -602,16 +628,10 @@ private fun StyleRow(
         Text(text = cost, modifier = Modifier.weight(0.2f))
 
         //make display button for style's details
-        TextButton(
-            onClick = {
-                detailItem.value = title
-                contents.value = @Composable{Text(text = description)}
-                detailAlertOn.value = true
-            },
+        DetailButton(
+            onClick = {openDetailAlert(title) @Composable {Text(text = description)}},
             modifier = Modifier.weight(0.2f)
-        ) {
-            Text(text = "Details")
-        }
+        )
     }
 }
 
@@ -625,6 +645,7 @@ private fun StyleRow(
 private fun MartialArtRow(
     martialArt: MartialArt,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize checkbox value and add it to the collection
@@ -652,15 +673,10 @@ private fun MartialArtRow(
         Text(text = "+" + martialArt.mkBonus.toString() + " MK", modifier = Modifier.weight(0.2f))
 
         //display details button for the martial art
-        TextButton(onClick = {
-            detailAlertOn.value = true
-            detailItem.value = martialArt.name
-            contents.value = @Composable{MartialContents(martialArt.prereqList, martialArt.description)}
-            },
+        DetailButton(
+            onClick = {openDetailAlert(martialArt.name) @Composable {MartialContents(martialArt.prereqList, martialArt.description)}},
             modifier = Modifier.weight(0.2f)
-        ) {
-            Text(text = "Details")
-        }
+        )
     }
 }
 

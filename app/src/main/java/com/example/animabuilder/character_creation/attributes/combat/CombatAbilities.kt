@@ -254,8 +254,7 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
     }
 
     fun calculateSpent(): Int{
-        return lifeMultsTaken * charInstance.ownClass.lifePointMultiple +
-                pointInAttack * charInstance.ownClass.atkGrowth +
+        return pointInAttack * charInstance.ownClass.atkGrowth +
                 pointInBlock * charInstance.ownClass.blockGrowth +
                 pointInDodge * charInstance.ownClass.dodgeGrowth +
                 pointInWear * charInstance.ownClass.armorGrowth

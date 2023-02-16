@@ -17,8 +17,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.activities.charInstance
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 /**
@@ -29,6 +29,7 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 
 @Composable
 fun AdvantageFragment(
+    charInstance: BaseCharacter,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit
 ){
@@ -64,6 +65,7 @@ fun AdvantageFragment(
         //display each list of base advantages
         items(advantageTable){
             AdvantageDisplay(
+                charInstance,
                 it,
                 context,
                 creationPoints,
@@ -83,7 +85,7 @@ fun AdvantageFragment(
 
         //display all of the character's taken advantages
         items(takenAdvantages){
-            HeldAdvantageDisplay(it, creationPoints, openDetailAlert)
+            HeldAdvantageDisplay(charInstance, it, creationPoints, openDetailAlert)
             {
                 updateBottomBar()
                 takenAdvantages.clear()
@@ -100,7 +102,7 @@ fun AdvantageFragment(
 
     //display for advantage adjustment
     if(advantageAdjustOn.value)
-        AdvantageCostPick(advantageToAdjust.value!!, advantageAdjustInput.value)
+        AdvantageCostPick(charInstance, advantageToAdjust.value!!, advantageAdjustInput.value)
         {input: String? ->
             if(input != null)
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
@@ -125,6 +127,7 @@ fun AdvantageFragment(
  */
 @Composable
 private fun AdvantageDisplay(
+    charInstance: BaseCharacter,
     advantageList: AdvantageList,
     context: Context,
     creationPoints: MutableState<String>,
@@ -230,6 +233,7 @@ private fun AdvantageRow(
  */
 @Composable
 private fun HeldAdvantageDisplay(
+    charInstance: BaseCharacter,
     item: Advantage,
     creationPoints: MutableState<String>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,

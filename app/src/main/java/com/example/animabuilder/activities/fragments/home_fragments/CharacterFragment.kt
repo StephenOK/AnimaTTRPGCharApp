@@ -27,8 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.charInstance
-import com.example.animabuilder.activities.keyboardActive
+import com.example.animabuilder.character_creation.BaseCharacter
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -44,12 +43,10 @@ import com.example.animabuilder.activities.keyboardActive
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
+    charInstance: BaseCharacter,
     maxNumVM: BottomBarViewModel,
     updateFunc: () -> Unit
 ){
-    //initialize screen size and keyboard
-    val screenSize = LocalConfiguration.current
-
     val context = LocalContext.current
 
     //initialize mutable name
@@ -232,7 +229,7 @@ fun CharacterPageFragment(
         maxNumVM.setMaxPsychic(charInstance.maxPsyDP)
     })
 
-
+    val keyboardActive = LocalSoftwareKeyboardController.current
 
     //page column
     LazyColumn(
@@ -246,7 +243,7 @@ fun CharacterPageFragment(
                 onValueChange = {
                     //close keyboard if enter is pushed
                     if (it.contains('\n'))
-                        keyboardActive.value?.hide()
+                        keyboardActive?.hide()
                     //otherwise, update name
                     else {
                         inputName.value = it

@@ -13,13 +13,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 
 /**
  * Fragment that displays the character's summoning abilities
  */
 @Composable
-fun SummoningFragment(updateFunc: () -> Unit){
+fun SummoningFragment(
+    charInstance: BaseCharacter,
+    updateFunc: () -> Unit
+){
     //initialize mutable strings for the page
     val boughtSummon = remember{mutableStateOf(charInstance.summoning.summonBought.toString())}
     val totalSummon = remember{mutableStateOf(charInstance.summoning.summonTotal.toString())}
@@ -94,7 +97,7 @@ fun SummoningFragment(updateFunc: () -> Unit){
 
         //display table data
         items(summoningRowTable){
-            SummoningAbilityRow(it, updateFunc)
+            SummoningAbilityRow(charInstance, it, updateFunc)
         }
     }
 }
@@ -106,7 +109,11 @@ fun SummoningFragment(updateFunc: () -> Unit){
  * updateFunc: function to update the bottom bar
  */
 @Composable
-private fun SummoningAbilityRow(inputData: SummoningAbilityItem, updateFunc: () -> Unit){
+private fun SummoningAbilityRow(
+    charInstance: BaseCharacter,
+    inputData: SummoningAbilityItem,
+    updateFunc: () -> Unit
+){
     Row(Modifier.fillMaxWidth()){
         //display item, points from modifier, and points from class
         Text(text = inputData.title, textAlign = TextAlign.Center, modifier = Modifier.weight(0.3f))

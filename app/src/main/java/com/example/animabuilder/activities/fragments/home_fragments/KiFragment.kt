@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 
@@ -29,6 +29,7 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.techn
 
 @Composable
 fun KiFragment(
+    charInstance: BaseCharacter,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
@@ -142,6 +143,7 @@ fun KiFragment(
         //display a ki row for each stat
         items(kiRowTable) {kiRowInput ->
             KiFromStatRow(
+                charInstance,
                 kiRowInput,
                 updateFunc,
                 { input: String -> kiPointTotal.value = input}
@@ -187,6 +189,7 @@ fun KiFragment(
                 Column {
                     charInstance.ki.kiRecord.allKiAbilities.forEach {
                         KiAbilityRow(
+                            charInstance,
                             it,
                             allKiAbilities,
                             {
@@ -228,7 +231,7 @@ fun KiFragment(
                 Column {
                     //display each prebuilt technique
                     charInstance.ki.allTechniques.forEach {
-                        TechniqueRow(it, allTechniques, openDetailAlert) {
+                        TechniqueRow(charInstance, it, allTechniques, openDetailAlert) {
                             remainingMK.value =
                                 charInstance.ki.martialKnowledgeRemaining.toString()
                         }
@@ -245,7 +248,7 @@ fun KiFragment(
 
                     //display custom techniques
                     charInstance.ki.customTechniques.forEach {
-                        TechniqueRow(it, allTechniques, openDetailAlert) {
+                        TechniqueRow(charInstance, it, allTechniques, openDetailAlert) {
                             remainingMK.value =
                                 charInstance.ki.martialKnowledgeRemaining.toString()
                         }
@@ -257,7 +260,7 @@ fun KiFragment(
 
     //alert for custom technique creation
     if(customTechOn.value)
-        CustomTechnique(TechContents) { customTechOn.value = false }
+        CustomTechnique(charInstance, TechContents) { customTechOn.value = false }
 }
 
 /**
@@ -270,6 +273,7 @@ fun KiFragment(
  */
 @Composable
 private fun KiFromStatRow(
+    charInstance: BaseCharacter,
     kiRowData: KiRowData,
     updateFunc: () -> Unit,
     changePointDisplay: (String) -> Unit,
@@ -340,6 +344,7 @@ private fun KiFromStatRow(
  */
 @Composable
 private fun KiAbilityRow(
+    charInstance: BaseCharacter,
     ability: KiAbility,
     allKiAbilities: MutableList<Pair<KiAbility, MutableState<Boolean>>>,
     updateMKRemaining: () -> Unit,
@@ -370,7 +375,7 @@ private fun KiAbilityRow(
                     //remove ability and change checkbox accordingly
                     abilityTaken.value = false
                     charInstance.ki.removeAbility(ability)
-                    updateKiTaken(allKiAbilities, techListOpen, closeList)
+                    updateKiTaken(charInstance, allKiAbilities, techListOpen, closeList)
                 }
 
                 //update martial knowledge text
@@ -399,6 +404,7 @@ private fun KiAbilityRow(
  * closeList: function to close technique list
  */
 private fun updateKiTaken(
+    charInstance: BaseCharacter,
     allKiAbilities: MutableList<Pair<KiAbility, MutableState<Boolean>>>,
     techListOpen: Boolean,
     closeList: () -> Unit
@@ -424,6 +430,7 @@ private fun updateKiTaken(
  */
 @Composable
 private fun TechniqueRow(
+    charInstance: BaseCharacter,
     toShow: Technique,
     allTechniques: MutableList<Pair<Technique, MutableState<Boolean>>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
@@ -451,7 +458,7 @@ private fun TechniqueRow(
                     //remove technique from character and change checkbox
                     charInstance.ki.removeTechnique(toShow)
                     techCheck.value = false
-                    updateTechTaken(allTechniques)
+                    updateTechTaken(charInstance, allTechniques)
                 }
 
                 //update the martial knowledge display
@@ -477,7 +484,10 @@ private fun TechniqueRow(
  *
  * allTechniques: master list of techniques and associated checkboxes
  */
-private fun updateTechTaken(allTechniques: MutableList<Pair<Technique, MutableState<Boolean>>>) {
+private fun updateTechTaken(
+    charInstance: BaseCharacter,
+    allTechniques: MutableList<Pair<Technique, MutableState<Boolean>>>
+) {
     //check each technique checkbox
     allTechniques.forEach{
         //make sure character still has the checked technique

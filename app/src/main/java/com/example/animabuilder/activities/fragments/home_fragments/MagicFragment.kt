@@ -11,14 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.*
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
 @Composable
 fun MagicFragment(
+    charInstance: BaseCharacter,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
@@ -47,8 +48,14 @@ fun MagicFragment(
         else
             "Defense"
     )}
-    val offenseImbalance = remember{mutableStateOf(determineImbalanceValue(imbalanceIsAttack.value).toString())}
-    val defenseImbalance = remember{mutableStateOf(determineImbalanceValue(!imbalanceIsAttack.value).toString())}
+    val offenseImbalance = remember{mutableStateOf(determineImbalanceValue(
+        charInstance,
+        imbalanceIsAttack.value
+    ).toString())}
+    val defenseImbalance = remember{mutableStateOf(determineImbalanceValue(
+        charInstance,
+        !imbalanceIsAttack.value
+    ).toString())}
 
     //initialize maximum and spent values for magic level
     val magicLevelMax = remember{mutableStateOf(charInstance.magic.magicLevelMax.toString())}
@@ -104,9 +111,9 @@ fun MagicFragment(
             totalMagProjectString.value =
                 charInstance.magic.magProjTotal.toString()
             offenseImbalance.value =
-                determineImbalanceValue(imbalanceIsAttack.value).toString()
+                determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
             defenseImbalance.value =
-                determineImbalanceValue(!imbalanceIsAttack.value).toString()
+                determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
             updateFunc()
         },
         {
@@ -115,9 +122,9 @@ fun MagicFragment(
             totalMagProjectString.value =
                 charInstance.magic.magProjTotal.toString()
             offenseImbalance.value =
-                determineImbalanceValue(imbalanceIsAttack.value).toString()
+                determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
             defenseImbalance.value =
-                determineImbalanceValue(!imbalanceIsAttack.value).toString()
+                determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
             updateFunc()
         }
     ))
@@ -274,9 +281,9 @@ fun MagicFragment(
                     },
                     {
                         offenseImbalance.value =
-                            determineImbalanceValue(imbalanceIsAttack.value).toString()
+                            determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
                         defenseImbalance.value =
-                            determineImbalanceValue(!imbalanceIsAttack.value).toString()
+                            determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
                     },
                     Modifier
                 )
@@ -291,9 +298,9 @@ fun MagicFragment(
                     imbalanceIsAttack.value = !imbalanceIsAttack.value
                     charInstance.magic.imbalanceIsAttack = !charInstance.magic.imbalanceIsAttack
                     offenseImbalance.value =
-                        determineImbalanceValue(imbalanceIsAttack.value).toString()
+                        determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
                     defenseImbalance.value =
-                        determineImbalanceValue(!imbalanceIsAttack.value).toString()
+                        determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
 
                     imbalanceTypeString.value = if(imbalanceIsAttack.value) "Attack" else "Defense"
                 }) {
@@ -315,6 +322,7 @@ fun MagicFragment(
         //display each book investment row and spell displays
         items(spellTable){
             SpellBookInvestment(
+                charInstance,
                 it,
                 primaryElementBoxes,
                 {magicLevelSpent.value = charInstance.magic.magicLevelSpent.toString()},
@@ -346,6 +354,7 @@ fun MagicFragment(
                 }
             else
                 SpellRow(
+                    charInstance,
                     it,
                     false,
                     openDetailAlert
@@ -356,6 +365,7 @@ fun MagicFragment(
     //show free spell dialog if displayed
     if(freeExchangeOpen.value)
         FreeSpellPick(
+            charInstance,
             freeElement.value,
             freeLevel.value,
             textChange.value,
@@ -415,6 +425,7 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
  */
 @Composable
 private fun SpellBookInvestment(
+    charInstance: BaseCharacter,
     spellData: SpellRowData,
     allElementList: MutableMap<Element, MutableState<Boolean>>,
     updateMgLvlSpent: () -> Unit,
@@ -442,7 +453,7 @@ private fun SpellBookInvestment(
                     charInstance.magic.changePrimaryBook(spellData.spellElement, it)
 
                     //change checkbox booleans to reflect the change
-                    reflectPrimaryElements(allElementList)
+                    reflectPrimaryElements(charInstance, allElementList)
 
                     //update any potentially changed values
                     updateMgLvlSpent()
@@ -472,7 +483,7 @@ private fun SpellBookInvestment(
                     updateMgLvlSpent()
 
                     //reflect any primary book change
-                    reflectPrimaryElements(allElementList)
+                    reflectPrimaryElements(charInstance, allElementList)
 
                     //update spells taken
                     updateSpellList()
@@ -500,10 +511,11 @@ private fun SpellBookInvestment(
                     //display the given spell if one is given
                     if (it != null) {
                         SpellRow(
+                            charInstance,
                             it,
                             true,
                             openDetailAlert
-                        ) { reflectPrimaryElements(allElementList); updateMgLvlSpent(); updateSpellList() }
+                        ) { reflectPrimaryElements(charInstance, allElementList); updateMgLvlSpent(); updateSpellList() }
 
                         //increment free spell level
                         freeSpellLevel = it.level + 2
@@ -511,8 +523,8 @@ private fun SpellBookInvestment(
 
                     //display free spell row if no spell given
                     else
-                        FreeSpellRow(freeSpellLevel, spellData.spellElement)
-                        { reflectPrimaryElements(allElementList); updateMgLvlSpent(); updateSpellList() }
+                        FreeSpellRow(charInstance, freeSpellLevel, spellData.spellElement)
+                        { reflectPrimaryElements(charInstance, allElementList); updateMgLvlSpent(); updateSpellList() }
                 }
             }
         }
@@ -528,6 +540,7 @@ private fun SpellBookInvestment(
  */
 @Composable
 private fun SpellRow(
+    charInstance: BaseCharacter,
     displayItem: Spell,
     buyable: Boolean,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
@@ -535,7 +548,7 @@ private fun SpellRow(
 ){
     Row{
         //make purchase button if buyable row
-        if(buyable) BuySingleSpellButton(displayItem, updateList)
+        if(buyable) BuySingleSpellButton(charInstance, displayItem, updateList)
 
         //display spell name
         Text(text = displayItem.name)
@@ -557,13 +570,14 @@ private fun SpellRow(
  */
 @Composable
 private fun FreeSpellRow(
+    charInstance: BaseCharacter,
     lvlVal: Int,
     eleVal: Element,
     updateList: () -> Unit
 ){
     Row{
         //button to buy free spell individually
-        BuySingleFreeSpellButton(lvlVal, eleVal, updateList)
+        BuySingleFreeSpellButton(charInstance, lvlVal, eleVal, updateList)
 
         //display free spell values
         Text(text = "Free Spell (Lvl $lvlVal)")
@@ -578,6 +592,7 @@ private fun FreeSpellRow(
  */
 @Composable
 private fun BuySingleSpellButton(
+    charInstance: BaseCharacter,
     inputSpell: Spell,
     updateList: () -> Unit
 ){
@@ -603,6 +618,7 @@ private fun BuySingleSpellButton(
  */
 @Composable
 private fun BuySingleFreeSpellButton(
+    charInstance: BaseCharacter,
     spellLevel: Int,
     spellElement: Element,
     updateList: () -> Unit
@@ -735,6 +751,7 @@ val SpellDetails = @Composable {spell: Spell ->
  * additionMade: whether imbalance favors the stat or not
  */
 private fun determineImbalanceValue(
+    charInstance: BaseCharacter,
     additionMade: Boolean
 ): Int{
     return if(additionMade)
@@ -749,6 +766,7 @@ private fun determineImbalanceValue(
  * allElementList: master list of primary element checkboxes
  */
 private fun reflectPrimaryElements(
+    charInstance: BaseCharacter,
     allElementList: MutableMap<Element, MutableState<Boolean>>
 ){
     //change checkbox value if it does not match character's value

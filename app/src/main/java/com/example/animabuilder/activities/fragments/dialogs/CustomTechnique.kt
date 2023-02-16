@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
@@ -39,6 +39,7 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.techn
 
 @Composable
 fun CustomTechnique(
+    charInstance: BaseCharacter,
     techContents: @Composable (Technique) -> Unit,
     deactivate: () -> Unit
 ) {
@@ -159,6 +160,7 @@ fun CustomTechnique(
 
                         //create dropdown and displayed table
                         TechniqueAbilityDropdown(
+                            charInstance,
                             isPrimary.value,
                             techniqueIndex,
                             allEffectChecks,
@@ -187,6 +189,7 @@ fun CustomTechnique(
 
                         //create dropdown and displayed table
                         TechniqueAbilityDropdown(
+                            charInstance,
                             isPrimary.value,
                             techniqueIndex,
                             allEffectChecks,
@@ -729,6 +732,7 @@ fun CustomTechnique(
  */
 @Composable
 private fun TechniqueAbilityDropdown(
+    charInstance: BaseCharacter,
     isPrimary: Boolean,
     techniqueIndex: MutableState<Int>,
     allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,

@@ -12,10 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,12 +30,6 @@ import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
 
-@OptIn(ExperimentalComposeUiApi::class)
-val keyboardActive: MutableState<SoftwareKeyboardController?> = mutableStateOf(null)
-
-//initialize player's character
-lateinit var charInstance: BaseCharacter
-
 /**
  * Activity that runs all character creation fragments
  * Initially loads the CharacterPageFragment
@@ -46,7 +37,7 @@ lateinit var charInstance: BaseCharacter
 
 class HomeActivity : AppCompatActivity() {
 
-    //private enumeration for current displayed page
+    //enumeration for current displayed page
     enum class ScreenPage{
         Character,
         Combat,
@@ -64,18 +55,14 @@ class HomeActivity : AppCompatActivity() {
     //character to work with and its associated file name
     private val filename: MutableState<String?> = mutableStateOf(null)
 
-    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //get values from intent
-        charInstance = intent.getSerializableExtra("Character", BaseCharacter::class.java)!!
+        val charInstance = intent.getSerializableExtra("Character", BaseCharacter::class.java)!!
         filename.value = intent.getStringExtra("filename")
 
         setContent{
-            //define active keyboard
-            keyboardActive.value = LocalSoftwareKeyboardController.current
-
             val navVM = viewModel<NavigationViewModel>()
 
             navVM.setScaffoldState(rememberScaffoldState())
@@ -140,7 +127,8 @@ class HomeActivity : AppCompatActivity() {
                         //drawer button for saving the character
                         DrawerButton("Save"){
                             scope.launch{scaffoldState.drawerState.close()}
-                            attemptSave()}
+                            attemptSave(charInstance)
+                        }
 
                         //drawer button for exiting the character creator
                         DrawerButton("Exit"){
@@ -211,55 +199,55 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
-                        CharacterPageFragment(bottomBarVM)
+                        CharacterPageFragment(charInstance, bottomBarVM)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment()
+                        CombatFragment(charInstance)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
-                        SecondaryAbilityFragment()
+                        SecondaryAbilityFragment(charInstance)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        AdvantageFragment(homeAlertsVM.openDetailAlert)
+                        AdvantageFragment(charInstance, homeAlertsVM.openDetailAlert)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
-                        ModuleFragment(homeAlertsVM.openDetailAlert)
+                        ModuleFragment(charInstance, homeAlertsVM.openDetailAlert)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
-                        KiFragment(homeAlertsVM.openDetailAlert)
+                        KiFragment(charInstance, homeAlertsVM.openDetailAlert)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
-                        MagicFragment(homeAlertsVM.openDetailAlert)
+                        MagicFragment(charInstance, homeAlertsVM.openDetailAlert)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
-                        SummoningFragment()
+                        SummoningFragment(charInstance)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
-                        PsychicFragment(homeAlertsVM.openDetailAlert)
+                        PsychicFragment(charInstance, homeAlertsVM.openDetailAlert)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
@@ -273,7 +261,7 @@ class HomeActivity : AppCompatActivity() {
 
             //show exit alert if user opens it
             if(homeAlertsVM.exitOpen.collectAsState().value)
-                ExitAlert{homeAlertsVM.setExitAlert(false)}
+                ExitAlert(charInstance) {homeAlertsVM.setExitAlert(false)}
             if(homeAlertsVM.detailAlertOn.collectAsState().value)
                 DetailAlert(homeAlertsVM)
         }
@@ -352,7 +340,7 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Attempts to save the character's data to its designated file
      */
-    private fun attemptSave(){
+    private fun attemptSave(charInstance: BaseCharacter) {
         try{
             //create file writer
             val saveStream = openFileOutput(filename.value, Context.MODE_PRIVATE)
@@ -395,6 +383,7 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun ExitAlert(
+        charInstance: BaseCharacter,
         closeDialog: () -> Unit
     ){
         AlertDialog(
@@ -405,7 +394,7 @@ class HomeActivity : AppCompatActivity() {
                 //attempt to save then leave page
                 TextButton(
                     onClick = {
-                        attemptSave()
+                        attemptSave(charInstance)
                         exitPage()}
                 ){
                     Text(text = "Save")

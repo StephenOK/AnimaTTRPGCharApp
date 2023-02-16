@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 
 /**
@@ -28,7 +28,10 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
  */
 
 @Composable
-fun SecondaryAbilityFragment(updateBottomBar: () -> Unit) {
+fun SecondaryAbilityFragment(
+    charInstance: BaseCharacter,
+    updateBottomBar: () -> Unit
+) {
     val secondaryFieldTable = mutableListOf<SecondaryFieldData>()
 
     secondaryFieldTable.add(SecondaryFieldData(
@@ -65,7 +68,7 @@ fun SecondaryAbilityFragment(updateBottomBar: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         items(secondaryFieldTable){
-            MakeTableDisplay(it, updateBottomBar)
+            MakeTableDisplay(charInstance, it, updateBottomBar)
         }
     }
 }
@@ -77,6 +80,7 @@ fun SecondaryAbilityFragment(updateBottomBar: () -> Unit) {
  */
 @Composable
 private fun MakeTableDisplay(
+    charInstance: BaseCharacter,
     input: SecondaryFieldData,
     updateBottomBar: () -> Unit
 ){
@@ -100,7 +104,7 @@ private fun MakeTableDisplay(
             RowHead()
 
             input.fieldItems.forEach {
-                MakeRow(it, updateBottomBar)
+                MakeRow(charInstance, it, updateBottomBar)
             }
         }
     }
@@ -159,6 +163,7 @@ private fun RowHead(){
  */
 @Composable
 private fun MakeRow(
+    charInstance: BaseCharacter,
     item: SecondaryCharacteristic,
     updateBottomBar: () -> Unit
 ){
@@ -207,9 +212,9 @@ private fun MakeRow(
             userInput,
             {},
             {input: String ->
-                secondaryInput(item, input.toInt(), textColor, total)
+                secondaryInput(charInstance, item, input.toInt(), textColor, total)
                 userInput.value = input},
-            {secondaryInput(item, 0, textColor, total)
+            {secondaryInput(charInstance, item, 0, textColor, total)
                 userInput.value = ""},
             {
                 checkedState.value = item.bonusApplied
@@ -266,6 +271,7 @@ private fun MakeRow(
  * total: secondary characteristic's final value
  */
 private fun secondaryInput(
+    charInstance: BaseCharacter,
     item: SecondaryCharacteristic,
     input: Int,
     textColor: MutableState<Color>,

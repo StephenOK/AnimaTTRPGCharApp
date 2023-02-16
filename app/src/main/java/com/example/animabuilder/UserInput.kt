@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.animabuilder.activities.keyboardActive
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -19,6 +19,8 @@ fun UserInput(
     postRun: () -> Unit,
     modifier: Modifier
 ){
+    val keyboardActive = LocalSoftwareKeyboardController.current
+
     TextField(
         value = inputText.value,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -31,7 +33,7 @@ fun UserInput(
                 if(it == "")
                     emptyFunction()
                 else if (it.contains('\n'))
-                    keyboardActive.value?.hide()
+                    keyboardActive?.hide()
             }
             postRun()
         },

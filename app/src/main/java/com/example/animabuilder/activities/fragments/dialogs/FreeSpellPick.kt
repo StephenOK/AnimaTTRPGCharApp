@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
@@ -30,6 +30,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
  */
 @Composable
 fun FreeSpellPick(
+    charInstance: BaseCharacter,
     spellElement: Element,
     spellLevel: Int,
     textChange: (String) -> Unit,

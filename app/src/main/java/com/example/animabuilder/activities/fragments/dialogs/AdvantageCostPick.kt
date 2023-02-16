@@ -8,7 +8,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 /**
@@ -23,6 +23,7 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 
 @Composable
 fun AdvantageCostPick(
+    charInstance: BaseCharacter,
     item: Advantage,
     startPage: Int,
     closeDialog: (String?) -> Unit

@@ -16,10 +16,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.charInstance
+import com.example.animabuilder.character_creation.BaseCharacter
 
 @Composable
-fun CombatFragment(updateFunc: () -> Unit) {
+fun CombatFragment(
+    charInstance: BaseCharacter,
+    updateFunc: () -> Unit
+) {
     //initialize color item
     val pointColor =
         if(charInstance.combat.validAttackDodgeBlock())

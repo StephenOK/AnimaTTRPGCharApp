@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.activities.*
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 
 @Composable
 fun PsychicFragment(
+    charInstance: BaseCharacter,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
@@ -83,7 +84,7 @@ fun PsychicFragment(
 
         //display psychic item input
         items(psyPurchaseData){
-            PsychicPurchaseTable(it, updateFunc)
+            PsychicPurchaseTable(charInstance, it, updateFunc)
         }
 
         //display currently free psychic points
@@ -92,6 +93,7 @@ fun PsychicFragment(
         //display discipline info
         items(disciplineData){
             DisciplineDisplay(
+                charInstance,
                 it,
                 {input -> disciplineMasterList.add(input)},
                 {input -> powerMasterList.add(input)},
@@ -112,7 +114,11 @@ fun PsychicFragment(
  * updateFunc: bottom bar update function
  */
 @Composable
-private fun PsychicPurchaseTable(tableData: PsychicPurchaseItemData, updateFunc: () -> Unit){
+private fun PsychicPurchaseTable(
+    charInstance: BaseCharacter,
+    tableData: PsychicPurchaseItemData,
+    updateFunc: () -> Unit
+){
     //display title of this section
     Row{Text(text = tableData.title)}
     Row{
@@ -149,6 +155,7 @@ private fun PsychicPurchaseTable(tableData: PsychicPurchaseItemData, updateFunc:
  */
 @Composable
 private fun DisciplineDisplay(
+    charInstance: BaseCharacter,
     discipline: DisciplineItemData,
     addDiscipline: (MutableState<Boolean>) -> Unit,
     addPower: (MutableState<Boolean>) -> Unit,
@@ -203,7 +210,8 @@ private fun DisciplineDisplay(
             Column {
                 discipline.item.allPowers.forEach {
                     PsyPowerRow(
-                        discipline.item, it,
+                        charInstance, discipline.item,
+                        it,
                         {item -> powerChecks += item},
                         addPower,
                         {input ->
@@ -233,6 +241,7 @@ private fun DisciplineDisplay(
  */
 @Composable
 private fun PsyPowerRow(
+    charInstance: BaseCharacter,
     discipline: Discipline,
     power: PsychicPower,
     addCheckbox: (Pair<PsychicPower, MutableState<Boolean>>) -> Unit,

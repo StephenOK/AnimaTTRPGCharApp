@@ -23,64 +23,66 @@ fun SummoningFragment(
     charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ){
+    val summoning = charInstance.summoning
+
     //initialize mutable strings for the page
-    val boughtSummon = remember{mutableStateOf(charInstance.summoning.summonBought.toString())}
-    val totalSummon = remember{mutableStateOf(charInstance.summoning.summonTotal.toString())}
+    val boughtSummon = remember{mutableStateOf(summoning.summonBought.toString())}
+    val totalSummon = remember{mutableStateOf(summoning.summonTotal.toString())}
 
-    val boughtControl = remember{mutableStateOf(charInstance.summoning.controlBought.toString())}
-    val totalControl = remember{mutableStateOf(charInstance.summoning.controlTotal.toString())}
+    val boughtControl = remember{mutableStateOf(summoning.controlBought.toString())}
+    val totalControl = remember{mutableStateOf(summoning.controlTotal.toString())}
 
-    val boughtBind = remember{mutableStateOf(charInstance.summoning.bindBought.toString())}
-    val totalBind = remember{mutableStateOf(charInstance.summoning.bindTotal.toString())}
+    val boughtBind = remember{mutableStateOf(summoning.bindBought.toString())}
+    val totalBind = remember{mutableStateOf(summoning.bindTotal.toString())}
 
-    val boughtBanish = remember{mutableStateOf(charInstance.summoning.banishBought.toString())}
-    val totalBanish = remember{mutableStateOf(charInstance.summoning.banishTotal.toString())}
+    val boughtBanish = remember{mutableStateOf(summoning.banishBought.toString())}
+    val totalBanish = remember{mutableStateOf(summoning.banishTotal.toString())}
 
     //initialize display data table
     val summoningRowTable = mutableListOf<SummoningAbilityItem>()
 
     summoningRowTable.add(SummoningAbilityItem(
         "Summoning",
-        charInstance.modPOW.toString(),
-        (charInstance.summoning.summonPerLevel * charInstance.lvl).toString(),
+        charInstance.primaryList.pow.outputMod.toString(),
+        (summoning.summonPerLevel * charInstance.lvl).toString(),
         boughtSummon,
         totalSummon
     ){
-        charInstance.summoning.buySummon(it)
-        totalSummon.value = charInstance.summoning.summonTotal.toString()
+        summoning.buySummon(it)
+        totalSummon.value = summoning.summonTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Control",
-        charInstance.modWP.toString(),
-        (charInstance.summoning.controlPerLevel * charInstance.lvl).toString(),
+        charInstance.primaryList.wp.outputMod.toString(),
+        (summoning.controlPerLevel * charInstance.lvl).toString(),
         boughtControl,
         totalControl
     ){
-        charInstance.summoning.buyControl(it)
-        totalControl.value = charInstance.summoning.controlTotal.toString()
+        summoning.buyControl(it)
+        totalControl.value = summoning.controlTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Bind",
-        charInstance.modPOW.toString(),
-        (charInstance.summoning.bindPerLevel * charInstance.lvl).toString(),
+        charInstance.primaryList.pow.outputMod.toString(),
+        (summoning.bindPerLevel * charInstance.lvl).toString(),
         boughtBind,
         totalBind
     ){
-        charInstance.summoning.buyBind(it)
-        totalBind.value = charInstance.summoning.bindTotal.toString()
+        summoning.buyBind(it)
+        totalBind.value = summoning.bindTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Banish",
-        charInstance.modPOW.toString(),
-        (charInstance.summoning.banishPerLevel * charInstance.lvl).toString(),
+        charInstance.primaryList.pow.outputMod.toString(),
+        (summoning.banishPerLevel * charInstance.lvl).toString(),
         boughtBanish,
         totalBanish
     ){
-        charInstance.summoning.buyBanish(it)
-        totalBanish.value = charInstance.summoning.banishTotal.toString()
+        summoning.buyBanish(it)
+        totalBanish.value = summoning.banishTotal.toString()
     })
 
     LazyColumn{

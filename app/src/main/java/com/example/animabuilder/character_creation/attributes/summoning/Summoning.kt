@@ -47,7 +47,7 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
      * Updates the character's total summon value
      */
     fun updateSummon(){
-        summonTotal = summonBought + charInstance.modPOW + (summonPerLevel * charInstance.lvl)
+        summonTotal = summonBought + charInstance.primaryList.pow.outputMod + (summonPerLevel * charInstance.lvl)
     }
 
     /**
@@ -70,7 +70,7 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
      * Updates the character's total control value
      */
     fun updateControl(){
-        controlTotal = controlBought + charInstance.modWP + (controlPerLevel * charInstance.lvl)
+        controlTotal = controlBought + charInstance.primaryList.wp.outputMod + (controlPerLevel * charInstance.lvl)
     }
 
     /**
@@ -93,7 +93,7 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
      * Updates the character's total bind value
      */
     fun updateBind(){
-        bindTotal = bindBought + charInstance.modPOW + (bindPerLevel * charInstance.lvl)
+        bindTotal = bindBought + charInstance.primaryList.pow.outputMod + (bindPerLevel * charInstance.lvl)
     }
 
     /**
@@ -116,7 +116,7 @@ class Summoning(private val charInstance: BaseCharacter): Serializable {
      * Updates the character's total banish value
      */
     fun updateBanish(){
-        banishTotal = banishBought + charInstance.modPOW + (banishPerLevel * charInstance.lvl)
+        banishTotal = banishBought + charInstance.primaryList.pow.outputMod + (banishPerLevel * charInstance.lvl)
     }
 
     /**

@@ -14,6 +14,7 @@ import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
@@ -25,23 +26,25 @@ fun MagicFragment(
 ) {
     val context = LocalContext.current
 
+    val magic = charInstance.magic
+
     //initialize strings for maximum Zeon purchase and total
-    val boughtZeonString = remember{mutableStateOf(charInstance.magic.boughtZeon.toString())}
-    val maxZeonString = remember{mutableStateOf(charInstance.magic.zeonMax.toString())}
+    val boughtZeonString = remember{mutableStateOf(magic.boughtZeon.toString())}
+    val maxZeonString = remember{mutableStateOf(magic.zeonMax.toString())}
 
     //initialize strings for Zeon Accumulation purchase and total
-    val boughtAccString = remember{mutableStateOf(charInstance.magic.zeonAccMult.toString())}
-    val totalAccString = remember{mutableStateOf(charInstance.magic.zeonAccTotal.toString())}
+    val boughtAccString = remember{mutableStateOf(magic.zeonAccMult.toString())}
+    val totalAccString = remember{mutableStateOf(magic.zeonAccTotal.toString())}
 
-    val zeonRecoverText = remember{mutableStateOf(charInstance.magic.magicRecoveryTotal.toString())}
+    val zeonRecoverText = remember{mutableStateOf(magic.magicRecoveryTotal.toString())}
 
     //initialize strings for Magic Projection purchase and total
-    val boughtProjString = remember{mutableStateOf(charInstance.magic.boughtMagProjection.toString())}
-    val totalMagProjectString = remember{mutableStateOf(charInstance.magic.magProjTotal.toString())}
+    val boughtProjString = remember{mutableStateOf(magic.boughtMagProjection.toString())}
+    val totalMagProjectString = remember{mutableStateOf(magic.magProjTotal.toString())}
 
     //initialize states for Magic Projection imbalance
-    val projectionImbalance = remember{mutableStateOf(charInstance.magic.magProjImbalance.toString())}
-    val imbalanceIsAttack = remember{mutableStateOf(charInstance.magic.imbalanceIsAttack)}
+    val projectionImbalance = remember{mutableStateOf(magic.magProjImbalance.toString())}
+    val imbalanceIsAttack = remember{mutableStateOf(magic.imbalanceIsAttack)}
     val imbalanceTypeString = remember{mutableStateOf(
         if(imbalanceIsAttack.value)
             "Attack"
@@ -49,23 +52,23 @@ fun MagicFragment(
             "Defense"
     )}
     val offenseImbalance = remember{mutableStateOf(determineImbalanceValue(
-        charInstance,
+        magic,
         imbalanceIsAttack.value
     ).toString())}
     val defenseImbalance = remember{mutableStateOf(determineImbalanceValue(
-        charInstance,
+        magic,
         !imbalanceIsAttack.value
     ).toString())}
 
     //initialize maximum and spent values for magic level
-    val magicLevelMax = remember{mutableStateOf(charInstance.magic.magicLevelMax.toString())}
-    val magicLevelSpent = remember{mutableStateOf(charInstance.magic.magicLevelSpent.toString())}
+    val magicLevelMax = remember{mutableStateOf(magic.magicLevelMax.toString())}
+    val magicLevelSpent = remember{mutableStateOf(magic.magicLevelSpent.toString())}
 
     //initialize list of character's primary spell elements
     val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
 
     //initialize state copy of character's spell list
-    val spellList = remember{charInstance.magic.spellList.toMutableStateList()}
+    val spellList = remember{magic.spellList.toMutableStateList()}
 
     //initialize values for the free exchange dialog
     val freeExchangeOpen = remember{mutableStateOf(false)}
@@ -78,53 +81,53 @@ fun MagicFragment(
 
     zeonPurchaseItemTable.add(ZeonPurchaseItemData(
         "Zeon Accumulation",
-        charInstance.magic.baseZeonAcc.toString(),
+        magic.baseZeonAcc.toString(),
         boughtAccString,
         totalAccString,
         { input ->
             if (input.toInt() >= 1) {
-                charInstance.magic.buyZeonAcc(input.toInt())
+                magic.buyZeonAcc(input.toInt())
                 boughtAccString.value = input
                 totalAccString.value =
-                    charInstance.magic.zeonAccTotal.toString()
-                zeonRecoverText.value = charInstance.magic.magicRecoveryTotal.toString()
+                    magic.zeonAccTotal.toString()
+                zeonRecoverText.value = magic.magicRecoveryTotal.toString()
                 updateFunc()
             }
         },
         {
-            charInstance.magic.buyZeonAcc(1)
+            magic.buyZeonAcc(1)
             boughtAccString.value = ""
-            totalAccString.value = charInstance.magic.zeonAccTotal.toString()
-            zeonRecoverText.value = charInstance.magic.magicRecoveryTotal.toString()
+            totalAccString.value = magic.zeonAccTotal.toString()
+            zeonRecoverText.value = magic.magicRecoveryTotal.toString()
             updateFunc()
         }
     ))
 
     zeonPurchaseItemTable.add(ZeonPurchaseItemData(
         "Magic Projection",
-        charInstance.modDEX.toString(),
+        charInstance.primaryList.dex.outputMod.toString(),
         boughtProjString,
         totalMagProjectString,
         { input ->
-            charInstance.magic.buyMagProj(input.toInt())
+            magic.buyMagProj(input.toInt())
             boughtProjString.value = input
             totalMagProjectString.value =
-                charInstance.magic.magProjTotal.toString()
+                magic.magProjTotal.toString()
             offenseImbalance.value =
-                determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
+                determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
             defenseImbalance.value =
-                determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
+                determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
             updateFunc()
         },
         {
-            charInstance.magic.buyMagProj(0)
+            magic.buyMagProj(0)
             boughtProjString.value = ""
             totalMagProjectString.value =
-                charInstance.magic.magProjTotal.toString()
+                magic.magProjTotal.toString()
             offenseImbalance.value =
-                determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
+                determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
             defenseImbalance.value =
-                determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
+                determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
             updateFunc()
         }
     ))
@@ -134,58 +137,58 @@ fun MagicFragment(
 
     spellTable.add(SpellRowData(
         Element.Light,
-        charInstance.magic.lightBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInLightBook.toString())}
+        magic.lightBook.fullBook,
+        remember{mutableStateOf(magic.pointsInLightBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Dark,
-        charInstance.magic.darkBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInDarkBook.toString())}
+        magic.darkBook.fullBook,
+        remember{mutableStateOf(magic.pointsInDarkBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Creation,
-        charInstance.magic.creationBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInCreateBook.toString())}
+        magic.creationBook.fullBook,
+        remember{mutableStateOf(magic.pointsInCreateBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Destruction,
-        charInstance.magic.destructionBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInDestructBook.toString())}
+        magic.destructionBook.fullBook,
+        remember{mutableStateOf(magic.pointsInDestructBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Air,
-        charInstance.magic.airBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInAirBook.toString())}
+        magic.airBook.fullBook,
+        remember{mutableStateOf(magic.pointsInAirBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Earth,
-        charInstance.magic.earthBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInEarthBook.toString())}
+        magic.earthBook.fullBook,
+        remember{mutableStateOf(magic.pointsInEarthBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Water,
-        charInstance.magic.waterBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInWaterBook.toString())}
+        magic.waterBook.fullBook,
+        remember{mutableStateOf(magic.pointsInWaterBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Fire,
-        charInstance.magic.fireBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInFireBook.toString())}
+        magic.fireBook.fullBook,
+        remember{mutableStateOf(magic.pointsInFireBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Essence,
-        charInstance.magic.essenceBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInEssenceBook.toString())}
+        magic.essenceBook.fullBook,
+        remember{mutableStateOf(magic.pointsInEssenceBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Illusion,
-        charInstance.magic.illusionBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInIllusionBook.toString())}
+        magic.illusionBook.fullBook,
+        remember{mutableStateOf(magic.pointsInIllusionBook.toString())}
     ))
     spellTable.add(SpellRowData(
         Element.Necromancy,
-        charInstance.magic.necromancyBook.fullBook,
-        remember{mutableStateOf(charInstance.magic.pointsInNecroBook.toString())}
+        magic.necromancyBook.fullBook,
+        remember{mutableStateOf(magic.pointsInNecroBook.toString())}
     ))
 
 
@@ -211,7 +214,7 @@ fun MagicFragment(
             Row {
                 //display base maximum Zeon
                 Text(
-                    text = charInstance.magic.baseZeon.toString(),
+                    text = magic.baseZeon.toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 
@@ -221,16 +224,16 @@ fun MagicFragment(
                     {},
                     { input ->
                         //take inputted number and buy that many Zeon points
-                        charInstance.magic.buyZeon(input.toInt())
+                        magic.buyZeon(input.toInt())
                         boughtZeonString.value = input
                     },
                     {
                         //clear bought Zeon amount
-                        charInstance.magic.buyZeon(0)
+                        magic.buyZeon(0)
                         boughtZeonString.value = ""
                     },
                     {
-                        maxZeonString.value = charInstance.magic.zeonMax.toString()
+                        maxZeonString.value = magic.zeonMax.toString()
                         updateFunc()
                     },
                     Modifier.weight(0.25f)
@@ -240,7 +243,7 @@ fun MagicFragment(
 
                 //display zeon points from class levels
                 Text(
-                    text = (charInstance.lvl * charInstance.magic.zeonPerLevel).toString(),
+                    text = (charInstance.lvl * magic.zeonPerLevel).toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 
@@ -270,20 +273,20 @@ fun MagicFragment(
                         //if imbalance is a legal input
                         if (input.toInt() in 0..30) {
                             //set magic imbalance to input
-                            charInstance.magic.magProjImbalance = input.toInt()
+                            magic.magProjImbalance = input.toInt()
                             projectionImbalance.value = input
                         }
                     },
                     {
                         //default imbalance to 0
-                        charInstance.magic.magProjImbalance = 0
+                        magic.magProjImbalance = 0
                         projectionImbalance.value = ""
                     },
                     {
                         offenseImbalance.value =
-                            determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
+                            determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
                         defenseImbalance.value =
-                            determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
+                            determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
                     },
                     Modifier
                 )
@@ -296,11 +299,11 @@ fun MagicFragment(
                 Button(onClick = {
                     //switch imbalance preference
                     imbalanceIsAttack.value = !imbalanceIsAttack.value
-                    charInstance.magic.imbalanceIsAttack = !charInstance.magic.imbalanceIsAttack
+                    magic.imbalanceIsAttack = !magic.imbalanceIsAttack
                     offenseImbalance.value =
-                        determineImbalanceValue(charInstance, imbalanceIsAttack.value).toString()
+                        determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
                     defenseImbalance.value =
-                        determineImbalanceValue(charInstance, !imbalanceIsAttack.value).toString()
+                        determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
 
                     imbalanceTypeString.value = if(imbalanceIsAttack.value) "Attack" else "Defense"
                 }) {
@@ -322,11 +325,11 @@ fun MagicFragment(
         //display each book investment row and spell displays
         items(spellTable){
             SpellBookInvestment(
-                charInstance,
+                magic,
                 it,
                 primaryElementBoxes,
-                {magicLevelSpent.value = charInstance.magic.magicLevelSpent.toString()},
-                {spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList())},
+                {magicLevelSpent.value = magic.magicLevelSpent.toString()},
+                {spellList.clear(); spellList.addAll(magic.spellList.toList())},
                 openDetailAlert
             ) { element: Element, box: MutableState<Boolean> ->
                 primaryElementBoxes += Pair(element, box)
@@ -340,39 +343,39 @@ fun MagicFragment(
             if(it is FreeSpell)
                 FreeSpellExchange(
                     it,
-                    charInstance.magic.findFreeSpellElement(it),
+                    magic.findFreeSpellElement(it),
                     it.level,
                     {input: Element -> freeElement.value = input},
                     {input: Int -> freeLevel.value = input},
                     {input: (String) -> Unit -> textChange.value = input},
                     openDetailAlert
                 ) {
-                    if(charInstance.magic.magicTies)
+                    if(magic.magicTies)
                         Toast.makeText(context, "Magic Ties prevents getting Free Spells", Toast.LENGTH_LONG).show()
                     else
                         freeExchangeOpen.value = true
                 }
             else
                 SpellRow(
-                    charInstance,
+                    magic,
                     it,
                     false,
                     openDetailAlert
-                ) { spellList.clear(); spellList.addAll(charInstance.magic.spellList.toList()) }
+                ) { spellList.clear(); spellList.addAll(magic.spellList.toList()) }
         }
     }
 
     //show free spell dialog if displayed
     if(freeExchangeOpen.value)
         FreeSpellPick(
-            charInstance,
+            magic,
             freeElement.value,
             freeLevel.value,
             textChange.value,
             SpellDetails,
             openDetailAlert
         )
-        {spellList.clear(); spellList.addAll(charInstance.magic.spellList); freeExchangeOpen.value = false}
+        {spellList.clear(); spellList.addAll(magic.spellList); freeExchangeOpen.value = false}
 }
 
 /**
@@ -425,7 +428,7 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
  */
 @Composable
 private fun SpellBookInvestment(
-    charInstance: BaseCharacter,
+    magic: Magic,
     spellData: SpellRowData,
     allElementList: MutableMap<Element, MutableState<Boolean>>,
     updateMgLvlSpent: () -> Unit,
@@ -438,7 +441,7 @@ private fun SpellBookInvestment(
 
     //initialize whether spell is a primary book or not
     val isPrimaryElement = remember{mutableStateOf(
-        charInstance.magic.primaryElementList.contains(spellData.spellElement))}
+        magic.primaryElementList.contains(spellData.spellElement))}
 
     //add mutable boolean to master list
     addElementBox(spellData.spellElement, isPrimaryElement)
@@ -450,10 +453,10 @@ private fun SpellBookInvestment(
                 checked = isPrimaryElement.value,
                 onCheckedChange = {
                     //change primary element in character
-                    charInstance.magic.changePrimaryBook(spellData.spellElement, it)
+                    magic.changePrimaryBook(spellData.spellElement, it)
 
                     //change checkbox booleans to reflect the change
-                    reflectPrimaryElements(charInstance, allElementList)
+                    reflectPrimaryElements(magic, allElementList)
 
                     //update any potentially changed values
                     updateMgLvlSpent()
@@ -471,19 +474,19 @@ private fun SpellBookInvestment(
                 { displayActive.value = false },
                 { input ->
                     //buy levels in the associated book
-                    charInstance.magic.buyBookLevels(input.toInt(), spellData.spellElement)
+                    magic.buyBookLevels(input.toInt(), spellData.spellElement)
                     spellData.elementInvestment.value = input
                 },
                 {
                     //default purchase to 0
-                    charInstance.magic.buyBookLevels(0, spellData.spellElement)
+                    magic.buyBookLevels(0, spellData.spellElement)
                     spellData.elementInvestment.value = ""
                 },
                 {
                     updateMgLvlSpent()
 
                     //reflect any primary book change
-                    reflectPrimaryElements(charInstance, allElementList)
+                    reflectPrimaryElements(magic, allElementList)
 
                     //update spells taken
                     updateSpellList()
@@ -511,11 +514,11 @@ private fun SpellBookInvestment(
                     //display the given spell if one is given
                     if (it != null) {
                         SpellRow(
-                            charInstance,
+                            magic,
                             it,
                             true,
                             openDetailAlert
-                        ) { reflectPrimaryElements(charInstance, allElementList); updateMgLvlSpent(); updateSpellList() }
+                        ) { reflectPrimaryElements(magic, allElementList); updateMgLvlSpent(); updateSpellList() }
 
                         //increment free spell level
                         freeSpellLevel = it.level + 2
@@ -523,8 +526,8 @@ private fun SpellBookInvestment(
 
                     //display free spell row if no spell given
                     else
-                        FreeSpellRow(charInstance, freeSpellLevel, spellData.spellElement)
-                        { reflectPrimaryElements(charInstance, allElementList); updateMgLvlSpent(); updateSpellList() }
+                        FreeSpellRow(magic, freeSpellLevel, spellData.spellElement)
+                        { reflectPrimaryElements(magic, allElementList); updateMgLvlSpent(); updateSpellList() }
                 }
             }
         }
@@ -540,7 +543,7 @@ private fun SpellBookInvestment(
  */
 @Composable
 private fun SpellRow(
-    charInstance: BaseCharacter,
+    magic: Magic,
     displayItem: Spell,
     buyable: Boolean,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
@@ -548,7 +551,7 @@ private fun SpellRow(
 ){
     Row{
         //make purchase button if buyable row
-        if(buyable) BuySingleSpellButton(charInstance, displayItem, updateList)
+        if(buyable) BuySingleSpellButton(magic, displayItem, updateList)
 
         //display spell name
         Text(text = displayItem.name)
@@ -570,14 +573,14 @@ private fun SpellRow(
  */
 @Composable
 private fun FreeSpellRow(
-    charInstance: BaseCharacter,
+    magic: Magic,
     lvlVal: Int,
     eleVal: Element,
     updateList: () -> Unit
 ){
     Row{
         //button to buy free spell individually
-        BuySingleFreeSpellButton(charInstance, lvlVal, eleVal, updateList)
+        BuySingleFreeSpellButton(magic, lvlVal, eleVal, updateList)
 
         //display free spell values
         Text(text = "Free Spell (Lvl $lvlVal)")
@@ -592,16 +595,16 @@ private fun FreeSpellRow(
  */
 @Composable
 private fun BuySingleSpellButton(
-    charInstance: BaseCharacter,
+    magic: Magic,
     inputSpell: Spell,
     updateList: () -> Unit
 ){
     //whether spell is individually acquired by the character
-    val isBought = remember{mutableStateOf(charInstance.magic.individualSpells.contains(inputSpell))}
+    val isBought = remember{mutableStateOf(magic.individualSpells.contains(inputSpell))}
     Button(
         onClick = {
             //attempt to purchase the spell
-            isBought.value = charInstance.magic.changeIndividualSpell(inputSpell, !isBought.value)
+            isBought.value = magic.changeIndividualSpell(inputSpell, !isBought.value)
             updateList()
         }
     ){
@@ -618,18 +621,18 @@ private fun BuySingleSpellButton(
  */
 @Composable
 private fun BuySingleFreeSpellButton(
-    charInstance: BaseCharacter,
+    magic: Magic,
     spellLevel: Int,
     spellElement: Element,
     updateList: () -> Unit
 ){
     //determine if character has equivalent free spell taken
-    val isBought = remember{mutableStateOf(charInstance.magic.hasCopyOf(charInstance.magic.getFreeSpell(spellLevel, spellElement)))}
+    val isBought = remember{mutableStateOf(magic.hasCopyOf(magic.getFreeSpell(spellLevel, spellElement)))}
 
     Button(
         onClick = {
             //attempt to acquire free spell slot
-            isBought.value = charInstance.magic.changeIndividualFreeSpell(spellLevel, spellElement, !isBought.value)
+            isBought.value = magic.changeIndividualFreeSpell(spellLevel, spellElement, !isBought.value)
             updateList()
         }
     ){
@@ -751,13 +754,13 @@ val SpellDetails = @Composable {spell: Spell ->
  * additionMade: whether imbalance favors the stat or not
  */
 private fun determineImbalanceValue(
-    charInstance: BaseCharacter,
+    magic: Magic,
     additionMade: Boolean
 ): Int{
     return if(additionMade)
-        charInstance.magic.magProjTotal + charInstance.magic.magProjImbalance
+        magic.magProjTotal + magic.magProjImbalance
     else
-        charInstance.magic.magProjTotal - charInstance.magic.magProjImbalance
+        magic.magProjTotal - magic.magProjImbalance
 }
 
 /**
@@ -766,12 +769,12 @@ private fun determineImbalanceValue(
  * allElementList: master list of primary element checkboxes
  */
 private fun reflectPrimaryElements(
-    charInstance: BaseCharacter,
+    magic: Magic,
     allElementList: MutableMap<Element, MutableState<Boolean>>
 ){
     //change checkbox value if it does not match character's value
     allElementList.forEach{
-        if(charInstance.magic.primaryElementList.contains(it.key) != it.value.value)
+        if(magic.primaryElementList.contains(it.key) != it.value.value)
             it.value.value = !it.value.value
     }
 }

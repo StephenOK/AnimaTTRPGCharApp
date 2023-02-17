@@ -150,7 +150,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "Strength. Additionally, Jayan may not use the Deduct Two Points from a " +
                 "Characteristic Disadvantage to lower their Strength.",
         {_, _ ->
-            charInstance.setStrBonus(1)
+            charInstance.primaryList.str.setBonus(1)
             val reference = charInstance.advantageRecord.commonAdvantages.deductCharacteristic
 
             val dummyAdvantage = Advantage(
@@ -169,7 +169,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
 
             charInstance.advantageRecord.removeAdvantage(dummyAdvantage)
         },
-        {_, _ -> charInstance.setStrBonus(-1)}
+        {_, _ -> charInstance.primaryList.str.setBonus(-1)}
     )
 
     private val spiritualVision = RacialAdvantage(

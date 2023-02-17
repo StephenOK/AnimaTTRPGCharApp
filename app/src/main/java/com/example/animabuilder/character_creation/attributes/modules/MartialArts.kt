@@ -1,6 +1,6 @@
-package com.example.animabuilder.character_creation.equipment.weapons.weapon_instances
+package com.example.animabuilder.character_creation.attributes.modules
 
-import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
+import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import java.io.Serializable
 
 class MartialArts: Serializable {

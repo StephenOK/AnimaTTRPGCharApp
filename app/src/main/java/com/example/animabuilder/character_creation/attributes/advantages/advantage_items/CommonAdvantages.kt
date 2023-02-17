@@ -63,28 +63,10 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(1),
         0,
         { input, _ ->
-            when(input){
-                0 -> {charInstance.setStrBonus(1)}
-                1 -> {charInstance.setDexBonus(1)}
-                2 -> {charInstance.setAgiBonus(1)}
-                3 -> {charInstance.setConBonus(1)}
-                4 -> {charInstance.setIntBonus(1)}
-                5 -> {charInstance.setPowBonus(1)}
-                6 -> {charInstance.setWpBonus(1)}
-                7 -> {charInstance.setPerBonus(1)}
-            }
+            charInstance.primaryList.allPrimaries[input!!].setBonus(1)
         },
         { input, _ ->
-            when(input){
-                0 -> {charInstance.setStrBonus(-1)}
-                1 -> {charInstance.setDexBonus(-1)}
-                2 -> {charInstance.setAgiBonus(-1)}
-                3 -> {charInstance.setConBonus(-1)}
-                4 -> {charInstance.setIntBonus(-1)}
-                5 -> {charInstance.setPowBonus(-1)}
-                6 -> {charInstance.setWpBonus(-1)}
-                7 -> {charInstance.setPerBonus(-1)}
-            }
+            charInstance.primaryList.allPrimaries[input!!].setBonus(-1)
         }
     )
 
@@ -151,28 +133,10 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(2),
         0,
         {input, _ ->
-            when(input){
-                0 -> charInstance.updateStrValues()
-                1 -> charInstance.updateDexValues()
-                2 -> charInstance.updateAgiValues()
-                3 -> charInstance.updateConValues()
-                4 -> charInstance.updateIntValues()
-                5 -> charInstance.updatePowValues()
-                6 -> charInstance.updateWpValues()
-                7 -> charInstance.updatePerValues()
-            }
+            charInstance.primaryList.allPrimaries[input!!].updateValues()
         },
         {input, _ ->
-            when(input){
-                0 -> charInstance.updateStrValues()
-                1 -> charInstance.updateDexValues()
-                2 -> charInstance.updateAgiValues()
-                3 -> charInstance.updateConValues()
-                4 -> charInstance.updateIntValues()
-                5 -> charInstance.updatePowValues()
-                6 -> charInstance.updateWpValues()
-                7 -> charInstance.updatePerValues()
-            }
+            charInstance.primaryList.allPrimaries[input!!].updateValues()
         }
     )
 
@@ -1198,28 +1162,10 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(-1),
         0,
         {input, _ ->
-            when(input){
-                0 -> charInstance.setStrBonus(-2)
-                1 -> charInstance.setDexBonus(-2)
-                2 -> charInstance.setAgiBonus(-2)
-                3 -> charInstance.setConBonus(-2)
-                4 -> charInstance.setIntBonus(-2)
-                5 -> charInstance.setPowBonus(-2)
-                6 -> charInstance.setWpBonus(-2)
-                7 -> charInstance.setPerBonus(-2)
-            }
+            charInstance.primaryList.allPrimaries[input!!].setBonus(-2)
         },
         {input, _ ->
-            when(input){
-                0 -> charInstance.setStrBonus(2)
-                1 -> charInstance.setDexBonus(2)
-                2 -> charInstance.setAgiBonus(2)
-                3 -> charInstance.setConBonus(2)
-                4 -> charInstance.setIntBonus(2)
-                5 -> charInstance.setPowBonus(2)
-                6 -> charInstance.setWpBonus(2)
-                7 -> charInstance.setPerBonus(2)
-            }
+            charInstance.primaryList.allPrimaries[input!!].setBonus(2)
         }
     )
 

@@ -95,10 +95,10 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     fun setBaseZeon() {
         //determine the base Zeon
         baseZeon =
-            if(charInstance.totalPOW == 1)
+            if(charInstance.primaryList.pow.total == 1)
                 5
             else
-                20 + (10 * charInstance.totalPOW) + charInstance.modPOW
+                20 + (10 * charInstance.primaryList.pow.total) + charInstance.primaryList.pow.outputMod
 
         //recalculate the character's maximum Zeon
         calcMaxZeon()
@@ -134,7 +134,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      */
     fun setBaseZeonAcc() {
         //determine the base accumulation
-        baseZeonAcc = when(charInstance.totalPOW){
+        baseZeonAcc = when(charInstance.primaryList.pow.total){
             in 5..7 -> 5
             in 8 .. 11 -> 10
             in 12..14 -> 15
@@ -192,19 +192,19 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * Recalculate the character's Magic Projection stat
      */
     fun calcMagProj(){
-        magProjTotal = charInstance.modDEX + boughtMagProjection
+        magProjTotal = charInstance.primaryList.dex.outputMod + boughtMagProjection
     }
 
     /**
      * Determine the character's Magic Level based on their intelligence
      */
     fun setMagicLevelMax(){
-        magicLevelMax = when(charInstance.totalINT) {
-            in 6..10 -> (charInstance.totalINT - 5) * 10
+        magicLevelMax = when(charInstance.primaryList.int.total) {
+            in 6..10 -> (charInstance.primaryList.int.total - 5) * 10
             11 -> 75
             12 -> 100
             13 -> 150
-            in 14..20 -> (charInstance.totalINT - 12)* 100
+            in 14..20 -> (charInstance.primaryList.int.total - 12)* 100
             else -> 0
         }
     }

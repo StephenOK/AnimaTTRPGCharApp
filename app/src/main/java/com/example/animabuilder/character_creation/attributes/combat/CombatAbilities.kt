@@ -73,10 +73,10 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //update the base number of life points based on the character's constitution
     fun updateLifeBase(){
-        lifeBase = if(charInstance.totalCON == 1)
+        lifeBase = if(charInstance.primaryList.con.total == 1)
             5
         else
-            20 + (charInstance.totalCON * 10) + charInstance.modCON
+            20 + (charInstance.primaryList.con.total * 10) + charInstance.primaryList.con.outputMod
     }
 
     //updates the number of life multiples the user is taking for their character
@@ -88,7 +88,7 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //updates the character's total life points
     fun updateLifePoints(){
-        lifeMax = lifeBase + (lifeMultsTaken * charInstance.totalCON) + (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl)
+        lifeMax = lifeBase + (lifeMultsTaken * charInstance.primaryList.con.outputMod) + (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl)
     }
 
     //updates attack points and updates a string item if one given
@@ -105,19 +105,19 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     @JvmName("setAttackPerLevel1")
     fun setAttackPerLevel(newVal: Int){
-        attackPerLevel = newVal
+        attackPerLevel = newVal * charInstance.lvl
         updateAttack()
     }
 
     //updates the character's attack value
     fun updateAttack(){
-        attack = pointInAttack + charInstance.modDEX + attackClassVal()
+        attack = pointInAttack + charInstance.primaryList.dex.outputMod + attackClassVal()
         charInstance.weaponProficiencies.updateMartialMax()
     }
 
     //gets the character's class values for attack
     fun attackClassVal(): Int{
-        var total = attackPerLevel * charInstance.lvl
+        var total = attackPerLevel
         if(charInstance.weaponProficiencies.takenMartialList.contains(charInstance.weaponProficiencies.martials.capoeira))
             total += 10
 
@@ -147,7 +147,7 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //updates the character's block value
     fun updateBlock(){
-        block = pointInBlock + charInstance.modDEX + (blockPerLevel * charInstance.lvl)
+        block = pointInBlock + charInstance.primaryList.dex.outputMod + (blockPerLevel * charInstance.lvl)
         charInstance.weaponProficiencies.updateMartialMax()
     }
 
@@ -171,7 +171,7 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //updates the character's dodge value
     fun updateDodge(){
-        dodge = pointInDodge + charInstance.modAGI + (dodgePerLevel * charInstance.lvl)
+        dodge = pointInDodge + charInstance.primaryList.agi.outputMod + (dodgePerLevel * charInstance.lvl)
         charInstance.weaponProficiencies.updateMartialMax()
     }
 
@@ -212,7 +212,7 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //updates the character's wear armor value
     fun updateWear(){
-        wearArmor = pointInWear + charInstance.modSTR + (wearPerLevel * charInstance.lvl)
+        wearArmor = pointInWear + charInstance.primaryList.str.outputMod + (wearPerLevel * charInstance.lvl)
     }
 
     fun changeSpecInitiative(changeBy: Int){
@@ -221,27 +221,30 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
     }
 
     fun updateInitiative(){
-        totalInitiative = (charInstance.ownClass.initiativePerLevel * charInstance.lvl) + charInstance.modDEX + charInstance.modAGI + specInitiative
+        totalInitiative =
+            (charInstance.ownClass.initiativePerLevel * charInstance.lvl) +
+                    charInstance.primaryList.dex.outputMod +
+                    charInstance.primaryList.agi.outputMod + specInitiative
     }
 
     //updates the character's resistances
     fun updateResistances(){
-        resistPhys = ((presence + charInstance.modCON + rphysSpec) * rphysMult).toInt()
-        resistDisease = ((presence + charInstance.modCON + rdSpec) * rdMult).toInt()
-        resistVen = ((presence + charInstance.modCON + rvSpec) * rvMult).toInt()
-        resistMag = ((presence + charInstance.modPOW + rmSpec) * rmMult).toInt()
-        resistPsy = ((presence + charInstance.modWP + rpsySpec) * rpsyMult).toInt()
+        resistPhys = ((presence + charInstance.primaryList.con.outputMod + rphysSpec) * rphysMult).toInt()
+        resistDisease = ((presence + charInstance.primaryList.con.outputMod + rdSpec) * rdMult).toInt()
+        resistVen = ((presence + charInstance.primaryList.con.outputMod + rvSpec) * rvMult).toInt()
+        resistMag = ((presence + charInstance.primaryList.pow.outputMod + rmSpec) * rmMult).toInt()
+        resistPsy = ((presence + charInstance.primaryList.wp.outputMod + rpsySpec) * rpsyMult).toInt()
     }
 
     fun updateFatigue(){
-        fatigue = charInstance.totalCON + specFatigue
+        fatigue = charInstance.primaryList.con.total + specFatigue
     }
 
     fun getBaseRegen(){
-        baseRegen = when(charInstance.totalCON){
+        baseRegen = when(charInstance.primaryList.con.total){
             in 3..7 -> 1
             in 8..9 -> 2
-            in 10..18 -> charInstance.totalCON - 7
+            in 10..18 -> charInstance.primaryList.con.total - 7
             in 19..20 -> 12
             else -> 0
         }

@@ -15,6 +15,7 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
+import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
 
@@ -24,15 +25,17 @@ fun PsychicFragment(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
+    val psychic = charInstance.psychic
+
     //initialize Psychic Point display values
-    val innatePsyPoints = remember{mutableStateOf(charInstance.psychic.innatePsyPoints.toString())}
-    val psyPointsBought = remember{mutableStateOf(charInstance.psychic.boughtPsyPoints.toString())}
-    val psyPointsTotal = remember{mutableStateOf(charInstance.psychic.totalPsychicPoints.toString())}
-    val freePsyPoints = remember{mutableStateOf(charInstance.psychic.getFreePsyPoints().toString())}
+    val innatePsyPoints = remember{mutableStateOf(psychic.innatePsyPoints.toString())}
+    val psyPointsBought = remember{mutableStateOf(psychic.boughtPsyPoints.toString())}
+    val psyPointsTotal = remember{mutableStateOf(psychic.totalPsychicPoints.toString())}
+    val freePsyPoints = remember{mutableStateOf(psychic.getFreePsyPoints().toString())}
 
     //initialize Psychic Projection display values
-    val psyProjBought = remember{mutableStateOf(charInstance.psychic.psyProjectionBought.toString())}
-    val psyProjTotal = remember{mutableStateOf(charInstance.psychic.psyProjectionTotal.toString())}
+    val psyProjBought = remember{mutableStateOf(psychic.psyProjectionBought.toString())}
+    val psyProjTotal = remember{mutableStateOf(psychic.psyProjectionTotal.toString())}
 
     val disciplineMasterList = remember{mutableStateListOf<MutableState<Boolean>>()}
     val powerMasterList = remember{mutableStateListOf<MutableState<Boolean>>()}
@@ -46,41 +49,41 @@ fun PsychicFragment(
         psyPointsBought,
         psyPointsTotal
     ) { input ->
-        charInstance.psychic.buyPsyPoints(input.toInt())
+        psychic.buyPsyPoints(input.toInt())
         psyPointsBought.value = input
-        psyPointsTotal.value = charInstance.psychic.totalPsychicPoints.toString()
-        freePsyPoints.value = charInstance.psychic.getFreePsyPoints().toString()
+        psyPointsTotal.value = psychic.totalPsychicPoints.toString()
+        freePsyPoints.value = psychic.getFreePsyPoints().toString()
     })
 
     psyPurchaseData.add(
         PsychicPurchaseItemData(
         "Psychic Projection",
-        charInstance.modDEX.toString(),
+        charInstance.primaryList.dex.outputMod.toString(),
         psyProjBought,
         psyProjTotal
     ) { input ->
-            charInstance.psychic.buyPsyProjection(input.toInt())
+            psychic.buyPsyProjection(input.toInt())
             psyProjBought.value = input
-            psyProjTotal.value = charInstance.psychic.psyProjectionTotal.toString()
+            psyProjTotal.value = psychic.psyProjectionTotal.toString()
         }
     )
 
     //initialize and create Psychic Discipline data
     val disciplineData = mutableListOf<DisciplineItemData>()
 
-    disciplineData.add(DisciplineItemData("Telepathy", charInstance.psychic.telepathy))
-    disciplineData.add(DisciplineItemData("Psychokinesis", charInstance.psychic.psychokinesis))
-    disciplineData.add(DisciplineItemData("Pyrokinesis", charInstance.psychic.pyrokinesis))
-    disciplineData.add(DisciplineItemData("Cryokinesis", charInstance.psychic.cryokinesis))
-    disciplineData.add(DisciplineItemData("Physical Increase", charInstance.psychic.physicalIncrease))
-    disciplineData.add(DisciplineItemData("Energy", charInstance.psychic.energyPowers))
-    disciplineData.add(DisciplineItemData("Sentience", charInstance.psychic.sentiencePowers))
-    disciplineData.add(DisciplineItemData("Telemetry", charInstance.psychic.telemetry))
-    disciplineData.add(DisciplineItemData("Matrix Powers", charInstance.psychic.matrixPowers))
+    disciplineData.add(DisciplineItemData("Telepathy", psychic.telepathy))
+    disciplineData.add(DisciplineItemData("Psychokinesis", psychic.psychokinesis))
+    disciplineData.add(DisciplineItemData("Pyrokinesis", psychic.pyrokinesis))
+    disciplineData.add(DisciplineItemData("Cryokinesis", psychic.cryokinesis))
+    disciplineData.add(DisciplineItemData("Physical Increase", psychic.physicalIncrease))
+    disciplineData.add(DisciplineItemData("Energy", psychic.energyPowers))
+    disciplineData.add(DisciplineItemData("Sentience", psychic.sentiencePowers))
+    disciplineData.add(DisciplineItemData("Telemetry", psychic.telemetry))
+    disciplineData.add(DisciplineItemData("Matrix Powers", psychic.matrixPowers))
 
     LazyColumn{
         //display character's Psychic Potential
-        item{Text(text = "Psychic Potential: " + charInstance.psychic.psyPotentialBase.toString())}
+        item{Text(text = "Psychic Potential: " + psychic.psyPotentialBase.toString())}
 
         //display psychic item input
         items(psyPurchaseData){
@@ -94,6 +97,7 @@ fun PsychicFragment(
         items(disciplineData){
             DisciplineDisplay(
                 charInstance,
+                psychic,
                 it,
                 {input -> disciplineMasterList.add(input)},
                 {input -> powerMasterList.add(input)},
@@ -102,7 +106,7 @@ fun PsychicFragment(
                     powerMasterList.forEach{item -> item.value = false}
                 },
                 openDetailAlert
-            ){freePsyPoints.value = charInstance.psychic.getFreePsyPoints().toString()}
+            ){freePsyPoints.value = psychic.getFreePsyPoints().toString()}
         }
     }
 }
@@ -156,6 +160,7 @@ private fun PsychicPurchaseTable(
 @Composable
 private fun DisciplineDisplay(
     charInstance: BaseCharacter,
+    psychic: Psychic,
     discipline: DisciplineItemData,
     addDiscipline: (MutableState<Boolean>) -> Unit,
     addPower: (MutableState<Boolean>) -> Unit,
@@ -167,7 +172,7 @@ private fun DisciplineDisplay(
     val disciplineOpen = remember{mutableStateOf(false)}
 
     //initialize discipline's taken state
-    val disciplineInvestedIn = remember{mutableStateOf(charInstance.psychic.disciplineInvestment.contains(discipline.item))}
+    val disciplineInvestedIn = remember{mutableStateOf(psychic.disciplineInvestment.contains(discipline.item))}
     addDiscipline(disciplineInvestedIn)
 
     //initialize list of discipline's powers and if they're taken or not
@@ -182,12 +187,12 @@ private fun DisciplineDisplay(
                     onCheckedChange = {
                         //attempt to change the taken state of the discipline
                         disciplineInvestedIn.value =
-                            charInstance.psychic.updateInvestment(discipline.item, it)
+                            psychic.updateInvestment(discipline.item, it)
 
                         //set Psychic Powers' checkboxes to the appropriate values
                         powerChecks.forEach { item ->
                             item.value.value =
-                                charInstance.psychic.masteredPowers.contains(item.key)
+                                psychic.masteredPowers.contains(item.key)
                         }
 
                         if(!it && charInstance.ownRace.heldRace == RaceName.dukzarist && discipline.name == "Pyrokinesis")
@@ -210,16 +215,16 @@ private fun DisciplineDisplay(
             Column {
                 discipline.item.allPowers.forEach {
                     PsyPowerRow(
-                        charInstance, discipline.item,
+                        psychic, discipline.item,
                         it,
                         {item -> powerChecks += item},
                         addPower,
                         {input ->
                             if(discipline.name != "Matrix Powers")
                                 disciplineInvestedIn.value =
-                                    charInstance.psychic.updateInvestment(discipline.item, input) },
+                                    psychic.updateInvestment(discipline.item, input) },
                         {powerChecks.forEach{item ->
-                            item.value.value = charInstance.psychic.masteredPowers.contains(item.key) }},
+                            item.value.value = psychic.masteredPowers.contains(item.key) }},
                         openDetailAlert,
                         updateFreePoints
                     )
@@ -241,7 +246,7 @@ private fun DisciplineDisplay(
  */
 @Composable
 private fun PsyPowerRow(
-    charInstance: BaseCharacter,
+    psychic: Psychic,
     discipline: Discipline,
     power: PsychicPower,
     addCheckbox: (Pair<PsychicPower, MutableState<Boolean>>) -> Unit,
@@ -252,7 +257,7 @@ private fun PsyPowerRow(
     updateFreePoints: () -> Unit
 ){
     //initialize taken state of the power
-    val powerMastered = remember{mutableStateOf(charInstance.psychic.masteredPowers.contains(power))}
+    val powerMastered = remember{mutableStateOf(psychic.masteredPowers.contains(power))}
     addPower(powerMastered)
 
     //add checkbox to the master list
@@ -263,11 +268,11 @@ private fun PsyPowerRow(
             checked = powerMastered.value,
             onCheckedChange = {
                 //add power's discipline if character does not already have it
-                if(!charInstance.psychic.disciplineInvestment.contains(discipline))
+                if(!psychic.disciplineInvestment.contains(discipline))
                     updateDisciplineInvestment(true)
 
                 //attempt to perform inputted action
-                powerMastered.value = charInstance.psychic.masterPower(power, discipline, it)
+                powerMastered.value = psychic.masterPower(power, discipline, it)
 
                 //update checkbox list and free point display
                 updateCheckboxes()

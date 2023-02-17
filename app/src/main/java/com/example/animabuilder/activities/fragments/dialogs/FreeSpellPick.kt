@@ -11,8 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 
@@ -30,7 +30,7 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
  */
 @Composable
 fun FreeSpellPick(
-    charInstance: BaseCharacter,
+    magic: Magic,
     spellElement: Element,
     spellLevel: Int,
     textChange: (String) -> Unit,
@@ -40,16 +40,16 @@ fun FreeSpellPick(
 ){
     //determine which level of spells to display
     val freeList = when (spellLevel){
-        4, 8 -> charInstance.magic.freeBook.firstBook
-        14, 18 -> charInstance.magic.freeBook.secondBook
-        24, 28 -> charInstance.magic.freeBook.thirdBook
-        34, 38 -> charInstance.magic.freeBook.fourthBook
-        44, 48 -> charInstance.magic.freeBook.fifthBook
-        54, 58 -> charInstance.magic.freeBook.sixthBook
-        64, 68 -> charInstance.magic.freeBook.seventhBook
-        74, 78 -> charInstance.magic.freeBook.eighthBook
-        84, 88 -> charInstance.magic.freeBook.ninthBook
-        94, 98 -> charInstance.magic.freeBook.tenthBook
+        4, 8 -> magic.freeBook.firstBook
+        14, 18 -> magic.freeBook.secondBook
+        24, 28 -> magic.freeBook.thirdBook
+        34, 38 -> magic.freeBook.fourthBook
+        44, 48 -> magic.freeBook.fifthBook
+        54, 58 -> magic.freeBook.sixthBook
+        64, 68 -> magic.freeBook.seventhBook
+        74, 78 -> magic.freeBook.eighthBook
+        84, 88 -> magic.freeBook.ninthBook
+        94, 98 -> magic.freeBook.tenthBook
         else -> listOf()
     }
 
@@ -63,7 +63,7 @@ fun FreeSpellPick(
                 //create selection item for each available spell
                 items(freeList){
                     //determine that spell is legal for the book and not already taken
-                    if(!it.forbiddenElements.contains(spellElement) && !charInstance.magic.hasCopyOf(it)){
+                    if(!it.forbiddenElements.contains(spellElement) && !magic.hasCopyOf(it)){
                         PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
                             selectedSpell.value = input
                         }, openDetailAlert, detailContents)
@@ -75,7 +75,7 @@ fun FreeSpellPick(
             //confirmation button adds spell to character
             TextButton(onClick = {
                 if(selectedSpell.value != null) {
-                    charInstance.magic.addFreeSpell(FreeSpell(
+                    magic.addFreeSpell(FreeSpell(
                         selectedSpell.value!!.name,
                         selectedSpell.value!!.isActive,
                         spellLevel,

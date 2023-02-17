@@ -1,7 +1,10 @@
-package com.example.animabuilder.character_creation.equipment.weapons
+package com.example.animabuilder.character_creation.attributes.modules
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassName
+import com.example.animabuilder.character_creation.equipment.weapons.AttackType
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_instances.*
@@ -57,6 +60,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
     fun setPrimaryWeapon(input: String){
         primaryWeapon = findWeapon(input)
+        charInstance.updateTotalSpent()
     }
 
     /**
@@ -105,6 +109,15 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     //list of modules the character has taken
     val takenModules = mutableListOf<List<Weapon>>()
 
+    fun changeIndividualModule(input: Weapon, toAdd: Boolean){
+        if(toAdd)
+            individualModules += input
+        else
+            individualModules -= input
+
+        charInstance.updateTotalSpent()
+    }
+
     /**
      * Changes the character's taken weapon modules as desired
      *
@@ -130,10 +143,21 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
         //remove any individual weapon module costs from added archetype weapons
         individualModules -= fullModWeapons.toSet()
+
+        charInstance.updateTotalSpent()
     }
 
     //initialize list of taken style modules
     val styleMods = mutableListOf<String>()
+
+    fun changeStyle(input: String, toAdd: Boolean){
+        if(toAdd)
+            styleMods += input
+        else
+            styleMods -= input
+
+        charInstance.updateTotalSpent()
+    }
 
     //initialize taken martial arts and maximum martial art quantity
     var takenMartialList = mutableListOf<MartialArt>()
@@ -160,6 +184,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
         //update martial knowledge accordingly
         charInstance.ki.updateMK()
+        charInstance.updateTotalSpent()
 
         //return successful process
         return true

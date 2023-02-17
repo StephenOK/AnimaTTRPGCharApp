@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
 
@@ -39,7 +39,7 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.techn
 
 @Composable
 fun CustomTechnique(
-    charInstance: BaseCharacter,
+    ki: Ki,
     techContents: @Composable (Technique) -> Unit,
     deactivate: () -> Unit
 ) {
@@ -160,7 +160,7 @@ fun CustomTechnique(
 
                         //create dropdown and displayed table
                         TechniqueAbilityDropdown(
-                            charInstance,
+                            ki,
                             isPrimary.value,
                             techniqueIndex,
                             allEffectChecks,
@@ -189,7 +189,7 @@ fun CustomTechnique(
 
                         //create dropdown and displayed table
                         TechniqueAbilityDropdown(
-                            charInstance,
+                            ki,
                             isPrimary.value,
                             techniqueIndex,
                             allEffectChecks,
@@ -443,7 +443,7 @@ fun CustomTechnique(
                                 //get if effect is valid and add to return list
                                 val newInput = customTechnique.validEffectAddition(
                                     it,
-                                    charInstance.ki.martialKnowledgeRemaining - addedCost
+                                    ki.martialKnowledgeRemaining - addedCost
                                 )
                                 validAddition.add(newInput)
 
@@ -539,9 +539,9 @@ fun CustomTechnique(
                 when (pageNum.value) {
                     1 -> {
                         //if character can take technique of this level
-                        if ((customTechLevelSelection.value == 1 && charInstance.ki.martialKnowledgeRemaining >= 20) ||
-                            (customTechLevelSelection.value == 2 && charInstance.ki.takenFirstTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 40) ||
-                            (customTechLevelSelection.value == 3 && charInstance.ki.takenSecondTechniques.size >= 2 && charInstance.ki.martialKnowledgeRemaining >= 60)
+                        if ((customTechLevelSelection.value == 1 && ki.martialKnowledgeRemaining >= 20) ||
+                            (customTechLevelSelection.value == 2 && ki.takenFirstTechniques.size >= 2 && ki.martialKnowledgeRemaining >= 40) ||
+                            (customTechLevelSelection.value == 3 && ki.takenSecondTechniques.size >= 2 && ki.martialKnowledgeRemaining >= 60)
                         ) {
 
                             //set technique's level
@@ -699,7 +699,7 @@ fun CustomTechnique(
 
                     //add technique to character and close dialog
                     8 -> {
-                        charInstance.ki.addTechnique(customTechnique)
+                        ki.addTechnique(customTechnique)
                         deactivate()
                     }
                     else -> {}
@@ -732,7 +732,7 @@ fun CustomTechnique(
  */
 @Composable
 private fun TechniqueAbilityDropdown(
-    charInstance: BaseCharacter,
+    ki: Ki,
     isPrimary: Boolean,
     techniqueIndex: MutableState<Int>,
     allEffectChecks: MutableMap<TechniqueEffect, MutableState<Boolean>>,
@@ -1605,7 +1605,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.ki.martialKnowledgeRemaining
+                            ki.martialKnowledgeRemaining
                         )
                     }
                 }
@@ -1628,7 +1628,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.ki.martialKnowledgeRemaining
+                            ki.martialKnowledgeRemaining
                         )
                     }
                 }
@@ -1651,7 +1651,7 @@ private fun TechniqueAbilityDropdown(
                     ) { effectInput: TechniqueEffect ->
                         customTechnique.validEffectAddition(
                             effectInput,
-                            charInstance.ki.martialKnowledgeRemaining
+                            ki.martialKnowledgeRemaining
                         )
                     }
                 }

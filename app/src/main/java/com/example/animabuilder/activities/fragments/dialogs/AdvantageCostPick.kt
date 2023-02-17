@@ -8,7 +8,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 /**
@@ -23,7 +23,7 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 
 @Composable
 fun AdvantageCostPick(
-    charInstance: BaseCharacter,
+    advantageRecord: AdvantageRecord,
     item: Advantage,
     startPage: Int,
     closeDialog: (String?) -> Unit
@@ -91,7 +91,7 @@ fun AdvantageCostPick(
                             pageNum.value = 2
                         //attempt to apply advantage to character
                         else
-                            closeDialog(charInstance.advantageRecord.acquireAdvantage(
+                            closeDialog(advantageRecord.acquireAdvantage(
                                 item,
                                 optionPicked.value,
                                 costPicked.value
@@ -100,7 +100,7 @@ fun AdvantageCostPick(
 
                     2 ->
                         //attempt to apply advantage to character
-                        closeDialog(charInstance.advantageRecord.acquireAdvantage(item, optionPicked.value, costPicked.value))
+                        closeDialog(advantageRecord.acquireAdvantage(item, optionPicked.value, costPicked.value))
                 }
             }) {
                 Text(text = "Select")

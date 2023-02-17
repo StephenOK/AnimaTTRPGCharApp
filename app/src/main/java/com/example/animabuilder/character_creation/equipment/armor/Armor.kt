@@ -1,4 +1,4 @@
-package com.example.animabuilder.character_creation.equipment
+package com.example.animabuilder.character_creation.equipment.armor
 
 import java.io.Serializable
 

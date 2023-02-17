@@ -32,35 +32,36 @@ fun SecondaryAbilityFragment(
     charInstance: BaseCharacter,
     updateBottomBar: () -> Unit
 ) {
+    val secondaryList = charInstance.secondaryList
     val secondaryFieldTable = mutableListOf<SecondaryFieldData>()
 
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.athleticsLabel,
-        charInstance.secondaryList.intToField(0)
+        secondaryList.intToField(0)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.creativeLabel,
-        charInstance.secondaryList.intToField(1)
+        secondaryList.intToField(1)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.perceptionLabel,
-        charInstance.secondaryList.intToField(2)
+        secondaryList.intToField(2)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.socialLabel,
-        charInstance.secondaryList.intToField(3)
+        secondaryList.intToField(3)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.subterfugeLabel,
-        charInstance.secondaryList.intToField(4)
+        secondaryList.intToField(4)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.intellectualLabel,
-        charInstance.secondaryList.intToField(5)
+        secondaryList.intToField(5)
     ))
     secondaryFieldTable.add(SecondaryFieldData(
         R.string.vigorLabel,
-        charInstance.secondaryList.intToField(6)
+        secondaryList.intToField(6)
     ))
 
     LazyColumn(

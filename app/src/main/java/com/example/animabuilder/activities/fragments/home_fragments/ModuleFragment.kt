@@ -14,10 +14,10 @@ import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
-import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.equipment.weapons.MartialArt
+import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
+import com.example.animabuilder.character_creation.attributes.modules.WeaponProficiencies
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
@@ -32,11 +32,11 @@ import com.example.animabuilder.character_creation.equipment.weapons.weapon_clas
 
 @Composable
 fun ModuleFragment(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
-    val primaryWeapon = remember{mutableStateOf(charInstance.weaponProficiencies.primaryWeapon)}
+    val primaryWeapon = remember{mutableStateOf(weaponProficiencies.primaryWeapon)}
     val allSecondaries = mutableMapOf<Weapon, MutableState<Boolean>>()
     val allMartials = mutableMapOf<MartialArt, MutableState<Boolean>>()
     val allPrimaryBoxes = mutableListOf<MutableState<Boolean>>()
@@ -45,57 +45,57 @@ fun ModuleFragment(
     val weaponButtonList = mutableListOf<WeaponListData>()
     weaponButtonList.add(WeaponListData(
         "Short",
-        charInstance.weaponProficiencies.shortArms.shortArms,
+        weaponProficiencies.shortArms.shortArms,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Axes",
-        charInstance.weaponProficiencies.axes.axes,
+        weaponProficiencies.axes.axes,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Maces",
-        charInstance.weaponProficiencies.maces.maces,
+        weaponProficiencies.maces.maces,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Swords",
-        charInstance.weaponProficiencies.swords.swords,
+        weaponProficiencies.swords.swords,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Two-Handed",
-        charInstance.weaponProficiencies.twoHanded.twoHanded,
+        weaponProficiencies.twoHanded.twoHanded,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Pole",
-        charInstance.weaponProficiencies.poles.poles,
+        weaponProficiencies.poles.poles,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Cords",
-        charInstance.weaponProficiencies.cords.cords,
+        weaponProficiencies.cords.cords,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Mixed",
-        charInstance.weaponProficiencies.mixed.mixed,
+        weaponProficiencies.mixed.mixed,
         false
     ))
     weaponButtonList.add(WeaponListData(
         "Shields",
-        charInstance.weaponProficiencies.shields.shields,
+        weaponProficiencies.shields.shields,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Projectile",
-        charInstance.weaponProficiencies.projectiles.projectiles,
+        weaponProficiencies.projectiles.projectiles,
         true
     ))
     weaponButtonList.add(WeaponListData(
         "Thrown",
-        charInstance.weaponProficiencies.thrown.thrown,
+        weaponProficiencies.thrown.thrown,
         true
     ))
 
@@ -110,13 +110,13 @@ fun ModuleFragment(
         //display each weapon list button
         items(weaponButtonList){weaponButton ->
             WeaponListButton(
-                charInstance,
+                weaponProficiencies,
                 weaponButton,
                 primaryWeapon.value,
                 allPrimaryBoxes,
                 allSecondaries,
                 allMartials,
-                {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
+                {primaryWeapon.value = weaponProficiencies.primaryWeapon},
                 openDetailAlert,
                 updateFunc
             )
@@ -125,22 +125,32 @@ fun ModuleFragment(
         //display the unarmed weapon row
         item {
             WeaponRow(
-                charInstance,
-                charInstance.weaponProficiencies.unarmed,
+                weaponProficiencies,
+                weaponProficiencies.unarmed,
                 primaryWeapon.value,
                 allPrimaryBoxes,
                 allSecondaries,
                 allMartials,
-                {primaryWeapon.value = charInstance.weaponProficiencies.primaryWeapon},
+                {primaryWeapon.value = weaponProficiencies.primaryWeapon},
                 openDetailAlert,
                 updateFunc
             )
         }
 
         //display archetype, martial art, and style buttons
-        item{ArchetypeButton(charInstance, allSecondaries, openDetailAlert, updateFunc)}
-        item{MartialButton(charInstance, allMartials, openDetailAlert, updateFunc)}
-        item{StyleButton(charInstance, openDetailAlert, updateFunc)}
+        item{ArchetypeButton(
+            weaponProficiencies,
+            allSecondaries,
+            openDetailAlert,
+            updateFunc
+        )}
+        item{MartialButton(
+            weaponProficiencies,
+            allMartials,
+            openDetailAlert,
+            updateFunc
+        )}
+        item{StyleButton(weaponProficiencies, openDetailAlert, updateFunc)}
     }
 }
 
@@ -153,7 +163,7 @@ fun ModuleFragment(
  */
 @Composable
 private fun WeaponListButton(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     button: WeaponListData,
     primaryWeapon: Weapon,
     allPrimaryBoxes: MutableList<MutableState<Boolean>>,
@@ -182,7 +192,7 @@ private fun WeaponListButton(
             //display whole class module if one is available
             if(button.wholeClass)
                 ArchetypeRow(
-                    charInstance,
+                    weaponProficiencies,
                     button.name + " Module",
                     button.options,
                     allSecondaries,
@@ -193,7 +203,7 @@ private fun WeaponListButton(
             //display all weapons from the given list
             button.options.forEach{
                 WeaponRow(
-                    charInstance,
+                    weaponProficiencies,
                     it,
                     primaryWeapon,
                     allPrimaryBoxes,
@@ -215,7 +225,7 @@ private fun WeaponListButton(
  */
 @Composable
 private fun ArchetypeButton(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
@@ -236,105 +246,105 @@ private fun ArchetypeButton(
         //show all archetypes available
         Column {
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Barbarian",
-                charInstance.weaponProficiencies.barbarianWeapons,
+                weaponProficiencies.barbarianWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Ninja",
-                charInstance.weaponProficiencies.ninjaWeapons,
+                weaponProficiencies.ninjaWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Duel",
-                charInstance.weaponProficiencies.duelWeapons,
+                weaponProficiencies.duelWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Pirate",
-                charInstance.weaponProficiencies.pirateWeapons,
+                weaponProficiencies.pirateWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Nomad",
-                charInstance.weaponProficiencies.nomadWeapons,
+                weaponProficiencies.nomadWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Hunter",
-                charInstance.weaponProficiencies.huntWeapons,
+                weaponProficiencies.huntWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Knight",
-                charInstance.weaponProficiencies.knightWeapons,
+                weaponProficiencies.knightWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Gladiator",
-                charInstance.weaponProficiencies.gladiatorWeapons,
+                weaponProficiencies.gladiatorWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Assassin",
-                charInstance.weaponProficiencies.assassinWeapons,
+                weaponProficiencies.assassinWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Soldier",
-                charInstance.weaponProficiencies.soldierWeapons,
+                weaponProficiencies.soldierWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Indigenous",
-                charInstance.weaponProficiencies.indigenousWeapons,
+                weaponProficiencies.indigenousWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Bandit",
-                charInstance.weaponProficiencies.banditWeapons,
+                weaponProficiencies.banditWeapons,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                charInstance,
+                weaponProficiencies,
                 "Improvised",
-                charInstance.weaponProficiencies.improvised,
+                weaponProficiencies.improvised,
                 allSecondaries,
                 openDetailAlert,
                 updateFunc
@@ -350,7 +360,7 @@ private fun ArchetypeButton(
  */
 @Composable
 private fun StyleButton(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
@@ -369,7 +379,7 @@ private fun StyleButton(
     AnimatedVisibility(visible = open.value) {
         Column {
             StyleRow(
-                charInstance,
+                weaponProficiencies,
                 stringResource(R.string.battoIai),
                 "This skill permits a character to unsheathe his weapon with perfect ease. " +
                         "The character can unsheathe his weapon without applying the -25 penalty to " +
@@ -379,7 +389,7 @@ private fun StyleButton(
                 updateFunc
             )
             StyleRow(
-                charInstance,
+                weaponProficiencies,
                 stringResource(R.string.area),
                 "The character specializes in broad maneuvers that can take out various " +
                         "enemies with greater ease. This reduces the penalty for an Area Attack " +
@@ -390,7 +400,7 @@ private fun StyleButton(
                 updateFunc
             )
             StyleRow(
-                charInstance,
+                weaponProficiencies,
                 stringResource(R.string.precision),
                 "The character has a marked ability to put his adversary in a Menace " +
                         "Position. This reduces the penalty for a Put at Weapon's Point maneuver by " +
@@ -400,7 +410,7 @@ private fun StyleButton(
                 updateFunc
             )
             StyleRow(
-                charInstance,
+                weaponProficiencies,
                 stringResource(R.string.disarming),
                 "A character with this ability has specialized in disarming his opponents. " +
                         "This reduces the penalty for a Disarm maneuver to -20.",
@@ -419,7 +429,7 @@ private fun StyleButton(
  */
 @Composable
 private fun MartialButton(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
@@ -439,11 +449,11 @@ private fun MartialButton(
     AnimatedVisibility(visible = open.value){
         Column{
             //display number of marital arts character can take
-            Text(text = "Max Martial Arts: " + charInstance.weaponProficiencies.martialMax)
+            Text(text = "Max Martial Arts: " + weaponProficiencies.martialMax)
 
-            charInstance.weaponProficiencies.martials.allMartialArts.forEach{
+            weaponProficiencies.martials.allMartialArts.forEach{
                 MartialArtRow(
-                    charInstance,
+                    weaponProficiencies,
                     it,
                     allMartials,
                     openDetailAlert,
@@ -462,7 +472,7 @@ private fun MartialButton(
  */
 @Composable
 private fun WeaponRow(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     input: Weapon,
     primaryWeapon: Weapon,
     allPrimaryBoxes: MutableList<MutableState<Boolean>>,
@@ -475,8 +485,8 @@ private fun WeaponRow(
     //checkboxes for when the weapon is taken as a primary, secondary, or archetype proficiency
     val primeCheck = remember{mutableStateOf(input == primaryWeapon)}
     val secondCheck = remember{mutableStateOf(
-        charInstance.weaponProficiencies.individualModules.contains(input) ||
-                charInstance.weaponProficiencies.fullModWeapons.contains(input))}
+        weaponProficiencies.individualModules.contains(input) ||
+                weaponProficiencies.fullModWeapons.contains(input))}
 
     //add these boxes to the appropriate collection
     allPrimaryBoxes += primeCheck
@@ -495,19 +505,18 @@ private fun WeaponRow(
                 primeCheck.value = true
 
                 //if weapon was selected as a secondary weapon and isn't from an archetype module
-                if(secondCheck.value && !charInstance.weaponProficiencies.fullModWeapons.contains(input)) {
+                if(secondCheck.value && !weaponProficiencies.fullModWeapons.contains(input)) {
                     //remove secondary weapon check
                     secondCheck.value = false
-                    charInstance.weaponProficiencies.individualModules -= input
+                    weaponProficiencies.individualModules -= input
                 }
 
                 //update character's primary weapon
-                charInstance.weaponProficiencies.setPrimaryWeapon(input.name)
+                weaponProficiencies.setPrimaryWeapon(input.name)
                 primaryUpdate()
 
                 //update character's associated values
-                charInstance.updateTotalSpent()
-                martialUpdate(charInstance, allMartials)
+                martialUpdate(weaponProficiencies, allMartials)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -518,7 +527,7 @@ private fun WeaponRow(
             checked = secondCheck.value,
             onCheckedChange = {
                 //keep check if from an archetype
-                if(charInstance.weaponProficiencies.fullModWeapons.contains(input)){
+                if(weaponProficiencies.fullModWeapons.contains(input)){
                     secondCheck.value = true
                 }
                 //if primary check is not taken
@@ -527,17 +536,11 @@ private fun WeaponRow(
                     secondCheck.value = it
 
                     //perform appropriate action for input
-                    if (secondCheck.value)
-                        charInstance.weaponProficiencies.individualModules += input
-                    else
-                        charInstance.weaponProficiencies.individualModules -= input
-
-                    //update totals
-                    charInstance.updateTotalSpent()
+                    weaponProficiencies.changeIndividualModule(input, secondCheck.value)
                 }
 
                 //update other factors in character
-                martialUpdate(charInstance, allMartials)
+                martialUpdate(weaponProficiencies, allMartials)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -563,7 +566,7 @@ private fun WeaponRow(
  */
 @Composable
 private fun ArchetypeRow(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     title: String,
     modList: List<Weapon>,
     allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
@@ -571,7 +574,7 @@ private fun ArchetypeRow(
     updateFunc: () -> Unit
 ){
     //initialize checked boolean
-    val isTaken = remember{mutableStateOf(charInstance.weaponProficiencies.takenModules.contains(modList))}
+    val isTaken = remember{mutableStateOf(weaponProficiencies.takenModules.contains(modList))}
 
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
@@ -582,19 +585,17 @@ private fun ArchetypeRow(
                 isTaken.value = it
 
                 //add weapon list to character
-                charInstance.weaponProficiencies.updateModulesTaken(modList, isTaken.value)
+                weaponProficiencies.updateModulesTaken(modList, isTaken.value)
 
                 //for each secondary checkbox
                 allSecondaries.forEach{ (input, display) ->
                     //check or uncheck depending on if it is in the archetype
-                    if(charInstance.weaponProficiencies.fullModWeapons.contains(input))
+                    if(weaponProficiencies.fullModWeapons.contains(input))
                         display.value = true
-                    else if(!charInstance.weaponProficiencies.individualModules.contains(input) && display.value)
+                    else if(!weaponProficiencies.individualModules.contains(input) && display.value)
                         display.value = false
                 }
 
-                //update spent values
-                charInstance.updateTotalSpent()
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -622,7 +623,7 @@ private fun ArchetypeRow(
  */
 @Composable
 private fun StyleRow(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     title: String,
     description: String,
     cost: String,
@@ -630,7 +631,7 @@ private fun StyleRow(
     updateFunc: () -> Unit
 ){
     //boolean for the checkbox of this style module
-    val hasStyle = remember{ mutableStateOf(charInstance.weaponProficiencies.styleMods.contains(title)) }
+    val hasStyle = remember{ mutableStateOf(weaponProficiencies.styleMods.contains(title)) }
 
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
@@ -641,13 +642,8 @@ private fun StyleRow(
                 hasStyle.value = it
 
                 //add or remove style as needed
-                if(hasStyle.value)
-                    charInstance.weaponProficiencies.styleMods += title
-                else
-                    charInstance.weaponProficiencies.styleMods -= title
+                weaponProficiencies.changeStyle(title, hasStyle.value)
 
-                //update character's development points
-                charInstance.updateTotalSpent()
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -673,14 +669,14 @@ private fun StyleRow(
  */
 @Composable
 private fun MartialArtRow(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     martialArt: MartialArt,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //initialize checkbox value and add it to the collection
-    val martialTaken = remember{mutableStateOf(charInstance.weaponProficiencies.takenMartialList.contains(martialArt))}
+    val martialTaken = remember{mutableStateOf(weaponProficiencies.takenMartialList.contains(martialArt))}
     allMartials += Pair(martialArt, martialTaken)
 
     Row(verticalAlignment = Alignment.CenterVertically){
@@ -688,12 +684,10 @@ private fun MartialArtRow(
             checked = martialTaken.value,
             onCheckedChange = {
                 //check that martial art can be taken and grant if able
-                if(charInstance.weaponProficiencies.changeMartial(martialArt, it))
+                if(weaponProficiencies.changeMartial(martialArt, it))
                     martialTaken.value = it
 
-                //update development point expenditure
-                charInstance.updateTotalSpent()
-                martialUpdate(charInstance, allMartials)
+                martialUpdate(weaponProficiencies, allMartials)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -715,13 +709,13 @@ private fun MartialArtRow(
  * Updates martial list in case any of its prerequisites have been removed
  */
 fun martialUpdate(
-    charInstance: BaseCharacter,
+    weaponProficiencies: WeaponProficiencies,
     allMartials: MutableMap<MartialArt, MutableState<Boolean>>
 ) {
     //for each martial art checkbox
     allMartials.forEach{ (input, display) ->
         //check that the character still has this martial art
-        display.value = charInstance.weaponProficiencies.takenMartialList.contains(input)
+        display.value = weaponProficiencies.takenMartialList.contains(input)
     }
 }
 

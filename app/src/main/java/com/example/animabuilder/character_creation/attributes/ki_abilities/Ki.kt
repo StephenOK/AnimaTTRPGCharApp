@@ -399,48 +399,48 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
      * Updates ki for the strength characteristic
      */
     fun updateStr() {
-        kiSTR = getStatKi(charInstance.totalSTR) + boughtStrPoint
-        accSTR = getStatKiAcc(charInstance.totalSTR) + boughtStrAcc
+        kiSTR = getStatKi(charInstance.primaryList.str.total) + boughtStrPoint
+        accSTR = getStatKiAcc(charInstance.primaryList.str.total) + boughtStrAcc
     }
 
     /**
      * Updates ki for the dexterity characteristic
      */
     fun updateDex() {
-        kiDEX = getStatKi(charInstance.totalDEX) + boughtDexPoint
-        accDEX = getStatKiAcc(charInstance.totalDEX) + boughtDexAcc
+        kiDEX = getStatKi(charInstance.primaryList.dex.total) + boughtDexPoint
+        accDEX = getStatKiAcc(charInstance.primaryList.dex.total) + boughtDexAcc
     }
 
     /**
      * Updates ki for the agility characteristic
      */
     fun updateAgi() {
-        kiAGI = getStatKi(charInstance.totalAGI) + boughtAgiPoint
-        accAGI = getStatKiAcc(charInstance.totalAGI) + boughtAgiAcc
+        kiAGI = getStatKi(charInstance.primaryList.agi.total) + boughtAgiPoint
+        accAGI = getStatKiAcc(charInstance.primaryList.agi.total) + boughtAgiAcc
     }
 
     /**
      * Updates ki for the constitution characteristic
      */
     fun updateCon() {
-        kiCON = getStatKi(charInstance.totalCON) + boughtConPoint
-        accCON =  getStatKiAcc(charInstance.totalCON) + boughtConAcc
+        kiCON = getStatKi(charInstance.primaryList.con.total) + boughtConPoint
+        accCON =  getStatKiAcc(charInstance.primaryList.con.total) + boughtConAcc
     }
 
     /**
      * Updates ki for the power characteristic
      */
     fun updatePow() {
-        kiPOW = getStatKi(charInstance.totalPOW) + boughtPowPoint
-        accPOW = getStatKiAcc(charInstance.totalPOW) + boughtPowAcc
+        kiPOW = getStatKi(charInstance.primaryList.pow.total) + boughtPowPoint
+        accPOW = getStatKiAcc(charInstance.primaryList.pow.total) + boughtPowAcc
     }
 
     /**
      * Updates ki for the willpower characteristic
      */
     fun updateWp() {
-        kiWP = getStatKi(charInstance.totalWP) + boughtWpPoint
-        accWP = getStatKiAcc(charInstance.totalWP) + boughtWpAcc
+        kiWP = getStatKi(charInstance.primaryList.wp.total) + boughtWpPoint
+        accWP = getStatKiAcc(charInstance.primaryList.wp.total) + boughtWpAcc
     }
 
     /**

@@ -1,8 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.psychic
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.disciplines.*
 import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
@@ -54,10 +51,10 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      */
     fun setBasePotential(){
         //determine value exclusively from the character's willpower
-        psyPotentialBase = when(charInstance.totalWP){
+        psyPotentialBase = when(charInstance.primaryList.wp.total){
             in 0..4 -> 0
-            in 5 .. 14 -> 10 * (charInstance.totalWP -4)
-            else -> 100 + ((charInstance.totalWP - 14) * 20)
+            in 5 .. 14 -> 10 * (charInstance.primaryList.wp.total -4)
+            else -> 100 + ((charInstance.primaryList.wp.total - 14) * 20)
         }
     }
 
@@ -111,7 +108,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
      * Recalculates the total amount of Psychic Projection points the character can utilize
      */
     fun updatePsyProjection(){
-        psyProjectionTotal = psyProjectionBought + charInstance.modDEX
+        psyProjectionTotal = psyProjectionBought + charInstance.primaryList.dex.outputMod
     }
 
     /**

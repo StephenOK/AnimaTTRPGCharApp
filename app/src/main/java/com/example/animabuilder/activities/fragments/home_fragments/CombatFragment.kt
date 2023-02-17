@@ -23,66 +23,68 @@ fun CombatFragment(
     charInstance: BaseCharacter,
     updateFunc: () -> Unit
 ) {
+    val combat = charInstance.combat
+
     //initialize color item
     val pointColor =
-        if(charInstance.combat.validAttackDodgeBlock())
+        if(combat.validAttackDodgeBlock())
             remember{mutableStateOf(Color.Black)}
         else
             remember{mutableStateOf(Color.Red)}
 
     //initialize mutable states for resistance display
-    val presence = remember{mutableStateOf(charInstance.combat.presence)}
+    val presence = remember{mutableStateOf(combat.presence)}
 
     //initialize life point data
-    val baseLife = remember{mutableStateOf(charInstance.combat.lifeBase.toString())}
-    val lifeTotal = remember{mutableStateOf(charInstance.combat.lifeMax)}
-    val lifeMults = remember{mutableStateOf(charInstance.combat.lifeMultsTaken.toString())}
+    val baseLife = remember{mutableStateOf(combat.lifeBase.toString())}
+    val lifeTotal = remember{mutableStateOf(combat.lifeMax)}
+    val lifeMults = remember{mutableStateOf(combat.lifeMultsTaken.toString())}
 
     //determine class bonuses to combat abilities
-    val classAttack = remember{mutableStateOf((charInstance.combat.attackPerLevel * charInstance.lvl).toString())}
-    val classBlock = remember{mutableStateOf((charInstance.combat.blockPerLevel * charInstance.lvl).toString())}
-    val classDodge = remember{mutableStateOf((charInstance.combat.dodgePerLevel * charInstance.lvl).toString())}
-    val classWear = remember{mutableStateOf((charInstance.combat.wearPerLevel * charInstance.lvl).toString())}
+    val classAttack = remember{mutableStateOf((combat.attackPerLevel * charInstance.lvl).toString())}
+    val classBlock = remember{mutableStateOf((combat.blockPerLevel * charInstance.lvl).toString())}
+    val classDodge = remember{mutableStateOf((combat.dodgePerLevel * charInstance.lvl).toString())}
+    val classWear = remember{mutableStateOf((combat.wearPerLevel * charInstance.lvl).toString())}
 
     //get current attack ability values
-    val totalAttack = remember{mutableStateOf(charInstance.combat.attack.toString())}
-    val totalBlock = remember{mutableStateOf(charInstance.combat.block.toString())}
-    val totalDodge = remember{mutableStateOf(charInstance.combat.dodge.toString())}
-    val totalWear = remember{mutableStateOf(charInstance.combat.wearArmor.toString())}
+    val totalAttack = remember{mutableStateOf(combat.attack.toString())}
+    val totalBlock = remember{mutableStateOf(combat.block.toString())}
+    val totalDodge = remember{mutableStateOf(combat.dodge.toString())}
+    val totalWear = remember{mutableStateOf(combat.wearArmor.toString())}
 
-    val disSpec = remember{mutableStateOf(charInstance.combat.rdSpec)}
-    val magSpec = remember{mutableStateOf(charInstance.combat.rmSpec)}
-    val physSpec = remember{mutableStateOf(charInstance.combat.rphysSpec)}
-    val venSpec = remember{mutableStateOf(charInstance.combat.rvSpec)}
-    val psySpec = remember{mutableStateOf(charInstance.combat.rpsySpec)}
+    val disSpec = remember{mutableStateOf(combat.rdSpec)}
+    val magSpec = remember{mutableStateOf(combat.rmSpec)}
+    val physSpec = remember{mutableStateOf(combat.rphysSpec)}
+    val venSpec = remember{mutableStateOf(combat.rvSpec)}
+    val psySpec = remember{mutableStateOf(combat.rpsySpec)}
 
-    val disTotal = remember{mutableStateOf(charInstance.combat.resistDisease)}
-    val magTotal = remember{mutableStateOf(charInstance.combat.resistMag)}
-    val physTotal = remember{mutableStateOf(charInstance.combat.resistPhys)}
-    val venTotal = remember{mutableStateOf(charInstance.combat.resistVen)}
-    val psyTotal = remember{mutableStateOf(charInstance.combat.resistPsy)}
+    val disTotal = remember{mutableStateOf(combat.resistDisease)}
+    val magTotal = remember{mutableStateOf(combat.resistMag)}
+    val physTotal = remember{mutableStateOf(combat.resistPhys)}
+    val venTotal = remember{mutableStateOf(combat.resistVen)}
+    val psyTotal = remember{mutableStateOf(combat.resistPsy)}
 
-    val totalInitiative = remember{mutableStateOf(charInstance.combat.totalInitiative.toString())}
-    val fatigueText = remember{mutableStateOf(charInstance.combat.fatigue.toString())}
-    val regenText = remember{mutableStateOf(charInstance.combat.totalRegen.toString())}
+    val totalInitiative = remember{mutableStateOf(combat.totalInitiative.toString())}
+    val fatigueText = remember{mutableStateOf(combat.fatigue.toString())}
+    val regenText = remember{mutableStateOf(combat.totalRegen.toString())}
 
     val combatItemList = mutableListOf<CombatItemData>()
 
     //define combat row items
     combatItemList.add(CombatItemData(
-        "Attack", remember{mutableStateOf(charInstance.combat.pointInAttack)}, charInstance.combat.applyAttackPoint, charInstance.modDEX,
+        "Attack", remember{mutableStateOf(combat.pointInAttack)}, combat.applyAttackPoint, charInstance.primaryList.dex.outputMod,
         classAttack, pointColor, totalAttack
     ))
     combatItemList.add(CombatItemData(
-        "Block", remember{mutableStateOf(charInstance.combat.pointInBlock)}, charInstance.combat.applyBlockPoint, charInstance.modDEX,
+        "Block", remember{mutableStateOf(combat.pointInBlock)}, combat.applyBlockPoint, charInstance.primaryList.dex.outputMod,
         classBlock, pointColor, totalBlock
     ))
     combatItemList.add(CombatItemData(
-        "Dodge", remember{mutableStateOf(charInstance.combat.pointInDodge)}, charInstance.combat.applyDodgePoint, charInstance.modAGI,
+        "Dodge", remember{mutableStateOf(combat.pointInDodge)}, combat.applyDodgePoint, charInstance.primaryList.agi.outputMod,
         classDodge, pointColor, totalDodge
     ))
     combatItemList.add(CombatItemData(
-        "Wear Armor", remember{mutableStateOf(charInstance.combat.pointInWear)}, charInstance.combat.applyWearPoint, charInstance.modSTR,
+        "Wear Armor", remember{mutableStateOf(combat.pointInWear)}, combat.applyWearPoint, charInstance.primaryList.str.outputMod,
         classWear, remember { mutableStateOf(Color.Black) }, totalWear
     ))
 
@@ -92,35 +94,35 @@ fun CombatFragment(
     resistanceList.add(ResistanceData(
         "DR",
         presence,
-        charInstance.modCON,
+        charInstance.primaryList.con.outputMod,
         disSpec,
         disTotal
     ))
     resistanceList.add(ResistanceData(
         "MR",
         presence,
-        charInstance.modPOW,
+        charInstance.primaryList.pow.outputMod,
         magSpec,
         magTotal
     ))
     resistanceList.add(ResistanceData(
         "PhR",
         presence,
-        charInstance.modCON,
+        charInstance.primaryList.con.outputMod,
         physSpec,
         physTotal
     ))
     resistanceList.add(ResistanceData(
         "VR",
         presence,
-        charInstance.modCON,
+        charInstance.primaryList.con.outputMod,
         venSpec,
         venTotal
     ))
     resistanceList.add(ResistanceData(
         "PsR",
         presence,
-        charInstance.modWP,
+        charInstance.primaryList.wp.outputMod,
         psySpec,
         psyTotal
     ))
@@ -155,8 +157,8 @@ fun CombatFragment(
                     lifeMults,
                     {},
                     { input ->
-                        charInstance.combat.takeLifeMult(input.toInt())
-                        lifeTotal.value = charInstance.combat.lifeMax
+                        combat.takeLifeMult(input.toInt())
+                        lifeTotal.value = combat.lifeMax
 
                         lifeMults.value = input
                         updateFunc()

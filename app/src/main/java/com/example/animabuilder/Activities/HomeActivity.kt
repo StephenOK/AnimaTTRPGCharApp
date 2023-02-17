@@ -217,19 +217,29 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
-                        AdvantageFragment(charInstance, homeAlertsVM.openDetailAlert)
+                        AdvantageFragment(
+                            charInstance.advantageRecord,
+                            homeAlertsVM.openDetailAlert
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
-                        ModuleFragment(charInstance, homeAlertsVM.openDetailAlert)
+                        ModuleFragment(
+                            charInstance.weaponProficiencies,
+                            homeAlertsVM.openDetailAlert
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
-                        KiFragment(charInstance, homeAlertsVM.openDetailAlert)
+                        KiFragment(
+                            charInstance.ki,
+                            charInstance.primaryList,
+                            homeAlertsVM.openDetailAlert
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 

@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
-import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 
 /**
@@ -29,7 +29,7 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 
 @Composable
 fun AdvantageFragment(
-    charInstance: BaseCharacter,
+    advantageRecord: AdvantageRecord,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit
 ){
@@ -37,7 +37,7 @@ fun AdvantageFragment(
     val context = LocalContext.current
 
     //initialize creation point display
-    val creationPoints = remember{mutableStateOf((3 - charInstance.advantageRecord.creationPointSpent).toString())}
+    val creationPoints = remember{mutableStateOf((3 - advantageRecord.creationPointSpent).toString())}
 
     //initialize advantage dialog values
     val advantageAdjustOn = remember{mutableStateOf(false)}
@@ -45,18 +45,18 @@ fun AdvantageFragment(
     val advantageAdjustInput = remember{mutableStateOf(1)}
 
     //initialize list of acquired advantages
-    val takenAdvantages = remember{charInstance.advantageRecord.takenAdvantages.toMutableStateList()}
+    val takenAdvantages = remember{advantageRecord.takenAdvantages.toMutableStateList()}
 
     //create list of base advantages and disadvantages
     val advantageTable = mutableListOf<AdvantageList>()
 
-    advantageTable.add(AdvantageList("Common Advantages", charInstance.advantageRecord.commonAdvantages.advantages))
-    advantageTable.add(AdvantageList("Magic Advantages", charInstance.advantageRecord.magicAdvantages.advantages))
-    advantageTable.add(AdvantageList("Psychic Advantages", charInstance.advantageRecord.psychicAdvantages.advantages))
+    advantageTable.add(AdvantageList("Common Advantages", advantageRecord.commonAdvantages.advantages))
+    advantageTable.add(AdvantageList("Magic Advantages", advantageRecord.magicAdvantages.advantages))
+    advantageTable.add(AdvantageList("Psychic Advantages", advantageRecord.psychicAdvantages.advantages))
 
-    advantageTable.add(AdvantageList("Common Disadvantages", charInstance.advantageRecord.commonAdvantages.disadvantages))
-    advantageTable.add(AdvantageList("Magic Disadvantages", charInstance.advantageRecord.magicAdvantages.disadvantages))
-    advantageTable.add(AdvantageList("Psychic Disadvantages", charInstance.advantageRecord.psychicAdvantages.disadvantages))
+    advantageTable.add(AdvantageList("Common Disadvantages", advantageRecord.commonAdvantages.disadvantages))
+    advantageTable.add(AdvantageList("Magic Disadvantages", advantageRecord.magicAdvantages.disadvantages))
+    advantageTable.add(AdvantageList("Psychic Disadvantages", advantageRecord.psychicAdvantages.disadvantages))
 
     LazyColumn{
         //display creation points remaining
@@ -65,7 +65,7 @@ fun AdvantageFragment(
         //display each list of base advantages
         items(advantageTable){
             AdvantageDisplay(
-                charInstance,
+                advantageRecord,
                 it,
                 context,
                 creationPoints,
@@ -73,7 +73,7 @@ fun AdvantageFragment(
                 {
                     updateBottomBar()
                     takenAdvantages.clear()
-                    takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
+                    takenAdvantages.addAll(advantageRecord.takenAdvantages.toList())
                 }
             )
             {input, pageNum ->
@@ -85,24 +85,24 @@ fun AdvantageFragment(
 
         //display all of the character's taken advantages
         items(takenAdvantages){
-            HeldAdvantageDisplay(charInstance, it, creationPoints, openDetailAlert)
+            HeldAdvantageDisplay(advantageRecord, it, creationPoints, openDetailAlert)
             {
                 updateBottomBar()
                 takenAdvantages.clear()
-                takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
+                takenAdvantages.addAll(advantageRecord.takenAdvantages.toList())
             }
         }
 
         //display all advantages acquired by their race
         item{Text(text = "Racial Advantages")}
-        items(charInstance.ownRace.raceAdvantages){
+        items(advantageRecord.raceAdvantages){
             AdvantageRow(it, null, openDetailAlert, {}, {})
         }
     }
 
     //display for advantage adjustment
     if(advantageAdjustOn.value)
-        AdvantageCostPick(charInstance, advantageToAdjust.value!!, advantageAdjustInput.value)
+        AdvantageCostPick(advantageRecord, advantageToAdjust.value!!, advantageAdjustInput.value)
         {input: String? ->
             if(input != null)
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
@@ -110,8 +110,8 @@ fun AdvantageFragment(
             updateBottomBar()
 
             takenAdvantages.clear()
-            takenAdvantages.addAll(charInstance.advantageRecord.takenAdvantages.toList())
-            creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
+            takenAdvantages.addAll(advantageRecord.takenAdvantages.toList())
+            creationPoints.value = (3 - advantageRecord.creationPointSpent).toString()
             advantageAdjustOn.value = false
         }
 }
@@ -127,7 +127,7 @@ fun AdvantageFragment(
  */
 @Composable
 private fun AdvantageDisplay(
-    charInstance: BaseCharacter,
+    advantageRecord: AdvantageRecord,
     advantageList: AdvantageList,
     context: Context,
     creationPoints: MutableState<String>,
@@ -166,7 +166,7 @@ private fun AdvantageDisplay(
 
                         //attempt to add the base advantage to the character
                         else {
-                            val resultText = charInstance.advantageRecord.acquireAdvantage(
+                            val resultText = advantageRecord.acquireAdvantage(
                                 it,
                                 it.picked,
                                 it.pickedCost
@@ -180,7 +180,7 @@ private fun AdvantageDisplay(
                         }
 
                         //change creation points as needed
-                        creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
+                        creationPoints.value = (3 - advantageRecord.creationPointSpent).toString()
                     }
                 }
             }
@@ -233,7 +233,7 @@ private fun AdvantageRow(
  */
 @Composable
 private fun HeldAdvantageDisplay(
-    charInstance: BaseCharacter,
+    advantageRecord: AdvantageRecord,
     item: Advantage,
     creationPoints: MutableState<String>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
@@ -253,9 +253,9 @@ private fun HeldAdvantageDisplay(
         {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")}
     )
     {
-        charInstance.advantageRecord.removeAdvantage(item)
+        advantageRecord.removeAdvantage(item)
         updateTaken()
-        creationPoints.value = (3 - charInstance.advantageRecord.creationPointSpent).toString()
+        creationPoints.value = (3 - advantageRecord.creationPointSpent).toString()
     }
 }
 

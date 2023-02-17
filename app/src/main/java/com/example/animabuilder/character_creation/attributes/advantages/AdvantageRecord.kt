@@ -24,6 +24,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
 
     //initialize list of advantages
     val takenAdvantages = mutableListOf<Advantage>()
+    var raceAdvantages = listOf<Advantage>()
 
     //initialize instances of advantages and disadvantages
     val commonAdvantages = CommonAdvantages(charInstance)
@@ -98,14 +99,14 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
             commonAdvantages.characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
-                    0 -> if(charInstance.totalSTR + 1 > 11) return "Cannot increase Strength further"
-                    1 -> if(charInstance.totalDEX + 1 > 11) return "Cannot increase Dexterity further"
-                    2 -> if(charInstance.totalAGI + 1 > 11) return "Cannot increase Agility further"
-                    3 -> if(charInstance.totalCON + 1 > 11) return "Cannot increase Constitution further"
-                    4 -> if(charInstance.totalINT + 1 > 13) return "Cannot increase Intelligence further"
-                    5 -> if(charInstance.totalPOW + 1 > 13) return "Cannot increase Power further"
-                    6 -> if(charInstance.totalWP + 1 > 13) return "Cannot increase Willpower further"
-                    7 -> if(charInstance.totalPER + 1 > 13) return "Cannot increase Perception further"
+                    0 -> if(charInstance.primaryList.str.total + 1 > 11) return "Cannot increase Strength further"
+                    1 -> if(charInstance.primaryList.dex.total + 1 > 11) return "Cannot increase Dexterity further"
+                    2 -> if(charInstance.primaryList.agi.total + 1 > 11) return "Cannot increase Agility further"
+                    3 -> if(charInstance.primaryList.con.total + 1 > 11) return "Cannot increase Constitution further"
+                    4 -> if(charInstance.primaryList.int.total + 1 > 13) return "Cannot increase Intelligence further"
+                    5 -> if(charInstance.primaryList.pow.total + 1 > 13) return "Cannot increase Power further"
+                    6 -> if(charInstance.primaryList.wp.total + 1 > 13) return "Cannot increase Willpower further"
+                    7 -> if(charInstance.primaryList.per.total + 1 > 13) return "Cannot increase Perception further"
                     else -> return "Invalid input"
                 }
             }

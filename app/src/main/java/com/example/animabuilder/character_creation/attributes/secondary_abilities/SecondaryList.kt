@@ -159,69 +159,69 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     //update needed values based on new strength modifier
-    fun updateSTR(strMod: Int) {
-        jump.setModVal(strMod)
-        strengthFeat.setModVal(strMod)
+    fun updateSTR() {
+        jump.setModVal(charInstance.primaryList.str.outputMod)
+        strengthFeat.setModVal(charInstance.primaryList.str.outputMod)
     }
 
     //update needed values based on new dexterity modifier
-    fun updateDEX(dexMod: Int) {
-        forging.setModVal(dexMod)
-        sleightHand.setModVal(dexMod)
-        disguise.setModVal(dexMod)
-        lockPick.setModVal(dexMod)
-        theft.setModVal(dexMod)
-        trapLore.setModVal(dexMod)
+    fun updateDEX() {
+        forging.setModVal(charInstance.primaryList.dex.outputMod)
+        sleightHand.setModVal(charInstance.primaryList.dex.outputMod)
+        disguise.setModVal(charInstance.primaryList.dex.outputMod)
+        lockPick.setModVal(charInstance.primaryList.dex.outputMod)
+        theft.setModVal(charInstance.primaryList.dex.outputMod)
+        trapLore.setModVal(charInstance.primaryList.dex.outputMod)
     }
 
     //update needed values based on new agility modifier
-    fun updateAGI(agiMod: Int) {
-        acrobatics.setModVal(agiMod)
-        athletics.setModVal(agiMod)
-        climb.setModVal(agiMod)
-        ride.setModVal(agiMod)
-        swim.setModVal(agiMod)
-        dance.setModVal(agiMod)
-        stealth.setModVal(agiMod)
+    fun updateAGI() {
+        acrobatics.setModVal(charInstance.primaryList.agi.outputMod)
+        athletics.setModVal(charInstance.primaryList.agi.outputMod)
+        climb.setModVal(charInstance.primaryList.agi.outputMod)
+        ride.setModVal(charInstance.primaryList.agi.outputMod)
+        swim.setModVal(charInstance.primaryList.agi.outputMod)
+        dance.setModVal(charInstance.primaryList.agi.outputMod)
+        stealth.setModVal(charInstance.primaryList.agi.outputMod)
     }
 
     //update needed values based on new intelligence modifier
-    fun updateINT(intMod: Int) {
-        persuasion.setModVal(intMod)
-        poisons.setModVal(intMod)
-        animals.setModVal(intMod)
-        appraise.setModVal(intMod)
-        herbalLore.setModVal(intMod)
-        history.setModVal(intMod)
-        memorize.setModVal(intMod)
-        medic.setModVal(intMod)
-        navigate.setModVal(intMod)
-        occult.setModVal(intMod)
-        sciences.setModVal(intMod)
+    fun updateINT() {
+        persuasion.setModVal(charInstance.primaryList.int.outputMod)
+        poisons.setModVal(charInstance.primaryList.int.outputMod)
+        animals.setModVal(charInstance.primaryList.int.outputMod)
+        appraise.setModVal(charInstance.primaryList.int.outputMod)
+        herbalLore.setModVal(charInstance.primaryList.int.outputMod)
+        history.setModVal(charInstance.primaryList.int.outputMod)
+        memorize.setModVal(charInstance.primaryList.int.outputMod)
+        medic.setModVal(charInstance.primaryList.int.outputMod)
+        navigate.setModVal(charInstance.primaryList.int.outputMod)
+        occult.setModVal(charInstance.primaryList.int.outputMod)
+        sciences.setModVal(charInstance.primaryList.int.outputMod)
     }
 
     //update needed values based on new power modifier
-    fun updatePOW(powMod: Int) {
-        art.setModVal(powMod)
-        music.setModVal(powMod)
-        leadership.setModVal(powMod)
-        style.setModVal(powMod)
-        magicAppraise.setModVal(powMod)
+    fun updatePOW() {
+        art.setModVal(charInstance.primaryList.pow.outputMod)
+        music.setModVal(charInstance.primaryList.pow.outputMod)
+        leadership.setModVal(charInstance.primaryList.pow.outputMod)
+        style.setModVal(charInstance.primaryList.pow.outputMod)
+        magicAppraise.setModVal(charInstance.primaryList.pow.outputMod)
     }
 
     //update needed values based on new willpower modifier
-    fun updateWP(wpMod: Int) {
-        intimidate.setModVal(wpMod)
-        composure.setModVal(wpMod)
-        resistPain.setModVal(wpMod)
+    fun updateWP() {
+        intimidate.setModVal(charInstance.primaryList.wp.outputMod)
+        composure.setModVal(charInstance.primaryList.wp.outputMod)
+        resistPain.setModVal(charInstance.primaryList.wp.outputMod)
     }
 
     //update needed values based on new perception modifier
-    fun updatePER(perMod: Int) {
-        notice.setModVal(perMod)
-        search.setModVal(perMod)
-        track.setModVal(perMod)
-        hide.setModVal(perMod)
+    fun updatePER() {
+        notice.setModVal(charInstance.primaryList.per.outputMod)
+        search.setModVal(charInstance.primaryList.per.outputMod)
+        track.setModVal(charInstance.primaryList.per.outputMod)
+        hide.setModVal(charInstance.primaryList.per.outputMod)
     }
 
     //load characteristic values from a given file reader

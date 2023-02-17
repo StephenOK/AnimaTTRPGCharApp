@@ -52,21 +52,21 @@ fun CharacterPageFragment(
     //initialize mutable name
     val inputName = remember{mutableStateOf(charInstance.charName)}
 
-    val strSpec = remember{mutableStateOf(charInstance.strBonus)}
-    val dexSpec = remember{mutableStateOf(charInstance.dexBonus)}
-    val agiSpec = remember{mutableStateOf(charInstance.agiBonus)}
-    val conSpec = remember{mutableStateOf(charInstance.conBonus)}
-    val intSpec = remember{mutableStateOf(charInstance.intBonus)}
-    val powSpec = remember{mutableStateOf(charInstance.powBonus)}
-    val wpSpec = remember{mutableStateOf(charInstance.wpBonus)}
-    val perSpec = remember{mutableStateOf(charInstance.perBonus)}
+    val strSpec = remember{mutableStateOf(charInstance.primaryList.str.bonus)}
+    val dexSpec = remember{mutableStateOf(charInstance.primaryList.dex.bonus)}
+    val agiSpec = remember{mutableStateOf(charInstance.primaryList.agi.bonus)}
+    val conSpec = remember{mutableStateOf(charInstance.primaryList.con.bonus)}
+    val intSpec = remember{mutableStateOf(charInstance.primaryList.int.bonus)}
+    val powSpec = remember{mutableStateOf(charInstance.primaryList.pow.bonus)}
+    val wpSpec = remember{mutableStateOf(charInstance.primaryList.wp.bonus)}
+    val perSpec = remember{mutableStateOf(charInstance.primaryList.per.bonus)}
 
-    val strMod = remember{mutableStateOf(charInstance.modSTR)}
-    val agiMod = remember{mutableStateOf(charInstance.modAGI)}
-    val dexMod = remember{mutableStateOf(charInstance.modDEX)}
-    val conMod = remember{mutableStateOf(charInstance.modCON)}
-    val powMod = remember{mutableStateOf(charInstance.modPOW)}
-    val wpMod = remember{mutableStateOf(charInstance.modWP)}
+    val strMod = remember{mutableStateOf(charInstance.primaryList.str.outputMod)}
+    val dexMod = remember{mutableStateOf(charInstance.primaryList.dex.outputMod)}
+    val agiMod = remember{mutableStateOf(charInstance.primaryList.agi.outputMod)}
+    val conMod = remember{mutableStateOf(charInstance.primaryList.con.outputMod)}
+    val powMod = remember{mutableStateOf(charInstance.primaryList.pow.outputMod)}
+    val wpMod = remember{mutableStateOf(charInstance.primaryList.wp.outputMod)}
 
     val sizeText = remember{mutableStateOf(charInstance.sizeCategory.toString())}
     val appearanceText = remember{mutableStateOf(charInstance.appearance.toString())}
@@ -77,110 +77,110 @@ fun CharacterPageFragment(
     primaryList.add(
         PrimaryData(
             stringResource(R.string.strText),
-            remember{ mutableStateOf(charInstance.str.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.str.inputValue.toString()) },
             strSpec,
             strMod
         )
         { newSTR ->
-            charInstance.setSTR(newSTR)
-            strSpec.value = charInstance.strBonus
+            charInstance.primaryList.str.setInput(newSTR)
+            strSpec.value = charInstance.primaryList.str.bonus
             sizeText.value = charInstance.sizeCategory.toString()
 
-            charInstance.modSTR
+            charInstance.primaryList.str.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.dexText),
-            remember{ mutableStateOf(charInstance.dex.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.dex.inputValue.toString()) },
             dexSpec,
             dexMod)
         { newDEX ->
-            charInstance.setDEX(newDEX)
-            dexSpec.value = charInstance.dexBonus
+            charInstance.primaryList.dex.setInput(newDEX)
+            dexSpec.value = charInstance.primaryList.dex.bonus
 
-            charInstance.modDEX
+            charInstance.primaryList.dex.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.agiText),
-            remember{ mutableStateOf(charInstance.agi.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.agi.inputValue.toString()) },
             agiSpec,
             agiMod
         )
         { newAGI ->
-            charInstance.setAGI(newAGI)
-            agiSpec.value = charInstance.agiBonus
+            charInstance.primaryList.agi.setInput(newAGI)
+            agiSpec.value = charInstance.primaryList.agi.bonus
 
-            charInstance.modAGI
+            charInstance.primaryList.agi.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.conText),
-            remember{ mutableStateOf(charInstance.con.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.con.inputValue.toString()) },
             conSpec,
             conMod
         )
         { newCON ->
-            charInstance.setCON(newCON)
-            conSpec.value = charInstance.conBonus
+            charInstance.primaryList.con.setInput(newCON)
+            conSpec.value = charInstance.primaryList.con.bonus
             sizeText.value = charInstance.sizeCategory.toString()
 
-            charInstance.modCON
+            charInstance.primaryList.con.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.intText),
-            remember{ mutableStateOf(charInstance.int.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.int.inputValue.toString()) },
             intSpec,
-            remember{ mutableStateOf(charInstance.modINT) }
+            remember{ mutableStateOf(charInstance.primaryList.int.outputMod) }
         )
         {newINT ->
-            charInstance.setINT(newINT)
-            intSpec.value = charInstance.intBonus
-            charInstance.modINT
+            charInstance.primaryList.int.setInput(newINT)
+            intSpec.value = charInstance.primaryList.int.bonus
+            charInstance.primaryList.int.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.powText),
-            remember{ mutableStateOf(charInstance.pow.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.pow.inputValue.toString()) },
             powSpec,
             powMod
         )
         {newPOW ->
-            charInstance.setPOW(newPOW)
-            powSpec.value = charInstance.powBonus
-            charInstance.modPOW
+            charInstance.primaryList.pow.setInput(newPOW)
+            powSpec.value = charInstance.primaryList.pow.bonus
+            charInstance.primaryList.pow.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.wpText),
-            remember{ mutableStateOf(charInstance.wp.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.wp.inputValue.toString()) },
             wpSpec,
             wpMod
         )
         {newWP ->
-            charInstance.setWP(newWP)
-            wpSpec.value = charInstance.wpBonus
-            charInstance.modWP
+            charInstance.primaryList.wp.setInput(newWP)
+            wpSpec.value = charInstance.primaryList.wp.bonus
+            charInstance.primaryList.wp.outputMod
         })
 
     primaryList.add(
         PrimaryData(
             stringResource(R.string.perText),
-            remember{ mutableStateOf(charInstance.per.toString()) },
+            remember{ mutableStateOf(charInstance.primaryList.per.inputValue.toString()) },
             perSpec,
-            remember{ mutableStateOf(charInstance.modPER) }
+            remember{ mutableStateOf(charInstance.primaryList.per.outputMod) }
         )
         {newPER ->
-            charInstance.setPER(newPER)
-            perSpec.value = charInstance.perBonus
-            charInstance.modPER})
+            charInstance.primaryList.per.setInput(newPER)
+            perSpec.value = charInstance.primaryList.per.bonus
+            charInstance.primaryList.per.outputMod})
 
     //initialize list for items() displays
     val dropdownList = mutableListOf<DropdownData>()
@@ -207,8 +207,8 @@ fun CharacterPageFragment(
     { index: Int ->
         charInstance.setOwnRace(index)
 
-        strSpec.value = charInstance.strBonus
-        strMod.value = charInstance.modSTR
+        strSpec.value = charInstance.primaryList.str.bonus
+        strMod.value = charInstance.primaryList.str.outputMod
 
         sizeText.value = charInstance.sizeCategory.toString()
 

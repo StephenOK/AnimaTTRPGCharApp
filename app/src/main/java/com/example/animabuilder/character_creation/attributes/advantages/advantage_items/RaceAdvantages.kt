@@ -15,25 +15,22 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "In addition, a Nephilim cannot choose the following Disadvantages: Sickly, " +
                 "Serious Illness, or Susceptible to Magic.",
         {_, _ ->
-            charInstance.combat.rphysSpec += 5
-            charInstance.combat.rdSpec += 20
-            charInstance.combat.rvSpec += 5
-            charInstance.combat.rmSpec += 10
-            charInstance.combat.rpsySpec += 10
+            charInstance.combat.physicalRes.setSpecial(5)
+            charInstance.combat.diseaseRes.setSpecial(20)
+            charInstance.combat.venomRes.setSpecial(5)
+            charInstance.combat.magicRes.setSpecial(10)
+            charInstance.combat.psychicRes.setSpecial(10)
 
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.sickly)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.seriousIllness)
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.magicSusceptibility)
-
-            charInstance.combat.updateResistances()
         },
         {_, _ ->
-            charInstance.combat.rphysSpec -= 5
-            charInstance.combat.rdSpec -= 20
-            charInstance.combat.rvSpec -= 5
-            charInstance.combat.rmSpec -= 10
-            charInstance.combat.rpsySpec -= 10
-            charInstance.combat.updateResistances()
+            charInstance.combat.physicalRes.setSpecial(-5)
+            charInstance.combat.diseaseRes.setSpecial(-20)
+            charInstance.combat.venomRes.setSpecial(-5)
+            charInstance.combat.magicRes.setSpecial(-10)
+            charInstance.combat.psychicRes.setSpecial(-10)
         }
     )
 
@@ -134,14 +131,8 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Resistance to Damage",
         "Jayan souls make their bodies much more resistant to the shock produced by " +
                 "damage. As a result, they apply a +15 bonus to their Physical Resistance (PhR).",
-        {_, _ ->
-            charInstance.combat.rphysSpec += 15
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rphysSpec -= 15
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.physicalRes.setSpecial(15)},
+        {_, _ -> charInstance.combat.physicalRes.setSpecial(-15)}
     )
 
     private val uncommonStrength = RacialAdvantage(
@@ -188,14 +179,8 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         "Susceptibility to Magic",
         "Spells and mystical effects are especially effective against Jayan, who suffer " +
                 "a -10 penalty to their Magic Resistance (MR).",
-        {_, _ ->
-            charInstance.combat.rmSpec -= 10
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rmSpec += 10
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.magicRes.setSpecial(-10)},
+        {_, _ -> charInstance.combat.magicRes.setSpecial(10)}
     )
 
     private val immortalSoulJayan = RacialAdvantage(
@@ -387,28 +372,16 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
                 "Duk\'zarist gain a +15 to all Resistance rolls except Magic Resistance (MR), for " +
                 "which they receive +20.",
         {_, _ ->
-            charInstance.combat.rphysSpec += 15
-            charInstance.combat.rdSpec += 15
-            charInstance.combat.rvSpec += 15
-            charInstance.combat.rmSpec += 15
-            charInstance.combat.rpsySpec += 15
+            charInstance.combat.allResistances.forEach{it.setSpecial(15)}
 
-            if(charInstance.isMale) charInstance.combat.rphysSpec += 5
-            else charInstance.combat.rmSpec += 5
-
-            charInstance.combat.updateResistances()
+            if(charInstance.isMale) charInstance.combat.physicalRes.setSpecial(5)
+            else charInstance.combat.magicRes.setSpecial(5)
         },
         {_, _ ->
-            charInstance.combat.rphysSpec -= 15
-            charInstance.combat.rdSpec -= 15
-            charInstance.combat.rvSpec -= 15
-            charInstance.combat.rmSpec -= 15
-            charInstance.combat.rpsySpec -= 15
+            charInstance.combat.allResistances.forEach{it.setSpecial(-15)}
 
-            if(charInstance.isMale) charInstance.combat.rphysSpec -= 5
-            else charInstance.combat.rmSpec -= 5
-
-            charInstance.combat.updateResistances()
+            if(charInstance.isMale) charInstance.combat.physicalRes.setSpecial(-5)
+            else charInstance.combat.magicRes.setSpecial(-5)
         }
     )
 

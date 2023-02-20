@@ -9,7 +9,7 @@ class PrimaryCharacteristic(
     private val charInstance: BaseCharacter,
     private val advantageCap: Int,
     private val charIndex: Int,
-    private val setUpdate: () -> Unit
+    private val setUpdate: (Int) -> Unit
 ): Serializable {
     var inputValue = 0
     var bonus = 0
@@ -50,7 +50,7 @@ class PrimaryCharacteristic(
             else
                 (15 * (total/5 - 1) + 5 * ceil(total % 5 / 2.0)).toInt()
 
-        setUpdate()
+        setUpdate(outputMod)
     }
 
     fun load(fileReader: BufferedReader){

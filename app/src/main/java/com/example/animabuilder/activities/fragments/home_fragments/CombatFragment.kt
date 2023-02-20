@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
 
 @Composable
 fun CombatFragment(
@@ -41,28 +42,28 @@ fun CombatFragment(
     val lifeMults = remember{mutableStateOf(combat.lifeMultsTaken.toString())}
 
     //determine class bonuses to combat abilities
-    val classAttack = remember{mutableStateOf((combat.attackPerLevel * charInstance.lvl).toString())}
-    val classBlock = remember{mutableStateOf((combat.blockPerLevel * charInstance.lvl).toString())}
-    val classDodge = remember{mutableStateOf((combat.dodgePerLevel * charInstance.lvl).toString())}
-    val classWear = remember{mutableStateOf((combat.wearPerLevel * charInstance.lvl).toString())}
+    val classAttack = remember{mutableStateOf(combat.attack.pointFromClass.toString())}
+    val classBlock = remember{mutableStateOf(combat.block.pointFromClass.toString())}
+    val classDodge = remember{mutableStateOf(combat.dodge.pointFromClass.toString())}
+    val classWear = remember{mutableStateOf((combat.wearArmor.pointFromClass * charInstance.lvl).toString())}
 
     //get current attack ability values
-    val totalAttack = remember{mutableStateOf(combat.attack.toString())}
-    val totalBlock = remember{mutableStateOf(combat.block.toString())}
-    val totalDodge = remember{mutableStateOf(combat.dodge.toString())}
-    val totalWear = remember{mutableStateOf(combat.wearArmor.toString())}
+    val totalAttack = remember{mutableStateOf(combat.attack.total.toString())}
+    val totalBlock = remember{mutableStateOf(combat.block.total.toString())}
+    val totalDodge = remember{mutableStateOf(combat.dodge.total.toString())}
+    val totalWear = remember{mutableStateOf(combat.wearArmor.total.toString())}
 
-    val disSpec = remember{mutableStateOf(combat.rdSpec)}
-    val magSpec = remember{mutableStateOf(combat.rmSpec)}
-    val physSpec = remember{mutableStateOf(combat.rphysSpec)}
-    val venSpec = remember{mutableStateOf(combat.rvSpec)}
-    val psySpec = remember{mutableStateOf(combat.rpsySpec)}
+    val disSpec = remember{mutableStateOf(combat.diseaseRes.special)}
+    val magSpec = remember{mutableStateOf(combat.magicRes.special)}
+    val physSpec = remember{mutableStateOf(combat.physicalRes.special)}
+    val venSpec = remember{mutableStateOf(combat.venomRes.special)}
+    val psySpec = remember{mutableStateOf(combat.psychicRes.special)}
 
-    val disTotal = remember{mutableStateOf(combat.resistDisease)}
-    val magTotal = remember{mutableStateOf(combat.resistMag)}
-    val physTotal = remember{mutableStateOf(combat.resistPhys)}
-    val venTotal = remember{mutableStateOf(combat.resistVen)}
-    val psyTotal = remember{mutableStateOf(combat.resistPsy)}
+    val disTotal = remember{mutableStateOf(combat.diseaseRes.total)}
+    val magTotal = remember{mutableStateOf(combat.magicRes.total)}
+    val physTotal = remember{mutableStateOf(combat.physicalRes.total)}
+    val venTotal = remember{mutableStateOf(combat.venomRes.total)}
+    val psyTotal = remember{mutableStateOf(combat.psychicRes.total)}
 
     val totalInitiative = remember{mutableStateOf(combat.totalInitiative.toString())}
     val fatigueText = remember{mutableStateOf(combat.fatigue.toString())}
@@ -72,20 +73,40 @@ fun CombatFragment(
 
     //define combat row items
     combatItemList.add(CombatItemData(
-        "Attack", remember{mutableStateOf(combat.pointInAttack)}, combat.applyAttackPoint, charInstance.primaryList.dex.outputMod,
-        classAttack, pointColor, totalAttack
+        "Attack",
+        remember{mutableStateOf(combat.attack.inputVal)},
+        {input -> combat.attack.setInputVal(input)},
+        charInstance.primaryList.dex.outputMod,
+        classAttack,
+        pointColor,
+        totalAttack
     ))
     combatItemList.add(CombatItemData(
-        "Block", remember{mutableStateOf(combat.pointInBlock)}, combat.applyBlockPoint, charInstance.primaryList.dex.outputMod,
-        classBlock, pointColor, totalBlock
+        "Block",
+        remember{mutableStateOf(combat.block.inputVal)},
+        {input -> combat.block.setInputVal(input)},
+        charInstance.primaryList.dex.outputMod,
+        classBlock,
+        pointColor,
+        totalBlock
     ))
     combatItemList.add(CombatItemData(
-        "Dodge", remember{mutableStateOf(combat.pointInDodge)}, combat.applyDodgePoint, charInstance.primaryList.agi.outputMod,
-        classDodge, pointColor, totalDodge
+        "Dodge",
+        remember{mutableStateOf(combat.dodge.inputVal)},
+        {input -> combat.dodge.setInputVal(input)},
+        charInstance.primaryList.agi.outputMod,
+        classDodge,
+        pointColor,
+        totalDodge
     ))
     combatItemList.add(CombatItemData(
-        "Wear Armor", remember{mutableStateOf(combat.pointInWear)}, combat.applyWearPoint, charInstance.primaryList.str.outputMod,
-        classWear, remember { mutableStateOf(Color.Black) }, totalWear
+        "Wear Armor",
+        remember{mutableStateOf(combat.wearArmor.inputVal)},
+        {input -> combat.wearArmor.setInputVal(input)},
+        charInstance.primaryList.str.outputMod,
+        classWear,
+        remember { mutableStateOf(Color.Black) },
+        totalWear
     ))
 
     val resistanceList = mutableListOf<ResistanceData>()
@@ -195,7 +216,7 @@ fun CombatFragment(
 
         //create table row for each combat item
         items(combatItemList){combatItem ->
-            CombatItemRow(combatItem, updateFunc)
+            CombatItemRow(combat, combatItem, updateFunc)
         }
 
         //resistances table
@@ -254,6 +275,7 @@ fun CombatFragment(
  */
 @Composable
 private fun CombatItemRow(
+    combat: CombatAbilities,
     combatItem: CombatItemData,
     updateFunc: () -> Unit
 ){
@@ -268,8 +290,11 @@ private fun CombatItemRow(
             pointInScore,
             {},
             {input ->
+                pointInScore.value = input
+                combatItem.changeAct(input.toInt())
+
                 //determine if input is valid
-                if(combatItem.changeAct(input.toInt(), combatItem.totalText))
+                if(combat.validAttackDodgeBlock())
                     combatItem.pointColor.value = Color.Black
                 else
                     combatItem.pointColor.value = Color.Red
@@ -345,7 +370,7 @@ private fun ResistanceRow(resistance: ResistanceData){
 private data class CombatItemData(
     val labelText: String,
     val pointIn: MutableState<Int>,
-    val changeAct: (Int, MutableState<String>) -> Boolean,
+    val changeAct: (Int) -> Unit,
     val modInput: Int,
     val classAdd: MutableState<String>,
     val pointColor: MutableState<Color>,

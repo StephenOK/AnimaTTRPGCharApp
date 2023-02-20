@@ -835,19 +835,15 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.rmSpec += 25
-                2 -> charInstance.combat.rmSpec += 50
+                1 -> charInstance.combat.magicRes.setSpecial(25)
+                2 -> charInstance.combat.magicRes.setSpecial(50)
             }
-
-            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.rmSpec -= 25
-                2 -> charInstance.combat.rmSpec -= 50
+                1 -> charInstance.combat.magicRes.setSpecial(-25)
+                2 -> charInstance.combat.magicRes.setSpecial(-50)
             }
-
-            charInstance.combat.updateResistances()
         }
     )
 
@@ -867,19 +863,31 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> {charInstance.combat.rphysSpec += 25; charInstance.combat.rvSpec += 25; charInstance.combat.rdSpec += 25}
-                2 -> {charInstance.combat.rphysSpec += 50; charInstance.combat.rvSpec += 50; charInstance.combat.rdSpec += 50}
+                1 -> {
+                    charInstance.combat.physicalRes.setSpecial(25)
+                    charInstance.combat.venomRes.setSpecial(25)
+                    charInstance.combat.diseaseRes.setSpecial(25)
+                }
+                2 -> {
+                    charInstance.combat.physicalRes.setSpecial(50)
+                    charInstance.combat.venomRes.setSpecial(50)
+                    charInstance.combat.diseaseRes.setSpecial(50)
+                }
             }
-
-            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> {charInstance.combat.rphysSpec -= 25; charInstance.combat.rvSpec -= 25; charInstance.combat.rdSpec -= 25}
-                2 -> {charInstance.combat.rphysSpec -= 50; charInstance.combat.rvSpec -= 50; charInstance.combat.rdSpec -= 50}
+                1 -> {
+                    charInstance.combat.physicalRes.setSpecial(-25)
+                    charInstance.combat.venomRes.setSpecial(-25)
+                    charInstance.combat.diseaseRes.setSpecial(-25)
+                }
+                2 -> {
+                    charInstance.combat.physicalRes.setSpecial(-50)
+                    charInstance.combat.venomRes.setSpecial(-50)
+                    charInstance.combat.diseaseRes.setSpecial(-50)
+                }
             }
-
-            charInstance.combat.updateResistances()
         }
     )
 
@@ -897,19 +905,15 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.rpsySpec += 25
-                2 -> charInstance.combat.rpsySpec += 50
+                1 -> charInstance.combat.psychicRes.setSpecial(25)
+                2 -> charInstance.combat.psychicRes.setSpecial(50)
             }
-
-            charInstance.combat.updateResistances()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.rpsySpec -= 25
-                2 -> charInstance.combat.rpsySpec -= 50
+                1 -> charInstance.combat.psychicRes.setSpecial(-25)
+                2 -> charInstance.combat.psychicRes.setSpecial(-50)
             }
-
-            charInstance.combat.updateResistances()
         }
     )
 
@@ -1122,14 +1126,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         listOf(-1),
         0,
-        {_, _ ->
-            charInstance.combat.rphysMult = 0.5
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rphysMult = 1.0
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.physicalRes.setMultiplier(0.5)},
+        {_, _ -> charInstance.combat.physicalRes.setMultiplier(1.0)}
     )
 
     val deepSleeper = Advantage(
@@ -1266,14 +1264,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         listOf(-1),
         0,
-        {_, _ ->
-            charInstance.combat.rdMult = 0.5
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rdMult = 1.0
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(0.5)},
+        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(1.0)}
     )
 
     val slowHealer = Advantage(
@@ -1353,14 +1345,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         listOf(-1),
         0,
-        {_, _ ->
-            charInstance.combat.rmMult = 0.5
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rmMult = 1.0
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.magicRes.setMultiplier(0.5) },
+        {_, _ -> charInstance.combat.magicRes.setMultiplier(1.0)}
     )
 
     val poisonSusceptibility = Advantage(
@@ -1374,14 +1360,8 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         null,
         listOf(-1),
         0,
-        {_, _ ->
-            charInstance.combat.rvMult = 0.5
-            charInstance.combat.updateResistances()
-        },
-        {_, _ ->
-            charInstance.combat.rvMult = 1.0
-            charInstance.combat.updateResistances()
-        }
+        {_, _ -> charInstance.combat.venomRes.setMultiplier(0.5)},
+        {_, _ -> charInstance.combat.venomRes.setMultiplier(1.0)}
     )
 
     val unattractive = Advantage(

@@ -88,15 +88,15 @@ class BaseCharacter: Serializable {
 
     fun setGender(input: Boolean){
         if(ownRace.heldRace == RaceName.dukzarist){
-            if(isMale) combat.rphysSpec -= 5
-            else combat.rmSpec -= 5
+            if(isMale) combat.physicalRes.setSpecial(-5)
+            else combat.magicRes.setSpecial(-5)
         }
 
         isMale = input
 
         if(ownRace.heldRace == RaceName.dukzarist){
-            if(isMale) combat.rphysSpec += 5
-            else combat.rmSpec += 5
+            if(isMale) combat.physicalRes.setSpecial(5)
+            else combat.magicRes.setSpecial(5)
         }
     }
 
@@ -127,15 +127,12 @@ class BaseCharacter: Serializable {
     //updates class values when the character's class changes
     fun updateClassInputs(){
         combat.updateLifePoints()
-
-        combat.updateAttack()
-        combat.updateBlock()
-        combat.updateDodge()
-        combat.updateWear()
         combat.updateInitiative()
 
         adjustMaxValues()
+
         secondaryList.classUpdate(ownClass)
+
         ki.updateMK()
 
         magic.calcMaxZeon()
@@ -195,16 +192,14 @@ class BaseCharacter: Serializable {
         devPT = 500 + lvl * 100
 
         combat.updatePresence()
-        combat.updateResistances()
 
         //recalculate maximum DP allotments
         dpAllotmentCalc()
 
         combat.updateLifePoints()
-        combat.updateAttack()
-        combat.updateBlock()
-        combat.updateDodge()
-        combat.updateWear()
+        combat.allAbilities.forEach{
+            it.levelUpdate()
+        }
         combat.updateInitiative()
 
         ki.updateMK()

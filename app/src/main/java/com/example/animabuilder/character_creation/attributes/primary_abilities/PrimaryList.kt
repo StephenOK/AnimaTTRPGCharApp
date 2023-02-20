@@ -10,7 +10,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         11,
         0
     ){
-        charInstance.combat.updateWear()
+        charInstance.combat.wearArmor.setModPoints(it)
         charInstance.updateSize()
 
         charInstance.secondaryList.updateSTR()
@@ -23,8 +23,8 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         1
     ){
         charInstance.secondaryList.updateDEX()
-        charInstance.combat.updateAttack()
-        charInstance.combat.updateBlock()
+        charInstance.combat.attack.setModPoints(it)
+        charInstance.combat.block.setModPoints(it)
         charInstance.combat.updateInitiative()
         charInstance.ki.updateKiStats()
         charInstance.magic.calcMagProj()
@@ -37,7 +37,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         2
     ){
         charInstance.secondaryList.updateAGI()
-        charInstance.combat.updateDodge()
+        charInstance.combat.dodge.setModPoints(it)
         charInstance.combat.updateInitiative()
         charInstance.ki.updateKiStats()
     }
@@ -53,7 +53,9 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
 
         charInstance.combat.updateLifeBase()
         charInstance.combat.updateLifePoints()
-        charInstance.combat.updateResistances()
+        charInstance.combat.diseaseRes.setMod(it)
+        charInstance.combat.venomRes.setMod(it)
+        charInstance.combat.physicalRes.setMod(it)
         charInstance.ki.updateKiStats()
     }
 
@@ -72,7 +74,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         5
     ){
         charInstance.secondaryList.updatePOW()
-        charInstance.combat.updateResistances()
+        charInstance.combat.magicRes.setMod(it)
         charInstance.ki.updateKiStats()
         charInstance.magic.setBaseZeon()
         charInstance.magic.setBaseZeonAcc()
@@ -87,7 +89,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         6
     ){
         charInstance.secondaryList.updateWP()
-        charInstance.combat.updateResistances()
+        charInstance.combat.psychicRes.setMod(it)
         charInstance.ki.updateKiStats()
         charInstance.summoning.updateControl()
         charInstance.psychic.setBasePotential()

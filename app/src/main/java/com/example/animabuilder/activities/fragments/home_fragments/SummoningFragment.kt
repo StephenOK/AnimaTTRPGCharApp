@@ -13,76 +13,74 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.summoning.Summoning
 
 /**
  * Fragment that displays the character's summoning abilities
  */
 @Composable
 fun SummoningFragment(
-    charInstance: BaseCharacter,
+    summoning: Summoning,
     updateFunc: () -> Unit
 ){
-    val summoning = charInstance.summoning
-
     //initialize mutable strings for the page
-    val boughtSummon = remember{mutableStateOf(summoning.summonBought.toString())}
-    val totalSummon = remember{mutableStateOf(summoning.summonTotal.toString())}
+    val boughtSummon = remember{mutableStateOf(summoning.summon.buyVal.toString())}
+    val totalSummon = remember{mutableStateOf(summoning.summon.abilityTotal.toString())}
 
-    val boughtControl = remember{mutableStateOf(summoning.controlBought.toString())}
-    val totalControl = remember{mutableStateOf(summoning.controlTotal.toString())}
+    val boughtControl = remember{mutableStateOf(summoning.control.buyVal.toString())}
+    val totalControl = remember{mutableStateOf(summoning.control.abilityTotal.toString())}
 
-    val boughtBind = remember{mutableStateOf(summoning.bindBought.toString())}
-    val totalBind = remember{mutableStateOf(summoning.bindTotal.toString())}
+    val boughtBind = remember{mutableStateOf(summoning.bind.buyVal.toString())}
+    val totalBind = remember{mutableStateOf(summoning.bind.abilityTotal.toString())}
 
-    val boughtBanish = remember{mutableStateOf(summoning.banishBought.toString())}
-    val totalBanish = remember{mutableStateOf(summoning.banishTotal.toString())}
+    val boughtBanish = remember{mutableStateOf(summoning.banish.buyVal.toString())}
+    val totalBanish = remember{mutableStateOf(summoning.banish.abilityTotal.toString())}
 
     //initialize display data table
     val summoningRowTable = mutableListOf<SummoningAbilityItem>()
 
     summoningRowTable.add(SummoningAbilityItem(
         "Summoning",
-        charInstance.primaryList.pow.outputMod.toString(),
-        (summoning.summonPerLevel * charInstance.lvl).toString(),
+        summoning.summon.modVal.toString(),
+        summoning.summon.levelTotal.toString(),
         boughtSummon,
         totalSummon
     ){
-        summoning.buySummon(it)
-        totalSummon.value = summoning.summonTotal.toString()
+        summoning.summon.setBuyVal(it)
+        totalSummon.value = summoning.summon.abilityTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Control",
-        charInstance.primaryList.wp.outputMod.toString(),
-        (summoning.controlPerLevel * charInstance.lvl).toString(),
+        summoning.control.modVal.toString(),
+        summoning.control.levelTotal.toString(),
         boughtControl,
         totalControl
     ){
-        summoning.buyControl(it)
-        totalControl.value = summoning.controlTotal.toString()
+        summoning.control.setBuyVal(it)
+        totalControl.value = summoning.control.abilityTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Bind",
-        charInstance.primaryList.pow.outputMod.toString(),
-        (summoning.bindPerLevel * charInstance.lvl).toString(),
+        summoning.bind.modVal.toString(),
+        summoning.bind.levelTotal.toString(),
         boughtBind,
         totalBind
     ){
-        summoning.buyBind(it)
-        totalBind.value = summoning.bindTotal.toString()
+        summoning.bind.setBuyVal(it)
+        totalBind.value = summoning.bind.abilityTotal.toString()
     })
 
     summoningRowTable.add(SummoningAbilityItem(
         "Banish",
-        charInstance.primaryList.pow.outputMod.toString(),
-        (summoning.banishPerLevel * charInstance.lvl).toString(),
+        summoning.banish.modVal.toString(),
+        summoning.banish.levelTotal.toString(),
         boughtBanish,
         totalBanish
     ){
-        summoning.buyBanish(it)
-        totalBanish.value = summoning.banishTotal.toString()
+        summoning.banish.setBuyVal(it)
+        totalBanish.value = summoning.banish.abilityTotal.toString()
     })
 
     LazyColumn{
@@ -99,7 +97,7 @@ fun SummoningFragment(
 
         //display table data
         items(summoningRowTable){
-            SummoningAbilityRow(charInstance, it, updateFunc)
+            SummoningAbilityRow(it, updateFunc)
         }
     }
 }
@@ -112,7 +110,6 @@ fun SummoningFragment(
  */
 @Composable
 private fun SummoningAbilityRow(
-    charInstance: BaseCharacter,
     inputData: SummoningAbilityItem,
     updateFunc: () -> Unit
 ){
@@ -129,12 +126,10 @@ private fun SummoningAbilityRow(
             {input ->
                 inputData.purchaseAct(input.toInt())
                 inputData.boughtVal.value = input
-                charInstance.updateTotalSpent()
             },
             {
                 inputData.purchaseAct(0)
                 inputData.boughtVal.value = ""
-                charInstance.updateTotalSpent()
             },
             {updateFunc()},
             Modifier.weight(0.3f)

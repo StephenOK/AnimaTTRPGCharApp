@@ -66,6 +66,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
     fun buyPsyPoints(amount: Int){
         //set bought amount and update psychic point total
         boughtPsyPoints = amount
+        charInstance.updateTotalSpent()
         updatePsyPointTotal()
     }
 
@@ -101,6 +102,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
     fun buyPsyProjection(amount: Int){
         //set bought amount and update Psychic Projection
         psyProjectionBought = amount
+        charInstance.updateTotalSpent()
         updatePsyProjection()
     }
 

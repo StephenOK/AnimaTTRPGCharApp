@@ -94,7 +94,7 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
      *
      * target: secondary characteristic to toggle the bonus of
      */
-    fun toggleNatBonus(target: SecondaryCharacteristic): Boolean{
+    fun toggleNatBonus(target: SecondaryCharacteristic){
         //if natural bonus is currently off
         if(!target.bonusApplied){
             //if characteristic is invested in and there are bonuses available
@@ -105,9 +105,6 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         //remove bonus if it is currently on
         else
             target.setBonusApplied(false)
-
-        //return final state of the bonus
-        return target.bonusApplied
     }
 
     /**

@@ -13,20 +13,20 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
             0.5, 20, 3,
             2, 2, 2, 3, 2, 2, 2,
             {
-                charInstance.combat.attack.setPointFromClass(5)
-                charInstance.combat.block.setPointFromClass(5)
-                charInstance.combat.wearArmor.setPointFromClass(5)
+                charInstance.combat.attack.setPointPerLevel(5)
+                charInstance.combat.block.setPointPerLevel(5)
+                charInstance.combat.wearArmor.setPointPerLevel(5)
 
-                charInstance.secondaryList.strengthFeat.setPointsFromClass(5)
+                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(5)
 
                 charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(1)
             },
             {
-                charInstance.combat.attack.setPointFromClass(0)
-                charInstance.combat.block.setPointFromClass(0)
-                charInstance.combat.wearArmor.setPointFromClass(0)
+                charInstance.combat.attack.setPointPerLevel(0)
+                charInstance.combat.block.setPointPerLevel(0)
+                charInstance.combat.wearArmor.setPointPerLevel(0)
 
-                charInstance.secondaryList.strengthFeat.setPointsFromClass(0)
+                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(0)
 
                 charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(-1)
             }
@@ -40,24 +40,24 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.5, 20, 3,
         2, 2, 2, 3, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
 
-            charInstance.secondaryList.acrobatics.setPointsFromClass(10)
-            charInstance.secondaryList.jump.setPointsFromClass(10)
-            charInstance.secondaryList.athletics.setPointsFromClass(10)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(10)
-            charInstance.secondaryList.style.setPointsFromClass(10)
+            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(10)
+            charInstance.secondaryList.jump.setClassPointsPerLevel(10)
+            charInstance.secondaryList.athletics.setClassPointsPerLevel(10)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(10)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
 
-            charInstance.secondaryList.acrobatics.setPointsFromClass(0)
-            charInstance.secondaryList.jump.setPointsFromClass(0)
-            charInstance.secondaryList.athletics.setPointsFromClass(0)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(0)
-            charInstance.secondaryList.style.setPointsFromClass(0)
+            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(0)
+            charInstance.secondaryList.jump.setClassPointsPerLevel(0)
+            charInstance.secondaryList.athletics.setClassPointsPerLevel(0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(0)
         }
     )
 
@@ -69,32 +69,32 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 1, 2, 2, 2, 3, 2,
         {
-            charInstance.combat.block.setPointFromClass(5)
-            charInstance.combat.wearArmor.setPointFromClass(10)
+            charInstance.combat.block.setPointPerLevel(5)
+            charInstance.combat.wearArmor.setPointPerLevel(10)
 
-            charInstance.secondaryList.leadership.setPointsFromClass(10)
-            charInstance.secondaryList.resistPain.setPointsFromClass(10)
-            charInstance.secondaryList.style.setPointsFromClass(5)
+            charInstance.secondaryList.leadership.setClassPointsPerLevel(10)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(5)
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(1)
 
             charInstance.magic.setZeonPerLevel(20)
 
-            charInstance.summoning.setBanishPerLevel(10)
+            charInstance.summoning.banish.setPointsPerLevel(10)
         },
         {
-            charInstance.combat.block.setPointFromClass(0)
-            charInstance.combat.wearArmor.setPointFromClass(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.wearArmor.setPointPerLevel(0)
 
-            charInstance.secondaryList.leadership.setPointsFromClass(0)
-            charInstance.secondaryList.resistPain.setPointsFromClass(0)
-            charInstance.secondaryList.style.setPointsFromClass(0)
+            charInstance.secondaryList.leadership.setClassPointsPerLevel(0)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(-1)
 
             charInstance.magic.setZeonPerLevel(0)
 
-            charInstance.summoning.setBanishPerLevel(0)
+            charInstance.summoning.banish.setPointsPerLevel(0)
         }
     )
 
@@ -106,34 +106,34 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 1, 2, 2, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.wearArmor.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.wearArmor.setPointPerLevel(5)
 
-            charInstance.secondaryList.intimidate.setPointsFromClass(10)
-            charInstance.secondaryList.composure.setPointsFromClass(10)
-            charInstance.secondaryList.style.setPointsFromClass(5)
-            charInstance.secondaryList.persuasion.setPointsFromClass(5)
+            charInstance.secondaryList.intimidate.setClassPointsPerLevel(10)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(5)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(5)
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(1)
 
             charInstance.magic.setZeonPerLevel(20)
 
-            charInstance.summoning.setControlPerLevel(10)
+            charInstance.summoning.control.setPointsPerLevel(10)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.wearArmor.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.wearArmor.setPointPerLevel(0)
 
-            charInstance.secondaryList.intimidate.setPointsFromClass(0)
-            charInstance.secondaryList.composure.setPointsFromClass(0)
-            charInstance.secondaryList.style.setPointsFromClass(0)
-            charInstance.secondaryList.persuasion.setPointsFromClass(0)
+            charInstance.secondaryList.intimidate.setClassPointsPerLevel(0)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(0)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
 
             charInstance.magic.setZeonPerLevel(0)
 
-            charInstance.summoning.setControlPerLevel(0)
+            charInstance.summoning.control.setPointsPerLevel(0)
         }
     )
 
@@ -145,18 +145,18 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 3, 1, 3, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.block.setPointFromClass(5)
-            charInstance.combat.wearArmor.setPointFromClass(10)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.block.setPointPerLevel(5)
+            charInstance.combat.wearArmor.setPointPerLevel(10)
 
-            charInstance.secondaryList.strengthFeat.setPointsFromClass(5)
+            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(5)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.block.setPointFromClass(0)
-            charInstance.combat.wearArmor.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.wearArmor.setPointPerLevel(0)
 
-            charInstance.secondaryList.strengthFeat.setPointsFromClass(0)
+            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(0)
         }
     )
 
@@ -167,8 +167,8 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 3, 70, 3, 3, 3, 3, 3,
         0.50, 20, 3,
         2, 2, 2, 3, 2, 2, 2,
-        {charInstance.combat.attack.setPointFromClass(5)},
-        {charInstance.combat.attack.setPointFromClass(0)}
+        {charInstance.combat.attack.setPointPerLevel(5)},
+        {charInstance.combat.attack.setPointPerLevel(0)}
     )
 
     val tao = CharClass(
@@ -178,8 +178,8 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 3, 70, 3, 3, 3, 3, 3,
         0.50, 20, 3,
         2, 2, 2, 3, 2, 2, 2,
-        {charInstance.secondaryList.style.setPointsFromClass(5)},
-        {charInstance.secondaryList.style.setPointsFromClass(0)}
+        {charInstance.secondaryList.style.setClassPointsPerLevel(5)},
+        {charInstance.secondaryList.style.setClassPointsPerLevel(0)}
     )
 
     val ranger = CharClass(
@@ -190,14 +190,14 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 1, 3, 3, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
 
-            charInstance.secondaryList.notice.setPointsFromClass(10)
-            charInstance.secondaryList.search.setPointsFromClass(10)
-            charInstance.secondaryList.track.setPointsFromClass(10)
-            charInstance.secondaryList.trapLore.setPointsFromClass(5)
-            charInstance.secondaryList.animals.setPointsFromClass(5)
-            charInstance.secondaryList.herbalLore.setPointsFromClass(5)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(10)
+            charInstance.secondaryList.track.setClassPointsPerLevel(10)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(5)
+            charInstance.secondaryList.animals.setClassPointsPerLevel(5)
+            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(5)
 
             charInstance.secondaryList.trapLore.setDevelopmentDeduction(1)
             charInstance.secondaryList.herbalLore.setDevelopmentDeduction(1)
@@ -205,14 +205,14 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
             charInstance.secondaryList.medic.setDevelopmentDeduction(1)
         },
         {
-            charInstance.combat.attack.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
 
-            charInstance.secondaryList.notice.setPointsFromClass(0)
-            charInstance.secondaryList.search.setPointsFromClass(0)
-            charInstance.secondaryList.track.setPointsFromClass(0)
-            charInstance.secondaryList.trapLore.setPointsFromClass(0)
-            charInstance.secondaryList.animals.setPointsFromClass(0)
-            charInstance.secondaryList.herbalLore.setPointsFromClass(0)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(0)
+            charInstance.secondaryList.track.setClassPointsPerLevel(0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
+            charInstance.secondaryList.animals.setClassPointsPerLevel(0)
+            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.trapLore.setDevelopmentDeduction(-1)
             charInstance.secondaryList.herbalLore.setDevelopmentDeduction(-1)
@@ -229,22 +229,22 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 3, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
 
-            charInstance.secondaryList.notice.setPointsFromClass(10)
-            charInstance.secondaryList.search.setPointsFromClass(10)
-            charInstance.secondaryList.hide.setPointsFromClass(10)
-            charInstance.secondaryList.stealth.setPointsFromClass(10)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
 
-            charInstance.secondaryList.notice.setPointsFromClass(0)
-            charInstance.secondaryList.search.setPointsFromClass(0)
-            charInstance.secondaryList.hide.setPointsFromClass(0)
-            charInstance.secondaryList.stealth.setPointsFromClass(0)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
         }
     )
 
@@ -256,28 +256,28 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         1, 2, 2, 3, 3, 1, 2,
         {
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
 
-            charInstance.secondaryList.notice.setPointsFromClass(5)
-            charInstance.secondaryList.search.setPointsFromClass(5)
-            charInstance.secondaryList.hide.setPointsFromClass(5)
-            charInstance.secondaryList.stealth.setPointsFromClass(5)
-            charInstance.secondaryList.trapLore.setPointsFromClass(5)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(5)
-            charInstance.secondaryList.theft.setPointsFromClass(10)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(5)
+            charInstance.secondaryList.search.setClassPointsPerLevel(5)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(5)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(5)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(5)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(5)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(10)
 
             charInstance.secondaryList.appraise.setDevelopmentDeduction(2)
         },
         {
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
 
-            charInstance.secondaryList.notice.setPointsFromClass(0)
-            charInstance.secondaryList.search.setPointsFromClass(0)
-            charInstance.secondaryList.hide.setPointsFromClass(0)
-            charInstance.secondaryList.stealth.setPointsFromClass(0)
-            charInstance.secondaryList.trapLore.setPointsFromClass(0)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(0)
-            charInstance.secondaryList.theft.setPointsFromClass(0)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.appraise.setDevelopmentDeduction(-2)
         }
@@ -291,30 +291,30 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 1, 3, 3, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
 
-            charInstance.secondaryList.notice.setPointsFromClass(10)
-            charInstance.secondaryList.search.setPointsFromClass(10)
-            charInstance.secondaryList.hide.setPointsFromClass(10)
-            charInstance.secondaryList.stealth.setPointsFromClass(10)
-            charInstance.secondaryList.poisons.setPointsFromClass(10)
-            charInstance.secondaryList.composure.setPointsFromClass(10)
-            charInstance.secondaryList.trapLore.setPointsFromClass(10)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
+            charInstance.secondaryList.poisons.setClassPointsPerLevel(10)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(10)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(10)
 
             charInstance.secondaryList.stealth.setDevelopmentDeduction(1)
             charInstance.secondaryList.composure.setDevelopmentDeduction(1)
             charInstance.secondaryList.memorize.setDevelopmentDeduction(1)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
 
-            charInstance.secondaryList.notice.setPointsFromClass(0)
-            charInstance.secondaryList.search.setPointsFromClass(0)
-            charInstance.secondaryList.hide.setPointsFromClass(0)
-            charInstance.secondaryList.stealth.setPointsFromClass(0)
-            charInstance.secondaryList.poisons.setPointsFromClass(0)
-            charInstance.secondaryList.composure.setPointsFromClass(0)
-            charInstance.secondaryList.trapLore.setPointsFromClass(0)
+            charInstance.secondaryList.notice.setClassPointsPerLevel(0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
+            charInstance.secondaryList.poisons.setClassPointsPerLevel(0)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.stealth.setDevelopmentDeduction(-1)
             charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
@@ -330,16 +330,16 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 2, 3, 2, 2,
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(10)
-            charInstance.secondaryList.occult.setPointsFromClass(5)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(10)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
 
             charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(1)
 
             charInstance.magic.setZeonPerLevel(100)
         },
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(0)
-            charInstance.secondaryList.occult.setPointsFromClass(0)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(-1)
 
@@ -355,20 +355,20 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 2, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.block.setPointFromClass(5)
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.block.setPointPerLevel(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
 
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(5)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
 
             charInstance.magic.setZeonPerLevel(20)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.block.setPointFromClass(0)
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
 
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(0)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
 
             charInstance.magic.setZeonPerLevel(0)
         }
@@ -382,13 +382,13 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 2, 3, 2, 2,
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(5)
-            charInstance.secondaryList.stealth.setPointsFromClass(10)
-            charInstance.secondaryList.hide.setPointsFromClass(10)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(10)
-            charInstance.secondaryList.disguise.setPointsFromClass(5)
-            charInstance.secondaryList.theft.setPointsFromClass(5)
-            charInstance.secondaryList.persuasion.setPointsFromClass(5)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(10)
+            charInstance.secondaryList.disguise.setClassPointsPerLevel(5)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(5)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(5)
 
             charInstance.secondaryList.sleightHand.setDevelopmentDeduction(1)
             charInstance.secondaryList.persuasion.setDevelopmentDeduction(1)
@@ -396,13 +396,13 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
             charInstance.magic.setZeonPerLevel(75)
         },
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(0)
-            charInstance.secondaryList.stealth.setPointsFromClass(0)
-            charInstance.secondaryList.hide.setPointsFromClass(0)
-            charInstance.secondaryList.sleightHand.setPointsFromClass(0)
-            charInstance.secondaryList.disguise.setPointsFromClass(0)
-            charInstance.secondaryList.theft.setPointsFromClass(0)
-            charInstance.secondaryList.persuasion.setPointsFromClass(0)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
+            charInstance.secondaryList.disguise.setClassPointsPerLevel(0)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(0)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.sleightHand.setDevelopmentDeduction(-1)
             charInstance.secondaryList.persuasion.setDevelopmentDeduction(-1)
@@ -419,14 +419,14 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 10, 2,
         2, 2, 2, 2, 3, 2, 2,
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(10)
-            charInstance.secondaryList.occult.setPointsFromClass(5)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(10)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
 
             charInstance.magic.setZeonPerLevel(100)
         },
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(0)
-            charInstance.secondaryList.occult.setPointsFromClass(0)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(0)
 
             charInstance.magic.setZeonPerLevel(0)
         }
@@ -440,30 +440,30 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 2, 3, 2, 2,
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(5)
-            charInstance.secondaryList.occult.setPointsFromClass(10)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(10)
 
             charInstance.secondaryList.occult.setDevelopmentDeduction(1)
 
             charInstance.magic.setZeonPerLevel(50)
 
-            charInstance.summoning.setSummonPerLevel(10)
-            charInstance.summoning.setControlPerLevel(10)
-            charInstance.summoning.setBindPerLevel(10)
-            charInstance.summoning.setBanishPerLevel(10)
+            charInstance.summoning.summon.setPointsPerLevel(10)
+            charInstance.summoning.control.setPointsPerLevel(10)
+            charInstance.summoning.bind.setPointsPerLevel(10)
+            charInstance.summoning.banish.setPointsPerLevel(10)
         },
         {
-            charInstance.secondaryList.magicAppraise.setPointsFromClass(0)
-            charInstance.secondaryList.occult.setPointsFromClass(0)
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(0)
 
             charInstance.secondaryList.occult.setDevelopmentDeduction(-1)
 
             charInstance.magic.setZeonPerLevel(0)
 
-            charInstance.summoning.setSummonPerLevel(0)
-            charInstance.summoning.setControlPerLevel(0)
-            charInstance.summoning.setBindPerLevel(0)
-            charInstance.summoning.setBanishPerLevel(0)
+            charInstance.summoning.summon.setPointsPerLevel(0)
+            charInstance.summoning.control.setPointsPerLevel(0)
+            charInstance.summoning.bind.setPointsPerLevel(0)
+            charInstance.summoning.banish.setPointsPerLevel(0)
         }
     )
 
@@ -475,32 +475,32 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 20, 3,
         2, 2, 2, 2, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.block.setPointFromClass(5)
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.block.setPointPerLevel(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
 
-            charInstance.secondaryList.occult.setPointsFromClass(5)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
 
             charInstance.magic.setZeonPerLevel(20)
 
-            charInstance.summoning.setSummonPerLevel(5)
-            charInstance.summoning.setControlPerLevel(5)
-            charInstance.summoning.setBindPerLevel(5)
-            charInstance.summoning.setBanishPerLevel(5)
+            charInstance.summoning.summon.setPointsPerLevel(5)
+            charInstance.summoning.control.setPointsPerLevel(5)
+            charInstance.summoning.bind.setPointsPerLevel(5)
+            charInstance.summoning.banish.setPointsPerLevel(5)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.block.setPointFromClass(0)
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
 
-            charInstance.secondaryList.occult.setPointsFromClass(0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(0)
 
             charInstance.magic.setZeonPerLevel(0)
 
-            charInstance.summoning.setSummonPerLevel(0)
-            charInstance.summoning.setControlPerLevel(0)
-            charInstance.summoning.setBindPerLevel(0)
-            charInstance.summoning.setBanishPerLevel(0)
+            charInstance.summoning.summon.setPointsPerLevel(0)
+            charInstance.summoning.control.setPointsPerLevel(0)
+            charInstance.summoning.bind.setPointsPerLevel(0)
+            charInstance.summoning.banish.setPointsPerLevel(0)
         }
     )
 
@@ -522,14 +522,14 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         0.50, 15, 2,
         2, 2, 2, 3, 2, 2, 2,
         {
-            charInstance.combat.attack.setPointFromClass(5)
-            charInstance.combat.block.setPointFromClass(5)
-            charInstance.combat.dodge.setPointFromClass(5)
+            charInstance.combat.attack.setPointPerLevel(5)
+            charInstance.combat.block.setPointPerLevel(5)
+            charInstance.combat.dodge.setPointPerLevel(5)
         },
         {
-            charInstance.combat.attack.setPointFromClass(0)
-            charInstance.combat.block.setPointFromClass(0)
-            charInstance.combat.dodge.setPointFromClass(0)
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
         }
     )
 

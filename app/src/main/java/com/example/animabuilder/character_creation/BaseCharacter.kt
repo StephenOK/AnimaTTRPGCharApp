@@ -73,9 +73,6 @@ class BaseCharacter: Serializable {
 
     var appearance = 5
 
-    var equippedPiece: Armor? = null
-    var equippedWeapon: Weapon? = null
-
 
 
 
@@ -126,7 +123,7 @@ class BaseCharacter: Serializable {
 
     //updates class values when the character's class changes
     fun updateClassInputs(){
-        combat.updateLifePoints()
+        combat.setLifePerLevel(ownClass.lifePointsPerLevel)
         combat.updateInitiative()
 
         adjustMaxValues()
@@ -136,11 +133,6 @@ class BaseCharacter: Serializable {
         ki.updateMK()
 
         magic.calcMaxZeon()
-
-        summoning.updateSummon()
-        summoning.updateControl()
-        summoning.updateBind()
-        summoning.updateBanish()
 
         psychic.setInnatePsy()
 
@@ -196,17 +188,21 @@ class BaseCharacter: Serializable {
         //recalculate maximum DP allotments
         dpAllotmentCalc()
 
-        combat.updateLifePoints()
+        combat.updateClassLife()
         combat.allAbilities.forEach{
-            it.levelUpdate()
+            it.updateClassTotal()
         }
         combat.updateInitiative()
 
         ki.updateMK()
 
+        magic.updateZeonFromClass()
+
+        summoning.allSummoning.forEach{it.updateLevelTotal()}
+
         psychic.setInnatePsy()
 
-        secondaryList.classUpdate(ownClass)
+        secondaryList.fullList.forEach{it.classTotalRefresh()}
     }
 
     //get new dp maximums based on class change
@@ -333,8 +329,8 @@ class BaseCharacter: Serializable {
         ki.loadKiAttributes(fileReader)
         magic.loadMagic(fileReader)
         summoning.loadSummoning(fileReader)
-        psychic.loadPsychic(fileReader)
         advantageRecord.loadAdvantages(fileReader)
+        psychic.loadPsychic(fileReader)
 
         restoreChar.close()
 
@@ -368,8 +364,8 @@ class BaseCharacter: Serializable {
             ki.writeKiAttributes()
             magic.writeMagic()
             summoning.writeSummoning()
-            psychic.writePsychic()
             advantageRecord.writeAdvantages()
+            psychic.writePsychic()
 
             byteArray.close()
 

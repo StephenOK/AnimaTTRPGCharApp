@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.combat
 
-import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import java.io.Serializable
@@ -10,7 +9,8 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
 
     //character's maximum hp
     var lifeMax = 0
-
+    var lifePerLevel = 0
+    var lifeClassTotal = 0
     var lifeBase = 0
     var lifeMultsTaken = 0
 
@@ -64,9 +64,20 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
         updateLifePoints()
     }
 
+    @JvmName("setLifePerLevel1")
+    fun setLifePerLevel(input: Int){
+        lifePerLevel = input
+        updateClassLife()
+    }
+
+    fun updateClassLife(){
+        lifeClassTotal = lifePerLevel * charInstance.lvl
+        updateLifePoints()
+    }
+
     //updates the character's total life points
     fun updateLifePoints(){
-        lifeMax = lifeBase + (lifeMultsTaken * charInstance.primaryList.con.outputMod) + (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl)
+        lifeMax = lifeBase + (lifeMultsTaken * charInstance.primaryList.con.total) + lifeClassTotal
     }
 
     //determines if the attack, block, and dodge the user has taken is valid

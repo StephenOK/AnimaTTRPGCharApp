@@ -78,9 +78,9 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance.ki.updateKiStats()
         charInstance.magic.setBaseZeon()
         charInstance.magic.setBaseZeonAcc()
-        charInstance.summoning.updateSummon()
-        charInstance.summoning.updateBind()
-        charInstance.summoning.updateBanish()
+        charInstance.summoning.summon.setModVal(it)
+        charInstance.summoning.bind.setModVal(it)
+        charInstance.summoning.banish.setModVal(it)
     }
 
     val wp = PrimaryCharacteristic(
@@ -91,7 +91,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance.secondaryList.updateWP()
         charInstance.combat.psychicRes.setMod(it)
         charInstance.ki.updateKiStats()
-        charInstance.summoning.updateControl()
+        charInstance.summoning.control.setModVal(it)
         charInstance.psychic.setBasePotential()
     }
 

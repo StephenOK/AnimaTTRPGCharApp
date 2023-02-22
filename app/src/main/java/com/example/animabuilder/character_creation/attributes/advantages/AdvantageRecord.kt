@@ -142,9 +142,9 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
 
             //prevent certain classes from taking this disadvantage
             commonAdvantages.exclusiveWeapon -> {
-                if(!charInstance.ownClass.archetype.contains(Archetype.Fighter) ||
-                        !charInstance.ownClass.archetype.contains(Archetype.Domine) ||
-                        !charInstance.ownClass.archetype.contains(Archetype.Prowler) ||
+                if(!charInstance.ownClass.archetype.contains(Archetype.Fighter) &&
+                        !charInstance.ownClass.archetype.contains(Archetype.Domine) &&
+                        !charInstance.ownClass.archetype.contains(Archetype.Prowler) &&
                         !charInstance.ownClass.archetype.contains(Archetype.Novel))
                     return "Disadvantage forbidden to your class"
             }

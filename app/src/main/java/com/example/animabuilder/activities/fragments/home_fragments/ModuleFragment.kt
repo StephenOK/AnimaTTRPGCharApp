@@ -13,15 +13,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.modules.MartialArt
+import com.example.animabuilder.character_creation.attributes.modules.StyleModule
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.attributes.modules.WeaponProficiencies
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
-
 
 /**
  * Fragment that displays attributes related to weapons and special attacks
@@ -380,41 +379,25 @@ private fun StyleButton(
         Column {
             StyleRow(
                 weaponProficiencies,
-                stringResource(R.string.battoIai),
-                "This skill permits a character to unsheathe his weapon with perfect ease. " +
-                        "The character can unsheathe his weapon without applying the -25 penalty to " +
-                        "the Attack or Block abilities. It has no effect for two-handed weapons.",
-                "30 DP",
+                weaponProficiencies.styles.battoJutsu,
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
                 weaponProficiencies,
-                stringResource(R.string.area),
-                "The character specializes in broad maneuvers that can take out various " +
-                        "enemies with greater ease. This reduces the penalty for an Area Attack " +
-                        "maneuver by half. Therefore a character applies a -25 to his attack ability " +
-                        "when using this attack.",
-                "40 DP",
+                weaponProficiencies.styles.areaAttack,
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
                 weaponProficiencies,
-                stringResource(R.string.precision),
-                "The character has a marked ability to put his adversary in a Menace " +
-                        "Position. This reduces the penalty for a Put at Weapon's Point maneuver by " +
-                        "half. Therefore a character applies -50 to his attack ability when using this attack.",
-                "50 DP",
+                weaponProficiencies.styles.precisionAttack,
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
                 weaponProficiencies,
-                stringResource(R.string.disarming),
-                "A character with this ability has specialized in disarming his opponents. " +
-                        "This reduces the penalty for a Disarm maneuver to -20.",
-                "40 DP",
+                weaponProficiencies.styles.disarmingAttack,
                 openDetailAlert,
                 updateFunc
             )
@@ -624,12 +607,12 @@ private fun ArchetypeRow(
 @Composable
 private fun StyleRow(
     weaponProficiencies: WeaponProficiencies,
-    title: String,
-    description: String,
-    cost: String,
+    style: StyleModule,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
+    val title = stringResource(style.name)
+
     //boolean for the checkbox of this style module
     val hasStyle = remember{ mutableStateOf(weaponProficiencies.styleMods.contains(title)) }
 
@@ -651,11 +634,11 @@ private fun StyleRow(
 
         //display style's name and cost
         Text(text = title, modifier = Modifier.weight(0.4f))
-        Text(text = cost, modifier = Modifier.weight(0.2f))
+        Text(text = style.cost.toString(), modifier = Modifier.weight(0.2f))
 
         //make display button for style's details
         DetailButton(
-            onClick = {openDetailAlert(title) @Composable {Text(text = description)}},
+            onClick = {openDetailAlert(title) @Composable {Text(text = style.description)}},
             modifier = Modifier.weight(0.2f)
         )
     }

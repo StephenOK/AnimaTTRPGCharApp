@@ -12,13 +12,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
+import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 
 /**
  * Fragment to be displayed when working with secondary characteristics
@@ -29,10 +28,9 @@ import com.example.animabuilder.character_creation.attributes.secondary_abilitie
 
 @Composable
 fun SecondaryAbilityFragment(
-    charInstance: BaseCharacter,
+    secondaryList: SecondaryList,
     updateBottomBar: () -> Unit
 ) {
-    val secondaryList = charInstance.secondaryList
     val secondaryFieldTable = mutableListOf<SecondaryFieldData>()
 
     secondaryFieldTable.add(SecondaryFieldData(
@@ -69,7 +67,7 @@ fun SecondaryAbilityFragment(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(secondaryFieldTable){
-            MakeTableDisplay(charInstance, it, updateBottomBar)
+            MakeTableDisplay(secondaryList, it, updateBottomBar)
         }
     }
 }
@@ -81,7 +79,7 @@ fun SecondaryAbilityFragment(
  */
 @Composable
 private fun MakeTableDisplay(
-    charInstance: BaseCharacter,
+    secondaryList: SecondaryList,
     input: SecondaryFieldData,
     updateBottomBar: () -> Unit
 ){
@@ -105,7 +103,7 @@ private fun MakeTableDisplay(
             RowHead()
 
             input.fieldItems.forEach {
-                MakeRow(charInstance, it, updateBottomBar)
+                MakeRow(secondaryList, it, updateBottomBar)
             }
         }
     }
@@ -164,7 +162,7 @@ private fun RowHead(){
  */
 @Composable
 private fun MakeRow(
-    charInstance: BaseCharacter,
+    secondaryList: SecondaryList,
     item: SecondaryCharacteristic,
     updateBottomBar: () -> Unit
 ){
@@ -176,9 +174,6 @@ private fun MakeRow(
 
     //initial score stat
     val userInput = remember{mutableStateOf(item.pointsApplied.toString())}
-
-    //color of the score label's text
-    val textColor = remember{mutableStateOf(Color.Black)}
 
     //state of natural bonus taken
     val checkedState = remember{mutableStateOf(item.bonusApplied)}
@@ -213,13 +208,12 @@ private fun MakeRow(
             userInput,
             {},
             {input: String ->
-                secondaryInput(charInstance, item, input.toInt(), textColor, total)
+                secondaryInput(item, input.toInt(), total)
                 userInput.value = input},
-            {secondaryInput(charInstance, item, 0, textColor, total)
+            {secondaryInput(item, 0, total)
                 userInput.value = ""},
             {
                 checkedState.value = item.bonusApplied
-                charInstance.updateTotalSpent()
                 updateBottomBar()
             },
             Modifier.weight(0.25f)
@@ -231,7 +225,7 @@ private fun MakeRow(
             modifier = Modifier.weight(0.125f))
 
         //display associated class bonus value
-        Text(text = (item.pointsFromClass * charInstance.lvl).toString(),
+        Text(text = item.classPointTotal.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
 
@@ -240,7 +234,8 @@ private fun MakeRow(
             checked = checkedState.value,
             onCheckedChange = {
                 //attempt to toggle natural bonus
-                checkedState.value = charInstance.secondaryList.toggleNatBonus(item)
+                secondaryList.toggleNatBonus(item)
+                checkedState.value = item.bonusApplied
 
                 //change text to reflect value
                 checkedText.value =
@@ -272,10 +267,8 @@ private fun MakeRow(
  * total: secondary characteristic's final value
  */
 private fun secondaryInput(
-    charInstance: BaseCharacter,
     item: SecondaryCharacteristic,
     input: Int,
-    textColor: MutableState<Color>,
     total: MutableState<String>
 ){
     //set characteristic's point value
@@ -283,15 +276,6 @@ private fun secondaryInput(
 
     //update text displays
     total.value = item.total.toString()
-
-    //check if spent is  valid
-    if(charInstance.spentTotal < charInstance.devPT)
-        //make text black for valid
-        textColor.value = Color.Black
-
-    else
-        //make text red for invalid
-        textColor.value = Color.Red
 }
 
 /**

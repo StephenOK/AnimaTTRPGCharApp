@@ -52,7 +52,9 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     val shields = Shields()
     val projectiles = Projectiles()
     val thrown = Thrown()
+
     val martials = MartialArts()
+    val styles = StyleInstances()
 
     //make list of every weapon
     val allWeapons = shortArms.shortArms + axes.axes + maces.maces + swords.swords + twoHanded.twoHanded +
@@ -175,12 +177,18 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
             //check that character qualifies for this addition
             if(takenMartialList.size >= martialMax || !qualifies(changeItem))
                 return false
-            else
+            else {
                 takenMartialList += changeItem
+                if(changeItem == martials.capoeira)
+                    charInstance.combat.dodge.setClassBonus(10)
+            }
         }
         //always allow martial art removal
-        else
+        else {
             takenMartialList -= changeItem
+            if(changeItem == martials.capoeira)
+                charInstance.combat.dodge.setClassBonus(-10)
+        }
 
         //update martial knowledge accordingly
         charInstance.ki.updateMK()

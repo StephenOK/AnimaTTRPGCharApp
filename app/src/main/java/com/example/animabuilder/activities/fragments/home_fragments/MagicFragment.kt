@@ -12,21 +12,20 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
+import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 
 @Composable
 fun MagicFragment(
-    charInstance: BaseCharacter,
+    magic: Magic,
+    dex: PrimaryCharacteristic,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
     val context = LocalContext.current
-
-    val magic = charInstance.magic
 
     //initialize strings for maximum Zeon purchase and total
     val boughtZeonString = remember{mutableStateOf(magic.boughtZeon.toString())}
@@ -105,7 +104,7 @@ fun MagicFragment(
 
     zeonPurchaseItemTable.add(ZeonPurchaseItemData(
         "Magic Projection",
-        charInstance.primaryList.dex.outputMod.toString(),
+        dex.outputMod.toString(),
         boughtProjString,
         totalMagProjectString,
         { input ->
@@ -243,7 +242,7 @@ fun MagicFragment(
 
                 //display zeon points from class levels
                 Text(
-                    text = (charInstance.lvl * magic.zeonPerLevel).toString(),
+                    text = magic.zeonFromClass.toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 

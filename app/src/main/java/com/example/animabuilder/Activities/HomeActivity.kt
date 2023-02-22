@@ -205,13 +205,13 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment(charInstance)
+                        CombatFragment(charInstance.combat, charInstance.primaryList)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
-                        SecondaryAbilityFragment(charInstance)
+                        SecondaryAbilityFragment(charInstance.secondaryList)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
@@ -245,19 +245,30 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
-                        MagicFragment(charInstance, homeAlertsVM.openDetailAlert)
+                        MagicFragment(
+                            charInstance.magic,
+                            charInstance.primaryList.dex,
+                            homeAlertsVM.openDetailAlert
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
-                        SummoningFragment(charInstance)
+                        SummoningFragment(
+                            charInstance.summoning
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
-                        PsychicFragment(charInstance, homeAlertsVM.openDetailAlert)
+                        PsychicFragment(
+                            charInstance.psychic,
+                            charInstance.ownRace.heldRace,
+                            charInstance.primaryList.dex.outputMod,
+                            homeAlertsVM.openDetailAlert
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
@@ -21,12 +20,12 @@ import com.example.animabuilder.character_creation.attributes.race_objects.RaceN
 
 @Composable
 fun PsychicFragment(
-    charInstance: BaseCharacter,
+    psychic: Psychic,
+    heldRace: RaceName,
+    outputMod: Int,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
-    val psychic = charInstance.psychic
-
     //initialize Psychic Point display values
     val innatePsyPoints = remember{mutableStateOf(psychic.innatePsyPoints.toString())}
     val psyPointsBought = remember{mutableStateOf(psychic.boughtPsyPoints.toString())}
@@ -58,7 +57,7 @@ fun PsychicFragment(
     psyPurchaseData.add(
         PsychicPurchaseItemData(
         "Psychic Projection",
-        charInstance.primaryList.dex.outputMod.toString(),
+        outputMod.toString(),
         psyProjBought,
         psyProjTotal
     ) { input ->
@@ -87,7 +86,7 @@ fun PsychicFragment(
 
         //display psychic item input
         items(psyPurchaseData){
-            PsychicPurchaseTable(charInstance, it, updateFunc)
+            PsychicPurchaseTable(it, updateFunc)
         }
 
         //display currently free psychic points
@@ -96,7 +95,7 @@ fun PsychicFragment(
         //display discipline info
         items(disciplineData){
             DisciplineDisplay(
-                charInstance,
+                heldRace,
                 psychic,
                 it,
                 {input -> disciplineMasterList.add(input)},
@@ -119,7 +118,6 @@ fun PsychicFragment(
  */
 @Composable
 private fun PsychicPurchaseTable(
-    charInstance: BaseCharacter,
     tableData: PsychicPurchaseItemData,
     updateFunc: () -> Unit
 ){
@@ -138,10 +136,7 @@ private fun PsychicPurchaseTable(
                 tableData.buyFunction("0")
                 tableData.purchaseAmount.value = ""
             },
-            {
-                charInstance.updateTotalSpent()
-                updateFunc()
-            },
+            {updateFunc()},
             Modifier
         )
 
@@ -159,7 +154,7 @@ private fun PsychicPurchaseTable(
  */
 @Composable
 private fun DisciplineDisplay(
-    charInstance: BaseCharacter,
+    heldRace: RaceName,
     psychic: Psychic,
     discipline: DisciplineItemData,
     addDiscipline: (MutableState<Boolean>) -> Unit,
@@ -195,7 +190,7 @@ private fun DisciplineDisplay(
                                 psychic.masteredPowers.contains(item.key)
                         }
 
-                        if(!it && charInstance.ownRace.heldRace == RaceName.dukzarist && discipline.name == "Pyrokinesis")
+                        if(!it && heldRace == RaceName.dukzarist && discipline.name == "Pyrokinesis")
                             dukzaristClear()
 
                         //update free point display

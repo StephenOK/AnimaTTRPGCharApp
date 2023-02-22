@@ -24,7 +24,8 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     var developmentDeduction = 0
 
     //initialize points per level from class
-    var pointsFromClass = 0
+    var classPointsPerLevel = 0
+    var classPointTotal = 0
 
     //initialize bonus points in this characteristic
     var special = 0
@@ -73,9 +74,14 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     }
 
     //setter for class points
-    @JvmName("setPointsFromClass1")
-    fun setPointsFromClass(points: Int) {
-        pointsFromClass = points
+    @JvmName("setClassPointsPerLevel1")
+    fun setClassPointsPerLevel(points: Int) {
+        classPointsPerLevel = points
+        classTotalRefresh()
+    }
+
+    fun classTotalRefresh(){
+        classPointTotal = classPointsPerLevel * parent.charInstance.lvl
         refreshTotal()
     }
 
@@ -103,12 +109,14 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
         pointsIn =
             if(devPerPoint > developmentDeduction) pointsApplied * (devPerPoint - developmentDeduction)
             else pointsApplied
+
+        parent.charInstance.updateTotalSpent()
     }
 
     //recalculates the total value after any other setter is called
     fun refreshTotal() {
         total = modVal + pointsApplied + special +
-                ((pointsFromClass + specialPerLevel) * parent.charInstance.lvl)
+                ((classPointsPerLevel + specialPerLevel) * parent.charInstance.lvl)
         if(parent.allTradesTaken) total += 10
         else if (pointsApplied == 0) total -= 30
 

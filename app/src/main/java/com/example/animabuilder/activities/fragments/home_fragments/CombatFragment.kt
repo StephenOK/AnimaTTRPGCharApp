@@ -16,16 +16,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.UserInput
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
+import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryList
 
 @Composable
 fun CombatFragment(
-    charInstance: BaseCharacter,
+    combat: CombatAbilities,
+    primaryList: PrimaryList,
     updateFunc: () -> Unit
 ) {
-    val combat = charInstance.combat
-
     //initialize color item
     val pointColor =
         if(combat.validAttackDodgeBlock())
@@ -42,10 +41,10 @@ fun CombatFragment(
     val lifeMults = remember{mutableStateOf(combat.lifeMultsTaken.toString())}
 
     //determine class bonuses to combat abilities
-    val classAttack = remember{mutableStateOf(combat.attack.pointFromClass.toString())}
-    val classBlock = remember{mutableStateOf(combat.block.pointFromClass.toString())}
-    val classDodge = remember{mutableStateOf(combat.dodge.pointFromClass.toString())}
-    val classWear = remember{mutableStateOf((combat.wearArmor.pointFromClass * charInstance.lvl).toString())}
+    val classAttack = remember{mutableStateOf(combat.attack.classTotal.toString())}
+    val classBlock = remember{mutableStateOf(combat.block.classTotal.toString())}
+    val classDodge = remember{mutableStateOf(combat.dodge.classTotal.toString())}
+    val classWear = remember{mutableStateOf(combat.wearArmor.classTotal.toString())}
 
     //get current attack ability values
     val totalAttack = remember{mutableStateOf(combat.attack.total.toString())}
@@ -76,7 +75,7 @@ fun CombatFragment(
         "Attack",
         remember{mutableStateOf(combat.attack.inputVal)},
         {input -> combat.attack.setInputVal(input)},
-        charInstance.primaryList.dex.outputMod,
+        primaryList.dex.outputMod,
         classAttack,
         pointColor,
         totalAttack
@@ -85,7 +84,7 @@ fun CombatFragment(
         "Block",
         remember{mutableStateOf(combat.block.inputVal)},
         {input -> combat.block.setInputVal(input)},
-        charInstance.primaryList.dex.outputMod,
+        primaryList.dex.outputMod,
         classBlock,
         pointColor,
         totalBlock
@@ -94,7 +93,7 @@ fun CombatFragment(
         "Dodge",
         remember{mutableStateOf(combat.dodge.inputVal)},
         {input -> combat.dodge.setInputVal(input)},
-        charInstance.primaryList.agi.outputMod,
+        primaryList.agi.outputMod,
         classDodge,
         pointColor,
         totalDodge
@@ -103,7 +102,7 @@ fun CombatFragment(
         "Wear Armor",
         remember{mutableStateOf(combat.wearArmor.inputVal)},
         {input -> combat.wearArmor.setInputVal(input)},
-        charInstance.primaryList.str.outputMod,
+        primaryList.str.outputMod,
         classWear,
         remember { mutableStateOf(Color.Black) },
         totalWear
@@ -115,35 +114,35 @@ fun CombatFragment(
     resistanceList.add(ResistanceData(
         "DR",
         presence,
-        charInstance.primaryList.con.outputMod,
+        primaryList.con.outputMod,
         disSpec,
         disTotal
     ))
     resistanceList.add(ResistanceData(
         "MR",
         presence,
-        charInstance.primaryList.pow.outputMod,
+        primaryList.pow.outputMod,
         magSpec,
         magTotal
     ))
     resistanceList.add(ResistanceData(
         "PhR",
         presence,
-        charInstance.primaryList.con.outputMod,
+        primaryList.con.outputMod,
         physSpec,
         physTotal
     ))
     resistanceList.add(ResistanceData(
         "VR",
         presence,
-        charInstance.primaryList.con.outputMod,
+        primaryList.con.outputMod,
         venSpec,
         venTotal
     ))
     resistanceList.add(ResistanceData(
         "PsR",
         presence,
-        charInstance.primaryList.wp.outputMod,
+        primaryList.wp.outputMod,
         psySpec,
         psyTotal
     ))
@@ -168,7 +167,7 @@ fun CombatFragment(
                 //display life points from base and class values
                 Text(text = baseLife.value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
                 Text(
-                    text = (charInstance.ownClass.lifePointsPerLevel * charInstance.lvl).toString(),
+                    text = combat.lifeClassTotal.toString(),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(0.2f)
                 )
@@ -290,8 +289,8 @@ private fun CombatItemRow(
             pointInScore,
             {},
             {input ->
-                pointInScore.value = input
                 combatItem.changeAct(input.toInt())
+                pointInScore.value = input
 
                 //determine if input is valid
                 if(combat.validAttackDodgeBlock())

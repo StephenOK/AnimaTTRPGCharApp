@@ -19,6 +19,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     var baseZeon = 0
     var boughtZeon = 0
     var zeonPerLevel = 0
+    var zeonFromClass = 0
     var zeonMax = 0
 
     //initialize Zeon Accumulation stats
@@ -119,6 +120,11 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     @JvmName("setZeonPerLevel1")
     fun setZeonPerLevel(amount: Int){
         zeonPerLevel = amount
+        updateZeonFromClass()
+    }
+
+    fun updateZeonFromClass(){
+        zeonFromClass = zeonPerLevel * charInstance.lvl
         calcMaxZeon()
     }
 
@@ -126,7 +132,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * Recalculate the character's maximum Zeon
      */
     fun calcMaxZeon(){
-        zeonMax = baseZeon + (boughtZeon * 5) + (charInstance.lvl * zeonPerLevel)
+        zeonMax = baseZeon + (boughtZeon * 5) + zeonFromClass
     }
 
     /**
@@ -157,8 +163,8 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
     fun buyZeonAcc(toBuy: Int){
         //change the accumulation bought and update the appropriate figures
         zeonAccMult = toBuy
-        calcZeonAcc()
         charInstance.updateTotalSpent()
+        calcZeonAcc()
     }
 
     /**
@@ -185,6 +191,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      */
     fun buyMagProj(toBuy: Int){
         boughtMagProjection = toBuy
+        charInstance.updateTotalSpent()
         calcMagProj()
     }
 

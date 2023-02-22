@@ -9,8 +9,9 @@ class CombatItem(
 ): Serializable {
     var inputVal = 0
     var modPoints = 0
-    var pointFromClass = 0
+    var pointPerLevel = 0
     var classBonus = 0
+    var classTotal = 0
     var total = 0
 
     @JvmName("setInputVal1")
@@ -26,26 +27,28 @@ class CombatItem(
         updateTotal()
     }
 
-    @JvmName("setPointFromClass1")
-    fun setPointFromClass(input: Int){
-        pointFromClass = (input * charInstance.lvl) + classBonus
+    @JvmName("setPointPerLevel1")
+    fun setPointPerLevel(input: Int){
+        pointPerLevel = input
+        updateClassTotal()
+    }
 
-        if(pointFromClass > 50)
-            pointFromClass = 50
+    @JvmName("setClassBonus1")
+    fun setClassBonus(input: Int){
+        classBonus += input
+        updateClassTotal()
+    }
+
+    fun updateClassTotal(){
+        classTotal = (pointPerLevel * charInstance.lvl) + classBonus
+        if(classTotal > 50)
+            classTotal = 50
 
         updateTotal()
     }
 
-    fun levelUpdate(){setPointFromClass(pointFromClass)}
-
-    @JvmName("setClassBonus1")
-    fun setClassBonus(input: Int){
-        classBonus = input
-        setPointFromClass(pointFromClass)
-    }
-
     fun updateTotal(){
-        total = inputVal + modPoints + pointFromClass
+        total = inputVal + modPoints + classTotal
         charInstance.weaponProficiencies.updateMartialMax()
     }
 

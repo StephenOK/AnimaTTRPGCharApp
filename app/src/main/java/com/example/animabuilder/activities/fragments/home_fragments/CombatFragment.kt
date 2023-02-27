@@ -174,7 +174,7 @@ fun CombatFragment(
 
                 //create input for life point multiples
                 UserInput(
-                    lifeMults,
+                    lifeMults.value,
                     {},
                     { input ->
                         combat.takeLifeMult(input.toInt())
@@ -286,7 +286,7 @@ private fun CombatItemRow(
 
         //stat input field
         UserInput(
-            pointInScore,
+            pointInScore.value,
             {},
             {input ->
                 combatItem.changeAct(input.toInt())

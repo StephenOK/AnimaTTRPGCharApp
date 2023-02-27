@@ -1,24 +1,24 @@
 <resources>
-    <string name="app_name">AnimaBuilder</string>
+    <string name = "app_name">AnimaBuilder</string>
 
-    <string name="nameText">Name:</string>
-    <string name="classText">Class:</string>
-    <string name="raceText">Race:</string>
-    <string name="levelText">Level:</string>
+    <string name = "nameText">Name:</string>
+    <string name = "classText">Class:</string>
+    <string name = "raceText">Race:</string>
+    <string name = "levelText">Level:</string>
 
-    <string name="nav_open">Open</string>
-    <string name="nav_close">Close</string>
+    <string name = "nav_open">Open</string>
+    <string name = "nav_close">Close</string>
 
-    <string name="strText">STR:</string>
-    <string name="dexText">DEX:</string>
-    <string name="agiText">AGI:</string>
-    <string name="conText">CON:</string>
-    <string name="intText">INT:</string>
-    <string name="powText">POW:</string>
-    <string name="wpText">WP:</string>
-    <string name="perText">PER:</string>
+    <string name = "strText">STR:</string>
+    <string name = "dexText">DEX:</string>
+    <string name = "agiText">AGI:</string>
+    <string name = "conText">CON:</string>
+    <string name = "intText">INT:</string>
+    <string name = "powText">POW:</string>
+    <string name = "wpText">WP:</string>
+    <string name = "perText">PER:</string>
 
-    <string-array name="classArray">
+    <string-array name = "classArray">
         <item>Freelancer</item>
         <item>Warrior</item>
         <item>Acrobatic Warrior</item>
@@ -41,7 +41,7 @@
         <item>Warrior Mentalist</item>
     </string-array>
 
-    <string-array name="raceArray">
+    <string-array name = "raceArray">
         <item>Human</item>
         <item>Sylvain</item>
         <item>Jayan</item>
@@ -51,7 +51,7 @@
         <item>Duk\'zarist</item>
     </string-array>
 
-    <string-array name="levelCountArray">
+    <string-array name = "levelCountArray">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -75,7 +75,7 @@
         <item>20</item>
     </string-array>
 
-    <string-array name="techniqueAbilities">
+    <string-array name = "techniqueAbilities">
         <item>--Select an ability --</item>
         <item>Attack Ability</item>
         <item>Counterattack Ability</item>
@@ -113,90 +113,98 @@
         <item>Damage Resistance</item>
     </string-array>
 
-    <string-array name="techniqueDisadvantages">
+    <string-array name = "techniqueDisadvantages">
         <item>Elemental Binding</item>
         <item>Reduced Damage</item>
         <item>Special Requirements</item>
         <item>Predetermination</item>
     </string-array>
 
-    <string name="totalLabel">Total</string>
-    <string name="modLabel">Mod</string>
+    <string name = "baseLabel">Base</string>
+    <string name = "boughtLabel">Bought</string>
+    <string name = "modLabel">Mod</string>
+    <string name = "specialLabel">Spec</string>
+    <string name = "totalLabel">Total</string>
 
-    <string name="dpCombatLabel">Combat</string>
-    <string name="dpMagicLabel">Magic</string>
-    <string name="dpPsychicLabel">Psychic</string>
+    <string name = "dpCombatLabel">Combat</string>
+    <string name = "dpMagicLabel">Magic</string>
+    <string name = "dpPsychicLabel">Psychic</string>
 
-    <string name="socialLabel">Social</string>
-    <string name="perceptionLabel">Perception</string>
-    <string name="intellectualLabel">Intellectual</string>
-    <string name="vigorLabel">Vigor</string>
-    <string name="subterfugeLabel">Subterfuge</string>
-    <string name="creativeLabel">Creative</string>
+    <string name = "socialLabel">Social</string>
+    <string name = "perceptionLabel">Perception</string>
+    <string name = "intellectualLabel">Intellectual</string>
+    <string name = "vigorLabel">Vigor</string>
+    <string name = "subterfugeLabel">Subterfuge</string>
+    <string name = "creativeLabel">Creative</string>
 
-    <string name="pointsLabel">Points</string>
-    <string name="classLabel">Class</string>
-    <string name="natLabel">Nat</string>
+    <string name = "pointsLabel">Points</string>
+    <string name = "classLabel">Class</string>
+    <string name = "natLabel">Nat</string>
 
-    <string name="acrobaticsLabel">Acrobatics</string>
-    <string name="athleticsLabel">Athletics</string>
-    <string name="climbLabel">Climb</string>
-    <string name="jumpLabel">Jump</string>
-    <string name="rideLabel">Ride</string>
-    <string name="swimLabel">Swim</string>
+    <string name = "acrobaticsLabel">Acrobatics</string>
+    <string name = "athleticsLabel">Athletics</string>
+    <string name = "climbLabel">Climb</string>
+    <string name = "jumpLabel">Jump</string>
+    <string name = "rideLabel">Ride</string>
+    <string name = "swimLabel">Swim</string>
 
-    <string name="intimidateLabel">Intimidate</string>
-    <string name="leadershipLabel">Leadership</string>
-    <string name="persuasionLabel">Persuasion</string>
-    <string name="styleLabel">Style</string>
+    <string name = "intimidateLabel">Intimidate</string>
+    <string name = "leadershipLabel">Leadership</string>
+    <string name = "persuasionLabel">Persuasion</string>
+    <string name = "styleLabel">Style</string>
 
-    <string name="noticeLabel">Notice</string>
-    <string name="searchLabel">Search</string>
-    <string name="trackLabel">Track</string>
+    <string name = "noticeLabel">Notice</string>
+    <string name = "searchLabel">Search</string>
+    <string name = "trackLabel">Track</string>
 
-    <string name="animalLabel">Animals</string>
-    <string name="appraiseLabel">Appraise</string>
-    <string name="herbalLabel">Herb Lore</string>
-    <string name="histLabel">History</string>
-    <string name="memLabel">Memorize</string>
-    <string name="mAppraiseLabel">Magic Appraise</string>
-    <string name="medLabel">Medicine</string>
-    <string name="navLabel">Navigation</string>
-    <string name="occultLabel">Occult</string>
-    <string name="scienceLabel">Science</string>
+    <string name = "animalLabel">Animals</string>
+    <string name = "appraiseLabel">Appraise</string>
+    <string name = "herbalLabel">Herb Lore</string>
+    <string name = "histLabel">History</string>
+    <string name = "memLabel">Memorize</string>
+    <string name = "mAppraiseLabel">Magic Appraise</string>
+    <string name = "medLabel">Medicine</string>
+    <string name = "navLabel">Navigation</string>
+    <string name = "occultLabel">Occult</string>
+    <string name = "scienceLabel">Science</string>
 
-    <string name="composureLabel">Composure</string>
-    <string name="strFeatLabel">Feats of Strength</string>
-    <string name="resistPainLabel">Withstand Pain</string>
+    <string name = "composureLabel">Composure</string>
+    <string name = "strFeatLabel">Feats of Strength</string>
+    <string name = "resistPainLabel">Withstand Pain</string>
 
-    <string name="disguiseLabel">Disguise</string>
-    <string name="hideLabel">Hide</string>
-    <string name="lockpickLabel">Lock Picking</string>
-    <string name="poisonLabel">Poisons</string>
-    <string name="theftLabel">Theft</string>
-    <string name="stealthLabel">Stealth</string>
-    <string name="trapLabel">Trap Lore</string>
+    <string name = "disguiseLabel">Disguise</string>
+    <string name = "hideLabel">Hide</string>
+    <string name = "lockpickLabel">Lock Picking</string>
+    <string name = "poisonLabel">Poisons</string>
+    <string name = "theftLabel">Theft</string>
+    <string name = "stealthLabel">Stealth</string>
+    <string name = "trapLabel">Trap Lore</string>
 
-    <string name="artLabel">Art</string>
-    <string name="danceLabel">Dance</string>
-    <string name="forgeLabel">Forging</string>
-    <string name="musicLabel">Music</string>
-    <string name="sleightLabel">Sleight of Hand</string>
+    <string name = "artLabel">Art</string>
+    <string name = "danceLabel">Dance</string>
+    <string name = "forgeLabel">Forging</string>
+    <string name = "musicLabel">Music</string>
+    <string name = "sleightLabel">Sleight of Hand</string>
 
-    <string name="maxRowLabel">Max</string>
-    <string name="usedRowLabel">Used</string>
+    <string name = "maxRowLabel">Max</string>
+    <string name = "usedRowLabel">Used</string>
 
-    <string name="scoreLabel">Score</string>
+    <string name = "scoreLabel">Score</string>
 
-    <string name="natNotTaken">+ 0</string>
-    <string name="natTaken">+ 5</string>
+    <string name = "natNotTaken">+ 0</string>
+    <string name = "natTaken">+ 5</string>
 
-    <string name="battoIai">Batto Jutsu/Iai Jutsu</string>
-    <string name="area">Area Attack</string>
-    <string name="precision">Precision Attack</string>
-    <string name="disarming">Disarming Attack</string>
-    <string name="mpAttack">Magic Projection as Attack</string>
-    <string name="mpDefense">Magic Projection as Defense</string>
-    <string name="psyProjectionMod">Psychic Projection Module</string>
+    <string name = "battoIai">Batto Jutsu/Iai Jutsu</string>
+    <string name = "area">Area Attack</string>
+    <string name = "precision">Precision Attack</string>
+    <string name = "disarming">Disarming Attack</string>
+    <string name = "mpAttack">Magic Projection as Attack</string>
+    <string name = "mpDefense">Magic Projection as Defense</string>
+    <string name = "psyProjectionMod">Psychic Projection Module</string>
+
+    <string name = "summonTitle">Summoning</string>
+    <string name = "controlTitle">Control</string>
+    <string name = "bindTitle">Bind</string>
+    <string name = "banishTitle">Banish</string>
 
 </resources>

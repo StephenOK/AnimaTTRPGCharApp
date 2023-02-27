@@ -10,10 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,6 +25,8 @@ import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.UserInput
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.example.animabuilder.view_models.CharacterFragmentVM
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -45,142 +44,85 @@ import com.example.animabuilder.character_creation.BaseCharacter
 fun CharacterPageFragment(
     charInstance: BaseCharacter,
     maxNumVM: BottomBarViewModel,
-    updateFunc: () -> Unit
+    charFragVM: CharacterFragmentVM = CharacterFragmentVM(charInstance.primaryList),
+    updateFunc: () -> Unit,
 ){
     val context = LocalContext.current
+
+    val primaryList = charInstance. primaryList
 
     //initialize mutable name
     val inputName = remember{mutableStateOf(charInstance.charName)}
 
-    val strSpec = remember{mutableStateOf(charInstance.primaryList.str.bonus)}
-    val dexSpec = remember{mutableStateOf(charInstance.primaryList.dex.bonus)}
-    val agiSpec = remember{mutableStateOf(charInstance.primaryList.agi.bonus)}
-    val conSpec = remember{mutableStateOf(charInstance.primaryList.con.bonus)}
-    val intSpec = remember{mutableStateOf(charInstance.primaryList.int.bonus)}
-    val powSpec = remember{mutableStateOf(charInstance.primaryList.pow.bonus)}
-    val wpSpec = remember{mutableStateOf(charInstance.primaryList.wp.bonus)}
-    val perSpec = remember{mutableStateOf(charInstance.primaryList.per.bonus)}
-
-    val strMod = remember{mutableStateOf(charInstance.primaryList.str.outputMod)}
-    val dexMod = remember{mutableStateOf(charInstance.primaryList.dex.outputMod)}
-    val agiMod = remember{mutableStateOf(charInstance.primaryList.agi.outputMod)}
-    val conMod = remember{mutableStateOf(charInstance.primaryList.con.outputMod)}
-    val powMod = remember{mutableStateOf(charInstance.primaryList.pow.outputMod)}
-    val wpMod = remember{mutableStateOf(charInstance.primaryList.wp.outputMod)}
-
     val sizeText = remember{mutableStateOf(charInstance.sizeCategory.toString())}
     val appearanceText = remember{mutableStateOf(charInstance.appearance.toString())}
 
-    val primaryList = mutableListOf<PrimaryData>()
+    val primaryDataList = mutableListOf<PrimaryData>()
 
     //define primary characteristic items
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.strText),
-            remember{ mutableStateOf(charInstance.primaryList.str.inputValue.toString()) },
-            strSpec,
-            strMod
-        )
-        { newSTR ->
-            charInstance.primaryList.str.setInput(newSTR)
-            strSpec.value = charInstance.primaryList.str.bonus
-            sizeText.value = charInstance.sizeCategory.toString()
+            primaryList.str,
+            charFragVM.strengthData
+        ) {sizeText.value = charInstance.sizeCategory.toString()}
+    )
 
-            charInstance.primaryList.str.outputMod
-        })
-
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.dexText),
-            remember{ mutableStateOf(charInstance.primaryList.dex.inputValue.toString()) },
-            dexSpec,
-            dexMod)
-        { newDEX ->
-            charInstance.primaryList.dex.setInput(newDEX)
-            dexSpec.value = charInstance.primaryList.dex.bonus
+            primaryList.dex,
+            charFragVM.dexterityData
+        ) {}
+    )
 
-            charInstance.primaryList.dex.outputMod
-        })
-
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.agiText),
-            remember{ mutableStateOf(charInstance.primaryList.agi.inputValue.toString()) },
-            agiSpec,
-            agiMod
-        )
-        { newAGI ->
-            charInstance.primaryList.agi.setInput(newAGI)
-            agiSpec.value = charInstance.primaryList.agi.bonus
+            primaryList.agi,
+            charFragVM.agilityData
+        ) {}
+    )
 
-            charInstance.primaryList.agi.outputMod
-        })
-
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.conText),
-            remember{ mutableStateOf(charInstance.primaryList.con.inputValue.toString()) },
-            conSpec,
-            conMod
-        )
-        { newCON ->
-            charInstance.primaryList.con.setInput(newCON)
-            conSpec.value = charInstance.primaryList.con.bonus
-            sizeText.value = charInstance.sizeCategory.toString()
+            primaryList.con,
+            charFragVM.constitutionData
+        ) {sizeText.value = charInstance.sizeCategory.toString()}
+    )
 
-            charInstance.primaryList.con.outputMod
-        })
-
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.intText),
-            remember{ mutableStateOf(charInstance.primaryList.int.inputValue.toString()) },
-            intSpec,
-            remember{ mutableStateOf(charInstance.primaryList.int.outputMod) }
-        )
-        {newINT ->
-            charInstance.primaryList.int.setInput(newINT)
-            intSpec.value = charInstance.primaryList.int.bonus
-            charInstance.primaryList.int.outputMod
-        })
+            primaryList.int,
+            charFragVM.intelligenceData
+        ) {}
+    )
 
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.powText),
-            remember{ mutableStateOf(charInstance.primaryList.pow.inputValue.toString()) },
-            powSpec,
-            powMod
-        )
-        {newPOW ->
-            charInstance.primaryList.pow.setInput(newPOW)
-            powSpec.value = charInstance.primaryList.pow.bonus
-            charInstance.primaryList.pow.outputMod
-        })
+            primaryList.pow,
+            charFragVM.powerData
+        ) {}
+    )
 
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.wpText),
-            remember{ mutableStateOf(charInstance.primaryList.wp.inputValue.toString()) },
-            wpSpec,
-            wpMod
-        )
-        {newWP ->
-            charInstance.primaryList.wp.setInput(newWP)
-            wpSpec.value = charInstance.primaryList.wp.bonus
-            charInstance.primaryList.wp.outputMod
-        })
+            primaryList.wp,
+            charFragVM.willpowerData
+        ) {}
+    )
 
-    primaryList.add(
+    primaryDataList.add(
         PrimaryData(
             stringResource(R.string.perText),
-            remember{ mutableStateOf(charInstance.primaryList.per.inputValue.toString()) },
-            perSpec,
-            remember{ mutableStateOf(charInstance.primaryList.per.outputMod) }
-        )
-        {newPER ->
-            charInstance.primaryList.per.setInput(newPER)
-            perSpec.value = charInstance.primaryList.per.bonus
-            charInstance.primaryList.per.outputMod})
+            primaryList.per,
+            charFragVM.perceptionData
+        ) {}
+    )
 
     //initialize list for items() displays
     val dropdownList = mutableListOf<DropdownData>()
@@ -207,8 +149,7 @@ fun CharacterPageFragment(
     { index: Int ->
         charInstance.setOwnRace(index)
 
-        strSpec.value = charInstance.primaryList.str.bonus
-        strMod.value = charInstance.primaryList.str.outputMod
+        charFragVM.strengthData.setOutput(primaryList.str)
 
         sizeText.value = charInstance.sizeCategory.toString()
 
@@ -275,7 +216,7 @@ fun CharacterPageFragment(
 
                 //bonus header
                 Text(
-                    text = "Spec",
+                    text = stringResource(R.string.specialLabel),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(0.25f)
                 )
@@ -290,7 +231,7 @@ fun CharacterPageFragment(
         }
 
         //create row for each primary statistic
-        items(primaryList){primaryItem ->
+        items(primaryDataList){ primaryItem ->
             PrimaryRow(primaryItem)
         }
 
@@ -299,7 +240,7 @@ fun CharacterPageFragment(
         item{
             Text(text = "Appearance: ")
             UserInput(
-                appearanceText,
+                appearanceText.value,
                 {},
                 {input ->
                     if(input.toInt() <= 10) {
@@ -373,7 +314,7 @@ private fun DropdownObject(item: DropdownData){
         //dropdown object
         DropdownMenu(
             expanded = isOpen.value,
-            onDismissRequest = { isOpen.value = false },
+            onDismissRequest = {isOpen.value = false},
             modifier = Modifier.width(with(LocalDensity.current) { size.value.width.toDp() })
         ) {
             //create an object for each option in the inputted list
@@ -401,7 +342,9 @@ private fun DropdownObject(item: DropdownData){
  * primeItem: primary characteristic data to display
  */
 @Composable
-private fun PrimaryRow(primeItem: PrimaryData){
+private fun PrimaryRow(
+    primeItem: PrimaryData
+){
     Row(verticalAlignment = Alignment.CenterVertically){
         //row label
         Text(
@@ -411,28 +354,32 @@ private fun PrimaryRow(primeItem: PrimaryData){
 
         //user input section
         UserInput(
-            primeItem.statInput,
+            primeItem.vmData.input.collectAsState().value,
             {},
             {input ->
                 if(input.toInt() in 1..20) {
                     //update display and mod values
-                    primeItem.statInput.value = input
-                    primeItem.modOutput.value = primeItem.change(primeItem.statInput.value.toInt())
-                }},
-            {primeItem.statInput.value = ""},
+                    primeItem.primaryStat.setInput(input.toInt())
+                    primeItem.vmData.setInput(input)
+                    primeItem.vmData.setOutput(primeItem.primaryStat)
+
+                    primeItem.changeFunc()
+                }
+            },
+            {primeItem.vmData.setInput("")},
             {},
             Modifier.weight(0.25f)
         )
 
         Text(
-            text = primeItem.statSpec.value.toString(),
+            text = primeItem.vmData.output.collectAsState().value.specialVal,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.25f)
         )
 
         //mod display
         Text(
-            text = primeItem.modOutput.value.toString(),
+            text = primeItem.vmData.output.collectAsState().value.modVal,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.25f))
     }
@@ -486,8 +433,7 @@ private data class DropdownData(
  */
 private data class PrimaryData(
     val labelText: String,
-    val statInput: MutableState<String>,
-    val statSpec: MutableState<Int>,
-    val modOutput: MutableState<Int>,
-    val change: (newVal:Int) -> Int
+    val primaryStat: PrimaryCharacteristic,
+    val vmData: CharacterFragmentVM.PrimeCharacteristicData,
+    val changeFunc: () -> Unit
 )

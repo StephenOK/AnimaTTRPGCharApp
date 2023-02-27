@@ -205,7 +205,7 @@ private fun MakeRow(
     ){
         //user input for the stat's score
         UserInput(
-            userInput,
+            userInput.value,
             {},
             {input: String ->
                 secondaryInput(item, input.toInt(), total)

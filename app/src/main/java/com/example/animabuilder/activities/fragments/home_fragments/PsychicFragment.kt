@@ -129,7 +129,7 @@ private fun PsychicPurchaseTable(
 
         //input for user purchased value
         UserInput(
-            tableData.purchaseAmount,
+            tableData.purchaseAmount.value,
             {},
             tableData.buyFunction,
             {

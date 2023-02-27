@@ -1921,7 +1921,7 @@ private fun EditBuildRow(
             val buildVal = remember { mutableStateOf(workArray[index].toString()) }
 
             UserInput(
-                buildVal,
+                buildVal.value,
                 {},
                 { catchIn: String ->
                     //change value to given input
@@ -1967,7 +1967,7 @@ private fun MaintenanceInput(
 
         //maintenance input
         UserInput(
-            maintInput,
+            maintInput.value,
             {},
             { input ->
                 //change maintenance and display with user's input

@@ -298,7 +298,7 @@ private fun KiFromStatRow(
 
         //ki points purchased input
         UserInput(
-            pointString,
+            pointString.value,
             {},
             {input: String ->
                 kiRowData.pointUpdate(input.toInt(), pointTotalString, changePointDisplay)
@@ -318,7 +318,7 @@ private fun KiFromStatRow(
 
         //ki accumulation purchased input
         UserInput(
-            accString,
+            accString.value,
             {},
             {input: String ->
                 kiRowData.accUpdate(input.toInt(), accTotalString, changeAccDisplay)

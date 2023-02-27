@@ -219,7 +219,7 @@ fun MagicFragment(
 
                 //Zeon point purchase input
                 UserInput(
-                    boughtZeonString,
+                    boughtZeonString.value,
                     {},
                     { input ->
                         //take inputted number and buy that many Zeon points
@@ -266,7 +266,7 @@ fun MagicFragment(
 
                 //input to change imbalance
                 UserInput(
-                    projectionImbalance,
+                    projectionImbalance.value,
                     {},
                     { input ->
                         //if imbalance is a legal input
@@ -402,7 +402,7 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
 
             //input for user to purchase these points
             UserInput(
-                tableItem.boughtValue,
+                tableItem.boughtValue.value,
                 {},
                 tableItem.functionInput,
                 tableItem.functionZero,
@@ -469,7 +469,7 @@ private fun SpellBookInvestment(
 
             //display book investment value
             UserInput(
-                spellData.elementInvestment,
+                spellData.elementInvestment.value,
                 { displayActive.value = false },
                 { input ->
                     //buy levels in the associated book

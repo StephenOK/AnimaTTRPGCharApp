@@ -12,7 +12,7 @@ import androidx.compose.ui.text.input.KeyboardType
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserInput(
-    inputText: MutableState<String>,
+    inputText: String,
     preRun: () -> Unit,
     inputFunction: (String) -> Unit,
     emptyFunction: () -> Unit,
@@ -22,7 +22,7 @@ fun UserInput(
     val keyboardActive = LocalSoftwareKeyboardController.current
 
     TextField(
-        value = inputText.value,
+        value = inputText,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = {
             preRun()

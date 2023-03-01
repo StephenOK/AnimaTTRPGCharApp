@@ -9,14 +9,17 @@
     <string name = "nav_open">Open</string>
     <string name = "nav_close">Close</string>
 
-    <string name = "strText">STR:</string>
-    <string name = "dexText">DEX:</string>
-    <string name = "agiText">AGI:</string>
-    <string name = "conText">CON:</string>
-    <string name = "intText">INT:</string>
-    <string name = "powText">POW:</string>
-    <string name = "wpText">WP:</string>
-    <string name = "perText">PER:</string>
+    <string name = "strText">STR</string>
+    <string name = "dexText">DEX</string>
+    <string name = "agiText">AGI</string>
+    <string name = "conText">CON</string>
+    <string name = "intText">INT</string>
+    <string name = "powText">POW</string>
+    <string name = "wpText">WP</string>
+    <string name = "perText">PER</string>
+
+    <string name = "sizeCat">Size Category: </string>
+    <string name = "appearance">Appearance: </string>
 
     <string-array name = "classArray">
         <item>Freelancer</item>

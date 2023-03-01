@@ -32,6 +32,12 @@ class BottomBarViewModel: ViewModel() {
     fun setMaxMagic(input: Int){_maxMagic.update{input}}
     fun setMaxPsychic(input: Int){_maxPsychic.update{input}}
 
+    fun updateMaxValues(charInstance: BaseCharacter){
+        _maxCombat.update{charInstance.maxCombatDP}
+        _maxMagic.update{charInstance.maxMagDP}
+        _maxPsychic.update{charInstance.maxPsyDP}
+    }
+
     fun updateSpentValues(charInstance: BaseCharacter){
         _spentDP.update{charInstance.spentTotal}
         _spentCombat.update{charInstance.ptInCombat}

@@ -1,28 +1,151 @@
 package com.example.animabuilder.view_models
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
+import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryCharacteristic
-import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class CharacterFragmentVM(primaryList: PrimaryList): ViewModel() {
-    val strengthData = PrimeCharacteristicData(primaryList.str)
-    val dexterityData = PrimeCharacteristicData(primaryList.dex)
-    val agilityData = PrimeCharacteristicData(primaryList.agi)
-    val constitutionData = PrimeCharacteristicData(primaryList.con)
-    val intelligenceData = PrimeCharacteristicData(primaryList.int)
-    val powerData = PrimeCharacteristicData(primaryList.pow)
-    val willpowerData = PrimeCharacteristicData(primaryList.wp)
-    val perceptionData = PrimeCharacteristicData(primaryList.per)
+class CharacterFragmentVM(
+    charInstance: BaseCharacter,
+    maxNumVM: BottomBarViewModel
+): ViewModel() {
+    private val _nameInput = MutableStateFlow(charInstance.charName)
+    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.toString())
+    private val _appearInput = MutableStateFlow(charInstance.appearance.toString())
 
-    class PrimeCharacteristicData(primeItem: PrimaryCharacteristic){
-        private val _input = MutableStateFlow(primeItem.inputValue.toString())
+    val nameInput = _nameInput.asStateFlow()
+    val sizeInput = _sizeInput.asStateFlow()
+    val appearInput = _appearInput.asStateFlow()
+
+    fun setNameInput(newIn: String){_nameInput.update{newIn}}
+    private fun setSizeInput(newIn: String){_sizeInput.update{newIn}}
+    fun setAppearInput(newIn: String){_appearInput.update{newIn}}
+
+    private val strengthData = PrimeCharacteristicData(
+        R.string.strText,
+        charInstance.primaryList.str,
+    ){this.setSizeInput(charInstance.sizeCategory.toString())}
+
+    private val dexterityData = PrimeCharacteristicData(
+        R.string.dexText,
+        charInstance.primaryList.dex
+    ){}
+
+    private val agilityData = PrimeCharacteristicData(
+        R.string.agiText,
+        charInstance.primaryList.agi
+    ){}
+
+    private val constitutionData = PrimeCharacteristicData(
+        R.string.conText,
+        charInstance.primaryList.con
+    ){this.setSizeInput(charInstance.sizeCategory.toString())}
+
+    private val intelligenceData = PrimeCharacteristicData(
+        R.string.intText,
+        charInstance.primaryList.int
+    ){}
+
+    private val powerData = PrimeCharacteristicData(
+        R.string.powText,
+        charInstance.primaryList.pow
+    ){}
+
+    private val willpowerData = PrimeCharacteristicData(
+        R.string.wpText,
+        charInstance.primaryList.wp
+    ){}
+
+    private val perceptionData = PrimeCharacteristicData(
+        R.string.perText,
+        charInstance.primaryList.per
+    ){}
+
+    val primaryDataList = listOf(strengthData, dexterityData, agilityData, constitutionData,
+        intelligenceData, powerData, willpowerData, perceptionData)
+
+    private val classDropdown = DropdownData(
+        R.string.classText,
+        R.array.classArray,
+        charInstance.classes.allClasses.indexOf(charInstance.ownClass)
+    ){
+        charInstance.setOwnClass(it)
+        maxNumVM.updateMaxValues(charInstance)
+    }
+
+    private val raceDropdown = DropdownData(
+        R.string.raceText,
+        R.array.raceArray,
+        charInstance.ownRace.raceIndex
+    ){
+        charInstance.setOwnRace(it)
+        strengthData.setOutput(charInstance.primaryList.str)
+        setSizeInput(charInstance.sizeCategory.toString())
+        setAppearInput(charInstance.appearance.toString())
+    }
+
+    private val levelDropdown = DropdownData(
+        R.string.levelText,
+        R.array.levelCountArray,
+        charInstance.lvl
+    ){
+        charInstance.setLvl(it)
+        maxNumVM.setMaxDP(charInstance.devPT)
+        maxNumVM.updateMaxValues(charInstance)
+    }
+
+    val dropdownList = listOf(classDropdown, raceDropdown, levelDropdown)
+
+    class DropdownData(
+        val nameRef: Int,
+        val options: Int,
+        initialIndex: Int,
+        val onChange: (Int) -> Unit
+    ){
+        private val _size = MutableStateFlow(Size.Zero)
+        private val _indexTracker = MutableStateFlow(initialIndex)
+        private val _isOpen = MutableStateFlow(false)
+        private val _icon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
+
+        val size = _size.asStateFlow()
+        val indexTracker = _indexTracker.asStateFlow()
+        val isOpen = _isOpen.asStateFlow()
+        val icon = _icon.asStateFlow()
+
+        fun setSize(input: Size){_size.update{input}}
+
+        fun setIndexTracker(index: Int){
+            _indexTracker.update{index}
+            onChange(index)
+        }
+
+        fun setOpen(openState: Boolean){
+            _isOpen.update{openState}
+            _icon.update{
+                if(isOpen.value) Icons.Filled.KeyboardArrowUp
+                else Icons.Filled.KeyboardArrowDown
+            }
+
+        }
+    }
+
+    class PrimeCharacteristicData(
+        val nameRef: Int,
+        val primaryStat: PrimaryCharacteristic,
+        val changeFunc: () -> Unit
+    ){
+        private val _input = MutableStateFlow(primaryStat.inputValue.toString())
         private val _output = MutableStateFlow(
             PrimaryStrings(
-                primeItem.bonus.toString(),
-                primeItem.outputMod.toString()
+                primaryStat.bonus.toString(),
+                primaryStat.outputMod.toString()
             )
         )
 
@@ -42,6 +165,6 @@ class CharacterFragmentVM(primaryList: PrimaryList): ViewModel() {
 
     data class PrimaryStrings(
         val specialVal: String,
-        val modVal: String
+        val modVal: String,
     )
 }

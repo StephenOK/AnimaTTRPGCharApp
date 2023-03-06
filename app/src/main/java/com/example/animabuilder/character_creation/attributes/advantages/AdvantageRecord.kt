@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.CommonAdvantages
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.MagicAdvantages
@@ -38,10 +39,14 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      * taken: index of the chosen item if applicable
      * takenCost: index of the chosen cost of the advantage
      */
-    fun acquireAdvantage(toAdd: Advantage, taken: Int?, takenCost: Int): String?{
+    fun acquireAdvantage(
+        toAdd: Advantage,
+        taken: Int?,
+        takenCost: Int
+    ): Pair<String?, Advantage?>{
         //halt addition of fourth disadvantage
         if(toAdd.cost[takenCost] < 0 && countDisadvantages() >= 3)
-            return "Cannot take more Disadvantages"
+            return Pair("Cannot take more Disadvantages", null)
 
         //implement racial restrictions on advantages
         when(charInstance.ownRace.heldRace){
@@ -50,21 +55,21 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                     //forbid these advantages for sylvain
                     commonAdvantages.sickly,
                     commonAdvantages.seriousIllness,
-                    commonAdvantages.magicSusceptibility -> return "Forbidden for Sylvain"
+                    commonAdvantages.magicSusceptibility -> return Pair("Forbidden for Sylvain", null)
 
                     //forbid Dark element option for this advantage
                     magicAdvantages.elementalCompatibility -> if(taken == 1)
-                        return "Cannot take Dark as a Sylvain"
+                        return Pair("Cannot take Dark as a Sylvain", null)
                 }
             }
             RaceName.jayan -> {
                 when(toAdd){
                     //forbid size reduction in Jayan
                     commonAdvantages.uncommonSize -> if(taken!! < 5)
-                        return "Cannot reduce size as Jayan"
+                        return Pair("Cannot reduce size as Jayan", null)
                     //forbid Strength reduction for Jayan
                     commonAdvantages.deductCharacteristic -> if(taken == 0)
-                        return "Cannot reduce Strength as Jayan"
+                        return Pair("Cannot reduce Strength as Jayan", null)
                 }
             }
             RaceName.dukzarist -> {
@@ -78,16 +83,16 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                     commonAdvantages.physicalWeakness,
                     commonAdvantages.seriousIllness,
                     commonAdvantages.sickly,
-                    commonAdvantages.poisonSusceptibility -> return "Forbidden for Duk\'zarist"
+                    commonAdvantages.poisonSusceptibility -> return Pair("Forbidden for Duk\'zarist", null)
 
                     //forbid Light element option for this advantage
                     magicAdvantages.elementalCompatibility -> if(taken == 0)
-                        return "Cannot take Light as Duk\'zarist"
+                        return Pair("Cannot take Light as Duk\'zarist", null)
 
                     //Dukzarist must develop pyrokinesis first
                     commonAdvantages.psyDisciplineAccess ->{
                         if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis))
-                            return "Duk\'zarist must take Pyrokinesis first"
+                            return Pair("Duk\'zarist must take Pyrokinesis first", null)
                     }
                 }
             }
@@ -99,22 +104,22 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
             commonAdvantages.characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
-                    0 -> if(charInstance.primaryList.str.total + 1 > 11) return "Cannot increase Strength further"
-                    1 -> if(charInstance.primaryList.dex.total + 1 > 11) return "Cannot increase Dexterity further"
-                    2 -> if(charInstance.primaryList.agi.total + 1 > 11) return "Cannot increase Agility further"
-                    3 -> if(charInstance.primaryList.con.total + 1 > 11) return "Cannot increase Constitution further"
-                    4 -> if(charInstance.primaryList.int.total + 1 > 13) return "Cannot increase Intelligence further"
-                    5 -> if(charInstance.primaryList.pow.total + 1 > 13) return "Cannot increase Power further"
-                    6 -> if(charInstance.primaryList.wp.total + 1 > 13) return "Cannot increase Willpower further"
-                    7 -> if(charInstance.primaryList.per.total + 1 > 13) return "Cannot increase Perception further"
-                    else -> return "Invalid input"
+                    0 -> if(charInstance.primaryList.str.total + 1 > 11) return Pair("Cannot increase Strength further", null)
+                    1 -> if(charInstance.primaryList.dex.total + 1 > 11) return Pair("Cannot increase Dexterity further", null)
+                    2 -> if(charInstance.primaryList.agi.total + 1 > 11) return Pair("Cannot increase Agility further", null)
+                    3 -> if(charInstance.primaryList.con.total + 1 > 11) return Pair("Cannot increase Constitution further", null)
+                    4 -> if(charInstance.primaryList.int.total + 1 > 13) return Pair("Cannot increase Intelligence further", null)
+                    5 -> if(charInstance.primaryList.pow.total + 1 > 13) return Pair("Cannot increase Power further", null)
+                    6 -> if(charInstance.primaryList.wp.total + 1 > 13) return Pair("Cannot increase Willpower further", null)
+                    7 -> if(charInstance.primaryList.per.total + 1 > 13) return Pair("Cannot increase Perception further", null)
+                    else -> return Pair("Invalid input", null)
                 }
             }
 
             //forbid reduction of growth stat to below zero
             commonAdvantages.subjectAptitude -> {
                 if(charInstance.secondaryList.fullList[taken!!].devPerPoint - toAdd.cost[takenCost] <= 0)
-                    return "Cannot reduce characteristic growth below zero"
+                    return Pair("Cannot reduce characteristic growth below zero", null)
             }
 
             commonAdvantages.fieldAptitude -> {
@@ -131,13 +136,13 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                     }
 
                 if(prevGrowth - toAdd.cost[takenCost] <= 0)
-                    return "Cannot reduce field growth below zero"
+                    return Pair("Cannot reduce field growth below zero", null)
             }
 
             //no need to acquire more disciplines if all are already taken
             commonAdvantages.psyDisciplineAccess -> {
-                if(this.getAdvantage("Free Access to Any Psychic Discipline") != null)
-                    return "Already have access to all Disciplines"
+                if(this.getAdvantage(R.string.allPsyDisciplines) != null)
+                    return Pair("Already have access to all Disciplines", null)
             }
 
             //prevent certain classes from taking this disadvantage
@@ -146,27 +151,27 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                         !charInstance.ownClass.archetype.contains(Archetype.Domine) &&
                         !charInstance.ownClass.archetype.contains(Archetype.Prowler) &&
                         !charInstance.ownClass.archetype.contains(Archetype.Novel))
-                    return "Disadvantage forbidden to your class"
+                    return Pair("Disadvantage forbidden to your class", null)
             }
 
             //check minimum appearance before taking this disadvantage
             commonAdvantages.unattractive ->
-                if(charInstance.appearance < 7) return "Minimum appearance of 7 required"
+                if(charInstance.appearance < 7) return Pair("Minimum appearance of 7 required", null)
 
             //prevent either of these disadvantages from being taken with the other one
             magicAdvantages.slowMagicRecovery ->
-                if(this.getAdvantage("Magic Blockage") != null)
-                    return "Cannot take this with Magic Blockage"
+                if(this.getAdvantage(R.string.magicBlockage) != null)
+                    return Pair("Cannot take this with Magic Blockage", null)
             magicAdvantages.magicBlockage ->
-                if(this.getAdvantage("Slow Recovery of Magic") != null)
-                    return "Cannot take this with Slow Recovery of Magic"
+                if(this.getAdvantage(R.string.slowMagRecovery) != null)
+                    return Pair("Cannot take this with Slow Recovery of Magic", null)
         }
 
         //check if able to take multiple times
         if(toAdd.special == null && this.getAdvantage(toAdd.name) != null)
-            return "You cannot have multiple copies of this Advantage"
-        else if(taken != null && getAdvantage("Natural Knowledge of a Path", taken, takenCost) != null)
-            return "You cannot take the same Path multiple times"
+            return Pair("You cannot have multiple copies of this Advantage", null)
+        else if(taken != null && getAdvantage(R.string.natPathKnowledge, taken, takenCost) != null)
+            return Pair("You cannot take the same Path multiple times", null)
 
         //create advantage to take
         val copyAdvantage = Advantage(
@@ -192,10 +197,10 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
                 copyAdvantage.onTake!!(taken, copyAdvantage.cost[takenCost])
 
             refreshSpent()
-            return null
+            return Pair(null, copyAdvantage)
         }
 
-        return "Cannot buy this advantage"
+        return Pair("Cannot buy this advantage", null)
     }
 
     /**
@@ -239,7 +244,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      *
      * itemName: name of the advantage to find
      */
-    fun getAdvantage(itemName: String): Advantage?{
+    fun getAdvantage(itemName: Int): Advantage?{
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if match is found
@@ -257,7 +262,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      * itemTaken: type of the advantage to find
      * itemCost: cost of the item to find
      */
-    fun getAdvantage(itemName: String, itemTaken: Int, itemCost: Int): Advantage?{
+    fun getAdvantage(itemName: Int, itemTaken: Int, itemCost: Int): Advantage?{
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if identical advantage found
@@ -273,7 +278,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      *
      * toFind: name of the advantage to find
      */
-    fun findAdvantage(toFind: String): Advantage?{
+    fun findAdvantage(toFind: Int): Advantage?{
         //search through each base list to find a match
         commonAdvantages.advantages.forEach{
             //return if a common advantage matches
@@ -333,7 +338,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
         for(index in 0 until fileReader.readLine().toInt()){
             //apply recorded advantage data
             acquireAdvantage(
-                findAdvantage(fileReader.readLine())!!,
+                findAdvantage(fileReader.readLine().toInt())!!,
                 fileReader.readLine().toIntOrNull(),
                 fileReader.readLine().toInt()
             )

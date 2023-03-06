@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
@@ -7,7 +8,7 @@ import java.io.Serializable
 
 class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     private val exceptionalResistancesSylvain = RacialAdvantage(
-        "Exceptional Resistances (Sylvain)",
+        R.string.sylvainResistances,
         "As a reflection of their former existence, the Sylvain Nephilim are exceptionally " +
                 "resistant to magic, psychic attacks, and disease. They apply a bonus of +10 to " +
                 "their Magic Resistance (MR) and Psychic Resistance (PsR), a +20 to Disease " +
@@ -35,7 +36,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val inclinationLight = RacialAdvantage(
-        "Unbalanced Inclination to Light",
+        R.string.lightInclination,
         "All Sylvain possess a natural inclination to Light. That natural inclination " +
                 "gives them a special resistance of +10 against any effect based on The Light. " +
                 "However, that inclination also impedes them from choosing the Elemental " +
@@ -63,7 +64,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val quickHealingSylvain = RacialAdvantage(
-        "Quick Healing (Sylvain)",
+        R.string.sylvainHealing,
         "Sylvain possess an incredible capacity for recovering from physical injury. " +
                 "They add one point to their natural Regeneration.",
         {_, _ ->
@@ -77,7 +78,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val senseLightDarkSylvain = RacialAdvantage(
-        "Sense Light and Dark (Sylvain)",
+        R.string.sylvainLightSense,
         "Sylvain perceive a Dark or Light essence emanating from certain reincarnated " +
                 "souls. Thus, they can sense the presence of any other Sylvain or Duk\'zarist " +
                 "Nephilim present - although that does not mean they can identify them as such. " +
@@ -88,7 +89,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulSylvain = RacialAdvantage(
-        "Immortal Soul (Sylvain)",
+        R.string.sylvainSoul,
         "Like all Nephilim, the elvish soul of the Sylvain is conflicted by the contrast " +
                 "between what he learns while living and his ancient memories. For that reason, a " +
                 "Sylvain suffers a -4 penalty to all Experience Points awarded by the Game Master " +
@@ -98,11 +99,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val giant = RacialAdvantage(
-        "Giant",
+        R.string.giant,
         "Jayan add 2 points to their Size Characteristic and may not choose to reduce it " +
                 "using the Uncommon Size Advantage.",
         {_, _ ->
-            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage("Uncommon Size")
+            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage(R.string.uncommonSize)
             if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
                 charInstance.advantageRecord.removeAdvantage(uncommonSizeHeld)
 
@@ -114,7 +115,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val withstandFatigue = RacialAdvantage(
-        "Withstand Fatigue",
+        R.string.withstandFatigue,
         "The Jayan tire less than other characters with the same Constitution, and " +
                 "therefore they add 1 point to their maximum Fatigue number.",
         {_, _ ->
@@ -128,7 +129,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val damageResistance = RacialAdvantage(
-        "Resistance to Damage",
+        R.string.resistantToDamage,
         "Jayan souls make their bodies much more resistant to the shock produced by " +
                 "damage. As a result, they apply a +15 bonus to their Physical Resistance (PhR).",
         {_, _ -> charInstance.combat.physicalRes.setSpecial(15)},
@@ -136,7 +137,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val uncommonStrength = RacialAdvantage(
-        "Uncommon Strength",
+        R.string.uncommonStrength,
         "Because of their enhanced muscular development, Jayan add 1 point to their " +
                 "Strength. Additionally, Jayan may not use the Deduct Two Points from a " +
                 "Characteristic Disadvantage to lower their Strength.",
@@ -164,7 +165,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val spiritualVision = RacialAdvantage(
-        "Spiritual Vision",
+        R.string.spiritualVision,
         "The residual power of the Jayan's Third Eye has left them with the ability to " +
                 "see spirits under certain conditions. To do so, they must close their eyes and " +
                 "allow their unconscious to look for spiritual beings. While doing so, Jayan " +
@@ -176,7 +177,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val magicSusceptibility = RacialAdvantage(
-        "Susceptibility to Magic",
+        R.string.jayanMagicSusceptibility,
         "Spells and mystical effects are especially effective against Jayan, who suffer " +
                 "a -10 penalty to their Magic Resistance (MR).",
         {_, _ -> charInstance.combat.magicRes.setSpecial(-10)},
@@ -184,7 +185,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulJayan = RacialAdvantage(
-        "Immortal Soul (Jayan)",
+        R.string.jayanSoul,
         "Like all Nephilim, the Jayan experiences conflict between what he learns while " +
                 "living and his ancient memories. For that reason, a Jayan suffers a -3 penalty " +
                 "to all Experience Points awarded by the Game Master ata the end of each gaming session.",
@@ -193,7 +194,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val withoutTrace = RacialAdvantage(
-        "Pass Without Trace",
+        R.string.passWithoutTrace,
         "When a D\'Anjayni travels barefoot, his tracks erase themselves as he goes. " +
                 "Anyone attempting to track a D\'Anjayni moving in this way suffers a -40 penalty " +
                 "to their Ability Check.",
@@ -202,7 +203,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val forgetfulness = RacialAdvantage(
-        "Forgetfulness",
+        R.string.forgetfulness,
         "When D\'Anjayni wish, they may pass unnoticed wherever they go; even those who " +
                 "saw them will not remember much about them. They are capable of having a " +
                 "conversation with one or more people while leaving those persons unable to " +
@@ -223,7 +224,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val commonAppearance = RacialAdvantage(
-        "Common Appearance",
+        R.string.commonAppearance,
         "Because of their average looks, D\'Anjayni never possess an Appearance of less " +
                 "than 3 nor more than 7.",
         {_, _ -> if(charInstance.appearance !in 3..7) charInstance.setAppearance(5)},
@@ -231,7 +232,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val undetectability = RacialAdvantage(
-        "Undetectability",
+        R.string.undetectability,
         "The D\'Anjayni have the mystical ability to resist detection by magical or " +
                 "Ki-based means. For that reason, D\'Anjayni apply a bonus of +30 to their " +
                 "Resistance to detection. In addition, they have a natural understanding of the " +
@@ -241,7 +242,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val silentWhisper = RacialAdvantage(
-        "Silent Whisper",
+        R.string.silentWhisper,
         "It is quite difficult to hear the words of a D\'Anjayni if they are not " +
                 "directed at you. Anyone but the intended listener trying to overhear a D\'Anjayni " +
                 "applies a -60 penalty to the Ability Check.",
@@ -250,7 +251,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulDanjayni = RacialAdvantage(
-        "Immortal Soul (D\'Anjayni)",
+        R.string.danjayniSoul,
         "Like all Nephilim, the D\'Anjayni experience conflict between what they learn " +
                 "while living and their ancient memories. For that reason, a D\'Anjayni suffers " +
                 "a -3 penalty to all Experience Points awarded by the Game Master at the end of " +
@@ -260,7 +261,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val orinie = RacialAdvantage(
-        "Or\'inie",
+        R.string.orinie,
         "The mystical symbol with which the Ebudan are born is known as the Or\'inie. It " +
                 "works as a shield against anything that might threaten to turn them from their " +
                 "Sue\'Aman. As a consequence, Ebudan apply a bonus of +30 to their resistance " +
@@ -272,7 +273,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val celestialEssence = RacialAdvantage(
-        "Celestial Essence",
+        R.string.celestialEssence,
         "When an Ebudan has achieved his set purpose, his full spiritual essence " +
                 "suffuses his body, preventing him from suffering natural physical injuries. In " +
                 "game terms, the Ebudan becomes invulnerable to any natural attack that isn't " +
@@ -282,7 +283,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val seraphimWings = RacialAdvantage(
-        "Seraphim Wings",
+        R.string.seraphimWings,
         "The moment they achieve their purpose, Ebudan recover part of their lost " +
                 "essence and gain two luminous wings. These energy wings represent the feathery " +
                 "appendages the Ebudan used to possess in their former lives. They can summon " +
@@ -294,7 +295,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulEbudan = RacialAdvantage(
-        "Immortal Soul (Ebudan)",
+        R.string.ebudanSoul,
         "Like all Nephilim, the Ebudan experience conflict between what they learn while " +
                 "living and their ancient memories. For that reason, an Ebudan suffers a -3 " +
                 "penalty to all Experience Points awarded by the Game Master at the end of each " +
@@ -304,7 +305,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val seeEssence = RacialAdvantage(
-        "See the Essence",
+        R.string.seeEssence,
         "The eyes of the Daimah see the souls of the living immediately identifying the " +
                 "elemental or spiritual ties of any type of being. This ability is treated as an " +
                 "innate power of detection, but an individual can also resist it naturally with " +
@@ -314,7 +315,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val forestSense = RacialAdvantage(
-        "Sense the Forest",
+        R.string.forestSense,
         "Though they cannot literally talk with plants, the Daimah can sense the " +
                 "feelings of nature (both plants and animals), detecting such things as fear, " +
                 "calm, or even just disquiet.",
@@ -323,7 +324,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val natureCure = RacialAdvantage(
-        "Nature\'s Cure",
+        R.string.natureCure,
         "As long as they are within the forest, the soul of the Daimah provides their " +
                 "bodies with the essence of life around them. Therefore, while in thick forest " +
                 "or jungle, Daimah add three points to their Regeneration.",
@@ -332,7 +333,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val forestMovement = RacialAdvantage(
-        "Movement in the Forest",
+        R.string.forestMovement,
         "The Daimah recognize nature as their home, and nature accepts them. No matter " +
                 "how thick the forest or how tangled the brush, Daimah suffer no penalties to movement.",
         null,
@@ -340,7 +341,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val smallSize = RacialAdvantage(
-        "Small Size",
+        R.string.smallSize,
         "The Daimah are not usually tall or heavily built. They subtract 1 from their " +
                 "Size Characteristic.",
         {_, _ ->
@@ -354,7 +355,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulDaimah = RacialAdvantage(
-        "Immortal Soul (Daimah)",
+        R.string.daimahSoul,
         "Like all Nephilim, the Daimah experience conflict between what they learn while " +
                 "living and their ancient memories. For that reason, a Daimah suffers a -2 " +
                 "penalty to all Experience Points awarded by the Game Master at the end of each " +
@@ -364,7 +365,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val exceptionalResistancesDukzarist = RacialAdvantage(
-        "Exceptional Resistances (Duk\'zarist)",
+        R.string.dukzaristResistances,
         "The souls of the Duk\'zarist influence their human bodies at every stage of " +
                 "development, thereby greatly increasing their resistances. This ability acts " +
                 "differently in men and women. Male souls apply a bonus of +15 to all Resistance " +
@@ -386,7 +387,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val inclinationDark = RacialAdvantage(
-        "Unbalanced Inclination toward the Dark",
+        R.string.darkInclination,
         "The Duk\'zarist souls have an unbalanced inclination toward the Dark. That " +
                 "natural inclination gives them a special resistance of +10 against any effect " +
                 "based on The Dark. However, that inclination also impedes them from choosing " +
@@ -414,7 +415,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val withstandDeath = RacialAdvantage(
-        "Withstand Death",
+        R.string.withstandDeath,
         "When they are in a state between life and death, the Duk\'zarist do not need " +
                 "to pass a Physical Resistance (PhR) Check to survive; since their souls are so " +
                 "firmly wedded to their bodies, they automatically pass such checks.",
@@ -423,7 +424,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val quickHealingDukzarist = RacialAdvantage(
-        "Quick Healing (Duk\'zarist)",
+        R.string.dukzaristHealing,
         "Duk\'zarist possess an incredible capacity for recovering from any physical " +
                 "injury. They add one point to their natural Regeneration.",
         {_, _ ->
@@ -437,7 +438,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val limitedNeeds = RacialAdvantage(
-        "Limited Needs",
+        R.string.limitedNeeds,
         "The Duk\'zarist need much less rest and nourishment than any other race; they " +
                 "can survive on one-third the sleep and food required by humans.",
         null,
@@ -445,7 +446,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val senseLightDarkDukzarist = RacialAdvantage(
-        "Sense Light and Dark (Duk\'zarist)",
+        R.string.dukzaristLightSense,
         "Duk\'zarist perceive the Dark or Light essence emanating from certain " +
                 "reincarnated souls. Thus, they can sense the presence of any other Sylvain or " +
                 "Duk\'zarist Nephilim present - although that does not mean they can identify " +
@@ -456,7 +457,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val nightVision = RacialAdvantage(
-        "Night Vision",
+        R.string.nightVision,
         "The eyes of the Duk\'zarist are more adapted to darkness than any other human " +
                 "being. In game terms, this ability is not as developed as that acquired through " +
                 "spending a Creation Point, but it permits the Duk\'zarist to reduce any penalty " +
@@ -466,7 +467,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val fireDevotion = RacialAdvantage(
-        "Devotion to Fire",
+        R.string.fireDevotion,
         "The psychic powers of the Duk\'zarist are naturally tied to fire. If they " +
                 "develop their mental abilities, the first one they must acquire is the " +
                 "discipline of Pyrokinesis.",
@@ -498,7 +499,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val perfectBodies = RacialAdvantage(
-        "Perfect Bodies",
+        R.string.perfectBodies,
         "The essence of the Duk\'zarist prevents their bodies from developing any " +
                 "natural malformation. A Duk\'zarist cannot choose the following Disadvantages: " +
                 "Atrophied Limb, Blind, Deafness, Mute, Nearsighted, Physical Weakness, Serious " +
@@ -518,7 +519,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val metalAllergy = RacialAdvantage(
-        "Allergic to Metal",
+        R.string.metalAllergy,
         "The only weakness of the Duk\'zarist in their past lives was their vulnerability " +
                 "to metals, especially iron and iron-alloys. The original Duk\'zarist could be " +
                 "killed even by simple contact with metal; swords harmed them more because they " +
@@ -535,7 +536,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     )
 
     private val immortalSoulDukzarist = RacialAdvantage(
-        "Immortal Soul (Duk\'zarist)",
+        R.string.dukzaristSoul,
         "Like all Nephilim, the Duk\'zarist experience conflict between what they learn " +
                 "while living and their ancient memories. For that reason, a Duk\'zarist suffers " +
                 "a -5 penalty to all Experience Points awarded by the Game Master at the end of " +

@@ -19,13 +19,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
-import com.example.animabuilder.view_models.HomePageAlertViewModel
-import com.example.animabuilder.view_models.NavigationViewModel
+import com.example.animabuilder.view_models.*
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -218,7 +216,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
                         AdvantageFragment(
-                            charInstance.advantageRecord,
+                            AdvantageFragmentVM(charInstance.advantageRecord),
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
@@ -256,7 +254,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
                         SummoningFragment(
-                            charInstance.summoning
+                            SummoningFragmentVM(charInstance.summoning)
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }

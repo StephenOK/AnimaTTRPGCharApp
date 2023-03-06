@@ -120,7 +120,7 @@ fun CharacterPageFragment(
                     }
                 },
                 {
-                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null) {
+                    if(charInstance.advantageRecord.getAdvantage(R.string.unattractive) == null) {
                         charInstance.setAppearance(5)
                         charFragVM.setAppearInput("")
                     }
@@ -215,7 +215,7 @@ private fun PrimaryRow(
             {input ->
                 if(input.toInt() in 1..20) {
                     //update display and mod values
-                    primeItem.primaryStat.setInput(input)
+                    primeItem.primaryStat.setInput(input.toInt())
                     primeItem.setInput(input)
                     primeItem.setOutput(primeItem.primaryStat)
 

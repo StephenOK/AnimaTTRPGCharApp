@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
@@ -20,7 +21,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val elementalCompatibility = Advantage(
-        "Elemental Compatibility",
+        R.string.elementalCompatibility,
         "A character with this Advantage is naturally compatible with the powers of a " +
                 "specific magical path, being simultaneously weaker in its opposite. His essence " +
                 "is bound strongly to this element, and his magic is more powerful when he uses " +
@@ -40,7 +41,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val naturalPath = Advantage(
-        "Natural Knowledge of a Path",
+        R.string.natPathKnowledge,
         "A character with this Advantage possesses the capacity to cast certain spells " +
                 "naturally without having to study them. He can unconsciously weave the powers " +
                 "of the Soul Flow for one Path - as if the Path were simply responding to his " +
@@ -92,7 +93,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val contestedSpellMastery = Advantage(
-        "Contested Spell Mastery",
+        R.string.contestedMastery,
         "The attack spells of a character with this Advantage are greater when it " +
                 "clashes against another Supernatural Beam.",
         "The character applies a bonus of +50 to his roll to calculate the result of a " +
@@ -108,7 +109,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val magicDevelopmentAptitude = Advantage(
-        "Aptitude for Magic Development",
+        R.string.magDevAptitude,
         "A character with this Advantage has the capacity to understand and achieve " +
                 "levels of power with his spells far greater than his Intelligence would normally allow.",
         "A player can add 3 points to his character's Intelligence to determine the maximum " +
@@ -125,7 +126,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val halfTreeAttuned = Advantage(
-        "Half-Attuned to the Tree",
+        R.string.halfTreeAttuned,
         "As in Elemental Compatibility, but in this case the character is naturally " +
                 "compatible with the magic of half of the Mystical Tree.",
         "The wizard has a special bonus of +20 to his MA and his MR in the five magical " +
@@ -142,7 +143,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val improvedInnateMagic = Advantage(
-        "Improved Innate Magic",
+        R.string.improvedInnateMagic,
         "A character with this Advantage cna execute his innate spells with a greater " +
                 "potential than normal.",
         "The innate spells of the wizard add +10 to their potential as indicated by their " +
@@ -161,7 +162,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val unspokenCasting = Advantage(
-        "Unspoken Casting",
+        R.string.unspokenCasting,
         "A character with this Advantage does not need to speak to control the powers " +
                 "of the Soul Flow of souls.",
         "The character can cast spells in complete silence without reducing his MA.",
@@ -176,7 +177,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val gesturelessCasting = Advantage(
-        "Gestureless Casting",
+        R.string.gesturelessCasting,
         "A character with this Advantage does not need to make physical gestures to use " +
                 "his magic; he can take any type of physical action without affecting his powers.",
         "The character does not reduce his MA if unable to gesture.",
@@ -191,7 +192,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val superiorMagicRecovery = Advantage(
-        "Superior Magic Recovery",
+        R.string.superiorMagRecovery,
         "The essence of a character with this Advantage acts like a magnet for magic, " +
                 "and he is able to regenerate his power at a faster rate than that of other " +
                 "mystical individuals.",
@@ -223,7 +224,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
 
 
     val oralRequirement = Advantage(
-        "Oral Requirement",
+        R.string.oralRequirement,
         "A character with this Disadvantage cna only cast spells if he can speak",
         "The character must be able to speak to accumulate magic and to cast his spells.",
         null,
@@ -237,7 +238,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val requireGestures = Advantage(
-        "Require Gestures",
+        R.string.requireGestures,
         "A character with this Disadvantage must have complete freedom of movement in " +
                 "order to control or use his powers.",
         "The character must move freely to accumulate magic and cast spells.",
@@ -252,7 +253,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val magicalExhaustion = Advantage(
-        "Magical Exhaustion",
+        R.string.magicalExhaustion,
         "A character with this Disadvantage suffers intense fatigue whenever he uses " +
                 "magic. The mage will exhaust himself if he casts spells of great power, " +
                 "weakening if he uses his abilities too much.",
@@ -269,7 +270,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val shamanism = Advantage(
-        "Shamanism",
+        R.string.shamanism,
         "The magic practiced by this character has a tribal and shamanic character. " +
                 "His supernatural powers are tied to the material world, and he needs certain " +
                 "components to channel them and cast spells.",
@@ -287,7 +288,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val magicalTies = Advantage(
-        "Magical Ties",
+        R.string.magicalTies,
         "The powers of a character with this Disadvantage are tied to the same roots as " +
                 "the magical paths, so his capacity to develop or specify his own spells is " +
                 "practically impossible. The character obtains knowledge of his paths only and " +
@@ -309,7 +310,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val slowMagicRecovery = Advantage(
-        "Slow Recovery of Magic",
+        R.string.slowMagRecovery,
         "Magic has problems passing through the wizard\'s essence; he experiences " +
                 "difficulties recovering power he has used.",
         "Reduce the Zeonic regeneration of the character by half.",
@@ -328,7 +329,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val magicBlockage = Advantage(
-        "Magic Blockage",
+        R.string.magicBlockage,
         "Magic does not flow naturally through the body and soul of a character with " +
                 "this Disadvantage. Some type of blockage prevents him from channeling the powers " +
                 "of the environment, and his own soul does not regenerate magic either. When he " +
@@ -352,7 +353,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val actionRequirement = Advantage(
-        "Action Requirement",
+        R.string.actionRequirement,
         "The control that a character has over the powers of the Soul Flow is fickle, " +
                 "and they respond for him only while he performs a certain action. If, for " +
                 "example, his magic is tied to dance, his spells will work only while he dances. " +

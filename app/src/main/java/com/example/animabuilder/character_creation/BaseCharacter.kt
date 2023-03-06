@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
@@ -269,7 +270,7 @@ class BaseCharacter: Serializable {
 
     @JvmName("setAppearance1")
     fun setAppearance(input: Int){
-        if(advantageRecord.getAdvantage("Unattractive") != null)
+        if(advantageRecord.getAdvantage(R.string.unattractive) != null)
             appearance = 2
         else if(ownRace.heldRace != RaceName.danjayni || input in 3..7)
             appearance = input

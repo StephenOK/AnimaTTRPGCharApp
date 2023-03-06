@@ -78,51 +78,6 @@
         <item>20</item>
     </string-array>
 
-    <string-array name = "techniqueAbilities">
-        <item>--Select an ability --</item>
-        <item>Attack Ability</item>
-        <item>Counterattack Ability</item>
-        <item>Block Ability</item>
-        <item>Limited Block Ability</item>
-        <item>Dodge Ability</item>
-        <item>Limited Dodge Ability</item>
-        <item>Damage Multiplier</item>
-        <item>Damage Augmentation</item>
-        <item>Additional Attack</item>
-        <item>Limited Additional Attack</item>
-        <item>Additional Defense</item>
-        <item>Additional Action</item>
-        <item>Initiative Augmentation</item>
-        <item>States</item>
-        <item>Combat Maneuvers and Aiming</item>
-        <item>Armor Increase</item>
-        <item>Armor Destruction</item>
-        <item>Breakage Augmentation</item>
-        <item>Fortitude Augmentation</item>
-        <item>Long-Distance Attack</item>
-        <item>Area Attack</item>
-        <item>Automatic Transportation</item>
-        <item>Critical Enhancement</item>
-        <item>Physical Ki Weapon</item>
-        <item>Trapping</item>
-        <item>Projection</item>
-        <item>Energy Shield</item>
-        <item>Intangibility</item>
-        <item>Mirage</item>
-        <item>Attack Mirroring</item>
-        <item>Energy Damaging Attack</item>
-        <item>Elemental Attack</item>
-        <item>Supernatural Attack</item>
-        <item>Damage Resistance</item>
-    </string-array>
-
-    <string-array name = "techniqueDisadvantages">
-        <item>Elemental Binding</item>
-        <item>Reduced Damage</item>
-        <item>Special Requirements</item>
-        <item>Predetermination</item>
-    </string-array>
-
     <string name = "baseLabel">Base</string>
     <string name = "boughtLabel">Bought</string>
     <string name = "modLabel">Mod</string>
@@ -133,61 +88,9 @@
     <string name = "dpMagicLabel">Magic</string>
     <string name = "dpPsychicLabel">Psychic</string>
 
-    <string name = "socialLabel">Social</string>
-    <string name = "perceptionLabel">Perception</string>
-    <string name = "intellectualLabel">Intellectual</string>
-    <string name = "vigorLabel">Vigor</string>
-    <string name = "subterfugeLabel">Subterfuge</string>
-    <string name = "creativeLabel">Creative</string>
-
     <string name = "pointsLabel">Points</string>
     <string name = "classLabel">Class</string>
     <string name = "natLabel">Nat</string>
-
-    <string name = "acrobaticsLabel">Acrobatics</string>
-    <string name = "athleticsLabel">Athletics</string>
-    <string name = "climbLabel">Climb</string>
-    <string name = "jumpLabel">Jump</string>
-    <string name = "rideLabel">Ride</string>
-    <string name = "swimLabel">Swim</string>
-
-    <string name = "intimidateLabel">Intimidate</string>
-    <string name = "leadershipLabel">Leadership</string>
-    <string name = "persuasionLabel">Persuasion</string>
-    <string name = "styleLabel">Style</string>
-
-    <string name = "noticeLabel">Notice</string>
-    <string name = "searchLabel">Search</string>
-    <string name = "trackLabel">Track</string>
-
-    <string name = "animalLabel">Animals</string>
-    <string name = "appraiseLabel">Appraise</string>
-    <string name = "herbalLabel">Herb Lore</string>
-    <string name = "histLabel">History</string>
-    <string name = "memLabel">Memorize</string>
-    <string name = "mAppraiseLabel">Magic Appraise</string>
-    <string name = "medLabel">Medicine</string>
-    <string name = "navLabel">Navigation</string>
-    <string name = "occultLabel">Occult</string>
-    <string name = "scienceLabel">Science</string>
-
-    <string name = "composureLabel">Composure</string>
-    <string name = "strFeatLabel">Feats of Strength</string>
-    <string name = "resistPainLabel">Withstand Pain</string>
-
-    <string name = "disguiseLabel">Disguise</string>
-    <string name = "hideLabel">Hide</string>
-    <string name = "lockpickLabel">Lock Picking</string>
-    <string name = "poisonLabel">Poisons</string>
-    <string name = "theftLabel">Theft</string>
-    <string name = "stealthLabel">Stealth</string>
-    <string name = "trapLabel">Trap Lore</string>
-
-    <string name = "artLabel">Art</string>
-    <string name = "danceLabel">Dance</string>
-    <string name = "forgeLabel">Forging</string>
-    <string name = "musicLabel">Music</string>
-    <string name = "sleightLabel">Sleight of Hand</string>
 
     <string name = "maxRowLabel">Max</string>
     <string name = "usedRowLabel">Used</string>

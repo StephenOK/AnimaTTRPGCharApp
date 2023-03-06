@@ -6,10 +6,8 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
-import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
+import androidx.compose.runtime.collectAsState
+import com.example.animabuilder.view_models.AdvantageFragmentVM
 
 /**
  * Dialog that allows the user to choose specific information about their desired advantage
@@ -23,23 +21,16 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 
 @Composable
 fun AdvantageCostPick(
-    advantageRecord: AdvantageRecord,
-    item: Advantage,
-    startPage: Int,
+    advantageFragmentVM: AdvantageFragmentVM,
     closeDialog: (String?) -> Unit
 ){
-    //initialize radio button trackers
-    val optionPicked = remember{mutableStateOf(item.picked)}
-    val costPicked = remember{mutableStateOf(item.pickedCost)}
-
-    //initialize page tracker
-    val pageNum = remember{mutableStateOf(startPage)}
+    val item = advantageFragmentVM.adjustedAdvantage.collectAsState().value!!
 
     DialogFrame(
         "Select Items for Advantage",
         {
             LazyColumn {
-                when (pageNum.value) {
+                when (advantageFragmentVM.adjustingPage.value) {
                     //page for type options
                     1 -> {
                         //for each available option
@@ -48,8 +39,8 @@ fun AdvantageCostPick(
                                 Row {
                                     //display a radio button
                                     RadioButton(
-                                        selected = optionPicked.value == item.options.indexOf(it),
-                                        onClick = {optionPicked.value = item.options.indexOf(it)}
+                                        selected = advantageFragmentVM.optionPicked.collectAsState().value == item.options.indexOf(it),
+                                        onClick = {advantageFragmentVM.setOptionPicked(item.options.indexOf(it))}
                                     )
 
                                     //display name of option
@@ -68,8 +59,8 @@ fun AdvantageCostPick(
                                 Row {
                                     //display a radio button
                                     RadioButton(
-                                        selected = costPicked.value == item.cost.indexOf(it),
-                                        onClick = {costPicked.value = item.cost.indexOf(it)}
+                                        selected = advantageFragmentVM.costPicked.collectAsState().value == item.cost.indexOf(it),
+                                        onClick = {advantageFragmentVM.setCostPicked(item.cost.indexOf(it))}
                                     )
                                 }
 
@@ -84,23 +75,19 @@ fun AdvantageCostPick(
         {
             //button for user's item selection
             TextButton(onClick = {
-                when(pageNum.value){
+                when(advantageFragmentVM.adjustingPage.value){
                     1 -> {
                         //go to cost page if cost must be chosen
                         if(item.cost.size > 1)
-                            pageNum.value = 2
+                            advantageFragmentVM.setAdjustingPage(2)
                         //attempt to apply advantage to character
                         else
-                            closeDialog(advantageRecord.acquireAdvantage(
-                                item,
-                                optionPicked.value,
-                                costPicked.value
-                            ))
+                            closeDialog(advantageFragmentVM.acquireAdvantage())
                     }
 
                     2 ->
                         //attempt to apply advantage to character
-                        closeDialog(advantageRecord.acquireAdvantage(item, optionPicked.value, costPicked.value))
+                        closeDialog(advantageFragmentVM.acquireAdvantage())
                 }
             }) {
                 Text(text = "Select")

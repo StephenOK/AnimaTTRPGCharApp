@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.primary_abilities
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import java.io.Serializable
@@ -20,8 +21,8 @@ class PrimaryCharacteristic(
         inputValue = input
 
         while(inputValue + bonus > advantageCap &&
-                charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0) != null){
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0)!!)
+                charInstance.advantageRecord.getAdvantage(R.string.addCharPoint, charIndex, 0) != null){
+            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.getAdvantage(R.string.addCharPoint, charIndex, 0)!!)
         }
 
         updateValues()
@@ -35,7 +36,7 @@ class PrimaryCharacteristic(
 
     fun updateValues(){
         total =
-            if(charInstance.advantageRecord.getAdvantage("Increase One Characteristic to Nine", charIndex, 0) != null) 9
+            if(charInstance.advantageRecord.getAdvantage(R.string.charToNine, charIndex, 0) != null) 9
             else inputValue + bonus
 
         outputMod =

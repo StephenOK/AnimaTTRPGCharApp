@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
@@ -51,7 +52,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         "Intellectual", "Vigor")
 
     val characteristicPoint = Advantage(
-        "Add One Point to a Characteristic",
+        R.string.addCharPoint,
         "One of the character's attributes is greater than before.",
         "Add a point to the value of a single Characteristic.",
         "Restriction: Strength, Dexterity, Agility, and Constitution cannot be increased " +
@@ -71,7 +72,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val acuteSenses = Advantage(
-        "Acute Senses",
+        R.string.acuteSenses,
         "The character's senses are as developed as those of an animal.",
         "This Advantage adds 1 point to the character's Perception when making " +
                 "Characteristic Checks. It also adds a special bonus of +30 to Notice and Search.",
@@ -92,7 +93,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val artifact = Advantage(
-        "Artifact",
+        R.string.artifact,
         "The character possesses a mystical device of enormous power.",
         "The player and the Game Master must agree on the abilities of the " +
                 "device. Spending additional points increases the capabilities of the object.",
@@ -107,7 +108,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val ambidextrous = Advantage(
-        "Ambidextrous",
+        R.string.ambidextrous,
         "An ambidextrous person can use both hands equally well.",
         "An ambidextrous character can perform maneuvers with either hand. In combat, " +
                 "he suffers only -10 to attacks with an additional weapon.",
@@ -122,7 +123,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val characteristicToNine = Advantage(
-        "Increase One Characteristic to Nine",
+        R.string.charToNine,
         "This advantage allows a player to increase the value of one of his character's " +
                 "Primary Characteristics.",
         "Substitute one Characteristic's value for a 9, no matter what its original value was.",
@@ -141,7 +142,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val psyDisciplineAccess = Advantage(
-        "Access to One Psychic Discipline",
+        R.string.psyDisciplineAccess,
         "The character is gifted with the ability to use the powers of a single psychic " +
                 "discipline. Its abilities are limited to a single field and, no matter how much " +
                 "it increases his potential, he will not have access to powers that are greater " +
@@ -173,7 +174,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val charm = Advantage(
-        "Charm",
+        R.string.charm,
         "The character has a certain personal magnetism that makes others react " +
                 "positively toward him. He always receives a positive reaction from people who do " +
                 "not know him, and some individuals may even be slightly more permissive with him.",
@@ -189,7 +190,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val disquieting = Advantage(
-        "Disquieting",
+        R.string.disquieting,
         "A character with this Advantage can make people nervous whenever he wishes. He " +
                 "can also discourage violence against himself or force intimidating people to " +
                 "agree with him.",
@@ -205,7 +206,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val animalAffinity = Advantage(
-        "Animal Affinity",
+        R.string.animalAffinity,
         "A character with this Advantage has a special link with animals that allows him " +
                 "to obtain a positive reaction. He is also able to communicate in a limited way " +
                 "with them, understanding their general intentions, and vice versa.",
@@ -225,7 +226,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val dangerSense = Advantage(
-        "Danger Sense",
+        R.string.dangerSense,
         "Characters with this Advantage have a sixth sense, which allows them to detect " +
                 "when something dangerous approaches or threatens them - though they will not be " +
                 "able to detect the origin or nature of the danger until they see it.",
@@ -242,7 +243,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val beenAround = Advantage(
-        "Been Around",
+        R.string.beenAround,
         "The character has already had experiences in the real world, by which he has " +
                 "learned great lessons.",
         "The character begins the game with 50, 100, or 150 additional Experience Points, " +
@@ -260,7 +261,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val subjectAptitude = Advantage(
-        "Aptitude in a Subject",
+        R.string.subjectAptitude,
         "A character with this Advantage has an enormous capacity to learn a single " +
                 "Secondary Ability, which allows him to develop it with very little effort.",
         "This Advantage reduces the Development Cost of a single Secondary Ability for " +
@@ -285,7 +286,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val naturalPsychicPower = Advantage(
-        "Access to Natural Psychic Powers",
+        R.string.psychicPowerAccess,
         "The character has a limited psychic capacity that allows him to use one Psychic " +
                 "Ability unconsciously. He doesn't know the origin of the power or have complete " +
                 "control over it, but he can use it whenever he needs to.",
@@ -309,7 +310,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val fieldAptitude = Advantage(
-        "Aptitude in a Field",
+        R.string.fieldAptitude,
         "As per Aptitude in a Subject, except that in this case, the character has a " +
                 "great capacity to learn an entire area of Secondary Abilities.",
         "The Development Cost for a field of Secondary Abilities is reduced by 1 point. If " +
@@ -337,7 +338,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val characteristicReroll = Advantage(
-        "Repeat a Characteristics Roll",
+        R.string.characteristicReroll,
         "This Advantage allows a player to modify one of his character's Primary Characteristics.",
         "Players may roll one additional die once they have generated Characteristics and " +
                 "use the result in place of one of the previous rolls. The new number cannot be " +
@@ -353,7 +354,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val martialMastery = Advantage(
-        "Martial Mastery",
+        R.string.martialMastery,
         "The Martial Knowledge of a character with this Advantage is superior to others " +
                 "of his level. Usually, the character has received special training that has " +
                 "allowed him to explore his Ki abilities - although it is also possible that he " +
@@ -385,7 +386,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val goodLuck = Advantage(
-        "Good Luck",
+        R.string.goodLuck,
         "Characters with this Advantage are exceptionally lucky in everything they do " +
                 "and very rarely commit a serious mistake.",
         "The required number to fumble is reduced by 1 point. In normal circumstances, " +
@@ -403,7 +404,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val kiRecovery = Advantage(
-        "Ki Recovery",
+        R.string.kiRecovery,
         "This Advantage allows a character's spiritual energy to recover more quickly than normal.",
         "The character recovers 1 point of Ki every ten minutes, instead of every hour. " +
                 "Spending additional Creation Points decreases the recovery time to five minutes " +
@@ -419,7 +420,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val jackOfAllTrades = Advantage(
-        "Jack of All Trades",
+        R.string.jackTrades,
         "Characters with this Advantage can adapt to any need that arises and develop " +
                 "knowledge in all fields and subjects. No matter how rare or unusual the " +
                 "Secondary Ability needed, they will always shave some knowledge or skill useful " +
@@ -443,7 +444,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val naturalArmor = Advantage(
-        "Natural Armor",
+        R.string.natArmor,
         "The character has extremely resistant skin and very hard muscles - such that it " +
                 "is very difficult to penetrate them.",
         "Grants natural armor of 2 against all classes of attacks except Energy-based ones. " +
@@ -459,7 +460,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val mysticalArmor = Advantage(
-        "Mystical Armor",
+        R.string.mysticArmor,
         "The character's aura forms a layer of mystical energy that protect him against " +
                 "supernatural attacks.",
         "Grants a character a natural armor of 4 against Energy-based attacks. Although it " +
@@ -475,7 +476,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val untiring = Advantage(
-        "Untiring",
+        R.string.untiring,
         "A character with this Advantage possesses a superior endurance relative to what " +
                 "his Constitution would indicate.",
         "A player can add 3 points to his character's Fatigue. Spending additional " +
@@ -508,7 +509,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val uncommonSize = Advantage(
-        "Uncommon Size",
+        R.string.uncommonSize,
         "A character with this Advantage possesses an unusual Size relative to his " +
                 "Strength and Constitution. This allows someone who should be a colossal mass of " +
                 "muscles to be a small person, or vice versa.",
@@ -529,7 +530,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val startingWealth = Advantage(
-        "Starting Wealth",
+        R.string.startingWealth,
         "The character has a great fortune in materials and equipment.",
         "This Advantage provides starting money or equipment valued at 2,000 gold crowns " +
                 "(GC). Further points spent increase this amount to 5,000 and 10,000 respectively.",
@@ -545,7 +546,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val increasedRegeneration = Advantage(
-        "Regeneration: Basic, Advanced, and Greater",
+        R.string.regenAdvantage,
         "Wounds suffered by the character heal easily.",
         "This Advantage increases the character's Regeneration by two levels. Spending " +
                 "additional points increases Regeneration by four and six levels, respectively.",
@@ -576,7 +577,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val elan = Advantage(
-        "Elan",
+        R.string.elan,
         "A character with this Advantage has attracted the attention of a Shajad or a " +
                 "Beryl. Generally, this means that an ancestor of the character was bound to the " +
                 "being and it still maintains some type of bond with all the members of the " +
@@ -598,7 +599,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val painImmunity = Advantage(
-        "Immunity to Pain and Fatigue",
+        R.string.painFatigueImmunity,
         "A character with this Advantage is especially resistant to the effects of pain " +
                 "and fatigue.",
         "Penalties caused by pain and Fatigue are reduced by half.",
@@ -613,7 +614,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val gift = Advantage(
-        "The Gift",
+        R.string.gift,
         "The character can feel and control supernatural energies inherent within his own " +
                 "soul. Magic flows through his very spirit, and with the appropriate knowledge, " +
                 "the character with this Advantage will be able to cast spells.",
@@ -630,7 +631,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val seeSupernatural = Advantage(
-        "See Supernatural",
+        R.string.seeSupernatural,
         "A character with this Advantage can perceive the Soul Flow and at the same " +
                 "time perceive the energy of psychic matrices.",
         "The character sees supernatural things - including magic and psychic matrices - as " +
@@ -646,7 +647,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val nightVision = Advantage(
-        "Night Vision",
+        R.string.nightVision,
         "This Advantage allows a character to see in the dark and to adapt quickly to " +
                 "any change in light intensity.",
         "The character may ignore any penalty caused by the dark - except for magically " +
@@ -663,7 +664,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val fortunate = Advantage(
-        "Fortunate",
+        R.string.fortunate,
         "A Fortunate character enjoys true luck. He can often escape difficult " +
                 "situations due to his lucky star.",
         "The limits of this Advantage must be decided by the Game Master. In any case, the " +
@@ -680,7 +681,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val freePsychicDiscipline = Advantage(
-        "Free Access to Any Psychic Discipline",
+        R.string.allPsyDisciplines,
         "Characters with this Advantage may use any type of psychic discipline and its abilities.",
         "This Advantage enables the character to use as many Psychic Disciplines as he " +
                 "wishes using his Psychic Points.",
@@ -691,7 +692,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(2),
         0,
         {_, _ ->
-            val removable = charInstance.advantageRecord.getAdvantage("Access to One Psychic Discipline")
+            val removable = charInstance.advantageRecord.getAdvantage(R.string.psyDisciplineAccess)
             if(removable != null)
                 charInstance.advantageRecord.removeAdvantage(removable)
 
@@ -705,7 +706,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val quickReflexes = Advantage(
-        "Quick Reflexes",
+        R.string.quickReflexes,
         "The character has exceptional reflexes that allow him to respond quickly to " +
                 "any situation.",
         "Grants a special bonus of +25 to a character's initiative score. Spending " +
@@ -735,7 +736,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val learning = Advantage(
-        "Learning",
+        R.string.learning,
         "Characters with this Advantage possess an enormous capacity to learn and " +
                 "develop their potential, always gaining the maximum benefit from whatever they " +
                 "have seen or done.",
@@ -753,7 +754,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val naturalLearner = Advantage(
-        "Natural Learner",
+        R.string.natLearner,
         "Characters with this Advantage naturally improve in a specific Secondary Ability.",
         "Grants a character an innate special modifier of +10 per level in a single " +
                 "Secondary Ability. Add this modifier to any other innate class-based bonus the " +
@@ -788,7 +789,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val fieldLearner = Advantage(
-        "Natural Learner (Field)",
+        R.string.natLearnerField,
         "As Natural Learner, but in this case the character improves in all the " +
                 "Secondary Abilities that belong to a certain field.",
         "Grants a special +5 per level bonus to all the Secondary Abilities in a field. Add " +
@@ -823,7 +824,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val exceptionalMagicResistance = Advantage(
-        "Exceptional Magic Resistance",
+        R.string.exceptionalMRes,
         "Characters with this Advantage possess heightened resistance to magical attacks and effects.",
         "Add a special bonus of +25 to Magic Resistance (MR). Spending a second Creation " +
                 "Point increases the bonus to +50.",
@@ -848,7 +849,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val exceptionalPhysicalResistance = Advantage(
-        "Exceptional Physical Resistance",
+        R.string.exceptionalPhRes,
         "Characters with this Advantage possess heightened resistance to physical " +
                 "attacks and effects. Damage, poisons, and disease do not affect them as they do " +
                 "other people.",
@@ -892,7 +893,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val exceptionalPsychicResistance = Advantage(
-        "Exceptional Psychic Resistance",
+        R.string.exceptionalPsyRes,
         "The mind fo a character with this Advantage possesses very strong mental " +
                 "barriers that protect him from psychic attacks and other negative psychic effects.",
         "This Advantage adds a special bonus of +25 to a character's Psychic Resistance " +
@@ -918,7 +919,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val lightSleeper = Advantage(
-        "Light Sleeper",
+        R.string.lightSleeper,
         "A character with this Advantage remains partially conscious while sleeping and " +
                 "is able to wake at the slightest noise or movement.",
         "The character applies a penalty of only -20 to his Notice ability while sleeping.",
@@ -946,7 +947,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
 
 
     val badLuck = Advantage(
-        "Bad Luck",
+        R.string.badLuck,
         "Characters with this Disadvantage have very bad luck in doing what they set " +
                 "out to do; they fail much more than they would like.",
         "The required number for a fumble increases by 2 points. Normal abilities, " +
@@ -963,7 +964,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val blind = Advantage(
-        "Blind",
+        R.string.blind,
         "A character with this Disadvantage is completely blind.",
         "The character cannot use any ability that requires sight. He applies the blinded " +
                 "penalty at all times.",
@@ -978,7 +979,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val deafness = Advantage(
-        "Deafness",
+        R.string.deafness,
         "A character with this Disadvantage cannot hear anything.",
         "The character cannot use any ability that requires hearing.",
         null,
@@ -992,7 +993,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val mute = Advantage(
-        "Mute",
+        R.string.mute,
         "A character with this Disadvantage is incapable of speaking.",
         "The character cannot speak.",
         null,
@@ -1006,7 +1007,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val nearsighted = Advantage(
-        "Nearsighted",
+        R.string.nearsighted,
         "A character with this Disadvantage cannot see well. Many things appear blurry, " +
                 "and he has difficulty even reading.",
         "Apply a -50 penalty to any Notice and Search rolls using vision, and a -3 to any " +
@@ -1024,7 +1025,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val exclusiveWeapon = Advantage(
-        "Exclusive Weapon",
+        R.string.exclusiveWeapon,
         "A character with this Disadvantage is accustomed to fighting exclusively with " +
                 "a specific weapon and therefore is less able to fight with other weapons.",
         "The character applies a penalty of -30 to his combat ability with any weapon other " +
@@ -1041,7 +1042,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val severeAllergy = Advantage(
-        "Severe Allergy",
+        R.string.severeAllergy,
         "A character with this Disadvantage suffers from some type of allergy which is " +
                 "so serious that, by mere contact or inhalation, he will have a terrible allergic " +
                 "reaction lasting hours. Some examples of typical allergies are to metal, pollen, " +
@@ -1060,7 +1061,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val seriousVice = Advantage(
-        "Addiction or Serious Vice",
+        R.string.addictionOrVice,
         "A character with this Disadvantage has an urgent need to take some type of " +
                 "action or to consume a specific substance daily and will do anything necessary " +
                 "to satisfy his vice - otherwise he will begin to feel very nervous and go into " +
@@ -1078,7 +1079,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val atrophiedLimb = Advantage(
-        "Atrophied Limb",
+        R.string.atrophiedLimb,
         "A character with this Disadvantage has a severe problem with one of his limbs. " +
                 "This limb may shake all the time, or it may not respond when most needed.",
         "The character applies a penalty of -80 to all physical actions that require the " +
@@ -1094,7 +1095,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val seriousIllness = Advantage(
-        "Serious Illness",
+        R.string.seriousIllness,
         "A character with this Disadvantage suffers from some type of degenerative " +
                 "disease that will end up killing him. Usually, he has an average of little more " +
                 "than half a year of life remaining when beginning the game. However, the period " +
@@ -1115,7 +1116,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val physicalWeakness = Advantage(
-        "Physical Weakness",
+        R.string.physicalWeakness,
         "A character with this Disadvantage is exceptionally weak physically; whenever " +
                 "he receives a critical wound, he has a strong possibility of dying or of " +
                 "suffering irreversible damage.",
@@ -1131,7 +1132,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val deepSleeper = Advantage(
-        "Deep Sleeper",
+        R.string.deepSleeper,
         "A character with this Disadvantage sleeps very deeply and has difficulty " +
                 "awakening. He will remain asleep even with light physical contact, and when he " +
                 "finally does awaken, he will be stunned for several minutes.",
@@ -1148,7 +1149,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val deductCharacteristic = Advantage(
-        "Deduct Two Points from a Characteristic",
+        R.string.deductCharacteristic,
         "One of the Characteristics of a character with this Disadvantage is less " +
                 "developed than it should be.",
         "Deduct 2 points from one of the character's Primary Characteristics.",
@@ -1168,7 +1169,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val unfortunate = Advantage(
-        "Unfortunate",
+        R.string.unfortunate,
         "Misfortune follows the character wherever he goes. Terrible things happen to " +
                 "him no matter how much he tries to avoid them.",
         "The GM will have to interpret the limits of this Disadvantage. In a group, an " +
@@ -1185,7 +1186,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val easilyPossessed = Advantage(
-        "Easily Possessed",
+        R.string.easilyPossessed,
         "A character with this Disadvantage is easily controlled by any being with the " +
                 "ability to affect his mind or alter his personality - even if the character's " +
                 "will is strong.",
@@ -1202,7 +1203,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val exhausted = Advantage(
-        "Exhausted",
+        R.string.exhausted,
         "A character with this Disadvantage is vulnerable to Fatigue. Not only will he " +
                 "tire more easily than others, but he particularly suffers the effects of Fatigue.",
         "Doubles Fatigue penalties to actions and reduces the base Fatigue of the character " +
@@ -1224,7 +1225,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val severePhobia = Advantage(
-        "Severe Phobia",
+        R.string.severePhobia,
         "A character with this Disadvantage experiences a terrible fear of something, " +
                 "which forces him to behave irrationally in its presence. The exact nature of " +
                 "the phobia is at the discretion of the GM.",
@@ -1240,7 +1241,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val painVulnerability = Advantage(
-        "Vulnerability to Pain",
+        R.string.painVulnerability,
         "The character has no resistance to physical pain, which terrifies him.",
         "Doubles any penalty caused by pain, including those produced by criticals or " +
                 "mystical effects.",
@@ -1255,7 +1256,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val sickly = Advantage(
-        "Sickly",
+        R.string.sickly,
         "A character with this Disadvantage suffers from bad health and sickens easily.",
         "Reduce the character's Disease Resistance (DR) by half.",
         null,
@@ -1269,7 +1270,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val slowHealer = Advantage(
-        "Slow Healer",
+        R.string.slowHealer,
         "A character with this Disadvantage possesses a very low recuperative capacity " +
                 "and recovers from wounds with great difficulty - even with supernatural aid.",
         "The character recovers only half the Life Points he should by whatever means, " +
@@ -1291,7 +1292,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val slowLearner = Advantage(
-        "Slow Learner",
+        R.string.slowLearner,
         "A character with this Disadvantage cannot learn as quickly as a normal individual.",
         "The character suffers a penalty of -4 Experience Points to those granted by the GM " +
                 "at the end of a session. An additional point in this Disadvantage increases the " +
@@ -1307,7 +1308,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val slowReactions = Advantage(
-        "Slow Reactions",
+        R.string.slowReactions,
         "The character's reflexes leave him ill-prepared to respond quickly to events.",
         "The character applies a special penalty of -30 to his Initiative. An additional " +
                 "point in this Disadvantage increases the penalty to -60.",
@@ -1336,7 +1337,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val magicSusceptibility = Advantage(
-        "Magic Susceptibility",
+        R.string.magicSusceptibility,
         "A character with this Disadvantage is easily affected by magical energies",
         "Reduce the character's MR by half.",
         null,
@@ -1350,7 +1351,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val poisonSusceptibility = Advantage(
-        "Susceptible to Poisons",
+        R.string.poisonSusceptibility,
         "A character with this Disadvantage cannot combat the negative effects of any " +
                 "type of harmful substance.",
         "Reduce the character's Venom Resistance (VR) by half.",
@@ -1365,7 +1366,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val unattractive = Advantage(
-        "Unattractive",
+        R.string.unattractive,
         "A character with this Disadvantage suffers from terrible deformities that make " +
                 "him very distasteful to look upon.",
         "This Disadvantage reduces a character's Appearance to 2.",
@@ -1383,7 +1384,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     )
 
     val temperatureVulnerability = Advantage(
-        "Vulnerable to Heat/Cold",
+        R.string.tempVulnerability,
         "A character with this Disadvantage is particularly vulnerable to heat or " +
                 "cold (player's choice).",
         "The character suffers a penalty of -80 to his Resistance against the chosen " +

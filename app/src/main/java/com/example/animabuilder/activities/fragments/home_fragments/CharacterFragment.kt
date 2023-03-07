@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
@@ -19,9 +20,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.view_models.BottomBarViewModel
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.view_models.CharacterFragmentVM
+import com.example.animabuilder.view_models.CharacterFragmentViewModel
 
 /**
  * Fragment to be displayed when working with basic characteristics
@@ -34,7 +35,7 @@ import com.example.animabuilder.view_models.CharacterFragmentVM
 fun CharacterPageFragment(
     charInstance: BaseCharacter,
     maxNumVM: BottomBarViewModel,
-    charFragVM: CharacterFragmentVM = CharacterFragmentVM(charInstance, maxNumVM),
+    charFragVM: CharacterFragmentViewModel = CharacterFragmentViewModel(charInstance, maxNumVM),
     updateFunc: () -> Unit,
 ){
     val context = LocalContext.current
@@ -107,7 +108,7 @@ fun CharacterPageFragment(
 
         item{
             Text(text = stringResource(R.string.appearance))
-            UserInput(
+            NumberInput(
                 charFragVM.appearInput.collectAsState().value,
                 {},
                 {input ->
@@ -120,12 +121,13 @@ fun CharacterPageFragment(
                     }
                 },
                 {
-                    if(charInstance.advantageRecord.getAdvantage(R.string.unattractive) == null) {
+                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null) {
                         charInstance.setAppearance(5)
                         charFragVM.setAppearInput("")
                     }
                 },
                 {},
+                Color.Black,
                 Modifier
             )
         }
@@ -139,7 +141,7 @@ fun CharacterPageFragment(
  */
 @Composable
 private fun DropdownObject(
-    item: CharacterFragmentVM.DropdownData,
+    item: CharacterFragmentViewModel.DropdownData,
     updateFunc: () -> Unit
 ){
     val heldArray = stringArrayResource(item.options)
@@ -199,7 +201,7 @@ private fun DropdownObject(
  */
 @Composable
 private fun PrimaryRow(
-    primeItem: CharacterFragmentVM.PrimeCharacteristicData
+    primeItem: CharacterFragmentViewModel.PrimeCharacteristicData
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         //row label
@@ -209,7 +211,7 @@ private fun PrimaryRow(
             modifier = Modifier.weight(0.25f))
 
         //user input section
-        UserInput(
+        NumberInput(
             primeItem.input.collectAsState().value,
             {},
             {input ->
@@ -224,6 +226,7 @@ private fun PrimaryRow(
             },
             {primeItem.setInput("")},
             {},
+            Color.Black,
             Modifier.weight(0.25f)
         )
 

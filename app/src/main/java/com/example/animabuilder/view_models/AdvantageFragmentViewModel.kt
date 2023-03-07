@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class AdvantageFragmentVM(
+class AdvantageFragmentViewModel(
     private val advantageRecord: AdvantageRecord
 ): ViewModel() {
     private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent).toString())

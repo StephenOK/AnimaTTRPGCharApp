@@ -12,10 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 
@@ -204,7 +205,7 @@ private fun MakeRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //user input for the stat's score
-        UserInput(
+        NumberInput(
             userInput.value,
             {},
             {input: String ->
@@ -216,6 +217,7 @@ private fun MakeRow(
                 checkedState.value = item.bonusApplied
                 updateBottomBar()
             },
+            Color.Black,
             Modifier.weight(0.25f)
         )
 

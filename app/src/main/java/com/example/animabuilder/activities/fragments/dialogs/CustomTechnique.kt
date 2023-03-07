@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -25,7 +26,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.R
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
@@ -1920,7 +1921,7 @@ private fun EditBuildRow(
             //initialize build value
             val buildVal = remember { mutableStateOf(workArray[index].toString()) }
 
-            UserInput(
+            NumberInput(
                 buildVal.value,
                 {},
                 { catchIn: String ->
@@ -1936,6 +1937,7 @@ private fun EditBuildRow(
                     buildVal.value = ""
                 },
                 {},
+                Color.Black,
                 Modifier.weight(0.2f)
             )
 
@@ -1966,7 +1968,7 @@ private fun MaintenanceInput(
         Text(text = statName, modifier = Modifier.weight(0.5f))
 
         //maintenance input
-        UserInput(
+        NumberInput(
             maintInput.value,
             {},
             { input ->
@@ -1979,6 +1981,7 @@ private fun MaintenanceInput(
                 maintInput.value = ""
             },
             {},
+            Color.Black,
             Modifier.weight(0.5f)
         )
     }

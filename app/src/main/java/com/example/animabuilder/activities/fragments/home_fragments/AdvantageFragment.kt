@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
-import com.example.animabuilder.view_models.AdvantageFragmentVM
+import com.example.animabuilder.view_models.AdvantageFragmentViewModel
 
 /**
  * Section that displays advantage and disadvantage information to the user
@@ -29,7 +29,7 @@ import com.example.animabuilder.view_models.AdvantageFragmentVM
 
 @Composable
 fun AdvantageFragment(
-    advantageFragVM: AdvantageFragmentVM,
+    advantageFragVM: AdvantageFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit
 ){
@@ -92,8 +92,8 @@ fun AdvantageFragment(
  */
 @Composable
 private fun AdvantageDisplay(
-    advantageFragVM: AdvantageFragmentVM,
-    advantageList: AdvantageFragmentVM.AdvantageButtonData,
+    advantageFragVM: AdvantageFragmentViewModel,
+    advantageList: AdvantageFragmentViewModel.AdvantageButtonData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit
 ){
@@ -167,8 +167,8 @@ private fun AdvantageRow(
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
-        if(takenAddition != null) stringResource(item.name) + takenAddition
-        else stringResource(item.name)
+        if(takenAddition != null) item.name + takenAddition
+        else item.name
 
     Row{
         //implement button with given image and function
@@ -194,7 +194,7 @@ private fun AdvantageRow(
  */
 @Composable
 private fun HeldAdvantageDisplay(
-    advantageFragVM: AdvantageFragmentVM,
+    advantageFragVM: AdvantageFragmentViewModel,
     item: Advantage,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit

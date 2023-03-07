@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation
 
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.serializables.SerialOutputStream
@@ -13,8 +12,6 @@ import com.example.animabuilder.character_creation.attributes.race_objects.RaceN
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.summoning.Summoning
-import com.example.animabuilder.character_creation.equipment.armor.Armor
-import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.attributes.modules.WeaponProficiencies
 import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryList
 import java.io.*
@@ -270,7 +267,7 @@ class BaseCharacter: Serializable {
 
     @JvmName("setAppearance1")
     fun setAppearance(input: Int){
-        if(advantageRecord.getAdvantage(R.string.unattractive) != null)
+        if(advantageRecord.getAdvantage("Unattractive") != null)
             appearance = 2
         else if(ownRace.heldRace != RaceName.danjayni || input in 3..7)
             appearance = input

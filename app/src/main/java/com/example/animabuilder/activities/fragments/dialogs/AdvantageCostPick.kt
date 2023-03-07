@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.example.animabuilder.view_models.AdvantageFragmentVM
+import com.example.animabuilder.view_models.AdvantageFragmentViewModel
 
 /**
  * Dialog that allows the user to choose specific information about their desired advantage
@@ -21,7 +21,7 @@ import com.example.animabuilder.view_models.AdvantageFragmentVM
 
 @Composable
 fun AdvantageCostPick(
-    advantageFragmentVM: AdvantageFragmentVM,
+    advantageFragmentVM: AdvantageFragmentViewModel,
     closeDialog: (String?) -> Unit
 ){
     val item = advantageFragmentVM.adjustedAdvantage.collectAsState().value!!

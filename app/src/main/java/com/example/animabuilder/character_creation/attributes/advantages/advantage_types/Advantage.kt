@@ -3,7 +3,7 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 import java.io.Serializable
 
 open class Advantage(
-    val name: Int,
+    val name: String,
     val description: String,
     val effect: String?,
     val restriction: String?,

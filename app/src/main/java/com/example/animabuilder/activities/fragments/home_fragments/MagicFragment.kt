@@ -8,9 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.Magic
@@ -218,7 +219,7 @@ fun MagicFragment(
                 )
 
                 //Zeon point purchase input
-                UserInput(
+                NumberInput(
                     boughtZeonString.value,
                     {},
                     { input ->
@@ -235,6 +236,7 @@ fun MagicFragment(
                         maxZeonString.value = magic.zeonMax.toString()
                         updateFunc()
                     },
+                    Color.Black,
                     Modifier.weight(0.25f)
                 )
 
@@ -265,7 +267,7 @@ fun MagicFragment(
                 Text(text = "Projection Imbalance: ")
 
                 //input to change imbalance
-                UserInput(
+                NumberInput(
                     projectionImbalance.value,
                     {},
                     { input ->
@@ -287,6 +289,7 @@ fun MagicFragment(
                         defenseImbalance.value =
                             determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
                     },
+                    Color.Black,
                     Modifier
                 )
             }
@@ -401,12 +404,13 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
             Text(text = tableItem.baseDisplay)
 
             //input for user to purchase these points
-            UserInput(
+            NumberInput(
                 tableItem.boughtValue.value,
                 {},
                 tableItem.functionInput,
                 tableItem.functionZero,
                 {},
+                Color.Black,
                 Modifier
             )
 
@@ -468,7 +472,7 @@ private fun SpellBookInvestment(
             Text(text = spellData.spellElement.name, modifier = Modifier.weight(0.3f))
 
             //display book investment value
-            UserInput(
+            NumberInput(
                 spellData.elementInvestment.value,
                 { displayActive.value = false },
                 { input ->
@@ -490,6 +494,7 @@ private fun SpellBookInvestment(
                     //update spells taken
                     updateSpellList()
                 },
+                Color.Black,
                 Modifier
             )
 

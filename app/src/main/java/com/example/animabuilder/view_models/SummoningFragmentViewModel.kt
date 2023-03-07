@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class SummoningFragmentVM(
+class SummoningFragmentViewModel(
     val summoning: Summoning
 ): ViewModel() {
     private val summon = SummonItemData(R.string.summonTitle, summoning.summon)

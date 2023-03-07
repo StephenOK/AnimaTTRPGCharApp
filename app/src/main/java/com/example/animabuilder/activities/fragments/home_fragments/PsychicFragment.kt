@@ -10,9 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
@@ -128,7 +129,7 @@ private fun PsychicPurchaseTable(
         Text(text = tableData.baseString)
 
         //input for user purchased value
-        UserInput(
+        NumberInput(
             tableData.purchaseAmount.value,
             {},
             tableData.buyFunction,
@@ -137,6 +138,7 @@ private fun PsychicPurchaseTable(
                 tableData.purchaseAmount.value = ""
             },
             {updateFunc()},
+            Color.Black,
             Modifier
         )
 

@@ -1,12 +1,11 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
 
 class PsychicAdvantages: Serializable {
     val amplifySustainedPower = Advantage(
-        R.string.amplifySustainedPower,
+        "Amplify Sustained Power",
         "A character with this Advantage can maintain his psychic powers with more force.",
         "Any powers maintained in this way are one difficulty level higher than what the " +
                 "psychic could normally attain.",
@@ -21,7 +20,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val psychicPointRecovery = Advantage(
-        R.string.psyPointRecovery,
+        "Psychic Point Recovery",
         "A character with this Advantage can easily recover from using his abilities.",
         "The character's recovery rate for Psychic Points is 1 point every 10 minutes. " +
                 "Spending additional Creation Points increases the rate to 1 point every five " +
@@ -37,7 +36,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val psychicFatigueResistance = Advantage(
-        R.string.psyFatigueRes,
+        "Psychic Fatigue Resistance",
         "A character with this Advantage never experiences exhaustion when using his " +
                 "psychic powers.",
         "If a character fails in the use of one of his powers, he does not lose Fatigue " +
@@ -54,7 +53,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val passiveConcentration = Advantage(
-        R.string.passiveConcentration,
+        "Passive Concentration",
         "A character with this Advantage can concentrate in any situation, no matter the " +
                 "difficulty or complications.",
         "The psychic can concentrate to harness a power even while executing active actions.",
@@ -69,7 +68,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val psychicInclination = Advantage(
-        R.string.psychicInclination,
+        "Psychic Inclination",
         "A character with this Advantage has developed one of his Psychic Disciplines " +
                 "more than the rest of his abilities.",
         "The character automatically gains one level of difficulty greater than normal when " +
@@ -94,7 +93,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val focus = Advantage(
-        R.string.focus,
+        "Focus",
         "Characters with the Advantage can harness their ability more than normal and " +
                 "focus their powers on a particular objective.",
         "Psychic Points spent to improve Psychic Projection increase the ability by +20 " +
@@ -110,7 +109,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val extremeConcentration = Advantage(
-        R.string.extremeConcentration,
+        "Extreme Concentration",
         "A character with this Advantage can concentrate much more than most psychics, " +
                 "thereby gaining greater benefits from his abilities.",
         "The psychic doubles the bonus he normally gains from concentration. For example, " +
@@ -132,7 +131,7 @@ class PsychicAdvantages: Serializable {
 
 
     val psychicExhaustion = Advantage(
-        R.string.psychicExhaustion,
+        "Psychic Exhaustion",
         "The psychic powers of a character with this Disadvantage cause great physical " +
                 "stress upon his body, leaving him terribly exhausted even when using his " +
                 "low-level psychic abilities.",
@@ -148,7 +147,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val psychicConsumption = Advantage(
-        R.string.psychicConsumption,
+        "Psychic Consumption",
         "The psychic powers of a character with this Disadvantage create serious " +
                 "feedback in his body, causing internal damage.",
         "If the character suffers a psychic failure, he automatically loses the same " +
@@ -164,7 +163,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val onePowerAtATime = Advantage(
-        R.string.onePowerAtATime,
+        "One Power at a Time",
         "The psychic powers of the character do not allow him to use several abilities " +
                 "at once. If the character uses one power, his focus remains so intense that he " +
                 "cannot project others - except those maintained unconsciously.",
@@ -182,7 +181,7 @@ class PsychicAdvantages: Serializable {
     )
 
     val noConcentration = Advantage(
-        R.string.noConcentration,
+        "No Concentration",
         "The psychic powers of a character with this Disadvantage are too unreliable " +
                 "for him to plan ahead in their use.",
         "A psychic with this Disadvantage does not apply bonuses to his psychic potential " +

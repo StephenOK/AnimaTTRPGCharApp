@@ -203,7 +203,9 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment(charInstance.combat, charInstance.primaryList)
+                        CombatFragment(
+                            CombatFragViewModel(charInstance.combat, charInstance.primaryList),
+                        )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
@@ -216,7 +218,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
                         AdvantageFragment(
-                            AdvantageFragmentVM(charInstance.advantageRecord),
+                            AdvantageFragmentViewModel(charInstance.advantageRecord),
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
@@ -254,7 +256,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
                         SummoningFragment(
-                            SummoningFragmentVM(charInstance.summoning)
+                            SummoningFragmentViewModel(charInstance.summoning)
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }

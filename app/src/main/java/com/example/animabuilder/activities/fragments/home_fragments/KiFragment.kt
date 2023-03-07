@@ -9,12 +9,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
-import com.example.animabuilder.UserInput
+import com.example.animabuilder.NumberInput
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -297,7 +298,7 @@ private fun KiFromStatRow(
         Text(text = ki.getStatKi(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki points purchased input
-        UserInput(
+        NumberInput(
             pointString.value,
             {},
             {input: String ->
@@ -307,6 +308,7 @@ private fun KiFromStatRow(
             {kiRowData.pointUpdate(0, pointTotalString, changePointDisplay)
                 pointString.value = ""},
             {},
+            Color.Black,
             Modifier.weight(0.13f)
         )
 
@@ -317,7 +319,7 @@ private fun KiFromStatRow(
         Text(text = ki.getStatKiAcc(kiRowData.statVal).toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki accumulation purchased input
-        UserInput(
+        NumberInput(
             accString.value,
             {},
             {input: String ->
@@ -327,6 +329,7 @@ private fun KiFromStatRow(
             {kiRowData.accUpdate(0, accTotalString, changeAccDisplay)
                 accString.value = ""},
             {},
+            Color.Black,
             Modifier.weight(0.13f)
         )
 

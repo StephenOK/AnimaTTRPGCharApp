@@ -9,18 +9,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
-import com.example.animabuilder.UserInput
-import com.example.animabuilder.view_models.SummoningFragmentVM
+import com.example.animabuilder.NumberInput
+import com.example.animabuilder.view_models.SummoningFragmentViewModel
 
 /**
  * Fragment that displays the character's summoning abilities
  */
 @Composable
 fun SummoningFragment(
-    summoningVM: SummoningFragmentVM,
+    summoningVM: SummoningFragmentViewModel,
     updateFunc: () -> Unit
 ){
     LazyColumn{
@@ -50,7 +51,7 @@ fun SummoningFragment(
  */
 @Composable
 private fun SummoningAbilityRow(
-    inputData: SummoningFragmentVM.SummonItemData,
+    inputData: SummoningFragmentViewModel.SummonItemData,
     updateFunc: () -> Unit
 ){
     Row(Modifier.fillMaxWidth()){
@@ -60,7 +61,7 @@ private fun SummoningAbilityRow(
         Text(text = inputData.item.levelTotal.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
 
         //display points bought and give option to buy points
-        UserInput(
+        NumberInput(
             inputData.boughtVal.collectAsState().value,
             {},
             {input ->
@@ -74,6 +75,7 @@ private fun SummoningAbilityRow(
             {
                 updateFunc()
             },
+            Color.Black,
             Modifier.weight(0.3f)
         )
 

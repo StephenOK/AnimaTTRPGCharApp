@@ -1,7 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_types
 
 class RacialAdvantage(
-    name: Int,
+    name: String,
     description: String,
     onTake: ((Int?, Int) -> Unit)?,
     onRemove: ((Int?, Int) -> Unit)?

@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.advantages
 
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.CommonAdvantages
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.MagicAdvantages
@@ -141,7 +140,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
 
             //no need to acquire more disciplines if all are already taken
             commonAdvantages.psyDisciplineAccess -> {
-                if(this.getAdvantage(R.string.allPsyDisciplines) != null)
+                if(this.getAdvantage("Free Access to Any Psychic Discipline") != null)
                     return Pair("Already have access to all Disciplines", null)
             }
 
@@ -160,17 +159,17 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
 
             //prevent either of these disadvantages from being taken with the other one
             magicAdvantages.slowMagicRecovery ->
-                if(this.getAdvantage(R.string.magicBlockage) != null)
+                if(this.getAdvantage("Magic Blockage") != null)
                     return Pair("Cannot take this with Magic Blockage", null)
             magicAdvantages.magicBlockage ->
-                if(this.getAdvantage(R.string.slowMagRecovery) != null)
+                if(this.getAdvantage("Slow Magic Recovery") != null)
                     return Pair("Cannot take this with Slow Recovery of Magic", null)
         }
 
         //check if able to take multiple times
         if(toAdd.special == null && this.getAdvantage(toAdd.name) != null)
             return Pair("You cannot have multiple copies of this Advantage", null)
-        else if(taken != null && getAdvantage(R.string.natPathKnowledge, taken, takenCost) != null)
+        else if(taken != null && getAdvantage("Natural Knowledge of a Path", taken, takenCost) != null)
             return Pair("You cannot take the same Path multiple times", null)
 
         //create advantage to take
@@ -244,7 +243,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      *
      * itemName: name of the advantage to find
      */
-    fun getAdvantage(itemName: Int): Advantage?{
+    fun getAdvantage(itemName: String): Advantage?{
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if match is found
@@ -262,7 +261,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      * itemTaken: type of the advantage to find
      * itemCost: cost of the item to find
      */
-    fun getAdvantage(itemName: Int, itemTaken: Int, itemCost: Int): Advantage?{
+    fun getAdvantage(itemName: String, itemTaken: Int, itemCost: Int): Advantage?{
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if identical advantage found
@@ -278,7 +277,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
      *
      * toFind: name of the advantage to find
      */
-    fun findAdvantage(toFind: Int): Advantage?{
+    fun findAdvantage(toFind: String): Advantage?{
         //search through each base list to find a match
         commonAdvantages.advantages.forEach{
             //return if a common advantage matches
@@ -338,7 +337,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
         for(index in 0 until fileReader.readLine().toInt()){
             //apply recorded advantage data
             acquireAdvantage(
-                findAdvantage(fileReader.readLine().toInt())!!,
+                findAdvantage(fileReader.readLine())!!,
                 fileReader.readLine().toIntOrNull(),
                 fileReader.readLine().toInt()
             )

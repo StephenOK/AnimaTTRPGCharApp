@@ -84,6 +84,14 @@
     <string name = "specialLabel">Spec</string>
     <string name = "totalLabel">Total</string>
 
+    <string name = "multLabel">Multiplier</string>
+
+    <string name = "lifePointLabel">Life Points: </string>
+    <string name = "presenceLabel">Presence</string>
+    <string name = "totalInitiative">Total Initiative: </string>
+    <string name = "fatigueLabel">Fatigue: </string>
+    <string name = "regenLabel">Regeneration: </string>
+
     <string name = "dpCombatLabel">Combat</string>
     <string name = "dpMagicLabel">Magic</string>
     <string name = "dpPsychicLabel">Psychic</string>

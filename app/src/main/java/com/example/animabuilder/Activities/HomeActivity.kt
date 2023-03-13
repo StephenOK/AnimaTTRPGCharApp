@@ -84,6 +84,8 @@ class HomeActivity : AppCompatActivity() {
 
             val homeAlertsVM = viewModel<HomePageAlertViewModel>()
 
+            val kiFragVM = KiFragmentViewModel(charInstance.ki)
+
             //scaffold for the home page
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -237,7 +239,7 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Ki.name){
                         KiFragment(
                             charInstance.ki,
-                            charInstance.primaryList,
+                            kiFragVM,
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
@@ -277,14 +279,13 @@ class HomeActivity : AppCompatActivity() {
                         EquipmentFragment()
                     }
                 }
+
+                //show exit alert if user opens it
+                if(homeAlertsVM.exitOpen.collectAsState().value)
+                    ExitAlert(charInstance) {homeAlertsVM.setExitAlert(false)}
+                if(homeAlertsVM.detailAlertOn.collectAsState().value)
+                    DetailAlert(homeAlertsVM)
             }
-
-
-            //show exit alert if user opens it
-            if(homeAlertsVM.exitOpen.collectAsState().value)
-                ExitAlert(charInstance) {homeAlertsVM.setExitAlert(false)}
-            if(homeAlertsVM.detailAlertOn.collectAsState().value)
-                DetailAlert(homeAlertsVM)
         }
     }
 

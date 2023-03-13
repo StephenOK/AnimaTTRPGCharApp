@@ -15,10 +15,26 @@ data class TechniqueEffect(
     val maintTotal: Int,
     val costPair: Pair<Int, Int>,
     val kiBuild: MutableList<Int>,
-    val buildAdditions: MutableList<Int?>,
+    val buildAdditions: List<Int?>,
     var elements: MutableList<Element>,
     val lvl: Int
 ): Serializable{
+    fun checkBuild(isPrimary: Boolean): Boolean{
+        var total = 0
+        var accTotal =
+            if(isPrimary) costPair.first
+            else costPair.second
+
+        for(index in 0..5){
+            total += kiBuild[index]
+
+            if(kiBuild[index] > 0)
+                accTotal += buildAdditions[index]!!
+        }
+
+        return total == accTotal
+    }
+
     /**
      * Writes held data to the save file for the character
      */

@@ -109,6 +109,19 @@ class Technique(
         return false
     }
 
+    fun checkMaintenance(): Boolean{
+        if(!isMaintained())
+            return true
+
+        var total = 0
+
+        for(index in 0..5){
+            total += maintArray[index]
+        }
+
+        return total == maintTotal()
+    }
+
     /**
      * Checks if there is any build ability in the indicated stat for the whole technique
      *
@@ -157,6 +170,15 @@ class Technique(
 
         //if list is empty, lists are equivalent
         return listCopy.isEmpty()
+    }
+
+    fun checkBuilds(): Boolean{
+        givenAbilities.forEach{
+            val isPrimary = givenAbilities[0] == it
+            if(!it.checkBuild(isPrimary)) return false
+        }
+
+        return true
     }
 
     /**

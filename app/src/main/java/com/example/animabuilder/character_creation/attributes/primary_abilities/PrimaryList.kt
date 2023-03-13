@@ -9,24 +9,24 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance,
         11,
         0
-    ){
-        charInstance.combat.wearArmor.setModPoints(it)
+    ){mod, total ->
+        charInstance.combat.wearArmor.setModPoints(mod)
         charInstance.updateSize()
 
         charInstance.secondaryList.updateSTR()
-        charInstance.ki.updateKiStats()
+        charInstance.ki.strKi.primaryUpdate(total)
     }
 
     val dex = PrimaryCharacteristic(
         charInstance,
         11,
         1
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updateDEX()
-        charInstance.combat.attack.setModPoints(it)
-        charInstance.combat.block.setModPoints(it)
+        charInstance.combat.attack.setModPoints(mod)
+        charInstance.combat.block.setModPoints(mod)
         charInstance.combat.updateInitiative()
-        charInstance.ki.updateKiStats()
+        charInstance.ki.dexKi.primaryUpdate(total)
         charInstance.magic.calcMagProj()
         charInstance.psychic.updatePsyProjection()
     }
@@ -35,35 +35,35 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance,
         11,
         2
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updateAGI()
-        charInstance.combat.dodge.setModPoints(it)
+        charInstance.combat.dodge.setModPoints(mod)
         charInstance.combat.updateInitiative()
-        charInstance.ki.updateKiStats()
+        charInstance.ki.agiKi.primaryUpdate(total)
     }
 
     val con = PrimaryCharacteristic(
         charInstance,
         11,
         3
-    ){
+    ){mod, total ->
         charInstance.combat.updateFatigue()
         charInstance.combat.getBaseRegen()
         charInstance.updateSize()
 
         charInstance.combat.updateLifeBase()
         charInstance.combat.updateLifePoints()
-        charInstance.combat.diseaseRes.setMod(it)
-        charInstance.combat.venomRes.setMod(it)
-        charInstance.combat.physicalRes.setMod(it)
-        charInstance.ki.updateKiStats()
+        charInstance.combat.diseaseRes.setMod(mod)
+        charInstance.combat.venomRes.setMod(mod)
+        charInstance.combat.physicalRes.setMod(mod)
+        charInstance.ki.conKi.primaryUpdate(total)
     }
 
     val int = PrimaryCharacteristic(
         charInstance,
         13,
         4
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updateINT()
         charInstance.magic.setMagicLevelMax()
     }
@@ -72,26 +72,26 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance,
         13,
         5
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updatePOW()
-        charInstance.combat.magicRes.setMod(it)
-        charInstance.ki.updateKiStats()
+        charInstance.combat.magicRes.setMod(mod)
+        charInstance.ki.powKi.primaryUpdate(total)
         charInstance.magic.setBaseZeon()
         charInstance.magic.setBaseZeonAcc()
-        charInstance.summoning.summon.setModVal(it)
-        charInstance.summoning.bind.setModVal(it)
-        charInstance.summoning.banish.setModVal(it)
+        charInstance.summoning.summon.setModVal(mod)
+        charInstance.summoning.bind.setModVal(mod)
+        charInstance.summoning.banish.setModVal(mod)
     }
 
     val wp = PrimaryCharacteristic(
         charInstance,
         13,
         6
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updateWP()
-        charInstance.combat.psychicRes.setMod(it)
-        charInstance.ki.updateKiStats()
-        charInstance.summoning.control.setModVal(it)
+        charInstance.combat.psychicRes.setMod(mod)
+        charInstance.ki.wpKi.primaryUpdate(total)
+        charInstance.summoning.control.setModVal(mod)
         charInstance.psychic.setBasePotential()
     }
 
@@ -99,7 +99,7 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance,
         13,
         7
-    ){
+    ){mod, total ->
         charInstance.secondaryList.updatePER()
     }
 

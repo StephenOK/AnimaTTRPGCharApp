@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
-import androidx.compose.runtime.MutableState
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -191,35 +190,20 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     var martialKnowledgeSpec = 0
     var martialKnowledgeRemaining = martialKnowledgeMax
 
-    //initialize ki points for each pertinent characteristic
-    var kiSTR = 0
-    var kiDEX = 0
-    var kiAGI = 0
-    var kiCON = 0
-    var kiPOW = 0
-    var kiWP = 0
+    val strKi = KiStat(this@Ki)
+    val dexKi = KiStat(this@Ki)
+    val agiKi = KiStat(this@Ki)
+    val conKi = KiStat(this@Ki)
+    val powKi = KiStat(this@Ki)
+    val wpKi = KiStat(this@Ki)
+
+    val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
 
     //initialize total ki points
     var totalKi = 0
 
-    //initialize ki accumulation for each pertinent characteristic
-    var accSTR = 0
-    var accDEX = 0
-    var accAGI = 0
-    var accCON = 0
-    var accPOW = 0
-    var accWP = 0
-
     //initialize total accumulation value
     var totalAcc = 0
-
-    //initialize ki points bought for each characteristic
-    var boughtStrPoint = 0
-    var boughtDexPoint = 0
-    var boughtAgiPoint = 0
-    var boughtConPoint = 0
-    var boughtPowPoint = 0
-    var boughtWpPoint = 0
 
     fun updateMKSpec(input: Int){
         martialKnowledgeSpec += input
@@ -233,253 +217,27 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
         updateMkSpent()
     }
 
-    //make a function for a change in each characteristic's bought point value
-    val setBoughtStr = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtStrPoint = input
-        updateStr()
-        updateTotals()
-        statFinal.value = kiSTR.toString()
-        changeDisplay(totalKi.toString())
-    }
-
-    val setBoughtDex = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtDexPoint = input
-        updateDex()
-        updateTotals()
-        statFinal.value = kiDEX.toString()
-        changeDisplay(totalKi.toString())
-    }
-
-    val setBoughtAgi = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtAgiPoint = input
-        updateAgi()
-        updateTotals()
-        statFinal.value = kiAGI.toString()
-        changeDisplay(totalKi.toString())
-    }
-
-    val setBoughtCon = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtConPoint = input
-        updateCon()
-        updateTotals()
-        statFinal.value = kiCON.toString()
-        changeDisplay(totalKi.toString())
-    }
-
-    val setBoughtPow = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtPowPoint = input
-        updatePow()
-        updateTotals()
-        statFinal.value = kiPOW.toString()
-        changeDisplay(totalKi.toString())
-    }
-
-    val setBoughtWp = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtWpPoint = input
-        updateWp()
-        updateTotals()
-        statFinal.value = kiWP.toString()
-        changeDisplay(totalKi.toString())
-    }
-
     //initialize value for total ki points bought
     var totalPointBuy = 0
-
-    //initialize ki accumulation bought for each characteristic
-    var boughtStrAcc = 0
-    var boughtDexAcc = 0
-    var boughtAgiAcc = 0
-    var boughtConAcc = 0
-    var boughtPowAcc = 0
-    var boughtWpAcc = 0
-
-    //make a function for a change in each characteristic's bought accumulation value
-    val setStrAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtStrAcc = input
-        updateStr()
-        updateTotals()
-        statFinal.value = accSTR.toString()
-        changeDisplay(totalAcc.toString())
-    }
-
-    val setDexAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtDexAcc = input
-        updateDex()
-        updateTotals()
-        statFinal.value = accDEX.toString()
-        changeDisplay(totalAcc.toString())
-    }
-
-    val setAgiAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtAgiAcc = input
-        updateAgi()
-        updateTotals()
-        statFinal.value = accAGI.toString()
-        changeDisplay(totalAcc.toString())
-    }
-
-    val setConAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtConAcc = input
-        updateCon()
-        updateTotals()
-        statFinal.value = accCON.toString()
-        changeDisplay(totalAcc.toString())
-    }
-
-    val setPowAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtPowAcc = input
-        updatePow()
-        updateTotals()
-        statFinal.value = accPOW.toString()
-        changeDisplay(totalAcc.toString())
-    }
-
-    val setWpAcc = {
-            input: Int,
-            statFinal: MutableState<String>,
-            changeDisplay: (String) -> Unit ->
-        boughtWpAcc = input
-        updateWp()
-        updateTotals()
-        statFinal.value = accWP.toString()
-        changeDisplay(totalAcc.toString())
-    }
 
     //initialize total bought accumulation value
     var totalAccBuy = 0
 
-    /**
-     * Updates the ki values for stats when a primary characteristic changes
-     */
-    fun updateKiStats() {
-        updateStr()
-        updateDex()
-        updateAgi()
-        updateCon()
-        updatePow()
-        updateWp()
-
-        updateTotals()
+    fun updateBoughtPoints(){
+        totalPointBuy = 0
+        allKiStats.forEach{totalPointBuy += it.boughtKiPoints}
     }
-
-    /**
-     * Updates ki for the strength characteristic
-     */
-    fun updateStr() {
-        kiSTR = getStatKi(charInstance.primaryList.str.total) + boughtStrPoint
-        accSTR = getStatKiAcc(charInstance.primaryList.str.total) + boughtStrAcc
+    fun updateTotalPoints(){
+        totalKi = 0
+        allKiStats.forEach{totalKi += it.totalKiPoints}
     }
-
-    /**
-     * Updates ki for the dexterity characteristic
-     */
-    fun updateDex() {
-        kiDEX = getStatKi(charInstance.primaryList.dex.total) + boughtDexPoint
-        accDEX = getStatKiAcc(charInstance.primaryList.dex.total) + boughtDexAcc
+    fun updateBoughtAcc(){
+        totalAccBuy = 0
+        allKiStats.forEach{totalAccBuy += it.boughtAccumulation}
     }
-
-    /**
-     * Updates ki for the agility characteristic
-     */
-    fun updateAgi() {
-        kiAGI = getStatKi(charInstance.primaryList.agi.total) + boughtAgiPoint
-        accAGI = getStatKiAcc(charInstance.primaryList.agi.total) + boughtAgiAcc
-    }
-
-    /**
-     * Updates ki for the constitution characteristic
-     */
-    fun updateCon() {
-        kiCON = getStatKi(charInstance.primaryList.con.total) + boughtConPoint
-        accCON =  getStatKiAcc(charInstance.primaryList.con.total) + boughtConAcc
-    }
-
-    /**
-     * Updates ki for the power characteristic
-     */
-    fun updatePow() {
-        kiPOW = getStatKi(charInstance.primaryList.pow.total) + boughtPowPoint
-        accPOW = getStatKiAcc(charInstance.primaryList.pow.total) + boughtPowAcc
-    }
-
-    /**
-     * Updates ki for the willpower characteristic
-     */
-    fun updateWp() {
-        kiWP = getStatKi(charInstance.primaryList.wp.total) + boughtWpPoint
-        accWP = getStatKiAcc(charInstance.primaryList.wp.total) + boughtWpAcc
-    }
-
-    /**
-     * Updates all totals in relation to ki points and accumulation
-     */
-    fun updateTotals() {
-        totalKi = kiSTR + kiDEX + kiAGI + kiCON + kiPOW + kiWP
-        totalAcc = accSTR + accDEX + accAGI + accCON + accPOW + accWP
-
-        totalPointBuy = boughtStrPoint + boughtDexPoint + boughtAgiPoint + boughtConPoint + boughtPowPoint + boughtWpPoint
-        totalAccBuy = boughtStrAcc + boughtDexAcc + boughtAgiAcc + boughtConAcc + boughtPowAcc + boughtWpAcc
-        charInstance.updateTotalSpent()
-    }
-
-    /**
-     * Gets the ki point value from the inputted stat value
-     *
-     * input: value of the primary characteristic
-     */
-    fun getStatKi(input: Int): Int {
-        return if (input <= 10)
-                input
-            else
-                10 + ((input - 10) * 2)
-    }
-
-    /**
-     * Gets the ki accumulation value from the inputted stat value
-     *
-     * input: value of the primary characteristic
-     */
-    fun getStatKiAcc(input: Int): Int{
-        return if(input <= 9)
-                1
-            else if (input in 10 .. 12)
-                2
-            else if(input in 13 .. 15)
-                3
-            else 4
+    fun updateTotalAcc(){
+        totalAcc = 0
+        allKiStats.forEach{totalAcc += it.totalAccumulation}
     }
 
     /**
@@ -499,18 +257,10 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
      * Loads data in regards to this section from saved file data
      */
     fun loadKiAttributes(fileReader: BufferedReader){
-        boughtStrPoint = fileReader.readLine().toInt()
-        boughtStrAcc = fileReader.readLine().toInt()
-        boughtDexPoint = fileReader.readLine().toInt()
-        boughtDexAcc = fileReader.readLine().toInt()
-        boughtAgiPoint = fileReader.readLine().toInt()
-        boughtAgiAcc = fileReader.readLine().toInt()
-        boughtConPoint = fileReader.readLine().toInt()
-        boughtConAcc = fileReader.readLine().toInt()
-        boughtPowPoint = fileReader.readLine().toInt()
-        boughtPowAcc = fileReader.readLine().toInt()
-        boughtWpPoint = fileReader.readLine().toInt()
-        boughtWpAcc = fileReader.readLine().toInt()
+        allKiStats.forEach{
+            it.setBoughtKiPoints(fileReader.readLine().toInt())
+            it.setBoughtAccumulation(fileReader.readLine().toInt())
+        }
 
         var loops = fileReader.readLine().toInt()
 
@@ -604,18 +354,10 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
      * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation
      */
     fun writeKiAttributes() {
-        charInstance.addNewData(boughtStrPoint)
-        charInstance.addNewData(boughtStrAcc)
-        charInstance.addNewData(boughtDexPoint)
-        charInstance.addNewData(boughtDexAcc)
-        charInstance.addNewData(boughtAgiPoint)
-        charInstance.addNewData(boughtAgiAcc)
-        charInstance.addNewData(boughtConPoint)
-        charInstance.addNewData(boughtConAcc)
-        charInstance.addNewData(boughtPowPoint)
-        charInstance.addNewData(boughtPowAcc)
-        charInstance.addNewData(boughtWpPoint)
-        charInstance.addNewData(boughtWpAcc)
+        allKiStats.forEach{
+            charInstance.addNewData(it.boughtKiPoints)
+            charInstance.addNewData(it.boughtAccumulation)
+        }
 
         charInstance.addNewData(takenAbilities.size)
         takenAbilities.forEach{

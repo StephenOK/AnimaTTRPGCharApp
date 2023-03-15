@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.update
 
 class CustomTechniqueViewModel(
     val context: Context,
-    val kiFragVM: KiFragmentViewModel
+    private val kiFragVM: KiFragmentViewModel
 ) {
-    val customTechnique = Technique(
+    private val customTechnique = Technique(
         "",
         "",
         1,
@@ -108,37 +108,37 @@ class CustomTechniqueViewModel(
     val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
 
     val strMaintInput = MaintInput(
-        R.string.strText,
+        context.resources.getStringArray(R.array.primaryCharArray)[0],
         customTechnique,
         0
     )
 
     val dexMaintInput = MaintInput(
-        R.string.dexText,
+        context.resources.getStringArray(R.array.primaryCharArray)[1],
         customTechnique,
         1
     )
 
     val agiMaintInput = MaintInput(
-        R.string.agiText,
+        context.resources.getStringArray(R.array.primaryCharArray)[2],
         customTechnique,
         2
     )
 
     val conMaintInput = MaintInput(
-        R.string.conText,
+        context.resources.getStringArray(R.array.primaryCharArray)[3],
         customTechnique,
         3
     )
 
     val powMaintInput = MaintInput(
-        R.string.powText,
+        context.resources.getStringArray(R.array.primaryCharArray)[4],
         customTechnique,
         4
     )
 
     val wpMaintInput = MaintInput(
-        R.string.wpText,
+        context.resources.getStringArray(R.array.primaryCharArray)[5],
         customTechnique,
         5
     )
@@ -149,6 +149,8 @@ class CustomTechniqueViewModel(
     val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
     fun setCustomPageNum(input: Int){_customPageNum.update{input}}
+
+    fun getTechniqueLevel(): Int{return customTechnique.level}
 
     fun setTechniqueLevel(input: Int){
         customTechnique.level = input
@@ -176,9 +178,26 @@ class CustomTechniqueViewModel(
     fun setCostMinimum(input: Int){_costMinimum.update{input}}
     fun setCostMaximum(input: Int){_costMaximum.update{input}}
 
+    fun costMinMet(toMeet: Int): Boolean{
+        return toMeet >= costMinimum.value
+    }
+
+    fun minTechsMet(): Boolean{
+        when(customTechnique.level){
+            1 -> return true
+            2 -> return kiFragVM.getTakenFirstSize() >= 2
+            3 -> return kiFragVM.getTakenSecondSize() >= 2
+        }
+
+        return false
+    }
+
     fun setPickingPrimary(input: Boolean){
         _pickingPrimary.update{input}
-        if(input) _listSource.update{context.resources.getStringArray(R.array.techniqueAbilities)}
+        if(input) {
+            _listSource.update { context.resources.getStringArray(R.array.techniqueAbilities) }
+            customTechnique.givenAbilities.clear()
+        }
         else
             _listSource.update{
                 context.resources.getStringArray(R.array.techniqueAbilities) +
@@ -592,7 +611,7 @@ class CustomTechniqueViewModel(
         addedTechniques.forEach{
             if(it != null){
                 val newInput =
-                    customTechnique.validEffectAddition(it, kiFragVM.ki.martialKnowledgeRemaining - additionCost)
+                    customTechnique.validEffectAddition(it, kiFragVM.getMartialRemaining() - additionCost)
 
                 if(newInput == null){
                     additionCost += it.mkCost
@@ -615,6 +634,10 @@ class CustomTechniqueViewModel(
 
         setTechniqueIndex(0)
         return null
+    }
+
+    fun validCheckInput(effectInput: TechniqueTableData): String?{
+        return customTechnique.validEffectAddition(dataToEffect(effectInput), kiFragVM.getMartialRemaining())
     }
 
     fun getSelectedEffects(): List<TechniqueEffect?>{
@@ -704,6 +727,9 @@ class CustomTechniqueViewModel(
         }
     }
 
+    fun getTechniqueCost(): Int{return customTechnique.mkCost()}
+    fun getTechniqueEffects(): MutableList<TechniqueEffect>{return customTechnique.givenAbilities}
+
     class AccTotalString(
         val customTechVM: CustomTechniqueViewModel,
         val index: Int
@@ -721,6 +747,14 @@ class CustomTechniqueViewModel(
         }
 
         return null
+    }
+
+    fun getCheckBuilds(): Boolean{
+        return customTechnique.checkBuilds()
+    }
+
+    fun getMaintenanceCheck(): Boolean{
+        return customTechnique.checkMaintenance()
     }
 
     fun gatherIndex(index: Int): Int{
@@ -763,6 +797,9 @@ class CustomTechniqueViewModel(
         _maintenanceSelection.update{input}
     }
 
+    fun getMaintenanceTotal(): Int{return customTechnique.maintTotal()}
+    fun techHasAccIn(index: Int): Boolean{return customTechnique.hasAccumulation(index)}
+
     fun setTechniqueName(input: String){
         _techniqueName.update{input}
         customTechnique.name = input
@@ -773,10 +810,12 @@ class CustomTechniqueViewModel(
         customTechnique.description = input
     }
 
+    fun getCustomTechnique(): Technique{return customTechnique}
+
     fun closeDialog(){kiFragVM.setCustomTechOpen(false)}
 
     class MaintInput(
-        val nameRef: Int,
+        val name: String,
         val customTechnique: Technique,
         val index: Int
     ){

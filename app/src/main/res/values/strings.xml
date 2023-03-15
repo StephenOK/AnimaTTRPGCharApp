@@ -9,14 +9,16 @@
     <string name = "nav_open">Open</string>
     <string name = "nav_close">Close</string>
 
-    <string name = "strText">STR</string>
-    <string name = "dexText">DEX</string>
-    <string name = "agiText">AGI</string>
-    <string name = "conText">CON</string>
-    <string name = "intText">INT</string>
-    <string name = "powText">POW</string>
-    <string name = "wpText">WP</string>
-    <string name = "perText">PER</string>
+    <string-array name = "primaryCharArray">
+        <item>STR</item>
+        <item>DEX</item>
+        <item>AGI</item>
+        <item>CON</item>
+        <item>POW</item>
+        <item>WP</item>
+        <item>INT</item>
+        <item>PER</item>
+    </string-array>
 
     <string name = "sizeCat">Size Category: </string>
     <string name = "appearance">Appearance: </string>
@@ -91,6 +93,21 @@
     <string name = "totalInitiative">Total Initiative: </string>
     <string name = "fatigueLabel">Fatigue: </string>
     <string name = "regenLabel">Regeneration: </string>
+
+    <string name = "yesLabel">Yes</string>
+    <string name = "noLabel">No</string>
+    <string name = "addLabel">Add</string>
+    <string name = "nextLabel">Next</string>
+    <string name = "returnLabel">Return</string>
+    <string name = "confirmLabel">Confirm</string>
+    <string name = "backLabel">Back</string>
+    <string name = "cancelLabel">Cancel</string>
+    <string name = "deleteLabel">Delete</string>
+    <string name = "editLabel">Edit</string>
+    <string name = "noneLabel">None</string>
+
+    <string name = "descriptionLabel">Description</string>
+    <string name = "descriptionOfLabel">Description of </string>
 
     <string name = "dpCombatLabel">Combat</string>
     <string name = "dpMagicLabel">Magic</string>

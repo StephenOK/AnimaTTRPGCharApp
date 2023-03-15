@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "customTechHeader">Create Custom Technique</string>
+
+    <string name = "firstPageTitle">Select the Technique\'s Level:</string>
+    <string name = "secondPageTitle">Select Primary Ability: </string>
+    <string name = "thirdPageTitle">Add Secondary Abilities: </string>
+    <string name = "fifthPageTitle">Accumulation Totals: </string>
+    <string name = "sixthPageTitle">Make Technique Maintainable?</string>
+    <string name = "seventhPageTitle">Name your Technique: </string>
+
+    <string name = "mkRange">Martial Knowledge Range: </string>
+    <string name = "totalMaintCost">Total Maintenance Cost: </string>
+</resources>

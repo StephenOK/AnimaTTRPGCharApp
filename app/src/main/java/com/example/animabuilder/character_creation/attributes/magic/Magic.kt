@@ -462,12 +462,12 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * targetSpell: spell to add or remove from character
      * isBought: whether spell is being bought or removed
      */
-    fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean): Boolean{
+    fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean){
         if(magicTies)
-            return false
+            return
 
         //if spell is being bought
-        return if(isBought){
+        if(isBought){
             //check that spell isn't already owned from book investment
             if(!spellList.contains(targetSpell)){
                 //add spell to individual list
@@ -476,17 +476,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
                 //add primary element if able to now
                 if(!primaryElementList.contains(targetSpell.inBook) && !oppositeElementFound(targetSpell.inBook))
                     primaryElementList.add(targetSpell.inBook)
-
-                //update spell list
-                updateSpellList()
-
-                //indicate that spell has been acquired
-                true
             }
-
-            //do nothing if spell already owned
-            else
-                false
         }
 
         //if spell is being removed
@@ -497,13 +487,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             //remove primary element if no more investment in it
             if(getElementInvestment(targetSpell.inBook) == 0)
                 setOppositeAsPrimary(targetSpell.inBook)
-
-            //update full spell list
-            updateSpellList()
-
-            //indicate spell's removal
-            false
         }
+
+        updateSpellList()
     }
 
     /**
@@ -513,15 +499,15 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
      * elementInput: associated element of the target free spell
      * isBought: true if acquiring the spell; false if removing it
      */
-    fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean): Boolean{
+    fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean){
         if(magicTies)
-            return false
+            return
 
         //determine spell held by the character
         val spellItem = getFreeSpell(levelInput, elementInput)
 
         //if acquiring the free spell
-        return if(isBought) {
+        if(isBought) {
             //check if character has an equivalent spell already
             if(!hasCopyOf(spellItem)) {
                 //add individual spell to the list
@@ -530,17 +516,7 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
                 //add element to primary list if able to
                 if(!primaryElementList.contains(elementInput) && !oppositeElementFound(elementInput))
                     primaryElementList.add(elementInput)
-
-                //update character's spells
-                updateSpellList()
-
-                //indicate spells acquisition
-                true
             }
-
-            //do nothing if equivalent spell is present
-            else
-                false
         }
 
         //if removing free spell
@@ -558,13 +534,9 @@ class Magic(private val charInstance: BaseCharacter) : Serializable {
             //remove primary element if required
             if(getElementInvestment(elementInput) == 0)
                     setOppositeAsPrimary(elementInput)
-
-            //update character's spell list
-            updateSpellList()
-
-            //indicate removal of spell
-            false
         }
+
+        updateSpellList()
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.example.animabuilder.view_models
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class KiFragmentViewModel(
-    val ki: Ki
+    private val ki: Ki,
+    context: Context
 ): ViewModel() {
     private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.toString())
     private val _kiAccTotal = MutableStateFlow(ki.totalAcc.toString())
@@ -34,10 +36,14 @@ class KiFragmentViewModel(
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
     val allTechniques = mutableMapOf<Technique, MutableState<Boolean>>()
 
+    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining}
     fun getMartialMax(): String{return ki.martialKnowledgeMax.toString()}
     fun getAllKiAbilities(): List<KiAbility>{return ki.kiRecord.allKiAbilities}
     fun getAllTechniques(): List<Technique>{return ki.allTechniques}
     fun getCustomTechniques(): List<Technique>{return ki.customTechniques}
+
+    fun getTakenFirstSize(): Int{return ki.takenFirstTechniques.size}
+    fun getTakenSecondSize(): Int{return ki.takenSecondTechniques.size}
 
     fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.toString()}}
     fun setKiAccTotal(input: String){_kiAccTotal.update{input}}
@@ -93,6 +99,7 @@ class KiFragmentViewModel(
     }
 
     fun addTechnique(item: Technique){
+        ki.addTechnique(item)
         allTechniques += Pair(item, mutableStateOf(true))
     }
 
@@ -103,42 +110,42 @@ class KiFragmentViewModel(
     }
 
     private val kiSTR = KiRowData(
-        R.string.strText,
+        context.resources.getStringArray(R.array.primaryCharArray)[0],
         ki.strKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
     )
 
     private val kiDEX = KiRowData(
-        R.string.dexText,
+        context.resources.getStringArray(R.array.primaryCharArray)[1],
         ki.dexKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
     )
 
     private val kiAGI = KiRowData(
-        R.string.agiText,
+        context.resources.getStringArray(R.array.primaryCharArray)[2],
         ki.agiKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
     )
 
     private val kiCON = KiRowData(
-        R.string.conText,
+        context.resources.getStringArray(R.array.primaryCharArray)[3],
         ki.conKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
     )
 
     private val kiPOW = KiRowData(
-        R.string.powText,
+        context.resources.getStringArray(R.array.primaryCharArray)[4],
         ki.powKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
     )
 
     private val kiWP = KiRowData(
-        R.string.wpText,
+        context.resources.getStringArray(R.array.primaryCharArray)[5],
         ki.wpKi,
         {setKiPointTotal(ki.totalKi.toString())},
         {setKiAccTotal(ki.totalAcc.toString())}
@@ -147,7 +154,7 @@ class KiFragmentViewModel(
     val allRowData = listOf(kiSTR, kiDEX, kiAGI, kiCON, kiPOW, kiWP)
 
     class KiRowData(
-        val title: Int,
+        val title: String,
         val item: KiStat,
         val setTotalPoints: () -> Unit,
         val setTotalAcc: () -> Unit

@@ -1,5 +1,6 @@
 package com.example.animabuilder.view_models
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.update
 
 class CharacterFragmentViewModel(
     charInstance: BaseCharacter,
-    maxNumVM: BottomBarViewModel
+    maxNumVM: BottomBarViewModel,
+    context: Context
 ): ViewModel() {
     private val _nameInput = MutableStateFlow(charInstance.charName)
     private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.toString())
@@ -29,42 +31,42 @@ class CharacterFragmentViewModel(
     fun setAppearInput(newIn: String){_appearInput.update{newIn}}
 
     private val strengthData = PrimeCharacteristicData(
-        R.string.strText,
+        context.resources.getStringArray(R.array.primaryCharArray)[0],
         charInstance.primaryList.str,
     ){this.setSizeInput(charInstance.sizeCategory.toString())}
 
     private val dexterityData = PrimeCharacteristicData(
-        R.string.dexText,
+        context.resources.getStringArray(R.array.primaryCharArray)[1],
         charInstance.primaryList.dex
     ){}
 
     private val agilityData = PrimeCharacteristicData(
-        R.string.agiText,
+        context.resources.getStringArray(R.array.primaryCharArray)[2],
         charInstance.primaryList.agi
     ){}
 
     private val constitutionData = PrimeCharacteristicData(
-        R.string.conText,
+        context.resources.getStringArray(R.array.primaryCharArray)[3],
         charInstance.primaryList.con
     ){this.setSizeInput(charInstance.sizeCategory.toString())}
 
     private val intelligenceData = PrimeCharacteristicData(
-        R.string.intText,
+        context.resources.getStringArray(R.array.primaryCharArray)[6],
         charInstance.primaryList.int
     ){}
 
     private val powerData = PrimeCharacteristicData(
-        R.string.powText,
+        context.resources.getStringArray(R.array.primaryCharArray)[4],
         charInstance.primaryList.pow
     ){}
 
     private val willpowerData = PrimeCharacteristicData(
-        R.string.wpText,
+        context.resources.getStringArray(R.array.primaryCharArray)[5],
         charInstance.primaryList.wp
     ){}
 
     private val perceptionData = PrimeCharacteristicData(
-        R.string.perText,
+        context.resources.getStringArray(R.array.primaryCharArray)[7],
         charInstance.primaryList.per
     ){}
 
@@ -137,7 +139,7 @@ class CharacterFragmentViewModel(
     }
 
     class PrimeCharacteristicData(
-        val nameRef: Int,
+        val name: String,
         val primaryStat: PrimaryCharacteristic,
         val changeFunc: () -> Unit
     ){

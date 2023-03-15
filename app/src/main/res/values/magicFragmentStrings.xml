@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "zeonAccumulationLabel">Zeon Accumulation</string>
+    <string name = "magProjectionLabel">Magic Projection</string>
+
+    <string name = "zeonPointLabel">Zeon Points: </string>
+    <string name = "zeonPointMultiplier">x 5</string>
+
+    <string name = "zeonRecoveryLabel">Zeon Recovery: </string>
+    <string name = "imbalanceLabel">Projection Imbalance: </string>
+
+    <string name = "offenseLabel">Offense: </string>
+    <string name = "defenseLabel">Defense: </string>
+
+    <string name = "magicLevelLabel">Magic Levels: </string>
+    <string name = "magicLevelSpentLabel">Magic Levels Spent: </string>
+
+    <string name = "spellsTakenLabel">Current Taken Spells: </string>
+
+    <string name = "spellsHidden">Hide Spells</string>
+    <string name = "spellsShown">Show Spells</string>
+
+    <string name = "spellRemoval">Remove Spell</string>
+    <string name = "spellPurchase">Buy Spell</string>
+
+    <string name = "changeSpellLabel">Change Free Spell</string>
+
+    <string name = "activeLabel">Active</string>
+    <string name = "passiveLabel">Passive</string>
+    <string name = "dailyLabel"> (Daily)</string>
+
+    <string name = "actionLabel">Action: </string>
+    <string name = "elementLabel">Element: </string>
+    <string name = "zeonCostLabel">Zeon Cost: </string>
+    <string name = "addedEffectLabel">Added Effect: </string>
+    <string name = "maxZeonLabel">Maximum Zeon: Intelligence x </string>
+    <string name = "maintenanceLabel">Maintenance: 1 every </string>
+    <string name = "typeLabel">Type: </string>
+    <string name = "forbiddenLabel">Forbidden Elements: </string>
+</resources>

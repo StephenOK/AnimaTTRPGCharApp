@@ -7,15 +7,14 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.character_creation.Element
-import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
-
+import com.example.animabuilder.view_models.MagicFragmentViewModel
 
 /**
  * Dialog for the player to choose their character's Free Spells
@@ -30,26 +29,23 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
  */
 @Composable
 fun FreeSpellPick(
-    magic: Magic,
-    spellElement: Element,
-    spellLevel: Int,
-    textChange: (String) -> Unit,
+    magFragVM: MagicFragmentViewModel,
     detailContents: @Composable (Spell) -> Unit,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     closeDialog: () -> Unit
 ){
     //determine which level of spells to display
-    val freeList = when (spellLevel){
-        4, 8 -> magic.freeBook.firstBook
-        14, 18 -> magic.freeBook.secondBook
-        24, 28 -> magic.freeBook.thirdBook
-        34, 38 -> magic.freeBook.fourthBook
-        44, 48 -> magic.freeBook.fifthBook
-        54, 58 -> magic.freeBook.sixthBook
-        64, 68 -> magic.freeBook.seventhBook
-        74, 78 -> magic.freeBook.eighthBook
-        84, 88 -> magic.freeBook.ninthBook
-        94, 98 -> magic.freeBook.tenthBook
+    val freeList = when (magFragVM.freeLevel.collectAsState().value){
+        4, 8 -> magFragVM.getFreeSpellbook().firstBook
+        14, 18 -> magFragVM.getFreeSpellbook().secondBook
+        24, 28 -> magFragVM.getFreeSpellbook().thirdBook
+        34, 38 -> magFragVM.getFreeSpellbook().fourthBook
+        44, 48 -> magFragVM.getFreeSpellbook().fifthBook
+        54, 58 -> magFragVM.getFreeSpellbook().sixthBook
+        64, 68 -> magFragVM.getFreeSpellbook().seventhBook
+        74, 78 -> magFragVM.getFreeSpellbook().eighthBook
+        84, 88 -> magFragVM.getFreeSpellbook().ninthBook
+        94, 98 -> magFragVM.getFreeSpellbook().tenthBook
         else -> listOf()
     }
 
@@ -63,7 +59,7 @@ fun FreeSpellPick(
                 //create selection item for each available spell
                 items(freeList){
                     //determine that spell is legal for the book and not already taken
-                    if(!it.forbiddenElements.contains(spellElement) && !magic.hasCopyOf(it)){
+                    if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getFreeSpellHeld(it)){
                         PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
                             selectedSpell.value = input
                         }, openDetailAlert, detailContents)
@@ -75,10 +71,10 @@ fun FreeSpellPick(
             //confirmation button adds spell to character
             TextButton(onClick = {
                 if(selectedSpell.value != null) {
-                    magic.addFreeSpell(FreeSpell(
+                    magFragVM.addFreeSpell(FreeSpell(
                         selectedSpell.value!!.name,
                         selectedSpell.value!!.isActive,
-                        spellLevel,
+                        magFragVM.freeLevel.value,
                         selectedSpell.value!!.zCost,
                         selectedSpell.value!!.effect,
                         selectedSpell.value!!.addedEffect,
@@ -87,8 +83,8 @@ fun FreeSpellPick(
                         selectedSpell.value!!.isDaily,
                         selectedSpell.value!!.type,
                         selectedSpell.value!!.forbiddenElements
-                    ), spellElement)
-                    textChange(selectedSpell.value!!.name)
+                    ), magFragVM.freeElement.value)
+                    magFragVM.textChange.value(selectedSpell.value!!.name)
                     closeDialog()
                 }
             }) {

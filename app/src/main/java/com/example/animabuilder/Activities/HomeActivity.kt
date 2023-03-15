@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -61,6 +62,8 @@ class HomeActivity : AppCompatActivity() {
         filename.value = intent.getStringExtra("filename")
 
         setContent{
+            val context = LocalContext.current
+
             val navVM = viewModel<NavigationViewModel>()
 
             navVM.setScaffoldState(rememberScaffoldState())
@@ -84,7 +87,12 @@ class HomeActivity : AppCompatActivity() {
 
             val homeAlertsVM = viewModel<HomePageAlertViewModel>()
 
-            val kiFragVM = KiFragmentViewModel(charInstance.ki)
+            val charFragVM = CharacterFragmentViewModel(charInstance, bottomBarVM, context)
+            val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
+            val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
+            val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
+            val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)
+            val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
 
             //scaffold for the home page
             Scaffold(
@@ -199,14 +207,14 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
-                        CharacterPageFragment(charInstance, bottomBarVM)
+                        CharacterPageFragment(charInstance, charFragVM)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
                         CombatFragment(
-                            CombatFragViewModel(charInstance.combat, charInstance.primaryList),
+                            combatFragVM,
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
@@ -220,7 +228,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
                         AdvantageFragment(
-                            AdvantageFragmentViewModel(charInstance.advantageRecord),
+                            advantageFragVM,
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
@@ -238,7 +246,6 @@ class HomeActivity : AppCompatActivity() {
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
                         KiFragment(
-                            charInstance.ki,
                             kiFragVM,
                             homeAlertsVM.openDetailAlert
                         )
@@ -248,8 +255,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
                         MagicFragment(
-                            charInstance.magic,
-                            charInstance.primaryList.dex,
+                            magFragVM,
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
@@ -258,7 +264,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
                         SummoningFragment(
-                            SummoningFragmentViewModel(charInstance.summoning)
+                            summonFragVM
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }

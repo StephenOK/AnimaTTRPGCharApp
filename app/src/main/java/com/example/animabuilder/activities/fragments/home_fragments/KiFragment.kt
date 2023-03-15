@@ -11,14 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
-import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.view_models.CustomTechniqueViewModel
@@ -33,7 +34,6 @@ import com.example.animabuilder.view_models.KiFragmentViewModel
 
 @Composable
 fun KiFragment(
-    ki: Ki,
     kiFragVM: KiFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
@@ -47,19 +47,19 @@ fun KiFragment(
             .fillMaxWidth()
     ){
         //display martial knowledge values
-        item{InfoRow("Max Martial Knowledge: ", kiFragVM.getMartialMax())}
-        item{InfoRow("Martial Knowledge Remaining: ", kiFragVM.remainingMK.collectAsState().value)}
+        item{InfoRow(stringResource(R.string.maxMKLabel), kiFragVM.getMartialMax())}
+        item{InfoRow(stringResource(R.string.remainingMKLabel), kiFragVM.remainingMK.collectAsState().value)}
 
         //header for ki point and accumulation table
         item {
             Row {
                 Spacer(modifier = Modifier.weight(0.13f))
-                Text(text = "Stat Ki", modifier = Modifier.weight(0.13f))
-                Text(text = "Buy Ki", modifier = Modifier.weight(0.13f))
-                Text(text = "Ki Total", modifier = Modifier.weight(0.13f))
-                Text(text = "Stat Acc", modifier = Modifier.weight(0.13f))
-                Text(text = "Buy Acc", modifier = Modifier.weight(0.13f))
-                Text(text = "Acc Total", modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.statKiLabel), modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.buyKiLabel), modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.totalKiLabel), modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.statAccLabel), modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.buyAccLabel), modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.totalAccLabel), modifier = Modifier.weight(0.13f))
             }
         }
 
@@ -74,7 +74,7 @@ fun KiFragment(
         //total ki points and accumulation
         item {
             Row {
-                Text(text = "Totals:", modifier = Modifier.weight(0.13f))
+                Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.13f))
 
                 Spacer(Modifier.weight(0.26f))
                 Text(
@@ -100,7 +100,7 @@ fun KiFragment(
                 },
                 modifier = Modifier.width(250.dp)
             ) {
-                Text(text = "Ki Abilities")
+                Text(text = stringResource(R.string.kiAbilityLabel))
             }
         }
 
@@ -133,7 +133,7 @@ fun KiFragment(
                 },
                 modifier = Modifier.width(250.dp)
             ) {
-                Text(text = "Dominion Techniques")
+                Text(text = stringResource(R.string.dominionLabel))
             }
         }
 
@@ -152,7 +152,7 @@ fun KiFragment(
                             kiFragVM.setCustomTechOpen(true)
                         }
                     ) {
-                        Text(text = "Add Technique")
+                        Text(text = stringResource(R.string.addTechniques))
                     }
 
                     //display custom techniques
@@ -166,7 +166,7 @@ fun KiFragment(
 
     //alert for custom technique creation
     if(kiFragVM.customTechOpen.collectAsState().value)
-        CustomTechnique(ki, CustomTechniqueViewModel(context, kiFragVM), TechContents)
+        CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM), TechContents)
 }
 
 /**
@@ -184,7 +184,7 @@ private fun KiFromStatRow(
 ){
     Row{
         //display stat name
-        Text(text = stringResource(kiRowData.title), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(text = kiRowData.title, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //get stat's inherit ki points
         Text(text = kiRowData.item.baseKiPoints.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
@@ -285,7 +285,7 @@ private fun TechniqueRow(
 
         //show technique's name, cost, and level
         Text(text = toShow.name)
-        Text(text = toShow.mkCost().toString() + " MK")
+        Text(text = toShow.mkCost().toString() + " " + stringResource(R.string.mkLabel))
         Text(text = toShow.level.toString())
 
         //give button to display technique's details
@@ -306,7 +306,7 @@ val KiContents = @Composable
             else
                 "null"
 
-        InfoRow("Prerequisite:", preString)
+        InfoRow(stringResource(R.string.prereqLabel), preString)
         Text(text = ability.description)
     }
 }
@@ -321,10 +321,10 @@ val TechContents = @Composable
 
         if (technique.isMaintained()){
             Row {
-                Text(text = "Maintenance: ")
+                Text(text = stringResource(R.string.maintenanceLabel))
                 for(index in 0..5){
                     if(technique.maintArray[index] != 0)
-                        Text(text = technique.maintArray[index].toString() + " (" + getStatName(index) + ")")
+                        Text(text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")")
                 }
             }
         }
@@ -333,24 +333,11 @@ val TechContents = @Composable
 
         for(index in 0..5){
             if(kiBuilds[index] > 0)
-                InfoRow(getStatName(index), kiBuilds[index].toString())
+                InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
         }
 
-        InfoRow("Total Accumulation: ", technique.accTotal().toString())
+        InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
 
         Text(text = technique.description)
-    }
-}
-
-//function for getting the index's associated primary characteristic
-private fun getStatName(label: Int): String{
-    return when(label){
-        0 -> "STR"
-        1 -> "DEX"
-        2 -> "AGI"
-        3 -> "CON"
-        4 -> "POW"
-        5 -> "WP"
-        else -> ""
     }
 }

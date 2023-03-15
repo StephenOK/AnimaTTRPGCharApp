@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.example.animabuilder.view_models.BottomBarViewModel
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CharacterFragmentViewModel
@@ -34,8 +33,7 @@ import com.example.animabuilder.view_models.CharacterFragmentViewModel
 @Composable
 fun CharacterPageFragment(
     charInstance: BaseCharacter,
-    maxNumVM: BottomBarViewModel,
-    charFragVM: CharacterFragmentViewModel = CharacterFragmentViewModel(charInstance, maxNumVM),
+    charFragVM: CharacterFragmentViewModel,
     updateFunc: () -> Unit,
 ){
     val context = LocalContext.current
@@ -206,7 +204,7 @@ private fun PrimaryRow(
     Row(verticalAlignment = Alignment.CenterVertically){
         //row label
         Text(
-            text = "${stringResource(primeItem.nameRef)}:",
+            text = "${primeItem.name}:",
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.25f))
 

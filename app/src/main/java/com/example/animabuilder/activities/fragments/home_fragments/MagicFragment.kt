@@ -10,202 +10,35 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
-import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
-import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.example.animabuilder.view_models.MagicFragmentViewModel
 
 @Composable
 fun MagicFragment(
-    magic: Magic,
-    dex: PrimaryCharacteristic,
+    magFragVM: MagicFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
     val context = LocalContext.current
 
-    //initialize strings for maximum Zeon purchase and total
-    val boughtZeonString = remember{mutableStateOf(magic.boughtZeon.toString())}
-    val maxZeonString = remember{mutableStateOf(magic.zeonMax.toString())}
-
-    //initialize strings for Zeon Accumulation purchase and total
-    val boughtAccString = remember{mutableStateOf(magic.zeonAccMult.toString())}
-    val totalAccString = remember{mutableStateOf(magic.zeonAccTotal.toString())}
-
-    val zeonRecoverText = remember{mutableStateOf(magic.magicRecoveryTotal.toString())}
-
-    //initialize strings for Magic Projection purchase and total
-    val boughtProjString = remember{mutableStateOf(magic.boughtMagProjection.toString())}
-    val totalMagProjectString = remember{mutableStateOf(magic.magProjTotal.toString())}
-
-    //initialize states for Magic Projection imbalance
-    val projectionImbalance = remember{mutableStateOf(magic.magProjImbalance.toString())}
-    val imbalanceIsAttack = remember{mutableStateOf(magic.imbalanceIsAttack)}
-    val imbalanceTypeString = remember{mutableStateOf(
-        if(imbalanceIsAttack.value)
-            "Attack"
-        else
-            "Defense"
-    )}
-    val offenseImbalance = remember{mutableStateOf(determineImbalanceValue(
-        magic,
-        imbalanceIsAttack.value
-    ).toString())}
-    val defenseImbalance = remember{mutableStateOf(determineImbalanceValue(
-        magic,
-        !imbalanceIsAttack.value
-    ).toString())}
-
-    //initialize maximum and spent values for magic level
-    val magicLevelMax = remember{mutableStateOf(magic.magicLevelMax.toString())}
-    val magicLevelSpent = remember{mutableStateOf(magic.magicLevelSpent.toString())}
-
-    //initialize list of character's primary spell elements
-    val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
-
-    //initialize state copy of character's spell list
-    val spellList = remember{magic.spellList.toMutableStateList()}
-
-    //initialize values for the free exchange dialog
-    val freeExchangeOpen = remember{mutableStateOf(false)}
-    val freeElement = remember{mutableStateOf(Element.Light)}
-    val freeLevel = remember{mutableStateOf(4)}
-    val textChange = remember{mutableStateOf<(String) -> Unit>({})}
-
-    //initialize and fill zeon purchase table data
-    val zeonPurchaseItemTable = mutableListOf<ZeonPurchaseItemData>()
-
-    zeonPurchaseItemTable.add(ZeonPurchaseItemData(
-        "Zeon Accumulation",
-        magic.baseZeonAcc.toString(),
-        boughtAccString,
-        totalAccString,
-        { input ->
-            if (input.toInt() >= 1) {
-                magic.buyZeonAcc(input.toInt())
-                boughtAccString.value = input
-                totalAccString.value =
-                    magic.zeonAccTotal.toString()
-                zeonRecoverText.value = magic.magicRecoveryTotal.toString()
-                updateFunc()
-            }
-        },
-        {
-            magic.buyZeonAcc(1)
-            boughtAccString.value = ""
-            totalAccString.value = magic.zeonAccTotal.toString()
-            zeonRecoverText.value = magic.magicRecoveryTotal.toString()
-            updateFunc()
-        }
-    ))
-
-    zeonPurchaseItemTable.add(ZeonPurchaseItemData(
-        "Magic Projection",
-        dex.outputMod.toString(),
-        boughtProjString,
-        totalMagProjectString,
-        { input ->
-            magic.buyMagProj(input.toInt())
-            boughtProjString.value = input
-            totalMagProjectString.value =
-                magic.magProjTotal.toString()
-            offenseImbalance.value =
-                determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
-            defenseImbalance.value =
-                determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
-            updateFunc()
-        },
-        {
-            magic.buyMagProj(0)
-            boughtProjString.value = ""
-            totalMagProjectString.value =
-                magic.magProjTotal.toString()
-            offenseImbalance.value =
-                determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
-            defenseImbalance.value =
-                determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
-            updateFunc()
-        }
-    ))
-
-    //initialize and fill spell table data
-    val spellTable = mutableListOf<SpellRowData>()
-
-    spellTable.add(SpellRowData(
-        Element.Light,
-        magic.lightBook.fullBook,
-        remember{mutableStateOf(magic.pointsInLightBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Dark,
-        magic.darkBook.fullBook,
-        remember{mutableStateOf(magic.pointsInDarkBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Creation,
-        magic.creationBook.fullBook,
-        remember{mutableStateOf(magic.pointsInCreateBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Destruction,
-        magic.destructionBook.fullBook,
-        remember{mutableStateOf(magic.pointsInDestructBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Air,
-        magic.airBook.fullBook,
-        remember{mutableStateOf(magic.pointsInAirBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Earth,
-        magic.earthBook.fullBook,
-        remember{mutableStateOf(magic.pointsInEarthBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Water,
-        magic.waterBook.fullBook,
-        remember{mutableStateOf(magic.pointsInWaterBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Fire,
-        magic.fireBook.fullBook,
-        remember{mutableStateOf(magic.pointsInFireBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Essence,
-        magic.essenceBook.fullBook,
-        remember{mutableStateOf(magic.pointsInEssenceBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Illusion,
-        magic.illusionBook.fullBook,
-        remember{mutableStateOf(magic.pointsInIllusionBook.toString())}
-    ))
-    spellTable.add(SpellRowData(
-        Element.Necromancy,
-        magic.necromancyBook.fullBook,
-        remember{mutableStateOf(magic.pointsInNecroBook.toString())}
-    ))
-
-
-
-
-
     //start page content
     LazyColumn{
 
         //header for zeon point maximums
-        item{Text(text = "Zeon Points:")}
+        item{Text(text = stringResource(R.string.zeonPointLabel))}
         item {
             Row {
-                Text(text = "Base", modifier = Modifier.weight(0.25f))
-                Text(text = "Bought", modifier = Modifier.weight(0.25f))
-                Text(text = "Class", modifier = Modifier.weight(0.25f))
-                Text(text = "Total", modifier = Modifier.weight(0.25f))
+                Text(text = stringResource(R.string.baseLabel), modifier = Modifier.weight(0.25f))
+                Text(text = stringResource(R.string.boughtLabel), modifier = Modifier.weight(0.25f))
+                Text(text = stringResource(R.string.classLabel), modifier = Modifier.weight(0.25f))
+                Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.25f))
             }
         }
 
@@ -214,81 +47,59 @@ fun MagicFragment(
             Row {
                 //display base maximum Zeon
                 Text(
-                    text = magic.baseZeon.toString(),
+                    text = magFragVM.getBaseZeon().toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 
                 //Zeon point purchase input
                 NumberInput(
-                    boughtZeonString.value,
+                    magFragVM.boughtZeonString.collectAsState().value,
                     {},
-                    { input ->
-                        //take inputted number and buy that many Zeon points
-                        magic.buyZeon(input.toInt())
-                        boughtZeonString.value = input
-                    },
-                    {
-                        //clear bought Zeon amount
-                        magic.buyZeon(0)
-                        boughtZeonString.value = ""
-                    },
-                    {
-                        maxZeonString.value = magic.zeonMax.toString()
-                        updateFunc()
-                    },
+                    {input -> magFragVM.setBoughtZeonString(input.toInt())},
+                    {magFragVM.setBoughtZeonString("")},
+                    {updateFunc()},
                     Color.Black,
                     Modifier.weight(0.25f)
                 )
 
-                Text(text = "x 5", modifier = Modifier.weight(0.1f))
+                Text(text = stringResource(R.string.zeonPointMultiplier), modifier = Modifier.weight(0.1f))
 
                 //display zeon points from class levels
                 Text(
-                    text = magic.zeonFromClass.toString(),
+                    text = magFragVM.getClassZeon().toString(),
                     modifier = Modifier.weight(0.25f)
                 )
 
                 //display final total
-                Text(text = maxZeonString.value, modifier = Modifier.weight(0.25f))
+                Text(text = magFragVM.maxZeonString.collectAsState().value, modifier = Modifier.weight(0.25f))
             }
         }
 
-        item{Text(text = "Zeon Recovery: " + zeonRecoverText.value)}
+        item{Text(text = stringResource(R.string.zeonRecoveryLabel) + magFragVM.zeonRecoveryString.collectAsState().value)}
 
         //display zeon accumulation and magic projection tables
-        items(zeonPurchaseItemTable){
-            ZeonPurchaseItem(it)
+        items(magFragVM.allPurchaseData){
+            ZeonPurchaseItem(it, updateFunc)
         }
 
         //projection imbalance section
         item {
             Row {
                 //title for section
-                Text(text = "Projection Imbalance: ")
+                Text(text = stringResource(R.string.imbalanceLabel))
 
                 //input to change imbalance
                 NumberInput(
-                    projectionImbalance.value,
+                    magFragVM.projectionImbalance.collectAsState().value,
                     {},
                     { input ->
                         //if imbalance is a legal input
                         if (input.toInt() in 0..30) {
-                            //set magic imbalance to input
-                            magic.magProjImbalance = input.toInt()
-                            projectionImbalance.value = input
+                            magFragVM.setProjectionImbalance(input.toInt())
                         }
                     },
-                    {
-                        //default imbalance to 0
-                        magic.magProjImbalance = 0
-                        projectionImbalance.value = ""
-                    },
-                    {
-                        offenseImbalance.value =
-                            determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
-                        defenseImbalance.value =
-                            determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
-                    },
+                    {magFragVM.setProjectionImbalance("")},
+                    {},
                     Color.Black,
                     Modifier
                 )
@@ -300,84 +111,67 @@ fun MagicFragment(
             Row {
                 Button(onClick = {
                     //switch imbalance preference
-                    imbalanceIsAttack.value = !imbalanceIsAttack.value
-                    magic.imbalanceIsAttack = !magic.imbalanceIsAttack
-                    offenseImbalance.value =
-                        determineImbalanceValue(magic, imbalanceIsAttack.value).toString()
-                    defenseImbalance.value =
-                        determineImbalanceValue(magic, !imbalanceIsAttack.value).toString()
-
-                    imbalanceTypeString.value = if(imbalanceIsAttack.value) "Attack" else "Defense"
+                    magFragVM.setImbalanceIsAttack(magFragVM.imbalanceIsAttack.value)
                 }) {
                     //display current imbalance preference
-                    Text(text = imbalanceTypeString.value)
+                    Text(text = magFragVM.imbalanceTypeString.collectAsState().value)
                 }
                 //display imbalanced projection values
                 Column {
-                    Text(text = "Offense: " + offenseImbalance.value)
-                    Text(text = "Defense: " + defenseImbalance.value)
+                    Text(text = stringResource(R.string.offenseLabel) + magFragVM.offenseImbalance.collectAsState().value)
+                    Text(text = stringResource(R.string.defenseLabel) + magFragVM.defenseImbalance.collectAsState().value)
                 }
             }
         }
 
         //display magic levels available and magic levels spent
-        item{Text(text = "Magic Levels: " + magicLevelMax.value)}
-        item{Text(text = "Magic Levels Spent: " + magicLevelSpent.value)}
+        item{Text(text = stringResource(R.string.magicLevelLabel) + magFragVM.magicLevelMax.collectAsState().value)}
+        item{Text(text = stringResource(R.string.magicLevelSpentLabel) + magFragVM.magicLevelSpent.collectAsState().value)}
 
         //display each book investment row and spell displays
-        items(spellTable){
+        items(magFragVM.allBooks){
             SpellBookInvestment(
-                magic,
+                magFragVM,
                 it,
-                primaryElementBoxes,
-                {magicLevelSpent.value = magic.magicLevelSpent.toString()},
-                {spellList.clear(); spellList.addAll(magic.spellList.toList())},
                 openDetailAlert
-            ) { element: Element, box: MutableState<Boolean> ->
-                primaryElementBoxes += Pair(element, box)
-            }
+            )
         }
 
         //display all currently taken spells
-        item{Text(text = "Current Taken Spells: ")}
-        items(spellList){
+        item{Text(text = stringResource(R.string.spellsTakenLabel))}
+        items(magFragVM.heldSpells){
             //display free spell exchange if it's a free spell
             if(it is FreeSpell)
                 FreeSpellExchange(
+                    magFragVM,
                     it,
-                    magic.findFreeSpellElement(it),
+                    magFragVM.getFreeElement(it),
                     it.level,
-                    {input: Element -> freeElement.value = input},
-                    {input: Int -> freeLevel.value = input},
-                    {input: (String) -> Unit -> textChange.value = input},
                     openDetailAlert
                 ) {
-                    if(magic.magicTies)
+                    if(magFragVM.getMagicTies())
                         Toast.makeText(context, "Magic Ties prevents getting Free Spells", Toast.LENGTH_LONG).show()
                     else
-                        freeExchangeOpen.value = true
+                        magFragVM.setFreeExchangeOpen(true)
                 }
             else
                 SpellRow(
-                    magic,
+                    magFragVM,
                     it,
                     false,
                     openDetailAlert
-                ) { spellList.clear(); spellList.addAll(magic.spellList.toList()) }
+                ) {}
         }
     }
 
     //show free spell dialog if displayed
-    if(freeExchangeOpen.value)
+    if(magFragVM.freeExchangeOpen.collectAsState().value)
         FreeSpellPick(
-            magic,
-            freeElement.value,
-            freeLevel.value,
-            textChange.value,
+            magFragVM,
             SpellDetails,
             openDetailAlert
         )
-        {spellList.clear(); spellList.addAll(magic.spellList); freeExchangeOpen.value = false}
+        {magFragVM.setFreeExchangeOpen(false)}
 }
 
 /**
@@ -386,36 +180,39 @@ fun MagicFragment(
  * tableItem: data for the displayed table
  */
 @Composable
-private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
+private fun ZeonPurchaseItem(
+    tableItem: MagicFragmentViewModel.ZeonPurchaseItemData,
+    updateFunc: () -> Unit
+){
     Column{
         //display table title
-        Row{Text(text = tableItem.sectionTitle)}
+        Row{Text(text = stringResource(tableItem.nameRef))}
 
         //display table header
         Row{
-            Text(text = "Base")
-            Text(text = "Bought")
-            Text(text = "Total")
+            Text(text = stringResource(R.string.baseLabel))
+            Text(text = stringResource(R.string.boughtLabel))
+            Text(text = stringResource(R.string.totalLabel))
         }
 
         //display table items
         Row{
             //display base value
-            Text(text = tableItem.baseDisplay)
+            Text(text = tableItem.baseInput.toString())
 
             //input for user to purchase these points
             NumberInput(
-                tableItem.boughtValue.value,
+                tableItem.boughtString.collectAsState().value,
                 {},
-                tableItem.functionInput,
-                tableItem.functionZero,
-                {},
+                {tableItem.setBoughtString(it.toInt())},
+                {tableItem.setBoughtString("")},
+                {updateFunc()},
                 Color.Black,
                 Modifier
             )
 
             //display final total
-            Text(text = tableItem.totalDisplay.value)
+            Text(text = tableItem.totalString.collectAsState().value)
         }
     }
 }
@@ -431,40 +228,18 @@ private fun ZeonPurchaseItem(tableItem: ZeonPurchaseItemData){
  */
 @Composable
 private fun SpellBookInvestment(
-    magic: Magic,
-    spellData: SpellRowData,
-    allElementList: MutableMap<Element, MutableState<Boolean>>,
-    updateMgLvlSpent: () -> Unit,
-    updateSpellList: () -> Unit,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    addElementBox: (Element, MutableState<Boolean>) -> Unit
+    magFragVM: MagicFragmentViewModel,
+    spellData: MagicFragmentViewModel.SpellRowData,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    //initialize spell list display boolean
-    val displayActive = remember{mutableStateOf(false)}
-
-    //initialize whether spell is a primary book or not
-    val isPrimaryElement = remember{mutableStateOf(
-        magic.primaryElementList.contains(spellData.spellElement))}
-
-    //add mutable boolean to master list
-    addElementBox(spellData.spellElement, isPrimaryElement)
+    magFragVM.addPrimaryElementBox(spellData.spellElement)
 
     Column {
         Row {
             //primary element checkbox
             Checkbox(
-                checked = isPrimaryElement.value,
-                onCheckedChange = {
-                    //change primary element in character
-                    magic.changePrimaryBook(spellData.spellElement, it)
-
-                    //change checkbox booleans to reflect the change
-                    reflectPrimaryElements(magic, allElementList)
-
-                    //update any potentially changed values
-                    updateMgLvlSpent()
-                    updateSpellList()
-                },
+                checked = magFragVM.primaryElementBoxes[spellData.spellElement]!!.value,
+                onCheckedChange = {magFragVM.changePrimaryBook(spellData.spellElement, it)},
                 modifier = Modifier.weight(0.1f)
             )
 
@@ -473,26 +248,15 @@ private fun SpellBookInvestment(
 
             //display book investment value
             NumberInput(
-                spellData.elementInvestment.value,
-                { displayActive.value = false },
-                { input ->
-                    //buy levels in the associated book
-                    magic.buyBookLevels(input.toInt(), spellData.spellElement)
-                    spellData.elementInvestment.value = input
-                },
+                spellData.elementInvestment.collectAsState().value,
+                {spellData.setListOpen(false)},
+                {input -> spellData.setElementInvestment(input.toInt())},
+                {spellData.setElementInvestment("")},
                 {
-                    //default purchase to 0
-                    magic.buyBookLevels(0, spellData.spellElement)
-                    spellData.elementInvestment.value = ""
-                },
-                {
-                    updateMgLvlSpent()
+                    magFragVM.setMagicLevelSpent()
 
                     //reflect any primary book change
-                    reflectPrimaryElements(magic, allElementList)
-
-                    //update spells taken
-                    updateSpellList()
+                    magFragVM.reflectPrimaryElement()
                 },
                 Color.Black,
                 Modifier
@@ -500,15 +264,20 @@ private fun SpellBookInvestment(
 
             //spell display button
             Button(
-                onClick = { displayActive.value = !displayActive.value },
+                onClick = {spellData.setListOpen(!spellData.listOpen.value)},
                 modifier = Modifier.weight(0.3f)
             ) {
-                Text(text = if(displayActive.value) "Hide Spells" else "Show Spells")
+                Text(
+                    text = stringResource(
+                        if(spellData.listOpen.collectAsState().value) R.string.spellsHidden
+                        else R.string.spellsShown
+                    )
+                )
             }
         }
 
         //display of spells
-        AnimatedVisibility(visible = displayActive.value) {
+        AnimatedVisibility(visible = spellData.listOpen.collectAsState().value) {
             Column {
                 //initialize free spell level indicator
                 var freeSpellLevel = 0
@@ -518,11 +287,11 @@ private fun SpellBookInvestment(
                     //display the given spell if one is given
                     if (it != null) {
                         SpellRow(
-                            magic,
+                            magFragVM,
                             it,
                             true,
                             openDetailAlert
-                        ) { reflectPrimaryElements(magic, allElementList); updateMgLvlSpent(); updateSpellList() }
+                        ) { magFragVM.reflectPrimaryElement(); magFragVM.setMagicLevelSpent()}
 
                         //increment free spell level
                         freeSpellLevel = it.level + 2
@@ -530,8 +299,8 @@ private fun SpellBookInvestment(
 
                     //display free spell row if no spell given
                     else
-                        FreeSpellRow(magic, freeSpellLevel, spellData.spellElement)
-                        { reflectPrimaryElements(magic, allElementList); updateMgLvlSpent(); updateSpellList() }
+                        FreeSpellRow(magFragVM, freeSpellLevel, spellData.spellElement)
+                        { magFragVM.reflectPrimaryElement(); magFragVM.setMagicLevelSpent()}
                 }
             }
         }
@@ -547,7 +316,7 @@ private fun SpellBookInvestment(
  */
 @Composable
 private fun SpellRow(
-    magic: Magic,
+    magFragVM: MagicFragmentViewModel,
     displayItem: Spell,
     buyable: Boolean,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
@@ -555,7 +324,7 @@ private fun SpellRow(
 ){
     Row{
         //make purchase button if buyable row
-        if(buyable) BuySingleSpellButton(magic, displayItem, updateList)
+        if(buyable) BuySingleSpellButton(magFragVM, displayItem, updateList)
 
         //display spell name
         Text(text = displayItem.name)
@@ -577,14 +346,14 @@ private fun SpellRow(
  */
 @Composable
 private fun FreeSpellRow(
-    magic: Magic,
+    magFragVM: MagicFragmentViewModel,
     lvlVal: Int,
     eleVal: Element,
     updateList: () -> Unit
 ){
     Row{
         //button to buy free spell individually
-        BuySingleFreeSpellButton(magic, lvlVal, eleVal, updateList)
+        BuySingleFreeSpellButton(magFragVM, lvlVal, eleVal, updateList)
 
         //display free spell values
         Text(text = "Free Spell (Lvl $lvlVal)")
@@ -599,20 +368,23 @@ private fun FreeSpellRow(
  */
 @Composable
 private fun BuySingleSpellButton(
-    magic: Magic,
+    magFragVM: MagicFragmentViewModel,
     inputSpell: Spell,
     updateList: () -> Unit
 ){
-    //whether spell is individually acquired by the character
-    val isBought = remember{mutableStateOf(magic.individualSpells.contains(inputSpell))}
     Button(
         onClick = {
             //attempt to purchase the spell
-            isBought.value = magic.changeIndividualSpell(inputSpell, !isBought.value)
+            magFragVM.changeIndividualSpell(inputSpell)
             updateList()
         }
     ){
-        Text(text = if(isBought.value) "Remove Spell" else "Buy Spell")
+        Text(
+            text = stringResource(
+                if(magFragVM.getIndividualSpells().contains(inputSpell)) R.string.spellRemoval
+                else R.string.spellPurchase
+            )
+        )
     }
 }
 
@@ -625,22 +397,24 @@ private fun BuySingleSpellButton(
  */
 @Composable
 private fun BuySingleFreeSpellButton(
-    magic: Magic,
+    magFragVM: MagicFragmentViewModel,
     spellLevel: Int,
     spellElement: Element,
     updateList: () -> Unit
 ){
     //determine if character has equivalent free spell taken
-    val isBought = remember{mutableStateOf(magic.hasCopyOf(magic.getFreeSpell(spellLevel, spellElement)))}
-
     Button(
         onClick = {
-            //attempt to acquire free spell slot
-            isBought.value = magic.changeIndividualFreeSpell(spellLevel, spellElement, !isBought.value)
+            magFragVM.changeIndividualFreeSpell(spellLevel, spellElement)
             updateList()
         }
     ){
-        Text(text = if(isBought.value) "Remove Spell" else "Buy Spell")
+        Text(
+            text = stringResource(
+                if(magFragVM.getFreeSpellHeld(spellLevel, spellElement)) R.string.spellRemoval
+                else R.string.spellPurchase
+            )
+        )
     }
 }
 
@@ -657,12 +431,10 @@ private fun BuySingleFreeSpellButton(
  */
 @Composable
 private fun FreeSpellExchange(
+    magFragVM: MagicFragmentViewModel,
     currentFreeSpell: FreeSpell,
     associatedElement: Element,
     associatedLevel: Int,
-    setFreeElement: (Element) -> Unit,
-    setFreeLevel: (Int) -> Unit,
-    setTextChange: ((String) -> Unit) -> Unit,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     openChoice: () -> Unit
 ){
@@ -694,13 +466,13 @@ private fun FreeSpellExchange(
         Button(
             onClick = {
                 //set dialog elements and open
-                setFreeElement(associatedElement)
-                setFreeLevel(associatedLevel)
-                setTextChange { input -> spellName.value = input }
+                magFragVM.setFreeElement(associatedElement)
+                magFragVM.setFreeLevel(associatedLevel)
+                magFragVM.setTextChange{input -> spellName.value = input}
                 openChoice()
             }
         )
-        {Text(text = "Change Free Spell")}
+        {Text(text = stringResource(R.string.changeSpellLabel))}
     }
 }
 
@@ -709,14 +481,14 @@ val SpellDetails = @Composable {spell: Spell ->
     //get active or passive text
     val action =
         if(spell.isActive)
-            "Active"
+            stringResource(R.string.activeLabel)
         else
-            "Passive"
+            stringResource(R.string.passiveLabel)
 
     //get daily text if able
     val daily =
         if(spell.isDaily)
-            " (Daily)"
+            stringResource(R.string.dailyLabel)
         else
             ""
 
@@ -735,82 +507,19 @@ val SpellDetails = @Composable {spell: Spell ->
     }
 
     Column{
-        Row{Text(text = "Action: $action")}
-        Row{Text(text = "Element: " + spell.inBook.name)}
-        Row{Text(text = "Level: " + spell.level.toString())}
-        Row{Text(text = "Zeon Cost: " + spell.zCost.toString())}
+        Row{Text(text = stringResource(R.string.actionLabel) + action)}
+        Row{Text(text = stringResource(R.string.elementLabel) + spell.inBook.name)}
+        Row{Text(text = stringResource(R.string.levelText) + spell.level.toString())}
+        Row{Text(text = stringResource(R.string.zeonCostLabel) + spell.zCost.toString())}
         Row{Text(text = spell.effect)}
-        Row{Text(text = "Added Effect: " + spell.addedEffect)}
-        Row{Text(text = "Maximum Zeon: Intelligence x " + spell.zMax)}
+        Row{Text(text = stringResource(R.string.addedEffectLabel) + spell.addedEffect)}
+        Row{Text(text = stringResource(R.string.maxZeonLabel) + spell.zMax)}
         if(spell.maintenance != null)
-            Row{Text(text = "Maintenance: 1 every " + spell.maintenance + daily)}
+            Row{Text(text = stringResource(R.string.maintenanceLabel) + spell.maintenance + daily)}
         else
-            Row{Text(text = "None")}
-        Row{Text(text = "Type: " + spellType.value)}
+            Row{Text(text = stringResource(R.string.noneLabel))}
+        Row{Text(text = stringResource(R.string.typeLabel) + spellType.value)}
         if(spell is FreeSpell)
-            Row{Text(text = "Forbidden Elements: $forbiddenList")}
+            Row{Text(text = stringResource(R.string.forbiddenLabel) + forbiddenList)}
     }
 }
-
-/**
- * Calculates the magic projection after taking into account the character's imbalance
- *
- * additionMade: whether imbalance favors the stat or not
- */
-private fun determineImbalanceValue(
-    magic: Magic,
-    additionMade: Boolean
-): Int{
-    return if(additionMade)
-        magic.magProjTotal + magic.magProjImbalance
-    else
-        magic.magProjTotal - magic.magProjImbalance
-}
-
-/**
- * Sets the displayed primary elements to match the character's primary elements
- *
- * allElementList: master list of primary element checkboxes
- */
-private fun reflectPrimaryElements(
-    magic: Magic,
-    allElementList: MutableMap<Element, MutableState<Boolean>>
-){
-    //change checkbox value if it does not match character's value
-    allElementList.forEach{
-        if(magic.primaryElementList.contains(it.key) != it.value.value)
-            it.value.value = !it.value.value
-    }
-}
-
-/**
- * Data class for stat purchase table
- *
- * sectionTitle: name of the table
- * baseDisplay: base stat of the given table
- * boughtValue: purchase value of the stat
- * totalDisplay: total value of the stat
- * functionInput: function to run for user purchase
- * functionZero: function to run if input is empty
- */
-private data class ZeonPurchaseItemData(
-    val sectionTitle: String,
-    val baseDisplay: String,
-    val boughtValue: MutableState<String>,
-    val totalDisplay: MutableState<String>,
-    val functionInput: (String) -> Unit,
-    val functionZero: () -> Unit
-)
-
-/**
- * Data class for spellbook data
- *
- * spellElement: element of the book displayed
- * spellList: list of spells to display
- * elementInvestment: amount of magical knowledge spent in this book
- */
-private data class SpellRowData(
-    val spellElement: Element,
-    val spellList: List<Spell?>,
-    val elementInvestment: MutableState<String>
-)

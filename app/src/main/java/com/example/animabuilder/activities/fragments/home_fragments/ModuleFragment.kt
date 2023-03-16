@@ -13,14 +13,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import com.example.animabuilder.character_creation.attributes.modules.StyleModule
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
-import com.example.animabuilder.character_creation.attributes.modules.WeaponProficiencies
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
+import com.example.animabuilder.view_models.ModuleFragmentViewModel
 
 /**
  * Fragment that displays attributes related to weapons and special attacks
@@ -31,91 +32,23 @@ import com.example.animabuilder.character_creation.equipment.weapons.weapon_clas
 
 @Composable
 fun ModuleFragment(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
-    val primaryWeapon = remember{mutableStateOf(weaponProficiencies.primaryWeapon)}
-    val allSecondaries = mutableMapOf<Weapon, MutableState<Boolean>>()
-    val allMartials = mutableMapOf<MartialArt, MutableState<Boolean>>()
-    val allPrimaryBoxes = mutableListOf<MutableState<Boolean>>()
-
-    //create list of weapon button data
-    val weaponButtonList = mutableListOf<WeaponListData>()
-    weaponButtonList.add(WeaponListData(
-        "Short",
-        weaponProficiencies.shortArms.shortArms,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Axes",
-        weaponProficiencies.axes.axes,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Maces",
-        weaponProficiencies.maces.maces,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Swords",
-        weaponProficiencies.swords.swords,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Two-Handed",
-        weaponProficiencies.twoHanded.twoHanded,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Pole",
-        weaponProficiencies.poles.poles,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Cords",
-        weaponProficiencies.cords.cords,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Mixed",
-        weaponProficiencies.mixed.mixed,
-        false
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Shields",
-        weaponProficiencies.shields.shields,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Projectile",
-        weaponProficiencies.projectiles.projectiles,
-        true
-    ))
-    weaponButtonList.add(WeaponListData(
-        "Thrown",
-        weaponProficiencies.thrown.thrown,
-        true
-    ))
-
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
     ){
         //display currently selected primary weapon
-        item{Text(text = "Current Primary Weapon: " + primaryWeapon.value.name)}
+        item{Text(text = stringResource(R.string.primaryWeaponLabel) + modFragVM.primaryWeapon.collectAsState().value.name)}
 
         //display each weapon list button
-        items(weaponButtonList){weaponButton ->
+        items(modFragVM.allWeapons){weaponButton ->
             WeaponListButton(
-                weaponProficiencies,
+                modFragVM,
                 weaponButton,
-                primaryWeapon.value,
-                allPrimaryBoxes,
-                allSecondaries,
-                allMartials,
-                {primaryWeapon.value = weaponProficiencies.primaryWeapon},
                 openDetailAlert,
                 updateFunc
             )
@@ -124,13 +57,8 @@ fun ModuleFragment(
         //display the unarmed weapon row
         item {
             WeaponRow(
-                weaponProficiencies,
-                weaponProficiencies.unarmed,
-                primaryWeapon.value,
-                allPrimaryBoxes,
-                allSecondaries,
-                allMartials,
-                {primaryWeapon.value = weaponProficiencies.primaryWeapon},
+                modFragVM,
+                modFragVM.getUnarmed(),
                 openDetailAlert,
                 updateFunc
             )
@@ -138,18 +66,16 @@ fun ModuleFragment(
 
         //display archetype, martial art, and style buttons
         item{ArchetypeButton(
-            weaponProficiencies,
-            allSecondaries,
+            modFragVM,
             openDetailAlert,
             updateFunc
         )}
         item{MartialButton(
-            weaponProficiencies,
-            allMartials,
+            modFragVM,
             openDetailAlert,
             updateFunc
         )}
-        item{StyleButton(weaponProficiencies, openDetailAlert, updateFunc)}
+        item{StyleButton(modFragVM, openDetailAlert, updateFunc)}
     }
 }
 
@@ -162,53 +88,39 @@ fun ModuleFragment(
  */
 @Composable
 private fun WeaponListButton(
-    weaponProficiencies: WeaponProficiencies,
-    button: WeaponListData,
-    primaryWeapon: Weapon,
-    allPrimaryBoxes: MutableList<MutableState<Boolean>>,
-    allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
-    allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
-    primaryUpdate: () -> Unit,
+    modFragVM: ModuleFragmentViewModel,
+    button: ModuleFragmentViewModel.WeaponListData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize list's open state
-    val open = remember{ mutableStateOf(false) }
-
     //button for displaying the list
     Button(
-        onClick = {open.value = !open.value},
+        onClick = {button.setListOpen(!button.listOpen.value)},
         modifier = Modifier.width(250.dp)
     ){
-        Text(text = button.name)
+        Text(text = stringResource(button.nameRef))
     }
 
     //revealable list associated with the button
     AnimatedVisibility(
-        visible = open.value,
+        visible = button.listOpen.collectAsState().value,
     ){
         Column{
             //display whole class module if one is available
             if(button.wholeClass)
                 ArchetypeRow(
-                    weaponProficiencies,
-                    button.name + " Module",
-                    button.options,
-                    allSecondaries,
+                    modFragVM,
+                    stringResource(button.nameRef) + stringResource(R.string.moduleSuffix),
+                    button.items,
                     openDetailAlert,
                     updateFunc
                 )
 
             //display all weapons from the given list
-            button.options.forEach{
+            button.items.forEach{
                 WeaponRow(
-                    weaponProficiencies,
+                    modFragVM,
                     it,
-                    primaryWeapon,
-                    allPrimaryBoxes,
-                    allSecondaries,
-                    allMartials,
-                    primaryUpdate,
                     openDetailAlert,
                     updateFunc
                 )
@@ -224,127 +136,110 @@ private fun WeaponListButton(
  */
 @Composable
 private fun ArchetypeButton(
-    weaponProficiencies: WeaponProficiencies,
-    allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
+    modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize open state
-    val open = remember{mutableStateOf(false)}
-
     //button for displaying archetype list
     Button(
-        onClick = {open.value = !open.value},
+        onClick = {modFragVM.setArchetypeOpen(!modFragVM.archetypeOpen.value)},
         modifier = Modifier.width(250.dp)
     ){
-        Text(text = "Archetype Modules")
+        Text(text = stringResource(R.string.archetypeLabel))
     }
 
     //revealable list for the archetypes
-    AnimatedVisibility(visible = open.value){
+    AnimatedVisibility(visible = modFragVM.archetypeOpen.collectAsState().value){
         //show all archetypes available
         Column {
             ArchetypeRow(
-                weaponProficiencies,
-                "Barbarian",
-                weaponProficiencies.barbarianWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.barbarianLabel),
+                modFragVM.getArchetypes()[0],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Ninja",
-                weaponProficiencies.ninjaWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.ninjaLabel),
+                modFragVM.getArchetypes()[1],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Duel",
-                weaponProficiencies.duelWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.duelLabel),
+                modFragVM.getArchetypes()[2],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Pirate",
-                weaponProficiencies.pirateWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.pirateLabel),
+                modFragVM.getArchetypes()[3],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Nomad",
-                weaponProficiencies.nomadWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.nomadLabel),
+                modFragVM.getArchetypes()[4],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Hunter",
-                weaponProficiencies.huntWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.hunterLabel),
+                modFragVM.getArchetypes()[5],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Knight",
-                weaponProficiencies.knightWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.knightLabel),
+                modFragVM.getArchetypes()[6],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Gladiator",
-                weaponProficiencies.gladiatorWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.gladiatorLabel),
+                modFragVM.getArchetypes()[7],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Assassin",
-                weaponProficiencies.assassinWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.assassinLabel),
+                modFragVM.getArchetypes()[8],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Soldier",
-                weaponProficiencies.soldierWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.soldierLabel),
+                modFragVM.getArchetypes()[9],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Indigenous",
-                weaponProficiencies.indigenousWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.indigenousLabel),
+                modFragVM.getArchetypes()[10],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Bandit",
-                weaponProficiencies.banditWeapons,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.banditLabel),
+                modFragVM.getArchetypes()[11],
                 openDetailAlert,
                 updateFunc
             )
             ArchetypeRow(
-                weaponProficiencies,
-                "Improvised",
-                weaponProficiencies.improvised,
-                allSecondaries,
+                modFragVM,
+                stringResource(R.string.improvisedLabel),
+                modFragVM.getArchetypes()[12],
                 openDetailAlert,
                 updateFunc
             )
@@ -359,45 +254,42 @@ private fun ArchetypeButton(
  */
 @Composable
 private fun StyleButton(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize open state
-    val open = remember{mutableStateOf(false)}
-
     //button for displaying weapon styles list
     Button(
-        onClick = {open.value = !open.value},
+        onClick = {modFragVM.setStyleOpen(!modFragVM.styleOpen.value)},
         modifier = Modifier.width(250.dp)
     ){
-        Text(text = "Style Modules")
+        Text(text = stringResource(R.string.styleModLabel))
     }
 
     //revealable list of weapon styles
-    AnimatedVisibility(visible = open.value) {
+    AnimatedVisibility(visible = modFragVM.styleOpen.collectAsState().value) {
         Column {
             StyleRow(
-                weaponProficiencies,
-                weaponProficiencies.styles.battoJutsu,
+                modFragVM,
+                modFragVM.getAllStyles()[0],
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
-                weaponProficiencies,
-                weaponProficiencies.styles.areaAttack,
+                modFragVM,
+                modFragVM.getAllStyles()[1],
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
-                weaponProficiencies,
-                weaponProficiencies.styles.precisionAttack,
+                modFragVM,
+                modFragVM.getAllStyles()[2],
                 openDetailAlert,
                 updateFunc
             )
             StyleRow(
-                weaponProficiencies,
-                weaponProficiencies.styles.disarmingAttack,
+                modFragVM,
+                modFragVM.getAllStyles()[3],
                 openDetailAlert,
                 updateFunc
             )
@@ -412,33 +304,28 @@ private fun StyleButton(
  */
 @Composable
 private fun MartialButton(
-    weaponProficiencies: WeaponProficiencies,
-    allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
+    modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize open state
-    val open = remember{mutableStateOf(false)}
-
     //button for displaying martial arts list
     Button(
-        onClick = {open.value = !open.value},
+        onClick = {modFragVM.setMartialOpen(!modFragVM.martialOpen.value)},
         modifier = Modifier.width(250.dp)
     ){
-        Text(text = "Martial Arts")
+        Text(text = stringResource(R.string.martialArtLabel))
     }
 
     //revealable list of martial arts
-    AnimatedVisibility(visible = open.value){
+    AnimatedVisibility(visible = modFragVM.martialOpen.collectAsState().value){
         Column{
             //display number of marital arts character can take
-            Text(text = "Max Martial Arts: " + weaponProficiencies.martialMax)
+            Text(text = stringResource(R.string.maxMartialLabel) + modFragVM.getMartialMax().toString())
 
-            weaponProficiencies.martials.allMartialArts.forEach{
+            modFragVM.getAllMartials().forEach{
                 MartialArtRow(
-                    weaponProficiencies,
+                    modFragVM,
                     it,
-                    allMartials,
                     openDetailAlert,
                     updateFunc
                 )
@@ -455,51 +342,20 @@ private fun MartialButton(
  */
 @Composable
 private fun WeaponRow(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     input: Weapon,
-    primaryWeapon: Weapon,
-    allPrimaryBoxes: MutableList<MutableState<Boolean>>,
-    allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
-    allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
-    primaryUpdate: () -> Unit,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //checkboxes for when the weapon is taken as a primary, secondary, or archetype proficiency
-    val primeCheck = remember{mutableStateOf(input == primaryWeapon)}
-    val secondCheck = remember{mutableStateOf(
-        weaponProficiencies.individualModules.contains(input) ||
-                weaponProficiencies.fullModWeapons.contains(input))}
-
-    //add these boxes to the appropriate collection
-    allPrimaryBoxes += primeCheck
-    allSecondaries += Pair(input, secondCheck)
-
     Row(verticalAlignment = Alignment.CenterVertically){
         //primary checkbox item
         Checkbox(
-            checked = primeCheck.value,
+            checked = input == modFragVM.primaryWeapon.collectAsState().value,
             onCheckedChange = {
-                //remove any other primary check
-                allPrimaryBoxes.forEach{
-                    it.value = false
-                }
-                //set this as the primary weapon
-                primeCheck.value = true
-
-                //if weapon was selected as a secondary weapon and isn't from an archetype module
-                if(secondCheck.value && !weaponProficiencies.fullModWeapons.contains(input)) {
-                    //remove secondary weapon check
-                    secondCheck.value = false
-                    weaponProficiencies.individualModules -= input
-                }
-
                 //update character's primary weapon
-                weaponProficiencies.setPrimaryWeapon(input.name)
-                primaryUpdate()
+                modFragVM.setPrimaryWeapon(input)
 
                 //update character's associated values
-                martialUpdate(weaponProficiencies, allMartials)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -507,23 +363,14 @@ private fun WeaponRow(
 
         //secondary checkbox item
         Checkbox(
-            checked = secondCheck.value,
+            checked = modFragVM.allSecondaryWeapons[input]!!.value ||
+                        modFragVM.archetypesHasWeapon(input),
             onCheckedChange = {
-                //keep check if from an archetype
-                if(weaponProficiencies.fullModWeapons.contains(input)){
-                    secondCheck.value = true
-                }
                 //if primary check is not taken
-                else if(!primeCheck.value) {
-                    //change secondary check
-                    secondCheck.value = it
-
+                if(input != modFragVM.primaryWeapon.value)
                     //perform appropriate action for input
-                    weaponProficiencies.changeIndividualModule(input, secondCheck.value)
-                }
+                    modFragVM.changeIndividualModule(input, it)
 
-                //update other factors in character
-                martialUpdate(weaponProficiencies, allMartials)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -549,35 +396,19 @@ private fun WeaponRow(
  */
 @Composable
 private fun ArchetypeRow(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     title: String,
     modList: List<Weapon>,
-    allSecondaries: MutableMap<Weapon, MutableState<Boolean>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize checked boolean
-    val isTaken = remember{mutableStateOf(weaponProficiencies.takenModules.contains(modList))}
-
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
         Checkbox(
-            checked = isTaken.value,
+            checked = modFragVM.allArchetypes[modList]!!.value,
             onCheckedChange = {
-                //toggle checkbox
-                isTaken.value = it
-
                 //add weapon list to character
-                weaponProficiencies.updateModulesTaken(modList, isTaken.value)
-
-                //for each secondary checkbox
-                allSecondaries.forEach{ (input, display) ->
-                    //check or uncheck depending on if it is in the archetype
-                    if(weaponProficiencies.fullModWeapons.contains(input))
-                        display.value = true
-                    else if(!weaponProficiencies.individualModules.contains(input) && display.value)
-                        display.value = false
-                }
+                modFragVM.setModuleTaken(modList, it)
 
                 updateFunc()
             },
@@ -586,7 +417,7 @@ private fun ArchetypeRow(
 
         //display archetype name and cost
         Text(text = title, modifier = Modifier.weight(0.4f))
-        Text(text = "50 DP", textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+        Text(text = stringResource(R.string.fiftyPointCost), textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
 
         //create a button to display the archetype's contents
         DetailButton(
@@ -606,26 +437,18 @@ private fun ArchetypeRow(
  */
 @Composable
 private fun StyleRow(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     style: StyleModule,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    val title = stringResource(style.name)
-
-    //boolean for the checkbox of this style module
-    val hasStyle = remember{ mutableStateOf(weaponProficiencies.styleMods.contains(title)) }
-
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
         Checkbox(
-            checked = hasStyle.value,
+            checked = modFragVM.allStyles[style]!!.value,
             onCheckedChange = {
-                //toggle style checkbox
-                hasStyle.value = it
-
                 //add or remove style as needed
-                weaponProficiencies.changeStyle(title, hasStyle.value)
+                modFragVM.changeStyle(style, it)
 
                 updateFunc()
             },
@@ -633,12 +456,12 @@ private fun StyleRow(
         )
 
         //display style's name and cost
-        Text(text = title, modifier = Modifier.weight(0.4f))
+        Text(text = style.name, modifier = Modifier.weight(0.4f))
         Text(text = style.cost.toString(), modifier = Modifier.weight(0.2f))
 
         //make display button for style's details
         DetailButton(
-            onClick = {openDetailAlert(title) @Composable {Text(text = style.description)}},
+            onClick = {openDetailAlert(style.name) @Composable {Text(text = style.description)}},
             modifier = Modifier.weight(0.2f)
         )
     }
@@ -652,25 +475,17 @@ private fun StyleRow(
  */
 @Composable
 private fun MartialArtRow(
-    weaponProficiencies: WeaponProficiencies,
+    modFragVM: ModuleFragmentViewModel,
     martialArt: MartialArt,
-    allMartials: MutableMap<MartialArt, MutableState<Boolean>>,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
-    //initialize checkbox value and add it to the collection
-    val martialTaken = remember{mutableStateOf(weaponProficiencies.takenMartialList.contains(martialArt))}
-    allMartials += Pair(martialArt, martialTaken)
-
     Row(verticalAlignment = Alignment.CenterVertically){
         Checkbox(
-            checked = martialTaken.value,
+            checked = modFragVM.allMartials[martialArt]!!.value,
             onCheckedChange = {
                 //check that martial art can be taken and grant if able
-                if(weaponProficiencies.changeMartial(martialArt, it))
-                    martialTaken.value = it
-
-                martialUpdate(weaponProficiencies, allMartials)
+                modFragVM.changeMartial(martialArt, it)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
@@ -678,7 +493,7 @@ private fun MartialArtRow(
 
         //display name and bonus martial knowledge
         Text(text = martialArt.name, modifier = Modifier.weight(0.5f))
-        Text(text = "+" + martialArt.mkBonus.toString() + " MK", modifier = Modifier.weight(0.2f))
+        Text(text = "+" + martialArt.mkBonus.toString() + " " + stringResource(R.string.mkLabel), modifier = Modifier.weight(0.2f))
 
         //display details button for the martial art
         DetailButton(
@@ -688,69 +503,55 @@ private fun MartialArtRow(
     }
 }
 
-/**
- * Updates martial list in case any of its prerequisites have been removed
- */
-fun martialUpdate(
-    weaponProficiencies: WeaponProficiencies,
-    allMartials: MutableMap<MartialArt, MutableState<Boolean>>
-) {
-    //for each martial art checkbox
-    allMartials.forEach{ (input, display) ->
-        //check that the character still has this martial art
-        display.value = weaponProficiencies.takenMartialList.contains(input)
-    }
-}
-
 //contents for the weapon's details
 val WeaponContents = @Composable
 {input: Weapon ->
     Column {
         //display either damage or own strength value
         if(input.damage != null)
-            InfoRow("Damage:", input.damage.toString())
+            InfoRow(stringResource(R.string.damageLabel), input.damage.toString())
         else
-            InfoRow("Strength:", input.ownStrength.toString())
+            InfoRow(stringResource(R.string.strengthLabel), input.ownStrength.toString())
 
         //display weapon's speed
-        InfoRow("Speed:", input.speed.toString())
+        InfoRow(stringResource(R.string.speedLabel), input.speed.toString())
 
         //display one-handed strength if available
         if(input.oneHandStr != null)
-            InfoRow("One-Handed Str:", input.oneHandStr.toString())
+            InfoRow(stringResource(R.string.oneHandedLabel), input.oneHandStr.toString())
 
         //display two-handed strength if available
         if(input.twoHandStr != null)
-            InfoRow("Two-Handed Str:", input.twoHandStr.toString())
+            InfoRow(stringResource(R.string.twoHandedLabel), input.twoHandStr.toString())
 
         //display primary attack type
         if(input.primaryType != null)
-            InfoRow("Weapon Type:", input.primaryType.name)
+            InfoRow(stringResource(R.string.damageTypeLabel), input.primaryType.name)
 
         //display secondary attack type
         if(input.secondaryType != null)
-            InfoRow("Secondary Type:", input.secondaryType.name)
+            InfoRow(stringResource(R.string.secondaryTypeLabel), input.secondaryType.name)
 
         //display weapon category
         if(input is MixedWeapon)
-            InfoRow("Weapon Type:", input.mixedType[0].name + "/" + input.mixedType[1].name)
+            InfoRow(stringResource(R.string.weaponTypeLabel), input.mixedType[0].name + "/" + input.mixedType[1].name)
         else
-            InfoRow("WeaponType:", input.type.name)
+            InfoRow(stringResource(R.string.weaponTypeLabel), input.type.name)
 
         //display weapon's fortitude, breakage, and presence
-        InfoRow("Fortitude:", input.fortitude.toString())
+        InfoRow(stringResource(R.string.fortitudeLabel), input.fortitude.toString())
         if(input.breakage != null)
-            InfoRow("Breakage:", input.breakage.toString())
-        InfoRow("Presence:", input.presence.toString())
+            InfoRow(stringResource(R.string.breakageLabel), input.breakage.toString())
+        InfoRow(stringResource(R.string.presenceLabel) + ": ", input.presence.toString())
 
         //display weapon's rate of fire, reload rate, and range
         if(input is ProjectileWeapon) {
             if (input.type == WeaponType.Throwing)
-                InfoRow("Fire Rate:", input.reloadOrRate.toString())
+                InfoRow(stringResource(R.string.fireRateLabel), input.reloadOrRate.toString())
             else
-                InfoRow("Reload:", input.reloadOrRate.toString())
+                InfoRow(stringResource(R.string.reloadLabel), input.reloadOrRate.toString())
             if (input.range != null)
-                InfoRow("Range", input.range.toString() + "m")
+                InfoRow(stringResource(R.string.rangeLabel), input.range.toString() + "m")
         }
 
         //initialize ability output and loop counter
@@ -775,7 +576,7 @@ val WeaponContents = @Composable
             }
 
             //show ability string
-            InfoRow("Abilities:", abilityString)
+            InfoRow(stringResource(R.string.abilityLabel), abilityString)
         }
 
         //show description
@@ -799,20 +600,7 @@ val MartialContents = @Composable
 {preReqList: String, description: String ->
     Column{
         //show art's prerequisites and description
-        InfoRow("PreRequisites", preReqList)
+        InfoRow(stringResource(R.string.prereqLabel), preReqList)
         Text(text = description)
     }
 }
-
-/**
- * Holds the data for a single weapon list button
- *
- * name: the type of weapon displayed after the button is clicked
- * options: the list of weapons to be displayed
- * wholeClass: whether the given class has a whole class module or not
- */
-private data class WeaponListData(
-    val name: String,
-    val options: List<Weapon>,
-    val wholeClass: Boolean
-)

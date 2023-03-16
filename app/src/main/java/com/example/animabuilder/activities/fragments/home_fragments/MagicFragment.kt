@@ -515,7 +515,7 @@ val SpellDetails = @Composable {spell: Spell ->
         Row{Text(text = stringResource(R.string.addedEffectLabel) + spell.addedEffect)}
         Row{Text(text = stringResource(R.string.maxZeonLabel) + spell.zMax)}
         if(spell.maintenance != null)
-            Row{Text(text = stringResource(R.string.maintenanceLabel) + spell.maintenance + daily)}
+            Row{Text(text = stringResource(R.string.maintenanceLabel) + "1 every " + spell.maintenance + daily)}
         else
             Row{Text(text = stringResource(R.string.noneLabel))}
         Row{Text(text = stringResource(R.string.typeLabel) + spellType.value)}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "primaryWeaponLabel">Current Primary Weapon: </string>
+    <string name = "maxMartialLabel">Max Martial Arts: </string>
+
+    <string name = "archetypeLabel">Archetype Modules</string>
+    <string name = "styleModLabel">Style Modules</string>
+    <string name = "martialArtLabel">Martial Art</string>
+
+    <string name = "fiftyPointCost">50 DP</string>
+
+    <string name = "moduleSuffix"> Module</string>
+
+    <string name = "shortLabel">Short</string>
+    <string name = "axeLabel">Axes</string>
+    <string name = "maceLabel">Maces</string>
+    <string name = "swordLabel">Swords</string>
+    <string name = "twoHandLabel">Two-Handed</string>
+    <string name = "poleLabel">Pole</string>
+    <string name = "cordLabel">Cords</string>
+    <string name = "mixedLabel">Mixed</string>
+    <string name = "shieldLabel">Shields</string>
+    <string name = "projectileLabel">Projectiles</string>
+    <string name = "thrownLabel">Thrown</string>
+
+    <string name = "barbarianLabel">Barbarian</string>
+    <string name = "ninjaLabel">Ninja</string>
+    <string name = "duelLabel">Duel</string>
+    <string name = "pirateLabel">Pirate</string>
+    <string name = "nomadLabel">Nomad</string>
+    <string name = "hunterLabel">Hunter</string>
+    <string name = "knightLabel">Knight</string>
+    <string name = "gladiatorLabel">Gladiator</string>
+    <string name = "assassinLabel">Assassin</string>
+    <string name = "soldierLabel">Soldier</string>
+    <string name = "indigenousLabel">Indigenous</string>
+    <string name = "banditLabel">Bandit</string>
+    <string name = "improvisedLabel">Improvised</string>
+
+    <string name = "damageLabel">Damage: </string>
+    <string name = "strengthLabel">Strength: </string>
+    <string name = "speedLabel">Speed: </string>
+    <string name = "oneHandedLabel">One-Handed Str: </string>
+    <string name = "twoHandedLabel">Two-Handed Str: </string>
+    <string name = "damageTypeLabel">Damage Type: </string>
+    <string name = "secondaryTypeLabel">Secondary Type: </string>
+    <string name = "weaponTypeLabel">Weapon Type: </string>
+    <string name = "fortitudeLabel">Fortitude: </string>
+    <string name = "breakageLabel">Breakage: </string>
+
+    <string name = "fireRateLabel">Fire Rate: </string>
+    <string name = "reloadLabel">Reload: </string>
+    <string name = "rangeLabel">Range: </string>
+
+    <string name = "abilityLabel">Abilities: </string>
+
+    <string name = "prereqLabel">Prerequisites: </string>
+</resources>

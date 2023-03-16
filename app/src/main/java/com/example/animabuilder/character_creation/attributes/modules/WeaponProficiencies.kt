@@ -58,10 +58,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
     //make list of every weapon
     val allWeapons = shortArms.shortArms + axes.axes + maces.maces + swords.swords + twoHanded.twoHanded +
-            poles.poles + cords.cords + mixed.mixed + shields.shields + projectiles.projectiles + thrown.thrown
+            poles.poles + cords.cords + mixed.mixed + shields.shields + projectiles.projectiles + thrown.thrown + unarmed
 
     fun setPrimaryWeapon(input: String){
         primaryWeapon = findWeapon(input)
+        individualModules -= primaryWeapon
         charInstance.updateTotalSpent()
     }
 
@@ -108,6 +109,33 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     val banditWeapons = listOf(shortArms.dagger, projectiles.crossbow, shortArms.shortSword,
         maces.mace, maces.club)
 
+    val allArchetypes = listOf(
+        barbarianWeapons,
+        ninjaWeapons,
+        duelWeapons,
+        pirateWeapons,
+        nomadWeapons,
+        huntWeapons,
+        knightWeapons,
+        gladiatorWeapons,
+        assassinWeapons,
+        soldierWeapons,
+        indigenousWeapons,
+        banditWeapons,
+        improvised,
+
+        shortArms.shortArms,
+        axes.axes,
+        maces.maces,
+        swords.swords,
+        twoHanded.twoHanded,
+        poles.poles,
+        cords.cords,
+        shields.shields,
+        projectiles.projectiles,
+        thrown.thrown
+    )
+
     //list of modules the character has taken
     val takenModules = mutableListOf<List<Weapon>>()
 
@@ -150,9 +178,9 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
     }
 
     //initialize list of taken style modules
-    val styleMods = mutableListOf<String>()
+    val styleMods = mutableListOf<StyleModule>()
 
-    fun changeStyle(input: String, toAdd: Boolean){
+    fun changeStyle(input: StyleModule, toAdd: Boolean){
         if(toAdd)
             styleMods += input
         else
@@ -175,12 +203,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
         //if user tries to add the item
         if(isInput){
             //check that character qualifies for this addition
-            if(takenMartialList.size >= martialMax || !qualifies(changeItem))
-                return false
-            else {
+            if(takenMartialList.size < martialMax && qualifies(changeItem)){
                 takenMartialList += changeItem
                 if(changeItem == martials.capoeira)
                     charInstance.combat.dodge.setClassBonus(10)
+                return true
             }
         }
         //always allow martial art removal
@@ -194,8 +221,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
         charInstance.ki.updateMK()
         charInstance.updateTotalSpent()
 
-        //return successful process
-        return true
+        return false
     }
 
     /**
@@ -349,15 +375,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
         }
 
         //add amount for different style modules
-        styleMods.forEach{
-            total += when(it){
-                "Batto Jutsu/Iai Jutsu"-> 30
-                "Area Attack",
-                "Disarming Attack" -> 40
-                "Precision Attack" -> 50
-                else -> 0
-            }
-        }
+        styleMods.forEach{total += it.cost}
 
         //if character has martial arts taken
         if(takenMartialList.isNotEmpty()){
@@ -394,7 +412,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
             loadModule(fileReader)
 
         for(loopNum in 0 until fileReader.readLine().toInt())
-            styleMods += fileReader.readLine()
+            styleMods += styles.getStyle(fileReader.readLine())!!
 
         for(loopNum in 0 until fileReader.readLine().toInt())
             takenMartialList += listOf(loadMartial(fileReader.readLine())!!)
@@ -416,7 +434,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializabl
 
         charInstance.addNewData(styleMods.size)
         styleMods.forEach{
-            charInstance.addNewData(it)
+            charInstance.addNewData(it.name)
         }
 
         charInstance.addNewData(takenMartialList.size)

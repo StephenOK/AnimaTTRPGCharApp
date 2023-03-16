@@ -34,7 +34,6 @@
     <string name = "zeonCostLabel">Zeon Cost: </string>
     <string name = "addedEffectLabel">Added Effect: </string>
     <string name = "maxZeonLabel">Maximum Zeon: Intelligence x </string>
-    <string name = "maintenanceLabel">Maintenance: 1 every </string>
     <string name = "typeLabel">Type: </string>
     <string name = "forbiddenLabel">Forbidden Elements: </string>
 </resources>

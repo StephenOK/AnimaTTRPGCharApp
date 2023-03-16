@@ -18,6 +18,5 @@
 
     <string name = "mkLabel">MK</string>
     <string name = "prereqLabel">Prerequisite: </string>
-    <string name = "maintenanceLabel">Maintenance: </string>
     <string name = "totalAccumulation">Total Accumulation: </string>
 </resources>

@@ -90,6 +90,7 @@ class HomeActivity : AppCompatActivity() {
             val charFragVM = CharacterFragmentViewModel(charInstance, bottomBarVM, context)
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
             val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
+            val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
             val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
             val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)
             val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
@@ -237,7 +238,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
                         ModuleFragment(
-                            charInstance.weaponProficiencies,
+                            modFragVM,
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}

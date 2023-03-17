@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "psyPointLabel">Psychic Points</string>
+    <string name = "psyProjectionLabel">Psychic Projection</string>
+    <string name = "psyPotentialLabel">Psychic Potential: </string>
+    <string name = "freePsyPointLabel">Free Psychic Points: </string>
+
+    <string name = "telepathyLabel">Telepathy</string>
+    <string name = "kinesisLabel">Psychokinesis</string>
+    <string name = "pyroLabel">Pyrokinesis</string>
+    <string name = "cryoLabel">Cryokinesis</string>
+    <string name = "physIncreaseLabel">Physical Increase</string>
+    <string name = "energyLabel">Energy</string>
+    <string name = "sentienceLabel">Sentience</string>
+    <string name = "telemetryLabel">Telemetry</string>
+    <string name = "matrixLabel">Matrix Powers</string>
+
+    <string-array name = "difficultyTable">
+        <item>Routine (20)</item>
+        <item>Easy (40)</item>
+        <item>Medium (80)</item>
+        <item>Difficult (120)</item>
+        <item>Very Difficult (140)</item>
+        <item>Absurd (180)</item>
+        <item>Almost Impossible (240)</item>
+        <item>Impossible (280)</item>
+        <item>Inhuman (320)</item>
+        <item>Zen (440)</item>
+    </string-array>
+</resources>

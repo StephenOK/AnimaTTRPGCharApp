@@ -11,102 +11,39 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.character_creation.attributes.psychic.Discipline
-import com.example.animabuilder.character_creation.attributes.psychic.Psychic
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
-import com.example.animabuilder.character_creation.attributes.race_objects.RaceName
+import com.example.animabuilder.view_models.PsychicFragmentViewModel
 
 @Composable
 fun PsychicFragment(
-    psychic: Psychic,
-    heldRace: RaceName,
-    outputMod: Int,
+    psyFragVM: PsychicFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
-    //initialize Psychic Point display values
-    val innatePsyPoints = remember{mutableStateOf(psychic.innatePsyPoints.toString())}
-    val psyPointsBought = remember{mutableStateOf(psychic.boughtPsyPoints.toString())}
-    val psyPointsTotal = remember{mutableStateOf(psychic.totalPsychicPoints.toString())}
-    val freePsyPoints = remember{mutableStateOf(psychic.getFreePsyPoints().toString())}
-
-    //initialize Psychic Projection display values
-    val psyProjBought = remember{mutableStateOf(psychic.psyProjectionBought.toString())}
-    val psyProjTotal = remember{mutableStateOf(psychic.psyProjectionTotal.toString())}
-
-    val disciplineMasterList = remember{mutableStateListOf<MutableState<Boolean>>()}
-    val powerMasterList = remember{mutableStateListOf<MutableState<Boolean>>()}
-
-    //initialize and create input table data
-    val psyPurchaseData = mutableListOf<PsychicPurchaseItemData>()
-
-    psyPurchaseData.add(PsychicPurchaseItemData(
-        "Psychic Points",
-        innatePsyPoints.value,
-        psyPointsBought,
-        psyPointsTotal
-    ) { input ->
-        psychic.buyPsyPoints(input.toInt())
-        psyPointsBought.value = input
-        psyPointsTotal.value = psychic.totalPsychicPoints.toString()
-        freePsyPoints.value = psychic.getFreePsyPoints().toString()
-    })
-
-    psyPurchaseData.add(
-        PsychicPurchaseItemData(
-        "Psychic Projection",
-        outputMod.toString(),
-        psyProjBought,
-        psyProjTotal
-    ) { input ->
-            psychic.buyPsyProjection(input.toInt())
-            psyProjBought.value = input
-            psyProjTotal.value = psychic.psyProjectionTotal.toString()
-        }
-    )
-
-    //initialize and create Psychic Discipline data
-    val disciplineData = mutableListOf<DisciplineItemData>()
-
-    disciplineData.add(DisciplineItemData("Telepathy", psychic.telepathy))
-    disciplineData.add(DisciplineItemData("Psychokinesis", psychic.psychokinesis))
-    disciplineData.add(DisciplineItemData("Pyrokinesis", psychic.pyrokinesis))
-    disciplineData.add(DisciplineItemData("Cryokinesis", psychic.cryokinesis))
-    disciplineData.add(DisciplineItemData("Physical Increase", psychic.physicalIncrease))
-    disciplineData.add(DisciplineItemData("Energy", psychic.energyPowers))
-    disciplineData.add(DisciplineItemData("Sentience", psychic.sentiencePowers))
-    disciplineData.add(DisciplineItemData("Telemetry", psychic.telemetry))
-    disciplineData.add(DisciplineItemData("Matrix Powers", psychic.matrixPowers))
-
     LazyColumn{
         //display character's Psychic Potential
-        item{Text(text = "Psychic Potential: " + psychic.psyPotentialBase.toString())}
+        item{Text(text = stringResource(R.string.psyPotentialLabel) + psyFragVM.getPotentialBase().toString())}
 
         //display psychic item input
-        items(psyPurchaseData){
+        items(psyFragVM.buyItems){
             PsychicPurchaseTable(it, updateFunc)
         }
 
         //display currently free psychic points
-        item{Text(text = "Free Psychic Points: " + freePsyPoints.value)}
+        item{Text(text = stringResource(R.string.freePsyPointLabel) + psyFragVM.freePsyPoints.collectAsState().value)}
 
         //display discipline info
-        items(disciplineData){
+        items(psyFragVM.allDisciplines){
             DisciplineDisplay(
-                heldRace,
-                psychic,
                 it,
-                {input -> disciplineMasterList.add(input)},
-                {input -> powerMasterList.add(input)},
-                {
-                    disciplineMasterList.forEach{item -> item.value = false}
-                    powerMasterList.forEach{item -> item.value = false}
-                },
                 openDetailAlert
-            ){freePsyPoints.value = psychic.getFreePsyPoints().toString()}
+            )
         }
     }
 }
@@ -119,31 +56,28 @@ fun PsychicFragment(
  */
 @Composable
 private fun PsychicPurchaseTable(
-    tableData: PsychicPurchaseItemData,
+    tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
     updateFunc: () -> Unit
 ){
     //display title of this section
-    Row{Text(text = tableData.title)}
+    Row{Text(text = stringResource(tableData.title))}
     Row{
         //display value's base input
         Text(text = tableData.baseString)
 
         //input for user purchased value
         NumberInput(
-            tableData.purchaseAmount.value,
+            tableData.purchaseAmount.collectAsState().value,
             {},
-            tableData.buyFunction,
-            {
-                tableData.buyFunction("0")
-                tableData.purchaseAmount.value = ""
-            },
+            {tableData.setPurchaseAmount(0)},
+            {tableData.setPurchaseAmount("")},
             {updateFunc()},
             Color.Black,
             Modifier
         )
 
         //display value's final total
-        Text(text = tableData.totalAmount.value)
+        Text(text = tableData.totalAmount.collectAsState().value)
     }
 }
 
@@ -156,74 +90,33 @@ private fun PsychicPurchaseTable(
  */
 @Composable
 private fun DisciplineDisplay(
-    heldRace: RaceName,
-    psychic: Psychic,
-    discipline: DisciplineItemData,
-    addDiscipline: (MutableState<Boolean>) -> Unit,
-    addPower: (MutableState<Boolean>) -> Unit,
-    dukzaristClear: () -> Unit,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFreePoints: () -> Unit
+    discipline: PsychicFragmentViewModel.DisciplineItemData,
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    //initialize discipline's open state
-    val disciplineOpen = remember{mutableStateOf(false)}
-
-    //initialize discipline's taken state
-    val disciplineInvestedIn = remember{mutableStateOf(psychic.disciplineInvestment.contains(discipline.item))}
-    addDiscipline(disciplineInvestedIn)
-
-    //initialize list of discipline's powers and if they're taken or not
-    val powerChecks = remember{mutableStateMapOf<PsychicPower, MutableState<Boolean>>()}
-
     Column {
         Row(Modifier.fillMaxWidth()) {
             //create a checkbox for any discipline that isn't Matrix Powers
-            if(discipline.name != "Matrix Powers") {
+            if(discipline.name != R.string.matrixLabel) {
                 Checkbox(
-                    checked = disciplineInvestedIn.value,
-                    onCheckedChange = {
-                        //attempt to change the taken state of the discipline
-                        disciplineInvestedIn.value =
-                            psychic.updateInvestment(discipline.item, it)
-
-                        //set Psychic Powers' checkboxes to the appropriate values
-                        powerChecks.forEach { item ->
-                            item.value.value =
-                                psychic.masteredPowers.contains(item.key)
-                        }
-
-                        if(!it && heldRace == RaceName.dukzarist && discipline.name == "Pyrokinesis")
-                            dukzaristClear()
-
-                        //update free point display
-                        updateFreePoints()
-                    }
+                    checked = discipline.investedIn.collectAsState().value,
+                    onCheckedChange = {discipline.setInvestedIn(it)}
                 )
             }
 
             //button to display Psychic Powers
-            Button(onClick = { disciplineOpen.value = !disciplineOpen.value }) {
-                Text(text = discipline.name)
+            Button(onClick = {discipline.toggleOpen()}) {
+                Text(text = stringResource(discipline.name))
             }
         }
 
         //display for discipline's Psychic Powers
-        AnimatedVisibility(visible = disciplineOpen.value) {
+        AnimatedVisibility(visible = discipline.isOpen.collectAsState().value) {
             Column {
                 discipline.item.allPowers.forEach {
                     PsyPowerRow(
-                        psychic, discipline.item,
+                        discipline,
                         it,
-                        {item -> powerChecks += item},
-                        addPower,
-                        {input ->
-                            if(discipline.name != "Matrix Powers")
-                                disciplineInvestedIn.value =
-                                    psychic.updateInvestment(discipline.item, input) },
-                        {powerChecks.forEach{item ->
-                            item.value.value = psychic.masteredPowers.contains(item.key) }},
-                        openDetailAlert,
-                        updateFreePoints
+                        openDetailAlert
                     )
                 }
             }
@@ -243,38 +136,14 @@ private fun DisciplineDisplay(
  */
 @Composable
 private fun PsyPowerRow(
-    psychic: Psychic,
-    discipline: Discipline,
+    discipline: PsychicFragmentViewModel.DisciplineItemData,
     power: PsychicPower,
-    addCheckbox: (Pair<PsychicPower, MutableState<Boolean>>) -> Unit,
-    addPower: (MutableState<Boolean>) -> Unit,
-    updateDisciplineInvestment: (Boolean) -> Unit,
-    updateCheckboxes: () -> Unit,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFreePoints: () -> Unit
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    //initialize taken state of the power
-    val powerMastered = remember{mutableStateOf(psychic.masteredPowers.contains(power))}
-    addPower(powerMastered)
-
-    //add checkbox to the master list
-    addCheckbox(Pair(power, powerMastered))
-
     Row{
         Checkbox(
-            checked = powerMastered.value,
-            onCheckedChange = {
-                //add power's discipline if character does not already have it
-                if(!psychic.disciplineInvestment.contains(discipline))
-                    updateDisciplineInvestment(true)
-
-                //attempt to perform inputted action
-                powerMastered.value = psychic.masterPower(power, discipline, it)
-
-                //update checkbox list and free point display
-                updateCheckboxes()
-                updateFreePoints()
-            }
+            checked = discipline.powerChecks[power]!!.value,
+            onCheckedChange = {discipline.setPower(power, it)}
         )
         Text(text = power.name)
 
@@ -286,32 +155,18 @@ private fun PsyPowerRow(
     }
 }
 
-//make list of difficulty levels
-val tableRows = listOf(
-    "Routine (20)",
-    "Easy (40)",
-    "Medium (80)",
-    "Difficult (120)",
-    "Very Difficult (140)",
-    "Absurd (180)",
-    "Almost Impossible (240)",
-    "Impossible (280)",
-    "Inhuman (320)",
-    "Zen (440)"
-)
-
 //detail display for the inputted Psychic Power
 val PowerDetails = @Composable{power: PsychicPower ->
     //retrieve level, if power is active, and if power is maintained
-    val itemLevel = if(power.level > 0) power.level.toString() else "N/A"
-    val isActive = if(power.active) "Active" else "Passive"
-    val isMaintained = if(power.maintained) "Yes" else "No"
+    val itemLevel = if(power.level > 0) power.level.toString() else stringResource(R.string.notApplicable)
+    val isActive = if(power.active) stringResource(R.string.activeLabel) else stringResource(R.string.passiveLabel)
+    val isMaintained = if(power.maintained) stringResource(R.string.yesLabel) else stringResource(R.string.noLabel)
 
     Column{
         //display power values
-        Row{Text(text = "Level: $itemLevel") }
-        Row{Text(text = "Action: $isActive")}
-        Row{Text(text = "Maintenance: $isMaintained")}
+        Row{Text(text = stringResource(R.string.levelText) + " $itemLevel") }
+        Row{Text(text = stringResource(R.string.actionLabel) + " $isActive")}
+        Row{Text(text = stringResource(R.string.maintenanceLabel) + " $isMaintained")}
         Row{Text(text = power.description)}
 
         Spacer(Modifier.height(20.dp))
@@ -322,37 +177,9 @@ val PowerDetails = @Composable{power: PsychicPower ->
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                Text(text = tableRows[power.effects.indexOf(it)], modifier = Modifier.weight(0.5f))
+                Text(text = stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)], modifier = Modifier.weight(0.5f))
                 Text(text = it, modifier = Modifier.weight(0.5f))
             }
         }
     }
 }
-
-/**
- * Class that holds data in regards to a the purchase table data
- *
- * title: name of the stat involved in this table
- * baseString: base value of the indicated stat
- * purchaseAmount: amount that the user has bought of this stat
- * totalAmount: stat's final total
- * buyFunction: function to run upon stat purchase
- */
-private data class PsychicPurchaseItemData(
-    val title: String,
-    val baseString: String,
-    val purchaseAmount: MutableState<String>,
-    val totalAmount: MutableState<String>,
-    val buyFunction: (String) -> Unit
-)
-
-/**
- * Class that holds data about a Psychic Discipline
- *
- * name: string of the discipline's name
- * item: discipline object to work with
- */
-private data class DisciplineItemData(
-    val name: String,
-    val item: Discipline
-)

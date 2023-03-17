@@ -224,7 +224,7 @@ class Psychic(private val charInstance: BaseCharacter): Serializable {
                 //for each taken power
                 masteredPowers.forEach {
                     //determine if it is a level 2 power of the same discipline
-                    if (it.level == 2 && discipline.allPowers.contains(it))
+                    if (it.level == 2 && discipline.allPowers.contains(it) && legalBuy(it, discipline))
                         return true
                 }
             }

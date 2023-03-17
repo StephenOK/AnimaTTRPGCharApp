@@ -54,5 +54,4 @@
 
     <string name = "abilityLabel">Abilities: </string>
 
-    <string name = "prereqLabel">Prerequisites: </string>
 </resources>

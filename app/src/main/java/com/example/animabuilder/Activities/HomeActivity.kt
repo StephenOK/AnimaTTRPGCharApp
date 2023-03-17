@@ -94,6 +94,10 @@ class HomeActivity : AppCompatActivity() {
             val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
             val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)
             val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
+            val psyFragVM = PsychicFragmentViewModel(
+                charInstance.psychic,
+                charInstance.primaryList.dex.outputMod
+            )
 
             //scaffold for the home page
             Scaffold(
@@ -273,9 +277,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
                         PsychicFragment(
-                            charInstance.psychic,
-                            charInstance.ownRace.heldRace,
-                            charInstance.primaryList.dex.outputMod,
+                            psyFragVM,
                             homeAlertsVM.openDetailAlert
                         )
                         {bottomBarVM.updateSpentValues(charInstance)}

@@ -105,6 +105,7 @@
     <string name = "deleteLabel">Delete</string>
     <string name = "editLabel">Edit</string>
     <string name = "noneLabel">None</string>
+    <string name = "notApplicable">N/A</string>
 
     <string name = "descriptionLabel">Description</string>
     <string name = "descriptionOfLabel">Description of </string>
@@ -135,4 +136,5 @@
     <string name = "banishTitle">Banish</string>
 
     <string name = "maintenanceLabel">Maintenance: </string>
+    <string name = "prereqLabel">Prerequisites: </string>
 </resources>

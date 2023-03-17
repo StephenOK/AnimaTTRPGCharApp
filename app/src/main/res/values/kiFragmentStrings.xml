@@ -17,6 +17,5 @@
     <string name = "totalAccLabel">Acc Total</string>
 
     <string name = "mkLabel">MK</string>
-    <string name = "prereqLabel">Prerequisite: </string>
     <string name = "totalAccumulation">Total Accumulation: </string>
 </resources>

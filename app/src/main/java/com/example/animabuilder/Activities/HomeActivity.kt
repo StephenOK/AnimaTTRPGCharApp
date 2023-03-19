@@ -89,6 +89,7 @@ class HomeActivity : AppCompatActivity() {
 
             val charFragVM = CharacterFragmentViewModel(charInstance, bottomBarVM, context)
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
+            val secondaryFragVM = SecondaryFragmentViewModel(charInstance.secondaryList)
             val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
             val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
             val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
@@ -226,7 +227,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
-                        SecondaryAbilityFragment(charInstance.secondaryList)
+                        SecondaryAbilityFragment(secondaryFragVM)
                         {bottomBarVM.updateSpentValues(charInstance)}
                     }
 

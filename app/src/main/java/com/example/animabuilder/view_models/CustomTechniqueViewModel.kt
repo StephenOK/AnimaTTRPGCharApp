@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.geometry.Size
 import com.example.animabuilder.R
 import com.example.animabuilder.TechniqueTableData
 import com.example.animabuilder.TechniqueTableDataRecord
@@ -31,6 +32,8 @@ class CustomTechniqueViewModel(
     private val techniqueDatabase = TechniqueTableDataRecord()
 
     private val _customPageNum = MutableStateFlow(1)
+
+    private val _size = MutableStateFlow(Size.Zero)
 
     private val _costMinimum = MutableStateFlow(20)
     private val _costMaximum = MutableStateFlow(50)
@@ -68,7 +71,11 @@ class CustomTechniqueViewModel(
 
     val deletionChecklist = mutableMapOf<TechniqueEffect, MutableState<Boolean>>()
 
+    val editBuildList = mutableListOf<BuildPackage>()
+
     val customPageNum = _customPageNum.asStateFlow()
+
+    val size = _size.asStateFlow()
 
     val costMinimum = _costMinimum.asStateFlow()
     val costMaximum = _costMaximum.asStateFlow()
@@ -149,6 +156,8 @@ class CustomTechniqueViewModel(
     val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
     fun setCustomPageNum(input: Int){_customPageNum.update{input}}
+
+    fun setSize(input: Size){_size.update{input}}
 
     fun getTechniqueLevel(): Int{return customTechnique.level}
 
@@ -736,17 +745,7 @@ class CustomTechniqueViewModel(
     ){
         private val _totalDisplay = MutableStateFlow("")
         val totalDisplay = _totalDisplay.asStateFlow()
-
         fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index).toString()}}
-    }
-
-    fun findBuild(input: String): MutableList<Int>?{
-        customTechnique.givenAbilities.forEach{
-            if(it.name == input)
-                return it.kiBuild
-        }
-
-        return null
     }
 
     fun getCheckBuilds(): Boolean{
@@ -788,6 +787,13 @@ class CustomTechniqueViewModel(
             setCustomPageNum(2)
     }
 
+    fun initializeBuildList(){
+        editBuildList.clear()
+        customTechnique.givenAbilities.forEach{
+            editBuildList += BuildPackage(it, context)
+        }
+    }
+
     fun setMaintenanceSelection(input: Boolean){
         if(!input){
             for(index in 0..5)
@@ -813,6 +819,43 @@ class CustomTechniqueViewModel(
     fun getCustomTechnique(): Technique{return customTechnique}
 
     fun closeDialog(){kiFragVM.setCustomTechOpen(false)}
+
+    class BuildPackage(
+        val input: TechniqueEffect,
+        val context: Context
+    ){
+        val buildItems = mutableListOf<BuildItem>()
+        init{
+            var index = 0
+            input.buildAdditions.forEach{
+                if(it != null)
+                    buildItems +=
+                        BuildItem(
+                            input,
+                            input.kiBuild[index],
+                            context.resources.getStringArray(R.array.primaryCharArray)[index],
+                            index
+                        )
+
+                index++
+            }
+        }
+    }
+
+    class BuildItem(
+        val home: TechniqueEffect,
+        indexValue: Int,
+        val indexName: String,
+        val index: Int
+    ){
+        private val _display = MutableStateFlow(indexValue.toString())
+        val display = _display.asStateFlow()
+        fun setDisplay(input: Int){
+            setDisplay(input.toString())
+            home.kiBuild[index] = input
+        }
+        fun setDisplay(input: String){_display.update{input}}
+    }
 
     class MaintInput(
         val name: String,

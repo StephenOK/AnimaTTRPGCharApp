@@ -11,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -30,11 +29,14 @@ import com.example.animabuilder.view_models.CustomTechniqueViewModel
 import com.example.animabuilder.view_models.KiFragmentViewModel
 
 /**
- * Dialog that gives the user a sequence of pages to develop their own custom dominion technique
- * Applies the created technique to the character after creation is complete
- * Takes the appropriate checks to confirm a valid technique as it is being built
+ * Dialog that gives the user a sequence of pages to develop their own custom dominion technique.
+ * Applies the created technique to the character after creation is complete.
+ * Takes the appropriate checks to confirm a valid technique as it is being built.
+ *
+ * @param kiFragVM ki fragment viewModel passed down from the ki page
+ * @param customTechVM viewModel initialized for this dialog
+ * @param techContents detail function to pass to this object
  */
-
 @Composable
 fun CustomTechnique(
     kiFragVM: KiFragmentViewModel,
@@ -127,7 +129,7 @@ fun CustomTechnique(
                     LazyColumn{
                         //display each taken effect with their deletable checkboxes
                         customTechVM.deletionChecklist.forEach{
-                            item{EditEffectRow(it.key, it.value)}
+                            item{EditEffectRow(it)}
                         }
 
                         //display total current MK cost
@@ -139,6 +141,7 @@ fun CustomTechnique(
                 5 -> {
                     //set initial accumulation total values
                     customTechVM.allAccs.forEach{it.setTotalDisplay()}
+                    customTechVM.initializeBuildList()
 
                     Column{
                         Row{Text(text = stringResource(R.string.fifthPageTitle))}
@@ -159,19 +162,16 @@ fun CustomTechnique(
 
                         LazyColumn{
                             //for each taken effect
-                            customTechVM.getTechniqueEffects().forEach {
+                            customTechVM.editBuildList.forEach {
                                 //display the effect's name
-                                item { Text(text = it.name) }
+                                item { Text(text = it.input.name) }
 
                                 //create an input for the stat's accumulation input
-                                for (index in 0..5) {
+                                it.buildItems.forEach{
                                     item{
                                         EditBuildRow(
                                             it,
-                                            index,
-                                            customTechVM.findBuild(it.name)!!,
-                                            stringArrayResource(R.array.primaryCharArray)[index],
-                                            customTechVM.allAccs[index]
+                                            customTechVM.allAccs[it.index]
                                         )
                                     }
                                 }
@@ -248,11 +248,13 @@ fun CustomTechnique(
                 //confirmation page
                 8 -> {
                     Column {
+                        //display details of created technique
                         Row { Text(text = stringResource(R.string.descriptionOfLabel) + customTechVM.techniqueName.collectAsState().value) }
                         techContents(customTechVM.getCustomTechnique())
                     }
                 }
 
+                //close dialog on invalid input
                 else -> {customTechVM.closeDialog()}
             }
         },
@@ -295,31 +297,12 @@ fun CustomTechnique(
             if (customTechVM.customPageNum.collectAsState().value != 1 &&
                     customTechVM.customPageNum.collectAsState().value != 4) {
                 TextButton(onClick = {
-                    //set back button function for each page
-                    when (customTechVM.customPageNum.value) {
-                        2 -> {
-                            customTechVM.setCustomPageNum(1)
-                        }
-                        3 -> {
-                            customTechVM.setCustomPageNum(2)
-                        }
-                        5 -> {
-                            customTechVM.setTechniqueIndex(0)
-                            customTechVM.setCustomPageNum(3)
-                        }
-                        6 -> {
-                            customTechVM.setCustomPageNum(5)
-                        }
-                        7 -> {
-                            customTechVM.setCustomPageNum(6)
-                        }
-                        8 -> {
-                            customTechVM.setCustomPageNum(7)
-                        }
-                        else -> {
-                            customTechVM.closeDialog()
-                        }
-                    }
+                    //go back to third page if on fifth page
+                    if(customTechVM.customPageNum.value == 5)
+                        customTechVM.setCustomPageNum(3)
+                    //go back to previous page if on any other page
+                    else
+                        customTechVM.setCustomPageNum(customTechVM.customPageNum.value - 1)
                 }) { Text(text = stringResource(R.string.backLabel)) }
             }
 
@@ -370,11 +353,13 @@ fun CustomTechnique(
                         customTechVM.setCustomPageNum(3)
                     }
 
+                    //go to next page if builds are valid
                     5 -> {
                         if(customTechVM.getCheckBuilds())
                             customTechVM.setCustomPageNum(6)
                     }
 
+                    //go to next page if maintenance inputs are valid
                     6 -> {
                         if(customTechVM.getMaintenanceCheck())
                             customTechVM.setCustomPageNum(7)
@@ -407,24 +392,14 @@ fun CustomTechnique(
 }
 
 /**
- * Displays a dropdown and table for the technique's effects
+ * Displays a dropdown and table for the technique's effects.
  *
- * isPrimary: whether the added effect is the primary effect or not
- * techniqueIndex: current index of the effect selection
- * allEffectChecks: master list of main effects
- * optionalCheck1: first master list of optional effect
- * optionalCheck2: second master list of optional effect
- * elementChecks: master list of elemental checks
- * customTechnique: technique to add the effects to
- * changeIndex: action to do when the index is changed
+ * @param customTechVM viewModel for the dialog
  */
 @Composable
 private fun TechniqueAbilityDropdown(
     customTechVM: CustomTechniqueViewModel
 ){
-    //initialize size of dropdown box
-    val size = remember{mutableStateOf(Size.Zero)}
-
     Column {
         //dropdown text field
         OutlinedTextField(
@@ -432,7 +407,7 @@ private fun TechniqueAbilityDropdown(
             onValueChange = {},
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
-                    size.value = coordinates.size.toSize()
+                    customTechVM.setSize(coordinates.size.toSize())
                 },
             trailingIcon = {
                 Icon(
@@ -446,7 +421,7 @@ private fun TechniqueAbilityDropdown(
         DropdownMenu(
             expanded = customTechVM.dropdownOpen.collectAsState().value,
             onDismissRequest = {customTechVM.setDropdownOpen(false)},
-            modifier = Modifier.width(with(LocalDensity.current) { size.value.width.toDp() })
+            modifier = Modifier.width(with(LocalDensity.current) {customTechVM.size.value.width.toDp()})
         ) {
             customTechVM.listSource.collectAsState().value.forEach {
                 DropdownMenuItem(onClick = {
@@ -475,8 +450,7 @@ private fun TechniqueAbilityDropdown(
                     TechniqueTableRow(
                         customTechVM,
                         it,
-                        customTechVM.mainChecklist,
-                        customTechVM.mainChecklist[it]!!
+                        customTechVM.mainChecklist
                     )
                 }
             }
@@ -488,8 +462,7 @@ private fun TechniqueAbilityDropdown(
                     TechniqueTableRow(
                         customTechVM,
                         it,
-                        customTechVM.opt1Checklist,
-                        customTechVM.opt1Checklist[it]!!
+                        customTechVM.opt1Checklist
                     )
                 }
             }
@@ -501,8 +474,7 @@ private fun TechniqueAbilityDropdown(
                     TechniqueTableRow(
                         customTechVM,
                         it,
-                        customTechVM.opt2Checklist,
-                        customTechVM.opt2Checklist[it]!!
+                        customTechVM.opt2Checklist
                     )
                 }
             }
@@ -513,8 +485,7 @@ private fun TechniqueAbilityDropdown(
                 items(customTechVM.optElement.value!!) {
                     ElementalRow(
                         customTechVM,
-                        it,
-                        customTechVM.elementChecklist[it]!!
+                        it
                     )
                 }
             }
@@ -523,9 +494,9 @@ private fun TechniqueAbilityDropdown(
 }
 
 /**
- * Header for the table of technique effects
+ * Header for the table of technique effects.
  *
- * description: unique descriptor for the associated technique effect
+ * @param description unique descriptor for the associated technique effect
  */
 @Composable
 private fun TechniqueTableHeader(
@@ -549,25 +520,17 @@ private fun TechniqueTableHeader(
 }
 
 /**
- * Displays a single row for the effect table
+ * Displays a single row for the effect table.
  *
- * input: table data to be displayed
- * elementList: effect's associated elements
- * techniqueIndex: index to denote the effect chosen
- * kiIndex: primary characteristic of the effect's build
- * isPrimary: whether to use the primary or secondary cost
- * buildArray: additional costs for each characteristic build
- * inputBox: checkbox boolean to utilize in the row
- * allChecksList: master list of checkboxes for this table
- * getValidInput: function that tests validity of effect's addition
+ * @param customTechVM viewModel for the custom technique dialog
+ * @param input specific technique data to display
+ * @param holdingList specific list this data is found in
  */
 @Composable
 private fun TechniqueTableRow(
     customTechVM: CustomTechniqueViewModel,
     input: TechniqueTableData,
-
-    holdingList: MutableMap<TechniqueTableData, MutableState<Boolean>>,
-    inputBox: MutableState<Boolean>
+    holdingList: MutableMap<TechniqueTableData, MutableState<Boolean>>
 ){
     //get context for toast displays
     val context = LocalContext.current
@@ -576,7 +539,7 @@ private fun TechniqueTableRow(
     {
         //display checkbox
         Checkbox(
-            checked = inputBox.value,
+            checked = holdingList[input]!!.value,
             onCheckedChange = {
                 //clear any selected elements
                 customTechVM.clearElementChecks()
@@ -589,7 +552,7 @@ private fun TechniqueTableRow(
                     //indicate viable addition
                     if(textOut == null) {
                         customTechVM.clearInputList(holdingList)
-                        inputBox.value = true
+                        holdingList[input]!!.value = true
                     }
                     //display reason for invalid addition
                     else
@@ -597,7 +560,7 @@ private fun TechniqueTableRow(
                 }
                 //remove addition state
                 else
-                    inputBox.value = false
+                    holdingList[input]!!.value = false
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -612,33 +575,33 @@ private fun TechniqueTableRow(
 }
 
 /**
- * Displays a table row for adding element effects
+ * Displays a table row for adding element effects.
  *
- * elementType: the associated element of the row
- * checkStatus: mutable boolean for the checkbox
- * allEffectChecks: master list of main effect checkboxes
- * elementChecks: master list of element checkboxes
+ * @param customTechVM viewModel for the custom technique dialog
+ * @param elementType element to display in this row
  */
 @Composable
 private fun ElementalRow(
     customTechVM: CustomTechniqueViewModel,
-    elementType: Element,
-    checkStatus: MutableState<Boolean>
+    elementType: Element
 ){
     //get context of dialog
     val context = LocalContext.current
 
     Row{
         Checkbox(
-            checked = checkStatus.value,
+            checked = customTechVM.elementChecklist[elementType]!!.value,
             onCheckedChange = {
+                //make sure an effect is selected first
                 if(customTechVM.getSelectedEffects().isNotEmpty()){
+                    //retrieve selection and clear elements
                     val selection = customTechVM.getSelectedEffects()[0]!!
                     selection.elements.clear()
 
+                    //for elemental binding for two elements
                     if(selection.effect == "Two Elements")
-                    //change checkbox if input is valid
-                        checkStatus.value = it && customTechVM.getSelectedElement(selection).size < 2
+                        //change checkbox if input is valid
+                        customTechVM.elementChecklist[elementType]!!.value = it && customTechVM.getSelectedElement(selection).size < 2
 
 
                     //any other selection
@@ -650,9 +613,11 @@ private fun ElementalRow(
                         }
 
                         //apply user's desired state
-                        checkStatus.value = it
+                        customTechVM.elementChecklist[elementType]!!.value = it
                     }
                 }
+
+                //notify user of failure
                 else
                     Toast.makeText(context, "Please select an effect first", Toast.LENGTH_SHORT).show()
             }
@@ -664,36 +629,33 @@ private fun ElementalRow(
 }
 
 /**
- * Create a row for when the user is editing their technique's effects
+ * Create a row for when the user is editing their technique's effects.
  *
- * effect: the currently applied effect to display
- * deletionCheck: checkbox boolean associated with the item
- * removeEffects: master list of chosen effects to remove
+ * @param effectPair effect and boolean state to display in this row
  */
 @Composable
 private fun EditEffectRow(
-    effect: TechniqueEffect,
-    deletionCheck: MutableState<Boolean>
+    effectPair: Map.Entry<TechniqueEffect, MutableState<Boolean>>
 ){
     Row {
         //checkbox to indicate effect deletion
         Checkbox(
-            checked = deletionCheck.value,
+            checked = effectPair.value.value,
             onCheckedChange = {
                 //change deletion status accordingly
-                deletionCheck.value = it
+                effectPair.value.value = it
             }
         )
         //display effect
-        Text(text = effect.name)
-        Text(text = effect.effect)
+        Text(text = effectPair.key.name)
+        Text(text = effectPair.key.effect)
 
     }
 
     //display effect's cost and elements
     Row {
-        Text(text = effect.mkCost.toString())
-        Text(text = getElementString(effect.elements))
+        Text(text = effectPair.key.mkCost.toString())
+        Text(text = getElementString(effectPair.key.elements))
     }
 }
 
@@ -701,59 +663,38 @@ private fun EditEffectRow(
  * Row that displays an effect's ki build needed for the indicated characteristic and allows the
  * user to alter that value
  *
- * effect: the associated effect for the row
- * index: characteristic's corresponding index number
- * workArray: initial build to start with and alter
- * statName: name of the characteristic for the row
- * changeAccString: hoisting function for a change in the build value
+ * @param item display data for the specific item
+ * @param accItem total accumulation this individual item is related to
  */
 @Composable
 private fun EditBuildRow(
-    effect: TechniqueEffect,
-    index: Int,
-    workArray: MutableList<Int>,
-    statName: String,
+    item: CustomTechniqueViewModel.BuildItem,
     accItem: CustomTechniqueViewModel.AccTotalString
 ){
     Row {
-        //if the characteristic has a valid input
-        if (effect.buildAdditions[index] != null) {
-            //display characteristic name
-            Text(text = "$statName: ", modifier = Modifier.weight(0.4f))
+        //display characteristic name
+        Text(text = "${item.indexName}: ", modifier = Modifier.weight(0.4f))
 
-            //initialize build value
-            val buildVal = remember { mutableStateOf(workArray[index].toString()) }
+        //create numerical input for the user
+        NumberInput(
+            item.display.collectAsState().value,
+            {},
+            {item.setDisplay(it.toInt())},
+            {item.setDisplay("")},
+            {accItem.setTotalDisplay()},
+            Color.Black,
+            Modifier.weight(0.2f)
+        )
 
-            NumberInput(
-                buildVal.value,
-                {},
-                { catchIn: String ->
-                    //change value to given input
-                    workArray[index] = catchIn.toInt()
-                    buildVal.value = catchIn
-                },
-                {
-                    //change value to 0 if nothing given
-                    workArray[index] = 0
-                    buildVal.value = ""
-                },
-                {accItem.setTotalDisplay()},
-                Color.Black,
-                Modifier.weight(0.2f)
-            )
-
-            //display characteristic's additional cost
-            Text(text = "+" + effect.buildAdditions[index], modifier = Modifier.weight(0.4f))
-        }
+        //display characteristic's additional cost
+        Text(text = "+" + item.home.buildAdditions[item.index], modifier = Modifier.weight(0.4f))
     }
 }
 
 /**
- * Displays a primary characteristic's current maintenance value and allows the user to alter it
+ * Displays a primary characteristic's current maintenance value and allows the user to alter it.
  *
- * index: index of the primary characteristic used
- * customTechnique: the technique the user is creating with this dialog
- * statName: indicator of the primary characteristic used
+ * @param maintInput viewModel data for this item's display and changes to it
  */
 @Composable
 private fun MaintenanceInput(
@@ -767,12 +708,8 @@ private fun MaintenanceInput(
         NumberInput(
             maintInput.displayValue.collectAsState().value,
             {},
-            { input ->
-                maintInput.setDisplayValue(input.toInt())
-            },
-            {
-                maintInput.setDisplayValue("")
-            },
+            {maintInput.setDisplayValue(it.toInt())},
+            {maintInput.setDisplayValue("")},
             {},
             Color.Black,
             Modifier.weight(0.5f)
@@ -781,9 +718,10 @@ private fun MaintenanceInput(
 }
 
 /**
- * Displays the elements associated with the displayed effect table
+ * Displays the elements associated with the displayed effect table.
  *
- * elementList: effect's associated elements
+ * @param elementList effect's associated elements
+ * @return string of all elements inputted
  */
 private fun getElementString(
     elementList: List<Element>
@@ -794,6 +732,8 @@ private fun getElementString(
     //add each element's name to the string
     elementList.forEach{
         elementString += it.name
+
+        //separate items if any more present
         if(elementList.indexOf(it) < elementList.size)
             elementString += ", "
     }

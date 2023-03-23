@@ -76,8 +76,6 @@ fun AdvantageFragment(
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
 
             updateBottomBar()
-
-            advantageFragVM.setAdvantageCostOn(false)
         }
 }
 

@@ -10,6 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
+/**
+ * Frame to build other dialog objects onto
+ *
+ * @param dialogTitle header to display for the individual item
+ * @param mainContent what to display in the main body of the dialog
+ * @param buttonContent bottom row buttons to display for the dialog option
+ */
 @Composable
 fun DialogFrame(
     dialogTitle: String,
@@ -24,6 +31,7 @@ fun DialogFrame(
                     .background(Color.White)
                     .size(600.dp, 600.dp)
             ){
+                //title level
                 Row(
                     Modifier
                         .align(Alignment.TopCenter)
@@ -33,6 +41,8 @@ fun DialogFrame(
                         text = dialogTitle
                     )
                 }
+
+                //main body
                 Row(
                     Modifier
                         .align(Alignment.Center)
@@ -40,6 +50,8 @@ fun DialogFrame(
                 ){
                     mainContent()
                 }
+
+                //bottom buttons
                 Row(
                     Modifier
                         .align(Alignment.BottomCenter)

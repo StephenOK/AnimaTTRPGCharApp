@@ -5,6 +5,12 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * Generic button that is attached to rows in order to display an object's details.
+ *
+ * @param onClick specific function to run when clicked for this item's details
+ * @param modifier potential unique properties of the specific button
+ */
 @Composable
 fun DetailButton(
     onClick: () -> Unit,

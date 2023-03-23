@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 
 class CharacterFragmentViewModel(
     charInstance: BaseCharacter,
-    maxNumVM: BottomBarViewModel,
+    maxNumVM: HomePageViewModel,
     context: Context
 ): ViewModel() {
     private val _nameInput = MutableStateFlow(charInstance.charName)
@@ -79,7 +79,7 @@ class CharacterFragmentViewModel(
         charInstance.classes.allClasses.indexOf(charInstance.ownClass)
     ){
         charInstance.setOwnClass(it)
-        maxNumVM.updateMaxValues(charInstance)
+        maxNumVM.maximums.updateItems(charInstance.devPT, charInstance.maxCombatDP, charInstance.maxMagDP, charInstance.maxPsyDP)
     }
 
     private val raceDropdown = DropdownData(
@@ -99,8 +99,7 @@ class CharacterFragmentViewModel(
         charInstance.lvl
     ){
         charInstance.setLvl(it)
-        maxNumVM.setMaxDP(charInstance.devPT)
-        maxNumVM.updateMaxValues(charInstance)
+        maxNumVM.maximums.updateItems(charInstance.devPT, charInstance.maxCombatDP, charInstance.maxMagDP, charInstance.maxPsyDP)
     }
 
     val dropdownList = listOf(classDropdown, raceDropdown, levelDropdown)

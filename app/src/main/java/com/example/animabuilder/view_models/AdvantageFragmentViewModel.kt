@@ -27,6 +27,8 @@ class AdvantageFragmentViewModel(
 
         if(attemptAction.first == null) updateAdvantagesTaken()
 
+        setAdvantageCostOn(false)
+
         return attemptAction.first
     }
 

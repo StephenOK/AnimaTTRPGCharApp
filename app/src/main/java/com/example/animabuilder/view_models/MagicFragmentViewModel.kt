@@ -40,6 +40,8 @@ class MagicFragmentViewModel(
 
     private val _textChange = MutableStateFlow<(String) -> Unit>({})
 
+    private val _selectedFreeSpell = MutableStateFlow<FreeSpell?>(null)
+
     val boughtZeonString = _boughtZeonString.asStateFlow()
     val maxZeonString = _maxZeonString.asStateFlow()
 
@@ -60,6 +62,8 @@ class MagicFragmentViewModel(
     val freeLevel = _freeLevel.asStateFlow()
 
     val textChange = _textChange.asStateFlow()
+
+    val selectedFreeSpell = _selectedFreeSpell.asStateFlow()
 
     val zeonAccumulation = ZeonPurchaseItemData(
         R.string.zeonAccumulationLabel,
@@ -210,9 +214,27 @@ class MagicFragmentViewModel(
         updateHeldSpells()
     }
 
-    fun addFreeSpell(spell: FreeSpell, element: Element){
-        magic.addFreeSpell(spell, element)
-        updateHeldSpells()
+    fun addFreeSpell(){
+        if(selectedFreeSpell.value != null){
+            val item = FreeSpell(
+                selectedFreeSpell.value!!.name,
+                selectedFreeSpell.value!!.isActive,
+                freeLevel.value,
+                selectedFreeSpell.value!!.zCost,
+                selectedFreeSpell.value!!.effect,
+                selectedFreeSpell.value!!.addedEffect,
+                selectedFreeSpell.value!!.zMax,
+                selectedFreeSpell.value!!.maintenance,
+                selectedFreeSpell.value!!.isDaily,
+                selectedFreeSpell.value!!.type,
+                selectedFreeSpell.value!!.forbiddenElements
+            )
+
+            magic.addFreeSpell(item, freeElement.value)
+            updateHeldSpells()
+            textChange.value(item.name)
+            setFreeExchangeOpen(false)
+        }
     }
 
     fun setBoughtZeonString(input: Int){
@@ -274,6 +296,8 @@ class MagicFragmentViewModel(
     fun setFreeElement(input: Element){_freeElement.update{input}}
     fun setFreeLevel(input: Int){_freeLevel.update{input}}
     fun setTextChange(input: (String) -> Unit){_textChange.update{input}}
+
+    fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
 
     class ZeonPurchaseItemData(
         val nameRef: Int,

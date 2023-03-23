@@ -1,5 +1,10 @@
 package com.example.animabuilder
 
+/**
+ * Record of data for technique effects.
+ * Utilized in custom technique dialog for selecting effects.
+ */
+
 class TechniqueTableDataRecord {
     val table1 = listOf(
         TechniqueTableData("+10", 2, 4, 5, 1, 1),
@@ -451,6 +456,16 @@ class TechniqueTableDataRecord {
     )
 }
 
+/**
+ * Format of how technique effect data is stored.
+ *
+ * @param effect name to display for the data
+ * @param primaryCost ki cost of technique effect if selected first
+ * @param secondaryCost ki cost of technique effect if not selected first
+ * @param mkCost martial knowledge required to use effect
+ * @param maintCost ki cost to maintain the effect
+ * @param level minimum technique level needed to acquire the effect
+ */
 data class TechniqueTableData(
     val effect: String,
     val primaryCost: Int,

@@ -6,110 +6,30 @@ import android.content.Intent
 import android.widget.*
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.animabuilder.R
 
 import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.view_models.MainPageViewModel
 import java.io.File
 
 /**
- * Startup activity for the app
- * Gives the option to load a character or create a new one
+ * Startup activity for the app.
+ * Gives the option to load a character or create a new one.
  */
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //initialize intent to character page
-        val toNextPage = Intent(this@MainActivity, HomeActivity::class.java)
+        //start up main page's viewModel
+        val mainVM = MainPageViewModel()
 
         setContent {
-            //initialize character
-            var charInstance: BaseCharacter
-
-            //prepare values for new character alert
-            val newOpen = remember{mutableStateOf(false)}
-            val newName = remember{mutableStateOf("")}
-            val newComposable = @Composable{
-                TextField(value = newName.value, onValueChange = {newName.value = it})
-            }
-            val newConfirmation = {
-                //check that a name is given for the new character
-                if(newName.value == "")
-                    Toast.makeText(this@MainActivity, "File must have a name!", Toast.LENGTH_SHORT).show()
-                else{
-                    //create new character
-                    charInstance = BaseCharacter()
-
-                    //prepare data for next activity
-                    toNextPage.putExtra("filename", "AnimaChar" + newName.value)
-                    toNextPage.putExtra("Character", charInstance)
-
-                    //start next activity
-                    startActivity(toNextPage)
-                }
-            }
-            val newDecline = {newOpen.value = false}
-
-            //prepare values for load character alert
-            val loadOpen = remember{mutableStateOf(false)}
-            val selected = remember{mutableStateOf("")}
-            val loadComposable = @Composable{
-                Column{
-                    //display each file name as a radio button
-                    fileList().forEach{name ->
-                        if(name.contains("AnimaChar")) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .selectable(
-                                        selected = (name == selected.value),
-                                        onClick = { selected.value = name }
-                                    )
-                            ) {
-                                RadioButton(
-                                    selected = (name == selected.value),
-                                    onClick = { selected.value = name }
-                                )
-
-                                Text(
-                                    text = name.drop(9)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-            val loadConfirmation = {
-                //make sure the user has selected a character to load
-                if(selected.value == "")
-                    Toast.makeText(this@MainActivity, "Please select a file", Toast.LENGTH_SHORT).show()
-                else {
-                    val inputFile = File(this.filesDir, selected.value)
-
-                    //instantiate character off of file data
-                    charInstance = BaseCharacter(inputFile)
-                    toNextPage.putExtra("filename", selected.value)
-                    toNextPage.putExtra("Character", charInstance)
-
-                    //start next activity
-                    startActivity(toNextPage)
-                }
-            }
-            val loadDecline = {
-                selected.value = ""
-                loadOpen.value = false
-            }
-
             //display both buttons on page
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,70 +38,106 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ){
-                MainButton("NEW CHARACTER", newOpen)
-                MainButton("LOAD CHARACTER", loadOpen)
+                MainButton(mainVM.newChar)
+                MainButton(mainVM.loadChar)
             }
 
             //display new character alert if it's open
-            if(newOpen.value)
-                MakeAlert(newOpen, "Save Character As:", newComposable,
-                    newConfirmation, "Create", newDecline)
+            if(mainVM.newChar.isOpen.collectAsState().value)
+                MakeAlert(
+                    mainVM.newChar
+                )
 
             //display load character alert if it's open
-            else if(loadOpen.value)
-                MakeAlert(loadOpen, "Load Character:", loadComposable,
-                    loadConfirmation, "Load", loadDecline)
+            else if(mainVM.loadChar.isOpen.collectAsState().value)
+                MakeAlert(
+                    mainVM.loadChar
+                )
         }
     }
 
     /**
-     * Create a button for the main page
+     * Create a button for the main page.
      *
-     * title: name displayed on the button
-     * isOpen: boolean mutable for the alert's active state
+     * @param item holds the data to be used in this specific button's action
      */
     @Composable
-    private fun MainButton(title: String, isOpen: MutableState<Boolean>){
+    private fun MainButton(item: MainPageViewModel.AlertData){
         Row {
             Button(
-                onClick = {isOpen.value = true},
+                //open alert on click
+                onClick = {item.toggleOpen()},
                 modifier = Modifier.width(200.dp)
             ){
-                Text(text = title)
+                Text(text = stringResource(item.titleRef))
             }
         }
     }
 
     /**
-     * Creates an alert for the user to interact with
+     * Creates an alert for the user to interact with.
      *
-     * isOpen: active state of the alert
-     * titleIn: head title of the alert
-     * contents: display for the alert
-     * confirmation: action for the confirm button to take
-     * conTitle: name displayed by the confirmation button
-     * declination: action for the dismiss button to take
+     * @param item data package to use in this alert
      */
     @Composable
     private fun MakeAlert(
-        isOpen: MutableState<Boolean>,
-        titleIn: String,
-        contents: @Composable () -> Unit,
-        confirmation: () -> Unit,
-        conTitle: String,
-        declination: () -> Unit
+        item: MainPageViewModel.AlertData
     ){
         AlertDialog(
-            onDismissRequest = { isOpen.value = false },
-            title = {Text(text = titleIn)},
-            text = {contents()},
+            onDismissRequest = {
+                //clear name and toggle open status
+                item.setCharacterName("")
+                item.toggleOpen()
+            },
+            //get and display item's title
+            title = {Text(text = stringResource(item.headerRef))},
+            text = {
+                //display for new character
+                if(item.headerRef == R.string.newCharacterHeader)
+                    item.NewDisplay()
+                //display for loading a character
+                else
+                    item.LoadDisplay()
+            },
             confirmButton = {
-                TextButton(onClick = confirmation) {
-                    Text(text = conTitle)
+                TextButton(onClick = {
+                    //initialize intent
+                    val toNextPage = Intent(this@MainActivity, HomeActivity::class.java)
+
+                    //ready filename to pass
+                    val filename =
+                        if(item.headerRef == R.string.newCharacterHeader)
+                            "AnimaChar" + item.characterName.value
+                        else item.characterName.value
+
+                    //ready character to pass
+                    val charInstance =
+                        if(item.headerRef == R.string.newCharacterHeader)
+                            BaseCharacter()
+                        else
+                            BaseCharacter(File(this.filesDir, filename))
+
+                    //terminate process and notify user of failure
+                    if(item.characterName.value == "")
+                        Toast.makeText(this@MainActivity, item.failedText, Toast.LENGTH_SHORT).show()
+                    else{
+                        //prepare data for next activity
+                        toNextPage.putExtra("filename", filename)
+                        toNextPage.putExtra("Character", charInstance)
+
+                        //start next activity
+                        startActivity(toNextPage)
+                    }
+                }) {
+                    Text(text = stringResource(item.buttonName))
                 }
             },
             dismissButton = {
-                TextButton(onClick = declination){
+                TextButton(onClick = {
+                    //clear name and toggle open status
+                    item.setCharacterName("")
+                    item.toggleOpen()
+                }){
                     Text(text = "Cancel")
                 }
             }

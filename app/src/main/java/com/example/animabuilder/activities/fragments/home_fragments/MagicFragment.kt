@@ -171,7 +171,6 @@ fun MagicFragment(
             SpellDetails,
             openDetailAlert
         )
-        {magFragVM.setFreeExchangeOpen(false)}
 }
 
 /**

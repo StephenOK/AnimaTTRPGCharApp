@@ -8,8 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
@@ -17,22 +15,19 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.view_models.MagicFragmentViewModel
 
 /**
- * Dialog for the player to choose their character's Free Spells
- * Shows spells that are available to the indicated element that the character does not already have
- * Allows display of description of the available spells
+ * Dialog for the player to choose their character's Free Spells.
+ * Shows spells that are available to the indicated element that the character does not already have.
+ * Allows display of description of the available spells.
  *
- * spellElement: book that the associated spell is a part of
- * spellLevel: level of free spell that is being taken
- * textChange: function that changes which text item display to change on spell acquisition
- * detailContents: composable for detail alert for the spell
- * closeDialog: function to run on dialog's close
+ * @param magFragVM viewModel for magic page and data
+ * @param detailContents form of the contents for the detail alert
+ * @param openDetailAlert function to run on detail button press
  */
 @Composable
 fun FreeSpellPick(
     magFragVM: MagicFragmentViewModel,
     detailContents: @Composable (Spell) -> Unit,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    closeDialog: () -> Unit
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
     //determine which level of spells to display
     val freeList = when (magFragVM.freeLevel.collectAsState().value){
@@ -49,9 +44,6 @@ fun FreeSpellPick(
         else -> listOf()
     }
 
-    //initialize user's selection
-    val selectedSpell = remember{mutableStateOf<FreeSpell?>(null)}
-
     DialogFrame(
         "Choose Free Spell",
         {
@@ -60,39 +52,23 @@ fun FreeSpellPick(
                 items(freeList){
                     //determine that spell is legal for the book and not already taken
                     if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getFreeSpellHeld(it)){
-                        PickFreeRow(it, selectedSpell.value, { input: FreeSpell ->
-                            selectedSpell.value = input
-                        }, openDetailAlert, detailContents)
+                        PickFreeRow(
+                            magFragVM,
+                            it,
+                            openDetailAlert,
+                            detailContents
+                        )
                     }
                 }
             }
         },
         {
             //confirmation button adds spell to character
-            TextButton(onClick = {
-                if(selectedSpell.value != null) {
-                    magFragVM.addFreeSpell(FreeSpell(
-                        selectedSpell.value!!.name,
-                        selectedSpell.value!!.isActive,
-                        magFragVM.freeLevel.value,
-                        selectedSpell.value!!.zCost,
-                        selectedSpell.value!!.effect,
-                        selectedSpell.value!!.addedEffect,
-                        selectedSpell.value!!.zMax,
-                        selectedSpell.value!!.maintenance,
-                        selectedSpell.value!!.isDaily,
-                        selectedSpell.value!!.type,
-                        selectedSpell.value!!.forbiddenElements
-                    ), magFragVM.freeElement.value)
-                    magFragVM.textChange.value(selectedSpell.value!!.name)
-                    closeDialog()
-                }
-            }) {
-                Text(text = "Confirm")
-            }
+            TextButton(onClick = {magFragVM.addFreeSpell()})
+            {Text(text = "Confirm")}
 
             //back button closes dialog
-            TextButton(onClick = closeDialog) {
+            TextButton(onClick = {magFragVM.setFreeExchangeOpen(false)}) {
                 Text(text = "Back")
             }
         }
@@ -100,26 +76,25 @@ fun FreeSpellPick(
 }
 
 /**
- * Creates a row with a free spell for the user to select for their character
+ * Creates a row with a free spell for the user to select for their character.
  *
- * displayItem: spell associated with this row
- * radioCheck: player's currently selected free spell
- * changeRadioCheck: function to run when the user changes their selection
- * detailContents: composable to send to the DetailAlert when called
+ * @param magFragVM source of currently selected spell
+ * @param displayItem spell associated with this row
+ * @param openDetailAlert function to run on opening the spell's details
+ * @param detailContents composable to send to the DetailAlert when called
  */
 @Composable
 private fun PickFreeRow(
+    magFragVM: MagicFragmentViewModel,
     displayItem: FreeSpell,
-    radioCheck: FreeSpell?,
-    changeRadioCheck: (FreeSpell) -> Unit,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     detailContents: @Composable (Spell) -> Unit
 ){
     Row{
         //radio button to denote user's selection
         RadioButton(
-            selected = displayItem == radioCheck,
-            onClick = {changeRadioCheck(displayItem)}
+            selected = displayItem == magFragVM.selectedFreeSpell.collectAsState().value,
+            onClick = {magFragVM.setSelectedFreeSpell(displayItem)}
         )
         //spell's name
         Text(text = displayItem.name)

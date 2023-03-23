@@ -8,9 +8,9 @@ import androidx.compose.runtime.collectAsState
 import com.example.animabuilder.view_models.HomePageAlertViewModel
 
 /**
- * Shows an alert that gives details on the item in question
+ * Shows an alert that gives details on the item in question.
  *
- * contents: item's details specific to the type of item being displayed
+ * @param masterModel source of item information
  */
 @Composable
 fun DetailAlert(masterModel: HomePageAlertViewModel) {

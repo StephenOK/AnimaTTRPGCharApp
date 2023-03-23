@@ -7,10 +7,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 /**
- * Display item that holds a label and the associated amount
+ * Display item that holds a label and the associated amount.
  *
- * label: name of the item displayed
- * info: associated value for the listed item
+ * @param label name of the item displayed
+ * @param info associated value for the listed item
  */
 @Composable
 fun InfoRow(

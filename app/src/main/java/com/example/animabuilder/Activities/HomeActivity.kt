@@ -30,8 +30,9 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 /**
- * Activity that runs all character creation fragments
- * Initially loads the CharacterPageFragment
+ * Activity that runs all character creation fragments.
+ * Instantiates all viewModels used in the character pages.
+ * Initially loads the CharacterPageFragment.
  */
 
 class HomeActivity : AppCompatActivity() {
@@ -50,44 +51,28 @@ class HomeActivity : AppCompatActivity() {
         Equipment
     }
 
-
-    //character to work with and its associated file name
-    private val filename: MutableState<String?> = mutableStateOf(null)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //get values from intent
+        //get character instance and filename from intent
         val charInstance = intent.getSerializableExtra("Character", BaseCharacter::class.java)!!
-        filename.value = intent.getStringExtra("filename")
+        val filename = intent.getStringExtra("filename")!!
 
         setContent{
+            //get local context
             val context = LocalContext.current
 
-            val navVM = viewModel<NavigationViewModel>()
+            //get scaffold state, coroutine scope, and navigation controller
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            val navController = rememberNavController()
 
-            navVM.setScaffoldState(rememberScaffoldState())
-            val scaffoldState = navVM.scaffoldState.collectAsState().value!!
-
-            navVM.setCoroutineScope(rememberCoroutineScope())
-            val scope = navVM.coroutineScope.collectAsState().value!!
-
-            navVM.setNavHostController(rememberNavController())
-            val navController = navVM.navHostController.collectAsState().value!!
-
-            val currentFragment = navVM.currentFragment.collectAsState().value
-
-            //displays for maximum development points
-            val bottomBarVM = viewModel<BottomBarViewModel>()
-            bottomBarVM.setMaxDP(charInstance.devPT)
-            bottomBarVM.setMaxCombat(charInstance.maxCombatDP)
-            bottomBarVM.setMaxMagic(charInstance.maxMagDP)
-            bottomBarVM.setMaxPsychic(charInstance.maxPsyDP)
-            bottomBarVM.updateSpentValues(charInstance)
-
+            //create viewModels for the home page and home alert items
+            val homePageVM = HomePageViewModel(charInstance)
             val homeAlertsVM = viewModel<HomePageAlertViewModel>()
 
-            val charFragVM = CharacterFragmentViewModel(charInstance, bottomBarVM, context)
+            //create viewModels for each individual fragment
+            val charFragVM = CharacterFragmentViewModel(charInstance, homePageVM, context)
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
             val secondaryFragVM = SecondaryFragmentViewModel(charInstance.secondaryList)
             val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
@@ -107,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
                 //home page's top bar
                 topBar = {TopAppBar (
                     //update title with any page change
-                    title = {Text(text = currentFragment.name)},
+                    title = {Text(text = homePageVM.currentFragment.collectAsState().value.name)},
 
                     //icon to open the navigation drawer
                     navigationIcon = {
@@ -132,22 +117,26 @@ class HomeActivity : AppCompatActivity() {
                             //create a drawer button with the given onclick function
                             DrawerButton(it.name)
                             {
-                                navVM.setCurrentFragment(it)
-                                scope.launch{scaffoldState.drawerState.close()}
-                                navController.navigate(it.name)
+                                //change page if not on own page
+                                if(homePageVM.currentFragment.value != it) {
+                                    homePageVM.setCurrentFragment(it)
+                                    scope.launch { scaffoldState.drawerState.close() }
+                                    navController.navigate(it.name)
+                                }
                             }
                         }
 
                         //drawer button for saving the character
                         DrawerButton("Save"){
                             scope.launch{scaffoldState.drawerState.close()}
-                            attemptSave(charInstance)
+                            attemptSave(filename, charInstance)
                         }
 
                         //drawer button for exiting the character creator
                         DrawerButton("Exit"){
                             scope.launch{scaffoldState.drawerState.close()}
-                            homeAlertsVM.setExitAlert(true) }
+                            homeAlertsVM.setExitAlert(true)
+                        }
                     }
                 },
 
@@ -187,22 +176,10 @@ class HomeActivity : AppCompatActivity() {
                         }
 
                         //create row for maximum values
-                        BottomBarRow(
-                            stringResource(R.string.maxRowLabel),
-                            bottomBarVM.maxDP.collectAsState().value.toString(),
-                            bottomBarVM.maxCombat.collectAsState().value.toString(),
-                            bottomBarVM.maxMagic.collectAsState().value.toString(),
-                            bottomBarVM.maxPsychic.collectAsState().value.toString()
-                        )
+                        BottomBarRow(homePageVM.maximums)
 
                         //create row for spent values
-                        BottomBarRow(
-                            stringResource(R.string.usedRowLabel),
-                            bottomBarVM.spentDP.collectAsState().value.toString(),
-                            bottomBarVM.spentCombat.collectAsState().value.toString(),
-                            bottomBarVM.spentMagic.collectAsState().value.toString(),
-                            bottomBarVM.spentPsychic.collectAsState().value.toString())
-                    }
+                        BottomBarRow(homePageVM.expenditures)}
                 }
             ) {
                 //set navigation host in scaffold
@@ -214,7 +191,7 @@ class HomeActivity : AppCompatActivity() {
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
                         CharacterPageFragment(charInstance, charFragVM)
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to combat abilities page
@@ -222,13 +199,13 @@ class HomeActivity : AppCompatActivity() {
                         CombatFragment(
                             combatFragVM,
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
                         SecondaryAbilityFragment(secondaryFragVM)
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to advantages page
@@ -237,7 +214,7 @@ class HomeActivity : AppCompatActivity() {
                             advantageFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to combat page
@@ -246,7 +223,7 @@ class HomeActivity : AppCompatActivity() {
                             modFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to ki page
@@ -255,7 +232,7 @@ class HomeActivity : AppCompatActivity() {
                             kiFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to magic page
@@ -264,7 +241,7 @@ class HomeActivity : AppCompatActivity() {
                             magFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to summoning page
@@ -272,7 +249,7 @@ class HomeActivity : AppCompatActivity() {
                         SummoningFragment(
                             summonFragVM
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to psychic page
@@ -281,7 +258,7 @@ class HomeActivity : AppCompatActivity() {
                             psyFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {bottomBarVM.updateSpentValues(charInstance)}
+                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
                     //route to equipment page
@@ -292,7 +269,8 @@ class HomeActivity : AppCompatActivity() {
 
                 //show exit alert if user opens it
                 if(homeAlertsVM.exitOpen.collectAsState().value)
-                    ExitAlert(charInstance) {homeAlertsVM.setExitAlert(false)}
+                    ExitAlert(filename, charInstance) {homeAlertsVM.setExitAlert(false)}
+                //show detail alert if user opens one
                 if(homeAlertsVM.detailAlertOn.collectAsState().value)
                     DetailAlert(homeAlertsVM)
             }
@@ -300,10 +278,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Creates a drawer button with the given inputs
+     * Creates a navigation button with the given inputs.
      *
-     * display: name the button will have
-     * action: function to run on user input
+     * @param display name the button will have
+     * @param action function to run on user input
      */
     @Composable
     private fun DrawerButton(display:String, action: () -> Unit){
@@ -313,56 +291,46 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Creates a row for the bottom bar's display
+     * Creates a row for the bottom bar's display.
      *
-     * rowLabel: title for the given row
-     * maxValue: display of the maximum point column
-     * comValue: display of the combat column
-     * magValue: display of the magic column
-     * psyValue: display of the psychic column
+     * @param item bottom bar row data that is to be displayed in this row
      */
     @Composable
-    private fun BottomBarRow(
-        rowLabel: String,
-        maxValue: String,
-        comValue: String,
-        magValue: String,
-        psyValue: String
-    ){
+    private fun BottomBarRow(item: HomePageViewModel.BottomBarRowData){
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             //display title
             Text(
-                text = rowLabel,
+                text = stringResource(item.nameRef),
                 textAlign = TextAlign.End,
                 modifier = Modifier.weight(0.2f)
             )
 
             //display maximum value
             Text(
-                text = maxValue,
+                text = item.maxVal.collectAsState().value,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(0.2f))
 
             //display combat value
             Text(
-                text = comValue,
+                text = item.combatVal.collectAsState().value,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(0.2f)
             )
 
             //display magic value
             Text(
-                text = magValue,
+                text = item.magVal.collectAsState().value,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(0.2f)
             )
 
             //display psychic value
             Text(
-                text = psyValue,
+                text = item.psyVal.collectAsState().value,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(0.2f)
             )
@@ -370,12 +338,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Attempts to save the character's data to its designated file
+     * Attempts to save the character's data to its designated file.
+     *
+     * @param filename name of the file to save to
+     * @param charInstance character object to be saved
      */
-    private fun attemptSave(charInstance: BaseCharacter) {
+    private fun attemptSave(filename: String, charInstance: BaseCharacter) {
         try{
             //create file writer
-            val saveStream = openFileOutput(filename.value, Context.MODE_PRIVATE)
+            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
 
             //get and write character's bytes
             val charData = charInstance.bytes
@@ -409,12 +380,15 @@ class HomeActivity : AppCompatActivity() {
 
 
     /**
-     * Alert for when user wishes to leave the current activity
+     * Alert for when user wishes to leave the current activity.
      *
-     * isOpen: open state of alert
+     * @param filename name of the character file for save option
+     * @param charInstance character object for save option
+     * @param closeDialog function to run on close option
      */
     @Composable
     private fun ExitAlert(
+        filename: String,
         charInstance: BaseCharacter,
         closeDialog: () -> Unit
     ){
@@ -426,7 +400,7 @@ class HomeActivity : AppCompatActivity() {
                 //attempt to save then leave page
                 TextButton(
                     onClick = {
-                        attemptSave(charInstance)
+                        attemptSave(filename, charInstance)
                         exitPage()}
                 ){
                     Text(text = "Save")
@@ -443,7 +417,9 @@ class HomeActivity : AppCompatActivity() {
         )
     }
 
-    //transfer back to MainActivity
+    /**
+     * Function that transfers the user back to the main page.
+     */
     private fun exitPage(){
         startActivity(Intent(this@HomeActivity, MainActivity::class.java))
     }

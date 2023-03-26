@@ -51,7 +51,7 @@ fun FreeSpellPick(
                 //create selection item for each available spell
                 items(freeList){
                     //determine that spell is legal for the book and not already taken
-                    if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getFreeSpellHeld(it)){
+                    if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getSpellHeld(it)){
                         PickFreeRow(
                             magFragVM,
                             it,
@@ -68,7 +68,7 @@ fun FreeSpellPick(
             {Text(text = "Confirm")}
 
             //back button closes dialog
-            TextButton(onClick = {magFragVM.setFreeExchangeOpen(false)}) {
+            TextButton(onClick = {magFragVM.toggleFreeExchangeOpen() }) {
                 Text(text = "Back")
             }
         }

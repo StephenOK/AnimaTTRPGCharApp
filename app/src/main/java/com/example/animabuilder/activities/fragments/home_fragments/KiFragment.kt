@@ -26,10 +26,14 @@ import com.example.animabuilder.view_models.CustomTechniqueViewModel
 import com.example.animabuilder.view_models.KiFragmentViewModel
 
 /**
- * Fragment that displays items related to martial knowledge
- * Ki points and accumulations can be acquired here
- * Ki abilities are acquirable
- * Dominion Techniques are taken and created in this page
+ * Fragment that displays items related to martial knowledge.
+ * Ki points and accumulations can be acquired here.
+ * Ki abilities are acquirable.
+ * Dominion Techniques are taken and created in this page.
+ *
+ * @param kiFragVM viewModel to run for this page
+ * @param openDetailAlert function to run when opening an item's details
+ * @param updateFunc function to run to update the bottom bar's values
  */
 
 @Composable
@@ -63,7 +67,7 @@ fun KiFragment(
             }
         }
 
-        //display a ki row for each stat
+        //display a ki row for each characteristic
         items(kiFragVM.allRowData) {kiRowInput ->
             KiFromStatRow(
                 kiRowInput,
@@ -71,11 +75,11 @@ fun KiFragment(
             )
         }
 
-        //total ki points and accumulation
         item {
             Row {
                 Text(text = stringResource(R.string.totalLabel), modifier = Modifier.weight(0.13f))
 
+                //display total ki points
                 Spacer(Modifier.weight(0.26f))
                 Text(
                     text = kiFragVM.kiPointTotal.collectAsState().value,
@@ -83,6 +87,7 @@ fun KiFragment(
                     modifier = Modifier.weight(0.13f)
                 )
 
+                //display total accumulation
                 Spacer(Modifier.weight(0.26f))
                 Text(
                     text = kiFragVM.kiAccTotal.collectAsState().value,
@@ -95,9 +100,7 @@ fun KiFragment(
         //button to display ki abilities
         item {
             Button(
-                onClick = {
-                    kiFragVM.setKiListOpen(!kiFragVM.kiListOpen.value)
-                },
+                onClick = {kiFragVM.toggleKiListOpen() },
                 modifier = Modifier.width(250.dp)
             ) {
                 Text(text = stringResource(R.string.kiAbilityLabel))
@@ -124,7 +127,7 @@ fun KiFragment(
             Button(
                 onClick = {
                     //check that character can take a dominion technique
-                    if (!kiFragVM.setTechListOpen(!kiFragVM.techListOpen.value))
+                    if (!kiFragVM.toggleTechListOpen())
                         Toast.makeText(
                             context,
                             "You need Ki Control for Dominion Techniques",
@@ -148,9 +151,7 @@ fun KiFragment(
 
                     //button for custom technique creation
                     Button(
-                        onClick = {
-                            kiFragVM.setCustomTechOpen(true)
-                        }
+                        onClick = {kiFragVM.toggleCustomTechOpen()}
                     ) {
                         Text(text = stringResource(R.string.addTechniques))
                     }
@@ -164,18 +165,16 @@ fun KiFragment(
         }
     }
 
-    //alert for custom technique creation
+    //dialog for custom technique creation
     if(kiFragVM.customTechOpen.collectAsState().value)
         CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM), TechContents)
 }
 
 /**
- * Creates a display row for ki point and accumulation purchases
+ * Creates a display row for ki point and accumulation purchases of an individual primary characteristic.
  *
- * kiRowData: data specific to this row's stat
- * updateFunc: bottom bar update function
- * changePointDisplay: function that hoists the total ki point string
- * changeAccDisplay: function that hoists the total accumulation string
+ * @param kiRowData data specific to this row's stat
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun KiFromStatRow(
@@ -193,8 +192,8 @@ private fun KiFromStatRow(
         NumberInput(
             kiRowData.pointInputString.collectAsState().value,
             {},
-            {input: String ->
-                kiRowData.setPointInputString(input.toInt())
+            {
+                kiRowData.setPointInputString(it.toInt())
                 updateFunc()
             },
             {kiRowData.setPointInputString("")},
@@ -213,8 +212,8 @@ private fun KiFromStatRow(
         NumberInput(
             kiRowData.accInputString.collectAsState().value,
             {},
-            {input: String ->
-                kiRowData.setAccInputString(input.toInt())
+            {
+                kiRowData.setAccInputString(it.toInt())
                 updateFunc()
             },
             {kiRowData.setAccInputString("")},
@@ -229,13 +228,11 @@ private fun KiFromStatRow(
 }
 
 /**
- * Gives a row for a character to take a Ki Ability
+ * Gives a row for a character to take the indicated Ki Ability.
  *
- * ability: ki ability to display in this row
- * allKiAbilities: master list of ki ability checkboxes
- * updateMKRemaining: function to change the displayed martial knowledge remaining
- * techListOpen: open state of technique list
- * closeList: function to close the technique list
+ * @param kiFragVM viewModel managing this page's data
+ * @param ability ki ability to display in this row
+ * @param openDetailAlert function to run on opening an item's details
  */
 @Composable
 private fun KiAbilityRow(
@@ -244,7 +241,7 @@ private fun KiAbilityRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
-        //taken checkbox
+        //checkbox to take or remove the ability
         Checkbox(
             checked = kiFragVM.allKiAbilities[ability]!!.value,
             onCheckedChange = {kiFragVM.setKiAbilityTaken(ability, it)},
@@ -264,11 +261,11 @@ private fun KiAbilityRow(
 }
 
 /**
- * Displays a prebuilt technique the user can add to their character
+ * Displays a technique the user can add to their character.
  *
- * toShow: technique associated with the row
- * allTechniques: master list of the shown techniques
- * updateMKRemaining: function to update the displayed martial knowledge available
+ * @param kiFragVM viewModel that is managing the data on this page
+ * @param toShow technique associated with the row
+ * @param openDetailAlert function to run when opening this item's details
  */
 @Composable
 private fun TechniqueRow(
@@ -277,7 +274,7 @@ private fun TechniqueRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ) {
     Row{
-        //checkbox to apply technique to the character
+        //checkbox to apply or remove technique to the character
         Checkbox(
             checked = kiFragVM.allTechniques[toShow]!!.value,
             onCheckedChange ={kiFragVM.attemptTechniqueChange(toShow, it)}

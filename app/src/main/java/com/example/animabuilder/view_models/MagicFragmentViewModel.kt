@@ -38,8 +38,6 @@ class MagicFragmentViewModel(
     private val _freeElement = MutableStateFlow(Element.Free)
     private val _freeLevel = MutableStateFlow(4)
 
-    private val _textChange = MutableStateFlow<(String) -> Unit>({})
-
     private val _selectedFreeSpell = MutableStateFlow<FreeSpell?>(null)
 
     val boughtZeonString = _boughtZeonString.asStateFlow()
@@ -60,8 +58,6 @@ class MagicFragmentViewModel(
     val freeExchangeOpen = _freeExchangeOpen.asStateFlow()
     val freeElement = _freeElement.asStateFlow()
     val freeLevel = _freeLevel.asStateFlow()
-
-    val textChange = _textChange.asStateFlow()
 
     val selectedFreeSpell = _selectedFreeSpell.asStateFlow()
 
@@ -189,16 +185,12 @@ class MagicFragmentViewModel(
         heldSpells.addAll(magic.spellList)
     }
 
-    fun getIndividualSpells(): List<Spell>{return magic.individualSpells}
     fun getFreeElement(input: FreeSpell): Element{return magic.findFreeSpellElement(input)}
     fun getBaseZeon(): Int{return magic.baseZeon}
     fun getClassZeon(): Int{return magic.zeonFromClass}
-    fun getMagicTies(): Boolean{return magic.magicTies}
     fun getFreeSpellbook(): FreeBook{return magic.freeBook}
 
-    fun getFreeSpellHeld(item: FreeSpell): Boolean{
-        return magic.hasCopyOf(item)
-    }
+    fun getSpellHeld(item: Spell): Boolean{return magic.hasCopyOf(item)}
 
     fun getFreeSpellHeld(level: Int, element: Element): Boolean{
         return magic.hasCopyOf(magic.getFreeSpell(level, element))
@@ -232,8 +224,7 @@ class MagicFragmentViewModel(
 
             magic.addFreeSpell(item, freeElement.value)
             updateHeldSpells()
-            textChange.value(item.name)
-            setFreeExchangeOpen(false)
+            toggleFreeExchangeOpen()
         }
     }
 
@@ -292,10 +283,22 @@ class MagicFragmentViewModel(
             magic.magProjTotal - magic.magProjImbalance
     }
 
-    fun setFreeExchangeOpen(input: Boolean){_freeExchangeOpen.update{input}}
+    fun toggleFreeExchangeOpen() {_freeExchangeOpen.update{!freeExchangeOpen.value}}
     fun setFreeElement(input: Element){_freeElement.update{input}}
     fun setFreeLevel(input: Int){_freeLevel.update{input}}
-    fun setTextChange(input: (String) -> Unit){_textChange.update{input}}
+
+    fun tryExchangeOpen(
+        freeSpell: FreeSpell
+    ): Boolean{
+        if(magic.magicTies)
+            return true
+
+        setFreeElement(getFreeElement(freeSpell))
+        setFreeLevel(freeSpell.level)
+        toggleFreeExchangeOpen()
+
+        return false
+    }
 
     fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
 
@@ -340,11 +343,23 @@ class MagicFragmentViewModel(
             magFragVM.updateHeldSpells()
         }
         fun setElementInvestment(input: String){_elementInvestment.update{input}}
-        fun setListOpen(input: Boolean){_listOpen.update{input}}
+        fun toggleListOpen() {_listOpen.update{!listOpen.value}}
     }
 
     init{
         setImbalanceIsAttack(magic.imbalanceIsAttack)
         updateHeldSpells()
+
+        addPrimaryElementBox(Element.Light)
+        addPrimaryElementBox(Element.Dark)
+        addPrimaryElementBox(Element.Creation)
+        addPrimaryElementBox(Element.Destruction)
+        addPrimaryElementBox(Element.Air)
+        addPrimaryElementBox(Element.Earth)
+        addPrimaryElementBox(Element.Water)
+        addPrimaryElementBox(Element.Fire)
+        addPrimaryElementBox(Element.Essence)
+        addPrimaryElementBox(Element.Illusion)
+        addPrimaryElementBox(Element.Necromancy)
     }
 }

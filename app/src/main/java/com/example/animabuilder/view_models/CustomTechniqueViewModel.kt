@@ -818,7 +818,7 @@ class CustomTechniqueViewModel(
 
     fun getCustomTechnique(): Technique{return customTechnique}
 
-    fun closeDialog(){kiFragVM.setCustomTechOpen(false)}
+    fun closeDialog(){kiFragVM.toggleCustomTechOpen()}
 
     class BuildPackage(
         val input: TechniqueEffect,

@@ -28,9 +28,12 @@ class SummoningFragmentViewModel(
         val boughtVal = _boughtVal.asStateFlow()
         val total = _total.asStateFlow()
 
-        fun setBoughtVal(input: String){
-            _boughtVal.update{input}
+        fun setBoughtVal(input: Int){
+            item.setBuyVal(input)
             _total.update{item.abilityTotal.toString()}
+            setBoughtVal(input.toString())
         }
+
+        fun setBoughtVal(input: String){_boughtVal.update{input}}
     }
 }

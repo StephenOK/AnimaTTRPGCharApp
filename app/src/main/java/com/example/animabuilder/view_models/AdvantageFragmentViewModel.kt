@@ -27,7 +27,7 @@ class AdvantageFragmentViewModel(
 
         if(attemptAction.first == null) updateAdvantagesTaken()
 
-        setAdvantageCostOn(false)
+        toggleAdvantageCostOn()
 
         return attemptAction.first
     }
@@ -77,7 +77,7 @@ class AdvantageFragmentViewModel(
 
         val isOpen = _isOpen.asStateFlow()
 
-        fun setOpen(input: Boolean){_isOpen.update{input}}
+        fun toggleOpen() {_isOpen.update{!isOpen.value}}
     }
 
 
@@ -97,7 +97,7 @@ class AdvantageFragmentViewModel(
     val optionPicked = _optionPicked.asStateFlow()
     val costPicked = _costPicked.asStateFlow()
 
-    fun setAdvantageCostOn(input: Boolean){_advantageCostOn.update{input}}
+    fun toggleAdvantageCostOn() {_advantageCostOn.update{!advantageCostOn.value}}
     fun setAdjustedAdvantage(input: Advantage){_adjustedAdvantage.update{input}}
     fun setAdjustingPage(input: Int){_adjustingPage.update{input}}
 

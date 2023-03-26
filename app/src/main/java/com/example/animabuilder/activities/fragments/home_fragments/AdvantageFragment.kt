@@ -22,11 +22,14 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 import com.example.animabuilder.view_models.AdvantageFragmentViewModel
 
 /**
- * Section that displays advantage and disadvantage information to the user
- * Allows the user to select advantages and disadvantages for their character
- * Also displays advantages of their character's current race
+ * Section that displays advantage and disadvantage information to the user.
+ * Allows the user to select advantages and disadvantages for their character.
+ * Also displays advantages of their character's current race.
+ *
+ * @param advantageFragVM viewModel to run with this fragment
+ * @param openDetailAlert function to run when opening an item's details
+ * @param updateBottomBar function to run to update the screen's bottom bar
  */
-
 @Composable
 fun AdvantageFragment(
     advantageFragVM: AdvantageFragmentViewModel,
@@ -50,7 +53,7 @@ fun AdvantageFragment(
             )
         }
 
-        //display all of the character's taken advantages
+        //display all of the character's taken advantages and disadvantages
         items(advantageFragVM.takenAdvantages){
             HeldAdvantageDisplay(
                 advantageFragVM,
@@ -60,18 +63,19 @@ fun AdvantageFragment(
             )
         }
 
-        //display all advantages acquired by their race
+        //display all advantages acquired from their race
         item{Text(text = "Racial Advantages")}
         items(advantageFragVM.getRacialAdvantages()){
             AdvantageRow(it, null, openDetailAlert, {}, {})
         }
     }
 
-    //display for advantage adjustment
+    //dialog for advantage adjustment
     if(advantageFragVM.advantageCostOn.collectAsState().value)
         AdvantageCostPick(
             advantageFragVM
         ){input: String? ->
+            //notify user of failed acquisition
             if(input != null)
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
 
@@ -80,13 +84,12 @@ fun AdvantageFragment(
 }
 
 /**
- * Creates a button that displays the base advantages or disadvantages in the input
+ * Creates a button that displays the base advantages or disadvantages in the input.
  *
- * advantageList: data class that holds data on the category name and its contents
- * context: phone context to display Toast messages to
- * creationPoints: displayed string for the character's current creation points
- * updateTaken: hoisted function to run updates for the bottom bar and taken advantage list
- * activateAdjustment: function to run to initiate advantage dialog
+ * @param advantageFragVM viewModel for the advantage fragment
+ * @param advantageList advantage data to display
+ * @param openDetailAlert function to run when opening an item's details
+ * @param updateBottomBar function to run to update the screen's bottom bar
  */
 @Composable
 private fun AdvantageDisplay(
@@ -95,11 +98,12 @@ private fun AdvantageDisplay(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateBottomBar: () -> Unit
 ){
+    //get local context
     val context = LocalContext.current
 
     Column {
         //button to open advantage list
-        Button(onClick = {advantageList.setOpen(!advantageList.isOpen.value)}) {
+        Button(onClick = {advantageList.toggleOpen() }) {
             //display category name
             Text(text = stringResource(advantageList.category))
         }
@@ -115,6 +119,7 @@ private fun AdvantageDisplay(
                         openDetailAlert,
                         {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Advantage")})
                     {
+                        //if more selections need to be made
                         if(it.options != null || it.cost.size > 1) {
                             //activate dialog if multiple options available
                             if (it.options != null)
@@ -123,8 +128,9 @@ private fun AdvantageDisplay(
                             else
                                 advantageFragVM.setAdjustingPage(2)
 
+                            //open cost selection dialog for this advantage
                             advantageFragVM.setAdjustedAdvantage(it)
-                            advantageFragVM.setAdvantageCostOn(true)
+                            advantageFragVM.toggleAdvantageCostOn()
                         }
                         //attempt to add the base advantage to the character
                         else {
@@ -148,12 +154,14 @@ private fun AdvantageDisplay(
 }
 
 /**
- * Creates a row to display an advantage to the user
+ * Creates a row for an advantage where the user can add or remove it, depending on the inputted
+ * button action.
  *
- * item: target of the display
- * takenAddition: potential additional information about the advantage
- * button: display image on the row's button
- * buttonAction: what the button does in its context
+ * @param item advantage in this display
+ * @param takenAddition potential additional information to display
+ * @param openDetailAlert function to run when opening an item's details
+ * @param button display image on the row's button
+ * @param buttonAction what the button does in its context
  */
 @Composable
 private fun AdvantageRow(
@@ -161,7 +169,7 @@ private fun AdvantageRow(
     takenAddition: String?,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     button: @Composable () -> Unit,
-    buttonAction:() -> Unit,
+    buttonAction: () -> Unit,
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
@@ -184,11 +192,12 @@ private fun AdvantageRow(
 }
 
 /**
- * Display row for an already acquired advantage
+ * Display for an already acquired advantage.
  *
- * item: advantage to display
- * creationPoints: display of character's current creation points
- * updateTaken: update function to run after an action
+ * @param advantageFragVM viewModel that holds data for this object
+ * @param item advantage to display
+ * @param openDetailAlert function to run when opening an item's details
+ * @param updateBottomBar function to run to update the screen's bottom bar
  */
 @Composable
 private fun HeldAdvantageDisplay(

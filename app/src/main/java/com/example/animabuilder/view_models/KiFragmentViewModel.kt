@@ -49,17 +49,17 @@ class KiFragmentViewModel(
     fun setKiAccTotal(input: String){_kiAccTotal.update{input}}
     fun setKiPointTotal(input: String){_kiPointTotal.update{input}}
 
-    fun setTechListOpen(input: Boolean): Boolean{
-        val output = ki.takenAbilities.contains(ki.kiRecord.kiControl)
+    fun toggleTechListOpen(): Boolean{
+        if(ki.takenAbilities.contains(ki.kiRecord.kiControl)) {
+            _techListOpen.update{!techListOpen.value}
+            return true
+        }
 
-        if(output)
-            _techListOpen.update{input}
-
-        return output
+        return false
     }
 
-    fun setKiListOpen(input: Boolean){_kiListOpen.update{input}}
-    fun setCustomTechOpen(input: Boolean){_customTechOpen.update{input}}
+    fun toggleKiListOpen() {_kiListOpen.update{!kiListOpen.value}}
+    fun toggleCustomTechOpen() {_customTechOpen.update{!customTechOpen.value}}
 
     fun setKiAbilityTaken(item: KiAbility, input: Boolean){
         if(input) {
@@ -81,7 +81,7 @@ class KiFragmentViewModel(
         }
 
         if(techListOpen.value && !ki.takenAbilities.contains(ki.kiRecord.kiControl))
-            setTechListOpen(false)
+            toggleTechListOpen()
     }
 
     fun attemptTechniqueChange(item: Technique, input: Boolean){

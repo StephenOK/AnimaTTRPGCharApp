@@ -20,17 +20,24 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.FreeS
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.view_models.MagicFragmentViewModel
 
+/**
+ * Fragment that manages the character's magical properties.
+ * Users can update their zeon maximum, accumulation, and magic projection.
+ * User can define magic projection imbalance here.
+ * User can invest magic levels in spellbook levels and individual spells.
+ * User can change the free spells they have in this fragment.
+ *
+ * @param magFragVM viewModel to run with this fragment
+ * @param openDetailAlert function to run when opening an item's details
+ * @param updateFunc function to run to update the bottom bar's data
+ */
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ) {
-    val context = LocalContext.current
-
-    //start page content
     LazyColumn{
-
         //header for zeon point maximums
         item{Text(text = stringResource(R.string.zeonPointLabel))}
         item {
@@ -62,6 +69,7 @@ fun MagicFragment(
                     Modifier.weight(0.25f)
                 )
 
+                //display multiplier for zeon point purchases
                 Text(text = stringResource(R.string.zeonPointMultiplier), modifier = Modifier.weight(0.1f))
 
                 //display zeon points from class levels
@@ -75,6 +83,7 @@ fun MagicFragment(
             }
         }
 
+        //display zeon recovery
         item{Text(text = stringResource(R.string.zeonRecoveryLabel) + magFragVM.zeonRecoveryString.collectAsState().value)}
 
         //display zeon accumulation and magic projection tables
@@ -92,11 +101,10 @@ fun MagicFragment(
                 NumberInput(
                     magFragVM.projectionImbalance.collectAsState().value,
                     {},
-                    { input ->
+                    {
                         //if imbalance is a legal input
-                        if (input.toInt() in 0..30) {
-                            magFragVM.setProjectionImbalance(input.toInt())
-                        }
+                        if (it.toInt() in 0..30)
+                            magFragVM.setProjectionImbalance(it.toInt())
                     },
                     {magFragVM.setProjectionImbalance("")},
                     {},
@@ -145,15 +153,8 @@ fun MagicFragment(
                 FreeSpellExchange(
                     magFragVM,
                     it,
-                    magFragVM.getFreeElement(it),
-                    it.level,
                     openDetailAlert
-                ) {
-                    if(magFragVM.getMagicTies())
-                        Toast.makeText(context, "Magic Ties prevents getting Free Spells", Toast.LENGTH_LONG).show()
-                    else
-                        magFragVM.setFreeExchangeOpen(true)
-                }
+                )
             else
                 SpellRow(
                     magFragVM,
@@ -174,9 +175,10 @@ fun MagicFragment(
 }
 
 /**
- * Creates a table for inputs of the particular stat
+ * Creates a table for inputs of the particular stat.
  *
- * tableItem: data for the displayed table
+ * @param tableItem data for the displayed table
+ * @param updateFunc function to run when updating the bottom bar's values
  */
 @Composable
 private fun ZeonPurchaseItem(
@@ -217,13 +219,11 @@ private fun ZeonPurchaseItem(
 }
 
 /**
- * Creates a  section in the app to acquire spells through purchasing book levels or individually
+ * Creates a  section in the app to acquire spells through purchasing book levels or individually.
  *
- * spellData: SpellRowData for the individual element
- * allElementList: master list of checkboxes for primary elements
- * updateMgLvlSpent: function to update magic level spent
- * updateSpellList: function to update the page's master spell list
- * addElementBox: puts this item's element box into the master checkbox list
+ * @param magFragVM viewModel that manages the data for this section of data
+ * @param spellData SpellRowData for the individual element
+ * @param openDetailAlert function to run when looking at an item's details
  */
 @Composable
 private fun SpellBookInvestment(
@@ -231,8 +231,6 @@ private fun SpellBookInvestment(
     spellData: MagicFragmentViewModel.SpellRowData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    magFragVM.addPrimaryElementBox(spellData.spellElement)
-
     Column {
         Row {
             //primary element checkbox
@@ -248,8 +246,8 @@ private fun SpellBookInvestment(
             //display book investment value
             NumberInput(
                 spellData.elementInvestment.collectAsState().value,
-                {spellData.setListOpen(false)},
-                {input -> spellData.setElementInvestment(input.toInt())},
+                {},
+                {spellData.setElementInvestment(it.toInt())},
                 {spellData.setElementInvestment("")},
                 {
                     magFragVM.setMagicLevelSpent()
@@ -263,7 +261,7 @@ private fun SpellBookInvestment(
 
             //spell display button
             Button(
-                onClick = {spellData.setListOpen(!spellData.listOpen.value)},
+                onClick = {spellData.toggleListOpen()},
                 modifier = Modifier.weight(0.3f)
             ) {
                 Text(
@@ -307,11 +305,13 @@ private fun SpellBookInvestment(
 }
 
 /**
- * Row that displays the inputted spell
+ * Row that displays the inputted spell.
  *
- * displayItem: spell to display
- * buyable: whether the row is a purchasable individual spell or just a display
- * updateList: function to run on a button change
+ * @param magFragVM viewModel that manages the data for this page
+ * @param displayItem spell to display
+ * @param buyable whether the row is a purchasable individual spell or just a display
+ * @param openDetailAlert function to run when opening this spell's details
+ * @param updateList function to run on a button change
  */
 @Composable
 private fun SpellRow(
@@ -337,11 +337,12 @@ private fun SpellRow(
 }
 
 /**
- * Row to display a free spell in the book column
+ * Row to display a free spell in the book column.
  *
- * lvlVal: level of the free spell
- * eleVal: element of the free spell
- * updateList: function to run on free spell purchase
+ * @param magFragVM viewModel that manages the data for this page
+ * @param lvlVal level of the free spell
+ * @param eleVal element of the free spell
+ * @param updateList function to run on free spell purchase
  */
 @Composable
 private fun FreeSpellRow(
@@ -360,10 +361,11 @@ private fun FreeSpellRow(
 }
 
 /**
- * Button to purchase a spell individually
+ * Button to purchase a spell individually.
  *
- * inputSpell: spell to be purchased
- * updateList: function to run after spell purchase
+ * @param magFragVM viewModel that manages the data for this page
+ * @param inputSpell spell to be purchased
+ * @param updateList function to run after spell purchase
  */
 @Composable
 private fun BuySingleSpellButton(
@@ -380,7 +382,7 @@ private fun BuySingleSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getIndividualSpells().contains(inputSpell)) R.string.spellRemoval
+                if(magFragVM.getSpellHeld(inputSpell)) R.string.spellRemoval
                 else R.string.spellPurchase
             )
         )
@@ -388,11 +390,12 @@ private fun BuySingleSpellButton(
 }
 
 /**
- * Button to purchase an individual free spell
+ * Button to purchase an individual free spell.
  *
- * spellLevel: level of the free spell
- * spellElement: element associated with the free spell
- * updateList: function to run after spell purchase
+ * @param magFragVM viewModel that manages the data on this page
+ * @param spellLevel level of the free spell
+ * @param spellElement element associated with the free spell
+ * @param updateList function to run after spell purchase
  */
 @Composable
 private fun BuySingleFreeSpellButton(
@@ -420,35 +423,30 @@ private fun BuySingleFreeSpellButton(
 /**
  * Row to change the spell in the character's free spell slot
  *
- * currentFreeSpell: free spell currently in the slot
- * associatedElement: book the slot comes from
- * associatedLevel: level of the free spell slot
- * setFreeElement: set dialog's used element
- * setFreeLevel: set dialog's used level
- * setTextChanged: set change function for dialog
- * openChoice: function to open free spell dialog
+ * @param magFragVM viewModel that manages the data for this page
+ * @param currentFreeSpell free spell currently in the slot
+ * @param openDetailAlert function to run when looking at an item's details
  */
 @Composable
 private fun FreeSpellExchange(
     magFragVM: MagicFragmentViewModel,
     currentFreeSpell: FreeSpell,
-    associatedElement: Element,
-    associatedLevel: Int,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    openChoice: () -> Unit
+    openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
+    //get local context
+    val context = LocalContext.current
+
     //set spell name if one given
-    val spellName = remember{mutableStateOf(
+    val spellName =
         if(currentFreeSpell.name != "PlaceHolder") currentFreeSpell.name
         else "Empty Free Slot"
-    )}
 
     Row{
         //display slot's current spell
-        Text(text = spellName.value)
+        Text(text = spellName)
 
         //display slot's level and element
-        Text(text = "(" + associatedElement.name + " Lvl $associatedLevel)")
+        Text(text = "(" + magFragVM.getFreeElement(currentFreeSpell).name + " Lvl ${currentFreeSpell.level})")
 
         //show nothing here if no spell found
         if(currentFreeSpell.name == "PlaceHolder"){Spacer(Modifier.weight(0.1f))}
@@ -464,11 +462,14 @@ private fun FreeSpellExchange(
         //button that opens free spell exchange dialog
         Button(
             onClick = {
-                //set dialog elements and open
-                magFragVM.setFreeElement(associatedElement)
-                magFragVM.setFreeLevel(associatedLevel)
-                magFragVM.setTextChange{input -> spellName.value = input}
-                openChoice()
+                if(magFragVM.tryExchangeOpen(
+                        currentFreeSpell
+                    ))
+                    Toast.makeText(
+                        context,
+                        "Magic Ties prevents getting Free Spells",
+                        Toast.LENGTH_LONG
+                    ).show()
             }
         )
         {Text(text = stringResource(R.string.changeSpellLabel))}
@@ -492,9 +493,9 @@ val SpellDetails = @Composable {spell: Spell ->
             ""
 
     //create string of the spell's categories
-    val spellType = remember{mutableStateOf("")}
+    var spellType = ""
     spell.type.forEach{
-        spellType.value += it.name + " "
+        spellType += it.name + " "
     }
 
     //create string of forbidden elements if this is a free spell
@@ -517,7 +518,7 @@ val SpellDetails = @Composable {spell: Spell ->
             Row{Text(text = stringResource(R.string.maintenanceLabel) + "1 every " + spell.maintenance + daily)}
         else
             Row{Text(text = stringResource(R.string.noneLabel))}
-        Row{Text(text = stringResource(R.string.typeLabel) + spellType.value)}
+        Row{Text(text = stringResource(R.string.typeLabel) + spellType)}
         if(spell is FreeSpell)
             Row{Text(text = stringResource(R.string.forbiddenLabel) + forbiddenList)}
     }

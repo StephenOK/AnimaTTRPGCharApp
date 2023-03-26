@@ -17,7 +17,10 @@ import com.example.animabuilder.NumberInput
 import com.example.animabuilder.view_models.SummoningFragmentViewModel
 
 /**
- * Fragment that displays the character's summoning abilities
+ * Fragment that displays the character's summoning abilities.
+ *
+ * @param summoningVM viewModel to run with this fragment
+ * @param updateFunc function to run when updating the bottom bar's values
  */
 @Composable
 fun SummoningFragment(
@@ -44,10 +47,10 @@ fun SummoningFragment(
 }
 
 /**
- * Creates a row of data that displays information on the given ability of the character
+ * Creates a row of data that displays information on the given ability of the character.
  *
- * inputData: table data to display to the user
- * updateFunc: function to update the bottom bar
+ * @param inputData table data to display to the user
+ * @param updateFunc function to update the bottom bar
  */
 @Composable
 private fun SummoningAbilityRow(
@@ -64,17 +67,9 @@ private fun SummoningAbilityRow(
         NumberInput(
             inputData.boughtVal.collectAsState().value,
             {},
-            {input ->
-                inputData.item.setBuyVal(input.toInt())
-                inputData.setBoughtVal(input)
-            },
-            {
-                inputData.item.setBuyVal(0)
-                inputData.setBoughtVal("")
-            },
-            {
-                updateFunc()
-            },
+            {inputData.setBoughtVal(it.toInt())},
+            {inputData.setBoughtVal("")},
+            {updateFunc()},
             Color.Black,
             Modifier.weight(0.3f)
         )

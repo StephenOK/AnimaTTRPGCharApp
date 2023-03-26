@@ -14,32 +14,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CharacterFragmentViewModel
 
 /**
- * Fragment to be displayed when working with basic characteristics
- * Used to manipulate core stats, class, race, and name
- * Default fragment at character load
+ * Fragment to be displayed when working with basic characteristics.
+ * Used to manipulate primary characteristics, class, race, and name.
+ * Default fragment at character load.
+ *
+ * @param charFragVM viewModel for this page
+ * @param updateFunc function to run to update the bottom bar
  */
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
-    charInstance: BaseCharacter,
     charFragVM: CharacterFragmentViewModel,
     updateFunc: () -> Unit,
 ){
+    //get context and keyboard state
     val context = LocalContext.current
     val keyboardActive = LocalSoftwareKeyboardController.current
 
-    //page column
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
@@ -53,21 +53,19 @@ fun CharacterPageFragment(
                     if (it.contains('\n'))
                         keyboardActive?.hide()
                     //otherwise, update name
-                    else {
+                    else
                         charFragVM.setNameInput(it)
-                        charInstance.charName = it
-                    }
                 },
                 label = { Text(text = stringResource(R.string.nameText)) },
             )
         }
 
-        //other dropdown items
+        //class, race, and level dropdown items
         items(charFragVM.dropdownList){dropItem ->
             DropdownObject(dropItem, updateFunc)
         }
 
-        //primary statistic table
+        //primary characteristic table
         item {
             //table header row
             Row {
@@ -97,32 +95,29 @@ fun CharacterPageFragment(
             }
         }
 
-        //create row for each primary statistic
-        items(charFragVM.primaryDataList){ primaryItem ->
-            PrimaryRow(primaryItem)
+        //create row for each primary characteristic
+        items(charFragVM.primaryDataList){
+            PrimaryRow(it)
         }
 
+        //display character's size category
         item{Text(text = stringResource(R.string.sizeCat) + charFragVM.sizeInput.collectAsState().value)}
 
+        //create input for character's appearance score
         item{
             Text(text = stringResource(R.string.appearance))
             NumberInput(
                 charFragVM.appearInput.collectAsState().value,
                 {},
-                {input ->
-                    if(input.toInt() <= 10) {
-                        charInstance.setAppearance(input.toInt())
-                        if(charInstance.appearance == input.toInt())
-                            charFragVM.setAppearInput(input)
-                        else
-                            Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
-                    }
+                {
+                    //attempt new input and notify user of failed input
+                    if(it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
+                        Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
                 },
                 {
-                    if(charInstance.advantageRecord.getAdvantage("Unattractive") == null) {
-                        charInstance.setAppearance(5)
+                    //clear input if user can change it
+                    if(charFragVM.isNotUnattractive())
                         charFragVM.setAppearInput("")
-                    }
                 },
                 {},
                 Color.Black,
@@ -133,17 +128,16 @@ fun CharacterPageFragment(
 }
 
 /**
- * Creates a dropdown object for user inputs
+ * Creates a dropdown object for user inputs.
  *
- * item: data set of dropdown object
+ * @param item data held for this dropdown object
+ * @param updateFunc function to run to update the bottom bar
  */
 @Composable
 private fun DropdownObject(
     item: CharacterFragmentViewModel.DropdownData,
     updateFunc: () -> Unit
 ){
-    val heldArray = stringArrayResource(item.options)
-
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -151,7 +145,7 @@ private fun DropdownObject(
     ){
         //object to hold the dropdown menu
         OutlinedTextField(
-            value = heldArray[item.indexTracker.collectAsState().value],
+            value = item.output.collectAsState().value,
             onValueChange = {},
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
@@ -162,28 +156,22 @@ private fun DropdownObject(
                 Icon(
                     item.icon.collectAsState().value,
                     "contentDescription",
-                    modifier = Modifier.clickable {item.setOpen(!item.isOpen.value)})
+                    modifier = Modifier.clickable {item.openToggle()})
             }
         )
 
         //dropdown object
         DropdownMenu(
             expanded = item.isOpen.collectAsState().value,
-            onDismissRequest = {item.setOpen(false)},
+            onDismissRequest = {item.openToggle()},
             modifier = Modifier.width(with(LocalDensity.current) { item.size.value.width.toDp() })
         ) {
             //create an object for each option in the inputted list
-            heldArray.forEach { stringIn ->
+            item.options.forEach { stringIn ->
                 DropdownMenuItem(onClick = {
                     //set the new item to show
-                    item.setIndexTracker(heldArray.indexOf(stringIn))
-
-                    //run the inputted action
-                    item.onChange(item.indexTracker.value)
+                    item.setOutput(item.options.indexOf(stringIn))
                     updateFunc()
-
-                    //close the dropdown menu
-                    item.setOpen(false)
                 }) {
                     Text(text = stringIn)
                 }
@@ -193,9 +181,9 @@ private fun DropdownObject(
 }
 
 /**
- * Create a row for the primary characteristics table
+ * Create a row for the primary characteristics table.
  *
- * primeItem: primary characteristic data to display
+ * @param primeItem primary characteristic data to display
  */
 @Composable
 private fun PrimaryRow(
@@ -212,15 +200,10 @@ private fun PrimaryRow(
         NumberInput(
             primeItem.input.collectAsState().value,
             {},
-            {input ->
-                if(input.toInt() in 1..20) {
-                    //update display and mod values
-                    primeItem.primaryStat.setInput(input.toInt())
-                    primeItem.setInput(input)
-                    primeItem.setOutput(primeItem.primaryStat)
-
-                    primeItem.changeFunc()
-                }
+            {
+                //change input and other necessary items if in legal range
+                if(it.toInt() in 1..20)
+                    primeItem.setInput(it.toInt())
             },
             {primeItem.setInput("")},
             {},
@@ -228,6 +211,7 @@ private fun PrimaryRow(
             Modifier.weight(0.25f)
         )
 
+        //characteristic bonus display
         Text(
             text = primeItem.output.collectAsState().value.specialVal,
             textAlign = TextAlign.Center,

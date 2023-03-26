@@ -15,6 +15,16 @@ import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.view_models.CombatFragViewModel
 
+/**
+ * Section for the user to alter their character's combat abilities.
+ * Allows user to change their character's life points.
+ * Allows for changes to their character's Attack and Defense abilities as well as their wear armor.
+ * Displays information on the character's resistance stats.
+ * Displays information on the character's initiative, fatigue, and regeneration.
+ *
+ * @param combatFragVM viewModel utilized in this fragment
+ * @param updateFunc function to run to update the bottom bar values
+ */
 @Composable
 fun CombatFragment(
     combatFragVM: CombatFragViewModel,
@@ -53,8 +63,8 @@ fun CombatFragment(
                 NumberInput(
                     combatFragVM.lifeMults.collectAsState().value,
                     {},
-                    { input ->
-                        combatFragVM.setLifeMults(input.toInt())
+                    {
+                        combatFragVM.setLifeMults(it.toInt())
                         updateFunc()
                     },
                     {combatFragVM.setLifeMults("")},
@@ -138,6 +148,7 @@ fun CombatFragment(
             ResistanceRow(combatFragVM, resistanceItem)
         }
 
+        //create displays for the character's initiative, fatigue, and regeneration
         item{Text(text = stringResource(R.string.totalInitiative) + combatFragVM.getInitiativeTotal())}
         item{Text(text = stringResource(R.string.fatigueLabel) + combatFragVM.getFatigue())}
         item{Text(text = stringResource(R.string.regenLabel) + combatFragVM.getRegen())}
@@ -145,10 +156,11 @@ fun CombatFragment(
 }
 
 /**
- * Creates a table row for the combat items and allows input and total display
+ * Creates a table row for the combat items and allows input and total display.
  *
- * combatItem: character's combat stat to display
- * updateFunc: function to run for bottom bar update
+ * @param combatFragVM viewModel that controls this fragment's data
+ * @param combatItem character's combat stat to display
+ * @param updateFunc function to run for bottom bar update
  */
 @Composable
 private fun CombatItemRow(
@@ -164,8 +176,8 @@ private fun CombatItemRow(
         NumberInput(
             combatItem.pointsIn.collectAsState().value,
             {},
-            {input ->
-                combatItem.setPointsIn(input.toInt())
+            {
+                combatItem.setPointsIn(it.toInt())
                 updateFunc()
             },
             {combatItem.setPointsIn("")},
@@ -182,9 +194,10 @@ private fun CombatItemRow(
 }
 
 /**
- * Create a row for the resistances table
+ * Create a row for the resistances table.
  *
- * resistance: resistance data to display
+ * @param combatFragVM viewModel that controls this fragment's data
+ * @param resistance resistance data to display
  */
 @Composable
 private fun ResistanceRow(

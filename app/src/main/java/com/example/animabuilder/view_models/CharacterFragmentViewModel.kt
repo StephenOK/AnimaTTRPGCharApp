@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class CharacterFragmentViewModel(
-    charInstance: BaseCharacter,
+    private val charInstance: BaseCharacter,
     maxNumVM: HomePageViewModel,
     context: Context
 ): ViewModel() {
@@ -26,8 +26,25 @@ class CharacterFragmentViewModel(
     val sizeInput = _sizeInput.asStateFlow()
     val appearInput = _appearInput.asStateFlow()
 
-    fun setNameInput(newIn: String){_nameInput.update{newIn}}
+    fun isNotUnattractive(): Boolean{
+        return charInstance.advantageRecord.getAdvantage("Unattractive") == null
+    }
+
+    fun setNameInput(newIn: String){
+        charInstance.charName = newIn
+        _nameInput.update{newIn}
+    }
     private fun setSizeInput(newIn: String){_sizeInput.update{newIn}}
+
+    fun setAppearInput(newIn: Int): Boolean{
+        charInstance.setAppearance(newIn)
+
+        val output = charInstance.appearance == newIn
+        if(output)
+            setAppearInput(newIn.toString())
+
+        return output
+    }
     fun setAppearInput(newIn: String){_appearInput.update{newIn}}
 
     private val strengthData = PrimeCharacteristicData(
@@ -75,65 +92,75 @@ class CharacterFragmentViewModel(
 
     private val classDropdown = DropdownData(
         R.string.classText,
-        R.array.classArray,
+        context.resources.getStringArray(R.array.classArray),
         charInstance.classes.allClasses.indexOf(charInstance.ownClass)
-    ){
+    ) {
         charInstance.setOwnClass(it)
-        maxNumVM.maximums.updateItems(charInstance.devPT, charInstance.maxCombatDP, charInstance.maxMagDP, charInstance.maxPsyDP)
+        maxNumVM.maximums.updateItems(
+            charInstance.devPT,
+            charInstance.maxCombatDP,
+            charInstance.maxMagDP,
+            charInstance.maxPsyDP
+        )
     }
 
     private val raceDropdown = DropdownData(
         R.string.raceText,
-        R.array.raceArray,
+        context.resources.getStringArray(R.array.raceArray),
         charInstance.ownRace.raceIndex
-    ){
+    ) {
         charInstance.setOwnRace(it)
-        strengthData.setOutput(charInstance.primaryList.str)
+        strengthData.setOutput()
         setSizeInput(charInstance.sizeCategory.toString())
         setAppearInput(charInstance.appearance.toString())
     }
 
     private val levelDropdown = DropdownData(
         R.string.levelText,
-        R.array.levelCountArray,
+        context.resources.getStringArray(R.array.levelCountArray),
         charInstance.lvl
-    ){
+    ) {
         charInstance.setLvl(it)
-        maxNumVM.maximums.updateItems(charInstance.devPT, charInstance.maxCombatDP, charInstance.maxMagDP, charInstance.maxPsyDP)
+        maxNumVM.maximums.updateItems(
+            charInstance.devPT,
+            charInstance.maxCombatDP,
+            charInstance.maxMagDP,
+            charInstance.maxPsyDP
+        )
     }
 
     val dropdownList = listOf(classDropdown, raceDropdown, levelDropdown)
 
     class DropdownData(
         val nameRef: Int,
-        val options: Int,
+        val options: Array<String>,
         initialIndex: Int,
         val onChange: (Int) -> Unit
     ){
         private val _size = MutableStateFlow(Size.Zero)
-        private val _indexTracker = MutableStateFlow(initialIndex)
+        private val _output = MutableStateFlow(options[initialIndex])
         private val _isOpen = MutableStateFlow(false)
         private val _icon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
 
         val size = _size.asStateFlow()
-        val indexTracker = _indexTracker.asStateFlow()
+        val output = _output.asStateFlow()
         val isOpen = _isOpen.asStateFlow()
         val icon = _icon.asStateFlow()
 
         fun setSize(input: Size){_size.update{input}}
 
-        fun setIndexTracker(index: Int){
-            _indexTracker.update{index}
+        fun setOutput(index: Int){
+            _output.update{options[index]}
             onChange(index)
+            openToggle()
         }
 
-        fun setOpen(openState: Boolean){
-            _isOpen.update{openState}
+        fun openToggle() {
+            _isOpen.update{!isOpen.value}
             _icon.update{
                 if(isOpen.value) Icons.Filled.KeyboardArrowUp
                 else Icons.Filled.KeyboardArrowDown
             }
-
         }
     }
 
@@ -153,12 +180,18 @@ class CharacterFragmentViewModel(
         val input = _input.asStateFlow()
         val output = _output.asStateFlow()
 
+        fun setInput(input: Int){
+            primaryStat.setInput(input)
+            setInput(input.toString())
+            setOutput()
+            changeFunc()
+        }
         fun setInput(input: String){_input.update{input}}
-        fun setOutput(primeInput: PrimaryCharacteristic){
+        fun setOutput() {
             _output.update{
                 it.copy(
-                    specialVal = primeInput.bonus.toString(),
-                    modVal = primeInput.outputMod.toString()
+                    specialVal = primaryStat.bonus.toString(),
+                    modVal = primaryStat.outputMod.toString()
                 )
             }
         }

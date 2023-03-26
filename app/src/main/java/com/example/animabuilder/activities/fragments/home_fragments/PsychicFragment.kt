@@ -20,6 +20,15 @@ import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import com.example.animabuilder.view_models.PsychicFragmentViewModel
 
+/**
+ * Fragment that manages a character's psychic abilities.
+ * User can manage their character's psychic points and projection.
+ * User can select the psychic powers their character can use.
+ *
+ * @param psyFragVM viewModel that is to be run on this page
+ * @param openDetailAlert function to run when looking at an item's details
+ * @param updateFunc function to run when updating the bottom bar's data
+ */
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
@@ -30,7 +39,7 @@ fun PsychicFragment(
         //display character's Psychic Potential
         item{Text(text = stringResource(R.string.psyPotentialLabel) + psyFragVM.getPotentialBase().toString())}
 
-        //display psychic item input
+        //display psychic point and projection inputs
         items(psyFragVM.buyItems){
             PsychicPurchaseTable(it, updateFunc)
         }
@@ -49,10 +58,10 @@ fun PsychicFragment(
 }
 
 /**
- * Displays an item that allows for the user to purchase amounts of the indicated psychic ability
+ * Displays an item that allows for the user to purchase amounts of the indicated psychic ability.
  *
- * tableData: information regarding this individual table
- * updateFunc: bottom bar update function
+ * @param tableData information regarding this individual table
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun PsychicPurchaseTable(
@@ -69,7 +78,7 @@ private fun PsychicPurchaseTable(
         NumberInput(
             tableData.purchaseAmount.collectAsState().value,
             {},
-            {tableData.setPurchaseAmount(0)},
+            {tableData.setPurchaseAmount(it.toInt())},
             {tableData.setPurchaseAmount("")},
             {updateFunc()},
             Color.Black,
@@ -83,10 +92,10 @@ private fun PsychicPurchaseTable(
 
 /**
  * Row that displays information about a Psychic Discipline and allows the user to spend points in
- * that discipline
+ * that discipline.
  *
- * discipline: information regarding the specific Psychic Discipline
- * updateFreePoints: function that affects the free point display
+ * @param discipline information regarding the specific Psychic Discipline
+ * @param openDetailAlert function to run when looking at a power's details
  */
 @Composable
 private fun DisciplineDisplay(
@@ -125,14 +134,11 @@ private fun DisciplineDisplay(
 }
 
 /**
- * Display for a Psychic Power
+ * Display for a Psychic Power.
  *
- * discipline: power's associated Psychic Discipline
- * power: the displayed object
- * addCheckbox: function that hoists the power and checkbox to the master list
- * updateDisciplineInvestment: function that changes the investment in the associated discipline
- * updateCheckboxes: function that sets all checkboxes to their appropriate values
- * updateFreePoints: function that updates the free point display
+ * @param discipline power's associated Psychic Discipline
+ * @param power the displayed object
+ * @param openDetailAlert function to run when looking at a power's details
  */
 @Composable
 private fun PsyPowerRow(
@@ -141,6 +147,7 @@ private fun PsyPowerRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
     Row{
+        //checkbox to select or deselect this power
         Checkbox(
             checked = discipline.powerChecks[power]!!.value,
             onCheckedChange = {discipline.setPower(power, it)}

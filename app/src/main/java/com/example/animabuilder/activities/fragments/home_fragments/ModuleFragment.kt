@@ -24,12 +24,15 @@ import com.example.animabuilder.character_creation.equipment.weapons.weapon_clas
 import com.example.animabuilder.view_models.ModuleFragmentViewModel
 
 /**
- * Fragment that displays attributes related to weapons and special attacks
- * Weapon, archetype, and style modules are available to purchase
- * Taking archetype modules affect other weapons the character can have
- * Martial arts are available and account for their qualifications when taken
+ * Fragment that displays attributes related to weapons and special attacks.
+ * Weapon, archetype, and style modules are available to purchase.
+ * Taking archetype modules affect other weapons the character can have.
+ * Martial arts are available and account for their qualifications when taken.
+ *
+ * @param modFragVM viewModel to run with this fragment
+ * @param openDetailAlert function to run when looking at an item's details
+ * @param updateFunc function to run when updating the bottom bar's data
  */
-
 @Composable
 fun ModuleFragment(
     modFragVM: ModuleFragmentViewModel,
@@ -80,44 +83,44 @@ fun ModuleFragment(
 }
 
 /**
- * Displays a list of available weapons that a character can take modules for
- * Also displays whole weapon module if there is one available
+ * Displays a list of available weapons that a character can take modules for.
+ * Also displays whole weapon module if there is one available.
  *
-
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param weaponData information regarding this type of weapon
+ * @param openDetailAlert function to run when opening a weapon's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun WeaponListButton(
     modFragVM: ModuleFragmentViewModel,
-    button: ModuleFragmentViewModel.WeaponListData,
+    weaponData: ModuleFragmentViewModel.WeaponListData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     //button for displaying the list
     Button(
-        onClick = {button.setListOpen(!button.listOpen.value)},
+        onClick = {weaponData.toggleListOpen()},
         modifier = Modifier.width(250.dp)
     ){
-        Text(text = stringResource(button.nameRef))
+        Text(text = stringResource(weaponData.nameRef))
     }
 
     //revealable list associated with the button
     AnimatedVisibility(
-        visible = button.listOpen.collectAsState().value,
+        visible = weaponData.listOpen.collectAsState().value,
     ){
         Column{
             //display whole class module if one is available
-            if(button.wholeClass)
+            if(weaponData.wholeClass)
                 ArchetypeRow(
-                    modFragVM,
-                    stringResource(button.nameRef) + stringResource(R.string.moduleSuffix),
-                    button.items,
+                    weaponData.weaponArchetype,
                     openDetailAlert,
                     updateFunc
                 )
 
             //display all weapons from the given list
-            button.items.forEach{
+            weaponData.items.forEach{
                 WeaponRow(
                     modFragVM,
                     it,
@@ -130,9 +133,11 @@ private fun WeaponListButton(
 }
 
 /**
- * Button that reveals a list of all archetype modules the character can take
+ * Button that reveals a list of all archetype modules the character can take.
  *
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param openDetailAlert function to run when looking at an archetype's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun ArchetypeButton(
@@ -152,105 +157,23 @@ private fun ArchetypeButton(
     AnimatedVisibility(visible = modFragVM.archetypeOpen.collectAsState().value){
         //show all archetypes available
         Column {
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.barbarianLabel),
-                modFragVM.getArchetypes()[0],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.ninjaLabel),
-                modFragVM.getArchetypes()[1],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.duelLabel),
-                modFragVM.getArchetypes()[2],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.pirateLabel),
-                modFragVM.getArchetypes()[3],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.nomadLabel),
-                modFragVM.getArchetypes()[4],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.hunterLabel),
-                modFragVM.getArchetypes()[5],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.knightLabel),
-                modFragVM.getArchetypes()[6],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.gladiatorLabel),
-                modFragVM.getArchetypes()[7],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.assassinLabel),
-                modFragVM.getArchetypes()[8],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.soldierLabel),
-                modFragVM.getArchetypes()[9],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.indigenousLabel),
-                modFragVM.getArchetypes()[10],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.banditLabel),
-                modFragVM.getArchetypes()[11],
-                openDetailAlert,
-                updateFunc
-            )
-            ArchetypeRow(
-                modFragVM,
-                stringResource(R.string.improvisedLabel),
-                modFragVM.getArchetypes()[12],
-                openDetailAlert,
-                updateFunc
-            )
+            modFragVM.allArchetypeData.forEach{
+                ArchetypeRow(
+                    it,
+                    openDetailAlert,
+                    updateFunc
+                )
+            }
         }
     }
 }
 
 /**
- * Button that reveals a list of all weapon styles the character can take
+ * Button that reveals a list of all weapon styles the character can take.
  *
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param openDetailAlert function to run when looking at the style's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun StyleButton(
@@ -269,38 +192,24 @@ private fun StyleButton(
     //revealable list of weapon styles
     AnimatedVisibility(visible = modFragVM.styleOpen.collectAsState().value) {
         Column {
-            StyleRow(
-                modFragVM,
-                modFragVM.getAllStyles()[0],
-                openDetailAlert,
-                updateFunc
-            )
-            StyleRow(
-                modFragVM,
-                modFragVM.getAllStyles()[1],
-                openDetailAlert,
-                updateFunc
-            )
-            StyleRow(
-                modFragVM,
-                modFragVM.getAllStyles()[2],
-                openDetailAlert,
-                updateFunc
-            )
-            StyleRow(
-                modFragVM,
-                modFragVM.getAllStyles()[3],
-                openDetailAlert,
-                updateFunc
-            )
+            modFragVM.getAllStyles().forEach{
+                StyleRow(
+                    modFragVM,
+                    it,
+                    openDetailAlert,
+                    updateFunc
+                )
+            }
         }
     }
 }
 
 /**
- * Button that reveals the martial arts available to the player
+ * Button that reveals the martial arts available to the player.
  *
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages this page's data
+ * @param openDetailAlert function to run when looking at a martial art's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun MartialButton(
@@ -322,6 +231,7 @@ private fun MartialButton(
             //display number of marital arts character can take
             Text(text = stringResource(R.string.maxMartialLabel) + modFragVM.getMartialMax().toString())
 
+            //display a row for each martial art
             modFragVM.getAllMartials().forEach{
                 MartialArtRow(
                     modFragVM,
@@ -335,10 +245,12 @@ private fun MartialButton(
 }
 
 /**
- * Row that displays the qualities of the given weapon
+ * Row that displays the qualities of the given weapon.
  *
- * input: weapon to display info on
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param input weapon to display info on
+ * @param openDetailAlert function to run when looking at a weapon's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun WeaponRow(
@@ -388,27 +300,25 @@ private fun WeaponRow(
 }
 
 /**
- * Creates a row that displays data on an archetype module
+ * Creates a row that displays data on an archetype module.
  *
- * title: name of the archetype
- * modList: list of weapons in the associated mod
- * updateFunc: bottom bar update function
+ * @param item data on the inputted archetype
+ * @param openDetailAlert function to run when looking at an archetype's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun ArchetypeRow(
-    modFragVM: ModuleFragmentViewModel,
-    title: String,
-    modList: List<Weapon>,
+    item: ModuleFragmentViewModel.ArchetypeData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateFunc: () -> Unit
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
         Checkbox(
-            checked = modFragVM.allArchetypes[modList]!!.value,
+            checked = item.takenCheck.collectAsState().value,
             onCheckedChange = {
                 //add weapon list to character
-                modFragVM.setModuleTaken(modList, it)
+                item.toggleCheck()
 
                 updateFunc()
             },
@@ -416,24 +326,24 @@ private fun ArchetypeRow(
         )
 
         //display archetype name and cost
-        Text(text = title, modifier = Modifier.weight(0.4f))
+        Text(text = item.name, modifier = Modifier.weight(0.4f))
         Text(text = stringResource(R.string.fiftyPointCost), textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
 
         //create a button to display the archetype's contents
         DetailButton(
-            onClick = {openDetailAlert(title) @Composable {ArchetypeContents(modList)}},
+            onClick = {openDetailAlert(item.name) @Composable {ArchetypeContents(item.items)}},
             modifier = Modifier.weight(0.2f)
         )
     }
 }
 
 /**
- * Creates a row that displays the information for a weapon style module
+ * Creates a row that displays the information for a weapon style module.
  *
- * title: name of the style
- * description: details on the style's effect
- * cost: string of the development points needed for the style
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param style displayed item
+ * @param openDetailAlert function to run when looking at the style's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun StyleRow(
@@ -447,7 +357,7 @@ private fun StyleRow(
         Checkbox(
             checked = modFragVM.allStyles[style]!!.value,
             onCheckedChange = {
-                //add or remove style as needed
+                //add or remove style as indicated
                 modFragVM.changeStyle(style, it)
 
                 updateFunc()
@@ -468,10 +378,12 @@ private fun StyleRow(
 }
 
 /**
- * Creates a row that displays information on a martial art
+ * Creates a row that displays information on a martial art.
  *
- * martialArt: item to be displayed
- * updateFunc: bottom bar update function
+ * @param modFragVM viewModel that manages the data for this page
+ * @param martialArt item to be displayed
+ * @param openDetailAlert function to run when looking at the martial art's details
+ * @param updateFunc bottom bar update function
  */
 @Composable
 private fun MartialArtRow(
@@ -484,14 +396,14 @@ private fun MartialArtRow(
         Checkbox(
             checked = modFragVM.allMartials[martialArt]!!.value,
             onCheckedChange = {
-                //check that martial art can be taken and grant if able
+                //attempt to implement the user's desired change
                 modFragVM.changeMartial(martialArt, it)
                 updateFunc()
             },
             modifier = Modifier.weight(0.1f)
         )
 
-        //display name and bonus martial knowledge
+        //display name and bonus martial knowledge of this martial art
         Text(text = martialArt.name, modifier = Modifier.weight(0.5f))
         Text(text = "+" + martialArt.mkBonus.toString() + " " + stringResource(R.string.mkLabel), modifier = Modifier.weight(0.2f))
 

@@ -17,10 +17,10 @@ import com.example.animabuilder.NumberInput
 import com.example.animabuilder.view_models.SecondaryFragmentViewModel
 
 /**
- * Fragment to be displayed when working with secondary characteristics
+ * Fragment to be displayed when working with secondary characteristics.
  *
- * charInstance: character to work on
- * spentDisplay: bottombar mutable of spent development points
+ * @param secondaryFragVM viewModel that manages this fragment
+ * @param updateBottomBar bottom bar update function
  */
 
 @Composable
@@ -32,6 +32,7 @@ fun SecondaryAbilityFragment(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+        //display every secondary ability category
         items(secondaryFragVM.allFields){
             MakeTableDisplay(it, updateBottomBar)
         }
@@ -39,9 +40,10 @@ fun SecondaryAbilityFragment(
 }
 
 /**
- * Creates a toggle button to display the associated secondary characteristic table
+ * Creates a toggle button to display the associated secondary characteristic table.
  *
- * input: data item for this field of information
+ * @param input data item for this field of information
+ * @param updateBottomBar function to run when updating the bottom bar's values
  */
 @Composable
 private fun MakeTableDisplay(
@@ -62,8 +64,10 @@ private fun MakeTableDisplay(
     //visibility group for the table
     AnimatedVisibility(visible = input.tableOpen.collectAsState().value){
         Column {
+            //make the header of this section
             RowHead()
 
+            //display each of the field's characteristics
             input.fieldCharacteristics.forEach {
                 MakeRow(it, updateBottomBar)
             }
@@ -72,7 +76,7 @@ private fun MakeTableDisplay(
 }
 
 /**
- * Header row for a secondary characteristic table
+ * Header row for a secondary characteristic table.
  */
 @Composable
 private fun RowHead(){
@@ -115,12 +119,10 @@ private fun RowHead(){
 }
 
 /**
- * Make on row for a secondary characteristic in a table
+ * Make a row for a secondary characteristic in a table.
  *
- * charInstance: character to work on
- * stringReference: name of the secondary characteristic
- * item: characteristic item to work on
- * spentDisplay: mutable value of the characteristic's score input
+ * @param item characteristic item to display for this row
+ * @param updateBottomBar function to run when updating the bottom bar's values
  */
 @Composable
 private fun MakeRow(

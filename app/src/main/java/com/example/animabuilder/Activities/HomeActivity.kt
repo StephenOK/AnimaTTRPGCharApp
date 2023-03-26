@@ -76,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
             val secondaryFragVM = SecondaryFragmentViewModel(charInstance.secondaryList)
             val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
-            val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
+            val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, context)
             val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
             val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)
             val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
@@ -190,7 +190,7 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
-                        CharacterPageFragment(charInstance, charFragVM)
+                        CharacterPageFragment(charFragVM)
                         {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 

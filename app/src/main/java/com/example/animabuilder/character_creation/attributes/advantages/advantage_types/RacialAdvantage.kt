@@ -1,5 +1,13 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_types
 
+/**
+ * Subtype of advantage which comes with a character's race selection.
+ *
+ * @param name name of the advantage
+ * @param description details of the advantage's effects
+ * @param onTake function to run on advantage's acquisition
+ * @param onRemove function to run on advantage's removal
+ */
 class RacialAdvantage(
     name: String,
     description: String,

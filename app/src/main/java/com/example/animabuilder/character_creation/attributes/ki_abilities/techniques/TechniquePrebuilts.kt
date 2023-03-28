@@ -3,6 +3,9 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities.tech
 import com.example.animabuilder.character_creation.Element
 import java.io.Serializable
 
+/**
+ * Record of prebuilt techniques the character may have access to.
+ */
 class TechniquePrebuilts: Serializable {
     val excisumAeris = Technique(
         "Excisum Aeris",

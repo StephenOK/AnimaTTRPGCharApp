@@ -3,6 +3,7 @@ package com.example.animabuilder.view_models
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class AdvantageFragmentViewModel(
+    private val charInstance: BaseCharacter,
     private val advantageRecord: AdvantageRecord
 ): ViewModel() {
     private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent).toString())
@@ -25,19 +27,19 @@ class AdvantageFragmentViewModel(
             costPicked.value
         )
 
-        if(attemptAction.first == null) updateAdvantagesTaken()
+        if(attemptAction == null) updateAdvantagesTaken()
 
         toggleAdvantageCostOn()
 
-        return attemptAction.first
+        return attemptAction
     }
 
     fun acquireAdvantage(item: Advantage, taken: Int?, takenCost: Int): String?{
         val attemptAction =  advantageRecord.acquireAdvantage(item, taken, takenCost)
 
-        if(attemptAction.first == null) updateAdvantagesTaken()
+        if(attemptAction == null) updateAdvantagesTaken()
 
-        return attemptAction.first
+        return attemptAction
     }
 
     fun removeAdvantage(item: Advantage){
@@ -51,7 +53,7 @@ class AdvantageFragmentViewModel(
         _creationPoints.update{(3 - advantageRecord.creationPointSpent).toString()}
     }
 
-    fun getRacialAdvantages(): List<Advantage>{return advantageRecord.raceAdvantages}
+    fun getRacialAdvantages(): List<Advantage>{return charInstance.ownRace}
 
     private val commonAdv = AdvantageButtonData(
         R.string.commonAdv, advantageRecord.commonAdvantages.advantages)

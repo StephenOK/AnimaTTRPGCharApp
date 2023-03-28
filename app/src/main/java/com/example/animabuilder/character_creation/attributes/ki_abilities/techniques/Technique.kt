@@ -8,11 +8,11 @@ import java.util.Collections
 /**
  * Holds the data for a technique the character can take
  *
- * name: name of the technique
- * description: details on what the technique does
- * level: level of the technique
- * maintArray: array of maintenance points for the technique
- * givenAbilities: effects the technique utilizes
+ * @param name name of the technique
+ * @param description details on what the technique does
+ * @param level level of the technique
+ * @param maintArray array of maintenance points for the technique
+ * @param givenAbilities effects the technique utilizes
  */
 class Technique(
     var name: String,
@@ -22,7 +22,11 @@ class Technique(
     val givenAbilities: MutableList<TechniqueEffect>
 ): Serializable{
 
-    //returns the martial knowledge cost of the technique
+    /**
+     * Determines the total cost of the technique.
+     *
+     * @return total cost of the technique
+     */
     val mkCost = {
         //initialize cost value
         var total = 0
@@ -45,7 +49,11 @@ class Technique(
         total
     }
 
-    //determines total maintenance for the technique
+    /**
+     * Determines total maintenance for the technique.
+     *
+     * @return final maintenance cost of the technique
+     */
     val maintTotal = {
         //initialize output
         var total = 0
@@ -59,7 +67,11 @@ class Technique(
         total
     }
 
-    //determines the ki needed for each characteristic
+    /**
+     * Determines the ki needed for each characteristic.
+     *
+     * @return array of ki points needed respective to each primary characteristic
+     */
     val statSpent = {
         //initialize list of ki build
         val output = mutableListOf(0, 0, 0, 0, 0, 0)
@@ -75,7 +87,11 @@ class Technique(
         output
     }
 
-    //determines the total accumulation for the technique
+    /**
+     * Determines the total accumulation for the technique
+     *
+     * @return total accumulation needed for the technique
+     */
     val accTotal = {
         //get the array of ki needed
         val addUp = statSpent()
@@ -99,35 +115,49 @@ class Technique(
     }
 
     /**
-     * Determines if the stat is maintained based on its maintenance array
+     * Determines if the stat is maintained based on its maintenance array.
+     *
+     * @return true if technique is maintainable
      */
     fun isMaintained(): Boolean{
         for(index in 0..5)
+            //return true if any one maintenance array item is greater than 0
             if(maintArray[index] != 0)
                 return true
 
         return false
     }
 
+    /**
+     * Determines if the inputted maintenance array is legal for the technique.
+     *
+     * @return true if maintenance array is currently legal
+     */
     fun checkMaintenance(): Boolean{
+        //return true if array is currently empty
         if(!isMaintained())
             return true
 
+        //initialize maintenance total
         var total = 0
 
+        //sum up maintenance items
         for(index in 0..5){
             total += maintArray[index]
         }
 
+        //check that input matches required total
         return total == maintTotal()
     }
 
     /**
      * Checks if there is any build ability in the indicated stat for the whole technique
      *
-     * index: characteristic to check for build
+     * @param index characteristic to check for build
+     * @return if any build needed for the indicated characteristic
      */
     fun hasAccumulation(index: Int): Boolean{
+        //check each ki build for any inputted ki build
         givenAbilities.forEach{
             if(it.kiBuild[index] != 0)
                 return true
@@ -137,9 +167,10 @@ class Technique(
     }
 
     /**
-     * Checks if the values in a given technique are equal to this one
+     * Checks if the values in a given technique are equal to this one.
      *
-     * compareTo: technique to check equivalency with
+     * @param compareTo technique to check equivalency with
+     * @return true if technique matches
      */
     fun equivalentTo(compareTo: Technique): Boolean{
         return compareTo.name == name &&
@@ -150,9 +181,10 @@ class Technique(
     }
 
     /**
-     * Checks that the given ability lists are equal or not
+     * Checks that the given ability lists are equal or not.
      *
-     * compareTo: list of effects to compare with
+     * @param compareTo list of effects to compare with
+     * @return true if lists are equivalent
      */
     fun listCheck(compareTo: List<TechniqueEffect>): Boolean{
         //immediately dismiss if sizes are different
@@ -172,6 +204,11 @@ class Technique(
         return listCopy.isEmpty()
     }
 
+    /**
+     * Determines if the technique's ki builds are all legal.
+     *
+     * @return true if all builds qualify
+     */
     fun checkBuilds(): Boolean{
         givenAbilities.forEach{
             val isPrimary = givenAbilities[0] == it
@@ -184,8 +221,9 @@ class Technique(
     /**
      * Checks that a given technique effect can be added to the technique
      *
-     * input: effect to add to the technique
-     * charMax: amount of points the character can spend on the technique
+     * @param input effect to add to the technique
+     * @param charMax amount of points the character can spend on the technique
+     * @return error message that is the reason of failure, if addition failed
      */
     fun validEffectAddition(input: TechniqueEffect?, charMax: Int): String?{
         //assert a non-null effect input
@@ -245,9 +283,10 @@ class Technique(
     }
 
     /**
-     * Finds the desired effect in the technique's list
+     * Finds the desired effect in the technique's list.
      *
-     * retrieve: name of the effect to search for
+     * @param retrieve name of the effect to search for
+     * @return the sought for technique, if found
      */
     fun getAbility(retrieve: String): TechniqueEffect?{
         givenAbilities.forEach{
@@ -259,9 +298,10 @@ class Technique(
     }
 
     /**
-     * Determines if the effect complies with elemental binding rules
+     * Determines if the effect complies with elemental binding rules.
      *
-     * input: effect to check
+     * @param input effect to check
+     * @return true if it complies with elemental binding
      */
     fun checkElementalBinding(input: TechniqueEffect): Boolean{
         //find binding if one present
@@ -289,7 +329,7 @@ class Technique(
 
     /**
      * Reorganizes the effect list in case the primary effect is removed and the next effect is not
-     * a valid primary ability
+     * a valid primary ability.
      */
     fun fixPrimaryAbility(){
         //initialize boolean for only disadvantages left
@@ -334,12 +374,22 @@ class Technique(
      * Writes technique data to the save file
      */
     fun write(charInstance: BaseCharacter){
+        //write technique's name
         charInstance.addNewData(name)
+
+        //write technique's description
         charInstance.addNewData(description)
+
+        //write technique's level
         charInstance.addNewData(level)
+
+        //write meintenance array
         maintArray.forEach{charInstance.addNewData(it)}
 
+        //write number of effects
         charInstance.addNewData(givenAbilities.size)
+
+        //write data for each effect
         givenAbilities.forEach{
             it.write(charInstance)
         }

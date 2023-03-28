@@ -75,7 +75,10 @@ class HomeActivity : AppCompatActivity() {
             val charFragVM = CharacterFragmentViewModel(charInstance, homePageVM, context)
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
             val secondaryFragVM = SecondaryFragmentViewModel(charInstance.secondaryList)
-            val advantageFragVM = AdvantageFragmentViewModel(charInstance.advantageRecord)
+            val advantageFragVM = AdvantageFragmentViewModel(
+                charInstance,
+                charInstance.advantageRecord
+            )
             val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, context)
             val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
             val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)

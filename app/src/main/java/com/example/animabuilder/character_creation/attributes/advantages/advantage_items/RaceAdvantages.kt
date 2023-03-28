@@ -5,6 +5,11 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import java.io.Serializable
 
+/**
+ * Lists of advantages for every race available to a character.
+ *
+ * @param charInstance object holding a character's stats
+ */
 class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     private val exceptionalResistancesSylvain = RacialAdvantage(
         "Exceptional Resistances (Sylvain)",
@@ -544,6 +549,42 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
         null
     )
 
+    /**
+     * Retrieves a racial advantage list based on a string input.
+     *
+     * @param input name of the race that is input
+     * @return list of the corresponding advantages
+     */
+    fun getFromString(input: String): List<RacialAdvantage>{
+        return when(input){
+            "Sylvain" -> sylvainAdvantages
+            "Jayan" -> jayanAdvantages
+            "D\'Anjayni" -> danjayniAdvantages
+            "Ebudan" -> ebudanAdvantages
+            "Daimah" -> daimahAdvantages
+            "Duk\'zarist" -> dukzaristAdvantages
+            else -> listOf()
+        }
+    }
+
+    /**
+     * Get string that describes the inputted racial advantage list.
+     *
+     * @param input to get the name of
+     * @return string name associated with the list
+     */
+    fun getNameOfList(input: List<RacialAdvantage>): String{
+        return when(input){
+            sylvainAdvantages -> "Sylvain"
+            jayanAdvantages -> "Jayan"
+            danjayniAdvantages -> "D\'Anjayni"
+            ebudanAdvantages -> "Ebudan"
+            daimahAdvantages -> "Daimah"
+            dukzaristAdvantages -> "Duk\'zarist"
+            else -> "Human"
+        }
+    }
+
     val sylvainAdvantages = listOf(exceptionalResistancesSylvain, inclinationLight, quickHealingSylvain,
         senseLightDarkSylvain, immortalSoulSylvain)
 
@@ -561,4 +602,14 @@ class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
     val dukzaristAdvantages = listOf(exceptionalResistancesDukzarist, inclinationDark, withstandDeath,
         quickHealingDukzarist, limitedNeeds, senseLightDarkDukzarist, nightVision, fireDevotion,
         perfectBodies, metalAllergy, immortalSoulDukzarist)
+
+    val allAdvantageLists = listOf(
+        listOf(),
+        sylvainAdvantages,
+        jayanAdvantages,
+        danjayniAdvantages,
+        ebudanAdvantages,
+        daimahAdvantages,
+        dukzaristAdvantages
+    )
 }

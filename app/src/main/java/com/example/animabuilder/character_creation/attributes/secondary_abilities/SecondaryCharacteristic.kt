@@ -6,8 +6,11 @@ import java.io.IOException
 import java.io.Serializable
 
 /**
- * Object for a single secondary characteristic
- * Updates total whenever there is a change in other any value
+ * Object for a single secondary characteristic.
+ * Updates total whenever there is a change in other any value.
+ *
+ * @param name string reference for this characteristic's name
+ * @param parent full list that holds this objejct
  */
 
 class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) : Serializable {
@@ -42,18 +45,27 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
     //initialize final total
     var total = 0
 
-    //setter for characteristic's modifier
+    /**
+     * Setter for characteristic's modifier.
+     *
+     * @param value amount to set the mod to
+     */
     @JvmName("setModVal1")
     fun setModVal(value: Int) {
         modVal = value
         refreshTotal()
     }
 
-    //setter for points applied by user
+    /**
+     * Setter for points applied by user.
+     *
+     * @param points amount to set the points applied to
+     */
     @JvmName("setPointsApplied1")
     fun setPointsApplied(points: Int) {
         pointsApplied = points
 
+        //remove natural bonus if no points applied to this stat
         if(points == 0 && bonusApplied)
             setBonusApplied(false)
 
@@ -61,50 +73,83 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
         refreshTotal()
     }
 
+    /**
+     * Set the number of development points spent per bought point in this characteristic.
+     *
+     * @param perPoints value to set the development point multiplier to
+     */
     @JvmName("setDevPerPoint1")
     fun setDevPerPoint(perPoints:Int){
         devPerPoint = perPoints
         updateDevSpent()
     }
 
+    /**
+     * Change any deduction to the development point cost by the indicated amount.
+     *
+     * @param perPoints amount to change the deduction by
+     */
     @JvmName("setDevelopmentDeduction1")
     fun setDevelopmentDeduction(perPoints: Int){
         developmentDeduction += perPoints
         updateDevSpent()
     }
 
-    //setter for class points
+    /**
+     * Setter for class points.
+     *
+     * @param points amount to set the points per level to
+     */
     @JvmName("setClassPointsPerLevel1")
     fun setClassPointsPerLevel(points: Int) {
         classPointsPerLevel = points
         classTotalRefresh()
     }
 
+    /**
+     * Updates the number of points gained from levels for this characteristic.
+     */
     fun classTotalRefresh(){
         classPointTotal = classPointsPerLevel * parent.charInstance.lvl
         refreshTotal()
     }
 
-    //setter for special points
+    /**
+     * Setter for special points.
+     *
+     * @param points amount to change the special bonus to this characteristic by
+     */
     @JvmName("setSpecial1")
     fun setSpecial(points: Int) {
         special += points
         refreshTotal()
     }
 
+    /**
+     * Change the characteristic's bonus by the indicated amount.
+     *
+     * @param points amount to change the bonus by
+     */
     @JvmName("setSpecialPerLevel1")
     fun setSpecialPerLevel(points: Int){
         specialPerLevel += points
         refreshTotal()
     }
 
-    //setter for natural bonus
+    /**
+     * Setter for natural bonus.
+     *
+     * @param bonus true if applying a natural bonus to the characteristic
+     */
     @JvmName("setBonusApplied1")
     fun setBonusApplied(bonus: Boolean) {
         bonusApplied = bonus
         refreshTotal()
     }
 
+    /**
+     * Get actual development points spent per point applied to this characteristic.
+     */
     fun updateDevSpent(){
         pointsIn =
             if(devPerPoint > developmentDeduction) pointsApplied * (devPerPoint - developmentDeduction)
@@ -113,7 +158,9 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
         parent.charInstance.updateTotalSpent()
     }
 
-    //recalculates the total value after any other setter is called
+    /**
+     * Recalculates the total value after any other setter is called.
+     */
     fun refreshTotal() {
         total = modVal + pointsApplied + special +
                 ((classPointsPerLevel + specialPerLevel) * parent.charInstance.lvl)
@@ -125,6 +172,8 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) 
 
     /**
      * Loads data for the characteristic from given file reader
+     *
+     * @param fileReader file to read the data from
      */
     @Throws(IOException::class)
     fun load(fileReader: BufferedReader) {

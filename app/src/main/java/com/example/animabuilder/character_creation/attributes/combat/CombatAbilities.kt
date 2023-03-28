@@ -4,52 +4,73 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import java.io.Serializable
 
+/**
+ * Section of the character that holds combat data, such as life points and attack.
+ * Holds data on the character's resistances.
+ * Holds data on the character's initiative, fatigue, and regeneration.
+ *
+ * @param charInstance object that holds all of the character's data
+ */
 class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
-    var presence: Int = 20
+    //set default presence
+    var presence = 20
 
     //character's maximum hp
     var lifeMax = 0
-    var lifePerLevel = 0
     var lifeClassTotal = 0
     var lifeBase = 0
     var lifeMultsTaken = 0
 
+    //initialize the character's combat data
     val attack = CombatItem(charInstance)
     val block = CombatItem(charInstance)
     val dodge = CombatItem(charInstance)
     val wearArmor = CombatItem(charInstance)
 
+    //gather all combat abilities
     val allAbilities = listOf(attack, block, dodge, wearArmor)
 
+    //initialize the character's resistances
     val physicalRes = ResistanceItem()
     val diseaseRes = ResistanceItem()
     val venomRes = ResistanceItem()
     val magicRes = ResistanceItem()
     val psychicRes = ResistanceItem()
 
+    //gather all resistance data
     val allResistances = listOf(physicalRes, diseaseRes, venomRes, magicRes, psychicRes)
 
+    //initialize initiative
     var specInitiative = 0
     var totalInitiative = 0
 
+    //initialize fatigue
     var fatigue = 0
     var specFatigue = 0
 
+    //initialize regeneration
     var baseRegen = 0
     var specRegen = 0
     var totalRegen = 0
 
+    /**
+     * Update the character's presence.
+     */
     fun updatePresence(){
+        //set the presence value
         presence =
             if(charInstance.lvl == 0)
                 20
             else
                 25 + (5 * charInstance.lvl)
 
+        //update the character's resistances
         allResistances.forEach{it.setBase(presence)}
     }
 
-    //update the base number of life points based on the character's constitution
+    /**
+     * Update the base number of life points based on the character's constitution.
+     */
     fun updateLifeBase(){
         lifeBase = if(charInstance.primaryList.con.total == 1)
             5
@@ -57,30 +78,37 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
             20 + (charInstance.primaryList.con.total * 10) + charInstance.primaryList.con.outputMod
     }
 
-    //updates the number of life multiples the user is taking for their character
+    /**
+     * Updates the number of life multiples the user is taking for their character.
+     *
+     * @param multTake number of multiples the user intends to take
+     */
     fun takeLifeMult(multTake: Int){
         lifeMultsTaken = multTake
         charInstance.updateTotalSpent()
         updateLifePoints()
     }
 
-    @JvmName("setLifePerLevel1")
-    fun setLifePerLevel(input: Int){
-        lifePerLevel = input
-        updateClassLife()
-    }
-
+    /**
+     * Updates the number of life points gained from their class and level.
+     */
     fun updateClassLife(){
-        lifeClassTotal = lifePerLevel * charInstance.lvl
+        lifeClassTotal = charInstance.ownClass.lifePointsPerLevel * charInstance.lvl
         updateLifePoints()
     }
 
-    //updates the character's total life points
+    /**
+     * Updates the character's total life points
+     */
     fun updateLifePoints(){
         lifeMax = lifeBase + (lifeMultsTaken * charInstance.primaryList.con.total) + lifeClassTotal
     }
 
-    //determines if the attack, block, and dodge the user has taken is valid
+    /**
+     * Determines if the attack, block, and dodge the user has taken is valid.
+     *
+     * @return valid status of the combat inputs
+     */
     fun validAttackDodgeBlock(): Boolean{
         //if only one stat developed, cannot exceed 25% of overall devPT
         return ((block.inputVal == 0 && dodge.inputVal == 0 && attack.inputVal * charInstance.ownClass.atkGrowth <= charInstance.devPT/4) ||
@@ -97,23 +125,39 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
                         (block.total - attack.total <= 50 && dodge.total - attack.total <= 50))
     }
 
+    /**
+     * Applies changes to the special initiative value.
+     *
+     * @param changeBy value to alter the special initiative by
+     */
     fun changeSpecInitiative(changeBy: Int){
         specInitiative += changeBy
         updateInitiative()
     }
 
+    /**
+     * Function that updates the character's total initiative.
+     */
     fun updateInitiative(){
+        //add together class level value, dexterity, agility, and special input
         totalInitiative =
             (charInstance.ownClass.initiativePerLevel * charInstance.lvl) +
                     charInstance.primaryList.dex.outputMod +
                     charInstance.primaryList.agi.outputMod + specInitiative
     }
 
+    /**
+     * Function that updates the character's total fatigue.
+     */
     fun updateFatigue(){
         fatigue = charInstance.primaryList.con.total + specFatigue
     }
 
+    /**
+     * Retrieves the character's base regeneration value.
+     */
     fun getBaseRegen(){
+        //get value based on the character's constitution
         baseRegen = when(charInstance.primaryList.con.total){
             in 3..7 -> 1
             in 8..9 -> 2
@@ -122,13 +166,22 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
             else -> 0
         }
 
+        //recalculate the character's regeneration
         updateRegeneration()
     }
 
+    /**
+     * Updates the character's total regeneration value.
+     */
     fun updateRegeneration(){
         totalRegen = baseRegen + specRegen
     }
 
+    /**
+     * Calculates the total development points spent in this section.
+     *
+     * @return development points spent
+     */
     fun calculateSpent(): Int{
         return attack.inputVal * charInstance.ownClass.atkGrowth +
                 block.inputVal * charInstance.ownClass.blockGrowth +
@@ -136,15 +189,29 @@ class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
                 wearArmor.inputVal * charInstance.ownClass.armorGrowth
     }
 
+    /**
+     * Load the data for the combat section.
+     *
+     * @param fileReader file to retrieve the data from
+     */
     fun loadCombat(fileReader: BufferedReader){
+        //retrieve life multiple data
         takeLifeMult(fileReader.readLine().toInt())
+
+        //retrieve data on attack, defenses, and wear armor
         allAbilities.forEach{
             it.loadItem(fileReader)
         }
     }
 
+    /**
+     * Write the data for the combat section.
+     */
     fun writeCombat(){
+        //write life multiple data
         charInstance.addNewData(lifeMultsTaken)
+
+        //write data on attack, defenses, and wear armor
         allAbilities.forEach{
             it.writeItem()
         }

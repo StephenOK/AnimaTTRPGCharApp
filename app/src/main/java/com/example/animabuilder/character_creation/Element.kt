@@ -1,5 +1,9 @@
 package com.example.animabuilder.character_creation
 
+/**
+ * Enumeration of elements for objects.
+ * Covers all individual elements as well as non-elemental items (Free).
+ */
 enum class Element {
     Light,
     Dark,
@@ -15,6 +19,11 @@ enum class Element {
     Free;
 
     companion object{
+        /**
+         * Converts a string to the associated element.
+         *
+         * @param input string to check against the listed elements.
+         */
         fun fromString(input: String): Element{
             return when(input){
                 "Light" -> Light

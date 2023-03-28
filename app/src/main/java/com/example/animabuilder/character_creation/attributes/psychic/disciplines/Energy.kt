@@ -4,6 +4,9 @@ import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import java.io.Serializable
 
+/**
+ * Record of all of the available energy powers.
+ */
 class Energy: Discipline(), Serializable {
     val objectCreation = PsychicPower(
         "Energy Object Creation",

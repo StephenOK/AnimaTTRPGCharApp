@@ -6,6 +6,9 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbili
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.Serializable
 
+/**
+ * List of shields the character may take.
+ */
 class Shields: Serializable {
     val buckler = Weapon(
         "Buckler",

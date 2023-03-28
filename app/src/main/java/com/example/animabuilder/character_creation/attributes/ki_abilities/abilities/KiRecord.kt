@@ -2,6 +2,9 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities.abil
 
 import java.io.Serializable
 
+/**
+ * Record of Ki Abilities the character can take.
+ */
 class KiRecord: Serializable {
     val useOfKi = KiAbility(
         "Use of Ki",

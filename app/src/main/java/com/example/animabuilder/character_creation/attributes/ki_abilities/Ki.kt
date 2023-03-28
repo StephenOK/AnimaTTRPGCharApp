@@ -11,20 +11,23 @@ import java.io.BufferedReader
 import java.io.Serializable
 
 /**
- * Component that holds a character's ki abilities and dominion techniques
- * Also holds the data for default ki abilities and techniques
+ * Component that manages a character's ki points and accumulation.
+ * Also manages the character's ki abilities and dominion techniques.
+ *
+ * @param charInstance object that holds all of the character's data.
  */
-
 class Ki(private val charInstance: BaseCharacter) : Serializable {
+    //get data of ki techniques
     val kiRecord = KiRecord()
 
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
 
     /**
-     * Attempt to add the Ki Ability the user desires
+     * Attempt to add a Ki Ability to the character.
      *
-     * newIn: Ki Ability to attempt to add
+     * @param newIn Ki Ability to attempt to add
+     * @return true if ability has been successfully added
      */
     fun attemptAbilityAdd(newIn: KiAbility): Boolean{
         //check if character has the necessary martial knowledge for the ability
@@ -39,9 +42,9 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Removes the Ki Ability as indicated by the user
+     * Removes the Ki Ability indicated by the user
      *
-     * item: Ki Ability to remove
+     * @param item Ki Ability to remove
      */
     fun removeAbility(item: KiAbility){
         //remove the item from the list
@@ -56,6 +59,7 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
         updateMkSpent()
     }
 
+    //get all prebuilt techniques
     val allTechniques = TechniquePrebuilts().allTechniques
 
     //initialize character's techniques of each level
@@ -70,9 +74,10 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     val takenTechniques = (takenFirstTechniques + takenSecondTechniques + takenThirdTechniques).toMutableList()
 
     /**
-     * Attempts to add a technique to the character
+     * Attempts to add a technique to the character.
      *
-     * input: the technique to attempt to add
+     * @param input the technique to attempt to add
+     * @return state of successful addition
      */
     fun addTechnique(input: Technique): Boolean{
         when(input.level){
@@ -113,9 +118,10 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Determines if the technique is custom or prebuilt
+     * Determines if the technique is custom or prebuilt.
      *
-     * input: the technique to check
+     * @param input the technique to check
+     * @return true if technique is custom
      */
     fun customCheck(input: Technique): Boolean{
         //look through all default techniques
@@ -130,24 +136,29 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Removes a technique from the character
+     * Removes a technique from the character.
      *
-     * input: the technique to remove from the character
+     * @param input the technique to remove from the character
      */
     fun removeTechnique(input: Technique){
+        //remove the technique from the appropriate level bundle
         when(input.level){
             1 -> takenFirstTechniques -= input
             2 -> takenSecondTechniques -= input
             3 -> takenThirdTechniques -= input
             else -> {}
         }
+
+        //remove from custom technique list if it is there
         customTechniques -= input
+
+        //remove any potential invalid techniques after this one's removal
         removeExtra()
         updateFullList()
     }
 
     /**
-     * Checks if second and third level techniques are still valid for the character to take
+     * Checks if second and third level techniques are still valid for the character to take.
      */
     fun removeExtra(){
         //remove second level techniques if not enough first level techniques
@@ -168,7 +179,7 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Sets martial knowledge to the appropriate amount for each taken item
+     * Sets martial knowledge to the appropriate amount for each taken item.
      */
     fun updateMkSpent(){
         //reset martial knowledge remaining to its maximum value
@@ -188,8 +199,9 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     //initialize martial knowledge values
     var martialKnowledgeMax = 0
     var martialKnowledgeSpec = 0
-    var martialKnowledgeRemaining = martialKnowledgeMax
+    var martialKnowledgeRemaining = 0
 
+    //initialize stat ki points and accumulation
     val strKi = KiStat(this@Ki)
     val dexKi = KiStat(this@Ki)
     val agiKi = KiStat(this@Ki)
@@ -197,6 +209,7 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     val powKi = KiStat(this@Ki)
     val wpKi = KiStat(this@Ki)
 
+    //gather all ki stat items
     val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
 
     //initialize total ki points
@@ -205,12 +218,19 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     //initialize total accumulation value
     var totalAcc = 0
 
+    /**
+     * Changes the martial knowledge bonus by the inputted amount.
+     *
+     * @param input value to change the martial knowledge bonus by
+     */
     fun updateMKSpec(input: Int){
         martialKnowledgeSpec += input
         updateMK()
     }
 
-    //updates the character's martial knowledge
+    /**
+     * Recalculates the character's maximum martial knowledge
+     */
     fun updateMK(){
         martialKnowledgeMax = (charInstance.ownClass.mkPerLevel * charInstance.lvl) +
                 charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec
@@ -223,29 +243,45 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     //initialize total bought accumulation value
     var totalAccBuy = 0
 
+    /**
+     * Updates the total ki points bought for each KiStat item.
+     */
     fun updateBoughtPoints(){
         totalPointBuy = 0
         allKiStats.forEach{totalPointBuy += it.boughtKiPoints}
     }
+
+    /**
+     * Recalculates the total ki points acquired by the character.
+     */
     fun updateTotalPoints(){
         totalKi = 0
         allKiStats.forEach{totalKi += it.totalKiPoints}
     }
+
+    /**
+     * Updates the total ki accumulation bought for each KiStat item.
+     */
     fun updateBoughtAcc(){
         totalAccBuy = 0
         allKiStats.forEach{totalAccBuy += it.boughtAccumulation}
     }
+
+    /**
+     * Recalculates the total ki accumulation acquired by the character.
+     */
     fun updateTotalAcc(){
         totalAcc = 0
         allKiStats.forEach{totalAcc += it.totalAccumulation}
     }
 
     /**
-     * Determines the development points spent in ki point and accumulation purchases
+     * Determines the development points spent in ki point and accumulation purchases.
      */
     fun calculateSpent(): Int{
         var total = 0
 
+        //add bought ki points and accumulation values
         total += totalPointBuy * charInstance.ownClass.kiGrowth
         total += totalAccBuy * charInstance.ownClass.kiAccumMult
 
@@ -254,27 +290,34 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
 
 
     /**
-     * Loads data in regards to this section from saved file data
+     * Loads data in regards to this section from saved file data.
+     *
+     * @param fileReader file to read the data from
      */
     fun loadKiAttributes(fileReader: BufferedReader){
+        //set bought ki points and accumulation for each KiStat item
         allKiStats.forEach{
             it.setBoughtKiPoints(fileReader.readLine().toInt())
             it.setBoughtAccumulation(fileReader.readLine().toInt())
         }
 
-        var loops = fileReader.readLine().toInt()
-
-        while(loops > 0){
+        //acquire saved data for ki abilities
+        for(index in 0 until fileReader.readLine().toInt()){
             takenAbilities += listOf(getAbility(fileReader.readLine())!!)
-            loops--
         }
 
-        loops = fileReader.readLine().toInt()
-
-        while(loops > 0){
+        //acquire saved data for dominion techniques
+        for(index in 0 until fileReader.readLine().toInt()){
+            //get technique's name
             val techName = fileReader.readLine()
+
+            //get technique's description
             val techDesc = fileReader.readLine()
+
+            //get technique's level
             val techLvl = fileReader.readLine().toInt()
+
+            //get array of technique's maintenance
             val techMaint = mutableListOf(
                 fileReader.readLine().toInt(),
                 fileReader.readLine().toInt(),
@@ -283,18 +326,27 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
                 fileReader.readLine().toInt(),
                 fileReader.readLine().toInt()
             )
+
+            //initialize list of technique's effects
             val techEffects: MutableList<TechniqueEffect> = mutableListOf()
 
-            var techLoops = fileReader.readLine().toInt()
-
-            while(techLoops > 0){
+            for(techLoops in 0 until fileReader.readLine().toInt()){
+                //get effect name
                 val teName = fileReader.readLine()
+
+                //get effect amount
                 val teEffect = fileReader.readLine()
+
+                //get effect cost
                 val teCost = fileReader.readLine().toInt()
+
+                //get effect maintenance
                 val teMaint = fileReader.readLine().toInt()
 
+                //get effect build costs
                 val tePair = Pair(fileReader.readLine().toInt(), fileReader.readLine().toInt())
 
+                //get effect build array
                 val teBuild = mutableListOf(
                     fileReader.readLine().toInt(),
                     fileReader.readLine().toInt(),
@@ -304,6 +356,7 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
                     fileReader.readLine().toInt()
                 )
 
+                //get effect ki additions
                 val teAdditions = mutableListOf(
                     fileReader.readLine().toIntOrNull(),
                     fileReader.readLine().toIntOrNull(),
@@ -313,14 +366,15 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
                     fileReader.readLine().toIntOrNull()
                 )
 
+                //initialize effect elements
                 val teElements = mutableListOf<Element>()
 
-                var effectLoops = fileReader.readLine().toInt()
-                while(effectLoops > 0){
+                //get effect elements
+                for(effectLoops in 0 until fileReader.readLine().toInt()){
                     teElements += Element.fromString(fileReader.readLine())
-                    effectLoops--
                 }
 
+                //add effect to  technique
                 techEffects +=
                         TechniqueEffect(
                             teName,
@@ -333,18 +387,16 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
                             teElements,
                             fileReader.readLine().toInt()
                         )
-
-                techLoops--
             }
 
+            //create full technique to add
             val newTech = Technique(techName, techDesc, techLvl, techMaint, techEffects)
 
-            if(techEquivalent(newTech).first)
-                addTechnique(techEquivalent(newTech).second!!)
+            //add prebuilt technique if this item matches one
+            if(techEquivalent(newTech) != null)
+                addTechnique(techEquivalent(newTech)!!)
             else
                 addTechnique(newTech)
-
-            loops--
         }
 
         updateMkSpent()
@@ -354,16 +406,19 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
      * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation
      */
     fun writeKiAttributes() {
+        //write data from KiStats
         allKiStats.forEach{
             charInstance.addNewData(it.boughtKiPoints)
             charInstance.addNewData(it.boughtAccumulation)
         }
 
+        //write number of ki abilities taken and specific abilities taken
         charInstance.addNewData(takenAbilities.size)
         takenAbilities.forEach{
             charInstance.addNewData(it.name)
         }
 
+        //write number of techniques taken and data on each technique
         charInstance.addNewData(takenTechniques.size)
         takenTechniques.forEach{
             it.write(charInstance)
@@ -371,9 +426,10 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Finds a ki ability based on its name
+     * Finds a ki ability based on its name.
      *
-     * toFind: name of the ki ability to find
+     * @param toFind name of the ki ability to find
+     * @return ki ability of the search if available
      */
     fun getAbility(toFind: String): KiAbility?{
         kiRecord.allKiAbilities.forEach{
@@ -385,16 +441,17 @@ class Ki(private val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Determines if a technique from file is equivalent to a prebuilt technique
+     * Determines if a technique from file is equivalent to a prebuilt technique.
      *
-     * compareTo: technique to check against prebuilt techniques
+     * @param compareTo technique to check against prebuilt techniques
+     * @return prebuilt technique if one matches
      */
-    fun techEquivalent(compareTo: Technique): Pair<Boolean, Technique?>{
+    fun techEquivalent(compareTo: Technique): Technique?{
         allTechniques.forEach{
             if(it.equivalentTo(compareTo))
-                return Pair(true, it)
+                return it
         }
 
-        return Pair(false, null)
+        return null
     }
 }

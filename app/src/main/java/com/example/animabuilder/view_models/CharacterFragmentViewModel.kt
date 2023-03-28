@@ -107,7 +107,7 @@ class CharacterFragmentViewModel(
     private val raceDropdown = DropdownData(
         R.string.raceText,
         context.resources.getStringArray(R.array.raceArray),
-        charInstance.ownRace.raceIndex
+        charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace)
     ) {
         charInstance.setOwnRace(it)
         strengthData.setOutput()

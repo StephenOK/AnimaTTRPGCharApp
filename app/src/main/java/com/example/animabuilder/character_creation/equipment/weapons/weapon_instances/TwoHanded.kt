@@ -6,6 +6,9 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbili
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import java.io.Serializable
 
+/**
+ * List of two-handed weapons the character may take.
+ */
 class TwoHanded: Serializable {
     val twoHandSword = Weapon(
         "Two-Handed Sword",

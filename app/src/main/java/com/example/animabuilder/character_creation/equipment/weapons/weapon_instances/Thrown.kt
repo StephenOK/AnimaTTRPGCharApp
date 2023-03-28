@@ -6,6 +6,9 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
+/**
+ * List of thrown weapons the character may take.
+ */
 class Thrown: Serializable {
     val bolas = ProjectileWeapon(
         "Bolas",

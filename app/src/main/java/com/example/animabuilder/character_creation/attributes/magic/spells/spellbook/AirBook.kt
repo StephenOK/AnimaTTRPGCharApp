@@ -5,6 +5,9 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.SpellType
 import java.io.Serializable
 
+/**
+ * List of spells associated with the air element.
+ */
 class AirBook: Serializable {
     private val raiseWind = Spell(
         "Raise Wind",

@@ -1,8 +1,10 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
-import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import java.io.Serializable
 
+/**
+ * Record of martial arts the character may acquire.
+ */
 class MartialArts: Serializable {
     val kempo = MartialArt(
         "Kempo",

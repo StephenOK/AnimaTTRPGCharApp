@@ -4,6 +4,11 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import java.io.Serializable
 
+/**
+ * List of common advantages and disadvantages a character may acquire.
+ *
+ * @param charInstance object holding the character's stats
+ */
 class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
     val characteristicList = listOf("STR", "DEX", "AGI", "CON", "INT", "POW", "WP", "PER")
     val secondariesList = listOf(
@@ -164,7 +169,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
         listOf(1),
         0,
         {input, _ ->
-            charInstance.psychic.legalDisciplines.add(charInstance.psychic.intToDiscipline(input!!))
+            charInstance.psychic.legalDisciplines.add(charInstance.psychic.allDisciplines[input!!])
             charInstance.psychic.legalDisciplines.add(charInstance.psychic.matrixPowers)
         },
         {input, _ ->

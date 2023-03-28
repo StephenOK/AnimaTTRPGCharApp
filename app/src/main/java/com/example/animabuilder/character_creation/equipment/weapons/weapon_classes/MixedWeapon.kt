@@ -4,6 +4,24 @@ import com.example.animabuilder.character_creation.equipment.weapons.AttackType
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 
+/**
+ * A weapon that fits multiple types.
+ *
+ * @param name name of the weapon
+ * @param damage base damage the weapon can do
+ * @param speed change to the character's initiative when wielding this weapon
+ * @param oneHandStr strength needed to wield this with one hand
+ * @param twoHandStr strength needed to wield this with two hands
+ * @param primaryType primary damage type the weapon utilizes
+ * @param secondaryType secondary damage type the weapon may utilize
+ * @param mixedType pair of weapon types this item has
+ * @param fortitude durability of the weapon
+ * @param breakage ability of this item to break things
+ * @param presence size of the object
+ * @param ability special abilities the weapon may have
+ * @param ownStrength strength value the weapon may have
+ * @param description details of the item in question
+ */
 class MixedWeapon(
     name: String,
     damage: Int,

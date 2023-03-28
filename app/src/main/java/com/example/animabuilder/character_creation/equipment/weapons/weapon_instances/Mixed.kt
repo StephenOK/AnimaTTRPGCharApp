@@ -7,6 +7,9 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import java.io.Serializable
 
+/**
+ * List of mixed class weapons the character may take.
+ */
 class Mixed: Serializable {
     val bastardSword = MixedWeapon(
         "Bastard Sword",

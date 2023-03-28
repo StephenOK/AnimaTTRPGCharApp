@@ -4,6 +4,9 @@ import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import java.io.Serializable
 
+/**
+ * Record of all of the available sentience powers.
+ */
 class Sentience: Discipline(), Serializable {
     val senseFeelings = PsychicPower(
         "Sense Feelings",

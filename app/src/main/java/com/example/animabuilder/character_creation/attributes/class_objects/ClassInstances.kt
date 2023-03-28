@@ -3,10 +3,15 @@ package com.example.animabuilder.character_creation.attributes.class_objects
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.Serializable
 
+/**
+ * Record of classes available to the character.
+ *
+ * @param charInstance object that holds the character's dataa
+ */
 class ClassInstances(charInstance: BaseCharacter): Serializable {
     val warrior =
         CharClass(
-            ClassName.warrior, listOf(Archetype.Fighter),
+            "Warrior", listOf(Archetype.Fighter),
             15, 15, 5, 25, 3,
             0.6, 2, 2, 2, 2, 2, 20,
             0.5, 3, 70, 3, 3, 3, 3, 3,
@@ -33,7 +38,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
         )
 
     val acroWarrior = CharClass(
-        ClassName.acroWarrior, listOf(Archetype.Fighter),
+        "Acrobatic Warrior", listOf(Archetype.Fighter),
         20, 10, 10, 25, 3,
         0.6, 2, 3, 2, 2, 2, 20,
         0.5, 3, 70, 3, 3, 3, 3, 3,
@@ -62,7 +67,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val paladin = CharClass(
-        ClassName.paladin, listOf(Archetype.Fighter),
+        "Paladin", listOf(Archetype.Fighter),
         15, 15, 5, 20, 3,
         0.60, 2, 2, 2, 2, 2, 20,
         0.50, 2, 60, 3, 3, 3, 3, 1,
@@ -99,7 +104,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val darkPaladin = CharClass(
-        ClassName.darkPaladin, listOf(Archetype.Fighter),
+        "Dark Paladin", listOf(Archetype.Fighter),
         15, 15, 5, 20, 3,
         0.60, 2, 2, 2, 2, 2, 20,
         0.50, 2, 60, 3, 3, 1, 3, 3,
@@ -138,7 +143,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val weaponMaster = CharClass(
-        ClassName.weaponMaster, listOf(Archetype.Fighter),
+        "Weaponsmaster", listOf(Archetype.Fighter),
         10, 20, 5, 10, 3,
         0.60, 2, 2, 2, 1, 3, 30,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -161,7 +166,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val technician = CharClass(
-        ClassName.technician, listOf(Archetype.Domine),
+        "Technician", listOf(Archetype.Domine),
         20, 5, 5, 50, 3,
         0.60, 2, 2, 2, 2, 1, 10,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -172,7 +177,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val tao = CharClass(
-        ClassName.tao, listOf(Archetype.Fighter, Archetype.Domine),
+        "Tao", listOf(Archetype.Fighter, Archetype.Domine),
         20, 10, 5, 30, 3,
         0.60, 2, 2, 2, 2, 2, 15,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -183,7 +188,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val ranger = CharClass(
-        ClassName.ranger, listOf(Archetype.Fighter, Archetype.Prowler),
+        "Ranger", listOf(Archetype.Fighter, Archetype.Prowler),
         20, 10, 5, 20, 3,
         0.60, 2, 2, 2, 2, 2, 25,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -222,7 +227,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val shadow = CharClass(
-        ClassName.shadow, listOf(Archetype.Fighter, Archetype.Prowler),
+        "Shadow", listOf(Archetype.Fighter, Archetype.Prowler),
         20, 5, 10, 25, 3,
         0.60, 2, 3, 2, 2, 2, 20,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -249,7 +254,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val thief = CharClass(
-        ClassName.thief, listOf(Archetype.Prowler),
+        "Thief", listOf(Archetype.Prowler),
         20, 5, 10, 20, 3,
         0.50, 2, 3, 2, 3, 2, 25,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -284,7 +289,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val assassin = CharClass(
-        ClassName.assassin, listOf(Archetype.Prowler),
+        "Assassin", listOf(Archetype.Prowler),
         20, 5, 10, 20, 3,
         0.50, 2, 3, 2, 3, 2, 25,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -323,7 +328,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val wizard = CharClass(
-        ClassName.wizard, listOf(Archetype.Mystic),
+        "Wizard", listOf(Archetype.Mystic),
         20, 5, 5, 10, 3,
         0.50, 3, 3, 2, 3, 3, 30,
         0.60, 1, 50, 2, 2, 2, 2, 2,
@@ -348,7 +353,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val warlock = CharClass(
-        ClassName.warlock, listOf(Archetype.Fighter, Archetype.Mystic),
+        "Warlock", listOf(Archetype.Fighter, Archetype.Mystic),
         20, 10, 5, 20, 3,
         0.50, 2, 2, 2, 2, 2, 25,
         0.50, 1, 50, 2, 2, 2, 2, 2,
@@ -375,7 +380,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val illusionist = CharClass(
-        ClassName.illusionist, listOf(Archetype.Mystic, Archetype.Prowler),
+        "Illusionist", listOf(Archetype.Mystic, Archetype.Prowler),
         20, 5, 5, 20, 3,
         0.50, 3, 3, 2, 3, 2, 25,
         0.60, 1, 60, 2, 3, 3, 3, 3,
@@ -412,7 +417,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val wizMentalist = CharClass(
-        ClassName.wizMentalist, listOf(Archetype.Mystic, Archetype.Psychic),
+        "Wizard Mentalist", listOf(Archetype.Mystic, Archetype.Psychic),
         20, 5, 5, 10, 1,
         0.50, 3, 3, 2, 3, 3, 30,
         0.50, 1, 50, 2, 2, 2, 2, 2,
@@ -433,7 +438,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val summoner = CharClass(
-        ClassName.summoner, listOf(Archetype.Mystic),
+        "Summoner", listOf(Archetype.Mystic),
         20, 5, 5, 10, 3,
         0.50, 3, 3, 2, 3, 3, 30,
         0.60, 1, 60, 3, 1, 1, 1, 1,
@@ -468,7 +473,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val warSummoner = CharClass(
-        ClassName.warSummoner, listOf(Archetype.Fighter, Archetype.Mystic),
+        "Warrior Summoner", listOf(Archetype.Fighter, Archetype.Mystic),
         20, 10, 5, 20, 3,
         0.50, 2, 2, 2, 2, 2, 20,
         0.50, 1, 60, 3, 1, 1, 1, 1,
@@ -505,7 +510,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val mentalist = CharClass(
-        ClassName.mentalist, listOf(Archetype.Psychic),
+        "Mentalist", listOf(Archetype.Psychic),
         20, 5, 5, 10, 1,
         0.50, 3, 3, 2, 3, 3, 30,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -515,7 +520,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val warMentalist = CharClass(
-        ClassName.warMentalist, listOf(Archetype.Fighter, Archetype.Psychic),
+        "Warrior Mentalist", listOf(Archetype.Fighter, Archetype.Psychic),
         20, 10, 5, 20, 1,
         0.50, 2, 2, 2, 2, 2, 25,
         0.50, 3, 70, 3, 3, 3, 3, 3,
@@ -534,7 +539,7 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     )
 
     val freelancer = CharClass(
-        ClassName.freelancer, listOf(Archetype.Novel),
+        "Freelancer", listOf(Archetype.Novel),
         20, 5, 5, 20, 2,
         0.60, 2, 2, 2, 2, 2, 20,
         0.60, 2, 60, 2, 2, 2, 2, 2,
@@ -548,7 +553,13 @@ class ClassInstances(charInstance: BaseCharacter): Serializable {
     ranger, shadow, thief, assassin, wizard, warlock, illusionist, wizMentalist, summoner, warSummoner,
     mentalist, warMentalist)
 
-    fun findClass(input: ClassName): CharClass?{
+    /**
+     * Finds the class based on the inputted class name
+     *
+     * @param input desired class to find
+     * @return character class to find or null indicator
+     */
+    fun findClass(input: String): CharClass?{
         allClasses.forEach{
             if(it.heldClass == input) return it
         }

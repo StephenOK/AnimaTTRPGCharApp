@@ -11,8 +11,9 @@ import java.io.Serializable
 /**
  * Object that holds all of a character's secondary characteristics
  * Keeps track of natural bonuses taken by the player
+ *
+ * @param charInstance object that manages all of the character's stats
  */
-
 class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     //initialize held state of jack of all trades advantage
     var allTradesTaken = false
@@ -70,11 +71,18 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     val strengthFeat = SecondaryCharacteristic(R.string.strFeatLabel, this)
     val resistPain = SecondaryCharacteristic(R.string.resistPainLabel, this)
 
+    //get all secondary characteristics
     val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, art, dance, forging, music,
     sleightHand, notice, search, track, intimidate, leadership, persuasion, style, disguise, hide,
     lockPick, poisons, theft, stealth, trapLore, animals, appraise, herbalLore, history, memorize,
     magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain)
 
+    /**
+     * Retrieves a secondary field based on the numerical input.
+     *
+     * @param input number to convert to a secondary field
+     * @return list of characteristics associated with the desired field
+     */
     fun intToField(input: Int): List<SecondaryCharacteristic>{
         return when(input){
             0 -> listOf(acrobatics, athletics, climb, jump, ride, swim)
@@ -90,9 +98,9 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Attempts to toggle the natural bonus of the inputted characteristic
+     * Attempts to toggle the natural bonus of the inputted characteristic.
      *
-     * target: secondary characteristic to toggle the bonus of
+     * @param target secondary characteristic to toggle the bonus of
      */
     fun toggleNatBonus(target: SecondaryCharacteristic){
         //if natural bonus is currently off
@@ -108,7 +116,7 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Retrieves the number of currently held natural bonuses
+     * Retrieves the number of currently held natural bonuses.
      */
     fun countNatBonuses(): Int{
         //initialize counter
@@ -124,9 +132,9 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Update values based on given class change
+     * Update values based on given class change.
      *
-     * newClass: class the character now possesses
+     * @param newClass class the character now possesses
      */
     fun classUpdate(newClass: CharClass) {
         //update field growth rates
@@ -146,22 +154,26 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
     }
 
     /**
-     * Updates the development point cost of the given field
+     * Updates the development point cost of the given field.
      *
-     * itemNum: number indicating which field to change
-     * newNum: number to set the development point cost to
+     * @param itemNum number indicating which field to change
+     * @param newNum number to set the development point cost to
      */
     fun updateGrowth(itemNum: Int, newNum: Int){
         intToField(itemNum).forEach{it.setDevPerPoint(newNum)}
     }
 
-    //update needed values based on new strength modifier
+    /**
+     * Update needed values based on new strength modifier.
+     */
     fun updateSTR() {
         jump.setModVal(charInstance.primaryList.str.outputMod)
         strengthFeat.setModVal(charInstance.primaryList.str.outputMod)
     }
 
-    //update needed values based on new dexterity modifier
+    /**
+     * Update needed values based on new dexterity modifier.
+     */
     fun updateDEX() {
         forging.setModVal(charInstance.primaryList.dex.outputMod)
         sleightHand.setModVal(charInstance.primaryList.dex.outputMod)
@@ -171,7 +183,9 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         trapLore.setModVal(charInstance.primaryList.dex.outputMod)
     }
 
-    //update needed values based on new agility modifier
+    /**
+     * Update needed values based on new agility modifier.
+     */
     fun updateAGI() {
         acrobatics.setModVal(charInstance.primaryList.agi.outputMod)
         athletics.setModVal(charInstance.primaryList.agi.outputMod)
@@ -182,7 +196,9 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         stealth.setModVal(charInstance.primaryList.agi.outputMod)
     }
 
-    //update needed values based on new intelligence modifier
+    /**
+     * Update needed values based on new intelligence modifier.
+     */
     fun updateINT() {
         persuasion.setModVal(charInstance.primaryList.int.outputMod)
         poisons.setModVal(charInstance.primaryList.int.outputMod)
@@ -197,7 +213,9 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         sciences.setModVal(charInstance.primaryList.int.outputMod)
     }
 
-    //update needed values based on new power modifier
+    /**
+     * Update needed values based on new power modifier.
+     */
     fun updatePOW() {
         art.setModVal(charInstance.primaryList.pow.outputMod)
         music.setModVal(charInstance.primaryList.pow.outputMod)
@@ -206,14 +224,18 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         magicAppraise.setModVal(charInstance.primaryList.pow.outputMod)
     }
 
-    //update needed values based on new willpower modifier
+    /**
+     * Update needed values based on new willpower modifier.
+     */
     fun updateWP() {
         intimidate.setModVal(charInstance.primaryList.wp.outputMod)
         composure.setModVal(charInstance.primaryList.wp.outputMod)
         resistPain.setModVal(charInstance.primaryList.wp.outputMod)
     }
 
-    //update needed values based on new perception modifier
+    /**
+     * Update needed values based on new perception modifier
+     */
     fun updatePER() {
         notice.setModVal(charInstance.primaryList.per.outputMod)
         search.setModVal(charInstance.primaryList.per.outputMod)
@@ -221,17 +243,28 @@ class SecondaryList(val charInstance: BaseCharacter) : Serializable {
         hide.setModVal(charInstance.primaryList.per.outputMod)
     }
 
-    //load characteristic values from a given file reader
+    /**
+     * Load characteristic values from a given file reader.
+     *
+     * @param fileReader file to retrieve data from
+     */
     @Throws(IOException::class)
     fun loadList(fileReader: BufferedReader?) {
         fullList.forEach{it.load(fileReader!!)}
     }
 
-    //save characteristic values to file
+    /**
+     * Save characteristic values to file.
+     */
     fun writeList() {
         fullList.forEach{it.write() }
     }
 
+    /**
+     * Determine the total number of development points spent in this section.
+     *
+     * @return total development points spent
+     */
     fun calculateSpent(): Int{
         var total = 0
 

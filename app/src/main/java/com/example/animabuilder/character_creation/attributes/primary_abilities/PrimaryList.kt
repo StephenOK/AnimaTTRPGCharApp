@@ -4,6 +4,11 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import java.io.Serializable
 
+/**
+ * Record of all of a character's primary characteristic.
+ *
+ * @param charInstance object that contains all of the character's stats
+ */
 class PrimaryList(private val charInstance: BaseCharacter): Serializable {
     val str = PrimaryCharacteristic(
         charInstance,
@@ -103,12 +108,21 @@ class PrimaryList(private val charInstance: BaseCharacter): Serializable {
         charInstance.secondaryList.updatePER()
     }
 
+    //gather all primary characteristics into a list
     val allPrimaries = listOf(str, dex, agi, con, int, pow, wp, per)
 
+    /**
+     * Get data for each of the primary characteristics.
+     *
+     * @param fileReader file to get the data from
+     */
     fun loadPrimaries(fileReader: BufferedReader){
         allPrimaries.forEach{it.load(fileReader)}
     }
 
+    /**
+     * Save all primary characteristic data to file.
+     */
     fun writePrimaries(){
         allPrimaries.forEach{it.write()}
     }

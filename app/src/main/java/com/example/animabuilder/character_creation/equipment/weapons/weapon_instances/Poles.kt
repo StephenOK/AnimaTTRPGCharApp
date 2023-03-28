@@ -7,6 +7,9 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import java.io.Serializable
 
+/**
+ * List the pole weapons the character may take.
+ */
 class Poles: Serializable {
     val cavLance = Weapon(
         "Cavalry Lance",

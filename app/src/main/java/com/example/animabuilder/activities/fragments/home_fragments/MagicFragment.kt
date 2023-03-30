@@ -133,7 +133,7 @@ fun MagicFragment(
         }
 
         //display magic levels available and magic levels spent
-        item{Text(text = stringResource(R.string.magicLevelLabel) + magFragVM.magicLevelMax.collectAsState().value)}
+        item{Text(text = stringResource(R.string.magicLevelLabel) + magFragVM.getMagicLevelMax())}
         item{Text(text = stringResource(R.string.magicLevelSpentLabel) + magFragVM.magicLevelSpent.collectAsState().value)}
 
         //display each book investment row and spell displays

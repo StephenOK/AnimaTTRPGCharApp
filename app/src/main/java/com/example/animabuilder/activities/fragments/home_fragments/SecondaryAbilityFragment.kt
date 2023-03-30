@@ -126,7 +126,7 @@ private fun RowHead(){
  */
 @Composable
 private fun MakeRow(
-    item: SecondaryFragmentViewModel.SecondaryFieldData.SecondaryItem,
+    item: SecondaryFragmentViewModel.SecondaryItem,
     updateBottomBar: () -> Unit
 ){
     Row(
@@ -152,7 +152,7 @@ private fun MakeRow(
             {item.setPointInput("")},
             {updateBottomBar()},
             Color.Black,
-            Modifier.weight(0.25f)
+            Modifier.weight(0.15f)
         )
 
         //display associated mod value
@@ -174,6 +174,11 @@ private fun MakeRow(
             },
 
             modifier = Modifier.weight(0.125f)
+        )
+
+        //display for the natural bonus value
+        Text(text = stringResource(item.checkedText.collectAsState().value),
+            modifier = Modifier.weight(0.1f)
         )
 
         //display for characteristic's total value

@@ -17,10 +17,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * View model that manages the custom technique creation dialog.
+ * Holds the custom technique and associated data as it is being created.
+ *
+ * @param context context in which the dialog is being held
+ * @param kiFragVM ki fragment view model that is operating at the same time as this object
+ */
 class CustomTechniqueViewModel(
     val context: Context,
     private val kiFragVM: KiFragmentViewModel
 ) {
+    //initialize the newly created technique
     private val customTechnique = Technique(
         "",
         "",
@@ -29,141 +37,213 @@ class CustomTechniqueViewModel(
         mutableListOf()
     )
 
+    //data table of technique effects
     private val techniqueDatabase = TechniqueTableDataRecord()
 
+    //initialize the page tracker of the custom technique
     private val _customPageNum = MutableStateFlow(1)
-
-    private val _size = MutableStateFlow(Size.Zero)
-
-    private val _costMinimum = MutableStateFlow(20)
-    private val _costMaximum = MutableStateFlow(50)
-
-    private val _pickingPrimary = MutableStateFlow(false)
-
-    private val _listSource = MutableStateFlow(context.resources.getStringArray(R.array.techniqueAbilities))
-    private val _techniqueIndex = MutableStateFlow(0)
-
-    private val _dropdownTitle = MutableStateFlow("--Select an ability --")
-    private val _dropdownOpen = MutableStateFlow(false)
-    private val _dropdownIcon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
-
-    private val _buildArray = MutableStateFlow<List<Int?>>(listOf())
-    private val _elementList = MutableStateFlow<List<Element>>(listOf())
-
-    private val _header = MutableStateFlow<String?>(null)
-    private val _optHeader1 = MutableStateFlow<String?>(null)
-    private val _optHeader2 = MutableStateFlow<String?>(null)
-
-    private val _useTable = MutableStateFlow<List<TechniqueTableData>?>(null)
-    private val _optTable1 = MutableStateFlow<List<TechniqueTableData>?>(null)
-    private val _optTable2 = MutableStateFlow<List<TechniqueTableData>?>(null)
-    private val _optElement = MutableStateFlow<List<Element>?>(null)
-
-    private val _maintenanceSelection = MutableStateFlow(false)
-
-    private val _techniqueName = MutableStateFlow(customTechnique.name)
-    private val _techniqueDesc = MutableStateFlow(customTechnique.description)
-
-    val mainChecklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
-    val opt1Checklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
-    val opt2Checklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
-    val elementChecklist = mutableMapOf<Element, MutableState<Boolean>>()
-
-    val deletionChecklist = mutableMapOf<TechniqueEffect, MutableState<Boolean>>()
-
-    val editBuildList = mutableListOf<BuildPackage>()
-
     val customPageNum = _customPageNum.asStateFlow()
 
+    //initialize the size for the dropdowns in this dialog
+    private val _size = MutableStateFlow(Size.Zero)
     val size = _size.asStateFlow()
 
+    //initialize minimum and maximum costs of the custom technique
+    private val _costMinimum = MutableStateFlow(20)
     val costMinimum = _costMinimum.asStateFlow()
+    private val _costMaximum = MutableStateFlow(50)
     val costMaximum = _costMaximum.asStateFlow()
 
-    val pickingPrimary = _pickingPrimary.asStateFlow()
+    //initialize whether the character is picking their primary effect
+    private val _pickingPrimary = MutableStateFlow(false)
+    private val pickingPrimary = _pickingPrimary.asStateFlow()
 
+    //initialize list displayed in effect selection dropdown
+    private val _listSource = MutableStateFlow(context.resources.getStringArray(R.array.techniqueAbilities))
     val listSource = _listSource.asStateFlow()
+
+    //initialize selected item in the dropdown
+    private val _techniqueIndex = MutableStateFlow(0)
     val techniqueIndex = _techniqueIndex.asStateFlow()
+
+    //initialize the string in the dropdown
+    private val _dropdownTitle = MutableStateFlow("--Select an ability --")
     val dropdownTitle = _dropdownTitle.asStateFlow()
+
+    //initialize open state of the effect selection dropdown
+    private val _dropdownOpen = MutableStateFlow(false)
     val dropdownOpen = _dropdownOpen.asStateFlow()
+
+    //initialize logo displayed on the dropdown
+    private val _dropdownIcon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
     val dropdownIcon = _dropdownIcon.asStateFlow()
 
-    val buildArray = _buildArray.asStateFlow()
+    //initialize list of build additions for the selected technique effect
+    private val _buildArray = MutableStateFlow<List<Int?>>(listOf())
+    private val buildArray = _buildArray.asStateFlow()
+
+    //initialize the effect's associated element list
+    private val _elementList = MutableStateFlow<List<Element>>(listOf())
     val elementList = _elementList.asStateFlow()
 
+    //initialize title for the effects table
+    private val _header = MutableStateFlow<String?>(null)
     val header = _header.asStateFlow()
+
+    //initialize title for the first optional effects table
+    private val _optHeader1 = MutableStateFlow<String?>(null)
     val optHeader1 = _optHeader1.asStateFlow()
+
+    //initialize title for the second optional effects table
+    private val _optHeader2 = MutableStateFlow<String?>(null)
     val optHeader2 = _optHeader2.asStateFlow()
 
+    //initialize table of data for the technique effect
+    private val _useTable = MutableStateFlow<List<TechniqueTableData>?>(null)
     val useTable = _useTable.asStateFlow()
+
+    //initialize the first optional table for the technique effect
+    private val _optTable1 = MutableStateFlow<List<TechniqueTableData>?>(null)
     val optTable1 = _optTable1.asStateFlow()
+
+    //initialize the second optional table for the technique effect
+    private val _optTable2 = MutableStateFlow<List<TechniqueTableData>?>(null)
     val optTable2 = _optTable2.asStateFlow()
+
+    //initialize list of element options for a technique effect
+    private val _optElement = MutableStateFlow<List<Element>?>(null)
     val optElement = _optElement.asStateFlow()
 
-    val maintenanceSelection = _maintenanceSelection.asStateFlow()
+    //initialize checklist for the technique effect selection
+    val mainChecklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
 
-    val techniqueName = _techniqueName.asStateFlow()
-    val techniqueDesc = _techniqueDesc.asStateFlow()
+    //initialize checklist for the first optional selection
+    val opt1Checklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
 
-    val strAccTotal = AccTotalString(this, 0)
-    val dexAccTotal = AccTotalString(this, 1)
-    val agiAccTotal = AccTotalString(this, 2)
-    val conAccTotal = AccTotalString(this, 3)
-    val powAccTotal = AccTotalString(this, 4)
-    val wpAccTotal = AccTotalString(this, 5)
+    //initialize checklist for the second optional selection
+    val opt2Checklist = mutableMapOf<TechniqueTableData, MutableState<Boolean>>()
 
+    //initialize checklist for element selection
+    val elementChecklist = mutableMapOf<Element, MutableState<Boolean>>()
+
+    //initialize checklist for deleting technique effects
+    val deletionChecklist = mutableMapOf<TechniqueEffect, MutableState<Boolean>>()
+
+    //initialize list of ki builds for the technique's effects
+    val editBuildList = mutableListOf<BuildPackage>()
+
+    //initialize build total displays for ki builds
+    private val strAccTotal = AccTotalString(this, 0)
+    private val dexAccTotal = AccTotalString(this, 1)
+    private val agiAccTotal = AccTotalString(this, 2)
+    private val conAccTotal = AccTotalString(this, 3)
+    private val powAccTotal = AccTotalString(this, 4)
+    private val wpAccTotal = AccTotalString(this, 5)
+
+    //gather all build displays
     val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
 
-    val strMaintInput = MaintInput(
+    //initialize user's selection for technique maintenance
+    private val _maintenanceSelection = MutableStateFlow(false)
+    val maintenanceSelection = _maintenanceSelection.asStateFlow()
+
+    //initialize all input items for technique maintenance
+    private val strMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[0],
         customTechnique,
         0
     )
 
-    val dexMaintInput = MaintInput(
+    private val dexMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[1],
         customTechnique,
         1
     )
 
-    val agiMaintInput = MaintInput(
+    private val agiMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[2],
         customTechnique,
         2
     )
 
-    val conMaintInput = MaintInput(
+    private val conMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[3],
         customTechnique,
         3
     )
 
-    val powMaintInput = MaintInput(
+    private val powMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[4],
         customTechnique,
         4
     )
 
-    val wpMaintInput = MaintInput(
+    private val wpMaintInput = MaintInput(
         context.resources.getStringArray(R.array.primaryCharArray)[5],
         customTechnique,
         5
     )
 
+    //gather all maintenance inputs
     val allMaintInputs = listOf(strMaintInput, dexMaintInput, agiMaintInput, conMaintInput, powMaintInput, wpMaintInput)
 
-    val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
-    val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
+    //initialize the name of the technique
+    private val _techniqueName = MutableStateFlow(customTechnique.name)
+    val techniqueName = _techniqueName.asStateFlow()
 
+    //initialize the description of the technique
+    private val _techniqueDesc = MutableStateFlow(customTechnique.description)
+    val techniqueDesc = _techniqueDesc.asStateFlow()
+
+    //create element lists for the relevant effects
+    private val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
+    private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
+
+    /**
+     * Sets the page number of the custom technique.
+     *
+     * @param input page number to set the effect to
+     */
     fun setCustomPageNum(input: Int){_customPageNum.update{input}}
 
+    /**
+     * Sets the dropdown item's size.
+     *
+     * @param input size to set the dropdown to
+     */
     fun setSize(input: Size){_size.update{input}}
 
+    /**
+     * Sets the minimum cost required for the technique created.
+     *
+     * @param input minimum value to set
+     */
+    private fun setCostMinimum(input: Int){_costMinimum.update{input}}
+
+    /**
+     * Sets the maximum cost required for the technique created.
+     *
+     * @param input maximum value to set
+     */
+    private fun setCostMaximum(input: Int){_costMaximum.update{input}}
+
+    /**
+     * Retrieves the current level of the custom technique.
+     *
+     * @return technique's level value
+     */
     fun getTechniqueLevel(): Int{return customTechnique.level}
 
+    /**
+     * Sets the technique's level to the indicated value.
+     *
+     * @param input level to set the technique to
+     */
     fun setTechniqueLevel(input: Int){
+        //set the technique's level
         customTechnique.level = input
 
+        //update the minimum and maximum values as needed
         when(input){
             1 -> {
                 setCostMinimum(20)
@@ -184,13 +264,18 @@ class CustomTechniqueViewModel(
         }
     }
 
-    fun setCostMinimum(input: Int){_costMinimum.update{input}}
-    fun setCostMaximum(input: Int){_costMaximum.update{input}}
+    /**
+     * Determines if the minimum cost requirement has been met.
+     *
+     * @return true if condition met
+     */
+    fun costMinMet(toMeet: Int): Boolean{return toMeet >= costMinimum.value}
 
-    fun costMinMet(toMeet: Int): Boolean{
-        return toMeet >= costMinimum.value
-    }
-
+    /**
+     * Determines that the level of technique to make is a valid addition for the character.
+     *
+     * @return true if this level of technique is valid
+     */
     fun minTechsMet(): Boolean{
         when(customTechnique.level){
             1 -> return true
@@ -201,8 +286,16 @@ class CustomTechniqueViewModel(
         return false
     }
 
+    /**
+     * Notifies the viewModel of whether the user is selecting the primary effect or not.
+     *
+     * @param input boolean to set the selection flag to
+     */
     fun setPickingPrimary(input: Boolean){
+        //update the primary effect flag
         _pickingPrimary.update{input}
+
+        //update the displayed techniques for the dropdown
         if(input) {
             _listSource.update { context.resources.getStringArray(R.array.techniqueAbilities) }
             customTechnique.givenAbilities.clear()
@@ -214,6 +307,11 @@ class CustomTechniqueViewModel(
             }
     }
 
+    /**
+     * Sets the currently selected effect option in the dropdown.
+     *
+     * @param input index of the dropdown to set
+     */
     fun setTechniqueIndex(input: Int){
         _techniqueIndex.update{input}
         _dropdownTitle.update{listSource.value[techniqueIndex.value]}
@@ -552,11 +650,13 @@ class CustomTechniqueViewModel(
             else -> {tableClear()}
         }
 
+        //clear all checklists
         mainChecklist.clear()
         opt1Checklist.clear()
         opt2Checklist.clear()
         elementChecklist.clear()
 
+        //fill checklists with new data
         if(useTable.value != null){
             useTable.value!!.forEach{
                 mainChecklist += Pair(it, mutableStateOf(false))
@@ -582,27 +682,87 @@ class CustomTechniqueViewModel(
         }
     }
 
-    fun setDropdownOpen(input: Boolean){
-        _dropdownOpen.update{input}
+    /**
+     * Toggles the open state of the effect dropdown.
+     */
+    fun toggleDropdownOpen() {
+        //change the dropdown state
+        _dropdownOpen.update{!dropdownOpen.value}
+
+        //appropriately change the icon state
         _dropdownIcon.update{
-            if(input) Icons.Filled.KeyboardArrowUp
+            if(dropdownOpen.value) Icons.Filled.KeyboardArrowUp
             else Icons.Filled.KeyboardArrowDown
         }
     }
 
-    fun setBuildArray(input: List<Int?>){_buildArray.update{input}}
-    fun setElementList(input: List<Element>){_elementList.update{input}}
+    /**
+     * Sets the build addition list for the technique effect.
+     *
+     * @param input list of additions to set the state to
+     */
+    private fun setBuildArray(input: List<Int?>){_buildArray.update{input}}
 
-    fun setHeader(input: String?){_header.update{input}}
-    fun setOptHeader1(input: String?){_optHeader1.update{input}}
-    fun setOptHeader2(input: String?){_optHeader2.update{input}}
+    /**
+     * Sets the display of the effect's elements.
+     *
+     * @param input element list to set the state to
+     */
+    private fun setElementList(input: List<Element>){_elementList.update{input}}
 
-    fun setUseTable(input: List<TechniqueTableData>?){_useTable.update{input}}
-    fun setOptTable1(input: List<TechniqueTableData>?){_optTable1.update{input}}
-    fun setOptTable2(input: List<TechniqueTableData>?){_optTable2.update{input}}
-    fun setOptElement(input: List<Element>?){ _optElement.update{input}}
+    /**
+     * Sets the header of the effect table.
+     *
+     * @param input header to set
+     */
+    private fun setHeader(input: String?){_header.update{input}}
 
-    fun tableClear(){
+    /**
+     * Sets the first optional header of the effect table.
+     *
+     * @param input header to set
+     */
+    private fun setOptHeader1(input: String?){_optHeader1.update{input}}
+
+    /**
+     * Sets the second optional header of the effect table.
+     *
+     * @param input header to set
+     */
+    private fun setOptHeader2(input: String?){_optHeader2.update{input}}
+
+    /**
+     * Sets the information for the effect table.
+     *
+     * @param input table data to set
+     */
+    private fun setUseTable(input: List<TechniqueTableData>?){_useTable.update{input}}
+
+    /**
+     * Sets the information for the first optional table.
+     *
+     * @param input table data to set
+     */
+    private fun setOptTable1(input: List<TechniqueTableData>?){_optTable1.update{input}}
+
+    /**
+     * Sets the information for the second optional table.
+     *
+     * @param input table data to set
+     */
+    private fun setOptTable2(input: List<TechniqueTableData>?){_optTable2.update{input}}
+
+    /**
+     * Sets the information for the element options table.
+     *
+     * @param input table data to set
+     */
+    private fun setOptElement(input: List<Element>?){ _optElement.update{input}}
+
+    /**
+     * Empties all tables and headers of data.
+     */
+    private fun tableClear(){
         setHeader(null)
         setOptHeader1(null)
         setOptHeader2(null)
@@ -613,45 +773,75 @@ class CustomTechniqueViewModel(
         setOptElement(null)
     }
 
+    /**
+     * Attempts to add the selected effect to the custom technique.
+     *
+     * @return error message if effect addition failed
+     */
     fun attemptTechAddition(): String?{
+        //retrieve the effect the user has selected
         val addedTechniques = getSelectedEffects()
+
+        //initialize additional cost of new additions
         var additionCost = 0
 
+        //for each valid technique selection
         addedTechniques.forEach{
             if(it != null){
+                //attempt to add the effect
                 val newInput =
                     customTechnique.validEffectAddition(it, kiFragVM.getMartialRemaining() - additionCost)
 
+                //add cost if no error
                 if(newInput == null){
                     additionCost += it.mkCost
                 }
 
+                //return error if failed
                 else
                     return newInput
             }
         }
 
+        //for each valid technique selection
         addedTechniques.forEach{
             if(it != null) {
+                //retrieve the technique's element
                 it.elements = getSelectedElement(it)
 
+                //add disadvantage flag if adding elemental binding
                 if(techniqueIndex.value == 35) it.elements += Element.Free
 
+                //add effects to technique
                 customTechnique.givenAbilities.add(it)
             }
         }
 
+        //reset dropdown and terminate method
         setTechniqueIndex(0)
         return null
     }
 
+    /**
+     * Determines that the effect data can be added to the custom technique.
+     *
+     * @param effectInput effect data to attempt to add to the character
+     * @return error message if any failure occurs
+     */
     fun validCheckInput(effectInput: TechniqueTableData): String?{
         return customTechnique.validEffectAddition(dataToEffect(effectInput), kiFragVM.getMartialRemaining())
     }
 
+    /**
+     * Retrieve the technique effects the user has selected.
+     *
+     * @return list of effects selected by the user
+     */
     fun getSelectedEffects(): List<TechniqueEffect?>{
+        //initialize output list
         val output = mutableListOf<TechniqueEffect?>()
 
+        //check the main table for a valid technique input
         mainChecklist.forEach{
             if(it.value.value){
                 output.add(dataToEffect(it.key))
@@ -659,6 +849,7 @@ class CustomTechniqueViewModel(
             }
         }
 
+        //check the first optional table for a valid technique input
         opt1Checklist.forEach{
             if(it.value.value){
                 output.add(dataToEffect(it.key))
@@ -666,6 +857,7 @@ class CustomTechniqueViewModel(
             }
         }
 
+        //check the second optional table for a valid technique input
         opt2Checklist.forEach{
             if(it.value.value){
                 output.add(dataToEffect(it.key))
@@ -673,25 +865,43 @@ class CustomTechniqueViewModel(
             }
         }
 
+        //return list of selections
         return output.toList()
     }
 
+    /**
+     * Retrieve the price of the user's additions.
+     *
+     * @return cost of the selected effects
+     */
     fun getSelectionPrice(): Int{
+        //initialize cost total
         var output = 0
 
+        //add the price of each selected effect
         getSelectedEffects().forEach{
             if(it != null)
                 output += it.mkCost
         }
 
+        //return final cost
         return output
     }
 
-    fun dataToEffect(item: TechniqueTableData): TechniqueEffect{
+    /**
+     * Converts a technique table data item into a technique effect.
+     *
+     * @param item technique table data to convert
+     * @return effect to return from the table data
+     */
+    private fun dataToEffect(item: TechniqueTableData): TechniqueEffect{
+        //get the name of the technique effect
         val nameString = listSource.value[techniqueIndex.value]
 
+        //initialize the build for the technique
         val defaultBuild = mutableListOf(0, 0, 0, 0, 0, 0)
 
+        //set the default value of the build array
         if(buildArray.value.indexOf(0) >= 0){
             if(pickingPrimary.value)
                 defaultBuild[buildArray.value.indexOf(0)] = item.primaryCost
@@ -699,6 +909,7 @@ class CustomTechniqueViewModel(
                 defaultBuild[buildArray.value.indexOf(0)] = item.secondaryCost
         }
 
+        //return the composed technique
         return TechniqueEffect(
             nameString,
             item.effect,
@@ -712,50 +923,104 @@ class CustomTechniqueViewModel(
         )
     }
 
+    /**
+     * Retrieve the selection for the effect's element.
+     *
+     * @param input currently selected technique effect
+     */
     fun getSelectedElement(input: TechniqueEffect): MutableList<Element>{
+        //return own elements if they have them
         if(input.elements.isNotEmpty())
             return input.elements
 
+        //initialize user selected output
         val output = mutableListOf<Element>()
 
+        //get user's selected elements
         elementChecklist.forEach{
             if(it.value.value && !output.contains(it.key))
                 output.add(it.key)
         }
 
+        //return user's selection
         return output
     }
 
+    /**
+     * Clears the inputted selection map.
+     *
+     * @param input map of checkboxes to be cleared
+     */
     fun clearInputList(input: MutableMap<TechniqueTableData, MutableState<Boolean>>){
         input.forEach{it.value.value = false}
     }
 
+    /**
+     * Clears the checkboxes for the element selection.
+     */
     fun clearElementChecks(){
         elementChecklist.forEach{
             it.value.value = false
         }
     }
 
+    /**
+     * Retrieves the total cost of the custom technique.
+     *
+     * @return technique's cost value
+     */
     fun getTechniqueCost(): Int{return customTechnique.mkCost()}
+
+    /**
+     * Retrieves the currently selected effects for the custom technique.
+     *
+     * @return list of custom technique's effects
+     */
     fun getTechniqueEffects(): MutableList<TechniqueEffect>{return customTechnique.givenAbilities}
 
+    /**
+     * Item for total accumulation of a particular primary characteristic.
+     *
+     * @param customTechVM viewModel that manages the custom technique
+     * @param index primary characteristic location of the associated object
+     */
     class AccTotalString(
-        val customTechVM: CustomTechniqueViewModel,
+        private val customTechVM: CustomTechniqueViewModel,
         val index: Int
     ){
+        //initialize display string
         private val _totalDisplay = MutableStateFlow("")
         val totalDisplay = _totalDisplay.asStateFlow()
+
+        /**
+         * Sets the value of the display for the total build.
+         */
         fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index).toString()}}
     }
 
+    /**
+     * Retrieves the valid state of all of the technique's effects' builds.
+     *
+     * @return true if all effects have valid builds
+     */
     fun getCheckBuilds(): Boolean{
         return customTechnique.checkBuilds()
     }
 
+    /**
+     * Retrieves the valid state of the technique's maintenance array.
+     *
+     * @return true if the maintenance input is valid
+     */
     fun getMaintenanceCheck(): Boolean{
         return customTechnique.checkMaintenance()
     }
 
+    /**
+     * Retrieves the total cost of ki build needed for one index.
+     *
+     * @param index array index to sum up
+     */
     fun gatherIndex(index: Int): Int{
         var output = 0
         customTechnique.givenAbilities.forEach{
@@ -765,28 +1030,43 @@ class CustomTechniqueViewModel(
         return output
     }
 
+    /**
+     * Sets the checklist items for effect deletion.
+     */
     fun setDeletionChecklist(){
+        //clear any previous list items
         deletionChecklist.clear()
+
+        //add all currently held effects to the list
         customTechnique.givenAbilities.forEach{
             deletionChecklist += Pair(it, mutableStateOf(false))
         }
     }
 
-    fun deleteTechniques(){
+    /**
+     * Removes the desired technique effects from the custom technique.
+     */
+    fun deleteEffects(){
+        //remove the effects from the custom technique
         deletionChecklist.forEach{
             if(it.value.value){
                 customTechnique.givenAbilities.remove(customTechnique.getAbility(it.key.name))
             }
         }
 
+        //change the primary effect if change is necessary
         customTechnique.fixPrimaryAbility()
 
+        //set to primary effect selection page if no more effects are in the technique
         if(customTechnique.givenAbilities.isNotEmpty())
             setCustomPageNum(3)
         else
             setCustomPageNum(2)
     }
 
+    /**
+     * Initialize the items to be utilized for ki build distribution section.
+     */
     fun initializeBuildList(){
         editBuildList.clear()
         customTechnique.givenAbilities.forEach{
@@ -794,6 +1074,11 @@ class CustomTechniqueViewModel(
         }
     }
 
+    /**
+     * Sets the custom technique's selection on having maintenance or not.
+     *
+     * @param input state to set the maintenance selection to
+     */
     fun setMaintenanceSelection(input: Boolean){
         if(!input){
             for(index in 0..5)
@@ -803,71 +1088,146 @@ class CustomTechniqueViewModel(
         _maintenanceSelection.update{input}
     }
 
+    /**
+     * Retrieves the total maintenance value of the custom technique.
+     *
+     * @return technique's maintenance cost
+     */
     fun getMaintenanceTotal(): Int{return customTechnique.maintTotal()}
+
+    /**
+     * Retrieves whether the indicated primary characteristic has any accumulation required for
+     * this technique.
+     *
+     * @param index primary characteristic's location in its array
+     * @return true if any accumulation found here
+     */
     fun techHasAccIn(index: Int): Boolean{return customTechnique.hasAccumulation(index)}
 
+    /**
+     * Sets the custom technique's name to the given input.
+     *
+     * @param input name to apply to the technique
+     */
     fun setTechniqueName(input: String){
         _techniqueName.update{input}
         customTechnique.name = input
     }
 
+    /**
+     * Sets the custom technique's description to the given input.
+     *
+     * @param input description to apply to the technique
+     */
     fun setTechniqueDesc(input: String){
         _techniqueDesc.update{input}
         customTechnique.description = input
     }
 
+    /**
+     * Retrieves the custom technique being made here.
+     *
+     * @return the whole technique being worked on.
+     */
     fun getCustomTechnique(): Technique{return customTechnique}
 
+    /**
+     * Closes the custom technique dialog.
+     */
     fun closeDialog(){kiFragVM.toggleCustomTechOpen()}
 
+    /**
+     * Batch of build input data associated with the inputted effect.
+     *
+     * @param input associated technique effect
+     * @param context source of the resources used
+     */
     class BuildPackage(
         val input: TechniqueEffect,
         val context: Context
     ){
+        //initialize all build strings for this effect
         val buildItems = mutableListOf<BuildItem>()
+
         init{
-            var index = 0
-            input.buildAdditions.forEach{
-                if(it != null)
+            //add a build item for each valid index input for this effect
+            for(index in 0..5){
+                if(input.buildAdditions[index] != null)
                     buildItems +=
                         BuildItem(
                             input,
-                            input.kiBuild[index],
                             context.resources.getStringArray(R.array.primaryCharArray)[index],
                             index
                         )
-
-                index++
             }
         }
     }
 
+    /**
+     * Item for one input of a technique effect's ki build.
+     *
+     * @param home effect related to this particular input
+     * @param indexName string title for this item
+     * @param index corresponding ki build item this data represents
+     */
     class BuildItem(
         val home: TechniqueEffect,
-        indexValue: Int,
         val indexName: String,
         val index: Int
     ){
-        private val _display = MutableStateFlow(indexValue.toString())
+        //initialize input display
+        private val _display = MutableStateFlow(home.kiBuild[index].toString())
         val display = _display.asStateFlow()
+
+        /**
+         * Change the ki input to the indicated number.
+         *
+         * @param input value to change the build to
+         */
         fun setDisplay(input: Int){
             setDisplay(input.toString())
             home.kiBuild[index] = input
         }
+
+        /**
+         * Set the value to be shown in the ki build display.
+         *
+         * @param input value to change the display to
+         */
         fun setDisplay(input: String){_display.update{input}}
     }
 
+    /**
+     * Item that manages a maintenance input for the technique.
+     *
+     * @param name string to head the row
+     * @param customTechnique technique being made in this section
+     * @param index associated maintenance item being worked on in this section
+     */
     class MaintInput(
         val name: String,
-        val customTechnique: Technique,
+        private val customTechnique: Technique,
         val index: Int
     ){
-        private val _displayValue = MutableStateFlow("0")
+        //initialize input display
+        private val _displayValue = MutableStateFlow(customTechnique.maintArray[index].toString())
         val displayValue = _displayValue.asStateFlow()
+
+        /**
+         * Change the technique's maintenance input to the desired value.
+         *
+         * @param input value to set the maintenance input to
+         */
         fun setDisplayValue(input: Int){
             customTechnique.maintArray[index] = input
             setDisplayValue(input.toString())
         }
+
+        /**
+         * Change the display to the indicated value.
+         *
+         * @param input new value to display
+         */
         fun setDisplayValue(input: String){_displayValue.update{input}}
     }
 }

@@ -8,13 +8,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class HomePageViewModel(private val charInstance: BaseCharacter): ViewModel() {
+/**
+ * View model that manages the Home Fragment items.
+ * Manages the bottom bar display values.
+ * Manages the currently selected fragment that is displayed.
+ */
+class HomePageViewModel(charInstance: BaseCharacter): ViewModel() {
+    //initialize the page's current fragment
     private val _currentFragment = MutableStateFlow(HomeActivity.ScreenPage.Character)
-
     val currentFragment = _currentFragment.asStateFlow()
 
+    /**
+     * Changes the current page to the indicated one.
+     *
+     * @param input page to now display
+     */
     fun setCurrentFragment(input: HomeActivity.ScreenPage){_currentFragment.update{input}}
 
+    //initialize bottom bar maximum values
     val maximums = BottomBarRowData(
         R.string.maxRowLabel,
         charInstance.devPT,
@@ -23,6 +34,7 @@ class HomePageViewModel(private val charInstance: BaseCharacter): ViewModel() {
         charInstance.maxPsyDP
     )
 
+    //initialize bottom bar spent values
     val expenditures = BottomBarRowData(
         R.string.usedRowLabel,
         charInstance.spentTotal,
@@ -31,6 +43,15 @@ class HomePageViewModel(private val charInstance: BaseCharacter): ViewModel() {
         charInstance.ptInPsy
     )
 
+    /**
+     * Row of data contained in the app's bottom bar.
+     *
+     * @param nameRef header string reference of the row
+     * @param maxInput initial total value displayed
+     * @param combatInput initial combat value displayed
+     * @param magInput initial magic value displayed
+     * @param psyInput initial psychic value displayed
+     */
     class BottomBarRowData(
         val nameRef: Int,
         maxInput: Int,
@@ -38,16 +59,27 @@ class HomePageViewModel(private val charInstance: BaseCharacter): ViewModel() {
         magInput: Int,
         psyInput: Int
     ){
+        //initialize all of the row's display strings
         private val _maxVal = MutableStateFlow(maxInput.toString())
-        private val _combatVal = MutableStateFlow(combatInput.toString())
-        private val _magVal = MutableStateFlow(magInput.toString())
-        private val _psyVal = MutableStateFlow(psyInput.toString())
-
         val maxVal = _maxVal.asStateFlow()
+
+        private val _combatVal = MutableStateFlow(combatInput.toString())
         val combatVal = _combatVal.asStateFlow()
+
+        private val _magVal = MutableStateFlow(magInput.toString())
         val magVal = _magVal.asStateFlow()
+
+        private val _psyVal = MutableStateFlow(psyInput.toString())
         val psyVal = _psyVal.asStateFlow()
 
+        /**
+         * Update all of the row's items to the inputted values.
+         *
+         * @param max total value column input
+         * @param combat combat value column input
+         * @param mag magic value column input
+         * @param psy psychic value column input
+         */
         fun updateItems(max: Int, combat: Int, mag: Int, psy: Int){
             _maxVal.update{max.toString()}
             _combatVal.update{combat.toString()}

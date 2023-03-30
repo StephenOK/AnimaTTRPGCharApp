@@ -265,7 +265,7 @@ fun CustomTechnique(
             //if on edit page, button to delete selected items
             if (customTechVM.customPageNum.collectAsState().value == 4) {
                 TextButton(
-                    onClick = {customTechVM.deleteTechniques()}
+                    onClick = {customTechVM.deleteEffects()}
                 ) {
                     Text(text = stringResource(R.string.deleteLabel))
                 }
@@ -413,14 +413,14 @@ private fun TechniqueAbilityDropdown(
                 Icon(
                     customTechVM.dropdownIcon.collectAsState().value,
                     "contentDescription",
-                    modifier = Modifier.clickable {customTechVM.setDropdownOpen(!customTechVM.dropdownOpen.value)})
+                    modifier = Modifier.clickable {customTechVM.toggleDropdownOpen() })
             }
         )
 
         //effect options list
         DropdownMenu(
             expanded = customTechVM.dropdownOpen.collectAsState().value,
-            onDismissRequest = {customTechVM.setDropdownOpen(false)},
+            onDismissRequest = {customTechVM.toggleDropdownOpen() },
             modifier = Modifier.width(with(LocalDensity.current) {customTechVM.size.value.width.toDp()})
         ) {
             customTechVM.listSource.collectAsState().value.forEach {
@@ -428,7 +428,7 @@ private fun TechniqueAbilityDropdown(
                     customTechVM.setTechniqueIndex(customTechVM.listSource.value.indexOf(it))
 
                     //close the dropdown list
-                    customTechVM.setDropdownOpen(false)
+                    customTechVM.toggleDropdownOpen()
                 }) {
                     Text(text = it)
                 }

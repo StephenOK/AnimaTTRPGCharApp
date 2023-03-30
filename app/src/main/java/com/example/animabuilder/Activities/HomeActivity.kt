@@ -138,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
                         //drawer button for exiting the character creator
                         DrawerButton("Exit"){
                             scope.launch{scaffoldState.drawerState.close()}
-                            homeAlertsVM.setExitAlert(true)
+                            homeAlertsVM.toggleExitAlert()
                         }
                     }
                 },
@@ -199,9 +199,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment(
-                            combatFragVM,
-                        )
+                        CombatFragment(combatFragVM)
                         {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }
 
@@ -272,7 +270,7 @@ class HomeActivity : AppCompatActivity() {
 
                 //show exit alert if user opens it
                 if(homeAlertsVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) {homeAlertsVM.setExitAlert(false)}
+                    ExitAlert(filename, charInstance) {homeAlertsVM.toggleExitAlert() }
                 //show detail alert if user opens one
                 if(homeAlertsVM.detailAlertOn.collectAsState().value)
                     DetailAlert(homeAlertsVM)

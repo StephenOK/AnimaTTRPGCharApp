@@ -147,7 +147,7 @@ private fun ArchetypeButton(
 ){
     //button for displaying archetype list
     Button(
-        onClick = {modFragVM.setArchetypeOpen(!modFragVM.archetypeOpen.value)},
+        onClick = {modFragVM.toggleArchetypeOpen() },
         modifier = Modifier.width(250.dp)
     ){
         Text(text = stringResource(R.string.archetypeLabel))
@@ -183,7 +183,7 @@ private fun StyleButton(
 ){
     //button for displaying weapon styles list
     Button(
-        onClick = {modFragVM.setStyleOpen(!modFragVM.styleOpen.value)},
+        onClick = {modFragVM.toggleStyleOpen() },
         modifier = Modifier.width(250.dp)
     ){
         Text(text = stringResource(R.string.styleModLabel))
@@ -219,7 +219,7 @@ private fun MartialButton(
 ){
     //button for displaying martial arts list
     Button(
-        onClick = {modFragVM.setMartialOpen(!modFragVM.martialOpen.value)},
+        onClick = {modFragVM.toggleMartialOpen() },
         modifier = Modifier.width(250.dp)
     ){
         Text(text = stringResource(R.string.martialArtLabel))

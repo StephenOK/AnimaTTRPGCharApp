@@ -14,6 +14,7 @@ import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.summoning.Summoning
 import com.example.animabuilder.character_creation.attributes.modules.WeaponProficiencies
 import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryList
+import com.example.animabuilder.character_creation.equipment.Inventory
 import java.io.*
 import java.nio.charset.StandardCharsets
 import kotlin.Throws
@@ -39,6 +40,7 @@ class BaseCharacter: Serializable {
     val summoning = Summoning(this@BaseCharacter)
     val psychic = Psychic(this@BaseCharacter)
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
+    val inventory = Inventory()
 
     //list of all classes available
     val classes = ClassInstances(this@BaseCharacter)

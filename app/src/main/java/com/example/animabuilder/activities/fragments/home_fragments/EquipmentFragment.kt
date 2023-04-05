@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.Fragment
 import com.example.animabuilder.R
+import com.example.animabuilder.view_models.EquipmentFragmentViewModel
 
 @Composable
-fun EquipmentFragment() {
+fun EquipmentFragment(equipFragVM: EquipmentFragmentViewModel) {
+    LazyColumn{
 
+    }
 }

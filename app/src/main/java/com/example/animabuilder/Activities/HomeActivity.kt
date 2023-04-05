@@ -87,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
                 charInstance.psychic,
                 charInstance.primaryList.dex.outputMod
             )
+            val equipFragVM = EquipmentFragmentViewModel()
 
             //scaffold for the home page
             Scaffold(
@@ -264,7 +265,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to equipment page
                     composable(route = ScreenPage.Equipment.name){
-                        EquipmentFragment()
+                        EquipmentFragment(equipFragVM)
                     }
                 }
 

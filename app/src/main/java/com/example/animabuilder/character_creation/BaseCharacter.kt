@@ -40,7 +40,7 @@ class BaseCharacter: Serializable {
     val summoning = Summoning(this@BaseCharacter)
     val psychic = Psychic(this@BaseCharacter)
     val advantageRecord = AdvantageRecord(this@BaseCharacter)
-    val inventory = Inventory()
+    val inventory = Inventory(this@BaseCharacter)
 
     //list of all classes available
     val classes = ClassInstances(this@BaseCharacter)
@@ -451,6 +451,9 @@ class BaseCharacter: Serializable {
         //load character's psychic abilities
         psychic.loadPsychic(fileReader)
 
+        //load character's inventory
+        inventory.loadInventory(fileReader)
+
         //end file reading
         restoreChar.close()
 
@@ -509,6 +512,9 @@ class BaseCharacter: Serializable {
 
             //write psychic data
             psychic.writePsychic()
+
+            //write inventory data
+            inventory.writeInventory()
 
             //end writing data
             byteArray.close()

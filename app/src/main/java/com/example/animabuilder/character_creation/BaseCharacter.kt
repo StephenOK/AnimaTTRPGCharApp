@@ -554,6 +554,19 @@ class BaseCharacter: Serializable {
     }
 
     /**
+     * Adds new Double data to the ByteOutputStresm.
+     *
+     * @param toAdd double data to add to the byte array
+     */
+    fun addNewData(toAdd: Double?){
+        byteArray.write(
+            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
+            0,
+            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
+        )
+    }
+
+    /**
      * Writes a new line character to separate data from other data.
      */
     fun writeEndLine(){

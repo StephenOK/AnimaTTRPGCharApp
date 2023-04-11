@@ -26,6 +26,7 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.view_models.*
 import kotlinx.coroutines.launch
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
@@ -54,9 +55,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //get character instance and filename from intent
-        val charInstance = intent.getSerializableExtra("Character", BaseCharacter::class.java)!!
+        //get new character flag and filename from intent
+        val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
+
+        val charInstance = if(isNew)
+            BaseCharacter()
+        else
+            BaseCharacter(File(this.filesDir, filename))
 
         setContent{
             //get local context
@@ -87,7 +93,7 @@ class HomeActivity : AppCompatActivity() {
                 charInstance.psychic,
                 charInstance.primaryList.dex.outputMod
             )
-            val equipFragVM = EquipmentFragmentViewModel()
+            val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
             //scaffold for the home page
             Scaffold(
@@ -265,7 +271,10 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to equipment page
                     composable(route = ScreenPage.Equipment.name){
-                        EquipmentFragment(equipFragVM)
+                        EquipmentFragment(
+                            equipFragVM,
+                            homeAlertsVM.openDetailAlert
+                        )
                     }
                 }
 

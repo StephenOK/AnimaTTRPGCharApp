@@ -8,7 +8,7 @@ import com.example.animabuilder.character_creation.equipment.general_goods.Gener
 class Gems: GeneralCategory(null) {
     val zircon = GeneralEquipment(
         "Zircon",
-        50,
+        50.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -16,7 +16,7 @@ class Gems: GeneralCategory(null) {
 
     val various = GeneralEquipment(
         "Various Gens",
-        100,
+        100.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -24,7 +24,7 @@ class Gems: GeneralCategory(null) {
 
     val pearls = GeneralEquipment(
         "Pearls",
-        150,
+        150.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -32,7 +32,7 @@ class Gems: GeneralCategory(null) {
 
     val sapphire = GeneralEquipment(
         "Sapphire",
-        200,
+        200.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -40,7 +40,7 @@ class Gems: GeneralCategory(null) {
 
     val ruby = GeneralEquipment(
         "Ruby",
-        300,
+        300.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -48,7 +48,7 @@ class Gems: GeneralCategory(null) {
 
     val diamond = GeneralEquipment(
         "Diamond",
-        320,
+        320.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -56,7 +56,7 @@ class Gems: GeneralCategory(null) {
 
     val emerald = GeneralEquipment(
         "Emerald",
-        440,
+        440.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -64,7 +64,7 @@ class Gems: GeneralCategory(null) {
 
     val blackOpal = GeneralEquipment(
         "Black Opal",
-        500,
+        500.0,
         CoinType.Gold,
         null,
         Availability.Rare
@@ -72,7 +72,7 @@ class Gems: GeneralCategory(null) {
 
     val blackPearl = GeneralEquipment(
         "Black Pearl",
-        650,
+        650.0,
         CoinType.Gold,
         null,
         Availability.Rare

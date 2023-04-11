@@ -8,7 +8,7 @@ import com.example.animabuilder.character_creation.equipment.general_goods.Gener
 class Lodging: GeneralCategory(null) {
     val mediocreLodging = GeneralEquipment(
         "Mediocre Lodging",
-        5,
+        5.0,
         CoinType.Copper,
         null,
         Availability.Common
@@ -16,7 +16,7 @@ class Lodging: GeneralCategory(null) {
 
     val decentLodging = GeneralEquipment(
         "Decent Lodging",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -24,7 +24,7 @@ class Lodging: GeneralCategory(null) {
 
     val goodLodging = GeneralEquipment(
         "Good Lodging",
-        25,
+        25.0,
         CoinType.Silver,
         null,
         Availability.Uncommon
@@ -32,7 +32,7 @@ class Lodging: GeneralCategory(null) {
 
     val luxuryLodging = GeneralEquipment(
         "Luxurious Lodging",
-        5,
+        5.0,
         CoinType.Gold,
         null,
         Availability.Rare

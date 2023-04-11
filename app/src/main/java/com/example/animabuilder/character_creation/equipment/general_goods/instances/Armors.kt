@@ -13,7 +13,7 @@ class Armors: GeneralCategory(listOf(
 )) {
     val padded = GeneralEquipment(
         "Padded",
-        1,
+        1.0,
         CoinType.Gold,
         3.0,
         Availability.Common
@@ -21,7 +21,7 @@ class Armors: GeneralCategory(listOf(
 
     val byrnie = GeneralEquipment(
         "Byrnie",
-        50,
+        50.0,
         CoinType.Gold,
         9.0,
         Availability.Common
@@ -29,7 +29,7 @@ class Armors: GeneralCategory(listOf(
 
     val fullPlate = GeneralEquipment(
         "Full Plate",
-        400,
+        400.0,
         CoinType.Gold,
         20.0,
         Availability.Uncommon
@@ -37,7 +37,7 @@ class Armors: GeneralCategory(listOf(
 
     val completeLeather = GeneralEquipment(
         "Complete Leather",
-        5,
+        5.0,
         CoinType.Gold,
         7.0,
         Availability.Common
@@ -45,7 +45,7 @@ class Armors: GeneralCategory(listOf(
 
     val fullFieldPlate = GeneralEquipment(
         "Full Field Plate",
-        800,
+        800.0,
         CoinType.Gold,
         25.0,
         Availability.Rare
@@ -53,7 +53,7 @@ class Armors: GeneralCategory(listOf(
 
     val fullHeavyPlate = GeneralEquipment(
         "Full Heavy Plate",
-        700,
+        700.0,
         CoinType.Gold,
         30.0,
         Availability.Rare
@@ -61,7 +61,7 @@ class Armors: GeneralCategory(listOf(
 
     val leatherCoat = GeneralEquipment(
         "Leather Coat",
-        1,
+        1.0,
         CoinType.Gold,
         3.0,
         Availability.Common
@@ -69,7 +69,7 @@ class Armors: GeneralCategory(listOf(
 
     val hardenedLeather = GeneralEquipment(
         "Hardened Leather",
-        15,
+        15.0,
         CoinType.Gold,
         4.0,
         Availability.Common
@@ -77,7 +77,7 @@ class Armors: GeneralCategory(listOf(
 
     val studdedLeather = GeneralEquipment(
         "Studded Leather",
-        25,
+        25.0,
         CoinType.Gold,
         4.5,
         Availability.Common
@@ -85,7 +85,7 @@ class Armors: GeneralCategory(listOf(
 
     val scaleMail = GeneralEquipment(
         "Scale Mail",
-        120,
+        120.0,
         CoinType.Gold,
         9.0,
         Availability.Uncommon
@@ -93,7 +93,7 @@ class Armors: GeneralCategory(listOf(
 
     val armoredLongcoat = GeneralEquipment(
         "Armored Longcoat",
-        5,
+        5.0,
         CoinType.Silver,
         1.5,
         Availability.Uncommon
@@ -101,7 +101,7 @@ class Armors: GeneralCategory(listOf(
 
     val chainmail = GeneralEquipment(
         "Chainmail",
-        70,
+        70.0,
         CoinType.Gold,
         13.0,
         Availability.Common
@@ -109,7 +109,7 @@ class Armors: GeneralCategory(listOf(
 
     val breastplate = GeneralEquipment(
         "Breastplate",
-        40,
+        40.0,
         CoinType.Gold,
         4.0,
         Availability.Uncommon
@@ -117,7 +117,7 @@ class Armors: GeneralCategory(listOf(
 
     val fur = GeneralEquipment(
         "Fur",
-        5,
+        5.0,
         CoinType.Gold,
         2.0,
         Availability.Common
@@ -125,7 +125,7 @@ class Armors: GeneralCategory(listOf(
 
     val partialPlate = GeneralEquipment(
         "Partial Plate",
-        40,
+        40.0,
         CoinType.Gold,
         6.0,
         Availability.Uncommon
@@ -133,7 +133,7 @@ class Armors: GeneralCategory(listOf(
 
     val lightPlate = GeneralEquipment(
         "Light Plate",
-        300,
+        300.0,
         CoinType.Gold,
         18.0,
         Availability.Common
@@ -141,7 +141,7 @@ class Armors: GeneralCategory(listOf(
 
     val halfPlate = GeneralEquipment(
         "Half Plate",
-        100,
+        100.0,
         CoinType.Gold,
         13.0,
         Availability.Common
@@ -149,7 +149,7 @@ class Armors: GeneralCategory(listOf(
 
     val lightBarding = GeneralEquipment(
         "Light Barding",
-        20,
+        20.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -157,7 +157,7 @@ class Armors: GeneralCategory(listOf(
 
     val heavyBarding = GeneralEquipment(
         "Heavy Barding",
-        150,
+        150.0,
         CoinType.Gold,
         null,
         Availability.Uncommon

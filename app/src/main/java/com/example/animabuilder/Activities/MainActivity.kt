@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.R
-
-import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.MainPageViewModel
-import java.io.File
 
 /**
  * Startup activity for the app.
@@ -44,15 +41,11 @@ class MainActivity : AppCompatActivity() {
 
             //display new character alert if it's open
             if(mainVM.newChar.isOpen.collectAsState().value)
-                MakeAlert(
-                    mainVM.newChar
-                )
+                MakeAlert(mainVM.newChar)
 
             //display load character alert if it's open
             else if(mainVM.loadChar.isOpen.collectAsState().value)
-                MakeAlert(
-                    mainVM.loadChar
-                )
+                MakeAlert(mainVM.loadChar)
         }
     }
 
@@ -110,12 +103,8 @@ class MainActivity : AppCompatActivity() {
                             "AnimaChar" + item.characterName.value
                         else item.characterName.value
 
-                    //ready character to pass
-                    val charInstance =
-                        if(item.headerRef == R.string.newCharacterHeader)
-                            BaseCharacter()
-                        else
-                            BaseCharacter(File(this.filesDir, filename))
+                    //ready boolean for new character
+                    val isNew = item.headerRef == R.string.newCharacterHeader
 
                     //terminate process and notify user of failure
                     if(item.characterName.value == "")
@@ -123,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                     else{
                         //prepare data for next activity
                         toNextPage.putExtra("filename", filename)
-                        toNextPage.putExtra("Character", charInstance)
+                        toNextPage.putExtra("isNew", isNew)
 
                         //start next activity
                         startActivity(toNextPage)

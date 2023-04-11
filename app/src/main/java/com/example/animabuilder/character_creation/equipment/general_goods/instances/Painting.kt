@@ -13,7 +13,7 @@ class Painting: GeneralCategory(listOf(
 )) {
     val commonPainting = GeneralEquipment(
         "Common Painting",
-        25,
+        25.0,
         CoinType.Gold,
         null,
         Availability.Common
@@ -21,7 +21,7 @@ class Painting: GeneralCategory(listOf(
 
     val goodPainting = GeneralEquipment(
         "Good Painting",
-        80,
+        80.0,
         CoinType.Gold,
         null,
         Availability.Common
@@ -29,7 +29,7 @@ class Painting: GeneralCategory(listOf(
 
     val excellentPainting = GeneralEquipment(
         "Excellent Painting",
-        125,
+        125.0,
         CoinType.Gold,
         null,
         Availability.Uncommon

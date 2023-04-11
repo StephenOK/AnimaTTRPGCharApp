@@ -8,7 +8,7 @@ import com.example.animabuilder.character_creation.equipment.general_goods.Gener
 class Poisons: GeneralCategory(null) {
     val acquaToffana = GeneralEquipment(
         "Acqua Toffana",
-        25,
+        25.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -16,7 +16,7 @@ class Poisons: GeneralCategory(null) {
 
     val albaladin = GeneralEquipment(
         "Al-Baladin",
-        80,
+        80.0,
         CoinType.Gold,
         null,
         Availability.Rare
@@ -24,7 +24,7 @@ class Poisons: GeneralCategory(null) {
 
     val royalArsenic = GeneralEquipment(
         "Royal Arsenic",
-        280,
+        280.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -32,7 +32,7 @@ class Poisons: GeneralCategory(null) {
 
     val atropine = GeneralEquipment(
         "Atropine",
-        2,
+        2.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -40,7 +40,7 @@ class Poisons: GeneralCategory(null) {
 
     val belladonna = GeneralEquipment(
         "Belladonna",
-        15,
+        15.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -48,7 +48,7 @@ class Poisons: GeneralCategory(null) {
 
     val cantharidin = GeneralEquipment(
         "Cantheridin",
-        2,
+        2.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -56,7 +56,7 @@ class Poisons: GeneralCategory(null) {
 
     val cyanide = GeneralEquipment(
         "Cyanide",
-        80,
+        80.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -64,7 +64,7 @@ class Poisons: GeneralCategory(null) {
 
     val curare = GeneralEquipment(
         "Curare",
-        100,
+        100.0,
         CoinType.Gold,
         null,
         Availability.Rare
@@ -72,7 +72,7 @@ class Poisons: GeneralCategory(null) {
 
     val muscarine = GeneralEquipment(
         "Muscarine",
-        1,
+        1.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -80,7 +80,7 @@ class Poisons: GeneralCategory(null) {
 
     val ramalenSap = GeneralEquipment(
         "Ramalen Sap",
-        800,
+        800.0,
         CoinType.Gold,
         null,
         Availability.Rare
@@ -88,7 +88,7 @@ class Poisons: GeneralCategory(null) {
 
     val thallium = GeneralEquipment(
         "Thallium",
-        20,
+        20.0,
         CoinType.Silver,
         null,
         Availability.Uncommon
@@ -96,7 +96,7 @@ class Poisons: GeneralCategory(null) {
 
     val whiteCobra = GeneralEquipment(
         "White Cobra Venom",
-        500,
+        500.0,
         CoinType.Gold,
         null,
         Availability.Rare
@@ -104,7 +104,7 @@ class Poisons: GeneralCategory(null) {
 
     val serpentVenom = GeneralEquipment(
         "Serpent\'s Venom",
-        5,
+        5.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -112,7 +112,7 @@ class Poisons: GeneralCategory(null) {
 
     val saturnSalt = GeneralEquipment(
         "Salt of Saturn",
-        3,
+        3.0,
         CoinType.Gold,
         null,
         Availability.Uncommon

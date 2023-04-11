@@ -17,7 +17,7 @@ class Travel: GeneralCategory(
 ) {
     val shortPassage = GeneralEquipment(
         "Short Passage (2 - 5 hours)",
-        5,
+        5.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -25,7 +25,7 @@ class Travel: GeneralCategory(
 
     val shortVoyage = GeneralEquipment(
         "Short Voyage (1 day)",
-        10,
+        10.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -33,7 +33,7 @@ class Travel: GeneralCategory(
 
     val modestVoyage = GeneralEquipment(
         "Modest Voyage (2 - 5 days)",
-        10,
+        10.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -41,7 +41,7 @@ class Travel: GeneralCategory(
 
     val longVoyage = GeneralEquipment(
         "Long Voyage (more than a week)",
-        5,
+        5.0,
         CoinType.Gold,
         null,
         Availability.Common
@@ -49,7 +49,7 @@ class Travel: GeneralCategory(
 
     val shortTrip = GeneralEquipment(
         "Short Trip (1 day)",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -57,7 +57,7 @@ class Travel: GeneralCategory(
 
     val significantJourney = GeneralEquipment(
         "Significant Journey (2 - 5 days)",
-        50,
+        50.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -65,7 +65,7 @@ class Travel: GeneralCategory(
 
     val modestJourney = GeneralEquipment(
         "Modest Journey (1 - 2 weeks)",
-        1,
+        1.0,
         CoinType.Gold,
         null,
         Availability.Common
@@ -73,7 +73,7 @@ class Travel: GeneralCategory(
 
     val longJourney = GeneralEquipment(
         "Long Journey (more than a month)",
-        5,
+        5.0,
         CoinType.Gold,
         null,
         Availability.Common

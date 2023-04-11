@@ -19,7 +19,7 @@ open class GeneralCategory(val qualityInput: List<QualityModifier>?): Serializab
      * @return the exact item held in inventory, a copy of that item with a different cost, or
      * an empty flag indicating no item matching the inputted name
      */
-    fun findEquipment(name: String, cost: Int): GeneralEquipment?{
+    fun findEquipment(name: String, cost: Double): GeneralEquipment?{
         //look at each available item
         itemsAvailable.forEach{
             //item name found

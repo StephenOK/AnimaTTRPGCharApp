@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "clothingLabel">Clothing</string>
+    <string name = "travelLabel">Travel Costs</string>
+    <string name = "transport">Transport</string>
+    <string name = "foodAndDrinkLabel">Food and Drink</string>
+    <string name = "lodgingLabel">Lodging</string>
+    <string name = "dwellingLabel">Dwellings</string>
+    <string name = "serviceLabel">Services and Contracts</string>
+    <string name = "artAndDecorLabel">Art and Decor</string>
+    <string name = "gemLabel">Gems</string>
+    <string name = "paintingLabel">Paintings</string>
+    <string name = "miscLabel">Miscellaneous</string>
+    <string name = "weaponsLabel">Arms and Weapons</string>
+    <string name = "armorsLabel">Armor</string>
+
+    <string name = "basePriceLabel">Base Price: </string>
+    <string name = "weightLabel">Weight: </string>
+    <string name = "availabilityLabel">Availability: </string>
+
+    <string name = "maxGoldLabel">Max Funds: </string>
+</resources>

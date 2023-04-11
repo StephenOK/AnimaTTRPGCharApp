@@ -5,7 +5,7 @@ import java.io.Serializable
 
 class GeneralEquipment(
     val name: String,
-    val baseCost: Int,
+    val baseCost: Double,
     val coinType: CoinType,
     val weight: Double?,
     val availability: Availability

@@ -16,7 +16,7 @@ class Clothing: GeneralCategory(
 ) {
     val pants = GeneralEquipment(
         "Pants",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -24,7 +24,7 @@ class Clothing: GeneralCategory(
 
     val shirt = GeneralEquipment(
         "Shirt",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -32,7 +32,7 @@ class Clothing: GeneralCategory(
 
     val vest = GeneralEquipment(
         "Vest",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -40,7 +40,7 @@ class Clothing: GeneralCategory(
 
     val tunic = GeneralEquipment(
         "Tunic",
-        3,
+        3.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -48,7 +48,7 @@ class Clothing: GeneralCategory(
 
     val cap = GeneralEquipment(
         "Cap",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -56,7 +56,7 @@ class Clothing: GeneralCategory(
 
     val jacket = GeneralEquipment(
         "Jacket",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -64,7 +64,7 @@ class Clothing: GeneralCategory(
 
     val coat = GeneralEquipment(
         "Coat",
-        5,
+        5.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -72,7 +72,7 @@ class Clothing: GeneralCategory(
 
     val dress = GeneralEquipment(
         "Dress",
-        5,
+        5.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -80,7 +80,7 @@ class Clothing: GeneralCategory(
 
     val scarf = GeneralEquipment(
         "Scarf",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -88,7 +88,7 @@ class Clothing: GeneralCategory(
 
     val gloves = GeneralEquipment(
         "Gloves",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -96,7 +96,7 @@ class Clothing: GeneralCategory(
 
     val broadBrimmedHat = GeneralEquipment(
         "Broad-brimmed hat",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -104,7 +104,7 @@ class Clothing: GeneralCategory(
 
     val mittens = GeneralEquipment(
         "Mittens",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -112,7 +112,7 @@ class Clothing: GeneralCategory(
 
     val mensUnderwear = GeneralEquipment(
         "Men\'s Underwear",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -120,7 +120,7 @@ class Clothing: GeneralCategory(
 
     val womensUnderwear = GeneralEquipment(
         "Women\'s Underwear",
-        2,
+        2.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -128,7 +128,7 @@ class Clothing: GeneralCategory(
 
     val lingerie = GeneralEquipment(
         "Lingerie",
-        5,
+        5.0,
         CoinType.Silver,
         null,
         Availability.Uncommon
@@ -136,7 +136,7 @@ class Clothing: GeneralCategory(
 
     val belt = GeneralEquipment(
         "Belt",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -144,7 +144,7 @@ class Clothing: GeneralCategory(
 
     val handkerchief = GeneralEquipment(
         "Handkerchief",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -152,7 +152,7 @@ class Clothing: GeneralCategory(
 
     val ballGown = GeneralEquipment(
         "Ball Gown",
-        5,
+        5.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -160,7 +160,7 @@ class Clothing: GeneralCategory(
 
     val mansFormalOutfit = GeneralEquipment(
         "Man\'s Formal Outfit",
-        2,
+        2.0,
         CoinType.Gold,
         null,
         Availability.Uncommon
@@ -168,7 +168,7 @@ class Clothing: GeneralCategory(
 
     val mansKimono = GeneralEquipment(
         "Man\'s Kimono",
-        15,
+        15.0,
         CoinType.Silver,
         null,
         Availability.Uncommon
@@ -176,7 +176,7 @@ class Clothing: GeneralCategory(
 
     val womansKimono = GeneralEquipment(
         "Woman\'s Kimono",
-        20,
+        20.0,
         CoinType.Silver,
         null,
         Availability.Uncommon
@@ -184,7 +184,7 @@ class Clothing: GeneralCategory(
 
     val clogs = GeneralEquipment(
         "Clogs",
-        5,
+        5.0,
         CoinType.Copper,
         null,
         Availability.Common
@@ -192,7 +192,7 @@ class Clothing: GeneralCategory(
 
     val walkingBoots = GeneralEquipment(
         "Walking Boots",
-        5,
+        5.0,
         CoinType.Silver,
         null,
         Availability.Common
@@ -200,7 +200,7 @@ class Clothing: GeneralCategory(
 
     val shoes = GeneralEquipment(
         "Shoes",
-        1,
+        1.0,
         CoinType.Silver,
         null,
         Availability.Common

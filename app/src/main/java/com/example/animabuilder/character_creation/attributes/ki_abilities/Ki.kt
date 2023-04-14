@@ -8,7 +8,6 @@ import com.example.animabuilder.character_creation.attributes.ki_abilities.techn
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Component that manages a character's ki points and accumulation.
@@ -16,7 +15,7 @@ import java.io.Serializable
  *
  * @param charInstance object that holds all of the character's data.
  */
-class Ki(private val charInstance: BaseCharacter) : Serializable {
+class Ki(private val charInstance: BaseCharacter){
     //get data of ki techniques
     val kiRecord = KiRecord()
 

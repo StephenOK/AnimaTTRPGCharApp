@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities.tech
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
-import java.io.Serializable
 import java.util.Collections
 
 /**
@@ -20,7 +19,7 @@ class Technique(
     var level: Int,
     val maintArray: MutableList<Int>,
     val givenAbilities: MutableList<TechniqueEffect>
-): Serializable{
+){
 
     /**
      * Determines the total cost of the technique.

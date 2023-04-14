@@ -2,14 +2,13 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
-import java.io.Serializable
 
 /**
  * List of common advantages and disadvantages a character may acquire.
  *
  * @param charInstance object holding the character's stats
  */
-class CommonAdvantages(private val charInstance: BaseCharacter): Serializable {
+class CommonAdvantages(private val charInstance: BaseCharacter) {
     val characteristicList = listOf("STR", "DEX", "AGI", "CON", "INT", "POW", "WP", "PER")
     val secondariesList = listOf(
         "Acrobatics",

@@ -3,7 +3,6 @@ package com.example.animabuilder.character_creation.equipment.weapons.weapon_cla
 import com.example.animabuilder.character_creation.equipment.weapons.AttackType
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
-import java.io.Serializable
 
 /**
  * Combat item that a character may wield.
@@ -50,4 +49,4 @@ open class Weapon(
     val ability: List<WeaponAbility>?,
     val ownStrength: Int?,
     val description: String
-) : Serializable
+)

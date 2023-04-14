@@ -20,7 +20,8 @@ class Travel: GeneralCategory(
         5.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val shortVoyage = GeneralEquipment(
@@ -28,7 +29,8 @@ class Travel: GeneralCategory(
         10.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val modestVoyage = GeneralEquipment(
@@ -36,7 +38,8 @@ class Travel: GeneralCategory(
         10.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val longVoyage = GeneralEquipment(
@@ -44,7 +47,8 @@ class Travel: GeneralCategory(
         5.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val shortTrip = GeneralEquipment(
@@ -52,7 +56,8 @@ class Travel: GeneralCategory(
         2.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val significantJourney = GeneralEquipment(
@@ -60,7 +65,8 @@ class Travel: GeneralCategory(
         50.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val modestJourney = GeneralEquipment(
@@ -68,7 +74,8 @@ class Travel: GeneralCategory(
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val longJourney = GeneralEquipment(
@@ -76,7 +83,8 @@ class Travel: GeneralCategory(
         5.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     init{

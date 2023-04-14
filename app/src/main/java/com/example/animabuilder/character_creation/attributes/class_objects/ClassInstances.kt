@@ -1,14 +1,13 @@
 package com.example.animabuilder.character_creation.attributes.class_objects
 
 import com.example.animabuilder.character_creation.BaseCharacter
-import java.io.Serializable
 
 /**
  * Record of classes available to the character.
  *
  * @param charInstance object that holds the character's dataa
  */
-class ClassInstances(charInstance: BaseCharacter): Serializable {
+class ClassInstances(charInstance: BaseCharacter){
     val warrior =
         CharClass(
             "Warrior", listOf(Archetype.Fighter),

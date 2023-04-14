@@ -1,11 +1,9 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
-import java.io.Serializable
-
 /**
  * Record of style modules a character may acquire.
  */
-class StyleInstances: Serializable {
+class StyleInstances{
     val battoJutsu = StyleModule(
         "Batto Jutsu/Iai Jutsu",
         "This skill permits a character to unsheathe his weapon with perfect ease. " +

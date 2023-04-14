@@ -16,7 +16,8 @@ class Painting: GeneralCategory(listOf(
         25.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodPainting = GeneralEquipment(
@@ -24,7 +25,8 @@ class Painting: GeneralCategory(listOf(
         80.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val excellentPainting = GeneralEquipment(
@@ -32,7 +34,8 @@ class Painting: GeneralCategory(listOf(
         125.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     init{

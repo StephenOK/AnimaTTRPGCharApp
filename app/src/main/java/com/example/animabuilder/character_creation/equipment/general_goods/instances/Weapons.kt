@@ -16,7 +16,8 @@ class Weapons: GeneralCategory(listOf(
         12.0,
         CoinType.Gold,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val harpoon = GeneralEquipment(
@@ -24,7 +25,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val chain = GeneralEquipment(
@@ -32,7 +34,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val cestus = GeneralEquipment(
@@ -40,7 +43,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val scimitar = GeneralEquipment(
@@ -48,7 +52,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val dagger = GeneralEquipment(
@@ -56,7 +61,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val parryingDagger = GeneralEquipment(
@@ -64,7 +70,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         0.6,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val broadsword = GeneralEquipment(
@@ -72,7 +79,8 @@ class Weapons: GeneralCategory(listOf(
         4.0,
         CoinType.Gold,
         1.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val bastardSword = GeneralEquipment(
@@ -80,7 +88,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val shortSword = GeneralEquipment(
@@ -88,7 +97,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.8,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val longSword = GeneralEquipment(
@@ -96,7 +106,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         1.4,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val stiletto = GeneralEquipment(
@@ -104,7 +115,8 @@ class Weapons: GeneralCategory(listOf(
         60.0,
         CoinType.Silver,
         0.4,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val rapier = GeneralEquipment(
@@ -112,7 +124,8 @@ class Weapons: GeneralCategory(listOf(
         25.0,
         CoinType.Gold,
         1.2,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val scourge = GeneralEquipment(
@@ -120,7 +133,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val foil = GeneralEquipment(
@@ -128,7 +142,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val hook = GeneralEquipment(
@@ -136,7 +151,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val club = GeneralEquipment(
@@ -144,7 +160,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         1.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val greatHammer = GeneralEquipment(
@@ -152,7 +169,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         5.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val scythe = GeneralEquipment(
@@ -160,7 +178,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         2.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val twoHandedAxe = GeneralEquipment(
@@ -168,7 +187,8 @@ class Weapons: GeneralCategory(listOf(
         40.0,
         CoinType.Gold,
         5.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val battleAxe = GeneralEquipment(
@@ -176,7 +196,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         1.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val handAxe = GeneralEquipment(
@@ -184,7 +205,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val javelin = GeneralEquipment(
@@ -192,7 +214,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val lance = GeneralEquipment(
@@ -200,7 +223,8 @@ class Weapons: GeneralCategory(listOf(
         4.0,
         CoinType.Gold,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val cavLance = GeneralEquipment(
@@ -208,7 +232,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val whip = GeneralEquipment(
@@ -216,7 +241,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val lasso = GeneralEquipment(
@@ -224,7 +250,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         0.3,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val twoHandedSword = GeneralEquipment(
@@ -232,7 +259,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Gold,
         2.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val multiFlail = GeneralEquipment(
@@ -240,7 +268,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val warhammer = GeneralEquipment(
@@ -248,7 +277,8 @@ class Weapons: GeneralCategory(listOf(
         4.0,
         CoinType.Gold,
         1.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val flail = GeneralEquipment(
@@ -256,7 +286,8 @@ class Weapons: GeneralCategory(listOf(
         12.0,
         CoinType.Gold,
         1.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val mace = GeneralEquipment(
@@ -264,7 +295,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         1.8,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val heavyMace = GeneralEquipment(
@@ -272,7 +304,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         2.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val gladNet = GeneralEquipment(
@@ -280,7 +313,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val saber = GeneralEquipment(
@@ -288,7 +322,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val trident = GeneralEquipment(
@@ -296,7 +331,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val staff = GeneralEquipment(
@@ -304,7 +340,8 @@ class Weapons: GeneralCategory(listOf(
         40.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val shield = GeneralEquipment(
@@ -312,7 +349,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fullShield = GeneralEquipment(
@@ -320,7 +358,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Gold,
         6.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val buckler = GeneralEquipment(
@@ -328,7 +367,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val warFan = GeneralEquipment(
@@ -336,7 +376,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         0.2,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val haruNoOkina = GeneralEquipment(
@@ -344,7 +385,8 @@ class Weapons: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         3.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val raven = GeneralEquipment(
@@ -352,7 +394,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val katana = GeneralEquipment(
@@ -360,7 +403,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val doubleKatana = GeneralEquipment(
@@ -368,7 +412,8 @@ class Weapons: GeneralCategory(listOf(
         75.0,
         CoinType.Gold,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val kusarigama = GeneralEquipment(
@@ -376,7 +421,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val nodachi = GeneralEquipment(
@@ -384,7 +430,8 @@ class Weapons: GeneralCategory(listOf(
         70.0,
         CoinType.Gold,
         1.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val nunchakus = GeneralEquipment(
@@ -392,7 +439,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.6,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val sai = GeneralEquipment(
@@ -400,7 +448,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.4,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val shuriken = GeneralEquipment(
@@ -408,7 +457,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         0.1,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val shuko = GeneralEquipment(
@@ -416,7 +466,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.3,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val tanto = GeneralEquipment(
@@ -424,7 +475,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val tonfa = GeneralEquipment(
@@ -432,7 +484,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.3,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val boomerang = GeneralEquipment(
@@ -440,7 +493,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.6,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val claws = GeneralEquipment(
@@ -448,7 +502,8 @@ class Weapons: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val swordBreaker = GeneralEquipment(
@@ -456,7 +511,8 @@ class Weapons: GeneralCategory(listOf(
         30.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val katar = GeneralEquipment(
@@ -464,7 +520,8 @@ class Weapons: GeneralCategory(listOf(
         40.0,
         CoinType.Gold,
         0.6,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val arquebus = GeneralEquipment(
@@ -472,7 +529,8 @@ class Weapons: GeneralCategory(listOf(
         500.0,
         CoinType.Gold,
         4.5,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val shortBow = GeneralEquipment(
@@ -480,7 +538,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         0.8,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val longbow = GeneralEquipment(
@@ -488,7 +547,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         1.4,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val compositeBow = GeneralEquipment(
@@ -496,7 +556,8 @@ class Weapons: GeneralCategory(listOf(
         80.0,
         CoinType.Gold,
         1.8,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val pistolBall = GeneralEquipment(
@@ -504,7 +565,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val cannonball = GeneralEquipment(
@@ -512,7 +574,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         15.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val lightBallista = GeneralEquipment(
@@ -520,7 +583,8 @@ class Weapons: GeneralCategory(listOf(
         100.0,
         CoinType.Gold,
         180.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val heavyBallista = GeneralEquipment(
@@ -528,7 +592,8 @@ class Weapons: GeneralCategory(listOf(
         250.0,
         CoinType.Gold,
         350.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val crossbow = GeneralEquipment(
@@ -536,7 +601,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Gold,
         2.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val miniCrossbow = GeneralEquipment(
@@ -544,7 +610,8 @@ class Weapons: GeneralCategory(listOf(
         250.0,
         CoinType.Gold,
         1.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val repeatingCrossbow = GeneralEquipment(
@@ -552,7 +619,8 @@ class Weapons: GeneralCategory(listOf(
         200.0,
         CoinType.Gold,
         4.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val heavyCrossbow = GeneralEquipment(
@@ -560,7 +628,8 @@ class Weapons: GeneralCategory(listOf(
         70.0,
         CoinType.Gold,
         3.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val spikedBall = GeneralEquipment(
@@ -568,7 +637,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val bolas = GeneralEquipment(
@@ -576,7 +646,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val cannon = GeneralEquipment(
@@ -584,7 +655,8 @@ class Weapons: GeneralCategory(listOf(
         5000.0,
         CoinType.Gold,
         400.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val blowgun = GeneralEquipment(
@@ -592,7 +664,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.4,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val blowgunDart = GeneralEquipment(
@@ -600,7 +673,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val blowDart = GeneralEquipment(
@@ -608,7 +682,8 @@ class Weapons: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val dart = GeneralEquipment(
@@ -616,7 +691,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val arrow = GeneralEquipment(
@@ -624,7 +700,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val flightArrow = GeneralEquipment(
@@ -632,7 +709,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val armorArrow = GeneralEquipment(
@@ -640,7 +718,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val matchlock = GeneralEquipment(
@@ -648,7 +727,8 @@ class Weapons: GeneralCategory(listOf(
         600.0,
         CoinType.Gold,
         2.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val twoGunpowder = GeneralEquipment(
@@ -656,7 +736,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         0.1,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val tenGunpowder = GeneralEquipment(
@@ -664,7 +745,8 @@ class Weapons: GeneralCategory(listOf(
         100.0,
         CoinType.Gold,
         0.5,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val crossbowBolt = GeneralEquipment(
@@ -672,7 +754,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Silver,
         0.1,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val miniCrossBolt = GeneralEquipment(
@@ -680,7 +763,8 @@ class Weapons: GeneralCategory(listOf(
         2.0,
         CoinType.Silver,
         0.1,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val heavyCrossBolt = GeneralEquipment(
@@ -688,7 +772,8 @@ class Weapons: GeneralCategory(listOf(
         1.0,
         CoinType.Silver,
         0.2,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val chakram = GeneralEquipment(
@@ -696,7 +781,8 @@ class Weapons: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         0.8,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val lightQuarrel = GeneralEquipment(
@@ -704,7 +790,8 @@ class Weapons: GeneralCategory(listOf(
         10.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val heavyQuarrel = GeneralEquipment(
@@ -712,7 +799,8 @@ class Weapons: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         5.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     init{

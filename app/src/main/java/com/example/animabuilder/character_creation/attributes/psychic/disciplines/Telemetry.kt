@@ -2,12 +2,11 @@ package com.example.animabuilder.character_creation.attributes.psychic.disciplin
 
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
-import java.io.Serializable
 
 /**
  * Record of all of the available telemetric powers.
  */
-class Telemetry: Discipline(), Serializable {
+class Telemetry: Discipline(){
     val senseResidues = PsychicPower(
         "Sense Residues",
         1,

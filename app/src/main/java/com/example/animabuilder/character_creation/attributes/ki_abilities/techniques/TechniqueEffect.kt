@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.ki_abilities.tech
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
-import java.io.Serializable
 
 /**
  * Holds data in regards to an individual aspect of a technique.
@@ -27,7 +26,7 @@ data class TechniqueEffect(
     val buildAdditions: List<Int?>,
     var elements: MutableList<Element>,
     val lvl: Int
-): Serializable{
+){
     /**
      * Determines if the ki build of this technique is legal.
      *

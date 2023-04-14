@@ -11,7 +11,8 @@ class Gems: GeneralCategory(null) {
         50.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val various = GeneralEquipment(
@@ -19,7 +20,8 @@ class Gems: GeneralCategory(null) {
         100.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val pearls = GeneralEquipment(
@@ -27,7 +29,8 @@ class Gems: GeneralCategory(null) {
         150.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val sapphire = GeneralEquipment(
@@ -35,7 +38,8 @@ class Gems: GeneralCategory(null) {
         200.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val ruby = GeneralEquipment(
@@ -43,7 +47,8 @@ class Gems: GeneralCategory(null) {
         300.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val diamond = GeneralEquipment(
@@ -51,7 +56,8 @@ class Gems: GeneralCategory(null) {
         320.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val emerald = GeneralEquipment(
@@ -59,7 +65,8 @@ class Gems: GeneralCategory(null) {
         440.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val blackOpal = GeneralEquipment(
@@ -67,7 +74,8 @@ class Gems: GeneralCategory(null) {
         500.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val blackPearl = GeneralEquipment(
@@ -75,7 +83,8 @@ class Gems: GeneralCategory(null) {
         650.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     init{

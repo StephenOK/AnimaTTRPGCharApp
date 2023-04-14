@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
-import java.io.Serializable
-
 /**
  * Art that the character can buy for (primarily) unarmed combat.
  *
@@ -15,4 +13,4 @@ class MartialArt (
     var description: String,
     var prereqList: String,
     var mkBonus: Int
-): Serializable
+)

@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.combat
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Item that holds data in regards to a character's combat ability.
@@ -12,7 +11,7 @@ import java.io.Serializable
  */
 class CombatItem(
     private val charInstance: BaseCharacter
-): Serializable {
+){
     //initialize user input value for this stat
     var inputVal = 0
 

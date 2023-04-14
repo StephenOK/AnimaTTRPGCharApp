@@ -18,7 +18,8 @@ class Dwellings: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val house = GeneralEquipment(
@@ -26,7 +27,8 @@ class Dwellings: GeneralCategory(listOf(
         60.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeHouse = GeneralEquipment(
@@ -34,7 +36,8 @@ class Dwellings: GeneralCategory(listOf(
         150.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val mansion = GeneralEquipment(
@@ -42,7 +45,8 @@ class Dwellings: GeneralCategory(listOf(
         800.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val palace = GeneralEquipment(
@@ -50,7 +54,8 @@ class Dwellings: GeneralCategory(listOf(
         2000.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val castle = GeneralEquipment(
@@ -58,7 +63,8 @@ class Dwellings: GeneralCategory(listOf(
         30000.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     init{

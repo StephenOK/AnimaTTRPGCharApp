@@ -3,7 +3,6 @@ package com.example.animabuilder.character_creation.attributes.secondary_abiliti
 import kotlin.Throws
 import java.io.BufferedReader
 import java.io.IOException
-import java.io.Serializable
 
 /**
  * Object for a single secondary characteristic.
@@ -13,7 +12,7 @@ import java.io.Serializable
  * @param parent full list that holds this objejct
  */
 
-class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList) : Serializable {
+class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList){
     //initialize points from the associated modifier
     var modVal = 0
 

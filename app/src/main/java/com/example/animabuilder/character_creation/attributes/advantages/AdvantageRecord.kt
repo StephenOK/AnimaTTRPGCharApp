@@ -7,8 +7,6 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.class_objects.Archetype
 import java.io.BufferedReader
-import java.io.Serializable
-
 /**
  * Section that holds data on the advantages and disadvantages chosen for the character.
  * Holds information on how many creation points have been spent.
@@ -19,7 +17,7 @@ import java.io.Serializable
  * @param charInstance head character object that holds this section
  */
 
-class AdvantageRecord(private val charInstance: BaseCharacter): Serializable {
+class AdvantageRecord(private val charInstance: BaseCharacter){
     //initialize spent creation points
     var creationPointSpent = 0
 

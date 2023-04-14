@@ -1,11 +1,9 @@
 package com.example.animabuilder.character_creation.attributes.combat
 
-import java.io.Serializable
-
 /**
  * Item that holds the data on one of a character's resistances.
  */
-class ResistanceItem: Serializable {
+class ResistanceItem{
     //initialize resistance's base
     var base = 0
 

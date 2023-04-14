@@ -1,6 +1,6 @@
 package com.example.animabuilder.view_models
 
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.equipment.CoinType
@@ -18,7 +18,7 @@ class EquipmentFragmentViewModel(
     private val _maxExpenditure = MutableStateFlow(inventory.maxGold.toString())
     val maxExpenditure = _maxExpenditure.asStateFlow()
 
-    val boughtGoods = mutableStateMapOf<GeneralEquipment, Int>()
+    val boughtGoods = inventory.boughtGoods.keys.toMutableStateList()
 
     fun setMaxExpenditure(input: Int){
         inventory.setMaxGold(input)
@@ -27,10 +27,14 @@ class EquipmentFragmentViewModel(
 
     fun updateBoughtGoods(){
         boughtGoods.clear()
-        boughtGoods += inventory.boughtGoods
+        boughtGoods += inventory.boughtGoods.keys
     }
 
     fun setMaxExpenditure(input: String){_maxExpenditure.update{input}}
+
+    fun getQuantity(input: GeneralEquipment): Int?{
+        return inventory.boughtGoods[input]
+    }
 
     private val clothes = CategoryData(
         R.string.clothingLabel,
@@ -177,9 +181,9 @@ class EquipmentFragmentViewModel(
     fun updatePurchaseTotals(){
         val initialCost =
             if(currentQuality.value != null)
-                purchasedItem.value!!.baseCost * currentQuality.value!!.modifier
+                purchasedItem.value!!.baseCost * purchasedNumber.value.toInt() * currentQuality.value!!.modifier
             else
-                purchasedItem.value!!.baseCost.toDouble()
+                purchasedItem.value!!.baseCost * purchasedNumber.value.toInt()
 
         when(purchasedItem.value!!.coinType){
             CoinType.Copper -> {setTotalCopperPurchase(initialCost, true)}
@@ -231,6 +235,11 @@ class EquipmentFragmentViewModel(
             if(currentQuality.value != null) currentQuality.value!!.modifier
             else 1.0
 
+        val qualityIndex =
+            if(currentQuality.value == null || purchasingCategory.value!!.qualityInput == null) null
+            else
+                purchasingCategory.value!!.qualityInput!!.indexOf(currentQuality.value!!)
+
         if(purchasedNumber.value == "")
             return
 
@@ -240,7 +249,8 @@ class EquipmentFragmentViewModel(
                 purchasedItem.value!!.baseCost * qualityMult,
                 purchasedItem.value!!.coinType,
                 purchasedItem.value!!.weight,
-                purchasedItem.value!!.availability
+                purchasedItem.value!!.availability,
+                qualityIndex
             ),
             purchasedNumber.value.toInt()
         )
@@ -249,11 +259,25 @@ class EquipmentFragmentViewModel(
         toggleItemPurchaseOpen()
     }
 
+    fun removeItem(input: GeneralEquipment){
+        inventory.removeItem(input)
+        updateBoughtGoods()
+    }
+
     fun getCoinSpent(input: CoinType): Int{
         return when(input){
             CoinType.Copper -> inventory.copperSpent.toInt()
             CoinType.Silver -> inventory.silverSpent.toInt()
             CoinType.Gold -> inventory.goldSpent.toInt()
         }
+    }
+
+    fun getCategory(input: GeneralEquipment): GeneralCategory?{
+        inventory.allCategories.forEach{
+            if(it.findEquipment(input.name, input.baseCost, input.currentQuality) != null)
+                return it
+        }
+
+        return null
     }
 }

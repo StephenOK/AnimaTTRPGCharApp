@@ -1,7 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.magic.spells
 
 import com.example.animabuilder.character_creation.Element
-import java.io.Serializable
 
 /**
  * Magic ability a character may be able to cast to perform special actions.
@@ -30,4 +29,4 @@ open class Spell(
     val maintenance: Int?,
     val isDaily: Boolean,
     val type: List<SpellType>
-): Serializable
+)

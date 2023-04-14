@@ -1,11 +1,9 @@
 package com.example.animabuilder.character_creation.equipment.armor
 
-import java.io.Serializable
-
 /**
  * Record of all armors available for the character to acquire.
  */
-class ArmorInstances: Serializable {
+class ArmorInstances{
     val paddedArmor = Armor(
         "Padded",
 

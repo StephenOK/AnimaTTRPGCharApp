@@ -4,7 +4,6 @@ import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
 import com.example.animabuilder.character_creation.equipment.general_goods.instances.*
 import java.io.BufferedReader
-import java.io.Serializable
 
 class Inventory(val charInstance: BaseCharacter) {
     val clothing = Clothing()
@@ -51,11 +50,18 @@ class Inventory(val charInstance: BaseCharacter) {
     fun setMaxGold(input: Int){maxGold = input}
 
     fun buyItem(item: GeneralEquipment, quantity: Int){
-        boughtGoods +=
-            if(boughtGoods.containsKey(item))
-                Pair(item, quantity + boughtGoods[item]!!)
-            else
-                Pair(item, quantity)
+        var foundItem = false
+
+        boughtGoods.forEach{
+            if(item.name == it.key.name && item.currentQuality == it.key.currentQuality){
+                boughtGoods.replace(it.key, it.value + quantity)
+                foundItem = true
+                return@forEach
+            }
+        }
+
+        if(!foundItem)
+            boughtGoods += Pair(item, quantity)
 
         when(item.coinType){
             CoinType.Gold -> goldSpent += item.baseCost * quantity
@@ -67,7 +73,21 @@ class Inventory(val charInstance: BaseCharacter) {
     }
 
     fun removeItem(item: GeneralEquipment){
-        boughtGoods.remove(item)
+        var checkedItem: GeneralEquipment? = null
+
+        boughtGoods.forEach{
+            if(item.name == it.key.name && item.currentQuality == it.key.currentQuality){
+                val newVal = it.value - 1
+
+                boughtGoods.replace(it.key, newVal)
+                checkedItem = it.key
+
+                return@forEach
+            }
+        }
+
+        if(checkedItem != null && boughtGoods[checkedItem] == 0)
+            boughtGoods.remove(checkedItem)
 
         when(item.coinType){
             CoinType.Gold -> goldSpent -= item.baseCost
@@ -116,9 +136,9 @@ class Inventory(val charInstance: BaseCharacter) {
         silverFix()
     }
 
-    fun findItem(name: String, cost: Double): GeneralEquipment?{
+    fun findItem(name: String, cost: Double, quality: Int?): GeneralEquipment?{
         allCategories.forEach{
-            val item = it.findEquipment(name, cost)
+            val item = it.findEquipment(name, cost, quality)
 
             if(item != null) return item
         }
@@ -131,7 +151,11 @@ class Inventory(val charInstance: BaseCharacter) {
 
         for(loop in 0 until fileReader.readLine().toInt()){
             buyItem(
-                findItem(fileReader.readLine(), fileReader.readLine().toDouble())!!,
+                findItem(
+                    fileReader.readLine(),
+                    fileReader.readLine().toDouble(),
+                    fileReader.readLine().toIntOrNull()
+                )!!,
                 fileReader.readLine().toInt()
             )
         }
@@ -145,6 +169,7 @@ class Inventory(val charInstance: BaseCharacter) {
         boughtGoods.forEach{
             charInstance.addNewData(it.key.name)
             charInstance.addNewData(it.key.baseCost)
+            charInstance.addNewData(it.key.currentQuality)
             charInstance.addNewData(it.value)
         }
     }

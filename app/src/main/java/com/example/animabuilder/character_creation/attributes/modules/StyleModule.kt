@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
-import java.io.Serializable
-
 /**
  * Styles that a character may take to improve their combat abilities.
  *
@@ -13,4 +11,4 @@ class StyleModule(
     val name: String,
     val description: String,
     val cost: Int
-): Serializable
+)

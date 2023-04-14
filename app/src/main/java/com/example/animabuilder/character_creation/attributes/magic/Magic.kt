@@ -6,7 +6,6 @@ import com.example.animabuilder.character_creation.attributes.magic.spells.FreeS
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.spellbook.*
 import java.io.BufferedReader
-import java.io.Serializable
 import kotlin.math.ceil
 
 /**
@@ -16,7 +15,7 @@ import kotlin.math.ceil
  *
  * @param charInstance object that holds all of the character's data
  */
-class Magic(private val charInstance: BaseCharacter) : Serializable {
+class Magic(private val charInstance: BaseCharacter){
     //initialize base Zeon points
     var baseZeon = 0
 

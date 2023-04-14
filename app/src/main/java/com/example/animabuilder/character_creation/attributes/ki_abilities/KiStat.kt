@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
-import java.io.Serializable
-
 /**
  * Object that holds data in regards to a primary characteristics associated ki points and accumulation.
  *
@@ -9,7 +7,7 @@ import java.io.Serializable
  */
 class KiStat(
     val parent: Ki
-): Serializable {
+){
     //initialize base ki points in this stat
     var baseKiPoints = 0
 

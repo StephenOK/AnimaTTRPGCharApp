@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.class_objects
 
-import java.io.Serializable
-
 /**
  * Object class that holds values related to a character's class
  *
@@ -87,4 +85,4 @@ class CharClass(
 
     val onTake: () -> Unit,
     val onRemove: () -> Unit
-) : Serializable
+)

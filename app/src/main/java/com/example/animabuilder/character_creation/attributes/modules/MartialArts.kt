@@ -1,11 +1,9 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
-import java.io.Serializable
-
 /**
  * Record of martial arts the character may acquire.
  */
-class MartialArts: Serializable {
+class MartialArts{
     val kempo = MartialArt(
         "Kempo",
         "This is a freewheeling style of combat that uses combinations of " +

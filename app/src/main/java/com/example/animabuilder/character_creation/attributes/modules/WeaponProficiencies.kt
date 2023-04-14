@@ -8,7 +8,6 @@ import com.example.animabuilder.character_creation.equipment.weapons.weapon_clas
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_instances.*
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Class that operates on the character's various proficiencies.
@@ -19,7 +18,7 @@ import java.io.Serializable
  * @param charInstance object that holds all data on the character
  */
 
-class WeaponProficiencies(private val charInstance: BaseCharacter) : Serializable {
+class WeaponProficiencies(private val charInstance: BaseCharacter){
     //create data on the unarmed weapon
     val unarmed = Weapon(
         "Unarmed Combat",

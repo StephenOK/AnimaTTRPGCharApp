@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.summoning
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Section containing stats involving a character's summoning ability.
@@ -10,7 +9,7 @@ import java.io.Serializable
  *
  * @param charInstance object that holds all of the character's data
  */
-class Summoning(private val charInstance: BaseCharacter): Serializable {
+class Summoning(private val charInstance: BaseCharacter){
     //initialize each summoning ability
     val summon = SummonAbility(charInstance)
     val control = SummonAbility(charInstance)

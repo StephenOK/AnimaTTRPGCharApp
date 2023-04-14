@@ -3,14 +3,13 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
-import java.io.Serializable
 
 /**
  * List of magical advantages and disadvantages a character may take.
  *
  * @param charInstance object holding the character's stats
  */
-class MagicAdvantages(private val charInstance: BaseCharacter): Serializable {
+class MagicAdvantages(private val charInstance: BaseCharacter){
     val elementNames = listOf(
         "Light",
         "Dark",

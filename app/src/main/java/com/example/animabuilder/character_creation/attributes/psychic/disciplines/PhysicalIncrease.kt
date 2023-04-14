@@ -2,12 +2,11 @@ package com.example.animabuilder.character_creation.attributes.psychic.disciplin
 
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
-import java.io.Serializable
 
 /**
  * Record of all of the available physically increasing powers.
  */
-class PhysicalIncrease: Discipline(), Serializable {
+class PhysicalIncrease: Discipline(){
     val increaseJump = PsychicPower(
         "Increase Jump Ability",
         1,

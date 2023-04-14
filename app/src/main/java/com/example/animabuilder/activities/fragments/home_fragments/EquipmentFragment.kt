@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -54,8 +56,11 @@ fun EquipmentFragment(
             SpentDisplay(CoinType.Silver, equipFragVM.getCoinSpent(CoinType.Silver))
             SpentDisplay(CoinType.Copper, equipFragVM.getCoinSpent(CoinType.Copper))
         }
-        //display current inventory
 
+        //display current inventory
+        items(equipFragVM.boughtGoods){
+            HeldItemRow(equipFragVM, it)
+        }
     }
 
     if(equipFragVM.itemPurchaseOpen.collectAsState().value)
@@ -94,7 +99,7 @@ fun EquipmentRow(
             equipFragVM.toggleItemPurchaseOpen()
             equipFragVM.setPurchasedItem(item)
             equipFragVM.setPurchasingCategory(ownCategory)
-        }) {Icons.Filled.Add}
+        }) {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Item")}
 
         //display equipment name
         Text(text = item.name)
@@ -102,9 +107,9 @@ fun EquipmentRow(
         //display item's base cost
         Text(text = item.baseCost.toString() +
                 when(item.coinType){
-                    CoinType.Copper -> "CC"
-                    CoinType.Silver -> "SC"
-                    CoinType.Gold -> "GC"
+                    CoinType.Copper -> " CC"
+                    CoinType.Silver -> " SC"
+                    CoinType.Gold -> " GC"
                 }
         )
 
@@ -132,6 +137,26 @@ fun EquipmentRow(
 @Composable
 fun SpentDisplay(type: CoinType, value: Int){
     Text(text = type.name + ": $value")
+}
+
+@Composable
+fun HeldItemRow(
+    equipFragVM: EquipmentFragmentViewModel,
+    input: GeneralEquipment
+){
+    val titleString = input.name +
+        if(input.currentQuality != null)
+            " " + equipFragVM.getCategory(input)!!.qualityInput!![input.currentQuality].qualityType
+        else ""
+
+    Row{
+        Button(onClick = {equipFragVM.removeItem(input)})
+        {Icon(imageVector = Icons.Filled.Clear, contentDescription = "Add Item")}
+
+        Text(text = titleString)
+
+        Text(text = equipFragVM.getQuantity(input).toString())
+    }
 }
 
 val EquipmentDetails = @Composable {item: GeneralEquipment ->

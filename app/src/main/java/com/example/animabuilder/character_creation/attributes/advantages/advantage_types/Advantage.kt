@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_types
 
-import java.io.Serializable
-
 /**
  * Object that holds information on an advantage a character can take.
  *
@@ -29,7 +27,7 @@ open class Advantage(
     val pickedCost: Int,
     val onTake: ((Int?, Int) -> Unit)?,
     val onRemove: ((Int?, Int) -> Unit)?
-): Serializable{
+){
     /**
      * Checks that another advantage is exactly the same as this one.
      *

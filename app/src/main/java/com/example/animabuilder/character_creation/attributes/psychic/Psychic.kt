@@ -3,7 +3,6 @@ package com.example.animabuilder.character_creation.attributes.psychic
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.disciplines.*
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Fragment that holds the data on the character's psychic abilities.
@@ -12,7 +11,7 @@ import java.io.Serializable
  *
  * @param charInstance object that holds all of a character's data
  */
-class Psychic(private val charInstance: BaseCharacter): Serializable {
+class Psychic(private val charInstance: BaseCharacter){
     //initialize value for Psychic Potential
     var psyPotentialBase = 0
 

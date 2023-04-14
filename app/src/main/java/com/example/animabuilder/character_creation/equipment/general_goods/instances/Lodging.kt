@@ -11,7 +11,8 @@ class Lodging: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decentLodging = GeneralEquipment(
@@ -19,7 +20,8 @@ class Lodging: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodLodging = GeneralEquipment(
@@ -27,7 +29,8 @@ class Lodging: GeneralCategory(null) {
         25.0,
         CoinType.Silver,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val luxuryLodging = GeneralEquipment(
@@ -35,7 +38,8 @@ class Lodging: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     init{

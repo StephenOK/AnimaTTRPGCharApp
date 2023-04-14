@@ -2,14 +2,13 @@ package com.example.animabuilder.character_creation.attributes.summoning
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Object that manages one of the summoning abilities.
  *
  * @param charInstance object that manages all of the character's stats
  */
-class SummonAbility(private val charInstance: BaseCharacter): Serializable {
+class SummonAbility(private val charInstance: BaseCharacter){
     //initialize points spent in this item
     var buyVal = 0
 

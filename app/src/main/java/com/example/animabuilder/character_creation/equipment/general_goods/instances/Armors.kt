@@ -16,7 +16,8 @@ class Armors: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val byrnie = GeneralEquipment(
@@ -24,7 +25,8 @@ class Armors: GeneralCategory(listOf(
         50.0,
         CoinType.Gold,
         9.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fullPlate = GeneralEquipment(
@@ -32,7 +34,8 @@ class Armors: GeneralCategory(listOf(
         400.0,
         CoinType.Gold,
         20.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val completeLeather = GeneralEquipment(
@@ -40,7 +43,8 @@ class Armors: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         7.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fullFieldPlate = GeneralEquipment(
@@ -48,7 +52,8 @@ class Armors: GeneralCategory(listOf(
         800.0,
         CoinType.Gold,
         25.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val fullHeavyPlate = GeneralEquipment(
@@ -56,7 +61,8 @@ class Armors: GeneralCategory(listOf(
         700.0,
         CoinType.Gold,
         30.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val leatherCoat = GeneralEquipment(
@@ -64,7 +70,8 @@ class Armors: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val hardenedLeather = GeneralEquipment(
@@ -72,7 +79,8 @@ class Armors: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         4.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val studdedLeather = GeneralEquipment(
@@ -80,7 +88,8 @@ class Armors: GeneralCategory(listOf(
         25.0,
         CoinType.Gold,
         4.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val scaleMail = GeneralEquipment(
@@ -88,7 +97,8 @@ class Armors: GeneralCategory(listOf(
         120.0,
         CoinType.Gold,
         9.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val armoredLongcoat = GeneralEquipment(
@@ -96,7 +106,8 @@ class Armors: GeneralCategory(listOf(
         5.0,
         CoinType.Silver,
         1.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val chainmail = GeneralEquipment(
@@ -104,7 +115,8 @@ class Armors: GeneralCategory(listOf(
         70.0,
         CoinType.Gold,
         13.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val breastplate = GeneralEquipment(
@@ -112,7 +124,8 @@ class Armors: GeneralCategory(listOf(
         40.0,
         CoinType.Gold,
         4.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val fur = GeneralEquipment(
@@ -120,7 +133,8 @@ class Armors: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val partialPlate = GeneralEquipment(
@@ -128,7 +142,8 @@ class Armors: GeneralCategory(listOf(
         40.0,
         CoinType.Gold,
         6.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val lightPlate = GeneralEquipment(
@@ -136,7 +151,8 @@ class Armors: GeneralCategory(listOf(
         300.0,
         CoinType.Gold,
         18.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val halfPlate = GeneralEquipment(
@@ -144,7 +160,8 @@ class Armors: GeneralCategory(listOf(
         100.0,
         CoinType.Gold,
         13.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val lightBarding = GeneralEquipment(
@@ -152,7 +169,8 @@ class Armors: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val heavyBarding = GeneralEquipment(
@@ -160,7 +178,8 @@ class Armors: GeneralCategory(listOf(
         150.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     init{

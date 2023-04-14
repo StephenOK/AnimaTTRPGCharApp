@@ -7,7 +7,7 @@ import java.io.Serializable
 /**
  * Record of all of the available matrix abilities any psychic may acquire.
  */
-class MatrixPowers: Discipline(), Serializable {
+class MatrixPowers: Discipline(){
     val senseMatrices = PsychicPower(
         "Sense Matrices",
         0,

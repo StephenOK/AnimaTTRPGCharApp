@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities.abilities
 
-import java.io.Serializable
-
 /**
  * Data class for a ki ability a character can take.
  *
@@ -15,4 +13,4 @@ data class KiAbility(
     val prerequisites: KiAbility?,
     val mkCost: Int,
     val description: String
-): Serializable
+)

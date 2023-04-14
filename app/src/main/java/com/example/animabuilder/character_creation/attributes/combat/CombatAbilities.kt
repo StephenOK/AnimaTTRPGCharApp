@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.combat
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Section of the character that holds combat data, such as life points and attack.
@@ -11,7 +10,7 @@ import java.io.Serializable
  *
  * @param charInstance object that holds all of the character's data
  */
-class CombatAbilities(private val charInstance: BaseCharacter): Serializable {
+class CombatAbilities(private val charInstance: BaseCharacter){
     //set default presence
     var presence = 20
 

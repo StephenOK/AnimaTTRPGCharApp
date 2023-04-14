@@ -17,7 +17,8 @@ class Services: GeneralCategory(listOf(
         10.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val assassin = GeneralEquipment(
@@ -25,7 +26,8 @@ class Services: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val guide = GeneralEquipment(
@@ -33,7 +35,8 @@ class Services: GeneralCategory(listOf(
         20.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val blacksmith = GeneralEquipment(
@@ -41,7 +44,8 @@ class Services: GeneralCategory(listOf(
         25.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val instructor = GeneralEquipment(
@@ -49,7 +53,8 @@ class Services: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val healer = GeneralEquipment(
@@ -57,7 +62,8 @@ class Services: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val messenger = GeneralEquipment(
@@ -65,7 +71,8 @@ class Services: GeneralCategory(listOf(
         5.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val mercenary = GeneralEquipment(
@@ -73,7 +80,8 @@ class Services: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val lackey = GeneralEquipment(
@@ -81,7 +89,8 @@ class Services: GeneralCategory(listOf(
         1.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val thief = GeneralEquipment(
@@ -89,7 +98,8 @@ class Services: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val troubadour = GeneralEquipment(
@@ -97,7 +107,8 @@ class Services: GeneralCategory(listOf(
         5.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     init{

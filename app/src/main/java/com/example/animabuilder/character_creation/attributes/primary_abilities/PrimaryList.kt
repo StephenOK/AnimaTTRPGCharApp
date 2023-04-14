@@ -2,14 +2,13 @@ package com.example.animabuilder.character_creation.attributes.primary_abilities
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 
 /**
  * Record of all of a character's primary characteristic.
  *
  * @param charInstance object that contains all of the character's stats
  */
-class PrimaryList(private val charInstance: BaseCharacter): Serializable {
+class PrimaryList(private val charInstance: BaseCharacter){
     val str = PrimaryCharacteristic(
         charInstance,
         11,

@@ -11,7 +11,8 @@ class Transport: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val horse = GeneralEquipment(
@@ -19,7 +20,8 @@ class Transport: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val purebredHorse = GeneralEquipment(
@@ -27,7 +29,8 @@ class Transport: GeneralCategory(null) {
         50.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val warhorse = GeneralEquipment(
@@ -35,7 +38,8 @@ class Transport: GeneralCategory(null) {
         250.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val workingOx = GeneralEquipment(
@@ -43,7 +47,8 @@ class Transport: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val packBull = GeneralEquipment(
@@ -51,7 +56,8 @@ class Transport: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val ridingBull = GeneralEquipment(
@@ -59,7 +65,8 @@ class Transport: GeneralCategory(null) {
         3.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val saintBernard = GeneralEquipment(
@@ -67,7 +74,8 @@ class Transport: GeneralCategory(null) {
         15.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val cart = GeneralEquipment(
@@ -75,7 +83,8 @@ class Transport: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val clothWagon = GeneralEquipment(
@@ -83,7 +92,8 @@ class Transport: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val woodWagon = GeneralEquipment(
@@ -91,7 +101,8 @@ class Transport: GeneralCategory(null) {
         30.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val standardCoach = GeneralEquipment(
@@ -99,7 +110,8 @@ class Transport: GeneralCategory(null) {
         60.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val luxuryCoach = GeneralEquipment(
@@ -107,7 +119,8 @@ class Transport: GeneralCategory(null) {
         150.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val sleigh = GeneralEquipment(
@@ -115,7 +128,8 @@ class Transport: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val boat = GeneralEquipment(
@@ -123,7 +137,8 @@ class Transport: GeneralCategory(null) {
         20.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val singleSail = GeneralEquipment(
@@ -131,7 +146,8 @@ class Transport: GeneralCategory(null) {
         150.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val twoSail = GeneralEquipment(
@@ -139,7 +155,8 @@ class Transport: GeneralCategory(null) {
         450.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val threeSail = GeneralEquipment(
@@ -147,7 +164,8 @@ class Transport: GeneralCategory(null) {
         1200.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallCruiser = GeneralEquipment(
@@ -155,7 +173,8 @@ class Transport: GeneralCategory(null) {
         3500.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val cruiser = GeneralEquipment(
@@ -163,7 +182,8 @@ class Transport: GeneralCategory(null) {
         8000.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val warship = GeneralEquipment(
@@ -171,7 +191,8 @@ class Transport: GeneralCategory(null) {
         15000.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     init{

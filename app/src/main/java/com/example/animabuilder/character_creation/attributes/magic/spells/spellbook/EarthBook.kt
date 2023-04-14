@@ -3,12 +3,11 @@ package com.example.animabuilder.character_creation.attributes.magic.spells.spel
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.SpellType
-import java.io.Serializable
 
 /**
  * List of spells associated with the earth element.
  */
-class EarthBook: Serializable {
+class EarthBook{
     private val detectMinerals = Spell(
         "Detect Minerals",
         Element.Earth,

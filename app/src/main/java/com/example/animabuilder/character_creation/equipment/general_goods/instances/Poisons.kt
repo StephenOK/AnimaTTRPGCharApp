@@ -11,7 +11,8 @@ class Poisons: GeneralCategory(null) {
         25.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val albaladin = GeneralEquipment(
@@ -19,7 +20,8 @@ class Poisons: GeneralCategory(null) {
         80.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val royalArsenic = GeneralEquipment(
@@ -27,7 +29,8 @@ class Poisons: GeneralCategory(null) {
         280.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val atropine = GeneralEquipment(
@@ -35,7 +38,8 @@ class Poisons: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val belladonna = GeneralEquipment(
@@ -43,7 +47,8 @@ class Poisons: GeneralCategory(null) {
         15.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val cantharidin = GeneralEquipment(
@@ -51,7 +56,8 @@ class Poisons: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val cyanide = GeneralEquipment(
@@ -59,7 +65,8 @@ class Poisons: GeneralCategory(null) {
         80.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val curare = GeneralEquipment(
@@ -67,7 +74,8 @@ class Poisons: GeneralCategory(null) {
         100.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val muscarine = GeneralEquipment(
@@ -75,7 +83,8 @@ class Poisons: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val ramalenSap = GeneralEquipment(
@@ -83,7 +92,8 @@ class Poisons: GeneralCategory(null) {
         800.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val thallium = GeneralEquipment(
@@ -91,7 +101,8 @@ class Poisons: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val whiteCobra = GeneralEquipment(
@@ -99,7 +110,8 @@ class Poisons: GeneralCategory(null) {
         500.0,
         CoinType.Gold,
         null,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val serpentVenom = GeneralEquipment(
@@ -107,7 +119,8 @@ class Poisons: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val saturnSalt = GeneralEquipment(
@@ -115,7 +128,8 @@ class Poisons: GeneralCategory(null) {
         3.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     init{

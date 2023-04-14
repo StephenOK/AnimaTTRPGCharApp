@@ -4,7 +4,6 @@ import com.example.animabuilder.character_creation.equipment.CoinType
 import com.example.animabuilder.character_creation.equipment.general_goods.Availability
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralCategory
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
-import java.io.Serializable
 
 class Miscellaneous: GeneralCategory(null) {
     val oil = GeneralEquipment(
@@ -12,7 +11,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val torch = GeneralEquipment(
@@ -20,7 +20,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Copper,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallChest = GeneralEquipment(
@@ -28,7 +29,8 @@ class Miscellaneous: GeneralCategory(null) {
         15.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeChest = GeneralEquipment(
@@ -36,7 +38,8 @@ class Miscellaneous: GeneralCategory(null) {
         25.0,
         CoinType.Silver,
         10.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val harpoon = GeneralEquipment(
@@ -44,7 +47,8 @@ class Miscellaneous: GeneralCategory(null) {
         50.0,
         CoinType.Silver,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val barrel = GeneralEquipment(
@@ -52,7 +56,8 @@ class Miscellaneous: GeneralCategory(null) {
         10.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val cane = GeneralEquipment(
@@ -60,7 +65,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Copper,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallBag = GeneralEquipment(
@@ -68,7 +74,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Silver,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeBag = GeneralEquipment(
@@ -76,7 +83,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallBottle = GeneralEquipment(
@@ -84,7 +92,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val largeBottle = GeneralEquipment(
@@ -92,7 +101,8 @@ class Miscellaneous: GeneralCategory(null) {
         50.0,
         CoinType.Gold,
         3.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val lightChain = GeneralEquipment(
@@ -100,7 +110,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val heavyChain = GeneralEquipment(
@@ -108,7 +119,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val quiver = GeneralEquipment(
@@ -116,7 +128,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val box = GeneralEquipment(
@@ -124,7 +137,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val bell = GeneralEquipment(
@@ -132,7 +146,8 @@ class Miscellaneous: GeneralCategory(null) {
         25.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val spyglass = GeneralEquipment(
@@ -140,7 +155,8 @@ class Miscellaneous: GeneralCategory(null) {
         250.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val smallTrap = GeneralEquipment(
@@ -148,7 +164,8 @@ class Miscellaneous: GeneralCategory(null) {
         50.0,
         CoinType.Silver,
         3.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeTrap = GeneralEquipment(
@@ -156,7 +173,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         5.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decentLock = GeneralEquipment(
@@ -164,7 +182,8 @@ class Miscellaneous: GeneralCategory(null) {
         10.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodLock = GeneralEquipment(
@@ -172,7 +191,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val excellentLock = GeneralEquipment(
@@ -180,7 +200,8 @@ class Miscellaneous: GeneralCategory(null) {
         80.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val smallBasket = GeneralEquipment(
@@ -188,7 +209,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeBasket = GeneralEquipment(
@@ -196,7 +218,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val cross = GeneralEquipment(
@@ -204,7 +227,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val bucket = GeneralEquipment(
@@ -212,7 +236,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decentRope = GeneralEquipment(
@@ -220,7 +245,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodRope = GeneralEquipment(
@@ -228,7 +254,8 @@ class Miscellaneous: GeneralCategory(null) {
         25.0,
         CoinType.Silver,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val excellentRope = GeneralEquipment(
@@ -236,7 +263,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         6.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val ropeLadder = GeneralEquipment(
@@ -244,7 +272,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         6.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val metalMirror = GeneralEquipment(
@@ -252,7 +281,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val glassMirror = GeneralEquipment(
@@ -260,7 +290,8 @@ class Miscellaneous: GeneralCategory(null) {
         200.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val spectacles = GeneralEquipment(
@@ -268,7 +299,8 @@ class Miscellaneous: GeneralCategory(null) {
         180.0,
         CoinType.Gold,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val lockPick = GeneralEquipment(
@@ -276,7 +308,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val hook = GeneralEquipment(
@@ -284,7 +317,8 @@ class Miscellaneous: GeneralCategory(null) {
         15.0,
         CoinType.Silver,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val soap = GeneralEquipment(
@@ -292,7 +326,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallNotebook = GeneralEquipment(
@@ -300,7 +335,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val largeNotebook = GeneralEquipment(
@@ -308,7 +344,8 @@ class Miscellaneous: GeneralCategory(null) {
         100.0,
         CoinType.Gold,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val limeStick = GeneralEquipment(
@@ -316,7 +353,8 @@ class Miscellaneous: GeneralCategory(null) {
         25.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val candleLantern = GeneralEquipment(
@@ -324,7 +362,8 @@ class Miscellaneous: GeneralCategory(null) {
         50.0,
         CoinType.Silver,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val oilLamp = GeneralEquipment(
@@ -332,7 +371,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         2.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val canvas = GeneralEquipment(
@@ -340,7 +380,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val blanket = GeneralEquipment(
@@ -348,7 +389,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val backpack = GeneralEquipment(
@@ -356,7 +398,8 @@ class Miscellaneous: GeneralCategory(null) {
         30.0,
         CoinType.Silver,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val monocle = GeneralEquipment(
@@ -364,7 +407,8 @@ class Miscellaneous: GeneralCategory(null) {
         200.0,
         CoinType.Gold,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val wineskin = GeneralEquipment(
@@ -372,7 +416,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Silver,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val paper = GeneralEquipment(
@@ -380,7 +425,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val papyrus = GeneralEquipment(
@@ -388,7 +434,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decentPerfume = GeneralEquipment(
@@ -396,7 +443,8 @@ class Miscellaneous: GeneralCategory(null) {
         35.0,
         CoinType.Silver,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodPerfume = GeneralEquipment(
@@ -404,7 +452,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val excellentPerfume = GeneralEquipment(
@@ -412,7 +461,8 @@ class Miscellaneous: GeneralCategory(null) {
         100.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val parchment = GeneralEquipment(
@@ -420,7 +470,8 @@ class Miscellaneous: GeneralCategory(null) {
         50.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val whetstone = GeneralEquipment(
@@ -428,7 +479,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         0.3,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fishingNet = GeneralEquipment(
@@ -436,7 +488,8 @@ class Miscellaneous: GeneralCategory(null) {
         10.0,
         CoinType.Silver,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val hourglass = GeneralEquipment(
@@ -444,7 +497,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Gold,
         0.5,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val mechClock = GeneralEquipment(
@@ -452,7 +506,8 @@ class Miscellaneous: GeneralCategory(null) {
         300.0,
         CoinType.Gold,
         20.0,
-        Availability.Rare
+        Availability.Rare,
+        null
     )
 
     val smallSack = GeneralEquipment(
@@ -460,7 +515,8 @@ class Miscellaneous: GeneralCategory(null) {
         2.0,
         CoinType.Silver,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeSack = GeneralEquipment(
@@ -468,7 +524,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         0.4,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val whistle = GeneralEquipment(
@@ -476,7 +533,8 @@ class Miscellaneous: GeneralCategory(null) {
         10.0,
         CoinType.Silver,
         0.1,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val smallTent = GeneralEquipment(
@@ -484,7 +542,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val largeTent = GeneralEquipment(
@@ -492,7 +551,8 @@ class Miscellaneous: GeneralCategory(null) {
         20.0,
         CoinType.Gold,
         6.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val pavilionTent = GeneralEquipment(
@@ -500,7 +560,8 @@ class Miscellaneous: GeneralCategory(null) {
         150.0,
         CoinType.Gold,
         14.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val luxuryTent = GeneralEquipment(
@@ -508,7 +569,8 @@ class Miscellaneous: GeneralCategory(null) {
         200.0,
         CoinType.Gold,
         4.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val ink = GeneralEquipment(
@@ -516,7 +578,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         0.3,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val chalk = GeneralEquipment(
@@ -524,7 +587,8 @@ class Miscellaneous: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         0.2,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val flintAndTinder = GeneralEquipment(
@@ -532,7 +596,8 @@ class Miscellaneous: GeneralCategory(null) {
         1.0,
         CoinType.Silver,
         0.3,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     init{

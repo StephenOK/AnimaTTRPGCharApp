@@ -6,7 +6,6 @@ import com.example.animabuilder.character_creation.attributes.class_objects.Char
 import kotlin.Throws
 import java.io.BufferedReader
 import java.io.IOException
-import java.io.Serializable
 
 /**
  * Object that holds all of a character's secondary characteristics
@@ -14,7 +13,7 @@ import java.io.Serializable
  *
  * @param charInstance object that manages all of the character's stats
  */
-class SecondaryList(val charInstance: BaseCharacter) : Serializable {
+class SecondaryList(val charInstance: BaseCharacter){
     //initialize held state of jack of all trades advantage
     var allTradesTaken = false
 

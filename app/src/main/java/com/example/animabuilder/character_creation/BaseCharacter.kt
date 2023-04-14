@@ -5,7 +5,6 @@ import com.example.animabuilder.character_creation.attributes.advantages.advanta
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
-import com.example.animabuilder.serializables.SerialOutputStream
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 import com.example.animabuilder.character_creation.attributes.class_objects.ClassInstances
 import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
@@ -23,7 +22,7 @@ import kotlin.Throws
  * Character being built by the user
  * Holder class of all other character creation objects
  */
-class BaseCharacter: Serializable {
+class BaseCharacter {
     //character's name
     var charName = ""
 
@@ -461,7 +460,7 @@ class BaseCharacter: Serializable {
         updateTotalSpent()
     }
 
-    private lateinit var byteArray: SerialOutputStream
+    private lateinit var byteArray: ByteArrayOutputStream
 
     /**
      * Retrieve byte information for the character.
@@ -470,7 +469,7 @@ class BaseCharacter: Serializable {
     val bytes: ByteArray
         get() {
             //initialize byte stream
-            byteArray = SerialOutputStream()
+            byteArray = ByteArrayOutputStream()
 
             //add name data
             addNewData(charName)
@@ -564,6 +563,8 @@ class BaseCharacter: Serializable {
             0,
             """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
         )
+
+        writeEndLine()
     }
 
     /**

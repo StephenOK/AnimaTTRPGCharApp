@@ -3,12 +3,10 @@ package com.example.animabuilder.character_creation.attributes.magic.spells.spel
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.SpellType
-import java.io.Serializable
-
 /**
  * List of spells associated with no element.
  */
-class FreeBook: Serializable {
+class FreeBook{
     private val tieSpell = FreeSpell(
         "Tie",
         true,

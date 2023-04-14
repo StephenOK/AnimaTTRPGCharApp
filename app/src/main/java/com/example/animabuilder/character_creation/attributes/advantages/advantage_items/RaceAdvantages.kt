@@ -3,14 +3,13 @@ package com.example.animabuilder.character_creation.attributes.advantages.advant
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
-import java.io.Serializable
 
 /**
  * Lists of advantages for every race available to a character.
  *
  * @param charInstance object holding a character's stats
  */
-class RaceAdvantages(private val charInstance: BaseCharacter) : Serializable {
+class RaceAdvantages(private val charInstance: BaseCharacter){
     private val exceptionalResistancesSylvain = RacialAdvantage(
         "Exceptional Resistances (Sylvain)",
         "As a reflection of their former existence, the Sylvain Nephilim are exceptionally " +

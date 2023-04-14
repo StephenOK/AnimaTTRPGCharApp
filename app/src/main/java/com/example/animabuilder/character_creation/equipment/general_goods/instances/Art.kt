@@ -18,7 +18,8 @@ class Art: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val chinaCabinet = GeneralEquipment(
@@ -26,7 +27,8 @@ class Art: GeneralCategory(listOf(
         65.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val coatOfArms = GeneralEquipment(
@@ -34,7 +36,8 @@ class Art: GeneralCategory(listOf(
         20.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val carpet = GeneralEquipment(
@@ -42,7 +45,8 @@ class Art: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val tapestry = GeneralEquipment(
@@ -50,7 +54,8 @@ class Art: GeneralCategory(listOf(
         4.0,
         CoinType.Gold,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val ring = GeneralEquipment(
@@ -58,7 +63,8 @@ class Art: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fan = GeneralEquipment(
@@ -66,7 +72,8 @@ class Art: GeneralCategory(listOf(
         1.0,
         CoinType.Gold,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decoratedCane = GeneralEquipment(
@@ -74,7 +81,8 @@ class Art: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         2.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val broach = GeneralEquipment(
@@ -82,7 +90,8 @@ class Art: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val scepter = GeneralEquipment(
@@ -90,7 +99,8 @@ class Art: GeneralCategory(listOf(
         15.0,
         CoinType.Gold,
         3.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val necklace = GeneralEquipment(
@@ -98,7 +108,8 @@ class Art: GeneralCategory(listOf(
         4.0,
         CoinType.Gold,
         1.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val crown = GeneralEquipment(
@@ -106,7 +117,8 @@ class Art: GeneralCategory(listOf(
         10.0,
         CoinType.Gold,
         5.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val diadem = GeneralEquipment(
@@ -114,7 +126,8 @@ class Art: GeneralCategory(listOf(
         5.0,
         CoinType.Gold,
         1.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val buckle = GeneralEquipment(
@@ -122,7 +135,8 @@ class Art: GeneralCategory(listOf(
         50.0,
         CoinType.Silver,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val pin = GeneralEquipment(
@@ -130,7 +144,8 @@ class Art: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val comb = GeneralEquipment(
@@ -138,7 +153,8 @@ class Art: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val earrings = GeneralEquipment(
@@ -146,7 +162,8 @@ class Art: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val bracelet = GeneralEquipment(
@@ -154,7 +171,8 @@ class Art: GeneralCategory(listOf(
         2.0,
         CoinType.Gold,
         0.5,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val rosary = GeneralEquipment(
@@ -162,7 +180,8 @@ class Art: GeneralCategory(listOf(
         3.0,
         CoinType.Gold,
         0.25,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     init{

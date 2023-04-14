@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.psychic
 
-import java.io.Serializable
-
 /**
  * Psychic ability a character may acquire.
  *
@@ -19,4 +17,4 @@ data class PsychicPower(
     val maintained: Boolean,
     val description: String,
     val effects: List<String>
-): Serializable
+)

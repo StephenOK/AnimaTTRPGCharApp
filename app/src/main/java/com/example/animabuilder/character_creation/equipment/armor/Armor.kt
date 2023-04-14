@@ -1,7 +1,5 @@
 package com.example.animabuilder.character_creation.equipment.armor
 
-import java.io.Serializable
-
 /**
  * Object that defines a piece of armor a character may acquire.
  *
@@ -46,4 +44,4 @@ class Armor(
     val energyRes: Int,
 
     val description: String
-) : Serializable
+)

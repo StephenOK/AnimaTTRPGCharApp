@@ -1,12 +1,11 @@
 package com.example.animabuilder.character_creation.attributes.advantages.advantage_items
 
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
-import java.io.Serializable
 
 /**
  * List of psychic advantages and disadvantages a character may take.
  */
-class PsychicAdvantages: Serializable {
+class PsychicAdvantages{
     val amplifySustainedPower = Advantage(
         "Amplify Sustained Power",
         "A character with this Advantage can maintain his psychic powers with more force.",

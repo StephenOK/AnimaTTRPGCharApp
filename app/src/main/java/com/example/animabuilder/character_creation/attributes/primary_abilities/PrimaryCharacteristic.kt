@@ -2,7 +2,6 @@ package com.example.animabuilder.character_creation.attributes.primary_abilities
 
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
-import java.io.Serializable
 import kotlin.math.ceil
 
 /**
@@ -18,7 +17,7 @@ class PrimaryCharacteristic(
     private val advantageCap: Int,
     private val charIndex: Int,
     private val setUpdate: (mod: Int, total: Int) -> Unit
-): Serializable {
+){
     //base value fo the stat
     var inputValue = 0
 

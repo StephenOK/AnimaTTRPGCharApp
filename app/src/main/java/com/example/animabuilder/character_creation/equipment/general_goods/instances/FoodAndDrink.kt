@@ -11,7 +11,8 @@ class FoodAndDrink: GeneralCategory(null) {
         1.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodBeer = GeneralEquipment(
@@ -19,7 +20,8 @@ class FoodAndDrink: GeneralCategory(null) {
         3.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val wine = GeneralEquipment(
@@ -27,7 +29,8 @@ class FoodAndDrink: GeneralCategory(null) {
         2.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodWine = GeneralEquipment(
@@ -35,7 +38,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val excellentWine = GeneralEquipment(
@@ -43,7 +47,8 @@ class FoodAndDrink: GeneralCategory(null) {
         3.0,
         CoinType.Silver,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val milk = GeneralEquipment(
@@ -51,7 +56,8 @@ class FoodAndDrink: GeneralCategory(null) {
         1.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val juice = GeneralEquipment(
@@ -59,7 +65,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val exoticDrinks = GeneralEquipment(
@@ -67,7 +74,8 @@ class FoodAndDrink: GeneralCategory(null) {
         1.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val mediocreFood = GeneralEquipment(
@@ -75,7 +83,8 @@ class FoodAndDrink: GeneralCategory(null) {
         4.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val normalFood = GeneralEquipment(
@@ -83,7 +92,8 @@ class FoodAndDrink: GeneralCategory(null) {
         6.0,
         CoinType.Copper,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodFood = GeneralEquipment(
@@ -91,7 +101,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Silver,
         null,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val fineFood = GeneralEquipment(
@@ -99,7 +110,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Gold,
         null,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     val mediocreRations = GeneralEquipment(
@@ -107,7 +119,8 @@ class FoodAndDrink: GeneralCategory(null) {
         2.0,
         CoinType.Copper,
         5.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val decentRations = GeneralEquipment(
@@ -115,7 +128,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Copper,
         7.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val goodRations = GeneralEquipment(
@@ -123,7 +137,8 @@ class FoodAndDrink: GeneralCategory(null) {
         5.0,
         CoinType.Silver,
         10.0,
-        Availability.Common
+        Availability.Common,
+        null
     )
 
     val excellentRations = GeneralEquipment(
@@ -131,7 +146,8 @@ class FoodAndDrink: GeneralCategory(null) {
         30.0,
         CoinType.Silver,
         10.0,
-        Availability.Uncommon
+        Availability.Uncommon,
+        null
     )
 
     init{

@@ -17,6 +17,11 @@ import com.example.animabuilder.character_creation.equipment.CoinType
 import com.example.animabuilder.view_models.EquipmentFragmentViewModel
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Dialog that allows the user to determine a purchased item's quality and quantity.
+ *
+ * @param equipFragVM viewModel that manages this object's data
+ */
 @Composable
 fun EquipmentItemPurchase(
     equipFragVM: EquipmentFragmentViewModel
@@ -38,13 +43,13 @@ fun EquipmentItemPurchase(
                     )
                 }
 
-                //quality of the item bought, if available
+                //quality options of the item bought, if available
                 if(equipFragVM.currentQuality.value != null) {
                     items(equipFragVM.purchasingCategory.value!!.qualityInput!!){
                         Row {
                             RadioButton(
                                 selected = it == equipFragVM.currentQuality.collectAsState().value,
-                                onClick = { equipFragVM.setCurrentQuality(it) }
+                                onClick = {equipFragVM.setCurrentQuality(it)}
                             )
                             Text(text = it.qualityType)
                         }
@@ -75,6 +80,12 @@ fun EquipmentItemPurchase(
     )
 }
 
+/**
+ * Display for the cost in the indicated coin amount.
+ *
+ * @param value coin type to display
+ * @param display string stateflow of the amount
+ */
 @Composable
 fun TotalDisplay(
     value: CoinType,

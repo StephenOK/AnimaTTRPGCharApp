@@ -10,7 +10,7 @@ import com.example.animabuilder.character_creation.equipment.CoinType
  * @param coinType default coin  for the weapon's cost
  * @param weight mass of the item, if available
  * @param availability rarity of the item
- * @param currentQuality quality description of this individual item
+ * @param currentQuality quality index of this individual item
  */
 class GeneralEquipment(
     val name: String,

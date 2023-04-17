@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 
 /**
  * View model that manages the character's taken advantages and disadvantages.
- * Works on variable with the corresponding advantage fragment.
+ * Works on variables with the corresponding advantage fragment.
  *
  * @param charInstance object that holds all of the data for the character
  * @param advantageRecord object that holds all of the character's advantage information

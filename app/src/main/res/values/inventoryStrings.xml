@@ -18,5 +18,7 @@
     <string name = "weightLabel">Weight: </string>
     <string name = "availabilityLabel">Availability: </string>
 
-    <string name = "maxGoldLabel">Max Funds: </string>
+    <string name = "maxGoldLabel">Gold Max: </string>
+    <string name = "maxSilverLabel">Silver Max: </string>
+    <string name = "maxCopperLabel">Copper Max: </string>
 </resources>

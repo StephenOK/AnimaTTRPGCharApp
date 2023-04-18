@@ -83,6 +83,7 @@
     <string name = "baseLabel">Base</string>
     <string name = "boughtLabel">Bought</string>
     <string name = "modLabel">Mod</string>
+    <string name = "bonusLabel">Bonus</string>
     <string name = "specialLabel">Spec</string>
     <string name = "totalLabel">Total</string>
 

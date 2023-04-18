@@ -24,6 +24,9 @@ class PrimaryCharacteristic(
     //additional points in this stata
     var bonus = 0
 
+    //additional points in this stat due to character levels
+    var levelBonus = 0
+
     //total value of the stat
     var total = 0
 
@@ -61,13 +64,24 @@ class PrimaryCharacteristic(
     }
 
     /**
+     * Sets the character's bonus in this stat from levels.
+     *
+     * @param input value to set as bonus
+     */
+    @JvmName("setLevelBonus1")
+    fun setLevelBonus(input: Int){
+        levelBonus = input
+        updateValues()
+    }
+
+    /**
      * Updates the stat's total, modifier, and updates related character values.
      */
     fun updateValues(){
         //change the total value
         total =
             if(charInstance.advantageRecord.getAdvantage("Increase One Characteristic to Nine", charIndex, 0) != null) 9
-            else inputValue + bonus
+            else inputValue + bonus + levelBonus
 
         //update the modifier's value
         outputMod =
@@ -93,6 +107,7 @@ class PrimaryCharacteristic(
      */
     fun load(fileReader: BufferedReader){
         setInput(fileReader.readLine().toInt())
+        setLevelBonus(fileReader.readLine().toInt())
     }
 
     /**
@@ -100,5 +115,6 @@ class PrimaryCharacteristic(
      */
     fun write(){
         charInstance.addNewData(inputValue)
+        charInstance.addNewData(levelBonus)
     }
 }

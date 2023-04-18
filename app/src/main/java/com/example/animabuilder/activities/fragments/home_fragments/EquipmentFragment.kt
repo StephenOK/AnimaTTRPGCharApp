@@ -42,16 +42,18 @@ fun EquipmentFragment(
         //create inputs for each maximum coin expenditure
         items(equipFragVM.allQuantityMaximums){MaximumDisplay(it)}
 
+        //display spent coin
+        item{
+            Row {
+                SpentDisplay(CoinType.Gold, equipFragVM.getCoinSpent(CoinType.Gold))
+                SpentDisplay(CoinType.Silver, equipFragVM.getCoinSpent(CoinType.Silver))
+                SpentDisplay(CoinType.Copper, equipFragVM.getCoinSpent(CoinType.Copper))
+            }
+        }
+
         //display all purchasable items by category
         items(equipFragVM.allCategoryData){
             CategoryButton(equipFragVM, it, openDetailAlert)
-        }
-
-        //display spent coin
-        item{
-            SpentDisplay(CoinType.Gold, equipFragVM.getCoinSpent(CoinType.Gold))
-            SpentDisplay(CoinType.Silver, equipFragVM.getCoinSpent(CoinType.Silver))
-            SpentDisplay(CoinType.Copper, equipFragVM.getCoinSpent(CoinType.Copper))
         }
 
         //display current inventory

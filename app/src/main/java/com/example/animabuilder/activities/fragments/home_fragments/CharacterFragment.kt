@@ -70,34 +70,41 @@ fun CharacterPageFragment(
             //table header row
             Row {
                 //column buffer
-                Spacer(modifier = Modifier.weight(0.25f))
+                Spacer(modifier = Modifier.weight(0.2f))
 
                 //score header
                 Text(
                     text = stringResource(R.string.scoreLabel),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.25f)
+                    modifier = Modifier.weight(0.2f)
+                )
+
+                //level bonus input header
+                Text(
+                    text = stringResource(R.string.bonusLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
                 )
 
                 //bonus header
                 Text(
                     text = stringResource(R.string.specialLabel),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.25f)
+                    modifier = Modifier.weight(0.2f)
                 )
 
                 //mod header
                 Text(
                     text = stringResource(R.string.modLabel),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.25f)
+                    modifier = Modifier.weight(0.2f)
                 )
             }
         }
 
         //create row for each primary characteristic
         items(charFragVM.primaryDataList){
-            PrimaryRow(it)
+            PrimaryRow(charFragVM, it)
         }
 
         //display character's size category
@@ -183,10 +190,12 @@ private fun DropdownObject(
 /**
  * Create a row for the primary characteristics table.
  *
+ * @param charFragVM viewModel that manages this fragment
  * @param primeItem primary characteristic data to display
  */
 @Composable
 private fun PrimaryRow(
+    charFragVM: CharacterFragmentViewModel,
     primeItem: CharacterFragmentViewModel.PrimeCharacteristicData
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
@@ -194,7 +203,7 @@ private fun PrimaryRow(
         Text(
             text = "${primeItem.name}:",
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.25f))
+            modifier = Modifier.weight(0.2f))
 
         //user input section
         NumberInput(
@@ -208,20 +217,31 @@ private fun PrimaryRow(
             {primeItem.setInput("")},
             {},
             Color.Black,
-            Modifier.weight(0.25f)
+            Modifier.weight(0.2f)
+        )
+
+        //level bonus input
+        NumberInput(
+            inputText = primeItem.bonusInput.collectAsState().value,
+            preRun = {},
+            inputFunction = {primeItem.setBonusInput(it.toInt())},
+            emptyFunction = {primeItem.setBonusInput("")},
+            postRun = {},
+            colorInput = charFragVM.bonusColor.collectAsState().value,
+            modifier = Modifier.weight(0.2f)
         )
 
         //characteristic bonus display
         Text(
-            text = primeItem.output.collectAsState().value.specialVal,
+            text = primeItem.bonus.collectAsState().value,
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.25f)
+            modifier = Modifier.weight(0.2f)
         )
 
         //mod display
         Text(
-            text = primeItem.output.collectAsState().value.modVal,
+            text = primeItem.modTotal.collectAsState().value,
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.25f))
+            modifier = Modifier.weight(0.2f))
     }
 }

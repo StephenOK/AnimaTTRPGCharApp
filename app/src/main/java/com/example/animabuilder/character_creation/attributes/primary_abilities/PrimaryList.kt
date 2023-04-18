@@ -111,6 +111,19 @@ class PrimaryList(private val charInstance: BaseCharacter){
     val allPrimaries = listOf(str, dex, agi, con, int, pow, wp, per)
 
     /**
+     * Determines if the total level bonuses applied are valid.
+     *
+     * @return true if bonus does not exceed half of the character's level
+     */
+    fun validLevelBonuses(): Boolean{
+        var total = 0
+
+        allPrimaries.forEach{total += it.levelBonus}
+
+        return total <= charInstance.lvl/2
+    }
+
+    /**
      * Get data for each of the primary characteristics.
      *
      * @param fileReader file to get the data from

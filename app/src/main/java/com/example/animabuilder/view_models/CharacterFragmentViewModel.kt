@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
@@ -90,45 +91,70 @@ class CharacterFragmentViewModel(
      */
     fun setAppearInput(newIn: String){_appearInput.update{newIn}}
 
+    //initialize level bonus string color
+    private val _bonusColor = MutableStateFlow(Color.Black)
+    val bonusColor = _bonusColor.asStateFlow()
+
+    /**
+     * Sets the text color based on the applied level bonuses to the character.
+     */
+    fun setBonusColor(){
+        //set text to black if valid
+        if(charInstance.primaryList.validLevelBonuses())
+            _bonusColor.update{Color.Black}
+
+        //set text to red if invalid
+        else
+            _bonusColor.update{Color.Red}
+    }
+
     //set all primary characteristic data
     private val strengthData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[0],
         charInstance.primaryList.str,
+        {setBonusColor()},
     ){this.setSizeInput()}
 
     private val dexterityData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[1],
-        charInstance.primaryList.dex
+        charInstance.primaryList.dex,
+        {setBonusColor()}
     ){}
 
     private val agilityData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[2],
-        charInstance.primaryList.agi
+        charInstance.primaryList.agi,
+        {setBonusColor()}
     ){}
 
     private val constitutionData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[3],
-        charInstance.primaryList.con
+        charInstance.primaryList.con,
+        {setBonusColor()}
     ){this.setSizeInput()}
 
     private val intelligenceData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[6],
-        charInstance.primaryList.int
+        charInstance.primaryList.int,
+        {setBonusColor()}
     ){}
 
     private val powerData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[4],
-        charInstance.primaryList.pow
+        charInstance.primaryList.pow,
+        {setBonusColor()}
     ){}
 
     private val willpowerData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[5],
-        charInstance.primaryList.wp
+        charInstance.primaryList.wp,
+        {setBonusColor()}
     ){}
 
     private val perceptionData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[7],
-        charInstance.primaryList.per
+        charInstance.primaryList.per,
+        {setBonusColor()}
     ){}
 
     //gather all primary data
@@ -175,6 +201,7 @@ class CharacterFragmentViewModel(
             charInstance.maxMagDP,
             charInstance.maxPsyDP
         )
+        setBonusColor()
     }
 
     //set all dropdown data
@@ -247,25 +274,30 @@ class CharacterFragmentViewModel(
      *
      * @param name displayed name for this item
      * @param primaryStat stat item to work with and display
+     * @param bonusColorChange function to run to update the bonus texts' color
      * @param changeFunc function that accesses the size category display when it needs to be updated
      */
     class PrimeCharacteristicData(
         val name: String,
         private val primaryStat: PrimaryCharacteristic,
+        val bonusColorChange: () -> Unit,
         val changeFunc: () -> Unit
     ){
         //initialize characteristic input value
         private val _input = MutableStateFlow(primaryStat.inputValue.toString())
         val input = _input.asStateFlow()
 
-        //initialize characteristic output display
-        private val _output = MutableStateFlow(
-            PrimaryStrings(
-                primaryStat.bonus.toString(),
-                primaryStat.outputMod.toString()
-            )
-        )
-        val output = _output.asStateFlow()
+        //initialize characteristic bonus input
+        private val _bonusInput = MutableStateFlow(primaryStat.levelBonus.toString())
+        val bonusInput = _bonusInput.asStateFlow()
+
+        //initialize other bonus display
+        private val _bonus = MutableStateFlow(primaryStat.bonus.toString())
+        val bonus = _bonus.asStateFlow()
+
+        //initialize final output mod display
+        private val _modTotal = MutableStateFlow(primaryStat.outputMod.toString())
+        val modTotal = _modTotal.asStateFlow()
 
         /**
          * Change the value of this primary characteristic's input to the indicated value.
@@ -287,26 +319,31 @@ class CharacterFragmentViewModel(
         fun setInput(input: String){_input.update{input}}
 
         /**
+         * Sets the level bonus for this characteristic.
+         *
+         * @param input value to set the level bonus to
+         */
+        fun setBonusInput(input: Int){
+            primaryStat.setLevelBonus(input)
+            setBonusInput(input.toString())
+            bonusColorChange()
+            setOutput()
+            changeFunc()
+        }
+
+        /**
+         * Sets the display of the characteristic's level bonus.
+         *
+         * @param input new string to display
+         */
+        fun setBonusInput(input: String){_bonusInput.update{input}}
+
+        /**
          * Update the bonus and total displays of this string item.
          */
         fun setOutput() {
-            _output.update{
-                it.copy(
-                    specialVal = primaryStat.bonus.toString(),
-                    modVal = primaryStat.outputMod.toString()
-                )
-            }
+            _bonus.update{primaryStat.bonus.toString()}
+            _modTotal.update{primaryStat.outputMod.toString()}
         }
     }
-
-    /**
-     * Object that holds both the bonus and total values of a primary characteristic.
-     *
-     * @param specialVal bonus display for this characteristic
-     * @param modVal output modifier for this characteristic
-     */
-    data class PrimaryStrings(
-        val specialVal: String,
-        val modVal: String,
-    )
 }

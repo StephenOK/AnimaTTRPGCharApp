@@ -544,8 +544,14 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         listOf(1, 2, 3),
         0,
-        null,
-        null
+        {_, cost ->
+            when(cost){
+                1 -> charInstance.inventory.setWealthBonus(2000)
+                2 -> charInstance.inventory.setWealthBonus(5000)
+                3 -> charInstance.inventory.setWealthBonus(10000)
+            }
+        },
+        {_, _ -> charInstance.inventory.setWealthBonus(0)}
     )
 
     val increasedRegeneration = Advantage(

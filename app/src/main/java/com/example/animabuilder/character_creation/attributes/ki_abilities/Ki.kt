@@ -231,8 +231,11 @@ class Ki(private val charInstance: BaseCharacter){
      * Recalculates the character's maximum martial knowledge
      */
     fun updateMK(){
-        martialKnowledgeMax = (charInstance.ownClass.mkPerLevel * charInstance.lvl) +
-                charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec
+        val classMK =
+            if(charInstance.lvl != 0) charInstance.ownClass.mkPerLevel * charInstance.lvl
+            else charInstance.ownClass.mkPerLevel/2
+
+        martialKnowledgeMax = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec
         updateMkSpent()
     }
 

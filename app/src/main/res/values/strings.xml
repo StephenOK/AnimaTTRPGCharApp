@@ -22,6 +22,9 @@
 
     <string name = "sizeCat">Size Category: </string>
     <string name = "appearance">Appearance: </string>
+    <string name = "movement">Movement Value: </string>
+    <string name = "weightIndex">Weight Index: </string>
+    <string name = "gnosisLabel">Gnosis: </string>
 
     <string-array name = "classArray">
         <item>Freelancer</item>
@@ -111,6 +114,11 @@
     <string name = "descriptionLabel">Description</string>
     <string name = "descriptionOfLabel">Description of </string>
 
+    <string name = "maleString">Male Bonus (PhR)</string>
+    <string name = "femaleString">Female Bonus (MR)</string>
+
+    <string name = "isMagPaladin">Take magic abilities</string>
+
     <string name = "dpCombatLabel">Combat</string>
     <string name = "dpMagicLabel">Magic</string>
     <string name = "dpPsychicLabel">Psychic</string>
@@ -126,10 +134,6 @@
 
     <string name = "natNotTaken">+ 0</string>
     <string name = "natTaken">+ 5</string>
-
-    <string name = "mpAttack">Magic Projection as Attack</string>
-    <string name = "mpDefense">Magic Projection as Defense</string>
-    <string name = "psyProjectionMod">Psychic Projection Module</string>
 
     <string name = "summonTitle">Summoning</string>
     <string name = "controlTitle">Control</string>

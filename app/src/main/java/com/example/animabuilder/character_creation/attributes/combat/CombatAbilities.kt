@@ -92,7 +92,9 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Updates the number of life points gained from their class and level.
      */
     fun updateClassLife(){
-        lifeClassTotal = charInstance.ownClass.lifePointsPerLevel * charInstance.lvl
+        lifeClassTotal =
+            if(charInstance.lvl != 0) charInstance.ownClass.lifePointsPerLevel * charInstance.lvl
+            else charInstance.ownClass.lifePointsPerLevel/2
         updateLifePoints()
     }
 
@@ -138,10 +140,13 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Function that updates the character's total initiative.
      */
     fun updateInitiative(){
+        val classInitiative =
+            if(charInstance.lvl != 0) charInstance.ownClass.initiativePerLevel * charInstance.lvl
+            else charInstance.ownClass.initiativePerLevel/2
+
         //add together class level value, dexterity, agility, and special input
         totalInitiative =
-            (charInstance.ownClass.initiativePerLevel * charInstance.lvl) +
-                    charInstance.primaryList.dex.outputMod +
+            classInitiative + charInstance.primaryList.dex.outputMod +
                     charInstance.primaryList.agi.outputMod + specInitiative
     }
 

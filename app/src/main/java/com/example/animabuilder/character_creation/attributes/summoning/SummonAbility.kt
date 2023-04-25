@@ -62,7 +62,10 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * Refresh the number of points in this stat from levels.
      */
     fun updateLevelTotal(){
-        levelTotal = pointsPerLevel * charInstance.lvl
+        levelTotal =
+            if(charInstance.lvl != 0) pointsPerLevel * charInstance.lvl
+            else pointsPerLevel/2
+
         updateTotal()
     }
 

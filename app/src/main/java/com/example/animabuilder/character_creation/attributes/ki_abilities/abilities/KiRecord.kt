@@ -31,7 +31,8 @@ class KiRecord{
                 "overcomes obstacles such as solid objects and closed spaces, but it can not " +
                 "penetrate sealed energy fields. The GM should treat this power as a special " +
                 "Secondary Ability and can calculate its score by averaging the character's " +
-                "total MK and his Notice score."
+                "total MK and his Notice score. Ranger's add 10 points to this ability per class " +
+                "level."
     )
 
     val erudition = KiAbility(
@@ -205,17 +206,18 @@ class KiRecord{
                 "invisible to Ki Detection and Erudition. Technically, it creates a spiritual " +
                 "void that hinders tracking. Like Ki Detection, Ki Concealment is calculated as " +
                 "a Special Secondary Ability. Simply find the average between a character's total " +
-                "MK and his Hide score. When someone with Ki Detection tries to locate a " +
-                "character using Ki Concealment, they must make an Opposed check - the hiding " +
-                "character's Concealment score is deducted from the searching character's " +
-                "Detection score. An individual accumulating Ki while using this ability must " +
-                "subtract 10 from his Concealment score for every 1 Ki Point in use. Ki " +
-                "Concealment also distorts energy information gathered with Erudition. By " +
-                "succeeding at an Opposed Check, individuals may send out false information " +
-                "to those using Erudition. Finally, this ability also grants certain advantages " +
-                "against supernatural detection. If a character using Ki Concealment is being " +
-                "tracked down by a spell or psychic ability, he can add half his Ki Concealment " +
-                "score to the Resistance Check he needs to pass in order to avoid detection."
+                "MK and his Hide score. Shadows and Thieves add 5 points to this value per level. " +
+                "When someone with Ki Detection tries to locate a character using Ki Concealment, " +
+                "they must make an Opposed check - the hiding character's Concealment score is " +
+                "deducted from the searching character's Detection score. An individual " +
+                "accumulating Ki while using this ability must subtract 10 from his Concealment " +
+                "score for every 1 Ki Point in use. Ki Concealment also distorts energy " +
+                "information gathered with Erudition. By succeeding at an Opposed Check, " +
+                "individuals may send out false information to those using Erudition. Finally, " +
+                "this ability also grants certain advantages against supernatural detection. If a " +
+                "character using Ki Concealment is being tracked down by a spell or psychic " +
+                "ability, he can add half his Ki Concealment score to the Resistance Check he " +
+                "needs to pass in order to avoid detection."
     )
 
     val falseDeath = KiAbility(

@@ -1,6 +1,5 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import kotlin.Throws
@@ -19,62 +18,63 @@ class SecondaryList(val charInstance: BaseCharacter){
 
     //Initialize all secondary characteristics in list
     //athletics
-    val acrobatics = SecondaryCharacteristic(R.string.acrobaticsLabel, this)
-    val athletics = SecondaryCharacteristic(R.string.athleticsLabel, this)
-    val climb = SecondaryCharacteristic(R.string.climbLabel, this)
-    val jump = SecondaryCharacteristic(R.string.jumpLabel, this)
-    val ride = SecondaryCharacteristic(R.string.rideLabel, this)
-    val swim = SecondaryCharacteristic(R.string.swimLabel, this)
+    val acrobatics = SecondaryCharacteristic(this)
+    val athletics = SecondaryCharacteristic(this)
+    val climb = SecondaryCharacteristic(this)
+    val jump = SecondaryCharacteristic(this)
+    val ride = SecondaryCharacteristic(this)
+    val swim = SecondaryCharacteristic(this)
 
     //creative
-    val art = SecondaryCharacteristic(R.string.artLabel, this)
-    val dance = SecondaryCharacteristic(R.string.danceLabel, this)
-    val forging = SecondaryCharacteristic(R.string.forgeLabel, this)
-    val music = SecondaryCharacteristic(R.string.musicLabel, this)
-    val sleightHand = SecondaryCharacteristic(R.string.sleightLabel, this)
+    val art = SecondaryCharacteristic(this)
+    val dance = SecondaryCharacteristic(this)
+    val forging = SecondaryCharacteristic(this)
+    val music = SecondaryCharacteristic(this)
+    val sleightHand = SecondaryCharacteristic(this)
 
     //perceptive
-    val notice = SecondaryCharacteristic(R.string.noticeLabel, this)
-    val search = SecondaryCharacteristic(R.string.searchLabel, this)
-    val track = SecondaryCharacteristic(R.string.trackLabel, this)
+    val notice = SecondaryCharacteristic(this)
+    val search = SecondaryCharacteristic(this)
+    val track = SecondaryCharacteristic(this)
 
     //social
-    val intimidate = SecondaryCharacteristic(R.string.intimidateLabel, this)
-    val leadership = SecondaryCharacteristic(R.string.leadershipLabel, this)
-    val persuasion = SecondaryCharacteristic(R.string.persuasionLabel, this)
-    val style = SecondaryCharacteristic(R.string.styleLabel, this)
+    val intimidate = SecondaryCharacteristic(this)
+    val leadership = SecondaryCharacteristic(this)
+    val persuasion = SecondaryCharacteristic(this)
+    val style = SecondaryCharacteristic(this)
 
     //subterfuge
-    val disguise = SecondaryCharacteristic(R.string.disguiseLabel, this)
-    val hide = SecondaryCharacteristic(R.string.hideLabel, this)
-    val lockPick = SecondaryCharacteristic(R.string.lockpickLabel, this)
-    val poisons = SecondaryCharacteristic(R.string.poisonLabel, this)
-    val theft = SecondaryCharacteristic(R.string.theftLabel, this)
-    val stealth = SecondaryCharacteristic(R.string.stealthLabel, this)
-    val trapLore = SecondaryCharacteristic(R.string.trapLabel, this)
+    val disguise = SecondaryCharacteristic(this)
+    val hide = SecondaryCharacteristic(this)
+    val lockPick = SecondaryCharacteristic(this)
+    val poisons = SecondaryCharacteristic(this)
+    val theft = SecondaryCharacteristic(this)
+    val stealth = SecondaryCharacteristic(this)
+    val trapLore = SecondaryCharacteristic(this)
 
     //intellectual
-    val animals = SecondaryCharacteristic(R.string.animalLabel, this)
-    val appraise = SecondaryCharacteristic(R.string.appraiseLabel, this)
-    val herbalLore = SecondaryCharacteristic(R.string.herbalLabel, this)
-    val history = SecondaryCharacteristic(R.string.histLabel, this)
-    val memorize = SecondaryCharacteristic(R.string.memLabel, this)
-    val magicAppraise = SecondaryCharacteristic(R.string.mAppraiseLabel, this)
-    val medic = SecondaryCharacteristic(R.string.medLabel, this)
-    val navigate = SecondaryCharacteristic(R.string.navLabel, this)
-    val occult = SecondaryCharacteristic(R.string.occultLabel, this)
-    val sciences = SecondaryCharacteristic(R.string.scienceLabel, this)
+    val animals = SecondaryCharacteristic(this)
+    val appraise = SecondaryCharacteristic(this)
+    val herbalLore = SecondaryCharacteristic(this)
+    val history = SecondaryCharacteristic(this)
+    val memorize = SecondaryCharacteristic(this)
+    val magicAppraise = SecondaryCharacteristic(this)
+    val medic = SecondaryCharacteristic(this)
+    val navigate = SecondaryCharacteristic(this)
+    val occult = SecondaryCharacteristic(this)
+    val sciences = SecondaryCharacteristic(this)
 
     //vigor
-    val composure = SecondaryCharacteristic(R.string.composureLabel, this)
-    val strengthFeat = SecondaryCharacteristic(R.string.strFeatLabel, this)
-    val resistPain = SecondaryCharacteristic(R.string.resistPainLabel, this)
+    val composure = SecondaryCharacteristic(this)
+    val strengthFeat = SecondaryCharacteristic(this)
+    val resistPain = SecondaryCharacteristic(this)
 
     //get all secondary characteristics
-    val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, art, dance, forging, music,
-    sleightHand, notice, search, track, intimidate, leadership, persuasion, style, disguise, hide,
-    lockPick, poisons, theft, stealth, trapLore, animals, appraise, herbalLore, history, memorize,
-    magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain)
+    val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, intimidate, leadership,
+        persuasion, style, notice, search, track, animals, appraise, herbalLore, history, memorize,
+        magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain,
+        disguise, hide, lockPick, poisons, theft, stealth, trapLore, art, dance, forging, music,
+        sleightHand)
 
     /**
      * Retrieves a secondary field based on the numerical input.

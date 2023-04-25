@@ -57,9 +57,14 @@ class EquipmentFragmentViewModel(
      * @param input item to look for
      * @return number of queried items in inventory
      */
-    fun getQuantity(input: GeneralEquipment): Int?{
-        return inventory.boughtGoods[input]
-    }
+    fun getQuantity(input: GeneralEquipment): Int?{return inventory.boughtGoods[input]}
+
+    /**
+     * Gets the bonus wealth value the character has.
+     *
+     * @return amount of bonus wealth the character has
+     */
+    fun getBonusWealth(): Int{return inventory.wealthBonus}
 
     //instantiate all category data
     private val clothes = CategoryData(

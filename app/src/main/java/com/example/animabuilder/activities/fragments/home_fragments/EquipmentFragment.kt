@@ -51,6 +51,15 @@ fun EquipmentFragment(
             }
         }
 
+        if(equipFragVM.getBonusWealth() > 0){
+            item{
+                Text(text =
+                    stringResource(R.string.bonusWealthLabel) +
+                            equipFragVM.getBonusWealth().toString()
+                )
+            }
+        }
+
         //display all purchasable items by category
         items(equipFragVM.allCategoryData){
             CategoryButton(equipFragVM, it, openDetailAlert)

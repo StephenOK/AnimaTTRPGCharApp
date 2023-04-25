@@ -8,11 +8,10 @@ import java.io.IOException
  * Object for a single secondary characteristic.
  * Updates total whenever there is a change in other any value.
  *
- * @param name string reference for this characteristic's name
  * @param parent full list that holds this objejct
  */
 
-class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList){
+class SecondaryCharacteristic(private val parent: SecondaryList){
     //initialize points from the associated modifier
     var modVal = 0
 
@@ -109,7 +108,10 @@ class SecondaryCharacteristic(val name: Int, private val parent: SecondaryList){
      * Updates the number of points gained from levels for this characteristic.
      */
     fun classTotalRefresh(){
-        classPointTotal = classPointsPerLevel * parent.charInstance.lvl
+        classPointTotal =
+            if(parent.charInstance.lvl != 0) classPointsPerLevel * parent.charInstance.lvl
+            else classPointsPerLevel/2
+
         refreshTotal()
     }
 

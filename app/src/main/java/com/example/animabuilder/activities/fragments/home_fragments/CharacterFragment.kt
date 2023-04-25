@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -65,6 +66,37 @@ fun CharacterPageFragment(
             DropdownObject(dropItem, updateFunc)
         }
 
+        //display gender bonus selection if the character is a duk'zarist
+        item{
+            if(charFragVM.raceDropdown.output.collectAsState().value == stringArrayResource(R.array.raceArray)[6]){
+                Row {
+                    //display checkbox for selection
+                    Checkbox(
+                        checked = charFragVM.isMale.collectAsState().value,
+                        onCheckedChange = { charFragVM.toggleGender() }
+                    )
+                    //display current selection
+                    Text(text = stringResource(charFragVM.genderString.collectAsState().value))
+                }
+            }
+        }
+
+        //implement paladin checkbox if necessary
+        item{
+            if(charFragVM.magPaladinOpen.collectAsState().value){
+                Row {
+                    Checkbox(
+                        checked = charFragVM.magPaladin.collectAsState().value,
+                        onCheckedChange = {charFragVM.toggleMagPaladin()}
+                    )
+
+                    Text(
+                        text = stringResource(R.string.isMagPaladin)
+                    )
+                }
+            }
+        }
+
         //primary characteristic table
         item {
             //table header row
@@ -110,6 +142,12 @@ fun CharacterPageFragment(
         //display character's size category
         item{Text(text = stringResource(R.string.sizeCat) + charFragVM.sizeInput.collectAsState().value)}
 
+        //display character's movement value
+        item{Text(text = stringResource(R.string.movement) + charFragVM.movementDisplay.collectAsState().value)}
+
+        //display character's weight index
+        item{Text(text = stringResource(R.string.weightIndex) + charFragVM.weightIndex.collectAsState().value)}
+
         //create input for character's appearance score
         item{
             Text(text = stringResource(R.string.appearance))
@@ -126,6 +164,20 @@ fun CharacterPageFragment(
                     if(charFragVM.isNotUnattractive())
                         charFragVM.setAppearInput("")
                 },
+                {},
+                Color.Black,
+                Modifier
+            )
+        }
+
+        //create input for character's gnosis
+        item{
+            Text(text = stringResource(R.string.gnosisLabel))
+            NumberInput(
+                charFragVM.gnosisDisplay.collectAsState().value,
+                {},
+                {charFragVM.setGnosisDisplay(it.toInt())},
+                {charFragVM.setGnosisDisplay("")},
                 {},
                 Color.Black,
                 Modifier
@@ -163,7 +215,7 @@ private fun DropdownObject(
                 Icon(
                     item.icon.collectAsState().value,
                     "contentDescription",
-                    modifier = Modifier.clickable {item.openToggle()})
+                    modifier = Modifier.clickable{item.openToggle()})
             }
         )
 

@@ -113,6 +113,15 @@ class Psychic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Check that the bought psychic projection points are a valid input.
+     *
+     * @return true if valid
+     */
+    fun getValidProjection(): Boolean{
+        return psyProjectionBought * charInstance.ownClass.psyProjGrowth <= charInstance.maxPsyDP/2
+    }
+
+    /**
      * Determine the character's currently available Psychic Points.
      *
      * @return number of psychic points available to the character

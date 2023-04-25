@@ -10,6 +10,7 @@
     <string name = "artAndDecorLabel">Art and Decor</string>
     <string name = "gemLabel">Gems</string>
     <string name = "paintingLabel">Paintings</string>
+    <string name = "poisonLabel">Poisons</string>
     <string name = "miscLabel">Miscellaneous</string>
     <string name = "weaponsLabel">Arms and Weapons</string>
     <string name = "armorsLabel">Armor</string>
@@ -21,4 +22,6 @@
     <string name = "maxGoldLabel">Gold Max: </string>
     <string name = "maxSilverLabel">Silver Max: </string>
     <string name = "maxCopperLabel">Copper Max: </string>
+
+    <string name = "bonusWealthLabel">Bonus Wealth: </string>
 </resources>

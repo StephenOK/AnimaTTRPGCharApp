@@ -1,13 +1,14 @@
 package com.example.animabuilder.character_creation.attributes.class_objects
 
 import com.example.animabuilder.character_creation.BaseCharacter
+import java.io.BufferedReader
 
 /**
  * Record of classes available to the character.
  *
  * @param charInstance object that holds the character's dataa
  */
-class ClassInstances(charInstance: BaseCharacter){
+class ClassInstances(private val charInstance: BaseCharacter){
     val warrior =
         CharClass(
             "Warrior", listOf(Archetype.Fighter),
@@ -82,9 +83,11 @@ class ClassInstances(charInstance: BaseCharacter){
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(1)
 
-            charInstance.magic.setZeonPerLevel(20)
-
-            charInstance.summoning.banish.setPointsPerLevel(10)
+            if(magPaladin){
+                charInstance.magic.setZeonPerLevel(20)
+                charInstance.summoning.banish.setPointsPerLevel(10)
+            }
+            else charInstance.secondaryList.composure.setClassPointsPerLevel(10)
         },
         {
             charInstance.combat.block.setPointPerLevel(0)
@@ -96,9 +99,11 @@ class ClassInstances(charInstance: BaseCharacter){
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(-1)
 
-            charInstance.magic.setZeonPerLevel(0)
-
-            charInstance.summoning.banish.setPointsPerLevel(0)
+            if(magPaladin){
+                charInstance.magic.setZeonPerLevel(0)
+                charInstance.summoning.banish.setPointsPerLevel(0)
+            }
+            else charInstance.secondaryList.composure.setClassPointsPerLevel(0)
         }
     )
 
@@ -120,9 +125,11 @@ class ClassInstances(charInstance: BaseCharacter){
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(1)
 
-            charInstance.magic.setZeonPerLevel(20)
-
-            charInstance.summoning.control.setPointsPerLevel(10)
+            if(magPaladin){
+                charInstance.magic.setZeonPerLevel(20)
+                charInstance.summoning.control.setPointsPerLevel(10)
+            }
+            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
         },
         {
             charInstance.combat.attack.setPointPerLevel(0)
@@ -135,9 +142,11 @@ class ClassInstances(charInstance: BaseCharacter){
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
 
-            charInstance.magic.setZeonPerLevel(0)
-
-            charInstance.summoning.control.setPointsPerLevel(0)
+            if(magPaladin){
+                charInstance.magic.setZeonPerLevel(0)
+                charInstance.summoning.control.setPointsPerLevel(0)
+            }
+            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
         }
     )
 
@@ -544,13 +553,144 @@ class ClassInstances(charInstance: BaseCharacter){
         0.60, 2, 60, 2, 2, 2, 2, 2,
         0.60, 20, 2,
         2, 2, 2, 2, 2, 2, 2,
-        {charInstance.magic.setZeonPerLevel(10)},
-        {charInstance.magic.setZeonPerLevel(0)}
+        {
+            freelancerAdded()
+            charInstance.magic.setZeonPerLevel(10)
+        },
+        {
+            freelancerRemoved()
+            charInstance.magic.setZeonPerLevel(0)
+        }
     )
 
     val allClasses = listOf(freelancer, warrior, acroWarrior, paladin, darkPaladin, weaponMaster, technician, tao,
     ranger, shadow, thief, assassin, wizard, warlock, illusionist, wizMentalist, summoner, warSummoner,
     mentalist, warMentalist)
+
+    var magPaladin = true
+
+    /**
+     * Toggles the user's selection for their paladin boon.
+     */
+    fun toggleMagPaladin(){
+        //swap character's selection
+        magPaladin = !magPaladin
+
+        //boon items for paladins
+        if(charInstance.ownClass == paladin){
+            //grant magic options
+            if(magPaladin){
+                //remove composure bonus
+                charInstance.secondaryList.composure.setClassPointsPerLevel(0)
+
+                //grant zeon and banish points
+                charInstance.magic.setZeonPerLevel(20)
+                charInstance.summoning.banish.setPointsPerLevel(10)
+            }
+
+            //grant secondary boon
+            else {
+                //remove zeon and banish points
+                charInstance.magic.setZeonPerLevel(0)
+                charInstance.summoning.banish.setPointsPerLevel(0)
+
+                //grant composure bonus
+                charInstance.secondaryList.composure.setClassPointsPerLevel(10)
+            }
+        }
+
+        //boon items for dark paladins
+        else{
+            //grant magic options
+            if(magPaladin){
+                //remove withstand pain bonus
+                charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
+
+                //grant zeon and control points
+                charInstance.magic.setZeonPerLevel(20)
+                charInstance.summoning.control.setPointsPerLevel(10)
+            }
+
+            //grant secondary boon
+            else {
+                //remove zeon and control points
+                charInstance.magic.setZeonPerLevel(0)
+                charInstance.summoning.control.setPointsPerLevel(0)
+
+                //grant withstand pain bonus
+                charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
+            }
+        }
+    }
+
+    //initialize freelancer bonus selections
+    val freelancerSelection = mutableListOf(0, 0, 0)
+
+    /**
+     * Function to run on the character's selection of the freelancer class.
+     */
+    fun freelancerAdded(){
+        freelancerSelection.forEach{
+            //update characteristic's class value if a selection was made
+            if(it != 0)
+                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(10)
+        }
+    }
+
+    /**
+     * Function to run on the character's change from the freelancer class.
+     */
+    fun freelancerRemoved(){
+        //update characteristic's class value if a selection was made
+        freelancerSelection.forEach{
+            charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
+        }
+    }
+
+    /**
+     * Attempts to change the selection in the indicated record index.
+     *
+     * @param index record location to set the selection to
+     * @param input value to set the selection to
+     * @return value recorded after operation
+     */
+    fun setSelection(index: Int, input: Int): Int{
+        //record current selected value
+        val prevIndex = freelancerSelection[index] - 1
+
+        //if user is clearing selection
+        if(input == 0) {
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+
+            //set new input
+            freelancerSelection[index] = 0
+        }
+
+        //user is making a selection
+        else{
+            //determine that this input is not taken in another record index
+            freelancerSelection.forEach{
+                //return current value if match found
+                if(it == input)
+                    return freelancerSelection[index]
+            }
+
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+
+            //set new input
+            freelancerSelection[index] = input
+
+            //add new bonus
+            charInstance.secondaryList.fullList[input - 1].setClassPointsPerLevel(10)
+        }
+
+        //return changed value
+        return freelancerSelection[index]
+    }
 
     /**
      * Finds the class based on the inputted class name
@@ -564,5 +704,21 @@ class ClassInstances(charInstance: BaseCharacter){
         }
 
         return null
+    }
+
+    fun loadClassData(fileReader: BufferedReader){
+        magPaladin = fileReader.readLine().toBoolean()
+
+        freelancerSelection[0] = fileReader.readLine().toInt()
+        freelancerSelection[1] = fileReader.readLine().toInt()
+        freelancerSelection[2] = fileReader.readLine().toInt()
+    }
+
+    fun writeClassData(){
+        charInstance.addNewData(magPaladin)
+
+        freelancerSelection.forEach{
+            charInstance.addNewData(it)
+        }
     }
 }

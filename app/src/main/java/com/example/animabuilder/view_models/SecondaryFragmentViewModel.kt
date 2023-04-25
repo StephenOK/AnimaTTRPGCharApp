@@ -1,7 +1,13 @@
 package com.example.animabuilder.view_models
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.character_creation.attributes.class_objects.ClassInstances
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.example.animabuilder.character_creation.attributes.secondary_abilities.SecondaryList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,12 +21,17 @@ import kotlinx.coroutines.flow.update
  * @param secondaryList character's secondary characteristic data
  */
 class SecondaryFragmentViewModel(
+    val charInstance: BaseCharacter,
     secondaryList: SecondaryList
 ): ViewModel() {
+    //initialize open state of the freelancer bonus options
+    private val _freelancerOptionsOpen = MutableStateFlow(charInstance.ownClass == charInstance.classes.freelancer)
+    val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
+
     //initialize each secondary characteristic field data
     private val athletics = SecondaryFieldData(
         secondaryList,
-        R.string.athleticsLabel,
+        R.string.athleticism,
         secondaryList.intToField(0)
     )
 
@@ -62,6 +73,76 @@ class SecondaryFragmentViewModel(
 
     //gather all field data
     val allFields = listOf(athletics, creative, perceptive, social, subterfuge, intellectual, vigor)
+
+    //get all individual characteristic items
+    val allCharacteristics = athletics.fieldCharacteristics + social.fieldCharacteristics +
+            perceptive.fieldCharacteristics + intellectual.fieldCharacteristics +
+            vigor.fieldCharacteristics + subterfuge.fieldCharacteristics + creative.fieldCharacteristics
+
+    //create a object for each freelancer bonus option
+    val firstSelection = FreelancerSelection(charInstance.classes, 0, allCharacteristics)
+    val secondSelection = FreelancerSelection(charInstance.classes, 1, allCharacteristics)
+    val thirdSelection = FreelancerSelection(charInstance.classes, 2, allCharacteristics)
+
+    /**
+     * Class for a freelancer's secondary characteristic selection.
+     *
+     * @param classes source of selection record
+     * @param selection index this object manages
+     * @param allCharacteristics master list of characteristics
+     */
+    class FreelancerSelection(
+        private val classes: ClassInstances,
+        val selection: Int,
+        val allCharacteristics: List<SecondaryItem>
+    ){
+        //initialize dropdown size
+        private val _size = MutableStateFlow(Size.Zero)
+        val size = _size.asStateFlow()
+
+        //initialize selection in this index
+        private val _selectedIndex = MutableStateFlow(classes.freelancerSelection[selection])
+        val selectedIndex = _selectedIndex.asStateFlow()
+
+        //initialize open state of this item's dropdown
+        private val _isOpen = MutableStateFlow(false)
+        val isOpen = _isOpen.asStateFlow()
+
+        //initialize displayed icon
+        private val _icon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
+        val icon = _icon.asStateFlow()
+
+        /**
+         * Function to change the dropdown's size.
+         *
+         * @param input value to set the size to
+         */
+        fun setSize(input: Size){_size.update{input}}
+
+        /**
+         * Sets the user's selected characteristic for bonus.
+         */
+        fun setSelection(newIndex: Int){
+            //attempt to change the selection
+            _selectedIndex.update{classes.setSelection(selection, newIndex)}
+
+            //update the class bonus displays of all characteristic data
+            allCharacteristics.forEach{
+                it.setClassPoints()
+            }
+        }
+
+        /**
+         * Toggles the open state of the characteristic dropdown.
+         */
+        fun openToggle(){
+            _isOpen.update{!isOpen.value}
+            _icon.update{
+                if(isOpen.value) Icons.Filled.KeyboardArrowUp
+                else Icons.Filled.KeyboardArrowDown
+            }
+        }
+    }
 
     /**
      * Data in regards to a secondary field item.
@@ -117,6 +198,10 @@ class SecondaryFragmentViewModel(
         private val _pointInput = MutableStateFlow(secondaryItem.pointsApplied.toString())
         val pointInput = _pointInput.asStateFlow()
 
+        //initialize display for class points in this characteristic
+        private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.toString())
+        val classPoints = _classPoints.asStateFlow()
+
         //initialize the total score in this characteristic
         private val _totalOutput = MutableStateFlow(secondaryItem.total.toString())
         val totalOutput = _totalOutput.asStateFlow()
@@ -126,7 +211,7 @@ class SecondaryFragmentViewModel(
          *
          * @return characteristic's name
          */
-        fun getName(): Int{return secondaryItem.name}
+        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem) + 1}
 
         /**
          * Retrieves the modifier value of the characteristic.
@@ -134,13 +219,6 @@ class SecondaryFragmentViewModel(
          * @return displayed string for the characteristic's modifier
          */
         fun getModVal(): String{return secondaryItem.modVal.toString()}
-
-        /**
-         * Retrieves the class total for this characteristic.
-         *
-         * @return string of the characteristic's class points
-         */
-        fun getClassPointTotal(): String{return secondaryItem.classPointTotal.toString()}
 
         /**
          * Retrieves the character's development point cost.
@@ -200,5 +278,20 @@ class SecondaryFragmentViewModel(
          * @param input new string to display
          */
         fun setPointInput(input: String){_pointInput.update{input}}
+
+        /**
+         * Refreshes the class point display for the characteristic.
+         */
+        fun setClassPoints(){
+            _classPoints.update{secondaryItem.classPointTotal.toString()}
+            _totalOutput.update{secondaryItem.total.toString()}
+        }
+    }
+
+    /**
+     * Refreshes the fragment's values for changes on other pages.
+     */
+    fun refreshPage(){
+        _freelancerOptionsOpen.update{charInstance.ownClass == charInstance.classes.freelancer}
     }
 }

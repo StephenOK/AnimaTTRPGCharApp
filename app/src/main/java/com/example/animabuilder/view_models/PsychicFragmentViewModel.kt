@@ -2,6 +2,7 @@ package com.example.animabuilder.view_models
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
@@ -44,6 +45,7 @@ class PsychicFragmentViewModel(
         psychic.innatePsyPoints.toString(),
         psychic.boughtPsyPoints,
         psychic.totalPsychicPoints,
+        {Color.Black}
     ){input, item ->
         psychic.buyPsyPoints(input)
         item.update{psychic.totalPsychicPoints.toString()}
@@ -55,7 +57,13 @@ class PsychicFragmentViewModel(
         R.string.psyProjectionLabel,
         dexMod.toString(),
         psychic.psyProjectionBought,
-        psychic.psyProjectionTotal
+        psychic.psyProjectionTotal,
+        {
+            if(psychic.getValidProjection())
+                Color.Black
+            else
+                Color.Red
+        }
     ){input, item ->
         psychic.buyPsyProjection(input)
         item.update{psychic.psyProjectionTotal.toString()}
@@ -158,6 +166,7 @@ class PsychicFragmentViewModel(
         val baseString: String,
         boughtVal: Int,
         totalVal: Int,
+        val changeColor: () -> Color,
         val totalUpdate: (Int, MutableStateFlow<String>) -> Unit
     ){
         //initialize purchase input for this item
@@ -168,6 +177,10 @@ class PsychicFragmentViewModel(
         private val _totalAmount = MutableStateFlow(totalVal.toString())
         val totalAmount = _totalAmount.asStateFlow()
 
+        //initialize text's color
+        private val _textColor = MutableStateFlow(changeColor())
+        val textColor = _textColor.asStateFlow()
+
         /**
          * Sets the purchased amount to the indicated value.
          *
@@ -176,6 +189,7 @@ class PsychicFragmentViewModel(
         fun setPurchaseAmount(input: Int){
             setPurchaseAmount(input.toString())
             totalUpdate(input, _totalAmount)
+            setTextColor()
         }
 
         /**
@@ -184,6 +198,8 @@ class PsychicFragmentViewModel(
          * @param input new item to display
          */
         fun setPurchaseAmount(input: String){_purchaseAmount.update{input}}
+
+        fun setTextColor(){_textColor.update{changeColor()}}
     }
 
     /**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name = "athleticism">Athleticism</string>
     <string name = "socialLabel">Social</string>
     <string name = "perceptionLabel">Perception</string>
     <string name = "intellectualLabel">Intellectual</string>
@@ -7,48 +8,56 @@
     <string name = "subterfugeLabel">Subterfuge</string>
     <string name = "creativeLabel">Creative</string>
 
-    <string name = "acrobaticsLabel">Acrobatics</string>
-    <string name = "athleticsLabel">Athletics</string>
-    <string name = "climbLabel">Climb</string>
-    <string name = "jumpLabel">Jump</string>
-    <string name = "rideLabel">Ride</string>
-    <string name = "swimLabel">Swim</string>
+    <string-array name="secondaryCharacteristics">
+        <item>--Select a Characteristic--</item>
 
-    <string name = "intimidateLabel">Intimidate</string>
-    <string name = "leadershipLabel">Leadership</string>
-    <string name = "persuasionLabel">Persuasion</string>
-    <string name = "styleLabel">Style</string>
+        <item>Acrobatics</item>
+        <item>Athletics</item>
+        <item>Climb</item>
+        <item>Jump</item>
+        <item>Ride</item>
+        <item>Swim</item>
 
-    <string name = "noticeLabel">Notice</string>
-    <string name = "searchLabel">Search</string>
-    <string name = "trackLabel">Track</string>
+        <item>Intimidate</item>
+        <item>Leadership</item>
+        <item>Persuasion</item>
+        <item>Style</item>
 
-    <string name = "animalLabel">Animals</string>
-    <string name = "appraiseLabel">Appraise</string>
-    <string name = "herbalLabel">Herb Lore</string>
-    <string name = "histLabel">History</string>
-    <string name = "memLabel">Memorize</string>
-    <string name = "mAppraiseLabel">Magic Appraise</string>
-    <string name = "medLabel">Medicine</string>
-    <string name = "navLabel">Navigation</string>
-    <string name = "occultLabel">Occult</string>
-    <string name = "scienceLabel">Science</string>
+        <item>Notice</item>
+        <item>Search</item>
+        <item>Track</item>
 
-    <string name = "composureLabel">Composure</string>
-    <string name = "strFeatLabel">Feats of Strength</string>
-    <string name = "resistPainLabel">Withstand Pain</string>
+        <item>Animals</item>
+        <item>Appraise</item>
+        <item>Herb Lore</item>
+        <item>History</item>
+        <item>Memorize</item>
+        <item>Magic Appraise</item>
+        <item>Medicine</item>
+        <item>Navigation</item>
+        <item>Occult</item>
+        <item>Science</item>
 
-    <string name = "disguiseLabel">Disguise</string>
-    <string name = "hideLabel">Hide</string>
-    <string name = "lockpickLabel">Lock Picking</string>
-    <string name = "poisonLabel">Poisons</string>
-    <string name = "theftLabel">Theft</string>
-    <string name = "stealthLabel">Stealth</string>
-    <string name = "trapLabel">Trap Lore</string>
+        <item>Composure</item>
+        <item>Feats of Strength</item>
+        <item>Withstand Pain</item>
 
-    <string name = "artLabel">Art</string>
-    <string name = "danceLabel">Dance</string>
-    <string name = "forgeLabel">Forging</string>
-    <string name = "musicLabel">Music</string>
-    <string name = "sleightLabel">Sleight of Hand</string>
+        <item>Disguise</item>
+        <item>Hide</item>
+        <item>Lock Picking</item>
+        <item>Poisons</item>
+        <item>Theft</item>
+        <item>Stealth</item>
+        <item>Trap Lore</item>
+
+        <item>Art</item>
+        <item>Dance</item>
+        <item>Forging</item>
+        <item>Music</item>
+        <item>Sleight of Hand</item>
+    </string-array>
+
+
+
+    <string name = "freelancerPrompt">Select Freelancer\'s Bonuses: </string>
 </resources>

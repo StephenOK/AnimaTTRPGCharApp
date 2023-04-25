@@ -353,14 +353,34 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
 
     /**
      * Determines development points spent in modules, martial arts, and weapon styles.
+     *
+     * @return value of points spent
      */
     fun calculateSpent(): Int{
         //initialize total as number of archetype modules taken
         var total = takenModules.size * 50
 
+        //add amount for different style modules
+        styleMods.forEach{
+            if(!styles.exceptions.contains(it))
+                total += it.cost
+        }
+
+        //apply weaponmaster deductions if applicable
+        if(charInstance.ownClass == charInstance.classes.weaponMaster)
+            total /= 2
+
+        //create dividend for individual weapon module addition
+        val classDividend =
+            if(charInstance.ownClass != charInstance.classes.weaponMaster)
+                1
+            else
+                2
+
         //retrieve list of individual weapons
         val toCheck = individualModules.toMutableList() - fullModWeapons.toSet()
 
+        //for each individual module taken
         toCheck.forEach{
             //if primary weapon is mixed
             if(primaryWeapon is MixedWeapon){
@@ -369,38 +389,35 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
                 //apply same type for exactly matching weapons
                 if(it is MixedWeapon) {
                     if ((copyPrime.mixedType - it.mixedType.toSet()).isEmpty())
-                        total += 10
+                        total += 10/classDividend
 
                     //apply mixed type for one matching type
                     else if (copyPrime.mixedType.contains(it.mixedType[0]) ||
                         copyPrime.mixedType.contains(it.mixedType[1])
                     )
-                        total += 15
+                        total += 15/classDividend
                 }
 
                 //apply mixed type for it belonging to one mixed type
                 else if(copyPrime.mixedType.contains(it.type))
-                    total += 15
+                    total += 15/classDividend
 
                 else
-                    total += 20
+                    total += 20/classDividend
             }
 
             //if primary weapon is not mixed
             //add mixed cost if secondary is mixed with one matching type
             else if(it is MixedWeapon && it.mixedType.contains(primaryWeapon.type))
-                total += 15
+                total += 15/classDividend
             //add identical cost for identical type
             else if(it.type == primaryWeapon.type)
-                total += 10
+                total += 10/classDividend
 
             //add no matching type amount
             else
-                total += 20
+                total += 20/classDividend
         }
-
-        //add amount for different style modules
-        styleMods.forEach{total += it.cost}
 
         //if character has martial arts taken
         if(takenMartialList.isNotEmpty()){
@@ -417,12 +434,38 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
                     50
 
             //add 50 for every other martial art taken
-            total += (takenMartialList.size - 1) * 50
+            total +=
+                if(charInstance.ownClass == charInstance.classes.tao) (takenMartialList.size - 1) * 20
+                else (takenMartialList.size - 1) * 50
         }
 
         return total
     }
 
+    /**
+     * Determines the amount of magic points spent in this section.
+     *
+     * @return value of magic points in this section
+     */
+    fun calcPointsInMag(): Int{
+        var output = 0
+
+        //add style costs for each one taken
+        if(styleMods.contains(styles.magAsAttack)) output += 75
+        if(styleMods.contains(styles.magAsDefense)) output += 75
+
+        return output
+    }
+
+    /**
+     * Determines the amount of psychic points spent in this section.
+     *
+     * @return value of psychic points in this section
+     */
+    fun calcPointsInPsy(): Int{
+        return if (styleMods.contains(styles.psyProjection)) 100
+            else 0
+    }
 
     /**
      * Retrieves save data to apply to the character for this category.

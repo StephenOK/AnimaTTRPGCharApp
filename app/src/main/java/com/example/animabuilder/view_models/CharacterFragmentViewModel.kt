@@ -39,6 +39,50 @@ class CharacterFragmentViewModel(
     private val _appearInput = MutableStateFlow(charInstance.appearance.toString())
     val appearInput = _appearInput.asStateFlow()
 
+    //initialize the character's movement value display
+    private val _movementDisplay = MutableStateFlow(charInstance.movement.toString() + "m")
+    val movementDisplay = _movementDisplay.asStateFlow()
+
+    //initialize charaaacter's gnosis input
+    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.toString())
+    val gnosisDisplay = _gnosisDisplay.asStateFlow()
+
+    /**
+     * Sets the display for the character's movement value as defined in the character.
+     */
+    fun setMovementDisplay(){
+        if(charInstance.movement == 0)
+            _movementDisplay.update{"SPECIAL"}
+        else
+            _movementDisplay.update{charInstance.movement.toString() + " m"}
+    }
+
+    fun setGnosisDisplay(input: Int){
+        charInstance.gnosis = input
+        setGnosisDisplay(input.toString())
+    }
+
+    fun setGnosisDisplay(input: String){_gnosisDisplay.update{input}}
+
+    //initialize the character's weight index display
+    private val _weightIndex = MutableStateFlow(
+        if(charInstance.primaryList.str.total < 12) charInstance.weightIndex.toString() + " kg"
+        else charInstance.weightIndex.toString() + " tons"
+    )
+    val weightIndex = _weightIndex.asStateFlow()
+
+    /**
+     * Sets the display for the character's movement value as defined in the character.
+     */
+    fun setWeightIndex(){
+        if(charInstance.weightIndex == 0)
+            _weightIndex.update{"SPECIAL"}
+        else if(charInstance.primaryList.str.total < 12)
+            _weightIndex.update{charInstance.weightIndex.toString() + " kg"}
+        else
+            _weightIndex.update{charInstance.weightIndex.toString() + " tons"}
+    }
+
     /**
      * Checks if the character has the Unattractive disadvantage.
      *
@@ -108,12 +152,72 @@ class CharacterFragmentViewModel(
             _bonusColor.update{Color.Red}
     }
 
+    //initialize character's gender tracker
+    private val _isMale = MutableStateFlow(charInstance.isMale)
+    val isMale = _isMale.asStateFlow()
+
+    //initialize display for character's gender
+    private val _genderString = MutableStateFlow(
+        if(charInstance.isMale) R.string.maleString
+        else R.string.femaleString
+    )
+    val genderString = _genderString.asStateFlow()
+
+    /**
+     * Swaps the character's gender to the other one.
+     */
+    fun toggleGender(){
+        //update the gender input
+        _isMale.update{!isMale.value}
+        charInstance.setGender(isMale.value)
+
+        //update display string appropriately
+        if(isMale.value)
+            _genderString.update{R.string.maleString}
+        else
+            _genderString.update{R.string.femaleString}
+    }
+
+    //initialize magic paladin open state
+    private val _magPaladinOpen = MutableStateFlow(getPaladin())
+    val magPaladinOpen = _magPaladinOpen.asStateFlow()
+
+    //initialize magic paladin checkbox input
+    private val _magPaladin = MutableStateFlow(charInstance.classes.magPaladin)
+    val magPaladin = _magPaladin.asStateFlow()
+
+    /**
+     * Sets the visibility of the paladin boon option checkbox.
+     */
+    fun setMagPaladinOpen(){_magPaladinOpen.update{getPaladin()}}
+
+    /**
+     * Toggles the character's selected paladin boon.
+     */
+    fun toggleMagPaladin(){
+        charInstance.classes.toggleMagPaladin()
+        _magPaladin.update{!magPaladin.value}
+    }
+
+    /**
+     * Determines if the character is one of the paladin classes.
+     *
+     * @return true if character is a paladin or dark paladin
+     */
+    fun getPaladin(): Boolean{
+        return charInstance.ownClass == charInstance.classes.paladin ||
+                charInstance.ownClass == charInstance.classes.darkPaladin
+    }
+
     //set all primary characteristic data
     private val strengthData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[0],
         charInstance.primaryList.str,
         {setBonusColor()},
-    ){this.setSizeInput()}
+    ){
+        this.setSizeInput()
+        this.setWeightIndex()
+    }
 
     private val dexterityData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[1],
@@ -124,7 +228,10 @@ class CharacterFragmentViewModel(
     private val agilityData = PrimeCharacteristicData(
         context.resources.getStringArray(R.array.primaryCharArray)[2],
         charInstance.primaryList.agi,
-        {setBonusColor()}
+        {
+            setBonusColor()
+            this.setMovementDisplay()
+        }
     ){}
 
     private val constitutionData = PrimeCharacteristicData(
@@ -174,10 +281,12 @@ class CharacterFragmentViewModel(
             charInstance.maxMagDP,
             charInstance.maxPsyDP
         )
+
+        setMagPaladinOpen()
     }
 
     //set race dropdown data
-    private val raceDropdown = DropdownData(
+    val raceDropdown = DropdownData(
         R.string.raceText,
         context.resources.getStringArray(R.array.raceArray),
         charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace)

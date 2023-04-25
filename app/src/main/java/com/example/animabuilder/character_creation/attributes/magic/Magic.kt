@@ -46,6 +46,9 @@ class Magic(private val charInstance: BaseCharacter){
     //initialize zeon recovery total
     var magicRecoveryTotal = 0
 
+    //initialize character's innate magic level
+    var innateMagic = 0
+
     //initialize bought magic projection
     var boughtMagProjection = 0
 
@@ -161,7 +164,10 @@ class Magic(private val charInstance: BaseCharacter){
      * Update the total number of Zeon points gained from levels.
      */
     fun updateZeonFromClass(){
-        zeonFromClass = zeonPerLevel * charInstance.lvl
+        zeonFromClass =
+            if(charInstance.lvl != 0) zeonPerLevel * charInstance.lvl
+            else zeonPerLevel/2
+
         calcMaxZeon()
     }
 
@@ -210,6 +216,7 @@ class Magic(private val charInstance: BaseCharacter){
     private fun calcZeonAcc(){
         zeonAccTotal = baseZeonAcc * zeonAccMult
         calcZeonRecovery()
+        setInnateMagic()
     }
 
     /**
@@ -229,6 +236,22 @@ class Magic(private val charInstance: BaseCharacter){
         magicRecoveryTotal = (zeonAccTotal * magicRecoveryMult).toInt()
     }
 
+    @JvmName("setInnateMagic1")
+    private fun setInnateMagic(){
+        innateMagic = when(zeonAccTotal){
+            in 0..9 -> 0
+            in 10 .. 50 -> 10
+            in 51..70 -> 20
+            in 71..90 -> 30
+            in 91..110 -> 40
+            in 111..130 -> 50
+            in 131..150 -> 60
+            in 151..180 -> 70
+            in 181..200 -> 80
+            else -> 90
+        }
+    }
+
     /**
      * Set the amount of magic projection bought by the user.
      *
@@ -245,6 +268,15 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun calcMagProj(){
         magProjTotal = charInstance.primaryList.dex.outputMod + boughtMagProjection
+    }
+
+    /**
+     * Determines if the bought amount of Magic Projejction is a valid input.
+     *
+     * @return true if input is valid
+     */
+    fun getValidProjection(): Boolean{
+        return boughtMagProjection * charInstance.ownClass.maProjGrowth <= charInstance.maxMagDP/2
     }
 
     /**

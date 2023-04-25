@@ -80,7 +80,9 @@ class CombatItem(
      */
     fun updateClassTotal(){
         //determine actual total
-        classTotal = (pointPerLevel * charInstance.lvl) + classBonus
+        classTotal =
+            if(charInstance.lvl != 0) (pointPerLevel * charInstance.lvl) + classBonus
+            else (pointPerLevel/2) + classBonus
 
         //set class cap if it is exceeded
         if(classTotal > 50)

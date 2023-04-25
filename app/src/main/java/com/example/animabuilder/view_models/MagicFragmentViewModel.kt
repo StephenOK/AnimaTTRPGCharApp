@@ -3,6 +3,7 @@ package com.example.animabuilder.view_models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.Element
@@ -37,6 +38,10 @@ class MagicFragmentViewModel(
     //initialize the character's zeon recovery string
     private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.toString())
     val zeonRecoveryString = _zeonRecoverString.asStateFlow()
+
+    //initialize the character's innate magic displaay
+    private val _innateMagic = MutableStateFlow(magic.innateMagic.toString())
+    val innateMagic = _innateMagic.asStateFlow()
 
     //initialize the character's magic projection imbalance input
     private val _projectionImbalance = MutableStateFlow(magic.magProjImbalance.toString())
@@ -86,8 +91,10 @@ class MagicFragmentViewModel(
             if(it >= 1){
                 magic.buyZeonAcc(it)
                 _zeonRecoverString.update{magic.magicRecoveryTotal.toString()}
+                _innateMagic.update{magic.innateMagic.toString()}
             }
-        }
+        },
+        {Color.Black}
     ) {it.update{magic.zeonAccTotal.toString()}}
 
     //create item to manage zeon projection
@@ -99,6 +106,12 @@ class MagicFragmentViewModel(
         {
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
+        },
+        {
+            if(magic.getValidProjection())
+                Color.Black
+            else
+                Color.Red
         }
     ){it.update{magic.magProjTotal.toString()}}
 
@@ -484,6 +497,7 @@ class MagicFragmentViewModel(
         boughtInput: Int,
         totalInput: Int,
         val buyItem: (Int) -> Unit,
+        val changeColor: () -> Color,
         val updateTotal: (MutableStateFlow<String>) -> Unit
     ){
         //initialize bought amount input
@@ -494,6 +508,10 @@ class MagicFragmentViewModel(
         private val _totalString = MutableStateFlow(totalInput.toString())
         val totalString = _totalString.asStateFlow()
 
+        //initialize the color of the displayed text
+        private val _textColor = MutableStateFlow(changeColor())
+        val textColor = _textColor.asStateFlow()
+
         /**
          * Set the bought amount to the desired input.
          *
@@ -501,6 +519,7 @@ class MagicFragmentViewModel(
          */
         fun setBoughtString(input: Int){
             buyItem(input)
+            setNewColor()
             setBoughtString(input.toString())
             updateTotal(_totalString)
         }
@@ -511,6 +530,11 @@ class MagicFragmentViewModel(
          * @param input string to now display
          */
         fun setBoughtString(input: String){_boughtString.update{input}}
+
+        /**
+         * Sets the color of this item's text to the indicated value.
+         */
+        fun setNewColor(){_textColor.update{changeColor()}}
     }
 
     /**

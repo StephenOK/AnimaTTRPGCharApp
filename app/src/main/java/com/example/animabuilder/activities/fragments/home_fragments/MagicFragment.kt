@@ -91,6 +91,11 @@ fun MagicFragment(
             ZeonPurchaseItem(it, updateFunc)
         }
 
+        //display character's innate magic
+        item{
+            Text(text = stringResource(R.string.innateMagic) + magFragVM.innateMagic.collectAsState().value)
+        }
+
         //projection imbalance section
         item {
             Row {
@@ -208,7 +213,7 @@ private fun ZeonPurchaseItem(
                 {tableItem.setBoughtString(it.toInt())},
                 {tableItem.setBoughtString("")},
                 {updateFunc()},
-                Color.Black,
+                tableItem.textColor.collectAsState().value,
                 Modifier
             )
 

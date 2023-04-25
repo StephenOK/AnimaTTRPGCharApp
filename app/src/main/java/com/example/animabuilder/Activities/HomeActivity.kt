@@ -80,7 +80,10 @@ class HomeActivity : AppCompatActivity() {
             //create viewModels for each individual fragment
             val charFragVM = CharacterFragmentViewModel(charInstance, homePageVM, context)
             val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
-            val secondaryFragVM = SecondaryFragmentViewModel(charInstance.secondaryList)
+            val secondaryFragVM = SecondaryFragmentViewModel(
+                charInstance,
+                charInstance.secondaryList
+            )
             val advantageFragVM = AdvantageFragmentViewModel(
                 charInstance,
                 charInstance.advantageRecord
@@ -212,6 +215,8 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
+                        secondaryFragVM.refreshPage()
+
                         SecondaryAbilityFragment(secondaryFragVM)
                         {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
                     }

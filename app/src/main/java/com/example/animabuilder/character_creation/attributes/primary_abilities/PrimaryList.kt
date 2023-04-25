@@ -14,6 +14,7 @@ class PrimaryList(private val charInstance: BaseCharacter){
         11,
         0
     ){mod, total ->
+        charInstance.setWeightIndex(total)
         charInstance.combat.wearArmor.setModPoints(mod)
         charInstance.updateSize()
 
@@ -40,6 +41,7 @@ class PrimaryList(private val charInstance: BaseCharacter){
         11,
         2
     ){mod, total ->
+        charInstance.setMovement(total)
         charInstance.secondaryList.updateAGI()
         charInstance.combat.dodge.setModPoints(mod)
         charInstance.combat.updateInitiative()

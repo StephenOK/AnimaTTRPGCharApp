@@ -50,6 +50,9 @@ class Inventory(val charInstance: BaseCharacter) {
     var maxSilver = 0
     var maxCopper = 0
 
+    //initialize starting wealth bonus
+    var wealthBonus = 0
+
     //initialize spent coin values
     var goldSpent = 0.0
     var silverSpent = 0.0
@@ -81,6 +84,14 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     @JvmName("setMaxCopper1")
     fun setMaxCopper(input: Int){maxCopper = input}
+
+    /**
+     * Setter for the character's bonus wealth from the advantage Starting Wealth.
+     *
+     * @param input value to set the bonus to
+     */
+    @JvmName("setWealthBonus1")
+    fun setWealthBonus(input: Int){wealthBonus = input}
 
     /**
      * Function to run when the user purchases an amount of items for their character.

@@ -79,6 +79,14 @@ class BaseCharacter {
     //character's appearance
     var appearance = 5
 
+    //character's movement value
+    var movement = 1
+
+    //character's weight index
+    var weightIndex = 1
+
+    //character's gnosis value
+    var gnosis = 0
 
     /**
      * Changes the character's gender depending on the input
@@ -113,6 +121,8 @@ class BaseCharacter {
         //change class and apply new buffs
         ownClass = input
         ownClass.onTake()
+
+        updateClassInputs()
     }
 
     /**
@@ -164,9 +174,6 @@ class BaseCharacter {
 
         //update character's martial knowledge
         ki.updateMK()
-
-        //update maximum zeon
-        magic.calcMaxZeon()
 
         //update innate psychic points
         psychic.setInnatePsy()
@@ -243,7 +250,9 @@ class BaseCharacter {
         lvl = levNum
 
         //determine development point count
-        devPT = 500 + lvl * 100
+        devPT =
+            if(lvl == 0) 400
+            else 500 + lvl * 100
 
         //refactor the character's presence
         combat.updatePresence()
@@ -320,14 +329,14 @@ class BaseCharacter {
      * Get by calculating the values spent in the magic and summoning sections.
      */
     private fun updateMagicSpent(){
-        ptInMag = magic.calculateSpent() + summoning.calculateSpent()
+        ptInMag = magic.calculateSpent() + summoning.calculateSpent() + weaponProficiencies.calcPointsInMag()
     }
 
     /**
      * Updates the total development points spent in psychic abilities.
      */
     private fun updatePsychicSpent(){
-        ptInPsy = psychic.calculateSpent()
+        ptInPsy = psychic.calculateSpent() + weaponProficiencies.calcPointsInPsy()
     }
 
     /**
@@ -377,6 +386,63 @@ class BaseCharacter {
             appearance = input
     }
 
+    /**
+     * Sets the character's movement distance depending on the inputted value.
+     *
+     * @param input total agility score the character possesses
+     */
+    @JvmName("setMovement1")
+    fun setMovement(input: Int){
+        movement = when(input){
+            1 -> 1
+            2 -> 4
+            3 -> 8
+            4 -> 15
+            5 -> 20
+            6 -> 22
+            7 -> 25
+            8 -> 28
+            9 -> 32
+            10 -> 35
+            11 -> 40
+            12 -> 50
+            13 -> 80
+            14 -> 150
+            15 -> 250
+            16 -> 500
+            17 -> 1000
+            18 -> 5000
+            19 -> 25000
+            else -> 0
+        }
+    }
+
+    @JvmName("setWeightIndex1")
+    fun setWeightIndex(input: Int){
+        weightIndex = when(input){
+            1 -> 1
+            2 -> 10
+            3 -> 20
+            4 -> 40
+            5 -> 60
+            6 -> 120
+            7 -> 180
+            8 -> 260
+            9 -> 350
+            10 -> 420
+            11 -> 600
+            12 -> 1
+            13 -> 3
+            14 -> 25
+            15 -> 100
+            16 -> 500
+            17 -> 2500
+            18 -> 10000
+            19 -> 150000
+            else -> 0
+        }
+    }
+
 
     /**
      * Default constructor for new character.
@@ -419,6 +485,9 @@ class BaseCharacter {
         setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
+
+        //load paladin's chosen level boon
+        classes.loadClassData(fileReader)
 
         //load character's primary abilities
         primaryList.loadPrimaries(fileReader)
@@ -481,6 +550,9 @@ class BaseCharacter {
             addNewData(ownClass.heldClass)
             addNewData(races.getNameOfList(ownRace))
             addNewData(lvl)
+
+            //write paladin's chosen level boon
+            classes.writeClassData()
 
             //write primary characteristic data
             primaryList.writePrimaries()
@@ -558,6 +630,21 @@ class BaseCharacter {
      * @param toAdd double data to add to the byte array
      */
     fun addNewData(toAdd: Double?){
+        byteArray.write(
+            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
+            0,
+            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
+        )
+
+        writeEndLine()
+    }
+
+    /**
+     * Adds new Boolean data to the output stream.
+     *
+     * @param toAdd boolean data to add to the stream
+     */
+    fun addNewData(toAdd: Boolean?){
         byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,

@@ -16,23 +16,22 @@ import androidx.compose.ui.text.input.KeyboardType
  * Catches empty input.
  *
  * @param inputText String to display in the TextField
- * @param preRun function to run before reading user input
  * @param inputFunction function to run for user's numerical input
  * @param emptyFunction function to run for no input
- * @param postRun function to run after reading user input
- * @param colorInput color the text is
- * @param modifier design properties of the input object
+ *
+ * @param modifier optional design properties of the input object
+ * @param postRun optional function to run after reading user input
+ * @param color optional color the text is
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun NumberInput(
     inputText: String,
-    preRun: () -> Unit,
     inputFunction: (String) -> Unit,
     emptyFunction: () -> Unit,
-    postRun: () -> Unit,
-    colorInput: Color,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    postRun: () -> Unit = {},
+    color: Color = Color.Black
 ){
     //initialize user keyboard
     val keyboardActive = LocalSoftwareKeyboardController.current
@@ -44,9 +43,6 @@ fun NumberInput(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
 
         onValueChange = {
-            //run function before reading input
-            preRun()
-
             //read user input
             try{
                 //implement numerical input
@@ -70,7 +66,7 @@ fun NumberInput(
         },
 
         //set text color and modifier
-        textStyle = LocalTextStyle.current.copy(color = colorInput),
+        textStyle = LocalTextStyle.current.copy(color = color),
         modifier = modifier
     )
 }

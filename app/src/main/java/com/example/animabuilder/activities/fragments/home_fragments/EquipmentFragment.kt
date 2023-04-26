@@ -89,12 +89,8 @@ fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
     //display input
     NumberInput(
         inputText = input.maxValue.collectAsState().value,
-        preRun = {},
         inputFunction = {input.setMaxValue(it.toInt())},
-        emptyFunction = {input.setMaxValue("")},
-        postRun = {},
-        colorInput = Color.Black,
-        modifier = Modifier
+        emptyFunction = {input.setMaxValue("")}
     )
 }
 

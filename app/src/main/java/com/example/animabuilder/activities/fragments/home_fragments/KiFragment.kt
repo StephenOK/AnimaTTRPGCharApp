@@ -190,16 +190,13 @@ private fun KiFromStatRow(
 
         //ki points purchased input
         NumberInput(
-            kiRowData.pointInputString.collectAsState().value,
-            {},
-            {
+            inputText = kiRowData.pointInputString.collectAsState().value,
+            inputFunction = {
                 kiRowData.setPointInputString(it.toInt())
                 updateFunc()
             },
-            {kiRowData.setPointInputString("")},
-            {},
-            Color.Black,
-            Modifier.weight(0.13f)
+            emptyFunction = {kiRowData.setPointInputString("")},
+            modifier = Modifier.weight(0.13f)
         )
 
         //display for ki points from this stat
@@ -210,16 +207,13 @@ private fun KiFromStatRow(
 
         //ki accumulation purchased input
         NumberInput(
-            kiRowData.accInputString.collectAsState().value,
-            {},
-            {
+            inputText = kiRowData.accInputString.collectAsState().value,
+            inputFunction = {
                 kiRowData.setAccInputString(it.toInt())
                 updateFunc()
             },
-            {kiRowData.setAccInputString("")},
-            {},
-            Color.Black,
-            Modifier.weight(0.13f)
+            emptyFunction = {kiRowData.setAccInputString("")},
+            modifier = Modifier.weight(0.13f)
         )
 
         //display for ki accumulation from this stat

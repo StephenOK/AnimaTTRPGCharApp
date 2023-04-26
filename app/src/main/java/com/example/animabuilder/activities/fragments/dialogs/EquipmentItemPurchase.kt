@@ -34,12 +34,8 @@ fun EquipmentItemPurchase(
                 item {
                     NumberInput(
                         inputText = equipFragVM.purchasedNumber.collectAsState().value,
-                        preRun = {},
                         inputFunction = { equipFragVM.setPurchasedNumber(it.toInt()) },
-                        emptyFunction = { equipFragVM.setPurchasedNumber("") },
-                        postRun = {},
-                        colorInput = Color.Black,
-                        modifier = Modifier
+                        emptyFunction = { equipFragVM.setPurchasedNumber("") }
                     )
                 }
 

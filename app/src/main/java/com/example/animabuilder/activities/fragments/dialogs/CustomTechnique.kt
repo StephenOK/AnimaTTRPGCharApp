@@ -170,8 +170,7 @@ fun CustomTechnique(
                                 it.buildItems.forEach{
                                     item{
                                         EditBuildRow(
-                                            it,
-                                            customTechVM.allAccs[it.index]
+                                            it
                                         )
                                     }
                                 }
@@ -668,8 +667,7 @@ private fun EditEffectRow(
  */
 @Composable
 private fun EditBuildRow(
-    item: CustomTechniqueViewModel.BuildItem,
-    accItem: CustomTechniqueViewModel.AccTotalString
+    item: CustomTechniqueViewModel.BuildItem
 ){
     Row {
         //display characteristic name
@@ -677,13 +675,10 @@ private fun EditBuildRow(
 
         //create numerical input for the user
         NumberInput(
-            item.display.collectAsState().value,
-            {},
-            {item.setDisplay(it.toInt())},
-            {item.setDisplay("")},
-            {accItem.setTotalDisplay()},
-            Color.Black,
-            Modifier.weight(0.2f)
+            inputText = item.display.collectAsState().value,
+            inputFunction = {item.setDisplay(it.toInt())},
+            emptyFunction = {item.setDisplay("")},
+            modifier = Modifier.weight(0.2f)
         )
 
         //display characteristic's additional cost
@@ -706,13 +701,10 @@ private fun MaintenanceInput(
 
         //maintenance input
         NumberInput(
-            maintInput.displayValue.collectAsState().value,
-            {},
-            {maintInput.setDisplayValue(it.toInt())},
-            {maintInput.setDisplayValue("")},
-            {},
-            Color.Black,
-            Modifier.weight(0.5f)
+            inputText = maintInput.displayValue.collectAsState().value,
+            inputFunction = {maintInput.setDisplayValue(it.toInt())},
+            emptyFunction = {maintInput.setDisplayValue("")},
+            modifier = Modifier.weight(0.5f)
         )
     }
 }

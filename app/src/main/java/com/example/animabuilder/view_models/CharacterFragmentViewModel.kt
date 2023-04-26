@@ -31,6 +31,10 @@ class CharacterFragmentViewModel(
     private val _nameInput = MutableStateFlow(charInstance.charName)
     val nameInput = _nameInput.asStateFlow()
 
+    //initialize input for the character's experience points
+    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.toString())
+    val experiencePoints = _experiencePoints.asStateFlow()
+
     //initialize the character's size category display
     private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.toString())
     val sizeInput = _sizeInput.asStateFlow()
@@ -43,7 +47,7 @@ class CharacterFragmentViewModel(
     private val _movementDisplay = MutableStateFlow(charInstance.movement.toString() + "m")
     val movementDisplay = _movementDisplay.asStateFlow()
 
-    //initialize charaaacter's gnosis input
+    //initialize charaacter's gnosis input
     private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.toString())
     val gnosisDisplay = _gnosisDisplay.asStateFlow()
 
@@ -101,6 +105,23 @@ class CharacterFragmentViewModel(
         charInstance.charName = newIn
         _nameInput.update{newIn}
     }
+
+    /**
+     * Sets the number of experience points the character currently has.
+     *
+     * @param input number of points to set
+     */
+    fun setExp(input: Int){
+        charInstance.experiencePoints = input
+        setExp(input.toString())
+    }
+
+    /**
+     * Sets the display for the number of experience points held.
+     *
+     * @param input new string to displaay
+     */
+    fun setExp(input: String){_experiencePoints.update{input}}
 
     /**
      * Sets the size category display to the character's value.

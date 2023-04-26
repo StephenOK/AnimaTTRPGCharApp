@@ -26,6 +26,9 @@ class BaseCharacter {
     //character's name
     var charName = ""
 
+    //character's current experience point amount
+    var experiencePoints = 0
+
     //character's gender (default male)
     var isMale = true
 
@@ -478,6 +481,9 @@ class BaseCharacter {
         //get the character's name
         charName = fileReader.readLine()
 
+        //get the character's experience point amount
+        experiencePoints = fileReader.readLine().toInt()
+
         //get the character's gender
         setGender(fileReader.readLine().toBoolean())
 
@@ -542,6 +548,9 @@ class BaseCharacter {
 
             //add name data
             addNewData(charName)
+
+            //add experience point data
+            addNewData(experiencePoints)
 
             //add gender data
             addNewData(isMale.toString())

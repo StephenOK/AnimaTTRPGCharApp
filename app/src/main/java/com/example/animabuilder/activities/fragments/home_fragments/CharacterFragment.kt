@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
@@ -139,6 +138,14 @@ fun CharacterPageFragment(
             PrimaryRow(charFragVM, it)
         }
 
+        item{
+            NumberInput(
+                inputText = charFragVM.experiencePoints.collectAsState().value,
+                inputFunction = {charFragVM.setExp(it.toInt())},
+                emptyFunction = {charFragVM.setExp("")}
+            )
+        }
+
         //display character's size category
         item{Text(text = stringResource(R.string.sizeCat) + charFragVM.sizeInput.collectAsState().value)}
 
@@ -152,21 +159,17 @@ fun CharacterPageFragment(
         item{
             Text(text = stringResource(R.string.appearance))
             NumberInput(
-                charFragVM.appearInput.collectAsState().value,
-                {},
-                {
+                inputText = charFragVM.appearInput.collectAsState().value,
+                inputFunction = {
                     //attempt new input and notify user of failed input
                     if(it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
                         Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
                 },
-                {
+                emptyFunction = {
                     //clear input if user can change it
                     if(charFragVM.isNotUnattractive())
                         charFragVM.setAppearInput("")
-                },
-                {},
-                Color.Black,
-                Modifier
+                }
             )
         }
 
@@ -174,13 +177,9 @@ fun CharacterPageFragment(
         item{
             Text(text = stringResource(R.string.gnosisLabel))
             NumberInput(
-                charFragVM.gnosisDisplay.collectAsState().value,
-                {},
-                {charFragVM.setGnosisDisplay(it.toInt())},
-                {charFragVM.setGnosisDisplay("")},
-                {},
-                Color.Black,
-                Modifier
+                inputText = charFragVM.gnosisDisplay.collectAsState().value,
+                inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
+                emptyFunction = {charFragVM.setGnosisDisplay("")}
             )
         }
     }
@@ -259,28 +258,23 @@ private fun PrimaryRow(
 
         //user input section
         NumberInput(
-            primeItem.input.collectAsState().value,
-            {},
-            {
+            inputText = primeItem.input.collectAsState().value,
+            inputFunction = {
                 //change input and other necessary items if in legal range
                 if(it.toInt() in 1..20)
                     primeItem.setInput(it.toInt())
             },
-            {primeItem.setInput("")},
-            {},
-            Color.Black,
-            Modifier.weight(0.2f)
+            emptyFunction = {primeItem.setInput("")},
+            modifier = Modifier.weight(0.2f)
         )
 
         //level bonus input
         NumberInput(
             inputText = primeItem.bonusInput.collectAsState().value,
-            preRun = {},
             inputFunction = {primeItem.setBonusInput(it.toInt())},
             emptyFunction = {primeItem.setBonusInput("")},
-            postRun = {},
-            colorInput = charFragVM.bonusColor.collectAsState().value,
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier.weight(0.2f),
+            color = charFragVM.bonusColor.collectAsState().value
         )
 
         //characteristic bonus display

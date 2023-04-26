@@ -336,7 +336,9 @@ class MagicFragmentViewModel(
      *
      * @param input new value to display
      */
-    fun setBoughtZeonString(input: String){_boughtZeonString.update{input}}
+    fun setBoughtZeonString(input: String){
+        _boughtZeonString.update{input}
+    }
 
     /**
      * Change the character's magic imbalance input.
@@ -577,7 +579,11 @@ class MagicFragmentViewModel(
          *
          * @param input string to display
          */
-        fun setElementInvestment(input: String){_elementInvestment.update{input}}
+        fun setElementInvestment(input: String){
+            _elementInvestment.update{input}
+            magFragVM.setMagicLevelSpent()
+            magFragVM.reflectPrimaryElement()
+        }
 
         /**
          * Changes the open state of this item's spell list.

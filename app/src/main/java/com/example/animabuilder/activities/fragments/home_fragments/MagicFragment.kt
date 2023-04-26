@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.animabuilder.DetailButton
@@ -60,13 +59,11 @@ fun MagicFragment(
 
                 //Zeon point purchase input
                 NumberInput(
-                    magFragVM.boughtZeonString.collectAsState().value,
-                    {},
-                    {input -> magFragVM.setBoughtZeonString(input.toInt())},
-                    {magFragVM.setBoughtZeonString("")},
-                    {updateFunc()},
-                    Color.Black,
-                    Modifier.weight(0.25f)
+                    inputText = magFragVM.boughtZeonString.collectAsState().value,
+                    inputFunction = {input -> magFragVM.setBoughtZeonString(input.toInt())},
+                    emptyFunction = {magFragVM.setBoughtZeonString("")},
+                    modifier = Modifier.weight(0.25f),
+                    postRun = {updateFunc()}
                 )
 
                 //display multiplier for zeon point purchases
@@ -104,17 +101,13 @@ fun MagicFragment(
 
                 //input to change imbalance
                 NumberInput(
-                    magFragVM.projectionImbalance.collectAsState().value,
-                    {},
-                    {
+                    inputText = magFragVM.projectionImbalance.collectAsState().value,
+                    inputFunction = {
                         //if imbalance is a legal input
                         if (it.toInt() in 0..30)
                             magFragVM.setProjectionImbalance(it.toInt())
                     },
-                    {magFragVM.setProjectionImbalance("")},
-                    {},
-                    Color.Black,
-                    Modifier
+                    emptyFunction = {magFragVM.setProjectionImbalance("")},
                 )
             }
         }
@@ -208,13 +201,11 @@ private fun ZeonPurchaseItem(
 
             //input for user to purchase these points
             NumberInput(
-                tableItem.boughtString.collectAsState().value,
-                {},
-                {tableItem.setBoughtString(it.toInt())},
-                {tableItem.setBoughtString("")},
-                {updateFunc()},
-                tableItem.textColor.collectAsState().value,
-                Modifier
+                inputText = tableItem.boughtString.collectAsState().value,
+                inputFunction = {tableItem.setBoughtString(it.toInt())},
+                emptyFunction = {tableItem.setBoughtString("")},
+                postRun = {updateFunc()},
+                color = tableItem.textColor.collectAsState().value
             )
 
             //display final total
@@ -250,18 +241,9 @@ private fun SpellBookInvestment(
 
             //display book investment value
             NumberInput(
-                spellData.elementInvestment.collectAsState().value,
-                {},
-                {spellData.setElementInvestment(it.toInt())},
-                {spellData.setElementInvestment("")},
-                {
-                    magFragVM.setMagicLevelSpent()
-
-                    //reflect any primary book change
-                    magFragVM.reflectPrimaryElement()
-                },
-                Color.Black,
-                Modifier
+                inputText = spellData.elementInvestment.collectAsState().value,
+                inputFunction = {spellData.setElementInvestment(it.toInt())},
+                emptyFunction = {spellData.setElementInvestment("")}
             )
 
             //spell display button

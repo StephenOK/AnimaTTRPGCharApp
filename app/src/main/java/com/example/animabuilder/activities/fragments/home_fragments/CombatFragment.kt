@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
@@ -61,16 +60,13 @@ fun CombatFragment(
 
                 //create input for life point multiples
                 NumberInput(
-                    combatFragVM.lifeMults.collectAsState().value,
-                    {},
-                    {
+                    inputText = combatFragVM.lifeMults.collectAsState().value,
+                    inputFunction = {
                         combatFragVM.setLifeMults(it.toInt())
                         updateFunc()
                     },
-                    {combatFragVM.setLifeMults("")},
-                    {},
-                    Color.Black,
-                    Modifier.weight(0.2f)
+                    emptyFunction = {combatFragVM.setLifeMults("")},
+                    modifier = Modifier.weight(0.2f)
                 )
 
                 //display life point total
@@ -174,16 +170,14 @@ private fun CombatItemRow(
 
         //stat input field
         NumberInput(
-            combatItem.pointsIn.collectAsState().value,
-            {},
-            {
+            inputText = combatItem.pointsIn.collectAsState().value,
+            inputFunction = {
                 combatItem.setPointsIn(it.toInt())
                 updateFunc()
             },
-            {combatItem.setPointsIn("")},
-            {},
-            combatFragVM.pointColor.collectAsState().value,
-            Modifier.weight(0.2f)
+            emptyFunction = {combatItem.setPointsIn("")},
+            modifier = Modifier.weight(0.2f),
+            color = combatFragVM.pointColor.collectAsState().value
         )
 
         //display remaining stat values

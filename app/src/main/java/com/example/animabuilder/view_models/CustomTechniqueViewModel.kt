@@ -1070,7 +1070,7 @@ class CustomTechniqueViewModel(
     fun initializeBuildList(){
         editBuildList.clear()
         customTechnique.givenAbilities.forEach{
-            editBuildList += BuildPackage(it, context)
+            editBuildList += BuildPackage(it, this, context)
         }
     }
 
@@ -1144,6 +1144,7 @@ class CustomTechniqueViewModel(
      */
     class BuildPackage(
         val input: TechniqueEffect,
+        customTechVM: CustomTechniqueViewModel,
         val context: Context
     ){
         //initialize all build strings for this effect
@@ -1155,6 +1156,7 @@ class CustomTechniqueViewModel(
                 if(input.buildAdditions[index] != null)
                     buildItems +=
                         BuildItem(
+                            customTechVM,
                             input,
                             context.resources.getStringArray(R.array.primaryCharArray)[index],
                             index
@@ -1171,6 +1173,7 @@ class CustomTechniqueViewModel(
      * @param index corresponding ki build item this data represents
      */
     class BuildItem(
+        val customTechVM: CustomTechniqueViewModel,
         val home: TechniqueEffect,
         val indexName: String,
         val index: Int
@@ -1194,7 +1197,10 @@ class CustomTechniqueViewModel(
          *
          * @param input value to change the display to
          */
-        fun setDisplay(input: String){_display.update{input}}
+        fun setDisplay(input: String){
+            _display.update{input}
+            customTechVM.allAccs[index].setTotalDisplay()
+        }
     }
 
     /**

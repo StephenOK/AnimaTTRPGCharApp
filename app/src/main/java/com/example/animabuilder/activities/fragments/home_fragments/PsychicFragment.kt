@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -45,11 +44,8 @@ fun PsychicFragment(
                 Text(text = stringResource(R.string.pointsInPotential))
                 NumberInput(
                     inputText = psyFragVM.pointsInPotential.collectAsState().value,
-                    preRun = {},
                     inputFunction = {psyFragVM.setPointsInPotential(it.toInt())},
                     emptyFunction = {psyFragVM.setPointsInPotential("")},
-                    postRun = {},
-                    colorInput = Color.Black,
                     modifier = Modifier.weight(0.2f)
                 )
             }
@@ -82,12 +78,8 @@ fun PsychicFragment(
                 Text(text = stringResource(R.string.innateSlotLabel))
                 NumberInput(
                     inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
-                    preRun = {},
                     inputFunction = {psyFragVM.setInnateSlotDisplay(it.toInt())},
-                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")},
-                    postRun = {},
-                    colorInput = Color.Black,
-                    modifier = Modifier
+                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")}
                 )
             }
         }
@@ -113,13 +105,11 @@ private fun PsychicPurchaseTable(
 
         //input for user purchased value
         NumberInput(
-            tableData.purchaseAmount.collectAsState().value,
-            {},
-            {tableData.setPurchaseAmount(it.toInt())},
-            {tableData.setPurchaseAmount("")},
-            {updateFunc()},
-            tableData.textColor.collectAsState().value,
-            Modifier
+            inputText = tableData.purchaseAmount.collectAsState().value,
+            inputFunction = {tableData.setPurchaseAmount(it.toInt())},
+            emptyFunction = {tableData.setPurchaseAmount("")},
+            postRun = {updateFunc()},
+            color = tableData.textColor.collectAsState().value
         )
 
         //display value's final total
@@ -191,11 +181,8 @@ private fun PsyPowerRow(
         //input for psychic point enhancement
         NumberInput(
             inputText = power.pointInvestment.collectAsState().value,
-            preRun = {},
             inputFunction = {power.setPointInvestment(it.toInt())},
             emptyFunction = {power.setPointInvestment("")},
-            postRun = {},
-            colorInput = Color.Black,
             modifier = Modifier.weight(0.2f)
         )
 

@@ -65,13 +65,11 @@ private fun SummoningAbilityRow(
 
         //display points bought and give option to buy points
         NumberInput(
-            inputData.boughtVal.collectAsState().value,
-            {},
-            {inputData.setBoughtVal(it.toInt())},
-            {inputData.setBoughtVal("")},
-            {updateFunc()},
-            Color.Black,
-            Modifier.weight(0.3f)
+            inputText = inputData.boughtVal.collectAsState().value,
+            inputFunction = {inputData.setBoughtVal(it.toInt())},
+            emptyFunction = {inputData.setBoughtVal("")},
+            modifier = Modifier.weight(0.3f),
+            postRun = {updateFunc()}
         )
 
         //display final total

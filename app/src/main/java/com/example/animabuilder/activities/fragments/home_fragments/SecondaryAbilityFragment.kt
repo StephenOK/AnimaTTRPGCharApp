@@ -209,13 +209,11 @@ private fun MakeRow(
     ){
         //user input for the stat's score
         NumberInput(
-            item.pointInput.collectAsState().value,
-            {},
-            {item.setPointInput(it.toInt())},
-            {item.setPointInput("")},
-            {updateBottomBar()},
-            Color.Black,
-            Modifier.weight(0.15f)
+            inputText = item.pointInput.collectAsState().value,
+            inputFunction = {item.setPointInput(it.toInt())},
+            emptyFunction = {item.setPointInput("")},
+            modifier = Modifier.weight(0.15f),
+            postRun = {updateBottomBar()}
         )
 
         //display associated mod value

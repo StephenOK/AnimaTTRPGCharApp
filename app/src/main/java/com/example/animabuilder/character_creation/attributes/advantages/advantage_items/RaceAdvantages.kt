@@ -478,7 +478,8 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
             if(charInstance.psychic.totalPsychicPoints > 0) {
                 if (charInstance.psychic.getFreePsyPoints() == 0) {
                     val powerRemoved =
-                        if (charInstance.psychic.masteredPowers.size > 0) charInstance.psychic.masteredPowers.last()
+                        if (charInstance.psychic.masteredPowers.isNotEmpty())
+                            charInstance.psychic.masteredPowers.keys.last()
                         else null
                     if(powerRemoved != null)
                         charInstance.psychic.masterPower(

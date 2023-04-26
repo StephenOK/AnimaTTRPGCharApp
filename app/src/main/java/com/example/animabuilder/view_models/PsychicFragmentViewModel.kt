@@ -1,7 +1,5 @@
 package com.example.animabuilder.view_models
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
@@ -23,21 +21,76 @@ class PsychicFragmentViewModel(
     private val psychic: Psychic,
     dexMod: Int
 ): ViewModel() {
+    //initialize psychic potential display
+    private val _potentialTotal = MutableStateFlow(psychic.psyPotentialTotal.toString())
+    val potentialTotal = _potentialTotal.asStateFlow()
+
+    //initialize input for point investment in psychic potential
+    private val _pointsInPotential = MutableStateFlow(psychic.pointsInPotential.toString())
+    val pointsInPotential = _pointsInPotential.asStateFlow()
+
     //initialize character's free psychic point text
     private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints().toString())
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
+    //initialize character's taken number of innate slots
+    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.toString())
+    val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
+
+    //initialize color of free point text
+    private val _freePointColor = MutableStateFlow(
+        if(psychic.getFreePsyPoints() >= 0) Color.Black
+        else Color.Red
+    )
+    val freePointColor = _freePointColor.asStateFlow()
+
+    /**
+     * Sets the amount of psychic points invested in to psychic potential.
+     *
+     * @param input number of points to invest
+     */
+    fun setPointsInPotential(input: Int){
+        psychic.setPointPotential(input)
+        setPointsInPotential(input.toString())
+        updateFreePsyPoints()
+        _potentialTotal.update{psychic.psyPotentialTotal.toString()}
+    }
+
+    /**
+     * Changes the display of psychic points invested in potential.
+     *
+     * @param input new string to display
+     */
+    fun setPointsInPotential(input: String){_pointsInPotential.update{input}}
+
     /**
      * Updates the free psychic points display to reflect the value held in the character.
      */
-    fun updateFreePsyPoints(){_freePsyPoints.update{psychic.getFreePsyPoints().toString()}}
+    fun updateFreePsyPoints(){
+        _freePsyPoints.update{psychic.getFreePsyPoints().toString()}
+        _freePointColor.update{
+            if(psychic.getFreePsyPoints() >= 0) Color.Black
+            else Color.Red
+        }
+    }
 
     /**
-     * Retrieves the data in regards to the character's base psychic potential.
+     * Sets the number of innate slots the character can use.
      *
-     * @return character's base psychic potential
+     * @param input number of innate slots to acquire
      */
-    fun getPotentialBase(): Int{return psychic.psyPotentialBase}
+    fun setInnateSlotDisplay(input: Int){
+        psychic.buyInnateSlots(input)
+        setInnateSlotDisplay(input.toString())
+        updateFreePsyPoints()
+    }
+
+    /**
+     * Sets the displayed number of innate slots.
+     *
+     * @param input amount of slots to display
+     */
+    fun setInnateSlotDisplay(input: String){_innateSlotDisplay.update{input}}
 
     //initialize data in regards to the character's psychic points
     private val psychicPoints = PsychicPurchaseItemData(
@@ -146,8 +199,9 @@ class PsychicFragmentViewModel(
     fun setAllPowers(){
         allDisciplines.forEach{
             it.setInvestedIn()
-            it.powerChecks.forEach{item ->
-                item.value.value = psychic.masteredPowers.contains(item.key)
+            it.powerList.forEach{power ->
+                if(power.powerInvestedIn.value != psychic.masteredPowers.contains(power.item))
+                    power.setPowerInvestedIn(psychic.masteredPowers.contains(power.item))
             }
         }
     }
@@ -225,7 +279,7 @@ class PsychicFragmentViewModel(
         val investedIn = _investedIn.asStateFlow()
 
         //initialize checklist of all associated powers
-        val powerChecks = mutableMapOf<PsychicPower, MutableState<Boolean>>()
+        val powerList = mutableListOf<PowerItemData>()
 
         /**
          * Changes the open state of the discipline display.
@@ -254,32 +308,108 @@ class PsychicFragmentViewModel(
          */
         fun setInvestedIn(){_investedIn.update{psychic.disciplineInvestment.contains(item)}}
 
+        init{
+            //initialize checkboxes for all powers
+            item.allPowers.forEach{
+                powerList.add(PowerItemData(psyFragVM, psychic, this, it))
+            }
+        }
+    }
+
+    /**
+     * Object that manages data for an individual psychic power.
+     *
+     * @param psyFragVM view model that manages this item
+     * @param psychic character's psychic ability object
+     * @param home discipline data object that this power is associated with
+     * @param item psychic power maintained by this object
+     */
+    class PowerItemData(
+        val psyFragVM: PsychicFragmentViewModel,
+        val psychic: Psychic,
+        val home: DisciplineItemData,
+        val item: PsychicPower
+    ){
+        //initialize whether the character has mastered this power
+        private val _powerInvestedIn = MutableStateFlow(psychic.masteredPowers.contains(item))
+        val powerInvestedIn = _powerInvestedIn.asStateFlow()
+
+        //initialize psychic point investment in this power
+        private val _pointInvestment = MutableStateFlow(
+            if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item].toString()
+            else "0"
+        )
+        val pointInvestment = _pointInvestment.asStateFlow()
+
+        //initialize display for bonus potential gained
+        private val _bonusGained = MutableStateFlow(
+            if(psychic.masteredPowers.contains(item)) "+" + (psychic.masteredPowers[item]!! * 10).toString()
+            else ""
+        )
+        val bonusGained = _bonusGained.asStateFlow()
+
         /**
-         * Changes the state of the indicated power to the desired state.
+         * Sets the character's mastery of this power.
          *
-         * @param power item to change the state of
-         * @param input state to set the taken state to
+         * @param input true if character is mastering this power
          */
-        fun setPower(power: PsychicPower, input: Boolean){
+        fun setPowerInvestedIn(input: Boolean){
             //attempt to add discipline if character does not currently have it
-            if(!psychic.disciplineInvestment.contains(item) && name != R.string.matrixLabel)
-                setInvestedIn(true)
+            if(input && !psychic.disciplineInvestment.contains(home.item) && home.name != R.string.matrixLabel)
+                home.setInvestedIn(true)
 
-            //attempt to add the power to the character
-            powerChecks[power]!!.value = psychic.masterPower(power, item, input)
+            //change mastery as needed
+            _powerInvestedIn.update{psychic.masterPower(item, home.item, input)}
 
-            //reflect other power checks if this power is being removed
-            if(!input)
+            //if user is removing mastery
+            if(!input) {
+                //reflect other power checks if this power is being removed
                 psyFragVM.setAllPowers()
+
+                //update point investment on power's removal
+                setPointInvestment("0")
+                setBonusGained()
+            }
 
             //update character's psychic points
             psyFragVM.updateFreePsyPoints()
         }
 
-        init{
-            //initialize checkboxes for all powers
-            item.allPowers.forEach{
-                powerChecks += Pair(it, mutableStateOf(psychic.masteredPowers.contains(it)))
+        /**
+         * Sets the number of points invested in enhancing this power.
+         *
+         * @param input number of points to invest
+         */
+        fun setPointInvestment(input: Int){
+            //only run if power is mastered and input is valid
+            if(psychic.masteredPowers.contains(item) && input <= 10){
+                //update power enhancement
+                psychic.enhancePower(item, input)
+
+                //update related displays
+                setPointInvestment(psychic.masteredPowers[item].toString())
+                psyFragVM.updateFreePsyPoints()
+                setBonusGained()
+            }
+        }
+
+        /**
+         * Updates the displayed value for the power's enhancement.
+         *
+         * @param input string to displaay
+         */
+        fun setPointInvestment(input: String){_pointInvestment.update{input}}
+
+        /**
+         * Updates the displayed potential gained from psychic point investment.
+         */
+        fun setBonusGained(){
+            _bonusGained.update{
+                //display bonus to mastered power
+                if(psychic.masteredPowers.contains(item))
+                    "+" + (psychic.masteredPowers[item]!! * 10).toString() + " Potential"
+                //display nothing if power isn't mastered
+                else ""
             }
         }
     }

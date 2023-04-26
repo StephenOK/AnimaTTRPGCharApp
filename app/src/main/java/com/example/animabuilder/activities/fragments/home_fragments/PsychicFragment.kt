@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,23 @@ fun PsychicFragment(
 ) {
     LazyColumn{
         //display character's Psychic Potential
-        item{Text(text = stringResource(R.string.psyPotentialLabel) + psyFragVM.getPotentialBase().toString())}
+        item{Text(text = stringResource(R.string.psyPotentialLabel) + psyFragVM.potentialTotal.collectAsState().value)}
+
+        //implement psychic point investment into psychic potential
+        item{
+            Row {
+                Text(text = stringResource(R.string.pointsInPotential))
+                NumberInput(
+                    inputText = psyFragVM.pointsInPotential.collectAsState().value,
+                    preRun = {},
+                    inputFunction = {psyFragVM.setPointsInPotential(it.toInt())},
+                    emptyFunction = {psyFragVM.setPointsInPotential("")},
+                    postRun = {},
+                    colorInput = Color.Black,
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+        }
 
         //display psychic point and projection inputs
         items(psyFragVM.buyItems){
@@ -44,7 +61,12 @@ fun PsychicFragment(
         }
 
         //display currently free psychic points
-        item{Text(text = stringResource(R.string.freePsyPointLabel) + psyFragVM.freePsyPoints.collectAsState().value)}
+        item{
+            Text(
+                text = stringResource(R.string.freePsyPointLabel) + psyFragVM.freePsyPoints.collectAsState().value,
+                color = psyFragVM.freePointColor.collectAsState().value
+            )
+        }
 
         //display discipline info
         items(psyFragVM.allDisciplines){
@@ -52,6 +74,22 @@ fun PsychicFragment(
                 it,
                 openDetailAlert
             )
+        }
+
+        //implement innate slot purchase input
+        item{
+            Row{
+                Text(text = stringResource(R.string.innateSlotLabel))
+                NumberInput(
+                    inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
+                    preRun = {},
+                    inputFunction = {psyFragVM.setInnateSlotDisplay(it.toInt())},
+                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")},
+                    postRun = {},
+                    colorInput = Color.Black,
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
@@ -120,9 +158,8 @@ private fun DisciplineDisplay(
         //display for discipline's Psychic Powers
         AnimatedVisibility(visible = discipline.isOpen.collectAsState().value) {
             Column {
-                discipline.item.allPowers.forEach {
+                discipline.powerList.forEach {
                     PsyPowerRow(
-                        discipline,
                         it,
                         openDetailAlert
                     )
@@ -135,27 +172,38 @@ private fun DisciplineDisplay(
 /**
  * Display for a Psychic Power.
  *
- * @param discipline power's associated Psychic Discipline
  * @param power the displayed object
  * @param openDetailAlert function to run when looking at a power's details
  */
 @Composable
 private fun PsyPowerRow(
-    discipline: PsychicFragmentViewModel.DisciplineItemData,
-    power: PsychicPower,
+    power: PsychicFragmentViewModel.PowerItemData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
     Row{
         //checkbox to select or deselect this power
         Checkbox(
-            checked = discipline.powerChecks[power]!!.value,
-            onCheckedChange = {discipline.setPower(power, it)}
+            checked = power.powerInvestedIn.collectAsState().value,
+            onCheckedChange = {power.setPowerInvestedIn(it)}
         )
-        Text(text = power.name)
+        Text(text = power.item.name)
+
+        //input for psychic point enhancement
+        NumberInput(
+            inputText = power.pointInvestment.collectAsState().value,
+            preRun = {},
+            inputFunction = {power.setPointInvestment(it.toInt())},
+            emptyFunction = {power.setPointInvestment("")},
+            postRun = {},
+            colorInput = Color.Black,
+            modifier = Modifier.weight(0.2f)
+        )
+
+        Text(text = power.bonusGained.collectAsState().value)
 
         //power's detail button
         DetailButton(
-            onClick = {openDetailAlert(power.name) @Composable{PowerDetails(power)}},
+            onClick = {openDetailAlert(power.item.name) @Composable{PowerDetails(power.item)}},
             modifier = Modifier
         )
     }

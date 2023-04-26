@@ -15,6 +15,13 @@ class Psychic(private val charInstance: BaseCharacter){
     //initialize value for Psychic Potential
     var psyPotentialBase = 0
 
+    //initialize potential from Psychic Points
+    var pointsInPotential = 0
+    var potentialFromPoints = 0
+
+    //initialize total psychic potential
+    var psyPotentialTotal = 0
+
     //initialize values for Psychic Points
     var boughtPsyPoints = 0
     var innatePsyPoints = 0
@@ -36,13 +43,16 @@ class Psychic(private val charInstance: BaseCharacter){
     val telemetry = Telemetry()
     val matrixPowers = MatrixPowers()
 
+    //initialize number of innate slots available
+    var innateSlotCount = 0
+
     //initialize discipline and power lists
     val legalDisciplines = mutableListOf<Discipline>()
     val disciplineInvestment = mutableListOf<Discipline>()
-    val masteredPowers = mutableListOf<PsychicPower>()
+    val masteredPowers = mutableMapOf<PsychicPower, Int>()
 
     //collect all disciplines into a list
-    val allDisciplines = listOf<Discipline>(telepathy, psychokinesis, pyrokinesis, cryokinesis, physicalIncrease,
+    val allDisciplines = listOf(telepathy, psychokinesis, pyrokinesis, cryokinesis, physicalIncrease,
         energyPowers, sentiencePowers, telemetry, matrixPowers)
 
     /**
@@ -55,6 +65,44 @@ class Psychic(private val charInstance: BaseCharacter){
             in 5 .. 14 -> 10 * (charInstance.primaryList.wp.total -4)
             else -> 100 + ((charInstance.primaryList.wp.total - 14) * 20)
         }
+
+        updateTotalPotential()
+    }
+
+    /**
+     * Set the psychic points contributing to psychic potential and the points gained from them.
+     *
+     * @param input number of psychic points invested
+     */
+    fun setPointPotential(input: Int){
+        //set number of points invested
+        pointsInPotential = input
+
+        //set psychic potential added
+        potentialFromPoints = when(input){
+            0 -> 0
+            1, 2 -> 10
+            in 3..5 -> 20
+            in 6..9 -> 30
+            in 11..14 -> 40
+            in 15..20 -> 50
+            in 21..27 -> 60
+            in 28..35 -> 70
+            in 36..44 -> 80
+            in 45..54 -> 90
+            else -> 100
+        }
+
+        //update free points and potential
+        recalcPsyPointsSpent()
+        updateTotalPotential()
+    }
+
+    /**
+     * Gets the total psychic potential for the character.
+     */
+    fun updateTotalPotential(){
+        psyPotentialTotal = psyPotentialBase + potentialFromPoints
     }
 
     /**
@@ -79,9 +127,6 @@ class Psychic(private val charInstance: BaseCharacter){
             //start character at 1 point and add more depending on additional levels
             else 1 + (charInstance.lvl - 1)/charInstance.ownClass.psyPerTurn
 
-        if(innatePsyPoints > 0 && charInstance.ownRace == charInstance.races.dukzaristAdvantages && !disciplineInvestment.contains(pyrokinesis))
-            updateInvestment(pyrokinesis, true)
-
         //update total
         updatePsyPointTotal()
     }
@@ -91,6 +136,11 @@ class Psychic(private val charInstance: BaseCharacter){
      */
     fun updatePsyPointTotal(){
         totalPsychicPoints = boughtPsyPoints + innatePsyPoints
+
+        //sets pyrokinesis as set if character is duk'zarist and does not have pyrokinesis
+        if(totalPsychicPoints > 0 && charInstance.ownRace == charInstance.races.dukzaristAdvantages &&
+            !disciplineInvestment.contains(pyrokinesis))
+            updateInvestment(pyrokinesis, true)
     }
 
     /**
@@ -128,6 +178,16 @@ class Psychic(private val charInstance: BaseCharacter){
      */
     fun getFreePsyPoints(): Int{
         return totalPsychicPoints - spentPsychicPoints
+    }
+
+    /**
+     * Purchases the indicated number of innate slots.
+     *
+     * @param input number of innate slots to purchase
+     */
+    fun buyInnateSlots(input: Int){
+        innateSlotCount = input
+        recalcPsyPointsSpent()
     }
 
     /**
@@ -202,7 +262,7 @@ class Psychic(private val charInstance: BaseCharacter){
         //if attempting to add, there is a psychic point to buy it, and if the character can buy it
         if(into && getFreePsyPoints() > 0 && legalBuy(item, discipline)){
             //add power to the character and spend the point
-            masteredPowers.add(item)
+            masteredPowers += Pair(item, 0)
             recalcPsyPointsSpent()
 
             //notify of successful purchase
@@ -223,6 +283,17 @@ class Psychic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Enhances the indicated power with the indicated number of psychic points.
+     *
+     * @param item psychic power to enhance
+     * @param amount psychic points invested in this power
+     */
+    fun enhancePower(item: PsychicPower, amount: Int){
+        masteredPowers[item] = amount
+        recalcPsyPointsSpent()
+    }
+
+    /**
      * Check if the given Psychic Power can be bought by this character.
      *
      * @param item Psychic Power to check the validity of
@@ -240,7 +311,7 @@ class Psychic(private val charInstance: BaseCharacter){
                 //for each taken power
                 masteredPowers.forEach {
                     //determine if it is a level 1 power of the same discipline
-                    if (it.level == 1 && discipline.allPowers.contains(it))
+                    if (it.key.level == 1 && discipline.allPowers.contains(it.key))
                         return true
                 }
             }
@@ -250,7 +321,7 @@ class Psychic(private val charInstance: BaseCharacter){
                 //for each taken power
                 masteredPowers.forEach {
                     //determine if it is a level 2 power of the same discipline
-                    if (it.level == 2 && discipline.allPowers.contains(it) && legalBuy(it, discipline))
+                    if (it.key.level == 2 && discipline.allPowers.contains(it.key) && legalBuy(it.key, discipline))
                         return true
                 }
             }
@@ -294,7 +365,11 @@ class Psychic(private val charInstance: BaseCharacter){
      */
     fun removeIllegal(discipline: Discipline){
         //remove any illegal powers of this discipline
-        masteredPowers.removeIf{!legalBuy(it, discipline)}
+        masteredPowers.forEach{
+            if(!legalBuy(it.key, discipline))
+                masteredPowers -= it.key
+        }
+
         recalcPsyPointsSpent()
     }
 
@@ -302,7 +377,10 @@ class Psychic(private val charInstance: BaseCharacter){
      * Determine the number of psychic points spent by the user.
      */
     fun recalcPsyPointsSpent(){
-        spentPsychicPoints = disciplineInvestment.size + masteredPowers.size
+        var reinforcement = 0
+        masteredPowers.forEach{reinforcement += it.value}
+
+        spentPsychicPoints = disciplineInvestment.size + masteredPowers.size + reinforcement + pointsInPotential + (innateSlotCount * 2)
     }
 
     /**
@@ -350,6 +428,7 @@ class Psychic(private val charInstance: BaseCharacter){
     fun loadPsychic(fileReader: BufferedReader){
         //retrieve psychic points and projection data
         buyPsyPoints(fileReader.readLine().toInt())
+        setPointPotential(fileReader.readLine().toInt())
         buyPsyProjection(fileReader.readLine().toInt())
 
         //load discipline investment data
@@ -363,7 +442,10 @@ class Psychic(private val charInstance: BaseCharacter){
             val power = powerDiscipline.allPowers[fileReader.readLine().toInt()]
 
             masterPower(power, powerDiscipline, true)
+            enhancePower(power, fileReader.readLine().toInt())
         }
+
+        buyInnateSlots(fileReader.readLine().toInt())
     }
 
     /**
@@ -372,6 +454,7 @@ class Psychic(private val charInstance: BaseCharacter){
     fun writePsychic(){
         //write psychic point and projection data
         charInstance.addNewData(boughtPsyPoints)
+        charInstance.addNewData(pointsInPotential)
         charInstance.addNewData(psyProjectionBought)
 
         //add discipline data
@@ -383,10 +466,13 @@ class Psychic(private val charInstance: BaseCharacter){
         //add mastered power data
         charInstance.addNewData(masteredPowers.size)
         masteredPowers.forEach{
-            val powerDiscipline = getPowerDiscipline(it)!!
+            val powerDiscipline = getPowerDiscipline(it.key)!!
             charInstance.addNewData(allDisciplines.indexOf(powerDiscipline))
-            charInstance.addNewData(powerDiscipline.allPowers.indexOf(it))
+            charInstance.addNewData(powerDiscipline.allPowers.indexOf(it.key))
+            charInstance.addNewData(it.value)
         }
+
+        charInstance.addNewData(innateSlotCount)
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.magic
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
@@ -17,55 +18,55 @@ import kotlin.math.ceil
  */
 class Magic(private val charInstance: BaseCharacter){
     //initialize base Zeon points
-    var baseZeon = 0
+    val baseZeon = mutableStateOf(0)
 
     //initialize bought Zeon points
-    var boughtZeon = 0
+    val boughtZeon = mutableStateOf(0)
 
     //initialize Zeon points per level
-    var zeonPerLevel = 0
+    val zeonPerLevel = mutableStateOf(0)
 
     //initialize Zeon points from class levels
-    var zeonFromClass = 0
+    val zeonFromClass = mutableStateOf(0)
 
     //initialize total Zeon points
-    var zeonMax = 0
+    val zeonMax = mutableStateOf(0)
 
     //initialize base Zeon accumulation
-    var baseZeonAcc = 0
+    val baseZeonAcc = mutableStateOf(0)
 
     //initialize zeon accumulation multiple
-    var zeonAccMult = 1
+    val zeonAccMult = mutableStateOf(1)
 
     //initialize zeon accumulation total
-    var zeonAccTotal = 0
+    val zeonAccTotal = mutableStateOf(0)
 
     //initialize zeon recovery multiplier
-    var magicRecoveryMult = 1.0
+    val magicRecoveryMult = mutableStateOf(1.0)
 
     //initialize zeon recovery total
-    var magicRecoveryTotal = 0
+    val magicRecoveryTotal = mutableStateOf(0)
 
     //initialize character's innate magic level
-    var innateMagic = 0
+    val innateMagic = mutableStateOf(0)
 
     //initialize bought magic projection
-    var boughtMagProjection = 0
+    val boughtMagProjection = mutableStateOf(0)
 
     //initialize magic projection total
-    var magProjTotal = 0
+    val magProjTotal = mutableStateOf(0)
 
     //initialize magic projection imbalance
-    var magProjImbalance = 0
+    val magProjImbalance = mutableStateOf(0)
 
     //initialize whether imbalance is to offensive spells
-    var imbalanceIsAttack = true
+    val imbalanceIsAttack = mutableStateOf(true)
 
     //initialize maximum magic level
-    var magicLevelMax = 0
+    val magicLevelMax = mutableStateOf(0)
 
     //initialize magic levels spent
-    var magicLevelSpent = 0
+    val magicLevelSpent = mutableStateOf(0)
 
     //retrieve all available spells
     val lightBook = LightBook()
@@ -85,17 +86,17 @@ class Magic(private val charInstance: BaseCharacter){
     val primaryElementList = mutableListOf<Element>()
 
     //initialize points invested in each book
-    var pointsInLightBook = 0
-    var pointsInDarkBook = 0
-    var pointsInCreateBook = 0
-    var pointsInDestructBook = 0
-    var pointsInAirBook = 0
-    var pointsInEarthBook = 0
-    var pointsInWaterBook = 0
-    var pointsInFireBook = 0
-    var pointsInEssenceBook = 0
-    var pointsInIllusionBook = 0
-    var pointsInNecroBook = 0
+    val pointsInLightBook = mutableStateOf(0)
+    val pointsInDarkBook = mutableStateOf(0)
+    val pointsInCreateBook = mutableStateOf(0)
+    val pointsInDestructBook = mutableStateOf(0)
+    val pointsInAirBook = mutableStateOf(0)
+    val pointsInEarthBook = mutableStateOf(0)
+    val pointsInWaterBook = mutableStateOf(0)
+    val pointsInFireBook = mutableStateOf(0)
+    val pointsInEssenceBook = mutableStateOf(0)
+    val pointsInIllusionBook = mutableStateOf(0)
+    val pointsInNecroBook = mutableStateOf(0)
 
     //initialize lists of free spells taken for each spell category
     private val lightBookFreeSpells = mutableListOf<FreeSpell>()
@@ -120,18 +121,18 @@ class Magic(private val charInstance: BaseCharacter){
     val naturalPaths = mutableListOf<Element>()
 
     //initialize if magic ties has been taken
-    var magicTies = false
+    val magicTies = mutableStateOf(false)
 
     /**
      * Get the character's base Zeon based on the character's Power.
      */
     fun setBaseZeon() {
         //determine the base Zeon
-        baseZeon =
-            if(charInstance.primaryList.pow.total == 1)
+        baseZeon.value =
+            if(charInstance.primaryList.pow.total.value == 1)
                 5
             else
-                20 + (10 * charInstance.primaryList.pow.total) + charInstance.primaryList.pow.outputMod
+                20 + (10 * charInstance.primaryList.pow.total.value) + charInstance.primaryList.pow.outputMod.value
 
         //recalculate the character's maximum Zeon
         calcMaxZeon()
@@ -144,7 +145,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun buyZeon(toBuy: Int){
         //change zeon bought and update appropriate figures
-        boughtZeon = toBuy
+        boughtZeon.value = toBuy
         calcMaxZeon()
         charInstance.updateTotalSpent()
     }
@@ -156,7 +157,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     @JvmName("setZeonPerLevel1")
     fun setZeonPerLevel(amount: Int){
-        zeonPerLevel = amount
+        zeonPerLevel.value = amount
         updateZeonFromClass()
     }
 
@@ -164,9 +165,9 @@ class Magic(private val charInstance: BaseCharacter){
      * Update the total number of Zeon points gained from levels.
      */
     fun updateZeonFromClass(){
-        zeonFromClass =
-            if(charInstance.lvl != 0) zeonPerLevel * charInstance.lvl
-            else zeonPerLevel/2
+        zeonFromClass.value =
+            if(charInstance.lvl.value != 0) zeonPerLevel.value * charInstance.lvl.value
+            else zeonPerLevel.value/2
 
         calcMaxZeon()
     }
@@ -175,7 +176,7 @@ class Magic(private val charInstance: BaseCharacter){
      * Recalculate the character's maximum Zeon.
      */
     fun calcMaxZeon(){
-        zeonMax = baseZeon + (boughtZeon * 5) + zeonFromClass
+        zeonMax.value = baseZeon.value + (boughtZeon.value * 5) + zeonFromClass.value
     }
 
     /**
@@ -183,7 +184,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun setBaseZeonAcc() {
         //determine the base accumulation
-        baseZeonAcc = when(charInstance.primaryList.pow.total){
+        baseZeonAcc.value = when(charInstance.primaryList.pow.total.value){
             in 5..7 -> 5
             in 8 .. 11 -> 10
             in 12..14 -> 15
@@ -205,7 +206,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun buyZeonAcc(toBuy: Int){
         //change the accumulation bought and update the appropriate figures
-        zeonAccMult = toBuy
+        zeonAccMult.value = toBuy
         charInstance.updateTotalSpent()
         calcZeonAcc()
     }
@@ -214,7 +215,7 @@ class Magic(private val charInstance: BaseCharacter){
      * Recalculate the character's Zeon accumulation.
      */
     private fun calcZeonAcc(){
-        zeonAccTotal = baseZeonAcc * zeonAccMult
+        zeonAccTotal.value = baseZeonAcc.value * zeonAccMult.value
         calcZeonRecovery()
         setInnateMagic()
     }
@@ -225,7 +226,7 @@ class Magic(private val charInstance: BaseCharacter){
      * @param input multiplier value to set
      */
     fun changeRecoveryMult(input: Double){
-        magicRecoveryMult = input
+        magicRecoveryMult.value = input
         calcZeonRecovery()
     }
 
@@ -233,12 +234,15 @@ class Magic(private val charInstance: BaseCharacter){
      * Reevaluate the zeon recovery rate.
      */
     private fun calcZeonRecovery(){
-        magicRecoveryTotal = (zeonAccTotal * magicRecoveryMult).toInt()
+        magicRecoveryTotal.value = (zeonAccTotal.value * magicRecoveryMult.value).toInt()
     }
 
+    /**
+     * Sets the value for the minimum zeon cost of spells cast innately.
+     */
     @JvmName("setInnateMagic1")
     private fun setInnateMagic(){
-        innateMagic = when(zeonAccTotal){
+        innateMagic.value = when(zeonAccTotal.value){
             in 0..9 -> 0
             in 10 .. 50 -> 10
             in 51..70 -> 20
@@ -258,7 +262,7 @@ class Magic(private val charInstance: BaseCharacter){
      * @param toBuy the projection amount bought for the character
      */
     fun buyMagProj(toBuy: Int){
-        boughtMagProjection = toBuy
+        boughtMagProjection.value = toBuy
         charInstance.updateTotalSpent()
         calcMagProj()
     }
@@ -267,7 +271,7 @@ class Magic(private val charInstance: BaseCharacter){
      * Recalculate the character's Magic Projection stat.
      */
     fun calcMagProj(){
-        magProjTotal = charInstance.primaryList.dex.outputMod + boughtMagProjection
+        magProjTotal.value = charInstance.primaryList.dex.outputMod.value + boughtMagProjection.value
     }
 
     /**
@@ -276,19 +280,19 @@ class Magic(private val charInstance: BaseCharacter){
      * @return true if input is valid
      */
     fun getValidProjection(): Boolean{
-        return boughtMagProjection * charInstance.ownClass.maProjGrowth <= charInstance.maxMagDP/2
+        return boughtMagProjection.value * charInstance.ownClass.value.maProjGrowth <= charInstance.maxMagDP.value/2
     }
 
     /**
      * Determine the character's Magic Level based on their intelligence.
      */
     fun setMagicLevelMax(){
-        magicLevelMax = when(charInstance.primaryList.int.total) {
-            in 6..10 -> (charInstance.primaryList.int.total - 5) * 10
+        magicLevelMax.value = when(charInstance.primaryList.int.total.value) {
+            in 6..10 -> (charInstance.primaryList.int.total.value - 5) * 10
             11 -> 75
             12 -> 100
             13 -> 150
-            in 14..20 -> (charInstance.primaryList.int.total - 12)* 100
+            in 14..20 -> (charInstance.primaryList.int.total.value - 12)* 100
             else -> 0
         }
     }
@@ -321,7 +325,7 @@ class Magic(private val charInstance: BaseCharacter){
         }
 
         //set magic ties value
-        magicTies = input
+        magicTies.value = input
     }
 
     /**
@@ -333,17 +337,17 @@ class Magic(private val charInstance: BaseCharacter){
     fun buyBookLevels(spent: Int, book: Element){
         //adjust points spent depending on the inputted element
         when(book){
-            Element.Light -> pointsInLightBook = spent
-            Element.Dark -> pointsInDarkBook = spent
-            Element.Creation -> pointsInCreateBook = spent
-            Element.Destruction -> pointsInDestructBook = spent
-            Element.Air -> pointsInAirBook = spent
-            Element.Earth -> pointsInEarthBook = spent
-            Element.Water -> pointsInWaterBook = spent
-            Element.Fire -> pointsInFireBook = spent
-            Element.Essence -> pointsInEssenceBook = spent
-            Element.Illusion -> pointsInIllusionBook = spent
-            Element.Necromancy -> pointsInNecroBook = spent
+            Element.Light -> pointsInLightBook.value = spent
+            Element.Dark -> pointsInDarkBook.value = spent
+            Element.Creation -> pointsInCreateBook.value = spent
+            Element.Destruction -> pointsInDestructBook.value = spent
+            Element.Air -> pointsInAirBook.value = spent
+            Element.Earth -> pointsInEarthBook.value = spent
+            Element.Water -> pointsInWaterBook.value = spent
+            Element.Fire -> pointsInFireBook.value = spent
+            Element.Essence -> pointsInEssenceBook.value = spent
+            Element.Illusion -> pointsInIllusionBook.value = spent
+            Element.Necromancy -> pointsInNecroBook.value = spent
             else -> {}
         }
 
@@ -427,30 +431,30 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun updateSpellList(){
         //clear magic level spent and list of usable spells
-        magicLevelSpent = 0
+        magicLevelSpent.value = 0
         spellList.clear()
 
         //get spells acquired from investment in books
-        addSpellsFromBook(pointsInLightBook, Element.Light, lightBook.fullBook)
-        addSpellsFromBook(pointsInDarkBook, Element.Dark, darkBook.fullBook)
-        addSpellsFromBook(pointsInCreateBook, Element.Creation, creationBook.fullBook)
-        addSpellsFromBook(pointsInDestructBook, Element.Destruction, destructionBook.fullBook)
-        addSpellsFromBook(pointsInAirBook, Element.Air, airBook.fullBook)
-        addSpellsFromBook(pointsInEarthBook, Element.Earth, earthBook.fullBook)
-        addSpellsFromBook(pointsInWaterBook, Element.Water, waterBook.fullBook)
-        addSpellsFromBook(pointsInFireBook, Element.Fire, fireBook.fullBook)
-        addSpellsFromBook(pointsInEssenceBook, Element.Essence, essenceBook.fullBook)
-        addSpellsFromBook(pointsInIllusionBook, Element.Illusion, illusionBook.fullBook)
-        addSpellsFromBook(pointsInNecroBook, Element.Necromancy, necromancyBook.fullBook)
+        addSpellsFromBook(pointsInLightBook.value, Element.Light, lightBook.fullBook)
+        addSpellsFromBook(pointsInDarkBook.value, Element.Dark, darkBook.fullBook)
+        addSpellsFromBook(pointsInCreateBook.value, Element.Creation, creationBook.fullBook)
+        addSpellsFromBook(pointsInDestructBook.value, Element.Destruction, destructionBook.fullBook)
+        addSpellsFromBook(pointsInAirBook.value, Element.Air, airBook.fullBook)
+        addSpellsFromBook(pointsInEarthBook.value, Element.Earth, earthBook.fullBook)
+        addSpellsFromBook(pointsInWaterBook.value, Element.Water, waterBook.fullBook)
+        addSpellsFromBook(pointsInFireBook.value, Element.Fire, fireBook.fullBook)
+        addSpellsFromBook(pointsInEssenceBook.value, Element.Essence, essenceBook.fullBook)
+        addSpellsFromBook(pointsInIllusionBook.value, Element.Illusion, illusionBook.fullBook)
+        addSpellsFromBook(pointsInNecroBook.value, Element.Necromancy, necromancyBook.fullBook)
 
         //get spells acquired from individual purchases
         individualSpells.forEach{
             if(it is FreeSpell) {
-                magicLevelSpent += getIndividualCost(it.level, findFreeSpellElement(it))
+                magicLevelSpent.value += getIndividualCost(it.level, findFreeSpellElement(it))
                 spellList.add(getFreeSpell(it.level, findFreeSpellElement(it)))
             }
             else {
-                magicLevelSpent += getIndividualCost(it.level, it.inBook)
+                magicLevelSpent.value += getIndividualCost(it.level, it.inBook)
                 spellList.add(it)
             }
         }
@@ -486,7 +490,7 @@ class Magic(private val charInstance: BaseCharacter){
         }
 
         //add spent points value to cumulative value
-        magicLevelSpent += pointValue
+        magicLevelSpent.value += pointValue
 
         //determine how many spells are bought depending on if opposite element is primary
         val spellRange =
@@ -556,7 +560,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun changeIndividualSpell(targetSpell: Spell, isBought: Boolean){
         //cease action if character has Magic Ties disadvantage
-        if(magicTies)
+        if(magicTies.value)
             return
 
         //if spell is being bought
@@ -594,7 +598,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean){
         //terminate process if Magic Ties disadvantage is taken
-        if(magicTies)
+        if(magicTies.value)
             return
 
         //determine spell held by the character
@@ -720,17 +724,17 @@ class Magic(private val charInstance: BaseCharacter){
     private fun getElementInvestment(inputElement: Element): Int{
         //return sum of individual spells bought and book point investment
         return getIndividualPoints(inputElement) + when(inputElement){
-            Element.Light -> pointsInLightBook
-            Element.Dark -> pointsInDarkBook
-            Element.Creation -> pointsInCreateBook
-            Element.Destruction -> pointsInDestructBook
-            Element.Air -> pointsInAirBook
-            Element.Earth -> pointsInEarthBook
-            Element.Water -> pointsInWaterBook
-            Element.Fire -> pointsInFireBook
-            Element.Essence -> pointsInEssenceBook
-            Element.Illusion -> pointsInIllusionBook
-            Element.Necromancy -> pointsInNecroBook
+            Element.Light -> pointsInLightBook.value
+            Element.Dark -> pointsInDarkBook.value
+            Element.Creation -> pointsInCreateBook.value
+            Element.Destruction -> pointsInDestructBook.value
+            Element.Air -> pointsInAirBook.value
+            Element.Earth -> pointsInEarthBook.value
+            Element.Water -> pointsInWaterBook.value
+            Element.Fire -> pointsInFireBook.value
+            Element.Essence -> pointsInEssenceBook.value
+            Element.Illusion -> pointsInIllusionBook.value
+            Element.Necromancy -> pointsInNecroBook.value
             else -> 0
         }
     }
@@ -929,9 +933,9 @@ class Magic(private val charInstance: BaseCharacter){
      * Determines development points spent in this section of the character build.
      */
     fun calculateSpent(): Int{
-        return (boughtZeon * charInstance.ownClass.zeonGrowth) +
-                ((zeonAccMult - 1) * charInstance.ownClass.maGrowth) +
-                (boughtMagProjection * charInstance.ownClass.maProjGrowth)
+        return (boughtZeon.value * charInstance.ownClass.value.zeonGrowth) +
+                ((zeonAccMult.value - 1) * charInstance.ownClass.value.maGrowth) +
+                (boughtMagProjection.value * charInstance.ownClass.value.maProjGrowth)
     }
 
     /**
@@ -941,19 +945,19 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun loadMagic(fileReader: BufferedReader){
         //get character's purchased zeon
-        boughtZeon = fileReader.readLine().toInt()
+        boughtZeon.value = fileReader.readLine().toInt()
 
         //get zeon accumulation multiple
-        zeonAccMult = fileReader.readLine().toInt()
+        zeonAccMult.value = fileReader.readLine().toInt()
 
         //get magic projection bought
-        boughtMagProjection = fileReader.readLine().toInt()
+        boughtMagProjection.value = fileReader.readLine().toInt()
 
         //get projection imbalance value
-        magProjImbalance = fileReader.readLine().toInt()
+        magProjImbalance.value = fileReader.readLine().toInt()
 
         //get projection imbalance bias
-        imbalanceIsAttack = fileReader.readLine().toBoolean()
+        imbalanceIsAttack.value = fileReader.readLine().toBoolean()
         calcMagProj()
 
         //get each saved primary element
@@ -962,17 +966,17 @@ class Magic(private val charInstance: BaseCharacter){
         }
 
         //get all points invested in each element book
-        pointsInLightBook = fileReader.readLine().toInt()
-        pointsInDarkBook = fileReader.readLine().toInt()
-        pointsInCreateBook = fileReader.readLine().toInt()
-        pointsInDestructBook = fileReader.readLine().toInt()
-        pointsInAirBook = fileReader.readLine().toInt()
-        pointsInEarthBook = fileReader.readLine().toInt()
-        pointsInWaterBook = fileReader.readLine().toInt()
-        pointsInFireBook = fileReader.readLine().toInt()
-        pointsInEssenceBook = fileReader.readLine().toInt()
-        pointsInIllusionBook = fileReader.readLine().toInt()
-        pointsInNecroBook = fileReader.readLine().toInt()
+        pointsInLightBook.value = fileReader.readLine().toInt()
+        pointsInDarkBook.value = fileReader.readLine().toInt()
+        pointsInCreateBook.value = fileReader.readLine().toInt()
+        pointsInDestructBook.value = fileReader.readLine().toInt()
+        pointsInAirBook.value = fileReader.readLine().toInt()
+        pointsInEarthBook.value = fileReader.readLine().toInt()
+        pointsInWaterBook.value = fileReader.readLine().toInt()
+        pointsInFireBook.value = fileReader.readLine().toInt()
+        pointsInEssenceBook.value = fileReader.readLine().toInt()
+        pointsInIllusionBook.value = fileReader.readLine().toInt()
+        pointsInNecroBook.value = fileReader.readLine().toInt()
 
         //get each individual spell saved
         for(index in 0 until fileReader.readLine().toInt()){
@@ -1041,19 +1045,19 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun writeMagic(){
         //write bought zeon points
-        charInstance.addNewData(boughtZeon)
+        charInstance.addNewData(boughtZeon.value)
 
         //write zeon accumulation multiple
-        charInstance.addNewData(zeonAccMult)
+        charInstance.addNewData(zeonAccMult.value)
 
         //write magic projection bought
-        charInstance.addNewData(boughtMagProjection)
+        charInstance.addNewData(boughtMagProjection.value)
 
         //write projection imbalance
-        charInstance.addNewData(magProjImbalance)
+        charInstance.addNewData(magProjImbalance.value)
 
         //write imbalance bias
-        charInstance.addNewData(imbalanceIsAttack.toString())
+        charInstance.addNewData(imbalanceIsAttack.value.toString())
 
         //save primary elements and list size to file
         charInstance.addNewData(primaryElementList.size)
@@ -1062,17 +1066,17 @@ class Magic(private val charInstance: BaseCharacter){
         }
 
         //write all book levels to file
-        charInstance.addNewData(pointsInLightBook)
-        charInstance.addNewData(pointsInDarkBook)
-        charInstance.addNewData(pointsInCreateBook)
-        charInstance.addNewData(pointsInDestructBook)
-        charInstance.addNewData(pointsInAirBook)
-        charInstance.addNewData(pointsInEarthBook)
-        charInstance.addNewData(pointsInWaterBook)
-        charInstance.addNewData(pointsInFireBook)
-        charInstance.addNewData(pointsInEssenceBook)
-        charInstance.addNewData(pointsInIllusionBook)
-        charInstance.addNewData(pointsInNecroBook)
+        charInstance.addNewData(pointsInLightBook.value)
+        charInstance.addNewData(pointsInDarkBook.value)
+        charInstance.addNewData(pointsInCreateBook.value)
+        charInstance.addNewData(pointsInDestructBook.value)
+        charInstance.addNewData(pointsInAirBook.value)
+        charInstance.addNewData(pointsInEarthBook.value)
+        charInstance.addNewData(pointsInWaterBook.value)
+        charInstance.addNewData(pointsInFireBook.value)
+        charInstance.addNewData(pointsInEssenceBook.value)
+        charInstance.addNewData(pointsInIllusionBook.value)
+        charInstance.addNewData(pointsInNecroBook.value)
 
         //write all individually bought spells to file
         charInstance.addNewData(individualSpells.size)

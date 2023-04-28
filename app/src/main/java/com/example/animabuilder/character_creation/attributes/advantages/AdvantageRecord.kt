@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.advantages
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.CommonAdvantages
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.MagicAdvantages
@@ -19,7 +20,7 @@ import java.io.BufferedReader
 
 class AdvantageRecord(private val charInstance: BaseCharacter){
     //initialize spent creation points
-    var creationPointSpent = 0
+    val creationPointSpent = mutableStateOf(0)
 
     //initialize list of taken advantages
     val takenAdvantages = mutableListOf<Advantage>()
@@ -47,7 +48,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             return "Cannot take more Disadvantages"
 
         //implement racial restrictions on advantages
-        when(charInstance.ownRace){
+        when(charInstance.ownRace.value){
             charInstance.races.sylvainAdvantages -> {
                 when(toAdd){
                     //forbid these advantages for sylvain
@@ -102,21 +103,21 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             commonAdvantages.characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
-                    0 -> if(charInstance.primaryList.str.total + 1 > 11) return "Cannot increase Strength further"
-                    1 -> if(charInstance.primaryList.dex.total + 1 > 11) return "Cannot increase Dexterity further"
-                    2 -> if(charInstance.primaryList.agi.total + 1 > 11) return "Cannot increase Agility further"
-                    3 -> if(charInstance.primaryList.con.total + 1 > 11) return "Cannot increase Constitution further"
-                    4 -> if(charInstance.primaryList.int.total + 1 > 13) return "Cannot increase Intelligence further"
-                    5 -> if(charInstance.primaryList.pow.total + 1 > 13) return "Cannot increase Power further"
-                    6 -> if(charInstance.primaryList.wp.total + 1 > 13) return "Cannot increase Willpower further"
-                    7 -> if(charInstance.primaryList.per.total + 1 > 13) return "Cannot increase Perception further"
+                    0 -> if(charInstance.primaryList.str.total.value + 1 > 11) return "Cannot increase Strength further"
+                    1 -> if(charInstance.primaryList.dex.total.value + 1 > 11) return "Cannot increase Dexterity further"
+                    2 -> if(charInstance.primaryList.agi.total.value + 1 > 11) return "Cannot increase Agility further"
+                    3 -> if(charInstance.primaryList.con.total.value + 1 > 11) return "Cannot increase Constitution further"
+                    4 -> if(charInstance.primaryList.int.total.value + 1 > 13) return "Cannot increase Intelligence further"
+                    5 -> if(charInstance.primaryList.pow.total.value + 1 > 13) return "Cannot increase Power further"
+                    6 -> if(charInstance.primaryList.wp.total.value + 1 > 13) return "Cannot increase Willpower further"
+                    7 -> if(charInstance.primaryList.per.total.value + 1 > 13) return "Cannot increase Perception further"
                     else -> return "Invalid input"
                 }
             }
 
             //forbid reduction of growth stat to below zero
             commonAdvantages.subjectAptitude -> {
-                if(charInstance.secondaryList.fullList[taken!!].devPerPoint - toAdd.cost[takenCost] <= 0)
+                if(charInstance.secondaryList.fullList[taken!!].devPerPoint.value - toAdd.cost[takenCost] <= 0)
                     return "Cannot reduce characteristic growth below zero"
             }
 
@@ -124,13 +125,13 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                 //get current growth value that will be changed by this advantage
                 val prevGrowth =
                     when(taken){
-                        0 -> charInstance.ownClass.athGrowth
-                        1 -> charInstance.ownClass.creatGrowth
-                        2 -> charInstance.ownClass.percGrowth
-                        3 -> charInstance.ownClass.socGrowth
-                        4 -> charInstance.ownClass.subterGrowth
-                        5 -> charInstance.ownClass.intellGrowth
-                        6 -> charInstance.ownClass.vigGrowth
+                        0 -> charInstance.ownClass.value.athGrowth
+                        1 -> charInstance.ownClass.value.creatGrowth
+                        2 -> charInstance.ownClass.value.percGrowth
+                        3 -> charInstance.ownClass.value.socGrowth
+                        4 -> charInstance.ownClass.value.subterGrowth
+                        5 -> charInstance.ownClass.value.intellGrowth
+                        6 -> charInstance.ownClass.value.vigGrowth
                         else -> 0
                     }
 
@@ -147,16 +148,16 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
             //prevent certain classes from taking this disadvantage
             commonAdvantages.exclusiveWeapon -> {
-                if(!charInstance.ownClass.archetype.contains(Archetype.Fighter) &&
-                        !charInstance.ownClass.archetype.contains(Archetype.Domine) &&
-                        !charInstance.ownClass.archetype.contains(Archetype.Prowler) &&
-                        !charInstance.ownClass.archetype.contains(Archetype.Novel))
+                if(!charInstance.ownClass.value.archetype.contains(Archetype.Fighter) &&
+                        !charInstance.ownClass.value.archetype.contains(Archetype.Domine) &&
+                        !charInstance.ownClass.value.archetype.contains(Archetype.Prowler) &&
+                        !charInstance.ownClass.value.archetype.contains(Archetype.Novel))
                     return "Disadvantage forbidden to your class"
             }
 
             //check minimum appearance before taking this disadvantage
             commonAdvantages.unattractive ->
-                if(charInstance.appearance < 7) return "Minimum appearance of 7 required"
+                if(charInstance.appearance.value < 7) return "Minimum appearance of 7 required"
 
             //prevent either of these disadvantages from being taken with the other one
             magicAdvantages.slowMagicRecovery ->
@@ -189,7 +190,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         )
 
         //check that character has sufficient creation points to buy this advantage
-        if(creationPointSpent + copyAdvantage.cost[copyAdvantage.pickedCost] <= 3){
+        if(creationPointSpent.value + copyAdvantage.cost[copyAdvantage.pickedCost] <= 3){
             takenAdvantages += copyAdvantage
 
             //apply effect
@@ -232,11 +233,11 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
      */
     private fun refreshSpent(){
         //reset spent value
-        creationPointSpent = 0
+        creationPointSpent.value = 0
 
         //add cost of each taken advantage
         takenAdvantages.forEach{
-            creationPointSpent += it.cost[it.pickedCost]
+            creationPointSpent.value += it.cost[it.pickedCost]
         }
     }
 

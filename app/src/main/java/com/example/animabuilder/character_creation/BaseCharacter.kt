@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.attributes.advantages.AdvantageRecord
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_items.RaceAdvantages
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.RacialAdvantage
@@ -24,13 +25,13 @@ import kotlin.Throws
  */
 class BaseCharacter {
     //character's name
-    var charName = ""
+    val charName = mutableStateOf("")
 
     //character's current experience point amount
-    var experiencePoints = 0
+    val experiencePoints = mutableStateOf(0)
 
     //character's gender (default male)
-    var isMale = true
+    val isMale = mutableStateOf(true)
 
     //list of secondary abilities
     val primaryList = PrimaryList(this@BaseCharacter)
@@ -48,48 +49,48 @@ class BaseCharacter {
     val classes = ClassInstances(this@BaseCharacter)
 
     //set default class to one with empty onTake and onRemove functions
-    var ownClass = classes.mentalist
+    val ownClass = mutableStateOf(classes.mentalist)
 
     val races = RaceAdvantages(this@BaseCharacter)
 
     //initialize character's race
-    var ownRace = listOf<RacialAdvantage>()
+    val ownRace = mutableStateOf<List<RacialAdvantage>>(listOf())
 
     //character's level
-    var lvl = 0
+    val lvl = mutableStateOf(0)
 
     //character development points
-    var devPT = 0
-    var spentTotal = 0
+    val devPT = mutableStateOf(0)
+    val spentTotal = mutableStateOf(0)
 
     //maximum point allotments to combat, magic, and psychic abilities
-    var maxCombatDP = 0
-    private var percCombatDP = 0.0
-    var ptInCombat = 0
+    val maxCombatDP = mutableStateOf(0)
+    private val percCombatDP = mutableStateOf(0.0)
+    val ptInCombat = mutableStateOf(0)
 
-    var maxMagDP = 0
-    private var percMagDP = 0.0
-    var ptInMag = 0
+    val maxMagDP = mutableStateOf(0)
+    private val percMagDP = mutableStateOf(0.0)
+    val ptInMag = mutableStateOf(0)
 
-    var maxPsyDP = 0
-    private var percPsyDP = 0.0
-    var ptInPsy = 0
+    val maxPsyDP = mutableStateOf(0)
+    private val percPsyDP = mutableStateOf(0.0)
+    val ptInPsy = mutableStateOf(0)
 
     //character size items
-    var sizeSpecial = 0
-    var sizeCategory = 0
+    val sizeSpecial = mutableStateOf(0)
+    val sizeCategory = mutableStateOf(0)
 
     //character's appearance
-    var appearance = 5
+    val appearance = mutableStateOf(5)
 
     //character's movement value
-    var movement = 1
+    val movement = mutableStateOf(1)
 
     //character's weight index
-    var weightIndex = 1
+    val weightIndex = mutableStateOf(1)
 
     //character's gnosis value
-    var gnosis = 0
+    val gnosis = mutableStateOf(0)
 
     /**
      * Changes the character's gender depending on the input
@@ -98,17 +99,17 @@ class BaseCharacter {
      */
     fun setGender(input: Boolean){
         //remove previous buff if character is a duk'zarist
-        if(ownRace == races.dukzaristAdvantages){
-            if(isMale) combat.physicalRes.setSpecial(-5)
+        if(ownRace.value == races.dukzaristAdvantages){
+            if(isMale.value) combat.physicalRes.setSpecial(-5)
             else combat.magicRes.setSpecial(-5)
         }
 
         //set desired input
-        isMale = input
+        isMale.value = input
 
         //apply gendered buff if character is a duk'zarist
-        if(ownRace == races.dukzaristAdvantages){
-            if(isMale) combat.physicalRes.setSpecial(5)
+        if(ownRace.value == races.dukzaristAdvantages){
+            if(isMale.value) combat.physicalRes.setSpecial(5)
             else combat.magicRes.setSpecial(5)
         }
     }
@@ -119,11 +120,11 @@ class BaseCharacter {
     @JvmName("setOwnClass1")
     fun setOwnClass(input: CharClass){
         //undo current class buffs
-        ownClass.onRemove()
+        ownClass.value.onRemove()
 
         //change class and apply new buffs
-        ownClass = input
-        ownClass.onTake()
+        ownClass.value = input
+        ownClass.value.onTake()
 
         updateClassInputs()
     }
@@ -133,11 +134,11 @@ class BaseCharacter {
      */
     fun setOwnClass(className: String) {
         //undo current class buffs
-        ownClass.onRemove()
+        ownClass.value.onRemove()
 
         //change class and apply new buffs
-        ownClass = classes.findClass(className)!!
-        ownClass.onTake()
+        ownClass.value = classes.findClass(className)!!
+        ownClass.value.onTake()
 
         updateClassInputs()
     }
@@ -147,11 +148,11 @@ class BaseCharacter {
      */
     fun setOwnClass(classInt: Int){
         //undo current class buffs
-        ownClass.onRemove()
+        ownClass.value.onRemove()
 
         //changes class and apply new buffs
-        ownClass = classes.allClasses[classInt]
-        ownClass.onTake()
+        ownClass.value = classes.allClasses[classInt]
+        ownClass.value.onTake()
 
         updateClassInputs()
     }
@@ -167,13 +168,13 @@ class BaseCharacter {
         combat.updateInitiative()
 
         //update character's maximum point values
-        percCombatDP = ownClass.combatMax
-        percMagDP = ownClass.magMax
-        percPsyDP = ownClass.psyMax
+        percCombatDP.value = ownClass.value.combatMax
+        percMagDP.value = ownClass.value.magMax
+        percPsyDP.value = ownClass.value.psyMax
         dpAllotmentCalc()
 
         //update secondary bonuses
-        secondaryList.classUpdate(ownClass)
+        secondaryList.classUpdate(ownClass.value)
 
         //update character's martial knowledge
         ki.updateMK()
@@ -194,7 +195,7 @@ class BaseCharacter {
         removeRaceAdvantages()
 
         //apply new race and buffs
-        ownRace = raceIn
+        ownRace.value = raceIn
         applyRaceAdvantages()
     }
 
@@ -206,7 +207,7 @@ class BaseCharacter {
         removeRaceAdvantages()
 
         //apply new race and buffs
-        ownRace = races.getFromString(raceName)
+        ownRace.value = races.getFromString(raceName)
         applyRaceAdvantages()
     }
 
@@ -218,7 +219,7 @@ class BaseCharacter {
         removeRaceAdvantages()
 
         //apply new race and buffs
-        ownRace = races.allAdvantageLists[raceNum]
+        ownRace.value = races.allAdvantageLists[raceNum]
         applyRaceAdvantages()
     }
 
@@ -226,7 +227,7 @@ class BaseCharacter {
      * Apply the advantages of the character's current race.
      */
     fun applyRaceAdvantages(){
-        ownRace.forEach{
+        ownRace.value.forEach{
             //if the advantage has an onTake effect, run it
             if(it.onTake != null)
                 it.onTake!!(it.picked, it.cost[it.pickedCost])
@@ -237,7 +238,7 @@ class BaseCharacter {
      * Remove the advantages of the character's current race.
      */
     fun removeRaceAdvantages(){
-        ownRace.forEach{
+        ownRace.value.forEach{
             //if the advantage has an onRemove effect, run it
             if(it.onRemove != null)
                 it.onRemove!!(it.picked, it.cost[it.pickedCost])
@@ -250,12 +251,12 @@ class BaseCharacter {
     @JvmName("setLvl1")
     fun setLvl(levNum: Int) {
         //set new level number
-        lvl = levNum
+        lvl.value = levNum
 
         //determine development point count
-        devPT =
-            if(lvl == 0) 400
-            else 500 + lvl * 100
+        devPT.value =
+            if(lvl.value == 0) 400
+            else 500 + lvl.value * 100
 
         //refactor the character's presence
         combat.updatePresence()
@@ -294,9 +295,9 @@ class BaseCharacter {
      * Calculates percentage allotments for each category.
      */
     private fun dpAllotmentCalc() {
-        maxCombatDP = (devPT * percCombatDP).toInt()
-        maxMagDP = (devPT * percMagDP).toInt()
-        maxPsyDP = (devPT * percPsyDP).toInt()
+        maxCombatDP.value = (devPT.value * percCombatDP.value).toInt()
+        maxMagDP.value = (devPT.value * percMagDP.value).toInt()
+        maxPsyDP.value = (devPT.value * percPsyDP.value).toInt()
     }
 
     /**
@@ -312,8 +313,8 @@ class BaseCharacter {
         updatePsychicSpent()
 
         //update the total expenditure
-        spentTotal = combat.lifeMultsTaken * ownClass.lifePointMultiple +
-                secondaryList.calculateSpent() + ptInCombat + ptInMag + ptInPsy
+        spentTotal.value = combat.lifeMultsTaken.value * ownClass.value.lifePointMultiple +
+                secondaryList.calculateSpent() + ptInCombat.value + ptInMag.value + ptInPsy.value
     }
 
     /**
@@ -321,7 +322,7 @@ class BaseCharacter {
      * Get by calculating the values spent in the combat, module, and ki sections.
      */
     private fun updateCombatSpent(){
-        ptInCombat =
+        ptInCombat.value =
             combat.calculateSpent() +
             weaponProficiencies.calculateSpent() +
             ki.calculateSpent()
@@ -332,14 +333,14 @@ class BaseCharacter {
      * Get by calculating the values spent in the magic and summoning sections.
      */
     private fun updateMagicSpent(){
-        ptInMag = magic.calculateSpent() + summoning.calculateSpent() + weaponProficiencies.calcPointsInMag()
+        ptInMag.value = magic.calculateSpent() + summoning.calculateSpent() + weaponProficiencies.calcPointsInMag()
     }
 
     /**
      * Updates the total development points spent in psychic abilities.
      */
     private fun updatePsychicSpent(){
-        ptInPsy = psychic.calculateSpent() + weaponProficiencies.calcPointsInPsy()
+        ptInPsy.value = psychic.calculateSpent() + weaponProficiencies.calcPointsInPsy()
     }
 
     /**
@@ -350,16 +351,16 @@ class BaseCharacter {
     fun changeSize(input: Int){
         //run the indicated change to the size special value
         when(input){
-            0 -> sizeSpecial -= 5
-            1 -> sizeSpecial -= 4
-            2 -> sizeSpecial -= 3
-            3 -> sizeSpecial -= 2
-            4 -> sizeSpecial -= 1
-            5 -> sizeSpecial += 1
-            6 -> sizeSpecial += 2
-            7 -> sizeSpecial += 3
-            8 -> sizeSpecial += 4
-            9 -> sizeSpecial += 5
+            0 -> sizeSpecial.value -= 5
+            1 -> sizeSpecial.value -= 4
+            2 -> sizeSpecial.value -= 3
+            3 -> sizeSpecial.value -= 2
+            4 -> sizeSpecial.value -= 1
+            5 -> sizeSpecial.value += 1
+            6 -> sizeSpecial.value += 2
+            7 -> sizeSpecial.value += 3
+            8 -> sizeSpecial.value += 4
+            9 -> sizeSpecial.value += 5
         }
 
         //update the character's total size
@@ -370,7 +371,7 @@ class BaseCharacter {
      * Updates the character's total size category.
      */
     fun updateSize(){
-        sizeCategory = primaryList.str.total + primaryList.con.total + sizeSpecial
+        sizeCategory.value = primaryList.str.total.value + primaryList.con.total.value + sizeSpecial.value
     }
 
     /**
@@ -382,11 +383,11 @@ class BaseCharacter {
     fun setAppearance(input: Int){
         //set appearance to 2 if character has unattractive disadvantage
         if(advantageRecord.getAdvantage("Unattractive") != null)
-            appearance = 2
+            appearance.value = 2
 
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace != races.danjayniAdvantages || input in 3..7)
-            appearance = input
+        else if(ownRace.value != races.danjayniAdvantages || input in 3..7)
+            appearance.value = input
     }
 
     /**
@@ -396,7 +397,7 @@ class BaseCharacter {
      */
     @JvmName("setMovement1")
     fun setMovement(input: Int){
-        movement = when(input){
+        movement.value = when(input){
             1 -> 1
             2 -> 4
             3 -> 8
@@ -422,7 +423,7 @@ class BaseCharacter {
 
     @JvmName("setWeightIndex1")
     fun setWeightIndex(input: Int){
-        weightIndex = when(input){
+        weightIndex.value = when(input){
             1 -> 1
             2 -> 10
             3 -> 20
@@ -479,10 +480,10 @@ class BaseCharacter {
         val fileReader = BufferedReader(readChar)
 
         //get the character's name
-        charName = fileReader.readLine()
+        charName.value = fileReader.readLine()
 
         //get the character's experience point amount
-        experiencePoints = fileReader.readLine().toInt()
+        experiencePoints.value = fileReader.readLine().toInt()
 
         //get the character's gender
         setGender(fileReader.readLine().toBoolean())
@@ -547,18 +548,18 @@ class BaseCharacter {
             byteArray = ByteArrayOutputStream()
 
             //add name data
-            addNewData(charName)
+            addNewData(charName.value)
 
             //add experience point data
-            addNewData(experiencePoints)
+            addNewData(experiencePoints.value)
 
             //add gender data
-            addNewData(isMale.toString())
+            addNewData(isMale.value.toString())
 
             //add class, race, and level data
-            addNewData(ownClass.heldClass)
-            addNewData(races.getNameOfList(ownRace))
-            addNewData(lvl)
+            addNewData(ownClass.value.heldClass)
+            addNewData(races.getNameOfList(ownRace.value))
+            addNewData(lvl.value)
 
             //write paladin's chosen level boon
             classes.writeClassData()
@@ -570,7 +571,7 @@ class BaseCharacter {
             combat.writeCombat()
 
             //write appearance data
-            addNewData(appearance)
+            addNewData(appearance.value)
 
             //write secondary characteristic data
             secondaryList.writeList()
@@ -619,7 +620,7 @@ class BaseCharacter {
     }
 
     /**
-     * Adds new Int data to the ByteOutputStream.
+     * Adds new Int data to the output stream.
      *
      * @param toAdd integer data to add to the byte array
      */
@@ -634,7 +635,7 @@ class BaseCharacter {
     }
 
     /**
-     * Adds new Double data to the ByteOutputStresm.
+     * Adds new Double data to the output stream.
      *
      * @param toAdd double data to add to the byte array
      */

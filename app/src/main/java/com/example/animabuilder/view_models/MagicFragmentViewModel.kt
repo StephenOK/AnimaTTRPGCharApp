@@ -28,31 +28,31 @@ class MagicFragmentViewModel(
     dex: PrimaryCharacteristic
 ): ViewModel() {
     //initialize the character's bought zeon input
-    private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.toString())
+    private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.value.toString())
     val boughtZeonString = _boughtZeonString.asStateFlow()
 
     //initialize the character's maximum zeon display
-    private val _maxZeonString = MutableStateFlow(magic.zeonMax.toString())
+    private val _maxZeonString = MutableStateFlow(magic.zeonMax.value.toString())
     val maxZeonString = _maxZeonString.asStateFlow()
 
     //initialize the character's zeon recovery string
-    private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.toString())
+    private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.value.toString())
     val zeonRecoveryString = _zeonRecoverString.asStateFlow()
 
     //initialize the character's innate magic displaay
-    private val _innateMagic = MutableStateFlow(magic.innateMagic.toString())
+    private val _innateMagic = MutableStateFlow(magic.innateMagic.value.toString())
     val innateMagic = _innateMagic.asStateFlow()
 
     //initialize the character's magic projection imbalance input
-    private val _projectionImbalance = MutableStateFlow(magic.magProjImbalance.toString())
+    private val _projectionImbalance = MutableStateFlow(magic.magProjImbalance.value.toString())
     val projectionImbalance = _projectionImbalance.asStateFlow()
 
     //initialize the tracker of the character's imbalance bias
-    private val _imbalanceIsAttack = MutableStateFlow(magic.imbalanceIsAttack)
+    private val _imbalanceIsAttack = MutableStateFlow(magic.imbalanceIsAttack.value)
     val imbalanceIsAttack = _imbalanceIsAttack.asStateFlow()
 
     //initialize the display of the character's imbalance bias
-    private val _imbalanceTypeString = MutableStateFlow(if(magic.imbalanceIsAttack)"Attack" else "Block")
+    private val _imbalanceTypeString = MutableStateFlow(if(magic.imbalanceIsAttack.value)"Attack" else "Block")
     val imbalanceTypeString = _imbalanceTypeString.asStateFlow()
 
     //initialize the displays for the character's offensive and defensive magic projections
@@ -62,7 +62,7 @@ class MagicFragmentViewModel(
     val defenseImbalance = _defenseImbalance.asStateFlow()
 
     //initialize the display for the character's magic levels spent
-    private val _magicLevelSpent = MutableStateFlow(magic.magicLevelSpent.toString())
+    private val _magicLevelSpent = MutableStateFlow(magic.magicLevelSpent.value.toString())
     val magicLevelSpent = _magicLevelSpent.asStateFlow()
 
     //initialize open state of the free spell exchange dialog
@@ -84,25 +84,25 @@ class MagicFragmentViewModel(
     //create item to manage zeon accumulation
     private val zeonAccumulation = ZeonPurchaseItemData(
         R.string.zeonAccumulationLabel,
-        magic.baseZeonAcc,
-        magic.zeonAccMult,
-        magic.zeonAccTotal,
+        magic.baseZeonAcc.value,
+        magic.zeonAccMult.value,
+        magic.zeonAccTotal.value,
         {
             if(it >= 1){
                 magic.buyZeonAcc(it)
-                _zeonRecoverString.update{magic.magicRecoveryTotal.toString()}
-                _innateMagic.update{magic.innateMagic.toString()}
+                _zeonRecoverString.update{magic.magicRecoveryTotal.value.toString()}
+                _innateMagic.update{magic.innateMagic.value.toString()}
             }
         },
         {Color.Black}
-    ) {it.update{magic.zeonAccTotal.toString()}}
+    ) {it.update{magic.zeonAccTotal.value.toString()}}
 
     //create item to manage zeon projection
     private val zeonProjection = ZeonPurchaseItemData(
         R.string.magProjectionLabel,
-        dex.outputMod,
-        magic.boughtMagProjection,
-        magic.magProjTotal,
+        dex.outputMod.value,
+        magic.boughtMagProjection.value,
+        magic.magProjTotal.value,
         {
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
@@ -113,7 +113,7 @@ class MagicFragmentViewModel(
             else
                 Color.Red
         }
-    ){it.update{magic.magProjTotal.toString()}}
+    ){it.update{magic.magProjTotal.value.toString()}}
 
     //gather purchase data created
     val allPurchaseData = listOf(zeonAccumulation, zeonProjection)
@@ -122,7 +122,7 @@ class MagicFragmentViewModel(
     private val lightBook = SpellRowData(
         magic,
         this,
-        magic.pointsInLightBook,
+        magic.pointsInLightBook.value,
         Element.Light,
         magic.lightBook.fullBook
     )
@@ -130,7 +130,7 @@ class MagicFragmentViewModel(
     private val darkBook = SpellRowData(
         magic,
         this,
-        magic.pointsInDarkBook,
+        magic.pointsInDarkBook.value,
         Element.Dark,
         magic.darkBook.fullBook
     )
@@ -138,7 +138,7 @@ class MagicFragmentViewModel(
     private val creationBook = SpellRowData(
         magic,
         this,
-        magic.pointsInCreateBook,
+        magic.pointsInCreateBook.value,
         Element.Creation,
         magic.creationBook.fullBook
     )
@@ -146,7 +146,7 @@ class MagicFragmentViewModel(
     private val destructionBook = SpellRowData(
         magic,
         this,
-        magic.pointsInDestructBook,
+        magic.pointsInDestructBook.value,
         Element.Destruction,
         magic.destructionBook.fullBook
     )
@@ -154,7 +154,7 @@ class MagicFragmentViewModel(
     private val airBook = SpellRowData(
         magic,
         this,
-        magic.pointsInAirBook,
+        magic.pointsInAirBook.value,
         Element.Air,
         magic.airBook.fullBook
     )
@@ -162,7 +162,7 @@ class MagicFragmentViewModel(
     private val earthBook = SpellRowData(
         magic,
         this,
-        magic.pointsInEarthBook,
+        magic.pointsInEarthBook.value,
         Element.Earth,
         magic.earthBook.fullBook
     )
@@ -170,7 +170,7 @@ class MagicFragmentViewModel(
     private val waterBook = SpellRowData(
         magic,
         this,
-        magic.pointsInWaterBook,
+        magic.pointsInWaterBook.value,
         Element.Water,
         magic.waterBook.fullBook
     )
@@ -178,7 +178,7 @@ class MagicFragmentViewModel(
     private val fireBook = SpellRowData(
         magic,
         this,
-        magic.pointsInFireBook,
+        magic.pointsInFireBook.value,
         Element.Fire,
         magic.fireBook.fullBook
     )
@@ -186,7 +186,7 @@ class MagicFragmentViewModel(
     private val essenceBook = SpellRowData(
         magic,
         this,
-        magic.pointsInEssenceBook,
+        magic.pointsInEssenceBook.value,
         Element.Essence,
         magic.essenceBook.fullBook
     )
@@ -194,7 +194,7 @@ class MagicFragmentViewModel(
     private val illusionBook = SpellRowData(
         magic,
         this,
-        magic.pointsInIllusionBook,
+        magic.pointsInIllusionBook.value,
         Element.Illusion,
         magic.illusionBook.fullBook
     )
@@ -202,7 +202,7 @@ class MagicFragmentViewModel(
     private val necromancyBook = SpellRowData(
         magic,
         this,
-        magic.pointsInNecroBook,
+        magic.pointsInNecroBook.value,
         Element.Necromancy,
         magic.necromancyBook.fullBook
     )
@@ -235,14 +235,14 @@ class MagicFragmentViewModel(
      *
      * @return character's base zeon
      */
-    fun getBaseZeon(): Int{return magic.baseZeon}
+    fun getBaseZeon(): Int{return magic.baseZeon.value}
 
     /**
      * Retrieves the zeon the character gained from levels.
      *
      * @return zeon points gained from class levels
      */
-    fun getClassZeon(): Int{return magic.zeonFromClass}
+    fun getClassZeon(): Int{return magic.zeonFromClass.value}
 
     /**
      * Retrieves the book of free spells.
@@ -328,7 +328,7 @@ class MagicFragmentViewModel(
     fun setBoughtZeonString(input: Int){
         magic.buyZeon(input)
         setBoughtZeonString(input.toString())
-        _maxZeonString.update{magic.zeonMax.toString()}
+        _maxZeonString.update{magic.zeonMax.value.toString()}
     }
 
     /**
@@ -346,7 +346,7 @@ class MagicFragmentViewModel(
      * @param input value to set the magic imbalance to
      */
     fun setProjectionImbalance(input: Int){
-        magic.magProjImbalance = input
+        magic.magProjImbalance.value = input
         setProjectionImbalance(input.toString())
         refreshImbalance(imbalanceIsAttack.value)
     }
@@ -382,12 +382,12 @@ class MagicFragmentViewModel(
      *
      * @return the maximum magic level string
      */
-    fun getMagicLevelMax(): String{return magic.magicLevelMax.toString()}
+    fun getMagicLevelMax(): String{return magic.magicLevelMax.value.toString()}
 
     /**
      * Sets the spent magic level display to the character's held value.
      */
-    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.toString()}}
+    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.value.toString()}}
 
     //initialize list of primary element checkboxes
     val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
@@ -430,9 +430,9 @@ class MagicFragmentViewModel(
      */
     private fun determineImbalanceValue(additionMade: Boolean): Int{
         return if(additionMade)
-            magic.magProjTotal + magic.magProjImbalance
+            magic.magProjTotal.value + magic.magProjImbalance.value
         else
-            magic.magProjTotal - magic.magProjImbalance
+            magic.magProjTotal.value - magic.magProjImbalance.value
     }
 
     /**
@@ -464,7 +464,7 @@ class MagicFragmentViewModel(
         freeSpell: FreeSpell
     ): Boolean{
         //terminate if character has Magic Ties disadvantage
-        if(magic.magicTies)
+        if(magic.magicTies.value)
             return true
 
         //set free spell values
@@ -593,7 +593,7 @@ class MagicFragmentViewModel(
 
     init{
         //set the initial imbalance bias
-        setImbalanceIsAttack(magic.imbalanceIsAttack)
+        setImbalanceIsAttack(magic.imbalanceIsAttack.value)
 
         //initialize all book primary checkboxes
         addPrimaryElementBox(Element.Light)

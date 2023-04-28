@@ -94,7 +94,7 @@ class HomeActivity : AppCompatActivity() {
             val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
             val psyFragVM = PsychicFragmentViewModel(
                 charInstance.psychic,
-                charInstance.primaryList.dex.outputMod
+                charInstance.primaryList.dex.outputMod.value
             )
             val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
@@ -204,13 +204,23 @@ class HomeActivity : AppCompatActivity() {
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
                         CharacterPageFragment(charFragVM)
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
                         CombatFragment(combatFragVM)
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to secondary characteristics page
@@ -218,7 +228,12 @@ class HomeActivity : AppCompatActivity() {
                         secondaryFragVM.refreshPage()
 
                         SecondaryAbilityFragment(secondaryFragVM)
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to advantages page
@@ -227,7 +242,12 @@ class HomeActivity : AppCompatActivity() {
                             advantageFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to combat page
@@ -236,7 +256,12 @@ class HomeActivity : AppCompatActivity() {
                             modFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to ki page
@@ -245,7 +270,12 @@ class HomeActivity : AppCompatActivity() {
                             kiFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to magic page
@@ -254,7 +284,12 @@ class HomeActivity : AppCompatActivity() {
                             magFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to summoning page
@@ -262,7 +297,12 @@ class HomeActivity : AppCompatActivity() {
                         SummoningFragment(
                             summonFragVM
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to psychic page
@@ -271,7 +311,12 @@ class HomeActivity : AppCompatActivity() {
                             psyFragVM,
                             homeAlertsVM.openDetailAlert
                         )
-                        {homePageVM.expenditures.updateItems(charInstance.spentTotal, charInstance.ptInCombat, charInstance.ptInMag, charInstance.ptInPsy) }
+                        {homePageVM.expenditures.updateItems(
+                            charInstance.spentTotal.value,
+                            charInstance.ptInCombat.value,
+                            charInstance.ptInMag.value,
+                            charInstance.ptInPsy.value
+                        )}
                     }
 
                     //route to equipment page

@@ -26,11 +26,11 @@ class CombatFragViewModel(
     val pointColor = _pointColor.asStateFlow()
 
     //initialize life multiples taken input string
-    private val _lifeMults = MutableStateFlow(combat.lifeMultsTaken.toString())
+    private val _lifeMults = MutableStateFlow(combat.lifeMultsTaken.value.toString())
     val lifeMults = _lifeMults.asStateFlow()
 
     //initialize maximum life point display
-    private val _lifeTotal = MutableStateFlow(combat.lifeMax.toString())
+    private val _lifeTotal = MutableStateFlow(combat.lifeMax.value.toString())
     val lifeTotal = _lifeTotal.asStateFlow()
 
     /**
@@ -45,42 +45,42 @@ class CombatFragViewModel(
      *
      * @return string of the character's presence
      */
-    fun getPresence(): String{return combat.presence.toString()}
+    fun getPresence(): String{return combat.presence.value.toString()}
 
     /**
      * Retrieves the character's initiative to display.
      *
      * @return string of the character's initiative
      */
-    fun getInitiativeTotal(): String{return combat.totalInitiative.toString()}
+    fun getInitiativeTotal(): String{return combat.totalInitiative.value.toString()}
 
     /**
      * Retrieves the character's fatigue to display.
      *
      * @return string of the character's fatigue
      */
-    fun getFatigue(): String{return combat.fatigue.toString()}
+    fun getFatigue(): String{return combat.fatigue.value.toString()}
 
     /**
      * Retrieves the character's regeneration to display.
      *
      * @return string of the character's regeneration
      */
-    fun getRegen(): String{return combat.totalRegen.toString()}
+    fun getRegen(): String{return combat.totalRegen.value.toString()}
 
     /**
      * Retrieves the character's base life points to display.
      *
      * @return string of the character's base life points
      */
-    fun getBaseLife(): String{return combat.lifeBase.toString()}
+    fun getBaseLife(): String{return combat.lifeBase.value.toString()}
 
     /**
      * Retrieves the character's life points gained from class levels to display.
      *
      * @return string of the character's life points from levels
      */
-    fun getClassLife(): String{return combat.lifeClassTotal.toString()}
+    fun getClassLife(): String{return combat.lifeClassTotal.value.toString()}
 
     /**
      * Changes the number of life multiples the character has obtained.
@@ -90,7 +90,7 @@ class CombatFragViewModel(
     fun setLifeMults(input: Int){
         combat.takeLifeMult(input)
         setLifeMults(input.toString())
-        setLifeTotal(combat.lifeMax.toString())
+        setLifeTotal(combat.lifeMax.value.toString())
     }
 
     /**
@@ -110,31 +110,31 @@ class CombatFragViewModel(
     //initialize all resistance display items
     private val disRes = ResistanceData(
         "DR",
-        primaryList.con.outputMod.toString(),
+        primaryList.con.outputMod.value.toString(),
         combat.diseaseRes
     )
 
     private val magRes = ResistanceData(
         "MR",
-        primaryList.pow.outputMod.toString(),
+        primaryList.pow.outputMod.value.toString(),
         combat.magicRes
     )
 
     private val physRes = ResistanceData(
         "PhR",
-        primaryList.con.outputMod.toString(),
+        primaryList.con.outputMod.value.toString(),
         combat.physicalRes
     )
 
     private val venRes = ResistanceData(
         "VR",
-        primaryList.con.outputMod.toString(),
+        primaryList.con.outputMod.value.toString(),
         combat.venomRes
     )
 
     private val psyRes = ResistanceData(
         "PsR",
-        primaryList.wp.outputMod.toString(),
+        primaryList.wp.outputMod.value.toString(),
         combat.psychicRes
     )
 
@@ -197,11 +197,11 @@ class CombatFragViewModel(
         val setPointColor: (Color) -> Unit
     ){
         //initialize user's input value into this ability
-        private val _pointsIn = MutableStateFlow(item.inputVal.toString())
+        private val _pointsIn = MutableStateFlow(item.inputVal.value.toString())
         val pointsIn = _pointsIn.asStateFlow()
 
         //initialize final display for this stat
-        private val _totalVal = MutableStateFlow(item.total.toString())
+        private val _totalVal = MutableStateFlow(item.total.value.toString())
         val totalVal = _totalVal.asStateFlow()
 
         /**
@@ -223,7 +223,7 @@ class CombatFragViewModel(
                 setPointColor(Color.Red)
 
             //update item total display
-            setTotalVal(item.total.toString())
+            setTotalVal(item.total.value.toString())
         }
 
         /**

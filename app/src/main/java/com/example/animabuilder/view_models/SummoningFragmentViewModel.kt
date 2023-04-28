@@ -37,11 +37,11 @@ class SummoningFragmentViewModel(
         val item: SummonAbility
     ){
         //initialize bought input
-        private val _boughtVal = MutableStateFlow(item.buyVal.toString())
+        private val _boughtVal = MutableStateFlow(item.buyVal.value.toString())
         val boughtVal = _boughtVal.asStateFlow()
 
         //initialize total display
-        private val _total = MutableStateFlow(item.abilityTotal.toString())
+        private val _total = MutableStateFlow(item.abilityTotal.value.toString())
         val total = _total.asStateFlow()
 
         /**
@@ -51,7 +51,7 @@ class SummoningFragmentViewModel(
          */
         fun setBoughtVal(input: Int){
             item.setBuyVal(input)
-            _total.update{item.abilityTotal.toString()}
+            _total.update{item.abilityTotal.value.toString()}
             setBoughtVal(input.toString())
         }
 

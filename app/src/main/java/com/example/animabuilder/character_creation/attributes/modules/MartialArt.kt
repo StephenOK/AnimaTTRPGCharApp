@@ -9,8 +9,8 @@ package com.example.animabuilder.character_creation.attributes.modules
  * @param mkBonus additional martial knowledge the character may gain from having this art
  */
 class MartialArt (
-    var name: String,
-    var description: String,
-    var prereqList: String,
-    var mkBonus: Int
+    val name: String,
+    val description: String,
+    val prereqList: String,
+    val mkBonus: Int
 )

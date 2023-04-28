@@ -120,9 +120,9 @@ class PrimaryList(private val charInstance: BaseCharacter){
     fun validLevelBonuses(): Boolean{
         var total = 0
 
-        allPrimaries.forEach{total += it.levelBonus}
+        allPrimaries.forEach{total += it.levelBonus.value}
 
-        return total <= charInstance.lvl/2
+        return total <= charInstance.lvl.value/2
     }
 
     /**

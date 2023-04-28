@@ -1,23 +1,25 @@
 package com.example.animabuilder.character_creation.attributes.combat
 
+import androidx.compose.runtime.mutableStateOf
+
 /**
  * Item that holds the data on one of a character's resistances.
  */
 class ResistanceItem{
     //initialize resistance's base
-    var base = 0
+    val base = mutableStateOf(0)
 
     //initialize resistance's modifier value
-    var mod = 0
+    val mod = mutableStateOf(0)
 
     //initialize special bonuses to this resistance
-    var special = 0
+    val special = mutableStateOf(0)
 
     //initialize multiplier to the bonus
-    var multiplier = 1.0
+    val multiplier = mutableStateOf(1.0)
 
     //initialize resistance total
-    var total = 0
+    val total = mutableStateOf(0)
 
     /**
      * Sets the base resistance to the user's stat.
@@ -26,7 +28,7 @@ class ResistanceItem{
      */
     @JvmName("setBase1")
     fun setBase(input: Int){
-        base = input
+        base.value = input
         updateTotal()
     }
 
@@ -37,7 +39,7 @@ class ResistanceItem{
      */
     @JvmName("setMod1")
     fun setMod(input: Int){
-        mod = input
+        mod.value = input
         updateTotal()
     }
 
@@ -48,7 +50,7 @@ class ResistanceItem{
      */
     @JvmName("setSpecial1")
     fun setSpecial(input: Int){
-        special += input
+        special.value += input
         updateTotal()
     }
 
@@ -59,7 +61,7 @@ class ResistanceItem{
      */
     @JvmName("setMultiplier1")
     fun setMultiplier(input: Double){
-        multiplier = input
+        multiplier.value = input
         updateTotal()
     }
 
@@ -67,6 +69,6 @@ class ResistanceItem{
      * Updates the total resistance for this particular item.
      */
     fun updateTotal(){
-        total = ((base + mod + special) * multiplier).toInt()
+        total.value = ((base.value + mod.value + special.value) * multiplier.value).toInt()
     }
 }

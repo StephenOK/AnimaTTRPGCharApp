@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.primary_abilities
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 import kotlin.math.ceil
@@ -19,19 +20,19 @@ class PrimaryCharacteristic(
     private val setUpdate: (mod: Int, total: Int) -> Unit
 ){
     //base value fo the stat
-    var inputValue = 0
+    val inputValue = mutableStateOf(0)
 
     //additional points in this stata
-    var bonus = 0
+    val bonus = mutableStateOf(0)
 
     //additional points in this stat due to character levels
-    var levelBonus = 0
+    val levelBonus = mutableStateOf(0)
 
     //total value of the stat
-    var total = 0
+    val total = mutableStateOf(0)
 
     //modifier value for this stat
-    var outputMod = 0
+    val outputMod = mutableStateOf(0)
 
     /**
      * Sets the base value of the stat.
@@ -40,10 +41,10 @@ class PrimaryCharacteristic(
      */
     fun setInput(input: Int){
         //set the base stat value
-        inputValue = input
+        inputValue.value = input
 
         //remove any excess advantage bonuses
-        while(inputValue + bonus > advantageCap &&
+        while(inputValue.value + bonus.value > advantageCap &&
                 charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0) != null){
             charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0)!!)
         }
@@ -59,7 +60,7 @@ class PrimaryCharacteristic(
      */
     @JvmName("setBonus1")
     fun setBonus(input: Int){
-        bonus += input
+        bonus.value += input
         updateValues()
     }
 
@@ -70,7 +71,7 @@ class PrimaryCharacteristic(
      */
     @JvmName("setLevelBonus1")
     fun setLevelBonus(input: Int){
-        levelBonus = input
+        levelBonus.value = input
         updateValues()
     }
 
@@ -79,14 +80,14 @@ class PrimaryCharacteristic(
      */
     fun updateValues(){
         //change the total value
-        total =
+        total.value =
             if(charInstance.advantageRecord.getAdvantage("Increase One Characteristic to Nine", charIndex, 0) != null) 9
-            else inputValue + bonus + levelBonus
+            else inputValue.value + bonus.value + levelBonus.value
 
         //update the modifier's value
-        outputMod =
-            if(total < 5){
-                when(total){
+        outputMod.value =
+            if(total.value < 5){
+                when(total.value){
                     2 -> -20
                     3 -> -10
                     4 -> -5
@@ -94,10 +95,10 @@ class PrimaryCharacteristic(
                 }
             }
             else
-                (15 * (total/5 - 1) + 5 * ceil(total % 5 / 2.0)).toInt()
+                (15 * (total.value/5 - 1) + 5 * ceil(total.value % 5 / 2.0)).toInt()
 
         //update any related stats
-        setUpdate(outputMod, total)
+        setUpdate(outputMod.value, total.value)
     }
 
     /**
@@ -114,7 +115,7 @@ class PrimaryCharacteristic(
      * Save the characteristic's data to file.
      */
     fun write(){
-        charInstance.addNewData(inputValue)
-        charInstance.addNewData(levelBonus)
+        charInstance.addNewData(inputValue.value)
+        charInstance.addNewData(levelBonus.value)
     }
 }

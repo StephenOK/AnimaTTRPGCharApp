@@ -1,5 +1,7 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
+import androidx.compose.runtime.mutableStateOf
+
 /**
  * Object that holds data in regards to a primary characteristics associated ki points and accumulation.
  *
@@ -9,22 +11,22 @@ class KiStat(
     val parent: Ki
 ){
     //initialize base ki points in this stat
-    var baseKiPoints = 0
+    val baseKiPoints = mutableStateOf(0)
 
     //initialise ki points bought for this stat
-    var boughtKiPoints = 0
+    val boughtKiPoints = mutableStateOf(0)
 
     //initialize total ki points in this stat
-    var totalKiPoints = 0
+    val totalKiPoints = mutableStateOf(0)
 
     //initialize base accumulation in this stat
-    var baseAccumulation = 0
+    val baseAccumulation = mutableStateOf(0)
 
     //initialize accumulation bought for this stat
-    var boughtAccumulation = 0
+    val boughtAccumulation = mutableStateOf(0)
 
     //initialize total accumulation in this stat
-    var totalAccumulation = 0
+    val totalAccumulation = mutableStateOf(0)
 
     /**
      * Set the bought ki points to the indicated value.
@@ -33,7 +35,7 @@ class KiStat(
      */
     @JvmName("setBoughtKiPoints1")
     fun setBoughtKiPoints(input: Int){
-        boughtKiPoints = input
+        boughtKiPoints.value = input
         parent.updateBoughtPoints()
         updateTotalPoints()
     }
@@ -42,7 +44,7 @@ class KiStat(
      * Updates the total ki points held in this stat as well as the overall total points.
      */
     fun updateTotalPoints(){
-        totalKiPoints = baseKiPoints + boughtKiPoints
+        totalKiPoints.value = baseKiPoints.value + boughtKiPoints.value
         parent.updateTotalPoints()
     }
 
@@ -53,7 +55,7 @@ class KiStat(
      */
     @JvmName("setBoughtAccumulation1")
     fun setBoughtAccumulation(input: Int){
-        boughtAccumulation = input
+        boughtAccumulation.value = input
         parent.updateBoughtAcc()
         updateAccumulation()
     }
@@ -62,7 +64,7 @@ class KiStat(
      * Updates the total accumulation held in this stat as well as the overall total accumulation.
      */
     fun updateAccumulation(){
-        totalAccumulation = baseAccumulation + boughtAccumulation
+        totalAccumulation.value = baseAccumulation.value + boughtAccumulation.value
         parent.updateTotalAcc()
     }
 
@@ -73,7 +75,7 @@ class KiStat(
      */
     fun primaryUpdate(input: Int){
         //set the base ki points
-        baseKiPoints =
+        baseKiPoints.value =
             if(input <= 10) input
             else 10 + ((input - 10) * 2)
 
@@ -81,7 +83,7 @@ class KiStat(
         updateTotalPoints()
 
         //set the base accumulation value
-        baseAccumulation =
+        baseAccumulation.value =
             if(input <= 9)
                 1
             else if(input in 10..12)

@@ -22,7 +22,7 @@ class AdvantageFragmentViewModel(
     private val advantageRecord: AdvantageRecord
 ): ViewModel() {
     //initialize creation point display state flow
-    private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent).toString())
+    private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent.value).toString())
     val creationPoints = _creationPoints.asStateFlow()
 
     //initialize list of taken advantages
@@ -91,7 +91,7 @@ class AdvantageFragmentViewModel(
         takenAdvantages.addAll(advantageRecord.takenAdvantages)
 
         //update the creation points spent by the user
-        _creationPoints.update{(3 - advantageRecord.creationPointSpent).toString()}
+        _creationPoints.update{(3 - advantageRecord.creationPointSpent.value).toString()}
     }
 
     /**
@@ -100,7 +100,7 @@ class AdvantageFragmentViewModel(
      * @return the list of racial advantages the character possesses
      */
     fun getRacialAdvantages(): List<Advantage>{
-        return charInstance.ownRace
+        return charInstance.ownRace.value
     }
 
     //initialize the data for all of the advantage and disadvantage categories

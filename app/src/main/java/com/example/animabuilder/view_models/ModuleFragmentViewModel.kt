@@ -25,7 +25,7 @@ class ModuleFragmentViewModel(
     context: Context
 ) : ViewModel() {
     //initialize character's current primary weapon selection
-    private val _primaryWeapon = MutableStateFlow(weaponProficiencies.primaryWeapon)
+    private val _primaryWeapon = MutableStateFlow(weaponProficiencies.primaryWeapon.value)
     val primaryWeapon = _primaryWeapon.asStateFlow()
 
     //initialize open state of the archetype module menu
@@ -113,7 +113,7 @@ class ModuleFragmentViewModel(
      *
      * @return number of martial arts available to the user
      */
-    fun getMartialMax(): Int{return weaponProficiencies.martialMax}
+    fun getMartialMax(): Int{return weaponProficiencies.martialMax.value}
 
     /**
      * Retrieves information on all martial arts.

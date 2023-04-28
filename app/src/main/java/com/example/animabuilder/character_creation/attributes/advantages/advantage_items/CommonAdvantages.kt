@@ -437,11 +437,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(2),
         0,
         {_, _ ->
-            charInstance.secondaryList.allTradesTaken = true
+            charInstance.secondaryList.allTradesTaken.value = true
             charInstance.secondaryList.fullList.forEach{it.refreshTotal()}
         },
         {_, _ ->
-            charInstance.secondaryList.allTradesTaken = false
+            charInstance.secondaryList.allTradesTaken.value = false
             charInstance.secondaryList.fullList.forEach{it.refreshTotal()}
         }
     )
@@ -493,18 +493,18 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.specFatigue += 3
-                2 -> charInstance.combat.specFatigue += 6
-                3 -> charInstance.combat.specFatigue += 9
+                1 -> charInstance.combat.specFatigue.value += 3
+                2 -> charInstance.combat.specFatigue.value += 6
+                3 -> charInstance.combat.specFatigue.value += 9
             }
 
             charInstance.combat.updateFatigue()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.specFatigue -= 3
-                2 -> charInstance.combat.specFatigue -= 6
-                3 -> charInstance.combat.specFatigue -= 9
+                1 -> charInstance.combat.specFatigue.value -= 3
+                2 -> charInstance.combat.specFatigue.value -= 6
+                3 -> charInstance.combat.specFatigue.value -= 9
             }
 
             charInstance.combat.updateFatigue()
@@ -567,18 +567,18 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         0,
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.specRegen += 2
-                2 -> charInstance.combat.specRegen += 4
-                3 -> charInstance.combat.specRegen += 6
+                1 -> charInstance.combat.specRegen.value += 2
+                2 -> charInstance.combat.specRegen.value += 4
+                3 -> charInstance.combat.specRegen.value += 6
             }
 
             charInstance.combat.updateRegeneration()
         },
         {_, cost ->
             when(cost){
-                1 -> charInstance.combat.specRegen -= 2
-                2 -> charInstance.combat.specRegen -= 4
-                3 -> charInstance.combat.specRegen -= 6
+                1 -> charInstance.combat.specRegen.value -= 2
+                2 -> charInstance.combat.specRegen.value -= 4
+                3 -> charInstance.combat.specRegen.value -= 6
             }
 
             charInstance.combat.updateRegeneration()
@@ -1224,11 +1224,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.combat.specFatigue -= 1
+            charInstance.combat.specFatigue.value -= 1
             charInstance.combat.updateFatigue()
         },
         {_, _ ->
-            charInstance.combat.specFatigue += 1
+            charInstance.combat.specFatigue.value += 1
             charInstance.combat.updateFatigue()
         }
     )
@@ -1291,11 +1291,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(-1),
         0,
         {_, _ ->
-            charInstance.combat.specRegen -= 1
+            charInstance.combat.specRegen.value -= 1
             charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.combat.specRegen += 1
+            charInstance.combat.specRegen.value += 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -1329,16 +1329,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         0,
         {_, cost ->
             when(cost){
-                -1 -> charInstance.combat.specInitiative -= 30
-                -2 -> charInstance.combat.specInitiative -= 60
+                -1 -> charInstance.combat.specInitiative.value -= 30
+                -2 -> charInstance.combat.specInitiative.value -= 60
             }
 
             charInstance.combat.updateInitiative()
         },
         {_, cost ->
             when(cost){
-                -1 -> charInstance.combat.specInitiative += 30
-                -2 -> charInstance.combat.specInitiative += 60
+                -1 -> charInstance.combat.specInitiative.value += 30
+                -2 -> charInstance.combat.specInitiative.value += 60
             }
 
             charInstance.combat.updateInitiative()

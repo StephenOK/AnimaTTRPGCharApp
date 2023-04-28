@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.equipment
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
 import com.example.animabuilder.character_creation.equipment.general_goods.instances.*
@@ -46,17 +47,17 @@ class Inventory(val charInstance: BaseCharacter) {
     )
 
     //initialize maximum coin expenditures
-    var maxGold = 0
-    var maxSilver = 0
-    var maxCopper = 0
+    val maxGold = mutableStateOf(0)
+    val maxSilver = mutableStateOf(0)
+    val maxCopper = mutableStateOf(0)
 
     //initialize starting wealth bonus
-    var wealthBonus = 0
+    val wealthBonus = mutableStateOf(0)
 
     //initialize spent coin values
-    var goldSpent = 0.0
-    var silverSpent = 0.0
-    var copperSpent = 0.0
+    val goldSpent = mutableStateOf(0.0)
+    val silverSpent = mutableStateOf(0.0)
+    val copperSpent = mutableStateOf(0.0)
 
     //initialize bought items
     val boughtGoods = mutableMapOf<GeneralEquipment, Int>()
@@ -67,7 +68,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param input value to set the maximum to
      */
     @JvmName("setMaxGold1")
-    fun setMaxGold(input: Int){maxGold = input}
+    fun setMaxGold(input: Int){maxGold.value = input}
 
     /**
      * Setter for the character's maximum silver limit.
@@ -75,7 +76,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param input value to set the maximum to
      */
     @JvmName("setMaxSilver1")
-    fun setMaxSilver(input: Int){maxSilver = input}
+    fun setMaxSilver(input: Int){maxSilver.value = input}
 
     /**
      * Setter for the character's maximum copper limit.
@@ -83,7 +84,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param input value to set the maximum to
      */
     @JvmName("setMaxCopper1")
-    fun setMaxCopper(input: Int){maxCopper = input}
+    fun setMaxCopper(input: Int){maxCopper.value = input}
 
     /**
      * Setter for the character's bonus wealth from the advantage Starting Wealth.
@@ -91,7 +92,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param input value to set the bonus to
      */
     @JvmName("setWealthBonus1")
-    fun setWealthBonus(input: Int){wealthBonus = input}
+    fun setWealthBonus(input: Int){wealthBonus.value = input}
 
     /**
      * Function to run when the user purchases an amount of items for their character.
@@ -164,16 +165,16 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun countSpent(){
         //reset spent values
-        copperSpent = 0.0
-        silverSpent = 0.0
-        goldSpent = 0.0
+        copperSpent.value = 0.0
+        silverSpent.value = 0.0
+        goldSpent.value = 0.0
 
         //add all item costs to the appropriate amounts spent
         boughtGoods.forEach{
             when(it.key.coinType){
-                CoinType.Copper -> copperSpent += it.key.baseCost * it.value
-                CoinType.Silver -> silverSpent += it.key.baseCost * it.value
-                CoinType.Gold -> goldSpent += it.key.baseCost * it.value
+                CoinType.Copper -> copperSpent.value += it.key.baseCost * it.value
+                CoinType.Silver -> silverSpent.value += it.key.baseCost * it.value
+                CoinType.Gold -> goldSpent.value += it.key.baseCost * it.value
             }
         }
 
@@ -186,20 +187,20 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun copperFix(){
         //correct any negative copper value by converting silver to copper
-        while(copperSpent < 0){
-            copperSpent += 10
-            silverSpent -= 1
+        while(copperSpent.value < 0){
+            copperSpent.value += 10
+            silverSpent.value -= 1
             silverFix()
         }
 
         //convert sufficient copper amounts to silver
-        while(copperSpent >= 10){
-            copperSpent -= 10
-            silverSpent += 1
+        while(copperSpent.value >= 10){
+            copperSpent.value -= 10
+            silverSpent.value += 1
         }
 
         //fix silver if changes here caused needed changes
-        if(silverSpent > 100)
+        if(silverSpent.value > 100)
             silverFix()
     }
 
@@ -208,21 +209,21 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun silverFix(){
         //correct any negative silver value by converting gold to silver
-        while(silverSpent < 0){
-            silverSpent += 100
-            goldSpent -= 1
+        while(silverSpent.value < 0){
+            silverSpent.value += 100
+            goldSpent.value -= 1
         }
 
         //convert sufficient silver amounts to gold
-        while(silverSpent >= 100){
-            silverSpent -= 100
-            goldSpent += 1
+        while(silverSpent.value >= 100){
+            silverSpent.value -= 100
+            goldSpent.value += 1
         }
 
         //convert decimal silver to copper
-        if(silverSpent % 1.0 != 0.0){
-            copperSpent += (silverSpent % 1.0) * 10
-            silverSpent -= silverSpent % 1.0
+        if(silverSpent.value % 1.0 != 0.0){
+            copperSpent.value += (silverSpent.value % 1.0) * 10
+            silverSpent.value -= silverSpent.value % 1.0
         }
 
         //fix the copper amount
@@ -234,9 +235,9 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun goldFix(){
         //convert decimal gold to silver
-        if(goldSpent % 1.0 != 0.0){
-            silverSpent += (goldSpent % 1.0) * 100
-            goldSpent -= goldSpent % 1.0
+        if(goldSpent.value % 1.0 != 0.0){
+            silverSpent.value += (goldSpent.value % 1.0) * 100
+            goldSpent.value -= goldSpent.value % 1.0
         }
 
         //fix the silver amount
@@ -292,9 +293,9 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun writeInventory(){
         //write data on maximum coin values
-        charInstance.addNewData(maxGold)
-        charInstance.addNewData(maxSilver)
-        charInstance.addNewData(maxCopper)
+        charInstance.addNewData(maxGold.value)
+        charInstance.addNewData(maxSilver.value)
+        charInstance.addNewData(maxCopper.value)
 
         //add size of equipment data
         charInstance.addNewData(boughtGoods.size)

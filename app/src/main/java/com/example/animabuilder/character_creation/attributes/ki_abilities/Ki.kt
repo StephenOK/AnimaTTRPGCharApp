@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -30,7 +31,7 @@ class Ki(private val charInstance: BaseCharacter){
      */
     fun attemptAbilityAdd(newIn: KiAbility): Boolean{
         //check if character has the necessary martial knowledge for the ability
-        if(martialKnowledgeRemaining - newIn.mkCost >= 0) {
+        if(martialKnowledgeRemaining.value - newIn.mkCost >= 0) {
             takenAbilities += newIn
             updateMkSpent()
             return true
@@ -82,7 +83,7 @@ class Ki(private val charInstance: BaseCharacter){
         when(input.level){
             //inputting a level one technique only requires enough MK
             1 ->
-                if(martialKnowledgeRemaining - input.mkCost() >= 0){
+                if(martialKnowledgeRemaining.value - input.mkCost() >= 0){
                     takenFirstTechniques += input
                     if(customCheck(input))
                         customTechniques += input
@@ -92,7 +93,7 @@ class Ki(private val charInstance: BaseCharacter){
 
             //inputting a level two technique requires two level one techniques
             2 ->
-                if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenFirstTechniques.size >= 2){
+                if(martialKnowledgeRemaining.value - input.mkCost() >= 0 && takenFirstTechniques.size >= 2){
                     takenSecondTechniques += input
                     if(customCheck(input))
                         customTechniques += input
@@ -102,7 +103,7 @@ class Ki(private val charInstance: BaseCharacter){
 
             //inputting a level three technique requires two level two techniques
             3 ->
-                if(martialKnowledgeRemaining - input.mkCost() >= 0 && takenSecondTechniques.size >= 2){
+                if(martialKnowledgeRemaining.value - input.mkCost() >= 0 && takenSecondTechniques.size >= 2){
                     takenThirdTechniques += input
                     if(customCheck(input))
                         customTechniques += input
@@ -182,23 +183,23 @@ class Ki(private val charInstance: BaseCharacter){
      */
     fun updateMkSpent(){
         //reset martial knowledge remaining to its maximum value
-        martialKnowledgeRemaining = martialKnowledgeMax
+        martialKnowledgeRemaining.value = martialKnowledgeMax.value
 
         //removes martial knowledge for each ki ability taken
         takenAbilities.forEach{
-            martialKnowledgeRemaining -= it.mkCost
+            martialKnowledgeRemaining.value -= it.mkCost
         }
 
         //removes martial knowledge for each dominion technique taken
         takenTechniques.forEach{
-            martialKnowledgeRemaining -= it.mkCost()
+            martialKnowledgeRemaining.value -= it.mkCost()
         }
     }
 
     //initialize martial knowledge values
-    var martialKnowledgeMax = 0
-    var martialKnowledgeSpec = 0
-    var martialKnowledgeRemaining = 0
+    val martialKnowledgeMax = mutableStateOf(0)
+    val martialKnowledgeSpec = mutableStateOf(0)
+    val martialKnowledgeRemaining = mutableStateOf(0)
 
     //initialize stat ki points and accumulation
     val strKi = KiStat(this@Ki)
@@ -212,10 +213,10 @@ class Ki(private val charInstance: BaseCharacter){
     val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
 
     //initialize total ki points
-    var totalKi = 0
+    val totalKi = mutableStateOf(0)
 
     //initialize total accumulation value
-    var totalAcc = 0
+    val totalAcc = mutableStateOf(0)
 
     /**
      * Changes the martial knowledge bonus by the inputted amount.
@@ -223,7 +224,7 @@ class Ki(private val charInstance: BaseCharacter){
      * @param input value to change the martial knowledge bonus by
      */
     fun updateMKSpec(input: Int){
-        martialKnowledgeSpec += input
+        martialKnowledgeSpec.value += input
         updateMK()
     }
 
@@ -232,49 +233,49 @@ class Ki(private val charInstance: BaseCharacter){
      */
     fun updateMK(){
         val classMK =
-            if(charInstance.lvl != 0) charInstance.ownClass.mkPerLevel * charInstance.lvl
-            else charInstance.ownClass.mkPerLevel/2
+            if(charInstance.lvl.value != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.value
+            else charInstance.ownClass.value.mkPerLevel/2
 
-        martialKnowledgeMax = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec
+        martialKnowledgeMax.value = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.value
         updateMkSpent()
     }
 
     //initialize value for total ki points bought
-    var totalPointBuy = 0
+    val totalPointBuy = mutableStateOf(0)
 
     //initialize total bought accumulation value
-    var totalAccBuy = 0
+    val totalAccBuy = mutableStateOf(0)
 
     /**
      * Updates the total ki points bought for each KiStat item.
      */
     fun updateBoughtPoints(){
-        totalPointBuy = 0
-        allKiStats.forEach{totalPointBuy += it.boughtKiPoints}
+        totalPointBuy.value = 0
+        allKiStats.forEach{totalPointBuy.value += it.boughtKiPoints.value}
     }
 
     /**
      * Recalculates the total ki points acquired by the character.
      */
     fun updateTotalPoints(){
-        totalKi = 0
-        allKiStats.forEach{totalKi += it.totalKiPoints}
+        totalKi.value = 0
+        allKiStats.forEach{totalKi.value += it.totalKiPoints.value}
     }
 
     /**
      * Updates the total ki accumulation bought for each KiStat item.
      */
     fun updateBoughtAcc(){
-        totalAccBuy = 0
-        allKiStats.forEach{totalAccBuy += it.boughtAccumulation}
+        totalAccBuy.value = 0
+        allKiStats.forEach{totalAccBuy.value += it.boughtAccumulation.value}
     }
 
     /**
      * Recalculates the total ki accumulation acquired by the character.
      */
     fun updateTotalAcc(){
-        totalAcc = 0
-        allKiStats.forEach{totalAcc += it.totalAccumulation}
+        totalAcc.value = 0
+        allKiStats.forEach{totalAcc.value += it.totalAccumulation.value}
     }
 
     /**
@@ -284,8 +285,8 @@ class Ki(private val charInstance: BaseCharacter){
         var total = 0
 
         //add bought ki points and accumulation values
-        total += totalPointBuy * charInstance.ownClass.kiGrowth
-        total += totalAccBuy * charInstance.ownClass.kiAccumMult
+        total += totalPointBuy.value * charInstance.ownClass.value.kiGrowth
+        total += totalAccBuy.value * charInstance.ownClass.value.kiAccumMult
 
         return total
     }
@@ -410,8 +411,8 @@ class Ki(private val charInstance: BaseCharacter){
     fun writeKiAttributes() {
         //write data from KiStats
         allKiStats.forEach{
-            charInstance.addNewData(it.boughtKiPoints)
-            charInstance.addNewData(it.boughtAccumulation)
+            charInstance.addNewData(it.boughtKiPoints.value)
+            charInstance.addNewData(it.boughtAccumulation.value)
         }
 
         //write number of ki abilities taken and specific abilities taken

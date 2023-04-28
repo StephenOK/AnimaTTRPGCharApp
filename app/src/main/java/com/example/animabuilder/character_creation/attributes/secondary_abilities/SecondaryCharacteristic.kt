@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
+import androidx.compose.runtime.mutableStateOf
 import kotlin.Throws
 import java.io.BufferedReader
 import java.io.IOException
@@ -13,35 +14,35 @@ import java.io.IOException
 
 class SecondaryCharacteristic(private val parent: SecondaryList){
     //initialize points from the associated modifier
-    var modVal = 0
+    val modVal = mutableStateOf(0)
 
     //initialize points applied by the user
-    var pointsApplied = 0
+    val pointsApplied = mutableStateOf(0)
 
     //initialize development cost
-    var devPerPoint = 0
+    val devPerPoint = mutableStateOf(0)
 
     //initialize reduction in cost due to advantages
-    var developmentDeduction = 0
+    val developmentDeduction = mutableStateOf(0)
 
     //initialize points per level from class
-    var classPointsPerLevel = 0
-    var classPointTotal = 0
+    val classPointsPerLevel = mutableStateOf(0)
+    val classPointTotal = mutableStateOf(0)
 
     //initialize bonus points in this characteristic
-    var special = 0
+    val special = mutableStateOf(0)
 
     //initialize bonus points per level in this characteristic
-    var specialPerLevel = 0
+    val specialPerLevel = mutableStateOf(0)
 
     //initialize natural bonus application
-    var bonusApplied = false
+    val bonusApplied = mutableStateOf(false)
 
     //initialize development points spent in this characteristic
-    var pointsIn: Int = 0
+    val pointsIn = mutableStateOf(0)
 
     //initialize final total
-    var total = 0
+    val total = mutableStateOf(0)
 
     /**
      * Setter for characteristic's modifier.
@@ -50,7 +51,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setModVal1")
     fun setModVal(value: Int) {
-        modVal = value
+        modVal.value = value
         refreshTotal()
     }
 
@@ -61,10 +62,10 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setPointsApplied1")
     fun setPointsApplied(points: Int) {
-        pointsApplied = points
+        pointsApplied.value = points
 
         //remove natural bonus if no points applied to this stat
-        if(points == 0 && bonusApplied)
+        if(points == 0 && bonusApplied.value)
             setBonusApplied(false)
 
         updateDevSpent()
@@ -78,7 +79,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setDevPerPoint1")
     fun setDevPerPoint(perPoints:Int){
-        devPerPoint = perPoints
+        devPerPoint.value = perPoints
         updateDevSpent()
     }
 
@@ -89,7 +90,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setDevelopmentDeduction1")
     fun setDevelopmentDeduction(perPoints: Int){
-        developmentDeduction += perPoints
+        developmentDeduction.value += perPoints
         updateDevSpent()
     }
 
@@ -100,7 +101,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setClassPointsPerLevel1")
     fun setClassPointsPerLevel(points: Int) {
-        classPointsPerLevel = points
+        classPointsPerLevel.value = points
         classTotalRefresh()
     }
 
@@ -108,9 +109,9 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      * Updates the number of points gained from levels for this characteristic.
      */
     fun classTotalRefresh(){
-        classPointTotal =
-            if(parent.charInstance.lvl != 0) classPointsPerLevel * parent.charInstance.lvl
-            else classPointsPerLevel/2
+        classPointTotal.value =
+            if(parent.charInstance.lvl.value != 0) classPointsPerLevel.value * parent.charInstance.lvl.value
+            else classPointsPerLevel.value/2
 
         refreshTotal()
     }
@@ -122,7 +123,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setSpecial1")
     fun setSpecial(points: Int) {
-        special += points
+        special.value += points
         refreshTotal()
     }
 
@@ -133,7 +134,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setSpecialPerLevel1")
     fun setSpecialPerLevel(points: Int){
-        specialPerLevel += points
+        specialPerLevel.value += points
         refreshTotal()
     }
 
@@ -144,7 +145,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     @JvmName("setBonusApplied1")
     fun setBonusApplied(bonus: Boolean) {
-        bonusApplied = bonus
+        bonusApplied.value = bonus
         refreshTotal()
     }
 
@@ -152,9 +153,9 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      * Get actual development points spent per point applied to this characteristic.
      */
     fun updateDevSpent(){
-        pointsIn =
-            if(devPerPoint > developmentDeduction) pointsApplied * (devPerPoint - developmentDeduction)
-            else pointsApplied
+        pointsIn.value =
+            if(devPerPoint.value > developmentDeduction.value) pointsApplied.value * (devPerPoint.value - developmentDeduction.value)
+            else pointsApplied.value
 
         parent.charInstance.updateTotalSpent()
     }
@@ -163,12 +164,12 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      * Recalculates the total value after any other setter is called.
      */
     fun refreshTotal() {
-        total = modVal + pointsApplied + special +
-                ((classPointsPerLevel + specialPerLevel) * parent.charInstance.lvl)
-        if(parent.allTradesTaken) total += 10
-        else if (pointsApplied == 0) total -= 30
+        total.value = modVal.value + pointsApplied.value + special.value +
+                ((classPointsPerLevel.value + specialPerLevel.value) * parent.charInstance.lvl.value)
+        if(parent.allTradesTaken.value) total.value += 10
+        else if (pointsApplied.value == 0) total.value -= 30
 
-        if (bonusApplied) total += 5
+        if (bonusApplied.value) total.value += 5
     }
 
     /**
@@ -188,7 +189,7 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
      */
     fun write() {
         //record characteristic's applied points and natural bonus state
-        parent.charInstance.addNewData(pointsApplied)
-        parent.charInstance.addNewData(bonusApplied.toString())
+        parent.charInstance.addNewData(pointsApplied.value)
+        parent.charInstance.addNewData(bonusApplied.value.toString())
     }
 }

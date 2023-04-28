@@ -186,7 +186,7 @@ private fun KiFromStatRow(
         Text(text = kiRowData.title, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //get stat's inherit ki points
-        Text(text = kiRowData.item.baseKiPoints.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(text = kiRowData.item.baseKiPoints.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki points purchased input
         NumberInput(
@@ -203,7 +203,7 @@ private fun KiFromStatRow(
         Text(text = kiRowData.pointTotalString.collectAsState().value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //get stat's inherit accumulation
-        Text(text = kiRowData.item.baseAccumulation.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(text = kiRowData.item.baseAccumulation.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
 
         //ki accumulation purchased input
         NumberInput(

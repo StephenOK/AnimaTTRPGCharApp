@@ -25,15 +25,15 @@ class KiFragmentViewModel(
     context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
-    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.toString())
+    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value.toString())
     val remainingMK = _remainingMK.asStateFlow()
 
     //initialize ki accumulation total display
-    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.toString())
+    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.value.toString())
     val kiAccTotal = _kiAccTotal.asStateFlow()
 
     //initialize ki point total display
-    private val _kiPointTotal = MutableStateFlow(ki.totalKi.toString())
+    private val _kiPointTotal = MutableStateFlow(ki.totalKi.value.toString())
     val kiPointTotal = _kiPointTotal.asStateFlow()
 
     //initialize open state of technique list
@@ -59,14 +59,14 @@ class KiFragmentViewModel(
      *
      * @return numeric value of remaining martial knowledge
      */
-    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining}
+    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining.value}
 
     /**
      * Retrieves the maximum martial knowledge the character can spend.
      *
      * @return string of the maximum martial knowledge capacity
      */
-    fun getMartialMax(): String{return ki.martialKnowledgeMax.toString()}
+    fun getMartialMax(): String{return ki.martialKnowledgeMax.value.toString()}
 
     /**
      * Retrieves a list of all possible ki abilities.
@@ -106,17 +106,17 @@ class KiFragmentViewModel(
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
      */
-    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.toString()}}
+    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.value.toString()}}
 
     /**
      * Sets the ki accumulation total display to the character's recorded value.
      */
-    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.toString()}}
+    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.value.toString()}}
 
     /**
      * Sets the ki point total display to the character's recorded value.
      */
-    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.toString()}}
+    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.value.toString()}}
 
     /**
      * Changes the technique list's open state.
@@ -290,19 +290,19 @@ class KiFragmentViewModel(
         val setTotalAcc: () -> Unit
     ){
         //initialize point input string
-        private val _pointInputString = MutableStateFlow(item.boughtKiPoints.toString())
+        private val _pointInputString = MutableStateFlow(item.boughtKiPoints.value.toString())
         val pointInputString = _pointInputString.asStateFlow()
 
         //initialize characteristic ki point total
-        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.toString())
+        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value.toString())
         val pointTotalString = _pointTotalString.asStateFlow()
 
         //initialize accumulation input
-        private val _accInputString = MutableStateFlow(item.boughtAccumulation.toString())
+        private val _accInputString = MutableStateFlow(item.boughtAccumulation.value.toString())
         val accInputString = _accInputString.asStateFlow()
 
         //initialize characteristic ki accumulation total
-        private val _accTotalString = MutableStateFlow(item.totalAccumulation.toString())
+        private val _accTotalString = MutableStateFlow(item.totalAccumulation.value.toString())
         val accTotalString = _accTotalString.asStateFlow()
 
         /**
@@ -313,7 +313,7 @@ class KiFragmentViewModel(
         fun setPointInputString(input: Int){
             item.setBoughtKiPoints(input)
             setPointInputString(input.toString())
-            _pointTotalString.update{item.totalKiPoints.toString()}
+            _pointTotalString.update{item.totalKiPoints.value.toString()}
             setTotalPoints()
         }
 
@@ -332,7 +332,7 @@ class KiFragmentViewModel(
         fun setAccInputString(input: Int){
             item.setBoughtAccumulation(input)
             setAccInputString(input.toString())
-            _accTotalString.update{item.totalAccumulation.toString()}
+            _accTotalString.update{item.totalAccumulation.value.toString()}
             setTotalAcc()
         }
 

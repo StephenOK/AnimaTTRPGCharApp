@@ -60,8 +60,8 @@ private fun SummoningAbilityRow(
     Row(Modifier.fillMaxWidth()){
         //display item, points from modifier, and points from class
         Text(text = stringResource(inputData.nameRef), textAlign = TextAlign.Center, modifier = Modifier.weight(0.3f))
-        Text(text = inputData.item.modVal.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = inputData.item.levelTotal.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
+        Text(text = inputData.item.modVal.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
+        Text(text = inputData.item.levelTotal.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
 
         //display points bought and give option to buy points
         NumberInput(

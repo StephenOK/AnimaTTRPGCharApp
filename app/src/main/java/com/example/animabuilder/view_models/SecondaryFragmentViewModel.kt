@@ -25,7 +25,7 @@ class SecondaryFragmentViewModel(
     secondaryList: SecondaryList
 ): ViewModel() {
     //initialize open state of the freelancer bonus options
-    private val _freelancerOptionsOpen = MutableStateFlow(charInstance.ownClass == charInstance.classes.freelancer)
+    private val _freelancerOptionsOpen = MutableStateFlow(charInstance.ownClass.value == charInstance.classes.freelancer)
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
     //initialize each secondary characteristic field data
@@ -187,7 +187,7 @@ class SecondaryFragmentViewModel(
         private val secondaryList: SecondaryList
     ){
         //initialize the characteristic's natural bonus check
-        private val _natBonusCheck = MutableStateFlow(secondaryItem.bonusApplied)
+        private val _natBonusCheck = MutableStateFlow(secondaryItem.bonusApplied.value)
         val natBonusCheck = _natBonusCheck.asStateFlow()
 
         //initialize the natural bonus text
@@ -195,15 +195,15 @@ class SecondaryFragmentViewModel(
         val checkedText = _checkedText.asStateFlow()
 
         //initialize the inputted points in this characteristic
-        private val _pointInput = MutableStateFlow(secondaryItem.pointsApplied.toString())
+        private val _pointInput = MutableStateFlow(secondaryItem.pointsApplied.value.toString())
         val pointInput = _pointInput.asStateFlow()
 
         //initialize display for class points in this characteristic
-        private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.toString())
+        private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.value.toString())
         val classPoints = _classPoints.asStateFlow()
 
         //initialize the total score in this characteristic
-        private val _totalOutput = MutableStateFlow(secondaryItem.total.toString())
+        private val _totalOutput = MutableStateFlow(secondaryItem.total.value.toString())
         val totalOutput = _totalOutput.asStateFlow()
 
         /**
@@ -218,7 +218,7 @@ class SecondaryFragmentViewModel(
          *
          * @return displayed string for the characteristic's modifier
          */
-        fun getModVal(): String{return secondaryItem.modVal.toString()}
+        fun getModVal(): String{return secondaryItem.modVal.value.toString()}
 
         /**
          * Retrieves the character's development point cost.
@@ -226,8 +226,8 @@ class SecondaryFragmentViewModel(
          * @return string of the characteristic's development point cost
          */
         fun getMultiplier(): Int{
-            return if(secondaryItem.devPerPoint > secondaryItem.developmentDeduction)
-                secondaryItem.devPerPoint - secondaryItem.developmentDeduction
+            return if(secondaryItem.devPerPoint.value > secondaryItem.developmentDeduction.value)
+                secondaryItem.devPerPoint.value - secondaryItem.developmentDeduction.value
             else 1
         }
 
@@ -239,8 +239,8 @@ class SecondaryFragmentViewModel(
             secondaryList.toggleNatBonus(secondaryItem)
 
             //update the appropriate values
-            _natBonusCheck.update{secondaryItem.bonusApplied}
-            _totalOutput.update{secondaryItem.total.toString()}
+            _natBonusCheck.update{secondaryItem.bonusApplied.value}
+            _totalOutput.update{secondaryItem.total.value.toString()}
             _checkedText.update{updateCheckedText()}
         }
 
@@ -250,7 +250,7 @@ class SecondaryFragmentViewModel(
          * @return string reference to display
          */
         private fun updateCheckedText(): Int{
-            return if(secondaryItem.bonusApplied) R.string.natTaken
+            return if(secondaryItem.bonusApplied.value) R.string.natTaken
             else R.string.natNotTaken
         }
 
@@ -265,7 +265,7 @@ class SecondaryFragmentViewModel(
             secondaryItem.setPointsApplied(input)
 
             //update the total display
-            _totalOutput.update{secondaryItem.total.toString()}
+            _totalOutput.update{secondaryItem.total.value.toString()}
 
             //remove natural bonus check if points are set to zero
             if(input == 0 && natBonusCheck.value)
@@ -283,8 +283,8 @@ class SecondaryFragmentViewModel(
          * Refreshes the class point display for the characteristic.
          */
         fun setClassPoints(){
-            _classPoints.update{secondaryItem.classPointTotal.toString()}
-            _totalOutput.update{secondaryItem.total.toString()}
+            _classPoints.update{secondaryItem.classPointTotal.value.toString()}
+            _totalOutput.update{secondaryItem.total.value.toString()}
         }
     }
 
@@ -292,6 +292,6 @@ class SecondaryFragmentViewModel(
      * Refreshes the fragment's values for changes on other pages.
      */
     fun refreshPage(){
-        _freelancerOptionsOpen.update{charInstance.ownClass == charInstance.classes.freelancer}
+        _freelancerOptionsOpen.update{charInstance.ownClass.value == charInstance.classes.freelancer}
     }
 }

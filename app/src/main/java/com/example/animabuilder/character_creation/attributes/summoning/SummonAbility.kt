@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.summoning
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 
@@ -10,19 +11,19 @@ import java.io.BufferedReader
  */
 class SummonAbility(private val charInstance: BaseCharacter){
     //initialize points spent in this item
-    var buyVal = 0
+    val buyVal = mutableStateOf(0)
 
     //initialize modifier for this item
-    var modVal = 0
+    val modVal = mutableStateOf(0)
 
     //initialize points gained in this item per level
-    var pointsPerLevel = 0
+    val pointsPerLevel = mutableStateOf(0)
 
     //initialize total class points in this item
-    var levelTotal = 0
+    val levelTotal = mutableStateOf(0)
 
     //initialize total in this item
-    var abilityTotal = 0
+    val abilityTotal = mutableStateOf(0)
 
     /**
      * Set the number of points purchased in this section.
@@ -31,7 +32,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
      */
     @JvmName("setBuyVal1")
     fun setBuyVal(input: Int){
-        buyVal = input
+        buyVal.value = input
         charInstance.updateTotalSpent()
         updateTotal()
     }
@@ -43,7 +44,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
      */
     @JvmName("setModVal1")
     fun setModVal(input: Int){
-        modVal = input
+        modVal.value = input
         updateTotal()
     }
 
@@ -54,7 +55,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
      */
     @JvmName("setPointsPerLevel1")
     fun setPointsPerLevel(input: Int){
-        pointsPerLevel = input
+        pointsPerLevel.value = input
         updateLevelTotal()
     }
 
@@ -62,9 +63,9 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * Refresh the number of points in this stat from levels.
      */
     fun updateLevelTotal(){
-        levelTotal =
-            if(charInstance.lvl != 0) pointsPerLevel * charInstance.lvl
-            else pointsPerLevel/2
+        levelTotal.value =
+            if(charInstance.lvl.value != 0) pointsPerLevel.value * charInstance.lvl.value
+            else pointsPerLevel.value/2
 
         updateTotal()
     }
@@ -73,7 +74,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * Refresh the total value for this item.
      */
     fun updateTotal(){
-        abilityTotal = buyVal + modVal + levelTotal
+        abilityTotal.value = buyVal.value + modVal.value + levelTotal.value
     }
 
     /**
@@ -89,6 +90,6 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * Write the points bought in this item to file.
      */
     fun writeAbility(){
-        charInstance.addNewData(buyVal)
+        charInstance.addNewData(buyVal.value)
     }
 }

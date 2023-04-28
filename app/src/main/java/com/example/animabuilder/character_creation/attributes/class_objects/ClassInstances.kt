@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.class_objects
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import java.io.BufferedReader
 
@@ -83,7 +84,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(1)
 
-            if(magPaladin){
+            if(magPaladin.value){
                 charInstance.magic.setZeonPerLevel(20)
                 charInstance.summoning.banish.setPointsPerLevel(10)
             }
@@ -99,7 +100,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(-1)
 
-            if(magPaladin){
+            if(magPaladin.value){
                 charInstance.magic.setZeonPerLevel(0)
                 charInstance.summoning.banish.setPointsPerLevel(0)
             }
@@ -125,7 +126,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(1)
 
-            if(magPaladin){
+            if(magPaladin.value){
                 charInstance.magic.setZeonPerLevel(20)
                 charInstance.summoning.control.setPointsPerLevel(10)
             }
@@ -142,7 +143,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
 
-            if(magPaladin){
+            if(magPaladin.value){
                 charInstance.magic.setZeonPerLevel(0)
                 charInstance.summoning.control.setPointsPerLevel(0)
             }
@@ -567,19 +568,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
     ranger, shadow, thief, assassin, wizard, warlock, illusionist, wizMentalist, summoner, warSummoner,
     mentalist, warMentalist)
 
-    var magPaladin = true
+    val magPaladin = mutableStateOf(true)
 
     /**
      * Toggles the user's selection for their paladin boon.
      */
     fun toggleMagPaladin(){
         //swap character's selection
-        magPaladin = !magPaladin
+        magPaladin.value = !magPaladin.value
 
         //boon items for paladins
-        if(charInstance.ownClass == paladin){
+        if(charInstance.ownClass.value == paladin){
             //grant magic options
-            if(magPaladin){
+            if(magPaladin.value){
                 //remove composure bonus
                 charInstance.secondaryList.composure.setClassPointsPerLevel(0)
 
@@ -602,7 +603,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         //boon items for dark paladins
         else{
             //grant magic options
-            if(magPaladin){
+            if(magPaladin.value){
                 //remove withstand pain bonus
                 charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
 
@@ -707,7 +708,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     fun loadClassData(fileReader: BufferedReader){
-        magPaladin = fileReader.readLine().toBoolean()
+        magPaladin.value = fileReader.readLine().toBoolean()
 
         freelancerSelection[0] = fileReader.readLine().toInt()
         freelancerSelection[1] = fileReader.readLine().toInt()
@@ -715,7 +716,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     fun writeClassData(){
-        charInstance.addNewData(magPaladin)
+        charInstance.addNewData(magPaladin.value)
 
         freelancerSelection.forEach{
             charInstance.addNewData(it)

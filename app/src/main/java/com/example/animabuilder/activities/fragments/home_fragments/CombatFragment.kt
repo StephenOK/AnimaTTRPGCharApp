@@ -181,8 +181,8 @@ private fun CombatItemRow(
         )
 
         //display remaining stat values
-        Text(text = combatItem.item.modPoints.toString(), modifier = Modifier.weight(0.2f))
-        Text(text = combatItem.item.classTotal.toString(), modifier = Modifier.weight(0.2f))
+        Text(text = combatItem.item.modPoints.value.toString(), modifier = Modifier.weight(0.2f))
+        Text(text = combatItem.item.classTotal.value.toString(), modifier = Modifier.weight(0.2f))
         Text(text = combatItem.totalVal.collectAsState().value, modifier = Modifier.weight(0.2f))
     }
 }
@@ -219,13 +219,13 @@ private fun ResistanceRow(
         )
         //associated special addition
         Text(
-            text = resistance.item.special.toString(),
+            text = resistance.item.special.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
         //total resistance value
         Text(
-            text = resistance.item.total.toString(),
+            text = resistance.item.total.value.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )

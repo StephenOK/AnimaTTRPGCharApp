@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.secondary_abilities
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import kotlin.Throws
@@ -14,7 +15,7 @@ import java.io.IOException
  */
 class SecondaryList(val charInstance: BaseCharacter){
     //initialize held state of jack of all trades advantage
-    var allTradesTaken = false
+    val allTradesTaken = mutableStateOf(false)
 
     //Initialize all secondary characteristics in list
     //athletics
@@ -103,9 +104,9 @@ class SecondaryList(val charInstance: BaseCharacter){
      */
     fun toggleNatBonus(target: SecondaryCharacteristic){
         //if natural bonus is currently off
-        if(!target.bonusApplied){
+        if(!target.bonusApplied.value){
             //if characteristic is invested in and there are bonuses available
-            if(countNatBonuses() < charInstance.lvl && target.pointsApplied > 0)
+            if(countNatBonuses() < charInstance.lvl.value && target.pointsApplied .value> 0)
                 target.setBonusApplied(true)
         }
 
@@ -123,7 +124,7 @@ class SecondaryList(val charInstance: BaseCharacter){
 
         //check each characteristic for a held bonus
         fullList.forEach{
-            if(it.bonusApplied) total++
+            if(it.bonusApplied.value) total++
         }
 
         //return final count
@@ -166,80 +167,80 @@ class SecondaryList(val charInstance: BaseCharacter){
      * Update needed values based on new strength modifier.
      */
     fun updateSTR() {
-        jump.setModVal(charInstance.primaryList.str.outputMod)
-        strengthFeat.setModVal(charInstance.primaryList.str.outputMod)
+        jump.setModVal(charInstance.primaryList.str.outputMod.value)
+        strengthFeat.setModVal(charInstance.primaryList.str.outputMod.value)
     }
 
     /**
      * Update needed values based on new dexterity modifier.
      */
     fun updateDEX() {
-        forging.setModVal(charInstance.primaryList.dex.outputMod)
-        sleightHand.setModVal(charInstance.primaryList.dex.outputMod)
-        disguise.setModVal(charInstance.primaryList.dex.outputMod)
-        lockPick.setModVal(charInstance.primaryList.dex.outputMod)
-        theft.setModVal(charInstance.primaryList.dex.outputMod)
-        trapLore.setModVal(charInstance.primaryList.dex.outputMod)
+        forging.setModVal(charInstance.primaryList.dex.outputMod.value)
+        sleightHand.setModVal(charInstance.primaryList.dex.outputMod.value)
+        disguise.setModVal(charInstance.primaryList.dex.outputMod.value)
+        lockPick.setModVal(charInstance.primaryList.dex.outputMod.value)
+        theft.setModVal(charInstance.primaryList.dex.outputMod.value)
+        trapLore.setModVal(charInstance.primaryList.dex.outputMod.value)
     }
 
     /**
      * Update needed values based on new agility modifier.
      */
     fun updateAGI() {
-        acrobatics.setModVal(charInstance.primaryList.agi.outputMod)
-        athletics.setModVal(charInstance.primaryList.agi.outputMod)
-        climb.setModVal(charInstance.primaryList.agi.outputMod)
-        ride.setModVal(charInstance.primaryList.agi.outputMod)
-        swim.setModVal(charInstance.primaryList.agi.outputMod)
-        dance.setModVal(charInstance.primaryList.agi.outputMod)
-        stealth.setModVal(charInstance.primaryList.agi.outputMod)
+        acrobatics.setModVal(charInstance.primaryList.agi.outputMod.value)
+        athletics.setModVal(charInstance.primaryList.agi.outputMod.value)
+        climb.setModVal(charInstance.primaryList.agi.outputMod.value)
+        ride.setModVal(charInstance.primaryList.agi.outputMod.value)
+        swim.setModVal(charInstance.primaryList.agi.outputMod.value)
+        dance.setModVal(charInstance.primaryList.agi.outputMod.value)
+        stealth.setModVal(charInstance.primaryList.agi.outputMod.value)
     }
 
     /**
      * Update needed values based on new intelligence modifier.
      */
     fun updateINT() {
-        persuasion.setModVal(charInstance.primaryList.int.outputMod)
-        poisons.setModVal(charInstance.primaryList.int.outputMod)
-        animals.setModVal(charInstance.primaryList.int.outputMod)
-        appraise.setModVal(charInstance.primaryList.int.outputMod)
-        herbalLore.setModVal(charInstance.primaryList.int.outputMod)
-        history.setModVal(charInstance.primaryList.int.outputMod)
-        memorize.setModVal(charInstance.primaryList.int.outputMod)
-        medic.setModVal(charInstance.primaryList.int.outputMod)
-        navigate.setModVal(charInstance.primaryList.int.outputMod)
-        occult.setModVal(charInstance.primaryList.int.outputMod)
-        sciences.setModVal(charInstance.primaryList.int.outputMod)
+        persuasion.setModVal(charInstance.primaryList.int.outputMod.value)
+        poisons.setModVal(charInstance.primaryList.int.outputMod.value)
+        animals.setModVal(charInstance.primaryList.int.outputMod.value)
+        appraise.setModVal(charInstance.primaryList.int.outputMod.value)
+        herbalLore.setModVal(charInstance.primaryList.int.outputMod.value)
+        history.setModVal(charInstance.primaryList.int.outputMod.value)
+        memorize.setModVal(charInstance.primaryList.int.outputMod.value)
+        medic.setModVal(charInstance.primaryList.int.outputMod.value)
+        navigate.setModVal(charInstance.primaryList.int.outputMod.value)
+        occult.setModVal(charInstance.primaryList.int.outputMod.value)
+        sciences.setModVal(charInstance.primaryList.int.outputMod.value)
     }
 
     /**
      * Update needed values based on new power modifier.
      */
     fun updatePOW() {
-        art.setModVal(charInstance.primaryList.pow.outputMod)
-        music.setModVal(charInstance.primaryList.pow.outputMod)
-        leadership.setModVal(charInstance.primaryList.pow.outputMod)
-        style.setModVal(charInstance.primaryList.pow.outputMod)
-        magicAppraise.setModVal(charInstance.primaryList.pow.outputMod)
+        art.setModVal(charInstance.primaryList.pow.outputMod.value)
+        music.setModVal(charInstance.primaryList.pow.outputMod.value)
+        leadership.setModVal(charInstance.primaryList.pow.outputMod.value)
+        style.setModVal(charInstance.primaryList.pow.outputMod.value)
+        magicAppraise.setModVal(charInstance.primaryList.pow.outputMod.value)
     }
 
     /**
      * Update needed values based on new willpower modifier.
      */
     fun updateWP() {
-        intimidate.setModVal(charInstance.primaryList.wp.outputMod)
-        composure.setModVal(charInstance.primaryList.wp.outputMod)
-        resistPain.setModVal(charInstance.primaryList.wp.outputMod)
+        intimidate.setModVal(charInstance.primaryList.wp.outputMod.value)
+        composure.setModVal(charInstance.primaryList.wp.outputMod.value)
+        resistPain.setModVal(charInstance.primaryList.wp.outputMod.value)
     }
 
     /**
      * Update needed values based on new perception modifier
      */
     fun updatePER() {
-        notice.setModVal(charInstance.primaryList.per.outputMod)
-        search.setModVal(charInstance.primaryList.per.outputMod)
-        track.setModVal(charInstance.primaryList.per.outputMod)
-        hide.setModVal(charInstance.primaryList.per.outputMod)
+        notice.setModVal(charInstance.primaryList.per.outputMod.value)
+        search.setModVal(charInstance.primaryList.per.outputMod.value)
+        track.setModVal(charInstance.primaryList.per.outputMod.value)
+        hide.setModVal(charInstance.primaryList.per.outputMod.value)
     }
 
     /**
@@ -267,7 +268,7 @@ class SecondaryList(val charInstance: BaseCharacter){
     fun calculateSpent(): Int{
         var total = 0
 
-        fullList.forEach{total += it.pointsIn}
+        fullList.forEach{total += it.pointsIn.value}
 
         return total
     }

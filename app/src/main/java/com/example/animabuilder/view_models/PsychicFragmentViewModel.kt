@@ -22,11 +22,11 @@ class PsychicFragmentViewModel(
     dexMod: Int
 ): ViewModel() {
     //initialize psychic potential display
-    private val _potentialTotal = MutableStateFlow(psychic.psyPotentialTotal.toString())
+    private val _potentialTotal = MutableStateFlow(psychic.psyPotentialTotal.value.toString())
     val potentialTotal = _potentialTotal.asStateFlow()
 
     //initialize input for point investment in psychic potential
-    private val _pointsInPotential = MutableStateFlow(psychic.pointsInPotential.toString())
+    private val _pointsInPotential = MutableStateFlow(psychic.pointsInPotential.value.toString())
     val pointsInPotential = _pointsInPotential.asStateFlow()
 
     //initialize character's free psychic point text
@@ -34,7 +34,7 @@ class PsychicFragmentViewModel(
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
     //initialize character's taken number of innate slots
-    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.toString())
+    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.value.toString())
     val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
 
     //initialize color of free point text
@@ -53,7 +53,7 @@ class PsychicFragmentViewModel(
         psychic.setPointPotential(input)
         setPointsInPotential(input.toString())
         updateFreePsyPoints()
-        _potentialTotal.update{psychic.psyPotentialTotal.toString()}
+        _potentialTotal.update{psychic.psyPotentialTotal.value.toString()}
     }
 
     /**
@@ -95,13 +95,13 @@ class PsychicFragmentViewModel(
     //initialize data in regards to the character's psychic points
     private val psychicPoints = PsychicPurchaseItemData(
         R.string.psyPointLabel,
-        psychic.innatePsyPoints.toString(),
-        psychic.boughtPsyPoints,
-        psychic.totalPsychicPoints,
+        psychic.innatePsyPoints.value.toString(),
+        psychic.boughtPsyPoints.value,
+        psychic.totalPsychicPoints.value,
         {Color.Black}
     ){input, item ->
         psychic.buyPsyPoints(input)
-        item.update{psychic.totalPsychicPoints.toString()}
+        item.update{psychic.totalPsychicPoints.value.toString()}
         updateFreePsyPoints()
     }
 
@@ -109,8 +109,8 @@ class PsychicFragmentViewModel(
     private val psychicProjection = PsychicPurchaseItemData(
         R.string.psyProjectionLabel,
         dexMod.toString(),
-        psychic.psyProjectionBought,
-        psychic.psyProjectionTotal,
+        psychic.psyProjectionBought.value,
+        psychic.psyProjectionTotal.value,
         {
             if(psychic.getValidProjection())
                 Color.Black
@@ -119,7 +119,7 @@ class PsychicFragmentViewModel(
         }
     ){input, item ->
         psychic.buyPsyProjection(input)
-        item.update{psychic.psyProjectionTotal.toString()}
+        item.update{psychic.psyProjectionTotal.value.toString()}
     }
 
     //gather purchase items into a list

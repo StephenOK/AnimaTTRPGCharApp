@@ -71,11 +71,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         "Sylvain possess an incredible capacity for recovering from physical injury. " +
                 "They add one point to their natural Regeneration.",
         {_, _ ->
-            charInstance.combat.specRegen += 1
+            charInstance.combat.specRegen.value += 1
             charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.combat.specRegen -= 1
+            charInstance.combat.specRegen.value -= 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -122,11 +122,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         "The Jayan tire less than other characters with the same Constitution, and " +
                 "therefore they add 1 point to their maximum Fatigue number.",
         {_, _ ->
-            charInstance.combat.specFatigue += 1
+            charInstance.combat.specFatigue.value += 1
             charInstance.combat.updateFatigue()
         },
         {_, _ ->
-            charInstance.combat.specFatigue -= 1
+            charInstance.combat.specFatigue.value -= 1
             charInstance.combat.updateFatigue()
         }
     )
@@ -230,7 +230,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         "Common Appearance",
         "Because of their average looks, D\'Anjayni never possess an Appearance of less " +
                 "than 3 nor more than 7.",
-        {_, _ -> if(charInstance.appearance !in 3..7) charInstance.setAppearance(5)},
+        {_, _ -> if(charInstance.appearance.value !in 3..7) charInstance.setAppearance(5)},
         null
     )
 
@@ -348,11 +348,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         "The Daimah are not usually tall or heavily built. They subtract 1 from their " +
                 "Size Characteristic.",
         {_, _ ->
-            charInstance.sizeSpecial -= 1
+            charInstance.sizeSpecial.value -= 1
             charInstance.updateSize()
         },
         {_, _ ->
-            charInstance.sizeSpecial += 1
+            charInstance.sizeSpecial.value += 1
             charInstance.updateSize()
         }
     )
@@ -378,13 +378,13 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         {_, _ ->
             charInstance.combat.allResistances.forEach{it.setSpecial(15)}
 
-            if(charInstance.isMale) charInstance.combat.physicalRes.setSpecial(5)
+            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(5)
             else charInstance.combat.magicRes.setSpecial(5)
         },
         {_, _ ->
             charInstance.combat.allResistances.forEach{it.setSpecial(-15)}
 
-            if(charInstance.isMale) charInstance.combat.physicalRes.setSpecial(-5)
+            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(-5)
             else charInstance.combat.magicRes.setSpecial(-5)
         }
     )
@@ -431,11 +431,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         "Duk\'zarist possess an incredible capacity for recovering from any physical " +
                 "injury. They add one point to their natural Regeneration.",
         {_, _ ->
-            charInstance.combat.specRegen += 1
+            charInstance.combat.specRegen.value += 1
             charInstance.combat.updateRegeneration()
         },
         {_, _ ->
-            charInstance.combat.specRegen -= 1
+            charInstance.combat.specRegen.value -= 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -475,7 +475,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
                 "develop their mental abilities, the first one they must acquire is the " +
                 "discipline of Pyrokinesis.",
         {_, _ ->
-            if(charInstance.psychic.totalPsychicPoints > 0) {
+            if(charInstance.psychic.totalPsychicPoints.value > 0) {
                 if (charInstance.psychic.getFreePsyPoints() == 0) {
                     val powerRemoved =
                         if (charInstance.psychic.masteredPowers.isNotEmpty())

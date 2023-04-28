@@ -24,17 +24,17 @@ class EquipmentFragmentViewModel(
     //initialize data for all coin maximums
     val maxGold = MaximumData(
         R.string.maxGoldLabel,
-        inventory.maxGold
+        inventory.maxGold.value
     ){inventory.setMaxGold(it)}
 
     val maxSilver = MaximumData(
         R.string.maxSilverLabel,
-        inventory.maxSilver
+        inventory.maxSilver.value
     ){inventory.setMaxSilver(it)}
 
     val maxCopper = MaximumData(
         R.string.maxCopperLabel,
-        inventory.maxCopper
+        inventory.maxCopper.value
     ){inventory.setMaxCopper(it)}
 
     //collect all maximum data
@@ -64,7 +64,7 @@ class EquipmentFragmentViewModel(
      *
      * @return amount of bonus wealth the character has
      */
-    fun getBonusWealth(): Int{return inventory.wealthBonus}
+    fun getBonusWealth(): Int{return inventory.wealthBonus.value}
 
     //instantiate all category data
     private val clothes = CategoryData(
@@ -448,9 +448,9 @@ class EquipmentFragmentViewModel(
      */
     fun getCoinSpent(input: CoinType): Int{
         return when(input){
-            CoinType.Copper -> inventory.copperSpent.toInt()
-            CoinType.Silver -> inventory.silverSpent.toInt()
-            CoinType.Gold -> inventory.goldSpent.toInt()
+            CoinType.Copper -> inventory.copperSpent.value.toInt()
+            CoinType.Silver -> inventory.silverSpent.value.toInt()
+            CoinType.Gold -> inventory.goldSpent.value.toInt()
         }
     }
 

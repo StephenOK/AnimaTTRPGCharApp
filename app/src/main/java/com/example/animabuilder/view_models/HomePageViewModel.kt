@@ -28,19 +28,19 @@ class HomePageViewModel(charInstance: BaseCharacter): ViewModel() {
     //initialize bottom bar maximum values
     val maximums = BottomBarRowData(
         R.string.maxRowLabel,
-        charInstance.devPT,
-        charInstance.maxCombatDP,
-        charInstance.maxMagDP,
-        charInstance.maxPsyDP
+        charInstance.devPT.value,
+        charInstance.maxCombatDP.value,
+        charInstance.maxMagDP.value,
+        charInstance.maxPsyDP.value
     )
 
     //initialize bottom bar spent values
     val expenditures = BottomBarRowData(
         R.string.usedRowLabel,
-        charInstance.spentTotal,
-        charInstance.ptInCombat,
-        charInstance.ptInMag,
-        charInstance.ptInPsy
+        charInstance.spentTotal.value,
+        charInstance.ptInCombat.value,
+        charInstance.ptInMag.value,
+        charInstance.ptInPsy.value
     )
 
     /**

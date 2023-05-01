@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.view_models.CharacterFragmentViewModel
+import com.example.animabuilder.view_models.HomePageViewModel
 
 /**
  * Fragment to be displayed when working with basic characteristics.
@@ -27,14 +28,14 @@ import com.example.animabuilder.view_models.CharacterFragmentViewModel
  * Default fragment at character load.
  *
  * @param charFragVM viewModel for this page
- * @param updateFunc function to run to update the bottom bar
+ * @param maxNumVM viewModel that manages the bottom bar display
  */
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
-    updateFunc: () -> Unit,
+    maxNumVM: HomePageViewModel
 ){
     //get context and keyboard state
     val context = LocalContext.current
@@ -62,7 +63,7 @@ fun CharacterPageFragment(
 
         //class, race, and level dropdown items
         items(charFragVM.dropdownList){dropItem ->
-            DropdownObject(dropItem, updateFunc)
+            DropdownObject(dropItem, maxNumVM)
         }
 
         //display gender bonus selection if the character is a duk'zarist
@@ -189,12 +190,12 @@ fun CharacterPageFragment(
  * Creates a dropdown object for user inputs.
  *
  * @param item data held for this dropdown object
- * @param updateFunc function to run to update the bottom bar
+ * @param maxNumVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun DropdownObject(
     item: CharacterFragmentViewModel.DropdownData,
-    updateFunc: () -> Unit
+    maxNumVM: HomePageViewModel
 ){
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -229,7 +230,8 @@ private fun DropdownObject(
                 DropdownMenuItem(onClick = {
                     //set the new item to show
                     item.setOutput(item.options.indexOf(stringIn))
-                    updateFunc()
+                    maxNumVM.updateMaximums()
+                    maxNumVM.updateExpenditures()
                 }) {
                     Text(text = stringIn)
                 }

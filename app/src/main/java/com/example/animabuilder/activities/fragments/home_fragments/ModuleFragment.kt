@@ -21,6 +21,7 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbili
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.ModuleFragmentViewModel
 
 /**
@@ -31,13 +32,13 @@ import com.example.animabuilder.view_models.ModuleFragmentViewModel
  *
  * @param modFragVM viewModel to run with this fragment
  * @param openDetailAlert function to run when looking at an item's details
- * @param updateFunc function to run when updating the bottom bar's data
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun ModuleFragment(
     modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +54,7 @@ fun ModuleFragment(
                 modFragVM,
                 weaponButton,
                 openDetailAlert,
-                updateFunc
+                homePageVM
             )
         }
 
@@ -63,7 +64,7 @@ fun ModuleFragment(
                 modFragVM,
                 modFragVM.getUnarmed(),
                 openDetailAlert,
-                updateFunc
+                homePageVM
             )
         }
 
@@ -71,14 +72,14 @@ fun ModuleFragment(
         item{ArchetypeButton(
             modFragVM,
             openDetailAlert,
-            updateFunc
+            homePageVM
         )}
         item{MartialButton(
             modFragVM,
             openDetailAlert,
-            updateFunc
+            homePageVM
         )}
-        item{StyleButton(modFragVM, openDetailAlert, updateFunc)}
+        item{StyleButton(modFragVM, openDetailAlert, homePageVM)}
     }
 }
 
@@ -89,14 +90,14 @@ fun ModuleFragment(
  * @param modFragVM viewModel that manages the data for this page
  * @param weaponData information regarding this type of weapon
  * @param openDetailAlert function to run when opening a weapon's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun WeaponListButton(
     modFragVM: ModuleFragmentViewModel,
     weaponData: ModuleFragmentViewModel.WeaponListData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //button for displaying the list
     Button(
@@ -116,7 +117,7 @@ private fun WeaponListButton(
                 ArchetypeRow(
                     weaponData.weaponArchetype,
                     openDetailAlert,
-                    updateFunc
+                    homePageVM
                 )
 
             //display all weapons from the given list
@@ -125,7 +126,7 @@ private fun WeaponListButton(
                     modFragVM,
                     it,
                     openDetailAlert,
-                    updateFunc
+                    homePageVM
                 )
             }
         }
@@ -137,13 +138,13 @@ private fun WeaponListButton(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param openDetailAlert function to run when looking at an archetype's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ArchetypeButton(
     modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //button for displaying archetype list
     Button(
@@ -161,7 +162,7 @@ private fun ArchetypeButton(
                 ArchetypeRow(
                     it,
                     openDetailAlert,
-                    updateFunc
+                    homePageVM
                 )
             }
         }
@@ -173,13 +174,13 @@ private fun ArchetypeButton(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param openDetailAlert function to run when looking at the style's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun StyleButton(
     modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //button for displaying weapon styles list
     Button(
@@ -197,7 +198,7 @@ private fun StyleButton(
                     modFragVM,
                     it,
                     openDetailAlert,
-                    updateFunc
+                    homePageVM
                 )
             }
         }
@@ -209,13 +210,13 @@ private fun StyleButton(
  *
  * @param modFragVM viewModel that manages this page's data
  * @param openDetailAlert function to run when looking at a martial art's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MartialButton(
     modFragVM: ModuleFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //button for displaying martial arts list
     Button(
@@ -237,7 +238,7 @@ private fun MartialButton(
                     modFragVM,
                     it,
                     openDetailAlert,
-                    updateFunc
+                    homePageVM
                 )
             }
         }
@@ -250,14 +251,14 @@ private fun MartialButton(
  * @param modFragVM viewModel that manages the data for this page
  * @param input weapon to display info on
  * @param openDetailAlert function to run when looking at a weapon's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun WeaponRow(
     modFragVM: ModuleFragmentViewModel,
     input: Weapon,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         //primary checkbox item
@@ -268,7 +269,7 @@ private fun WeaponRow(
                 modFragVM.setPrimaryWeapon(input)
 
                 //update character's associated values
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -283,7 +284,7 @@ private fun WeaponRow(
                     //perform appropriate action for input
                     modFragVM.changeIndividualModule(input, it)
 
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -304,13 +305,13 @@ private fun WeaponRow(
  *
  * @param item data on the inputted archetype
  * @param openDetailAlert function to run when looking at an archetype's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ArchetypeRow(
     item: ModuleFragmentViewModel.ArchetypeData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
@@ -320,7 +321,7 @@ private fun ArchetypeRow(
                 //add weapon list to character
                 item.toggleCheck()
 
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -343,14 +344,14 @@ private fun ArchetypeRow(
  * @param modFragVM viewModel that manages the data for this page
  * @param style displayed item
  * @param openDetailAlert function to run when looking at the style's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun StyleRow(
     modFragVM: ModuleFragmentViewModel,
     style: StyleModule,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(modifier = Modifier.weight(0.1f))
@@ -360,7 +361,7 @@ private fun StyleRow(
                 //add or remove style as indicated
                 modFragVM.changeStyle(style, it)
 
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -383,14 +384,14 @@ private fun StyleRow(
  * @param modFragVM viewModel that manages the data for this page
  * @param martialArt item to be displayed
  * @param openDetailAlert function to run when looking at the martial art's details
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MartialArtRow(
     modFragVM: ModuleFragmentViewModel,
     martialArt: MartialArt,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(verticalAlignment = Alignment.CenterVertically){
         Checkbox(
@@ -398,7 +399,7 @@ private fun MartialArtRow(
             onCheckedChange = {
                 //attempt to implement the user's desired change
                 modFragVM.changeMartial(martialArt, it)
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )

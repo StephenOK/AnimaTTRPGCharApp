@@ -33,26 +33,28 @@ android {
     }
 
     composeOptions{
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
     namespace 'com.example.animabuilder'
 }
 
 dependencies {
-    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation 'androidx.activity:activity-compose:1.7.1'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
-    implementation 'androidx.compose.animation:animation:1.4.1'
-    implementation 'androidx.compose.material:material:1.4.1'
-    implementation "androidx.compose.runtime:runtime:1.4.1"
-    implementation "androidx.compose.runtime:runtime-livedata:1.4.1"
-    implementation 'androidx.compose.ui:ui-tooling:1.4.1'
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.4.1'
+    implementation 'androidx.compose.animation:animation:1.4.2'
+    implementation 'androidx.compose.material:material:1.4.2'
+    implementation "androidx.compose.runtime:runtime:1.4.2"
+    implementation "androidx.compose.runtime:runtime-livedata:1.4.2"
+    implementation 'androidx.compose.ui:ui-tooling:1.4.2'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.4.2'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'androidx.core:core-ktx:1.10.0'
+
+    implementation 'androidx.fragment:fragment-ktx:1.5.7'
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
@@ -74,8 +76,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.4.1'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.4.2'
     androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
 
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.4.1'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.4.2'
 }

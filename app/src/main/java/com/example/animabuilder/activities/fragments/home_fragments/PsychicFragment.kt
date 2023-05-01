@@ -17,6 +17,7 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.PsychicFragmentViewModel
 
 /**
@@ -26,13 +27,13 @@ import com.example.animabuilder.view_models.PsychicFragmentViewModel
  *
  * @param psyFragVM viewModel that is to be run on this page
  * @param openDetailAlert function to run when looking at an item's details
- * @param updateFunc function to run when updating the bottom bar's data
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn{
         //display character's Psychic Potential
@@ -53,7 +54,7 @@ fun PsychicFragment(
 
         //display psychic point and projection inputs
         items(psyFragVM.buyItems){
-            PsychicPurchaseTable(it, updateFunc)
+            PsychicPurchaseTable(it, homePageVM)
         }
 
         //display currently free psychic points
@@ -90,12 +91,12 @@ fun PsychicFragment(
  * Displays an item that allows for the user to purchase amounts of the indicated psychic ability.
  *
  * @param tableData information regarding this individual table
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //display title of this section
     Row{Text(text = stringResource(tableData.title))}
@@ -108,7 +109,7 @@ private fun PsychicPurchaseTable(
             inputText = tableData.purchaseAmount.collectAsState().value,
             inputFunction = {tableData.setPurchaseAmount(it.toInt())},
             emptyFunction = {tableData.setPurchaseAmount("")},
-            postRun = {updateFunc()},
+            postRun = {homePageVM.updateExpenditures()},
             color = tableData.textColor.collectAsState().value
         )
 

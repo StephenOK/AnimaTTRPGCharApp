@@ -644,7 +644,8 @@ class ClassInstances(private val charInstance: BaseCharacter){
     fun freelancerRemoved(){
         //update characteristic's class value if a selection was made
         freelancerSelection.forEach{
-            charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
+            if(it != 0)
+                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
         }
     }
 

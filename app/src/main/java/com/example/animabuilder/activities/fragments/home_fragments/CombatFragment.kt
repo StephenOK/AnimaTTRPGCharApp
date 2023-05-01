@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.view_models.CombatFragViewModel
+import com.example.animabuilder.view_models.HomePageViewModel
 
 /**
  * Section for the user to alter their character's combat abilities.
@@ -22,12 +23,12 @@ import com.example.animabuilder.view_models.CombatFragViewModel
  * Displays information on the character's initiative, fatigue, and regeneration.
  *
  * @param combatFragVM viewModel utilized in this fragment
- * @param updateFunc function to run to update the bottom bar values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun CombatFragment(
     combatFragVM: CombatFragViewModel,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn{
         //create header row for combat items
@@ -63,7 +64,7 @@ fun CombatFragment(
                     inputText = combatFragVM.lifeMults.collectAsState().value,
                     inputFunction = {
                         combatFragVM.setLifeMults(it.toInt())
-                        updateFunc()
+                        homePageVM.updateExpenditures()
                     },
                     emptyFunction = {combatFragVM.setLifeMults("")},
                     modifier = Modifier.weight(0.2f)
@@ -99,7 +100,7 @@ fun CombatFragment(
 
         //create table row for each combat item
         items(combatFragVM.allCombatItems){combatItem ->
-            CombatItemRow(combatFragVM, combatItem, updateFunc)
+            CombatItemRow(combatFragVM, combatItem, homePageVM)
         }
 
         //resistances table
@@ -156,13 +157,13 @@ fun CombatFragment(
  *
  * @param combatFragVM viewModel that controls this fragment's data
  * @param combatItem character's combat stat to display
- * @param updateFunc function to run for bottom bar update
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun CombatItemRow(
     combatFragVM: CombatFragViewModel,
     combatItem: CombatFragViewModel.CombatItemData,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row {
         //row label
@@ -173,7 +174,7 @@ private fun CombatItemRow(
             inputText = combatItem.pointsIn.collectAsState().value,
             inputFunction = {
                 combatItem.setPointsIn(it.toInt())
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             emptyFunction = {combatItem.setPointsIn("")},
             modifier = Modifier.weight(0.2f),

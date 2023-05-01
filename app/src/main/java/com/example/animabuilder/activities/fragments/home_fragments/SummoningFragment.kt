@@ -9,23 +9,23 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.SummoningFragmentViewModel
 
 /**
  * Fragment that displays the character's summoning abilities.
  *
  * @param summoningVM viewModel to run with this fragment
- * @param updateFunc function to run when updating the bottom bar's values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun SummoningFragment(
     summoningVM: SummoningFragmentViewModel,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     LazyColumn{
         //display table header
@@ -41,7 +41,7 @@ fun SummoningFragment(
 
         //display table data
         items(summoningVM.allRows){
-            SummoningAbilityRow(it, updateFunc)
+            SummoningAbilityRow(it, homePageVM)
         }
     }
 }
@@ -50,12 +50,12 @@ fun SummoningFragment(
  * Creates a row of data that displays information on the given ability of the character.
  *
  * @param inputData table data to display to the user
- * @param updateFunc function to update the bottom bar
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun SummoningAbilityRow(
     inputData: SummoningFragmentViewModel.SummonItemData,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(Modifier.fillMaxWidth()){
         //display item, points from modifier, and points from class
@@ -69,7 +69,7 @@ private fun SummoningAbilityRow(
             inputFunction = {inputData.setBoughtVal(it.toInt())},
             emptyFunction = {inputData.setBoughtVal("")},
             modifier = Modifier.weight(0.3f),
-            postRun = {updateFunc()}
+            postRun = {homePageVM.updateExpenditures()}
         )
 
         //display final total

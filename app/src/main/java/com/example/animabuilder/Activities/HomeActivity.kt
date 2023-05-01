@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,6 +25,7 @@ import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.view_models.*
+import com.example.animabuilder.view_models.factories.CustomFactory
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
@@ -74,29 +75,54 @@ class HomeActivity : AppCompatActivity() {
             val navController = rememberNavController()
 
             //create viewModels for the home page and home alert items
-            val homePageVM = HomePageViewModel(charInstance)
-            val homeAlertsVM = viewModel<HomePageAlertViewModel>()
+            val homePageVM: HomePageViewModel by viewModels{
+                CustomFactory(HomePageViewModel::class.java, charInstance, context)
+            }
+
+            val homeAlertsVM: HomePageAlertViewModel by viewModels{
+                CustomFactory(HomePageAlertViewModel::class.java, charInstance, context)
+            }
 
             //create viewModels for each individual fragment
-            val charFragVM = CharacterFragmentViewModel(charInstance, homePageVM, context)
-            val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
-            val secondaryFragVM = SecondaryFragmentViewModel(
-                charInstance,
-                charInstance.secondaryList
-            )
-            val advantageFragVM = AdvantageFragmentViewModel(
-                charInstance,
-                charInstance.advantageRecord
-            )
-            val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, context)
-            val kiFragVM = KiFragmentViewModel(charInstance.ki, context)
-            val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance.primaryList.dex)
-            val summonFragVM = SummoningFragmentViewModel(charInstance.summoning)
-            val psyFragVM = PsychicFragmentViewModel(
-                charInstance.psychic,
-                charInstance.primaryList.dex.outputMod.value
-            )
-            val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
+            val charFragVM: CharacterFragmentViewModel by viewModels{
+                CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val combatFragVM: CombatFragViewModel by viewModels{
+                CustomFactory(CombatFragViewModel::class.java, charInstance, context)
+            }
+
+            val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
+                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val advantageFragVM: AdvantageFragmentViewModel by viewModels{
+                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val modFragVM: ModuleFragmentViewModel by viewModels{
+                CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val kiFragVM: KiFragmentViewModel by viewModels{
+                CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val magFragVM: MagicFragmentViewModel by viewModels{
+                CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val summonFragVM: SummoningFragmentViewModel by viewModels{
+                CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val psyFragVM: PsychicFragmentViewModel by viewModels{
+                CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
+            }
+
+            val equipFragVM: EquipmentFragmentViewModel by viewModels{
+                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
+            }
 
             //scaffold for the home page
             Scaffold(
@@ -203,120 +229,72 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
-                        CharacterPageFragment(charFragVM)
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
+                        CharacterPageFragment(charFragVM, homePageVM)
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
-                        CombatFragment(combatFragVM)
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
+                        CombatFragment(combatFragVM, homePageVM)
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
                         secondaryFragVM.refreshPage()
 
-                        SecondaryAbilityFragment(secondaryFragVM)
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
+                        SecondaryAbilityFragment(secondaryFragVM, homePageVM)
                     }
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
                         AdvantageFragment(
                             advantageFragVM,
-                            homeAlertsVM.openDetailAlert
+                            homeAlertsVM.openDetailAlert,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
                         ModuleFragment(
                             modFragVM,
-                            homeAlertsVM.openDetailAlert
+                            homeAlertsVM.openDetailAlert,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
                         KiFragment(
                             kiFragVM,
-                            homeAlertsVM.openDetailAlert
+                            homeAlertsVM.openDetailAlert,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
                         MagicFragment(
                             magFragVM,
-                            homeAlertsVM.openDetailAlert
+                            homeAlertsVM.openDetailAlert,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
                         SummoningFragment(
-                            summonFragVM
+                            summonFragVM,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
                         PsychicFragment(
                             psyFragVM,
-                            homeAlertsVM.openDetailAlert
+                            homeAlertsVM.openDetailAlert,
+                            homePageVM
                         )
-                        {homePageVM.expenditures.updateItems(
-                            charInstance.spentTotal.value,
-                            charInstance.ptInCombat.value,
-                            charInstance.ptInMag.value,
-                            charInstance.ptInPsy.value
-                        )}
                     }
 
                     //route to equipment page

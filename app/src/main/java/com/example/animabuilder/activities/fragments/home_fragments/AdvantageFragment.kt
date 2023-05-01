@@ -20,6 +20,7 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.view_models.AdvantageFragmentViewModel
+import com.example.animabuilder.view_models.HomePageViewModel
 
 /**
  * Section that displays advantage and disadvantage information to the user.
@@ -28,13 +29,13 @@ import com.example.animabuilder.view_models.AdvantageFragmentViewModel
  *
  * @param advantageFragVM viewModel to run with this fragment
  * @param openDetailAlert function to run when opening an item's details
- * @param updateBottomBar function to run to update the screen's bottom bar
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun AdvantageFragment(
     advantageFragVM: AdvantageFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //initialize local context
     val context = LocalContext.current
@@ -49,7 +50,7 @@ fun AdvantageFragment(
                 advantageFragVM,
                 it,
                 openDetailAlert,
-                updateBottomBar
+                homePageVM
             )
         }
 
@@ -59,7 +60,7 @@ fun AdvantageFragment(
                 advantageFragVM,
                 it,
                 openDetailAlert,
-                updateBottomBar
+                homePageVM
             )
         }
 
@@ -79,7 +80,7 @@ fun AdvantageFragment(
             if(input != null)
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
 
-            updateBottomBar()
+            homePageVM.updateExpenditures()
         }
 }
 
@@ -89,14 +90,14 @@ fun AdvantageFragment(
  * @param advantageFragVM viewModel for the advantage fragment
  * @param advantageList advantage data to display
  * @param openDetailAlert function to run when opening an item's details
- * @param updateBottomBar function to run to update the screen's bottom bar
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun AdvantageDisplay(
     advantageFragVM: AdvantageFragmentViewModel,
     advantageList: AdvantageFragmentViewModel.AdvantageButtonData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //get local context
     val context = LocalContext.current
@@ -144,7 +145,7 @@ private fun AdvantageDisplay(
                             if (resultText != null)
                                 Toast.makeText(context, resultText, Toast.LENGTH_LONG).show()
                             else
-                                updateBottomBar()
+                                homePageVM.updateExpenditures()
                         }
                     }
                 }
@@ -197,14 +198,14 @@ private fun AdvantageRow(
  * @param advantageFragVM viewModel that holds data for this object
  * @param item advantage to display
  * @param openDetailAlert function to run when opening an item's details
- * @param updateBottomBar function to run to update the screen's bottom bar
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun HeldAdvantageDisplay(
     advantageFragVM: AdvantageFragmentViewModel,
     item: Advantage,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //retrieve additional information on the advantage
     val nameAddition =
@@ -221,7 +222,7 @@ private fun HeldAdvantageDisplay(
     )
     {
         advantageFragVM.removeAdvantage(item)
-        updateBottomBar()
+        homePageVM.updateExpenditures()
     }
 }
 

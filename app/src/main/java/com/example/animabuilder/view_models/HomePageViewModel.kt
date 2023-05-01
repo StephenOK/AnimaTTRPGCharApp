@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
  * Manages the bottom bar display values.
  * Manages the currently selected fragment that is displayed.
  */
-class HomePageViewModel(charInstance: BaseCharacter): ViewModel() {
+class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     //initialize the page's current fragment
     private val _currentFragment = MutableStateFlow(HomeActivity.ScreenPage.Character)
     val currentFragment = _currentFragment.asStateFlow()
@@ -34,6 +34,15 @@ class HomePageViewModel(charInstance: BaseCharacter): ViewModel() {
         charInstance.maxPsyDP.value
     )
 
+    fun updateMaximums(){
+        maximums.updateItems(
+            charInstance.devPT.value,
+            charInstance.maxCombatDP.value,
+            charInstance.maxMagDP.value,
+            charInstance.maxPsyDP.value
+        )
+    }
+
     //initialize bottom bar spent values
     val expenditures = BottomBarRowData(
         R.string.usedRowLabel,
@@ -42,6 +51,15 @@ class HomePageViewModel(charInstance: BaseCharacter): ViewModel() {
         charInstance.ptInMag.value,
         charInstance.ptInPsy.value
     )
+
+    fun updateExpenditures(){
+        expenditures.updateItems(
+            charInstance.spentTotal.value,
+            charInstance.ptInCombat.value,
+            charInstance.ptInMag.value,
+            charInstance.ptInPsy.value
+        )
+    }
 
     /**
      * Row of data contained in the app's bottom bar.

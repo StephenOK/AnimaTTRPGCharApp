@@ -17,6 +17,7 @@ import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.MagicFragmentViewModel
 
 /**
@@ -28,13 +29,13 @@ import com.example.animabuilder.view_models.MagicFragmentViewModel
  *
  * @param magFragVM viewModel to run with this fragment
  * @param openDetailAlert function to run when opening an item's details
- * @param updateFunc function to run to update the bottom bar's data
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn{
         //header for zeon point maximums
@@ -63,7 +64,7 @@ fun MagicFragment(
                     inputFunction = {input -> magFragVM.setBoughtZeonString(input.toInt())},
                     emptyFunction = {magFragVM.setBoughtZeonString("")},
                     modifier = Modifier.weight(0.25f),
-                    postRun = {updateFunc()}
+                    postRun = {homePageVM.updateExpenditures()}
                 )
 
                 //display multiplier for zeon point purchases
@@ -85,7 +86,7 @@ fun MagicFragment(
 
         //display zeon accumulation and magic projection tables
         items(magFragVM.allPurchaseData){
-            ZeonPurchaseItem(it, updateFunc)
+            ZeonPurchaseItem(it, homePageVM)
         }
 
         //display character's innate magic
@@ -176,12 +177,12 @@ fun MagicFragment(
  * Creates a table for inputs of the particular stat.
  *
  * @param tableItem data for the displayed table
- * @param updateFunc function to run when updating the bottom bar's values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ZeonPurchaseItem(
     tableItem: MagicFragmentViewModel.ZeonPurchaseItemData,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Column{
         //display table title
@@ -204,7 +205,7 @@ private fun ZeonPurchaseItem(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {tableItem.setBoughtString(it.toInt())},
                 emptyFunction = {tableItem.setBoughtString("")},
-                postRun = {updateFunc()},
+                postRun = {homePageVM.updateExpenditures()},
                 color = tableItem.textColor.collectAsState().value
             )
 

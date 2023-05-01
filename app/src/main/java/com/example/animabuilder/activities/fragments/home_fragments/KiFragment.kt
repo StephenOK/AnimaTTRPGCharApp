@@ -9,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +22,7 @@ import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.view_models.CustomTechniqueViewModel
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.KiFragmentViewModel
 
 /**
@@ -33,14 +33,14 @@ import com.example.animabuilder.view_models.KiFragmentViewModel
  *
  * @param kiFragVM viewModel to run for this page
  * @param openDetailAlert function to run when opening an item's details
- * @param updateFunc function to run to update the bottom bar's values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     //get fragment's context
     val context = LocalContext.current
@@ -71,7 +71,7 @@ fun KiFragment(
         items(kiFragVM.allRowData) {kiRowInput ->
             KiFromStatRow(
                 kiRowInput,
-                updateFunc
+                homePageVM
             )
         }
 
@@ -174,12 +174,12 @@ fun KiFragment(
  * Creates a display row for ki point and accumulation purchases of an individual primary characteristic.
  *
  * @param kiRowData data specific to this row's stat
- * @param updateFunc bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun KiFromStatRow(
     kiRowData: KiFragmentViewModel.KiRowData,
-    updateFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row{
         //display stat name
@@ -193,7 +193,7 @@ private fun KiFromStatRow(
             inputText = kiRowData.pointInputString.collectAsState().value,
             inputFunction = {
                 kiRowData.setPointInputString(it.toInt())
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setPointInputString("")},
             modifier = Modifier.weight(0.13f)
@@ -210,7 +210,7 @@ private fun KiFromStatRow(
             inputText = kiRowData.accInputString.collectAsState().value,
             inputFunction = {
                 kiRowData.setAccInputString(it.toInt())
-                updateFunc()
+                homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setAccInputString("")},
             modifier = Modifier.weight(0.13f)

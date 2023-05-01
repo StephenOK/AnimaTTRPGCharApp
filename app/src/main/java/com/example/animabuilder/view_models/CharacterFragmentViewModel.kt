@@ -19,12 +19,10 @@ import kotlinx.coroutines.flow.update
  * Works on variables with the corresponding character fragment.
  *
  * @param charInstance object that holds all of the character's stats
- * @param maxNumVM viewModel for the bottom bar values
  * @param context context passed from the HomePageFragment for obtaining resources
  */
 class CharacterFragmentViewModel(
     private val charInstance: BaseCharacter,
-    maxNumVM: HomePageViewModel,
     context: Context
 ): ViewModel() {
     //initialize input for the character's name
@@ -296,13 +294,6 @@ class CharacterFragmentViewModel(
         charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
     ) {
         charInstance.setOwnClass(it)
-        maxNumVM.maximums.updateItems(
-            charInstance.devPT.value,
-            charInstance.maxCombatDP.value,
-            charInstance.maxMagDP.value,
-            charInstance.maxPsyDP.value
-        )
-
         setMagPaladinOpen()
     }
 
@@ -325,12 +316,6 @@ class CharacterFragmentViewModel(
         charInstance.lvl.value
     ) {
         charInstance.setLvl(it)
-        maxNumVM.maximums.updateItems(
-            charInstance.devPT.value,
-            charInstance.maxCombatDP.value,
-            charInstance.maxMagDP.value,
-            charInstance.maxPsyDP.value
-        )
         setBonusColor()
     }
 

@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
@@ -19,19 +18,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.view_models.HomePageViewModel
 import com.example.animabuilder.view_models.SecondaryFragmentViewModel
 
 /**
  * Fragment to be displayed when working with secondary characteristics.
  *
  * @param secondaryFragVM viewModel that manages this fragment
- * @param updateBottomBar bottom bar update function
+ * @param homePageVM viewModel that manages the bottom bar
  */
 
 @Composable
 fun SecondaryAbilityFragment(
     secondaryFragVM: SecondaryFragmentViewModel,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,7 +51,7 @@ fun SecondaryAbilityFragment(
 
         //display every secondary ability category
         items(secondaryFragVM.allFields){
-            MakeTableDisplay(it, updateBottomBar)
+            MakeTableDisplay(it, homePageVM)
         }
     }
 }
@@ -106,12 +106,12 @@ private fun FreelancerDropdown(
  * Creates a toggle button to display the associated secondary characteristic table.
  *
  * @param input data item for this field of information
- * @param updateBottomBar function to run when updating the bottom bar's values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MakeTableDisplay(
     input: SecondaryFragmentViewModel.SecondaryFieldData,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     //toggle button for the table
     Button(
@@ -132,7 +132,7 @@ private fun MakeTableDisplay(
 
             //display each of the field's characteristics
             input.fieldCharacteristics.forEach {
-                MakeRow(it, updateBottomBar)
+                MakeRow(it, homePageVM)
             }
         }
     }
@@ -185,12 +185,12 @@ private fun RowHead(){
  * Make a row for a secondary characteristic in a table.
  *
  * @param item characteristic item to display for this row
- * @param updateBottomBar function to run when updating the bottom bar's values
+ * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MakeRow(
     item: SecondaryFragmentViewModel.SecondaryItem,
-    updateBottomBar: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -213,7 +213,7 @@ private fun MakeRow(
             inputFunction = {item.setPointInput(it.toInt())},
             emptyFunction = {item.setPointInput("")},
             modifier = Modifier.weight(0.15f),
-            postRun = {updateBottomBar()}
+            postRun = {homePageVM.updateExpenditures()}
         )
 
         //display associated mod value

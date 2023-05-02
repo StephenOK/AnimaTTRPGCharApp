@@ -1,4 +1,4 @@
-package com.example.animabuilder.view_models
+package com.example.animabuilder.view_models.models
 
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R

@@ -1,4 +1,4 @@
-package com.example.animabuilder.view_models
+package com.example.animabuilder.view_models.models
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown

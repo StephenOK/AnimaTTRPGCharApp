@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.SecondaryFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
 
 /**
  * Fragment to be displayed when working with secondary characteristics.

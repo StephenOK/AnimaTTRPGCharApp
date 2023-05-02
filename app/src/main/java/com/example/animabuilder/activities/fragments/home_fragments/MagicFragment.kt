@@ -17,8 +17,8 @@ import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.MagicFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.MagicFragmentViewModel
 
 /**
  * Fragment that manages the character's magical properties.

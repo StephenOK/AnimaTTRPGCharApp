@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.SummoningFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
 
 /**
  * Fragment that displays the character's summoning abilities.

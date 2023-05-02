@@ -1,4 +1,4 @@
-package com.example.animabuilder.view_models
+package com.example.animabuilder.view_models.models
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
@@ -29,71 +29,6 @@ class CharacterFragmentViewModel(
     private val _nameInput = MutableStateFlow(charInstance.charName.value)
     val nameInput = _nameInput.asStateFlow()
 
-    //initialize input for the character's experience points
-    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.value.toString())
-    val experiencePoints = _experiencePoints.asStateFlow()
-
-    //initialize the character's size category display
-    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value.toString())
-    val sizeInput = _sizeInput.asStateFlow()
-
-    //initialize the character's appearance input string
-    private val _appearInput = MutableStateFlow(charInstance.appearance.value.toString())
-    val appearInput = _appearInput.asStateFlow()
-
-    //initialize the character's movement value display
-    private val _movementDisplay = MutableStateFlow(charInstance.movement.value.toString() + "m")
-    val movementDisplay = _movementDisplay.asStateFlow()
-
-    //initialize character's gnosis input
-    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.value.toString())
-    val gnosisDisplay = _gnosisDisplay.asStateFlow()
-
-    /**
-     * Sets the display for the character's movement value as defined in the character.
-     */
-    fun setMovementDisplay(){
-        if(charInstance.movement.value == 0)
-            _movementDisplay.update{"SPECIAL"}
-        else
-            _movementDisplay.update{charInstance.movement.value.toString() + " m"}
-    }
-
-    fun setGnosisDisplay(input: Int){
-        charInstance.gnosis.value = input
-        setGnosisDisplay(input.toString())
-    }
-
-    fun setGnosisDisplay(input: String){_gnosisDisplay.update{input}}
-
-    //initialize the character's weight index display
-    private val _weightIndex = MutableStateFlow(
-        if(charInstance.primaryList.str.total.value < 12) charInstance.weightIndex.value.toString() + " kg"
-        else charInstance.weightIndex.value.toString() + " tons"
-    )
-    val weightIndex = _weightIndex.asStateFlow()
-
-    /**
-     * Sets the display for the character's movement value as defined in the character.
-     */
-    fun setWeightIndex(){
-        if(charInstance.weightIndex.value == 0)
-            _weightIndex.update{"SPECIAL"}
-        else if(charInstance.primaryList.str.total.value < 12)
-            _weightIndex.update{charInstance.weightIndex.value.toString() + " kg"}
-        else
-            _weightIndex.update{charInstance.weightIndex.value.toString() + " tons"}
-    }
-
-    /**
-     * Checks if the character has the Unattractive disadvantage.
-     *
-     * @return true if character has the Unattractive disadvantage
-     */
-    fun isNotUnattractive(): Boolean{
-        return charInstance.advantageRecord.getAdvantage("Unattractive") == null
-    }
-
     /**
      * Sets the character's name to the user's input.
      *
@@ -103,6 +38,10 @@ class CharacterFragmentViewModel(
         charInstance.charName.value = newIn
         _nameInput.update{newIn}
     }
+
+    //initialize input for the character's experience points
+    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.value.toString())
+    val experiencePoints = _experiencePoints.asStateFlow()
 
     /**
      * Sets the number of experience points the character currently has.
@@ -117,59 +56,9 @@ class CharacterFragmentViewModel(
     /**
      * Sets the display for the number of experience points held.
      *
-     * @param input new string to displaay
+     * @param input new string to display
      */
     fun setExp(input: String){_experiencePoints.update{input}}
-
-    /**
-     * Sets the size category display to the character's value.
-     */
-    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value.toString()}}
-
-    /**
-     * Attempts to change the character's appearance to the inputted value.
-     *
-     * @param newIn value to set the appearance to
-     * @return true if there was a change inputted
-     */
-    fun setAppearInput(newIn: Int): Boolean{
-        //set appearance in the character
-        charInstance.setAppearance(newIn)
-
-        //check that a change occurred
-        val output = charInstance.appearance.value == newIn
-
-        //change display string if there was a change
-        if(output)
-            setAppearInput(newIn.toString())
-
-        //return if a change happened
-        return output
-    }
-
-    /**
-     * Sets the string display for the character's appearance.
-     *
-     * @param newIn value to set the display to
-     */
-    fun setAppearInput(newIn: String){_appearInput.update{newIn}}
-
-    //initialize level bonus string color
-    private val _bonusColor = MutableStateFlow(Color.Black)
-    val bonusColor = _bonusColor.asStateFlow()
-
-    /**
-     * Sets the text color based on the applied level bonuses to the character.
-     */
-    fun setBonusColor(){
-        //set text to black if valid
-        if(charInstance.primaryList.validLevelBonuses())
-            _bonusColor.update{Color.Black}
-
-        //set text to red if invalid
-        else
-            _bonusColor.update{Color.Red}
-    }
 
     //initialize character's gender tracker
     private val _isMale = MutableStateFlow(charInstance.isMale.value)
@@ -227,6 +116,152 @@ class CharacterFragmentViewModel(
         return charInstance.ownClass.value == charInstance.classes.paladin ||
                 charInstance.ownClass.value == charInstance.classes.darkPaladin
     }
+
+    //initialize the character's size category display
+    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value.toString())
+    val sizeInput = _sizeInput.asStateFlow()
+
+    /**
+     * Sets the size category display to the character's value.
+     */
+    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value.toString()}}
+
+    //initialize the character's appearance input string
+    private val _appearInput = MutableStateFlow(charInstance.appearance.value.toString())
+    val appearInput = _appearInput.asStateFlow()
+
+    /**
+     * Attempts to change the character's appearance to the inputted value.
+     *
+     * @param newIn value to set the appearance to
+     * @return true if there was a change inputted
+     */
+    fun setAppearInput(newIn: Int): Boolean{
+        //set appearance in the character
+        charInstance.setAppearance(newIn)
+
+        //check that a change occurred
+        val output = charInstance.appearance.value == newIn
+
+        //change display string if there was a change
+        if(output)
+            setAppearInput(newIn.toString())
+
+        //return if a change happened
+        return output
+    }
+
+    /**
+     * Sets the string display for the character's appearance.
+     *
+     * @param newIn value to set the display to
+     */
+    fun setAppearInput(newIn: String){_appearInput.update{newIn}}
+
+    /**
+     * Checks if the character has the Unattractive disadvantage.
+     *
+     * @return true if character has the Unattractive disadvantage
+     */
+    fun isNotUnattractive(): Boolean{
+        return charInstance.advantageRecord.getAdvantage("Unattractive") == null
+    }
+
+    //initialize the character's movement value display
+    private val _movementDisplay = MutableStateFlow(charInstance.movement.value.toString() + "m")
+    val movementDisplay = _movementDisplay.asStateFlow()
+
+    /**
+     * Sets the display for the character's movement value as defined in the character.
+     */
+    fun setMovementDisplay(){
+        if(charInstance.movement.value == 0)
+            _movementDisplay.update{"SPECIAL"}
+        else
+            _movementDisplay.update{charInstance.movement.value.toString() + " m"}
+    }
+
+    //initialize character's gnosis input
+    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.value.toString())
+    val gnosisDisplay = _gnosisDisplay.asStateFlow()
+
+    fun setGnosisDisplay(input: Int){
+        charInstance.gnosis.value = input
+        setGnosisDisplay(input.toString())
+    }
+
+    fun setGnosisDisplay(input: String){_gnosisDisplay.update{input}}
+
+    //initialize the character's weight index display
+    private val _weightIndex = MutableStateFlow(
+        if(charInstance.primaryList.str.total.value < 12) charInstance.weightIndex.value.toString() + " kg"
+        else charInstance.weightIndex.value.toString() + " tons"
+    )
+    val weightIndex = _weightIndex.asStateFlow()
+
+    /**
+     * Sets the display for the character's movement value as defined in the character.
+     */
+    fun setWeightIndex(){
+        if(charInstance.weightIndex.value == 0)
+            _weightIndex.update{"SPECIAL"}
+        else if(charInstance.primaryList.str.total.value < 12)
+            _weightIndex.update{charInstance.weightIndex.value.toString() + " kg"}
+        else
+            _weightIndex.update{charInstance.weightIndex.value.toString() + " tons"}
+    }
+
+    //initialize level bonus string color
+    private val _bonusColor = MutableStateFlow(Color.Black)
+    val bonusColor = _bonusColor.asStateFlow()
+
+    /**
+     * Sets the text color based on the applied level bonuses to the character.
+     */
+    fun setBonusColor(){
+        //set text to black if valid
+        if(charInstance.primaryList.validLevelBonuses())
+            _bonusColor.update{Color.Black}
+
+        //set text to red if invalid
+        else
+            _bonusColor.update{Color.Red}
+    }
+
+    //set race dropdown data
+    val raceDropdown = DropdownData(
+        R.string.raceText,
+        context.resources.getStringArray(R.array.raceArray),
+        charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value)
+    ) {
+        charInstance.setOwnRace(it)
+        strengthData.setOutput()
+        setSizeInput()
+        setAppearInput(charInstance.appearance.value.toString())
+    }
+
+    //set class dropdown data
+    private val classDropdown = DropdownData(
+        R.string.classText,
+        context.resources.getStringArray(R.array.classArray),
+        charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
+    ) {
+        charInstance.setOwnClass(it)
+        setMagPaladinOpen()
+    }
+
+    //set level dropdown data
+    private val levelDropdown = DropdownData(
+        R.string.levelText,
+        context.resources.getStringArray(R.array.levelCountArray),
+        charInstance.lvl.value
+    ) {
+        charInstance.setLvl(it)
+        setBonusColor()
+    }
+
+    //set all dropdown data
+    val dropdownList = listOf(raceDropdown, classDropdown, levelDropdown)
 
     //set all primary characteristic data
     private val strengthData = PrimeCharacteristicData(
@@ -286,41 +321,6 @@ class CharacterFragmentViewModel(
     //gather all primary data
     val primaryDataList = listOf(strengthData, dexterityData, agilityData, constitutionData,
         intelligenceData, powerData, willpowerData, perceptionData)
-
-    //set class dropdown data
-    private val classDropdown = DropdownData(
-        R.string.classText,
-        context.resources.getStringArray(R.array.classArray),
-        charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
-    ) {
-        charInstance.setOwnClass(it)
-        setMagPaladinOpen()
-    }
-
-    //set race dropdown data
-    val raceDropdown = DropdownData(
-        R.string.raceText,
-        context.resources.getStringArray(R.array.raceArray),
-        charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value)
-    ) {
-        charInstance.setOwnRace(it)
-        strengthData.setOutput()
-        setSizeInput()
-        setAppearInput(charInstance.appearance.value.toString())
-    }
-
-    //set level dropdown data
-    private val levelDropdown = DropdownData(
-        R.string.levelText,
-        context.resources.getStringArray(R.array.levelCountArray),
-        charInstance.lvl.value
-    ) {
-        charInstance.setLvl(it)
-        setBonusColor()
-    }
-
-    //set all dropdown data
-    val dropdownList = listOf(classDropdown, raceDropdown, levelDropdown)
 
     /**
      * Object that holds data for the page's dropdown menus.
@@ -460,5 +460,24 @@ class CharacterFragmentViewModel(
             _bonus.update{primaryStat.bonus.value.toString()}
             _modTotal.update{primaryStat.outputMod.value.toString()}
         }
+
+        /**
+         * Resets the display for this item on returning to this page.
+         */
+        fun refreshItem(){
+            setInput(primaryStat.inputValue.value.toString())
+            setBonusInput(primaryStat.levelBonus.value.toString())
+            setOutput()
+        }
+    }
+
+    /**
+     * Refreshes items on returning to this page.
+     */
+    fun refreshPage(){
+        setExp(charInstance.experiencePoints.value.toString())
+        primaryDataList.forEach{it.refreshItem()}
+        setAppearInput(charInstance.appearance.value.toString())
+        setGnosisDisplay(charInstance.gnosis.value.toString())
     }
 }

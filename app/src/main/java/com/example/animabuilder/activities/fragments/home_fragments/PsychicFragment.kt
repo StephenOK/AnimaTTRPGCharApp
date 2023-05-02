@@ -17,8 +17,8 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.PsychicFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
 
 /**
  * Fragment that manages a character's psychic abilities.

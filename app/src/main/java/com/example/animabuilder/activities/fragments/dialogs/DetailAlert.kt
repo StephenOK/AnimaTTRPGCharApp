@@ -5,7 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.example.animabuilder.view_models.HomePageAlertViewModel
+import com.example.animabuilder.view_models.models.HomePageAlertViewModel
 
 /**
  * Shows an alert that gives details on the item in question.

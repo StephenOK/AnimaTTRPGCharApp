@@ -11,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -22,11 +21,12 @@ import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.TechniqueTableData
+import com.example.animabuilder.TextInput
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
-import com.example.animabuilder.view_models.CustomTechniqueViewModel
-import com.example.animabuilder.view_models.KiFragmentViewModel
+import com.example.animabuilder.view_models.models.CustomTechniqueViewModel
+import com.example.animabuilder.view_models.models.KiFragmentViewModel
 
 /**
  * Dialog that gives the user a sequence of pages to develop their own custom dominion technique.
@@ -224,8 +224,8 @@ fun CustomTechnique(
                         //prompt and input for technique's name
                         Row{
                             Text(text = stringResource(R.string.seventhPageTitle))
-                            TextField(
-                                value = customTechVM.techniqueName.collectAsState().value,
+                            TextInput(
+                                display = customTechVM.techniqueName.collectAsState().value,
                                 onValueChange = {
                                     customTechVM.setTechniqueName(it)
                                 }
@@ -663,7 +663,6 @@ private fun EditEffectRow(
  * user to alter that value
  *
  * @param item display data for the specific item
- * @param accItem total accumulation this individual item is related to
  */
 @Composable
 private fun EditBuildRow(

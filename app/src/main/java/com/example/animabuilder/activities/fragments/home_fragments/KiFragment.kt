@@ -21,9 +21,9 @@ import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
-import com.example.animabuilder.view_models.CustomTechniqueViewModel
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.KiFragmentViewModel
+import com.example.animabuilder.view_models.models.CustomTechniqueViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.KiFragmentViewModel
 
 /**
  * Fragment that displays items related to martial knowledge.

@@ -12,8 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.view_models.CombatFragViewModel
-import com.example.animabuilder.view_models.HomePageViewModel
+import com.example.animabuilder.view_models.models.CombatFragViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
 
 /**
  * Section for the user to alter their character's combat abilities.

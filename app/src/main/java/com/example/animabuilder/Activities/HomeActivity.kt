@@ -24,8 +24,19 @@ import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
-import com.example.animabuilder.view_models.*
-import com.example.animabuilder.view_models.factories.CustomFactory
+import com.example.animabuilder.view_models.CustomFactory
+import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
+import com.example.animabuilder.view_models.models.CharacterFragmentViewModel
+import com.example.animabuilder.view_models.models.CombatFragViewModel
+import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageAlertViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.KiFragmentViewModel
+import com.example.animabuilder.view_models.models.MagicFragmentViewModel
+import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
+import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
+import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
+import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
@@ -229,6 +240,7 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
+                        charFragVM.refreshPage()
                         CharacterPageFragment(charFragVM, homePageVM)
                     }
 

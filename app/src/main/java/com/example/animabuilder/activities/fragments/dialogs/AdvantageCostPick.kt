@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.example.animabuilder.view_models.AdvantageFragmentViewModel
+import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 
 /**
  * Dialog that allows the user to choose specific information about their desired advantage.

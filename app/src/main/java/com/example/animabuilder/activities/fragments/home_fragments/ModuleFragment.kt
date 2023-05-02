@@ -21,8 +21,8 @@ import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbili
 import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.ModuleFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
 
 /**
  * Fragment that displays attributes related to weapons and special attacks.

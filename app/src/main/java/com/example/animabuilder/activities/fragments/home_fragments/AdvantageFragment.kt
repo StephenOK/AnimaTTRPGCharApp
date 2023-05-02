@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
-import com.example.animabuilder.view_models.AdvantageFragmentViewModel
-import com.example.animabuilder.view_models.HomePageViewModel
+import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
 
 /**
  * Section that displays advantage and disadvantage information to the user.

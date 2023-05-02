@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import com.example.animabuilder.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,16 +12,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
-import com.example.animabuilder.view_models.CharacterFragmentViewModel
-import com.example.animabuilder.view_models.HomePageViewModel
+import com.example.animabuilder.TextInput
+import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.view_models.models.CharacterFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
 
 /**
  * Fragment to be displayed when working with basic characteristics.
@@ -43,12 +49,20 @@ fun CharacterPageFragment(
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            )
     ) {
         //name input
         item {
-            OutlinedTextField(
-                value = charFragVM.nameInput.collectAsState().value,
+            TextInput(
+                display = charFragVM.nameInput.collectAsState().value,
                 onValueChange = {
                     //close keyboard if enter is pushed
                     if (it.contains('\n'))
@@ -57,7 +71,9 @@ fun CharacterPageFragment(
                     else
                         charFragVM.setNameInput(it)
                 },
-                label = { Text(text = stringResource(R.string.nameText)) },
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
+                label = stringResource(R.string.nameText)
             )
         }
 
@@ -66,34 +82,76 @@ fun CharacterPageFragment(
             DropdownObject(dropItem, maxNumVM)
         }
 
+        //experience point input
+        item{
+            NumberInput(
+                inputText = charFragVM.experiencePoints.collectAsState().value,
+                inputFunction = {charFragVM.setExp(it.toInt())},
+                emptyFunction = {charFragVM.setExp("")},
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
+                alignment = TextAlign.Left,
+                label = stringResource(R.string.expText)
+            )
+        }
+
+        item{Spacer(Modifier.height(20.dp))}
+
         //display gender bonus selection if the character is a duk'zarist
         item{
             if(charFragVM.raceDropdown.output.collectAsState().value == stringArrayResource(R.array.raceArray)[6]){
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                ){
                     //display checkbox for selection
                     Checkbox(
                         checked = charFragVM.isMale.collectAsState().value,
-                        onCheckedChange = { charFragVM.toggleGender() }
+                        onCheckedChange = {charFragVM.toggleGender()},
+                        modifier = Modifier
+                            .weight(0.1f)
                     )
                     //display current selection
-                    Text(text = stringResource(charFragVM.genderString.collectAsState().value))
+                    Text(
+                        text = stringResource(charFragVM.genderString.collectAsState().value),
+                        modifier = Modifier
+                            .clickable { charFragVM.toggleGender() }
+                            .weight(0.5f),
+                        textAlign = TextAlign.Center
+                    )
                 }
+
+                if(!charFragVM.magPaladinOpen.collectAsState().value)
+                    Spacer(Modifier.height(20.dp))
             }
         }
 
         //implement paladin checkbox if necessary
         item{
             if(charFragVM.magPaladinOpen.collectAsState().value){
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                ){
                     Checkbox(
                         checked = charFragVM.magPaladin.collectAsState().value,
-                        onCheckedChange = {charFragVM.toggleMagPaladin()}
+                        onCheckedChange = {charFragVM.toggleMagPaladin()},
+                        modifier = Modifier
+                            .weight(0.1f)
                     )
 
                     Text(
-                        text = stringResource(R.string.isMagPaladin)
+                        text = stringResource(R.string.isMagPaladin),
+                        modifier = Modifier
+                            .clickable { charFragVM.toggleMagPaladin() }
+                            .weight(0.5f),
+                        textAlign = TextAlign.Center
                     )
                 }
+
+                Spacer(Modifier.height(20.dp))
             }
         }
 
@@ -110,6 +168,8 @@ fun CharacterPageFragment(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(0.2f)
                 )
+
+                Spacer(Modifier.weight(0.01f))
 
                 //level bonus input header
                 Text(
@@ -139,48 +199,69 @@ fun CharacterPageFragment(
             PrimaryRow(charFragVM, it)
         }
 
+        item{Spacer(modifier = Modifier.height(20.dp))}
+
         item{
-            NumberInput(
-                inputText = charFragVM.experiencePoints.collectAsState().value,
-                inputFunction = {charFragVM.setExp(it.toInt())},
-                emptyFunction = {charFragVM.setExp("")}
-            )
+            Row(
+                Modifier
+                    .fillMaxWidth(0.7f)
+            ){
+                NumberInput(
+                    //create input for character's appearance score
+                    inputText = charFragVM.appearInput.collectAsState().value,
+                    inputFunction = {
+                        //attempt new input and notify user of failed input
+                        if (it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
+                            Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG)
+                                .show()
+                    },
+                    modifier = Modifier
+                        .weight(0.5f),
+                    emptyFunction = {
+                        //clear input if user can change it
+                        if (charFragVM.isNotUnattractive())
+                            charFragVM.setAppearInput("")
+                    },
+                    label = stringResource(R.string.appearance)
+                )
+
+                Spacer(Modifier.weight(0.01f))
+
+                //create input for a character's gnosis
+                NumberInput(
+                    inputText = charFragVM.gnosisDisplay.collectAsState().value,
+                    inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
+                    emptyFunction = {charFragVM.setGnosisDisplay("")},
+                    modifier = Modifier
+                        .weight(0.5f),
+                    label = stringResource(R.string.gnosisLabel)
+                )
+            }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
 
         //display character's size category
-        item{Text(text = stringResource(R.string.sizeCat) + charFragVM.sizeInput.collectAsState().value)}
-
-        //display character's movement value
-        item{Text(text = stringResource(R.string.movement) + charFragVM.movementDisplay.collectAsState().value)}
-
-        //display character's weight index
-        item{Text(text = stringResource(R.string.weightIndex) + charFragVM.weightIndex.collectAsState().value)}
-
-        //create input for character's appearance score
         item{
-            Text(text = stringResource(R.string.appearance))
-            NumberInput(
-                inputText = charFragVM.appearInput.collectAsState().value,
-                inputFunction = {
-                    //attempt new input and notify user of failed input
-                    if(it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
-                        Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG).show()
-                },
-                emptyFunction = {
-                    //clear input if user can change it
-                    if(charFragVM.isNotUnattractive())
-                        charFragVM.setAppearInput("")
-                }
+            InfoRow(
+                stringResource(R.string.sizeCat),
+                charFragVM.sizeInput.collectAsState().value
             )
         }
 
-        //create input for character's gnosis
+        //display character's movement value
         item{
-            Text(text = stringResource(R.string.gnosisLabel))
-            NumberInput(
-                inputText = charFragVM.gnosisDisplay.collectAsState().value,
-                inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
-                emptyFunction = {charFragVM.setGnosisDisplay("")}
+            InfoRow(
+                stringResource(R.string.movement),
+                charFragVM.movementDisplay.collectAsState().value
+            )
+        }
+
+        //display character's weight index
+        item{
+            InfoRow(
+                stringResource(R.string.weightIndex),
+                charFragVM.weightIndex.collectAsState().value
             )
         }
     }
@@ -200,7 +281,8 @@ private fun DropdownObject(
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.width((LocalConfiguration.current.screenWidthDp * 0.67).dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
         //object to hold the dropdown menu
         OutlinedTextField(
@@ -209,7 +291,8 @@ private fun DropdownObject(
             modifier = Modifier
                 .onGloballyPositioned { coordinates ->
                     item.setSize(coordinates.size.toSize())
-                },
+                }
+                .clickable { item.openToggle() },
             label = {Text(text = stringResource(item.nameRef))},
             trailingIcon = {
                 Icon(
@@ -251,7 +334,9 @@ private fun PrimaryRow(
     charFragVM: CharacterFragmentViewModel,
     primeItem: CharacterFragmentViewModel.PrimeCharacteristicData
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //row label
         Text(
             text = "${primeItem.name}:",
@@ -267,8 +352,11 @@ private fun PrimaryRow(
                     primeItem.setInput(it.toInt())
             },
             emptyFunction = {primeItem.setInput("")},
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier
+                .weight(0.2f)
         )
+
+        Spacer(Modifier.weight(0.01f))
 
         //level bonus input
         NumberInput(
@@ -292,4 +380,22 @@ private fun PrimaryRow(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f))
     }
+
+    Spacer(Modifier.height(5.dp))
+}
+
+@Preview
+@Composable
+fun CharacterPreview(){
+    val charInstance = BaseCharacter()
+    charInstance.setOwnClass(3)
+    charInstance.setOwnRace(6)
+
+    val charFragVM = CharacterFragmentViewModel(charInstance, LocalContext.current)
+    charFragVM.toggleGender()
+
+    CharacterPageFragment(
+        charFragVM,
+        HomePageViewModel(charInstance)
+    )
 }

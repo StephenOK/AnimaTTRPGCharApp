@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
-import com.example.animabuilder.view_models.MagicFragmentViewModel
+import com.example.animabuilder.view_models.models.MagicFragmentViewModel
 
 /**
  * Dialog for the player to choose their character's Free Spells.

@@ -2,13 +2,15 @@ package com.example.animabuilder
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.TextField
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 
 /**
  * Object that runs numerical input for the character.
@@ -20,8 +22,10 @@ import androidx.compose.ui.text.input.KeyboardType
  * @param emptyFunction function to run for no input
  *
  * @param modifier optional design properties of the input object
+ * @param label optional label for the input field
  * @param postRun optional function to run after reading user input
  * @param color optional color the text is
+ * @param alignment optional alignment for the input text
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -30,13 +34,15 @@ fun NumberInput(
     inputFunction: (String) -> Unit,
     emptyFunction: () -> Unit,
     modifier: Modifier = Modifier,
+    label: String = "",
     postRun: () -> Unit = {},
-    color: Color = Color.Black
+    color: Color = Color.Black,
+    alignment: TextAlign = TextAlign.Center
 ){
     //initialize user keyboard
     val keyboardActive = LocalSoftwareKeyboardController.current
 
-    TextField(
+    OutlinedTextField(
         value = inputText,
 
         //get number keyboard for input
@@ -65,8 +71,13 @@ fun NumberInput(
             postRun()
         },
 
-        //set text color and modifier
-        textStyle = LocalTextStyle.current.copy(color = color),
+        //set text color
+        textStyle = LocalTextStyle.current.copy(color = color, textAlign = alignment),
+
+        //set object label
+        label = {Text(text = label)},
+
+        //set other modifiers
         modifier = modifier
     )
 }

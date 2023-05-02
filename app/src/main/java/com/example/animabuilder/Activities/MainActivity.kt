@@ -12,8 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.animabuilder.R
-import com.example.animabuilder.view_models.MainPageViewModel
+import com.example.animabuilder.view_models.models.MainPageViewModel
 
 /**
  * Startup activity for the app.
@@ -23,10 +24,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //start up main page's viewModel
-        val mainVM = MainPageViewModel()
-
         setContent {
+            //start up main page's viewModel
+            val mainVM = viewModel<MainPageViewModel>()
+
             //display both buttons on page
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

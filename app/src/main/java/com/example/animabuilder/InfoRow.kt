@@ -1,10 +1,13 @@
 package com.example.animabuilder
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 
 /**
  * Display item that holds a label and the associated amount.
@@ -15,10 +18,28 @@ import androidx.compose.ui.Modifier
 @Composable
 fun InfoRow(
     label: String,
-    info: String
+    info: String,
+    percent: Float = 1.0f
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
-        Text(text = label, modifier = Modifier.weight(0.5f))
-        Text(text = info, modifier = Modifier.weight(0.5f))
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(percent)
+    ){
+        Text(
+            text = label,
+            modifier = Modifier
+                .weight(0.5f),
+            textAlign = TextAlign.Right
+        )
+
+        Spacer(modifier = Modifier.weight(0.1f))
+
+        Text(
+            text = info,
+            modifier = Modifier
+                .weight(0.5f),
+            textAlign = TextAlign.Left
+        )
     }
 }

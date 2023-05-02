@@ -1,4 +1,4 @@
-package com.example.animabuilder.view_models
+package com.example.animabuilder.view_models.models
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.TextInput
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -78,8 +79,8 @@ class MainPageViewModel: ViewModel() {
         @Composable
         fun NewDisplay(){
             //make input for the new character's name
-            TextField(
-                value = characterName.collectAsState().value,
+            TextInput(
+                display = characterName.collectAsState().value,
                 onValueChange = {setCharacterName(it)}
             )
         }

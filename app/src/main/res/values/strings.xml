@@ -5,6 +5,7 @@
     <string name = "classText">Class:</string>
     <string name = "raceText">Race:</string>
     <string name = "levelText">Level:</string>
+    <string name = "expText">Exp:</string>
 
     <string name = "nav_open">Open</string>
     <string name = "nav_close">Close</string>

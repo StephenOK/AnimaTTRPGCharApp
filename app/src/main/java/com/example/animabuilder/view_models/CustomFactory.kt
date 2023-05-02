@@ -1,21 +1,21 @@
-package com.example.animabuilder.view_models.factories
+package com.example.animabuilder.view_models
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.view_models.AdvantageFragmentViewModel
-import com.example.animabuilder.view_models.CharacterFragmentViewModel
-import com.example.animabuilder.view_models.CombatFragViewModel
-import com.example.animabuilder.view_models.EquipmentFragmentViewModel
-import com.example.animabuilder.view_models.HomePageAlertViewModel
-import com.example.animabuilder.view_models.HomePageViewModel
-import com.example.animabuilder.view_models.KiFragmentViewModel
-import com.example.animabuilder.view_models.MagicFragmentViewModel
-import com.example.animabuilder.view_models.ModuleFragmentViewModel
-import com.example.animabuilder.view_models.PsychicFragmentViewModel
-import com.example.animabuilder.view_models.SecondaryFragmentViewModel
-import com.example.animabuilder.view_models.SummoningFragmentViewModel
+import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
+import com.example.animabuilder.view_models.models.CharacterFragmentViewModel
+import com.example.animabuilder.view_models.models.CombatFragViewModel
+import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
+import com.example.animabuilder.view_models.models.HomePageAlertViewModel
+import com.example.animabuilder.view_models.models.HomePageViewModel
+import com.example.animabuilder.view_models.models.KiFragmentViewModel
+import com.example.animabuilder.view_models.models.MagicFragmentViewModel
+import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
+import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
+import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
+import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
 
 class CustomFactory (
     private val viewModel: Class<*>,

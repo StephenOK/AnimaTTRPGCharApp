@@ -1,4 +1,4 @@
-package com.example.animabuilder.view_models
+package com.example.animabuilder.view_models.models
 
 import android.content.Context
 import androidx.compose.runtime.MutableState

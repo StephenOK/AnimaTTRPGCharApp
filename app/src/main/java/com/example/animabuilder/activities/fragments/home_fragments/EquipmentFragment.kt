@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
@@ -25,7 +24,7 @@ import com.example.animabuilder.character_creation.equipment.CoinType
 import com.example.animabuilder.character_creation.equipment.general_goods.Availability
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralCategory
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
-import com.example.animabuilder.view_models.EquipmentFragmentViewModel
+import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
 
 /**
  * Fragment that manages the character's inventory.

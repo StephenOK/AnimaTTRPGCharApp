@@ -421,7 +421,7 @@ class CharacterFragmentViewModel(
          */
         fun setInput(input: Int){
             primaryStat.setInput(input)
-            setInput(input.toString())
+            setInput(primaryStat.inputValue.value.toString())
             setOutput()
             changeFunc()
         }
@@ -431,7 +431,16 @@ class CharacterFragmentViewModel(
          *
          * @param input string item to now display
          */
-        fun setInput(input: String){_input.update{input}}
+        fun setInput(input: String){
+            if(primaryStat.charInstance.advantageRecord.getAdvantage(
+                    "Increase One Characteristic to Nine",
+                    primaryStat.charIndex,
+                    0
+                ) == null
+            )
+                _input.update{input}
+            else _input.update{"9"}
+        }
 
         /**
          * Sets the level bonus for this characteristic.

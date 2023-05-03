@@ -143,4 +143,15 @@
 
     <string name = "maintenanceLabel">Maintenance: </string>
     <string name = "prereqLabel">Prerequisites: </string>
+
+    <string name = "attackLabel">Attack</string>
+    <string name = "blockLabel">Block</string>
+    <string name = "dodgeLabel">Dodge</string>
+    <string name = "wearLabel">Wear Armor</string>
+
+    <string name = "drLabel">DR</string>
+    <string name = "mrLabel">MR</string>
+    <string name = "phrLabel">PhR</string>
+    <string name = "vrLabel">VR</string>
+    <string name = "psrLabel">PsR</string>
 </resources>

@@ -14,9 +14,9 @@ import kotlin.math.ceil
  * @param setUpdate function to run on this stat's change
  */
 class PrimaryCharacteristic(
-    private val charInstance: BaseCharacter,
+    val charInstance: BaseCharacter,
     private val advantageCap: Int,
-    private val charIndex: Int,
+    val charIndex: Int,
     private val setUpdate: (mod: Int, total: Int) -> Unit
 ){
     //base value fo the stat
@@ -40,8 +40,17 @@ class PrimaryCharacteristic(
      * @param input value to set the base to
      */
     fun setInput(input: Int){
+        //set base to 9 if advantage requires it
+        if(charInstance.advantageRecord.getAdvantage(
+                "Increase One Characteristic to Nine",
+                charIndex,
+                0
+            ) != null
+        )
+            inputValue.value = 9
+
         //set the base stat value
-        inputValue.value = input
+        else inputValue.value = input
 
         //remove any excess advantage bonuses
         while(inputValue.value + bonus.value > advantageCap &&
@@ -80,9 +89,7 @@ class PrimaryCharacteristic(
      */
     fun updateValues(){
         //change the total value
-        total.value =
-            if(charInstance.advantageRecord.getAdvantage("Increase One Characteristic to Nine", charIndex, 0) != null) 9
-            else inputValue.value + bonus.value + levelBonus.value
+        total.value = inputValue.value + bonus.value + levelBonus.value
 
         //update the modifier's value
         outputMod.value =

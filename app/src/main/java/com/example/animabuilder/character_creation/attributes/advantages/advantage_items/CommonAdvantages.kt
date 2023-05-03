@@ -137,11 +137,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(2),
         0,
         {input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].updateValues()
+            charInstance.primaryList.allPrimaries[input!!].setInput(9)
         },
-        {input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].updateValues()
-        }
+        null
     )
 
     val psyDisciplineAccess = Advantage(

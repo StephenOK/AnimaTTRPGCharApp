@@ -246,6 +246,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
+                        combatFragVM.refreshPage()
                         CombatFragment(combatFragVM, homePageVM)
                     }
 

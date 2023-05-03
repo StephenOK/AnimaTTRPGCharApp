@@ -1,17 +1,26 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.models.CombatFragViewModel
 import com.example.animabuilder.view_models.models.HomePageViewModel
 
@@ -30,7 +39,17 @@ fun CombatFragment(
     combatFragVM: CombatFragViewModel,
     homePageVM: HomePageViewModel
 ) {
-    LazyColumn{
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            )
+    ){
         //create header row for combat items
         item {
             Row {
@@ -73,27 +92,38 @@ fun CombatFragment(
                 //display life point total
                 Text(
                     text = combatFragVM.lifeTotal.collectAsState().value,
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
+
+        item{Spacer(Modifier.height(10.dp))}
 
         //create table header for combat items
         item {
             Row {
                 Spacer(modifier = Modifier.weight(0.2f))
-                Text(text = stringResource(R.string.pointsLabel), modifier = Modifier.weight(0.2f))
+                Text(
+                    text = stringResource(R.string.pointsLabel),
+                    modifier = Modifier
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
+                )
                 Text(
                     text = stringResource(R.string.modLabel),
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.classLabel),
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.totalLabel),
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -102,6 +132,8 @@ fun CombatFragment(
         items(combatFragVM.allCombatItems){combatItem ->
             CombatItemRow(combatFragVM, combatItem, homePageVM)
         }
+
+        item{Spacer(Modifier.height(20.dp))}
 
         //resistances table
         item {
@@ -145,17 +177,35 @@ fun CombatFragment(
             ResistanceRow(combatFragVM, resistanceItem)
         }
 
+        item{Spacer(Modifier.height(20.dp))}
+
         //create displays for the character's initiative, fatigue, and regeneration
-        item{Text(text = stringResource(R.string.totalInitiative) + combatFragVM.getInitiativeTotal())}
-        item{Text(text = stringResource(R.string.fatigueLabel) + combatFragVM.getFatigue())}
-        item{Text(text = stringResource(R.string.regenLabel) + combatFragVM.getRegen())}
+        item{
+            InfoRow(
+                stringResource(R.string.totalInitiative),
+                combatFragVM.getInitiativeTotal()
+            )
+        }
+
+        item{
+            InfoRow(
+                stringResource(R.string.fatigueLabel),
+                combatFragVM.getFatigue()
+            )
+        }
+
+        item{
+            InfoRow(
+                stringResource(R.string.regenLabel),
+                combatFragVM.getRegen()
+            )
+        }
     }
 }
 
 /**
  * Creates a table row for the combat items and allows input and total display.
  *
- * @param combatFragVM viewModel that controls this fragment's data
  * @param combatItem character's combat stat to display
  * @param homePageVM viewModel that manages the bottom bar display
  */
@@ -165,9 +215,14 @@ private fun CombatItemRow(
     combatItem: CombatFragViewModel.CombatItemData,
     homePageVM: HomePageViewModel
 ){
-    Row {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //row label
-        Text(text = combatItem.label, modifier = Modifier.weight(0.2f))
+        Text(
+            text = stringResource(combatItem.label),
+            modifier = Modifier.weight(0.2f)
+        )
 
         //stat input field
         NumberInput(
@@ -178,13 +233,28 @@ private fun CombatItemRow(
             },
             emptyFunction = {combatItem.setPointsIn("")},
             modifier = Modifier.weight(0.2f),
-            color = combatFragVM.pointColor.collectAsState().value
+            color =
+                if(combatItem.label != R.string.wearLabel)
+                    combatFragVM.pointColor.collectAsState().value
+                else Color.Black
         )
 
         //display remaining stat values
-        Text(text = combatItem.item.modPoints.value.toString(), modifier = Modifier.weight(0.2f))
-        Text(text = combatItem.item.classTotal.value.toString(), modifier = Modifier.weight(0.2f))
-        Text(text = combatItem.totalVal.collectAsState().value, modifier = Modifier.weight(0.2f))
+        Text(
+            text = combatItem.item.modPoints.value.toString(),
+            modifier = Modifier.weight(0.2f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = combatItem.item.classTotal.value.toString(),
+            modifier = Modifier.weight(0.2f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = combatItem.totalVal.collectAsState().value,
+            modifier = Modifier.weight(0.2f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -202,7 +272,7 @@ private fun ResistanceRow(
     Row(verticalAlignment = Alignment.CenterVertically){
         //name of the resistance type
         Text(
-            text = resistance.label,
+            text = stringResource(resistance.label),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
@@ -214,7 +284,7 @@ private fun ResistanceRow(
         )
         //associated modifier value
         Text(
-            text = resistance.modStat,
+            text = resistance.getModStat(),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f)
         )
@@ -231,4 +301,17 @@ private fun ResistanceRow(
             modifier = Modifier.weight(0.2f)
         )
     }
+}
+
+@Preview
+@Composable
+fun CombatPreview(){
+    val charInstance = BaseCharacter()
+    val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
+    val homePageFragVM = HomePageViewModel(charInstance)
+
+    CombatFragment(
+        combatFragVM,
+        homePageFragVM
+    )
 }

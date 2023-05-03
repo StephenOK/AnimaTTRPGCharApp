@@ -2,6 +2,7 @@ package com.example.animabuilder.view_models.models
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
 import com.example.animabuilder.character_creation.attributes.combat.CombatItem
 import com.example.animabuilder.character_creation.attributes.combat.ResistanceItem
@@ -109,34 +110,29 @@ class CombatFragViewModel(
 
     //initialize all resistance display items
     private val disRes = ResistanceData(
-        "DR",
-        primaryList.con.outputMod.value.toString(),
+        R.string.drLabel,
         combat.diseaseRes
-    )
+    ){primaryList.con.outputMod.value.toString()}
 
     private val magRes = ResistanceData(
-        "MR",
-        primaryList.pow.outputMod.value.toString(),
+        R.string.mrLabel,
         combat.magicRes
-    )
+    ){primaryList.pow.outputMod.value.toString()}
 
     private val physRes = ResistanceData(
-        "PhR",
-        primaryList.con.outputMod.value.toString(),
+        R.string.phrLabel,
         combat.physicalRes
-    )
+    ){primaryList.con.outputMod.value.toString()}
 
     private val venRes = ResistanceData(
-        "VR",
-        primaryList.con.outputMod.value.toString(),
+        R.string.vrLabel,
         combat.venomRes
-    )
+    ){primaryList.con.outputMod.value.toString()}
 
     private val psyRes = ResistanceData(
-        "PsR",
-        primaryList.wp.outputMod.value.toString(),
+        R.string.psrLabel,
         combat.psychicRes
-    )
+    ){primaryList.wp.outputMod.value.toString()}
 
     //gather all resistance items
     val resistanceList = listOf(disRes, magRes, physRes, venRes, psyRes)
@@ -144,27 +140,31 @@ class CombatFragViewModel(
     //initialize all combat items
     private val attack = CombatItemData(
         combat,
-        "Attack",
-        combat.attack
+        R.string.attackLabel,
+        combat.attack,
+        pointColor.value
     ) { setPointColor(it) }
 
     private val block = CombatItemData(
         combat,
-        "Block",
-        combat.block
+        R.string.blockLabel,
+        combat.block,
+        pointColor.value
     ) { setPointColor(it) }
 
     private val dodge = CombatItemData(
         combat,
-        "Dodge",
-        combat.dodge
+        R.string.dodgeLabel,
+        combat.dodge,
+        pointColor.value
     ) { setPointColor(it) }
 
     private val wearArmor = CombatItemData(
         combat,
-        "Wear Armor",
-        combat.wearArmor
-    ) { setPointColor(it) }
+        R.string.wearLabel,
+        combat.wearArmor,
+        Color.Black
+    ) {}
 
     //gather all combat item data
     val allCombatItems = listOf(attack, block, dodge, wearArmor)
@@ -173,13 +173,13 @@ class CombatFragViewModel(
      * Data regarding one of a character's resistances.
      *
      * @param label name of the resistance
-     * @param modStat modifier to add to the resistance
      * @param item resistance data to reference
+     * @param getModStat gets the appropriate modifier value for the resistance
      */
     data class ResistanceData(
-        val label: String,
-        val modStat: String,
-        val item: ResistanceItem
+        val label: Int,
+        val item: ResistanceItem,
+        val getModStat: () -> String
     )
 
     /**
@@ -192,8 +192,9 @@ class CombatFragViewModel(
      */
     class CombatItemData(
         private val combat: CombatAbilities,
-        val label: String,
+        val label: Int,
         val item: CombatItem,
+        val color: Color,
         val setPointColor: (Color) -> Unit
     ){
         //initialize user's input value into this ability
@@ -223,7 +224,7 @@ class CombatFragViewModel(
                 setPointColor(Color.Red)
 
             //update item total display
-            setTotalVal(item.total.value.toString())
+            setTotalVal()
         }
 
         /**
@@ -232,6 +233,18 @@ class CombatFragViewModel(
          * @param input value to set this to
          */
         fun setPointsIn(input: String){_pointsIn.update{input}}
-        private fun setTotalVal(input: String){_totalVal.update{input}}
+        fun setTotalVal() {_totalVal.update{item.total.value.toString()}}
+    }
+
+    /**
+     * Function to run on loading this model's page.
+     */
+    fun refreshPage(){
+        setLifeMults(combat.lifeMultsTaken.value.toString())
+        setLifeTotal(combat.lifeMax.value.toString())
+        allCombatItems.forEach{
+            it.setPointsIn(it.item.inputVal.value.toString())
+            it.setTotalVal()
+        }
     }
 }

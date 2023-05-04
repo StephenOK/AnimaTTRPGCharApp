@@ -267,6 +267,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to combat page
                     composable(route = ScreenPage.Modules.name){
+                        modFragVM.refreshPage()
                         ModuleFragment(
                             modFragVM,
                             homeAlertsVM.openDetailAlert,

@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,12 +9,18 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import com.example.animabuilder.character_creation.attributes.modules.StyleModule
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
@@ -43,18 +50,25 @@ fun ModuleFragment(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .background(Color.White)
             .fillMaxWidth()
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            )
     ){
         //display currently selected primary weapon
-        item{Text(text = stringResource(R.string.primaryWeaponLabel) + modFragVM.primaryWeapon.collectAsState().value.name)}
-
-        //display each weapon list button
-        items(modFragVM.allWeapons){weaponButton ->
-            WeaponListButton(
-                modFragVM,
-                weaponButton,
-                openDetailAlert,
-                homePageVM
+        item{
+            Text(
+                text = stringResource(R.string.primaryWeaponLabel) + "\n" +
+                        modFragVM.primaryWeapon.collectAsState().value.name,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -68,17 +82,35 @@ fun ModuleFragment(
             )
         }
 
+        //display each weapon list button
+        items(modFragVM.allWeapons){weaponButton ->
+            WeaponListButton(
+                modFragVM,
+                weaponButton,
+                openDetailAlert,
+                homePageVM
+            )
+        }
+
+        item{Spacer(Modifier.height(25.dp))}
+
         //display archetype, martial art, and style buttons
         item{ArchetypeButton(
             modFragVM,
             openDetailAlert,
             homePageVM
         )}
+
+        item{Spacer(Modifier.height(25.dp))}
+
         item{MartialButton(
             modFragVM,
             openDetailAlert,
             homePageVM
         )}
+
+        item{Spacer(Modifier.height(25.dp))}
+
         item{StyleButton(modFragVM, openDetailAlert, homePageVM)}
     }
 }
@@ -102,7 +134,8 @@ private fun WeaponListButton(
     //button for displaying the list
     Button(
         onClick = {weaponData.toggleListOpen()},
-        modifier = Modifier.width(250.dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
         Text(text = stringResource(weaponData.nameRef))
     }
@@ -111,7 +144,9 @@ private fun WeaponListButton(
     AnimatedVisibility(
         visible = weaponData.listOpen.collectAsState().value,
     ){
-        Column{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             //display whole class module if one is available
             if(weaponData.wholeClass)
                 ArchetypeRow(
@@ -149,7 +184,8 @@ private fun ArchetypeButton(
     //button for displaying archetype list
     Button(
         onClick = {modFragVM.toggleArchetypeOpen() },
-        modifier = Modifier.width(250.dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
         Text(text = stringResource(R.string.archetypeLabel))
     }
@@ -157,7 +193,9 @@ private fun ArchetypeButton(
     //revealable list for the archetypes
     AnimatedVisibility(visible = modFragVM.archetypeOpen.collectAsState().value){
         //show all archetypes available
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             modFragVM.allArchetypeData.forEach{
                 ArchetypeRow(
                     it,
@@ -185,14 +223,17 @@ private fun StyleButton(
     //button for displaying weapon styles list
     Button(
         onClick = {modFragVM.toggleStyleOpen() },
-        modifier = Modifier.width(250.dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
         Text(text = stringResource(R.string.styleModLabel))
     }
 
     //revealable list of weapon styles
     AnimatedVisibility(visible = modFragVM.styleOpen.collectAsState().value) {
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             modFragVM.getAllStyles().forEach{
                 StyleRow(
                     modFragVM,
@@ -221,16 +262,26 @@ private fun MartialButton(
     //button for displaying martial arts list
     Button(
         onClick = {modFragVM.toggleMartialOpen() },
-        modifier = Modifier.width(250.dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
-        Text(text = stringResource(R.string.martialArtLabel))
+        Text(
+            text = stringResource(R.string.martialArtLabel)
+        )
     }
 
     //revealable list of martial arts
     AnimatedVisibility(visible = modFragVM.martialOpen.collectAsState().value){
-        Column{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             //display number of marital arts character can take
-            Text(text = stringResource(R.string.maxMartialLabel) + modFragVM.getMartialMax().toString())
+            Text(
+                text = stringResource(R.string.maxMartialLabel) + " " +
+                    modFragVM.getMartialMax().toString(),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
+            )
 
             //display a row for each martial art
             modFragVM.getAllMartials().forEach{
@@ -260,7 +311,11 @@ private fun WeaponRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //primary checkbox item
         Checkbox(
             checked = input == modFragVM.primaryWeapon.collectAsState().value,
@@ -290,12 +345,17 @@ private fun WeaponRow(
         )
 
         //display weapon name
-        Text(text = input.name, modifier = Modifier.weight(0.6f))
+        Text(
+            text = input.name,
+            modifier = Modifier
+                .weight(0.55f),
+            textAlign = TextAlign.Center
+        )
 
         //create a button to display the weapon's details
         DetailButton(
             onClick = {openDetailAlert(input.name) @Composable{WeaponContents(input)}},
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier.weight(0.25f)
         )
     }
 }
@@ -313,7 +373,14 @@ private fun ArchetypeRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        val itemString = LocalContext.current.getString(item.name) + " " +
+                LocalContext.current.resources.getString(R.string.moduleSuffix)
+
         Spacer(modifier = Modifier.weight(0.1f))
         Checkbox(
             checked = item.takenCheck.collectAsState().value,
@@ -327,13 +394,24 @@ private fun ArchetypeRow(
         )
 
         //display archetype name and cost
-        Text(text = item.name, modifier = Modifier.weight(0.4f))
-        Text(text = stringResource(R.string.fiftyPointCost), textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
+        Text(
+            text = itemString,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .weight(0.35f)
+        )
+
+        Text(
+            text = stringResource(R.string.fiftyPointCost),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .weight(0.2f)
+        )
 
         //create a button to display the archetype's contents
         DetailButton(
-            onClick = {openDetailAlert(item.name) @Composable {ArchetypeContents(item.items)}},
-            modifier = Modifier.weight(0.2f)
+            onClick = {openDetailAlert(itemString) @Composable {ArchetypeContents(item.items)}},
+            modifier = Modifier.weight(0.25f)
         )
     }
 }
@@ -353,8 +431,11 @@ private fun StyleRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
-        Spacer(modifier = Modifier.weight(0.1f))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
         Checkbox(
             checked = modFragVM.allStyles[style]!!.value,
             onCheckedChange = {
@@ -367,8 +448,18 @@ private fun StyleRow(
         )
 
         //display style's name and cost
-        Text(text = style.name, modifier = Modifier.weight(0.4f))
-        Text(text = style.cost.toString(), modifier = Modifier.weight(0.2f))
+        Text(
+            text = style.name,
+            modifier = Modifier
+                .weight(0.4f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = style.cost.toString(),
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
+        )
 
         //make display button for style's details
         DetailButton(
@@ -393,7 +484,11 @@ private fun MartialArtRow(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
-    Row(verticalAlignment = Alignment.CenterVertically){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
         Checkbox(
             checked = modFragVM.allMartials[martialArt]!!.value,
             onCheckedChange = {
@@ -405,13 +500,23 @@ private fun MartialArtRow(
         )
 
         //display name and bonus martial knowledge of this martial art
-        Text(text = martialArt.name, modifier = Modifier.weight(0.5f))
-        Text(text = "+" + martialArt.mkBonus.toString() + " " + stringResource(R.string.mkLabel), modifier = Modifier.weight(0.2f))
+        Text(
+            text = martialArt.name,
+            modifier = Modifier
+                .weight(0.45f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = "+" + martialArt.mkBonus.toString() + " " + stringResource(R.string.mkLabel),
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
+        )
 
         //display details button for the martial art
         DetailButton(
             onClick = {openDetailAlert(martialArt.name) @Composable {MartialContents(martialArt.prereqList, martialArt.description)}},
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier.weight(0.25f)
         )
     }
 }
@@ -516,4 +621,18 @@ val MartialContents = @Composable
         InfoRow(stringResource(R.string.prereqLabel), preReqList)
         Text(text = description)
     }
+}
+
+@Preview
+@Composable
+fun ModulePreview(){
+    val charInstance = BaseCharacter()
+
+    val moduleFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
+    moduleFragVM.allWeapons[1].toggleListOpen()
+    moduleFragVM.toggleArchetypeOpen()
+
+    val homePageVM = HomePageViewModel(charInstance)
+
+    ModuleFragment(moduleFragVM, {_, _ -> }, homePageVM)
 }

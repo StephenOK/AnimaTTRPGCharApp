@@ -65,8 +65,7 @@ class CustomFactory (
 
                 ModuleFragmentViewModel::class.java -> {
                     return ModuleFragmentViewModel(
-                        charInstance.weaponProficiencies,
-                        context
+                        charInstance.weaponProficiencies
                     ) as T
                 }
 

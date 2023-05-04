@@ -1,6 +1,5 @@
 package com.example.animabuilder.view_models.models
 
-import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,11 +17,9 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding module fragment.
  *
  * @param weaponProficiencies character's module object
- * @param context where to get string resources from
  */
 class ModuleFragmentViewModel(
-    private val weaponProficiencies: WeaponProficiencies,
-    context: Context
+    private val weaponProficiencies: WeaponProficiencies
 ) : ViewModel() {
     //initialize character's current primary weapon selection
     private val _primaryWeapon = MutableStateFlow(weaponProficiencies.primaryWeapon.value)
@@ -159,88 +156,77 @@ class ModuleFragmentViewModel(
         weaponProficiencies,
         R.string.shortLabel,
         weaponProficiencies.shortArms.shortArms,
-        true,
-        context
+        true
     )
 
     private val axes = WeaponListData(
         weaponProficiencies,
         R.string.axeLabel,
         weaponProficiencies.axes.axes,
-        true,
-        context
+        true
     )
 
     private val maces = WeaponListData(
         weaponProficiencies,
         R.string.maceLabel,
         weaponProficiencies.maces.maces,
-        true,
-        context
+        true
     )
 
     private val swords = WeaponListData(
         weaponProficiencies,
         R.string.swordLabel,
         weaponProficiencies.swords.swords,
-        true,
-        context
+        true
     )
 
     private val twoHandeds = WeaponListData(
         weaponProficiencies,
         R.string.twoHandLabel,
         weaponProficiencies.twoHanded.twoHanded,
-        true,
-        context
+        true
     )
 
     private val poles = WeaponListData(
         weaponProficiencies,
         R.string.poleLabel,
         weaponProficiencies.poles.poles,
-        true,
-        context
+        true
     )
 
     private val cords = WeaponListData(
         weaponProficiencies,
         R.string.cordLabel,
         weaponProficiencies.cords.cords,
-        true,
-        context
+        true
     )
 
     private val mixed = WeaponListData(
         weaponProficiencies,
         R.string.mixedLabel,
         weaponProficiencies.mixed.mixed,
-        false,
-        context
+        false
     )
 
     private val shields = WeaponListData(
         weaponProficiencies,
         R.string.shieldLabel,
         weaponProficiencies.shields.shields,
-        true,
-        context
+        true
     )
 
     private val projectiles = WeaponListData(
         weaponProficiencies,
         R.string.projectileLabel,
         weaponProficiencies.projectiles.projectiles,
-        true,
-        context
+        true
     )
 
     private val thrown = WeaponListData(
         weaponProficiencies,
         R.string.thrownLabel,
         weaponProficiencies.thrown.thrown,
-        true,
-        context
+        true
     )
 
     //gather all weapon data
@@ -250,79 +236,79 @@ class ModuleFragmentViewModel(
     private val barbarianArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[0],
-        context.resources.getString(R.string.barbarianLabel)
+        R.string.barbarianLabel
     )
 
     private val ninjaArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[1],
-        context.resources.getString(R.string.ninjaLabel)
+        R.string.ninjaLabel
     )
 
     private val duelArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[2],
-        context.resources.getString(R.string.duelLabel)
+        R.string.duelLabel
     )
 
     private val pirateArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[3],
-        context.resources.getString(R.string.pirateLabel)
+        R.string.pirateLabel
     )
 
     private val nomadArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[4],
-        context.resources.getString(R.string.nomadLabel)
+        R.string.nomadLabel
     )
 
     private val hunterArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[5],
-        context.resources.getString(R.string.hunterLabel)
+        R.string.hunterLabel
     )
 
     private val knightArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[6],
-        context.resources.getString(R.string.knightLabel)
+        R.string.knightLabel
     )
 
     private val gladiatorArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[7],
-        context.resources.getString(R.string.gladiatorLabel)
+        R.string.gladiatorLabel
     )
 
     private val assassinArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[8],
-        context.resources.getString(R.string.assassinLabel)
+        R.string.assassinLabel
     )
 
     private val soldierArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[9],
-        context.resources.getString(R.string.soldierLabel)
+        R.string.soldierLabel
     )
 
     private val indigenousArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[10],
-        context.resources.getString(R.string.indigenousLabel)
+        R.string.indigenousLabel
     )
 
     private val banditArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[11],
-        context.resources.getString(R.string.banditLabel)
+        R.string.banditLabel
     )
 
     private val improvisedArchetype = ArchetypeData(
         weaponProficiencies,
         weaponProficiencies.allArchetypes[12],
-        context.resources.getString(R.string.improvisedLabel)
+        R.string.improvisedLabel
     )
 
     //gather all archetype data
@@ -337,14 +323,12 @@ class ModuleFragmentViewModel(
      * @param nameRef string name of the weapon category
      * @param items list of weapon associated with this list
      * @param wholeClass true if the module has a whole weapons archetype
-     * @param context context to get the resources from
      */
     class WeaponListData(
         weaponProficiencies: WeaponProficiencies,
         val nameRef: Int,
         val items: List<Weapon>,
-        val wholeClass: Boolean,
-        context: Context
+        val wholeClass: Boolean
     ){
         //initialize open state of the list
         private val _listOpen = MutableStateFlow(false)
@@ -359,7 +343,7 @@ class ModuleFragmentViewModel(
         val weaponArchetype = ArchetypeData(
             weaponProficiencies,
             items,
-            context.resources.getString(nameRef) + context.resources.getString(R.string.moduleSuffix)
+            nameRef
         )
     }
 
@@ -373,7 +357,7 @@ class ModuleFragmentViewModel(
     class ArchetypeData(
         private val weaponProficiencies: WeaponProficiencies,
         val items: List<Weapon>,
-        val name: String
+        val name: Int
     ){
         //initialize checkbox for this archetype
         private val _takenCheck = MutableStateFlow(weaponProficiencies.takenModules.contains(items))
@@ -408,5 +392,24 @@ class ModuleFragmentViewModel(
         weaponProficiencies.styles.allStyles.forEach{
             allStyles += Pair(it, mutableStateOf(weaponProficiencies.styleMods.contains(it)))
         }
+    }
+
+    /**
+     * Function to run on opening the module fragment.
+     */
+    fun refreshPage(){
+        allWeapons.forEach{
+            if(it.listOpen.value)
+                it.toggleListOpen()
+        }
+
+        if(archetypeOpen.value)
+            toggleArchetypeOpen()
+
+        if(martialOpen.value)
+            toggleMartialOpen()
+
+        if(styleOpen.value)
+            toggleStyleOpen()
     }
 }

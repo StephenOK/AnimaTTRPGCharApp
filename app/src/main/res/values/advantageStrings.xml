@@ -6,4 +6,6 @@
     <string name = "magicDisadv">Magic Disadvantages</string>
     <string name = "psychicAdv">Psychic Advantages</string>
     <string name = "psychicDisadv">Psychic Disadvantages</string>
+
+    <string name = "heldAdvantageLabel">Held Advantages/Disadvantages</string>
 </resources>

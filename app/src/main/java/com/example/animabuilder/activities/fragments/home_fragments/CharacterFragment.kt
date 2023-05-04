@@ -289,11 +289,12 @@ private fun DropdownObject(
             value = item.output.collectAsState().value,
             onValueChange = {},
             modifier = Modifier
+                .clickable { item.openToggle() }
                 .onGloballyPositioned { coordinates ->
                     item.setSize(coordinates.size.toSize())
-                }
-                .clickable { item.openToggle() },
+                },
             label = {Text(text = stringResource(item.nameRef))},
+            readOnly = true,
             trailingIcon = {
                 Icon(
                     item.icon.collectAsState().value,

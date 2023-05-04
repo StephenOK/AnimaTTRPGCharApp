@@ -253,7 +253,6 @@ class HomeActivity : AppCompatActivity() {
                     //route to secondary characteristics page
                     composable(route = ScreenPage.Secondary_Characteristics.name){
                         secondaryFragVM.refreshPage()
-
                         SecondaryAbilityFragment(secondaryFragVM, homePageVM)
                     }
 

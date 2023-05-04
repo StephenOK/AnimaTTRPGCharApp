@@ -1,9 +1,15 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import com.example.animabuilder.R
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
@@ -13,11 +19,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 import com.example.animabuilder.view_models.models.HomePageViewModel
@@ -40,34 +54,58 @@ fun AdvantageFragment(
     //initialize local context
     val context = LocalContext.current
 
-    LazyColumn{
+    Column(
+        modifier = Modifier.fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         //display creation points remaining
-        item{Text(text = "Creation Points: " + advantageFragVM.creationPoints.collectAsState().value)}
+        Text(
+            text = "Creation Points: " + advantageFragVM.creationPoints.collectAsState().value,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Bold
+        )
 
-        //display each list of base advantages
-        items(advantageFragVM.advantageButtons){
-            AdvantageDisplay(
-                advantageFragVM,
-                it,
-                openDetailAlert,
-                homePageVM
-            )
-        }
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            //display each list of base advantages
+            items(advantageFragVM.advantageButtons) {
+                AdvantageDisplay(
+                    advantageFragVM,
+                    it,
+                    openDetailAlert,
+                    homePageVM
+                )
+            }
 
-        //display all of the character's taken advantages and disadvantages
-        items(advantageFragVM.takenAdvantages){
-            HeldAdvantageDisplay(
-                advantageFragVM,
-                it,
-                openDetailAlert,
-                homePageVM
-            )
-        }
+            item { Spacer(Modifier.height(20.dp)) }
+            item { Text(text = stringResource(R.string.heldAdvantageLabel)) }
 
-        //display all advantages acquired from their race
-        item{Text(text = "Racial Advantages")}
-        items(advantageFragVM.getRacialAdvantages()){
-            AdvantageRow(it, null, openDetailAlert, {}, {})
+            //display all of the character's taken advantages and disadvantages
+            items(advantageFragVM.takenAdvantages) {
+                HeldAdvantageDisplay(
+                    advantageFragVM,
+                    it,
+                    openDetailAlert,
+                    homePageVM
+                )
+            }
+
+            item { Spacer(Modifier.height(20.dp)) }
+
+            //display all advantages acquired from their race
+            item { Text(text = "Racial Advantages") }
+            items(advantageFragVM.getRacialAdvantages()) {
+                AdvantageRow(it, null, openDetailAlert, {}, null)
+            }
         }
     }
 
@@ -102,15 +140,27 @@ private fun AdvantageDisplay(
     //get local context
     val context = LocalContext.current
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         //button to open advantage list
-        Button(onClick = {advantageList.toggleOpen() }) {
+        Button(
+            onClick = {advantageList.toggleOpen()},
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+        ){
             //display category name
             Text(text = stringResource(advantageList.category))
         }
 
         //displayable list of options
-        AnimatedVisibility(visible = advantageList.isOpen.collectAsState().value) {
+        AnimatedVisibility(
+            visible = advantageList.isOpen.collectAsState().value,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             Column {
                 advantageList.items.forEach {
                     //display advantage as an obtainable item
@@ -170,24 +220,42 @@ private fun AdvantageRow(
     takenAddition: String?,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     button: @Composable () -> Unit,
-    buttonAction: () -> Unit,
+    buttonAction: (() -> Unit)?,
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
         if(takenAddition != null) item.name + takenAddition
         else item.name
 
-    Row{
-        //implement button with given image and function
-        Button(onClick = {buttonAction()}) {button()}
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+    ){
+        if(buttonAction != null) {
+            //implement button with given image and function
+            Button(
+                onClick = { buttonAction() },
+                modifier = Modifier
+                    .weight(0.15f)
+            ) { button() }
+        }
+        else
+            Spacer(Modifier.weight(0.15f))
 
         //display advantage information
-        Text(text = nameString)
+        Text(
+            text = nameString,
+            modifier = Modifier
+                .weight(0.6f),
+            textAlign = TextAlign.Center
+        )
 
         //details button
         DetailButton(
             onClick = {openDetailAlert(nameString){AdvantageDetails(item)}},
             modifier = Modifier
+                .weight(0.25f)
         )
     }
 }
@@ -253,4 +321,20 @@ val AdvantageDetails = @Composable{item: Advantage ->
         //display available costs
         Row{Text(text = "Cost: $costString")}
     }
+}
+
+@Preview
+@Composable
+fun AdvantagePreview(){
+    val charInstance = BaseCharacter()
+    charInstance.setOwnRace(1)
+
+    charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0)
+
+    val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
+    //advantageFragVM.advantageButtons[4].toggleOpen()
+
+    val homePageVM = HomePageViewModel(charInstance)
+
+    AdvantageFragment(advantageFragVM, {_, _ -> }, homePageVM)
 }

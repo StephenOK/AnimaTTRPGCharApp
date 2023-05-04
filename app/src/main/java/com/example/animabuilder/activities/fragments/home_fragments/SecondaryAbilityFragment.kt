@@ -2,6 +2,7 @@ package com.example.animabuilder.activities.fragments.home_fragments
 
 import com.example.animabuilder.R
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,14 +11,17 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.animabuilder.NumberInput
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
 
@@ -35,7 +39,15 @@ fun SecondaryAbilityFragment(
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            )
     ) {
         //open freelancer class bonus options if available
         item{
@@ -43,11 +55,15 @@ fun SecondaryAbilityFragment(
                 Column {
                     Text(text = stringResource(R.string.freelancerPrompt))
                     FreelancerDropdown(secondaryFragVM.firstSelection)
+                    Spacer(Modifier.height(5.dp))
                     FreelancerDropdown(secondaryFragVM.secondSelection)
+                    Spacer(Modifier.height(5.dp))
                     FreelancerDropdown(secondaryFragVM.thirdSelection)
                 }
             }
         }
+
+        item{Spacer(Modifier.height(10.dp))}
 
         //display every secondary ability category
         items(secondaryFragVM.allFields){
@@ -71,9 +87,11 @@ private fun FreelancerDropdown(
             value = stringArrayResource(R.array.secondaryCharacteristics)[item.selectedIndex.collectAsState().value],
             onValueChange = {},
             modifier = Modifier
+                .fillMaxWidth()
                 .onGloballyPositioned {coordinates ->
                     item.setSize(coordinates.size.toSize())
                 },
+            readOnly = true,
             trailingIcon = {
                 Icon(
                     item.icon.collectAsState().value,
@@ -116,7 +134,8 @@ private fun MakeTableDisplay(
     //toggle button for the table
     Button(
         onClick = {input.toggleOpen()},
-        modifier = Modifier.width(250.dp)
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
     ){
         //button label
         Text(
@@ -125,7 +144,10 @@ private fun MakeTableDisplay(
     }
 
     //visibility group for the table
-    AnimatedVisibility(visible = input.tableOpen.collectAsState().value){
+    AnimatedVisibility(
+        visible = input.tableOpen.collectAsState().value,
+        modifier = Modifier.fillMaxWidth()
+    ){
         Column {
             //make the header of this section
             RowHead()
@@ -134,6 +156,8 @@ private fun MakeTableDisplay(
             input.fieldCharacteristics.forEach {
                 MakeRow(it, homePageVM)
             }
+
+            Spacer(Modifier.height(5.dp))
         }
     }
 }
@@ -143,12 +167,12 @@ private fun MakeTableDisplay(
  */
 @Composable
 private fun RowHead(){
-    Row{
+    Row(Modifier.fillMaxWidth()){
         //input point label
         Text(
             text = stringResource(R.string.pointsLabel),
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.25f)
+            modifier = Modifier.weight(0.15f)
         )
 
         //mod value label
@@ -169,7 +193,7 @@ private fun RowHead(){
         Text(
             text = stringResource(R.string.natLabel),
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.125f)
+            modifier = Modifier.weight(0.225f)
         )
 
         //characteristic total label
@@ -192,9 +216,11 @@ private fun MakeRow(
     item: SecondaryFragmentViewModel.SecondaryItem,
     homePageVM: HomePageViewModel
 ){
+    Row{Spacer(Modifier.height(5.dp))}
     Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
     ){
         //characteristic label
         Text(text = stringArrayResource(R.array.secondaryCharacteristics)[item.getName()],
@@ -247,4 +273,16 @@ private fun MakeRow(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.125f))
     }
+}
+
+@Preview
+@Composable
+fun SecondaryPreview(){
+    val charInstance = BaseCharacter()
+    val secondaryFragVM = SecondaryFragmentViewModel(charInstance, charInstance.secondaryList)
+    val homePageVM = HomePageViewModel(charInstance)
+
+    secondaryFragVM.allFields[2].toggleOpen()
+
+    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM)
 }

@@ -240,7 +240,7 @@ class SecondaryFragmentViewModel(
 
             //update the appropriate values
             _natBonusCheck.update{secondaryItem.bonusApplied.value}
-            _totalOutput.update{secondaryItem.total.value.toString()}
+            updateTotal()
             _checkedText.update{updateCheckedText()}
         }
 
@@ -264,8 +264,7 @@ class SecondaryFragmentViewModel(
             setPointInput(input.toString())
             secondaryItem.setPointsApplied(input)
 
-            //update the total display
-            _totalOutput.update{secondaryItem.total.value.toString()}
+            updateTotal()
 
             //remove natural bonus check if points are set to zero
             if(input == 0 && natBonusCheck.value)
@@ -284,8 +283,10 @@ class SecondaryFragmentViewModel(
          */
         fun setClassPoints(){
             _classPoints.update{secondaryItem.classPointTotal.value.toString()}
-            _totalOutput.update{secondaryItem.total.value.toString()}
+            updateTotal()
         }
+
+        fun updateTotal(){_totalOutput.update{secondaryItem.total.value.toString()}}
     }
 
     /**
@@ -293,5 +294,6 @@ class SecondaryFragmentViewModel(
      */
     fun refreshPage(){
         _freelancerOptionsOpen.update{charInstance.ownClass.value == charInstance.classes.freelancer}
+        allCharacteristics.forEach{it.setClassPoints()}
     }
 }

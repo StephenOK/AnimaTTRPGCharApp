@@ -332,7 +332,7 @@ fun AdvantagePreview(){
     charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0)
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
-    //advantageFragVM.advantageButtons[4].toggleOpen()
+    advantageFragVM.advantageButtons[4].toggleOpen()
 
     val homePageVM = HomePageViewModel(charInstance)
 

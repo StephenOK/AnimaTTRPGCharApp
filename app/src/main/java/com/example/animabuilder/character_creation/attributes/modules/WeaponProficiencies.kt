@@ -232,6 +232,8 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
                 takenMartialList += changeItem
                 if(changeItem == martials.capoeira)
                     charInstance.combat.dodge.setClassBonus(10)
+
+                charInstance.updateTotalSpent()
                 return true
             }
         }

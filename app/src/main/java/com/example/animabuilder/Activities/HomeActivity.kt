@@ -277,6 +277,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to ki page
                     composable(route = ScreenPage.Ki.name){
+                        kiFragVM.refreshPage()
                         KiFragment(
                             kiFragVM,
                             homeAlertsVM.openDetailAlert,

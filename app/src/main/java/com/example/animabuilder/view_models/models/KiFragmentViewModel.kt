@@ -342,6 +342,13 @@ class KiFragmentViewModel(
          * @param input value to display
          */
         fun setAccInputString(input: String){_accInputString.update{input}}
+
+        fun refreshItem(){
+            setPointInputString(item.boughtKiPoints.value.toString())
+            setTotalPoints()
+            setAccInputString(item.boughtAccumulation.value.toString())
+            setTotalAcc()
+        }
     }
 
     init{
@@ -354,5 +361,17 @@ class KiFragmentViewModel(
         ki.allTechniques.forEach{
             allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
         }
+    }
+
+    fun refreshPage(){
+        allRowData.forEach{
+            it.refreshItem()
+        }
+
+        if(kiListOpen.value)
+            toggleKiListOpen()
+
+        if(techListOpen.value)
+            toggleTechListOpen()
     }
 }

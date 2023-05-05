@@ -148,12 +148,15 @@ private fun WeaponListButton(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             //display whole class module if one is available
-            if(weaponData.wholeClass)
+            if(weaponData.wholeClass) {
                 ArchetypeRow(
                     weaponData.weaponArchetype,
                     openDetailAlert,
                     homePageVM
                 )
+
+                Divider()
+            }
 
             //display all weapons from the given list
             weaponData.items.forEach{
@@ -455,7 +458,7 @@ private fun StyleRow(
             textAlign = TextAlign.Center
         )
         Text(
-            text = style.cost.toString(),
+            text = style.cost.toString() + " DP",
             modifier = Modifier
                 .weight(0.2f),
             textAlign = TextAlign.Center
@@ -629,7 +632,7 @@ fun ModulePreview(){
     val charInstance = BaseCharacter()
 
     val moduleFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
-    moduleFragVM.allWeapons[1].toggleListOpen()
+    //moduleFragVM.allWeapons[7].toggleListOpen()
     moduleFragVM.toggleArchetypeOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

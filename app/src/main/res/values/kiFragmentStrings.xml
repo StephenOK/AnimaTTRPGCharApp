@@ -8,13 +8,13 @@
     <string name = "maxMKLabel">Max Martial Knowledge: </string>
     <string name = "remainingMKLabel">Martial Knowledge Remaining: </string>
 
-    <string name = "statKiLabel">Stat Ki</string>
-    <string name = "buyKiLabel">Buy Ki</string>
-    <string name = "totalKiLabel">Ki Total</string>
+    <string name = "statKiLabel">Stat\nKi</string>
+    <string name = "buyKiLabel">Buy\nKi</string>
+    <string name = "totalKiLabel">Ki\nTotal</string>
 
-    <string name = "statAccLabel">Stat Acc</string>
-    <string name = "buyAccLabel">Buy Acc</string>
-    <string name = "totalAccLabel">Acc Total</string>
+    <string name = "statAccLabel">Stat\nAcc</string>
+    <string name = "buyAccLabel">Buy\nAcc</string>
+    <string name = "totalAccLabel">Acc\nTotal</string>
 
     <string name = "mkLabel">MK</string>
     <string name = "totalAccumulation">Total Accumulation: </string>

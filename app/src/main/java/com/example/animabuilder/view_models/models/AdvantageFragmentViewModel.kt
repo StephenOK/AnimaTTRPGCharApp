@@ -25,8 +25,22 @@ class AdvantageFragmentViewModel(
     private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent.value).toString())
     val creationPoints = _creationPoints.asStateFlow()
 
+    private val _giftAlertOpen = MutableStateFlow(false)
+    val giftAlertOpen = _giftAlertOpen.asStateFlow()
+
     //initialize list of taken advantages
     val takenAdvantages = mutableStateListOf<Advantage>()
+
+    fun toggleGiftAlertOn(){_giftAlertOpen.update{!giftAlertOpen.value}}
+
+    fun getGift(): Advantage?{
+        takenAdvantages.forEach{
+            if(it.name == "The Gift")
+                return it
+        }
+
+        return null
+    }
 
     /**
      * Attempts to give an advantage to the character.

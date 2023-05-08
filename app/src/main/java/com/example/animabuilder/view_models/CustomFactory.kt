@@ -79,7 +79,7 @@ class CustomFactory (
                 MagicFragmentViewModel::class.java ->{
                     return MagicFragmentViewModel(
                         charInstance.magic,
-                        charInstance.primaryList.dex
+                        charInstance
                     ) as T
                 }
 

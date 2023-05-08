@@ -275,7 +275,7 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Determines if the bought amount of Magic Projejction is a valid input.
+     * Determines if the bought amount of Magic Projection is a valid input.
      *
      * @return true if input is valid
      */
@@ -926,6 +926,27 @@ class Magic(private val charInstance: BaseCharacter){
 
         //no matching spell found
         return false
+    }
+
+    /**
+     * Function to run on confirmed removal of The Gift advantage.
+     */
+    fun loseMagic(){
+        buyZeon(0)
+        buyZeonAcc(1)
+        buyMagProj(0)
+
+        buyBookLevels(0, Element.Light)
+        buyBookLevels(0, Element.Dark)
+        buyBookLevels(0, Element.Creation)
+        buyBookLevels(0, Element.Destruction)
+        buyBookLevels(0, Element.Air)
+        buyBookLevels(0, Element.Earth)
+        buyBookLevels(0, Element.Water)
+        buyBookLevels(0, Element.Fire)
+        buyBookLevels(0, Element.Essence)
+        buyBookLevels(0, Element.Illusion)
+        buyBookLevels(0, Element.Necromancy)
     }
 
 

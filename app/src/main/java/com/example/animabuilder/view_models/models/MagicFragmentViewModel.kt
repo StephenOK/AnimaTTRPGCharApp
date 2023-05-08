@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.character_creation.attributes.magic.spells.spellbook.FreeBook
-import com.example.animabuilder.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding magic fragment.
  *
  * @param magic character's magic abilities section
- * @param dex character's dexterity primary characteristic
+ * @param charInstance full character object
  */
 class MagicFragmentViewModel(
     private val magic: Magic,
-    dex: PrimaryCharacteristic
+    private val charInstance: BaseCharacter
 ): ViewModel() {
     //initialize the character's bought zeon input
     private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.value.toString())
@@ -39,7 +39,7 @@ class MagicFragmentViewModel(
     private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.value.toString())
     val zeonRecoveryString = _zeonRecoverString.asStateFlow()
 
-    //initialize the character's innate magic displaay
+    //initialize the character's innate magic display
     private val _innateMagic = MutableStateFlow(magic.innateMagic.value.toString())
     val innateMagic = _innateMagic.asStateFlow()
 
@@ -81,12 +81,16 @@ class MagicFragmentViewModel(
     private val _selectedFreeSpell = MutableStateFlow<FreeSpell?>(null)
     val selectedFreeSpell = _selectedFreeSpell.asStateFlow()
 
+    fun isGifted(): Boolean{
+        return charInstance.advantageRecord.getAdvantage("The Gift") != null
+    }
+
     //create item to manage zeon accumulation
     private val zeonAccumulation = ZeonPurchaseItemData(
         R.string.zeonAccumulationLabel,
-        magic.baseZeonAcc.value,
-        magic.zeonAccMult.value,
-        magic.zeonAccTotal.value,
+        {magic.baseZeonAcc.value},
+        {magic.zeonAccMult.value},
+        {magic.zeonAccTotal.value},
         {
             if(it >= 1){
                 magic.buyZeonAcc(it)
@@ -100,9 +104,9 @@ class MagicFragmentViewModel(
     //create item to manage zeon projection
     private val zeonProjection = ZeonPurchaseItemData(
         R.string.magProjectionLabel,
-        dex.outputMod.value,
-        magic.boughtMagProjection.value,
-        magic.magProjTotal.value,
+        {charInstance.primaryList.dex.outputMod.value},
+        {magic.boughtMagProjection.value},
+        {magic.magProjTotal.value},
         {
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
@@ -122,7 +126,7 @@ class MagicFragmentViewModel(
     private val lightBook = SpellRowData(
         magic,
         this,
-        magic.pointsInLightBook.value,
+        {magic.pointsInLightBook.value},
         Element.Light,
         magic.lightBook.fullBook
     )
@@ -130,7 +134,7 @@ class MagicFragmentViewModel(
     private val darkBook = SpellRowData(
         magic,
         this,
-        magic.pointsInDarkBook.value,
+        {magic.pointsInDarkBook.value},
         Element.Dark,
         magic.darkBook.fullBook
     )
@@ -138,7 +142,7 @@ class MagicFragmentViewModel(
     private val creationBook = SpellRowData(
         magic,
         this,
-        magic.pointsInCreateBook.value,
+        {magic.pointsInCreateBook.value},
         Element.Creation,
         magic.creationBook.fullBook
     )
@@ -146,7 +150,7 @@ class MagicFragmentViewModel(
     private val destructionBook = SpellRowData(
         magic,
         this,
-        magic.pointsInDestructBook.value,
+        {magic.pointsInDestructBook.value},
         Element.Destruction,
         magic.destructionBook.fullBook
     )
@@ -154,7 +158,7 @@ class MagicFragmentViewModel(
     private val airBook = SpellRowData(
         magic,
         this,
-        magic.pointsInAirBook.value,
+        {magic.pointsInAirBook.value},
         Element.Air,
         magic.airBook.fullBook
     )
@@ -162,7 +166,7 @@ class MagicFragmentViewModel(
     private val earthBook = SpellRowData(
         magic,
         this,
-        magic.pointsInEarthBook.value,
+        {magic.pointsInEarthBook.value},
         Element.Earth,
         magic.earthBook.fullBook
     )
@@ -170,7 +174,7 @@ class MagicFragmentViewModel(
     private val waterBook = SpellRowData(
         magic,
         this,
-        magic.pointsInWaterBook.value,
+        {magic.pointsInWaterBook.value},
         Element.Water,
         magic.waterBook.fullBook
     )
@@ -178,7 +182,7 @@ class MagicFragmentViewModel(
     private val fireBook = SpellRowData(
         magic,
         this,
-        magic.pointsInFireBook.value,
+        {magic.pointsInFireBook.value},
         Element.Fire,
         magic.fireBook.fullBook
     )
@@ -186,7 +190,7 @@ class MagicFragmentViewModel(
     private val essenceBook = SpellRowData(
         magic,
         this,
-        magic.pointsInEssenceBook.value,
+        {magic.pointsInEssenceBook.value},
         Element.Essence,
         magic.essenceBook.fullBook
     )
@@ -194,7 +198,7 @@ class MagicFragmentViewModel(
     private val illusionBook = SpellRowData(
         magic,
         this,
-        magic.pointsInIllusionBook.value,
+        {magic.pointsInIllusionBook.value},
         Element.Illusion,
         magic.illusionBook.fullBook
     )
@@ -202,7 +206,7 @@ class MagicFragmentViewModel(
     private val necromancyBook = SpellRowData(
         magic,
         this,
-        magic.pointsInNecroBook.value,
+        {magic.pointsInNecroBook.value},
         Element.Necromancy,
         magic.necromancyBook.fullBook
     )
@@ -484,6 +488,21 @@ class MagicFragmentViewModel(
     fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
 
     /**
+     * Gets a color based on whether the character can cast the indicated spell.
+     *
+     * @param input spell to check the castability of
+     */
+    fun getCastableColor(input: Int): Color{
+        //return red if character cannot cast it
+        return if((input in 81..90 && charInstance.gnosis.value < 25) ||
+            (input > 90 && charInstance.gnosis.value < 40))
+            Color.Red
+
+        //return black if castable
+        else Color.Black
+    }
+
+    /**
      * Class that holds data on a zeon purchase item.
      *
      * @param nameRef string reference that titles this object
@@ -495,19 +514,19 @@ class MagicFragmentViewModel(
      */
     class ZeonPurchaseItemData(
         val nameRef: Int,
-        val baseInput: Int,
-        boughtInput: Int,
-        totalInput: Int,
+        val baseInput: () -> Int,
+        val boughtInput: () -> Int,
+        totalInput: () -> Int,
         val buyItem: (Int) -> Unit,
         val changeColor: () -> Color,
         val updateTotal: (MutableStateFlow<String>) -> Unit
     ){
         //initialize bought amount input
-        private val _boughtString = MutableStateFlow(boughtInput.toString())
+        private val _boughtString = MutableStateFlow(boughtInput().toString())
         val boughtString = _boughtString.asStateFlow()
 
         //initialize total amount display
-        private val _totalString = MutableStateFlow(totalInput.toString())
+        private val _totalString = MutableStateFlow(totalInput().toString())
         val totalString = _totalString.asStateFlow()
 
         //initialize the color of the displayed text
@@ -537,6 +556,13 @@ class MagicFragmentViewModel(
          * Sets the color of this item's text to the indicated value.
          */
         fun setNewColor(){_textColor.update{changeColor()}}
+
+        /**
+         * Refreshes the input and total for this item's data.
+         */
+        fun refreshItem(){
+            setBoughtString(boughtInput())
+        }
     }
 
     /**
@@ -551,12 +577,12 @@ class MagicFragmentViewModel(
     class SpellRowData(
         val magic: Magic,
         private val magFragVM: MagicFragmentViewModel,
-        pointsIn: Int,
+        val pointsIn: () -> Int,
         val spellElement: Element,
         val spellList: List<Spell?>
     ){
         //initialize value of investment levels
-        private val _elementInvestment = MutableStateFlow(pointsIn.toString())
+        private val _elementInvestment = MutableStateFlow(pointsIn().toString())
         val elementInvestment = _elementInvestment.asStateFlow()
 
         //initialize open state of this list
@@ -589,6 +615,10 @@ class MagicFragmentViewModel(
          * Changes the open state of this item's spell list.
          */
         fun toggleListOpen() {_listOpen.update{!listOpen.value}}
+
+        fun refreshItem(){
+            _elementInvestment.update{pointsIn().toString()}
+        }
     }
 
     init{
@@ -608,6 +638,18 @@ class MagicFragmentViewModel(
         addPrimaryElementBox(Element.Illusion)
         addPrimaryElementBox(Element.Necromancy)
 
+        updateHeldSpells()
+    }
+
+    /**
+     * Refreshes all items on this page when it is loaded.
+     */
+    fun refreshPage(){
+        setBoughtZeonString(magic.boughtZeon.value)
+        allPurchaseData.forEach{it.refreshItem()}
+        setProjectionImbalance(magic.magProjImbalance.value.toString())
+        allBooks.forEach{it.refreshItem()}
+        reflectPrimaryElement()
         updateHeldSpells()
     }
 }

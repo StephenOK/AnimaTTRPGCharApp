@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -55,7 +57,8 @@ fun AdvantageFragment(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .background(Color.White)
             .padding(
                 top = 15.dp,
@@ -120,6 +123,31 @@ fun AdvantageFragment(
 
             homePageVM.updateExpenditures()
         }
+
+    if(advantageFragVM.giftAlertOpen.collectAsState().value){
+        AlertDialog(
+            onDismissRequest = {},
+            text = {
+                Text(
+                    text = "Removing The Gift will remove any magic investments made. Proceed?"
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    advantageFragVM.removeAdvantage(advantageFragVM.getGift()!!)
+                    homePageVM.updateExpenditures()
+                    advantageFragVM.toggleGiftAlertOn()
+                }) {
+                    Text(text = stringResource(R.string.confirmLabel))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {advantageFragVM.toggleGiftAlertOn()}){
+                    Text(text = stringResource(R.string.cancelLabel))
+                }
+            }
+        )
+    }
 }
 
 /**
@@ -237,17 +265,17 @@ private fun AdvantageRow(
             Button(
                 onClick = { buttonAction() },
                 modifier = Modifier
-                    .weight(0.15f)
+                    .weight(0.25f)
             ) { button() }
         }
         else
-            Spacer(Modifier.weight(0.15f))
+            Spacer(Modifier.weight(0.25f))
 
         //display advantage information
         Text(
             text = nameString,
             modifier = Modifier
-                .weight(0.6f),
+                .weight(0.5f),
             textAlign = TextAlign.Center
         )
 
@@ -289,8 +317,12 @@ private fun HeldAdvantageDisplay(
         {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")}
     )
     {
-        advantageFragVM.removeAdvantage(item)
-        homePageVM.updateExpenditures()
+        if(item.name == "The Gift")
+            advantageFragVM.toggleGiftAlertOn()
+        else {
+            advantageFragVM.removeAdvantage(item)
+            homePageVM.updateExpenditures()
+        }
     }
 }
 

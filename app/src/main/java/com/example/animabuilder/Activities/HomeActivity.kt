@@ -287,6 +287,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to magic page
                     composable(route = ScreenPage.Magic.name){
+                        magFragVM.refreshPage()
                         MagicFragment(
                             magFragVM,
                             homeAlertsVM.openDetailAlert,

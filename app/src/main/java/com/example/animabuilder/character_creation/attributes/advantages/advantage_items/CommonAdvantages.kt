@@ -634,7 +634,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(2),
         0,
         null,
-        null
+        {_, _ ->
+            charInstance.magic.loseMagic()
+        }
     )
 
     val seeSupernatural = Advantage(

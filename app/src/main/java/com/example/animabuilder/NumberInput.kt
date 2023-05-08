@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
  * @param postRun optional function to run after reading user input
  * @param color optional color the text is
  * @param alignment optional alignment for the input text
+ * @param readOnly optional state of the text input
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -37,7 +38,8 @@ fun NumberInput(
     label: String = "",
     postRun: () -> Unit = {},
     color: Color = Color.Black,
-    alignment: TextAlign = TextAlign.Center
+    alignment: TextAlign = TextAlign.Center,
+    readOnly: Boolean = false
 ){
     //initialize user keyboard
     val keyboardActive = LocalSoftwareKeyboardController.current
@@ -71,13 +73,19 @@ fun NumberInput(
             postRun()
         },
 
+        //set other modifiers
+        modifier = modifier,
+
         //set text color
-        textStyle = LocalTextStyle.current.copy(color = color, textAlign = alignment),
+        textStyle = LocalTextStyle.current.copy(
+            color = color,
+            textAlign = alignment
+        ),
+
+        //set readonly status
+        readOnly = readOnly,
 
         //set object label
-        label = {Text(text = label)},
-
-        //set other modifiers
-        modifier = modifier
+        label = {Text(text = label)}
     )
 }

@@ -61,5 +61,19 @@ class SummoningFragmentViewModel(
          * @param input new string to display
          */
         fun setBoughtVal(input: String){_boughtVal.update{input}}
+
+        /**
+         * Refreshes the item on page loading.
+         */
+        fun refreshItem(){
+            setBoughtVal(item.buyVal.value)
+        }
+    }
+
+    /**
+     * Function to run on loading this page.
+     */
+    fun refreshPage(){
+        allRows.forEach{it.refreshItem()}
     }
 }

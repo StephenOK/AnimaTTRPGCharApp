@@ -297,6 +297,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to summoning page
                     composable(route = ScreenPage.Summoning.name){
+                        summonFragVM.refreshPage()
                         SummoningFragment(
                             summonFragVM,
                             homePageVM

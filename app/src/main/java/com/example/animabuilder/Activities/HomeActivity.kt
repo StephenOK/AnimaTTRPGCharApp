@@ -306,6 +306,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to psychic page
                     composable(route = ScreenPage.Psychic.name){
+                        psyFragVM.refreshPage()
                         PsychicFragment(
                             psyFragVM,
                             homeAlertsVM.openDetailAlert,

@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 
 /**
@@ -19,7 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 fun InfoRow(
     label: String,
     info: String,
-    percent: Float = 1.0f
+    percent: Float = 1.0f,
+    color: Color = Color.Black
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -30,7 +32,8 @@ fun InfoRow(
             text = label,
             modifier = Modifier
                 .weight(0.5f),
-            textAlign = TextAlign.Right
+            textAlign = TextAlign.Right,
+            color = color
         )
 
         Spacer(modifier = Modifier.weight(0.1f))
@@ -39,7 +42,8 @@ fun InfoRow(
             text = info,
             modifier = Modifier
                 .weight(0.5f),
-            textAlign = TextAlign.Left
+            textAlign = TextAlign.Left,
+            color = color
         )
     }
 }

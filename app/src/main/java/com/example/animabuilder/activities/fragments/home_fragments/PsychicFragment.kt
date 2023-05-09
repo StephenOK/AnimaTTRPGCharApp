@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,12 +11,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
+import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
@@ -35,35 +41,57 @@ fun PsychicFragment(
     openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ) {
-    LazyColumn{
-        //display character's Psychic Potential
-        item{Text(text = stringResource(R.string.psyPotentialLabel) + psyFragVM.potentialTotal.collectAsState().value)}
-
-        //implement psychic point investment into psychic potential
-        item{
-            Row {
-                Text(text = stringResource(R.string.pointsInPotential))
-                NumberInput(
-                    inputText = psyFragVM.pointsInPotential.collectAsState().value,
-                    inputFunction = {psyFragVM.setPointsInPotential(it.toInt())},
-                    emptyFunction = {psyFragVM.setPointsInPotential("")},
-                    modifier = Modifier.weight(0.2f)
-                )
-            }
-        }
-
-        //display psychic point and projection inputs
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        //display psychic potential, point, and projection inputs
         items(psyFragVM.buyItems){
             PsychicPurchaseTable(it, homePageVM)
         }
 
+        //implement innate slot purchase input
+        item{
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = stringResource(R.string.innateSlotLabel),
+                    modifier = Modifier
+                        .weight(0.4f)
+                )
+                NumberInput(
+                    inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
+                    inputFunction = {psyFragVM.setInnateSlotDisplay(it.toInt())},
+                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")},
+                    modifier = Modifier
+                        .weight(0.2f)
+                )
+            }
+        }
+
+        item{Spacer(Modifier.height(20.dp))}
+
         //display currently free psychic points
         item{
-            Text(
-                text = stringResource(R.string.freePsyPointLabel) + psyFragVM.freePsyPoints.collectAsState().value,
+            InfoRow(
+                stringResource(R.string.freePsyPointLabel),
+                psyFragVM.freePsyPoints.collectAsState().value,
                 color = psyFragVM.freePointColor.collectAsState().value
             )
         }
+
+        item{Spacer(Modifier.height(10.dp))}
 
         //display discipline info
         items(psyFragVM.allDisciplines){
@@ -71,18 +99,6 @@ fun PsychicFragment(
                 it,
                 openDetailAlert
             )
-        }
-
-        //implement innate slot purchase input
-        item{
-            Row{
-                Text(text = stringResource(R.string.innateSlotLabel))
-                NumberInput(
-                    inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
-                    inputFunction = {psyFragVM.setInnateSlotDisplay(it.toInt())},
-                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")}
-                )
-            }
         }
     }
 }
@@ -98,23 +114,66 @@ private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
     homePageVM: HomePageViewModel
 ){
-    //display title of this section
-    Row{Text(text = stringResource(tableData.title))}
-    Row{
+    Row(verticalAlignment = Alignment.CenterVertically){
+        Spacer(Modifier.weight(0.25f))
+        Text(
+            text = stringResource(R.string.baseLabel),
+            modifier = Modifier
+                .weight(0.25f),
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource(R.string.boughtLabel),
+            modifier = Modifier
+                .weight(0.25f),
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource(R.string.totalLabel),
+            modifier = Modifier
+                .weight(0.25f),
+            textAlign = TextAlign.Center
+        )
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        //display title of this section
+        Text(
+            text = stringResource(tableData.title),
+            modifier = Modifier
+                .weight(0.25f)
+        )
+
         //display value's base input
-        Text(text = tableData.baseString)
+        Text(
+            text = tableData.baseString().toString(),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .weight(0.25f)
+        )
 
         //input for user purchased value
         NumberInput(
             inputText = tableData.purchaseAmount.collectAsState().value,
             inputFunction = {tableData.setPurchaseAmount(it.toInt())},
             emptyFunction = {tableData.setPurchaseAmount("")},
+            modifier = Modifier
+                .weight(0.25f),
             postRun = {homePageVM.updateExpenditures()},
             color = tableData.textColor.collectAsState().value
         )
 
         //display value's final total
-        Text(text = tableData.totalAmount.collectAsState().value)
+        Text(
+            text = tableData.totalAmount.collectAsState().value,
+            modifier = Modifier
+                .weight(0.25f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -130,18 +189,32 @@ private fun DisciplineDisplay(
     discipline: PsychicFragmentViewModel.DisciplineItemData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    Column {
-        Row(Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+        ) {
             //create a checkbox for any discipline that isn't Matrix Powers
             if(discipline.name != R.string.matrixLabel) {
                 Checkbox(
                     checked = discipline.investedIn.collectAsState().value,
-                    onCheckedChange = {discipline.setInvestedIn(it)}
+                    onCheckedChange = {discipline.setInvestedIn(it)},
+                    modifier = Modifier.weight(0.1f)
                 )
             }
+            else
+                Spacer(Modifier.weight(0.1f))
 
             //button to display Psychic Powers
-            Button(onClick = {discipline.toggleOpen()}) {
+            Button(
+                onClick = {discipline.toggleOpen()},
+                modifier = Modifier
+                    .weight(0.5f)
+            ) {
                 Text(text = stringResource(discipline.name))
             }
         }
@@ -171,28 +244,42 @@ private fun PsyPowerRow(
     power: PsychicFragmentViewModel.PowerItemData,
     openDetailAlert: (String, @Composable () -> Unit) -> Unit
 ){
-    Row{
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //checkbox to select or deselect this power
         Checkbox(
             checked = power.powerInvestedIn.collectAsState().value,
-            onCheckedChange = {power.setPowerInvestedIn(it)}
+            onCheckedChange = {power.setPowerInvestedIn(it)},
+            modifier = Modifier
+                .weight(0.1f)
         )
-        Text(text = power.item.name)
+        Text(
+            text = power.item.name,
+            modifier = Modifier
+                .weight(0.3f)
+        )
 
         //input for psychic point enhancement
         NumberInput(
             inputText = power.pointInvestment.collectAsState().value,
             inputFunction = {power.setPointInvestment(it.toInt())},
             emptyFunction = {power.setPointInvestment("")},
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier.weight(0.18f)
         )
 
-        Text(text = power.bonusGained.collectAsState().value)
+        Text(
+            text = power.bonusGained.collectAsState().value,
+            modifier = Modifier
+                .weight(0.17f),
+            textAlign = TextAlign.Center
+        )
 
         //power's detail button
         DetailButton(
             onClick = {openDetailAlert(power.item.name) @Composable{PowerDetails(power.item)}},
             modifier = Modifier
+                .weight(0.25f)
         )
     }
 }
@@ -224,4 +311,16 @@ val PowerDetails = @Composable{power: PsychicPower ->
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PsychicPreview(){
+    val charInstance = BaseCharacter()
+    val psyFragVM = PsychicFragmentViewModel(charInstance.psychic, charInstance.primaryList.dex.outputMod.value)
+    val homePageFrag = HomePageViewModel(charInstance)
+
+    psyFragVM.allDisciplines[0].toggleOpen()
+
+    PsychicFragment(psyFragVM, {_, _, -> }, homePageFrag)
 }

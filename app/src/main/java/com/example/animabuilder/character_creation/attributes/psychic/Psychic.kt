@@ -302,7 +302,7 @@ class Psychic(private val charInstance: BaseCharacter){
      * @return true if power is legally acquired
      */
     fun legalBuy(item: PsychicPower, discipline: Discipline): Boolean{
-        if(disciplineInvestment.contains(discipline)) {
+        if(disciplineInvestment.contains(discipline) || (discipline == matrixPowers && legalDisciplines.size > 0)) {
             //add no matter what if it is level 1 or 0
             if (item.level <= 1)
                 return true
@@ -335,7 +335,7 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Removes a discipline from the legally acquirable list.
      *
-     * @paraam input integer indicator of a particular discipline
+     * @param input integer indicator of a particular discipline
      */
     fun removeLegalDisciplineFromInt(input: Int){
         //get the indicated discipline
@@ -351,7 +351,7 @@ class Psychic(private val charInstance: BaseCharacter){
      * @param input discipline to be removed from the legal list
      */
     fun removeLegalDiscipline(input: Discipline){
-        //remove the item from the legaal list
+        //remove the item from the legal list
         legalDisciplines.remove(input)
 
         //remove from the taken list
@@ -365,12 +365,14 @@ class Psychic(private val charInstance: BaseCharacter){
      * @param discipline Psychic Discipline to check for legality of
      */
     fun removeIllegal(discipline: Discipline){
+        val toRemove = mutableListOf<PsychicPower>()
         //remove any illegal powers of this discipline
         masteredPowers.forEach{
             if(!legalBuy(it.key, discipline))
-                masteredPowers -= it.key
+                toRemove += it.key
         }
 
+        toRemove.forEach{masteredPowers.remove(it)}
         recalcPsyPointsSpent()
     }
 

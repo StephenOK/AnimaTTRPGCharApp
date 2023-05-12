@@ -16,7 +16,7 @@ class Gems: GeneralCategory(null) {
     )
 
     val various = GeneralEquipment(
-        "Various Gens",
+        "Various Gems",
         100.0,
         CoinType.Gold,
         null,

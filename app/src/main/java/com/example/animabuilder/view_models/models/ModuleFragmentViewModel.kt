@@ -49,6 +49,37 @@ class ModuleFragmentViewModel(
     //initialize list of style module checkboxes
     val allStyles = mutableMapOf<StyleModule, MutableState<Boolean>>()
 
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    private val _detailName = MutableStateFlow("")
+    val detailName = _detailName.asStateFlow()
+
+    private val _detailItem = MutableStateFlow<Any?>(null)
+    val detailItem = _detailItem.asStateFlow()
+
+    fun setDetailItem(input: Weapon){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
+
+    fun setDetailItem(name: String, input: ArchetypeData){
+        _detailName.update{name}
+        _detailItem.update{input}
+    }
+
+    fun setDetailItem(input: StyleModule){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
+
+    fun setDetailItem(input: MartialArt){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
+
     /**
      * Sets the character's primary weapon to the inputted item.
      *

@@ -1,6 +1,5 @@
 package com.example.animabuilder.view_models
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.animabuilder.character_creation.BaseCharacter
@@ -17,10 +16,9 @@ import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
 import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
 import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
 
-class CustomFactory (
+class CustomFactory(
     private val viewModel: Class<*>,
-    private val charInstance: BaseCharacter,
-    private val context: Context
+    private val charInstance: BaseCharacter
 ): ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(viewModel)){
@@ -37,8 +35,7 @@ class CustomFactory (
 
                 CharacterFragmentViewModel::class.java ->{
                     return CharacterFragmentViewModel(
-                        charInstance,
-                        context
+                        charInstance
                     ) as T
                 }
 
@@ -71,8 +68,7 @@ class CustomFactory (
 
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
-                        charInstance.ki,
-                        context
+                        charInstance.ki
                     ) as T
                 }
 

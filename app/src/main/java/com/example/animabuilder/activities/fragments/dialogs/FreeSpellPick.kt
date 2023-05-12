@@ -11,7 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
-import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
 import com.example.animabuilder.view_models.models.MagicFragmentViewModel
 
 /**
@@ -20,14 +19,10 @@ import com.example.animabuilder.view_models.models.MagicFragmentViewModel
  * Allows display of description of the available spells.
  *
  * @param magFragVM viewModel for magic page and data
- * @param detailContents form of the contents for the detail alert
- * @param openDetailAlert function to run on detail button press
  */
 @Composable
 fun FreeSpellPick(
-    magFragVM: MagicFragmentViewModel,
-    detailContents: @Composable (Spell) -> Unit,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    magFragVM: MagicFragmentViewModel
 ){
     //determine which level of spells to display
     val freeList = when (magFragVM.freeLevel.collectAsState().value){
@@ -54,9 +49,7 @@ fun FreeSpellPick(
                     if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getSpellHeld(it)){
                         PickFreeRow(
                             magFragVM,
-                            it,
-                            openDetailAlert,
-                            detailContents
+                            it
                         )
                     }
                 }
@@ -80,15 +73,11 @@ fun FreeSpellPick(
  *
  * @param magFragVM source of currently selected spell
  * @param displayItem spell associated with this row
- * @param openDetailAlert function to run on opening the spell's details
- * @param detailContents composable to send to the DetailAlert when called
  */
 @Composable
 private fun PickFreeRow(
     magFragVM: MagicFragmentViewModel,
-    displayItem: FreeSpell,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
-    detailContents: @Composable (Spell) -> Unit
+    displayItem: FreeSpell
 ){
     Row{
         //radio button to denote user's selection
@@ -100,7 +89,10 @@ private fun PickFreeRow(
         Text(text = displayItem.name)
         //button to show the spell's details
         DetailButton(
-            onClick = {openDetailAlert(displayItem.name) @Composable{detailContents(displayItem)}},
+            onClick = {
+                magFragVM.setDetailItem(displayItem)
+                magFragVM.toggleDetailAlertOpen()
+            },
             modifier = Modifier
         )
     }

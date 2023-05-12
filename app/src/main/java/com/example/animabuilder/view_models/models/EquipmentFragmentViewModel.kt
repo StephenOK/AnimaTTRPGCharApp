@@ -21,20 +21,36 @@ import kotlinx.coroutines.flow.update
 class EquipmentFragmentViewModel(
     private val inventory: Inventory
 ) : ViewModel() {
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    private val _detailTitle = MutableStateFlow("")
+    val detailTitle = _detailTitle.asStateFlow()
+
+    private val _detailItem = MutableStateFlow<GeneralEquipment?>(null)
+    val detailItem = _detailItem.asStateFlow()
+
+    fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    fun setDetailItem(input: GeneralEquipment){
+        _detailTitle.update{input.name}
+        _detailItem.update{input}
+    }
+
     //initialize data for all coin maximums
     val maxGold = MaximumData(
         R.string.maxGoldLabel,
-        inventory.maxGold.value
+        {inventory.maxGold.value}
     ){inventory.setMaxGold(it)}
 
     val maxSilver = MaximumData(
         R.string.maxSilverLabel,
-        inventory.maxSilver.value
+        {inventory.maxSilver.value}
     ){inventory.setMaxSilver(it)}
 
     val maxCopper = MaximumData(
         R.string.maxCopperLabel,
-        inventory.maxCopper.value
+        {inventory.maxCopper.value}
     ){inventory.setMaxCopper(it)}
 
     //collect all maximum data
@@ -164,11 +180,11 @@ class EquipmentFragmentViewModel(
      */
     class MaximumData(
         val nameRef: Int,
-        maxInput: Int,
+        val maxInput: () -> Int,
         val changeAmount: (Int) -> Unit
     ){
         //initialize maximum string display
-        private val _maxValue = MutableStateFlow(maxInput.toString())
+        private val _maxValue = MutableStateFlow(maxInput().toString())
         val maxValue = _maxValue.asStateFlow()
 
         /**
@@ -467,5 +483,13 @@ class EquipmentFragmentViewModel(
         }
 
         return null
+    }
+
+    fun refreshPage(){
+        allQuantityMaximums.forEach{it.setMaxValue(it.maxInput().toString())}
+        allCategoryData.forEach{
+            if(it.catOpen.value)
+                it.toggleCatOpen()
+        }
     }
 }

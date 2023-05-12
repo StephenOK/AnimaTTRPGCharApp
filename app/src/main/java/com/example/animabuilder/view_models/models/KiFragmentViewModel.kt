@@ -1,10 +1,8 @@
 package com.example.animabuilder.view_models.models
 
-import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.KiStat
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -18,11 +16,9 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding ki fragment.
  *
  * @param ki character's ki ability data
- * @param context source of string data used in this section
  */
 class KiFragmentViewModel(
-    private val ki: Ki,
-    context: Context
+    private val ki: Ki
 ): ViewModel() {
     //initialize remaining martial knowledge display
     private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value.toString())
@@ -47,6 +43,27 @@ class KiFragmentViewModel(
     //initialize open state of custom technique dialog
     private val _customTechOpen = MutableStateFlow(false)
     val customTechOpen = _customTechOpen.asStateFlow()
+
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    private val _detailName = MutableStateFlow("")
+    val detailName = _detailName.asStateFlow()
+
+    private val _detailItem = MutableStateFlow<Any?>(null)
+    val detailItem = _detailItem.asStateFlow()
+
+    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    fun setDetailItem(input: KiAbility){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
+
+    fun setDetailItem(input: Technique){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
 
     //initialize map of all ki ability checkboxes
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
@@ -231,42 +248,42 @@ class KiFragmentViewModel(
 
     //initialize all ki items for each relevant primary characteristic
     private val kiSTR = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[0],
+        0,
         ki.strKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiDEX = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[1],
+        1,
         ki.dexKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiAGI = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[2],
+        2,
         ki.agiKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiCON = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[3],
+        3,
         ki.conKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiPOW = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[4],
+        4,
         ki.powKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiWP = KiRowData(
-        context.resources.getStringArray(R.array.primaryCharArray)[5],
+        5,
         ki.wpKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
@@ -284,7 +301,7 @@ class KiFragmentViewModel(
      * @param setTotalAcc function to run to update ki accumulation total
      */
     class KiRowData(
-        val title: String,
+        val title: Int,
         val item: KiStat,
         val setTotalPoints: () -> Unit,
         val setTotalAcc: () -> Unit

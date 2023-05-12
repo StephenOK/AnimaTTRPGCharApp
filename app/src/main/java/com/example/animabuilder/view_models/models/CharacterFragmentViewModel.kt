@@ -1,6 +1,5 @@
 package com.example.animabuilder.view_models.models
 
-import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -19,11 +18,9 @@ import kotlinx.coroutines.flow.update
  * Works on variables with the corresponding character fragment.
  *
  * @param charInstance object that holds all of the character's stats
- * @param context context passed from the HomePageFragment for obtaining resources
  */
 class CharacterFragmentViewModel(
-    private val charInstance: BaseCharacter,
-    context: Context
+    private val charInstance: BaseCharacter
 ): ViewModel() {
     //initialize input for the character's name
     private val _nameInput = MutableStateFlow(charInstance.charName.value)
@@ -231,7 +228,7 @@ class CharacterFragmentViewModel(
     //set race dropdown data
     val raceDropdown = DropdownData(
         R.string.raceText,
-        context.resources.getStringArray(R.array.raceArray),
+        R.array.raceArray,
         charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value)
     ) {
         charInstance.setOwnRace(it)
@@ -243,7 +240,7 @@ class CharacterFragmentViewModel(
     //set class dropdown data
     private val classDropdown = DropdownData(
         R.string.classText,
-        context.resources.getStringArray(R.array.classArray),
+        R.array.classArray,
         charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
     ) {
         charInstance.setOwnClass(it)
@@ -253,7 +250,7 @@ class CharacterFragmentViewModel(
     //set level dropdown data
     private val levelDropdown = DropdownData(
         R.string.levelText,
-        context.resources.getStringArray(R.array.levelCountArray),
+        R.array.levelCountArray,
         charInstance.lvl.value
     ) {
         charInstance.setLvl(it)
@@ -265,7 +262,7 @@ class CharacterFragmentViewModel(
 
     //set all primary characteristic data
     private val strengthData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[0],
+        0,
         charInstance.primaryList.str,
         {setBonusColor()},
     ){
@@ -274,13 +271,13 @@ class CharacterFragmentViewModel(
     }
 
     private val dexterityData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[1],
+        1,
         charInstance.primaryList.dex,
         {setBonusColor()}
     ){}
 
     private val agilityData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[2],
+        2,
         charInstance.primaryList.agi,
         {
             setBonusColor()
@@ -289,31 +286,31 @@ class CharacterFragmentViewModel(
     ){}
 
     private val constitutionData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[3],
+        3,
         charInstance.primaryList.con,
         {setBonusColor()}
     ){this.setSizeInput()}
 
     private val intelligenceData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[6],
+        6,
         charInstance.primaryList.int,
         {setBonusColor()}
     ){}
 
     private val powerData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[4],
+        4,
         charInstance.primaryList.pow,
         {setBonusColor()}
     ){}
 
     private val willpowerData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[5],
+        5,
         charInstance.primaryList.wp,
         {setBonusColor()}
     ){}
 
     private val perceptionData = PrimeCharacteristicData(
-        context.resources.getStringArray(R.array.primaryCharArray)[7],
+        7,
         charInstance.primaryList.per,
         {setBonusColor()}
     ){}
@@ -332,7 +329,7 @@ class CharacterFragmentViewModel(
      */
     class DropdownData(
         val nameRef: Int,
-        val options: Array<String>,
+        val options: Int,
         initialIndex: Int,
         val onChange: (Int) -> Unit
     ){
@@ -341,7 +338,7 @@ class CharacterFragmentViewModel(
         val size = _size.asStateFlow()
 
         //initialize the selected item
-        private val _output = MutableStateFlow(options[initialIndex])
+        private val _output = MutableStateFlow(initialIndex)
         val output = _output.asStateFlow()
 
         //initialize dropdown's open state
@@ -362,13 +359,13 @@ class CharacterFragmentViewModel(
         /**
          * Sets the item to the indicated index.
          *
-         * @param index location of the item selection
+         * @param item new string of the selection
          */
-        fun setOutput(index: Int){
-            _output.update{options[index]}
+        fun setOutput(item: Int){
+            _output.update{item}
 
             //perform the required change and close the dropdown
-            onChange(index)
+            onChange(item)
             openToggle()
         }
 
@@ -393,7 +390,7 @@ class CharacterFragmentViewModel(
      * @param changeFunc function that accesses the size category display when it needs to be updated
      */
     class PrimeCharacteristicData(
-        val name: String,
+        val name: Int,
         private val primaryStat: PrimaryCharacteristic,
         val bonusColorChange: () -> Unit,
         val changeFunc: () -> Unit

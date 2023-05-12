@@ -36,6 +36,22 @@ class PsychicFragmentViewModel(
     )
     val freePointColor = _freePointColor.asStateFlow()
 
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    private val _detailTitle = MutableStateFlow("")
+    val detailTitle = _detailTitle.asStateFlow()
+
+    private val _detailItem = MutableStateFlow<PsychicPower?>(null)
+    val detailItem = _detailItem.asStateFlow()
+
+    fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    fun setDetailItem(input: PsychicPower){
+        _detailTitle.update{input.name}
+        _detailItem.update{input}
+    }
+
     /**
      * Updates the free psychic points display to reflect the value held in the character.
      */

@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.activities.fragments.dialogs.AdvantageCostPick
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
@@ -44,13 +45,11 @@ import com.example.animabuilder.view_models.models.HomePageViewModel
  * Also displays advantages of their character's current race.
  *
  * @param advantageFragVM viewModel to run with this fragment
- * @param openDetailAlert function to run when opening an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun AdvantageFragment(
     advantageFragVM: AdvantageFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //initialize local context
@@ -84,7 +83,6 @@ fun AdvantageFragment(
                 AdvantageDisplay(
                     advantageFragVM,
                     it,
-                    openDetailAlert,
                     homePageVM
                 )
             }
@@ -97,7 +95,6 @@ fun AdvantageFragment(
                 HeldAdvantageDisplay(
                     advantageFragVM,
                     it,
-                    openDetailAlert,
                     homePageVM
                 )
             }
@@ -107,7 +104,7 @@ fun AdvantageFragment(
             //display all advantages acquired from their race
             item { Text(text = "Racial Advantages") }
             items(advantageFragVM.getRacialAdvantages()) {
-                AdvantageRow(it, null, openDetailAlert, {}, null)
+                AdvantageRow(it, advantageFragVM, null, {}, null)
             }
         }
     }
@@ -148,6 +145,12 @@ fun AdvantageFragment(
             }
         )
     }
+
+    if(advantageFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            advantageFragVM.detailItem.collectAsState().value!!.name,
+            advantageFragVM.detailItem.collectAsState().value!!
+        ){advantageFragVM.toggleDetailAlertOn()}
 }
 
 /**
@@ -155,14 +158,12 @@ fun AdvantageFragment(
  *
  * @param advantageFragVM viewModel for the advantage fragment
  * @param advantageList advantage data to display
- * @param openDetailAlert function to run when opening an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun AdvantageDisplay(
     advantageFragVM: AdvantageFragmentViewModel,
     advantageList: AdvantageFragmentViewModel.AdvantageButtonData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //get local context
@@ -194,8 +195,8 @@ private fun AdvantageDisplay(
                     //display advantage as an obtainable item
                     AdvantageRow(
                         it,
+                        advantageFragVM,
                         null,
-                        openDetailAlert,
                         {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Advantage")})
                     {
                         //if more selections need to be made
@@ -238,15 +239,14 @@ private fun AdvantageDisplay(
  *
  * @param item advantage in this display
  * @param takenAddition potential additional information to display
- * @param openDetailAlert function to run when opening an item's details
  * @param button display image on the row's button
  * @param buttonAction what the button does in its context
  */
 @Composable
 private fun AdvantageRow(
     item: Advantage,
+    advantageFragVM: AdvantageFragmentViewModel,
     takenAddition: String?,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     button: @Composable () -> Unit,
     buttonAction: (() -> Unit)?,
 ){
@@ -281,7 +281,10 @@ private fun AdvantageRow(
 
         //details button
         DetailButton(
-            onClick = {openDetailAlert(nameString){AdvantageDetails(item)}},
+            onClick = {
+                advantageFragVM.setDetailItem(item)
+                advantageFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier
                 .weight(0.25f)
         )
@@ -293,14 +296,12 @@ private fun AdvantageRow(
  *
  * @param advantageFragVM viewModel that holds data for this object
  * @param item advantage to display
- * @param openDetailAlert function to run when opening an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun HeldAdvantageDisplay(
     advantageFragVM: AdvantageFragmentViewModel,
     item: Advantage,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //retrieve additional information on the advantage
@@ -312,8 +313,8 @@ private fun HeldAdvantageDisplay(
     //display the advantage row
     AdvantageRow(
         item,
+        advantageFragVM,
         nameAddition,
-        openDetailAlert,
         {Icon(imageVector = Icons.Filled.Close, contentDescription = "Add Advantage")}
     )
     {
@@ -323,35 +324,6 @@ private fun HeldAdvantageDisplay(
             advantageFragVM.removeAdvantage(item)
             homePageVM.updateExpenditures()
         }
-    }
-}
-
-//detail page for an advantage
-val AdvantageDetails = @Composable{item: Advantage ->
-    //retrieve the costs of the item
-    var costString = ""
-    item.cost.forEach{
-        costString += "$it "
-    }
-
-    Column{
-        //display advantage's description
-        Row{Text(text = item.description)}
-
-        //display advantage's effect, if one given
-        if(item.effect != null)
-            Row{Text(text = "Effect: " + item.effect)}
-
-        //display advantage's restriction, if one given
-        if(item.restriction != null)
-            Row{Text(text = "Restriction: " + item.restriction)}
-
-        //display advantage's special, if one given
-        if(item.special != null)
-            Row{Text(text = "Special: " + item.special)}
-
-        //display available costs
-        Row{Text(text = "Cost: $costString")}
     }
 }
 
@@ -368,5 +340,5 @@ fun AdvantagePreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    AdvantageFragment(advantageFragVM, {_, _ -> }, homePageVM)
+    AdvantageFragment(advantageFragVM, homePageVM)
 }

@@ -21,6 +21,7 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.activities.fragments.dialogs.FreeSpellPick
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
@@ -37,13 +38,11 @@ import com.example.animabuilder.view_models.models.MagicFragmentViewModel
  * User can change the free spells they have in this fragment.
  *
  * @param magFragVM viewModel to run with this fragment
- * @param openDetailAlert function to run when opening an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ) {
     LazyColumn(
@@ -250,8 +249,7 @@ fun MagicFragment(
         items(magFragVM.allBooks){
             SpellBookInvestment(
                 magFragVM,
-                it,
-                openDetailAlert
+                it
             )
         }
 
@@ -275,15 +273,13 @@ fun MagicFragment(
             if(it is FreeSpell)
                 FreeSpellExchange(
                     magFragVM,
-                    it,
-                    openDetailAlert
+                    it
                 )
             else
                 SpellRow(
                     magFragVM,
                     it,
-                    false,
-                    openDetailAlert
+                    false
                 ) {}
 
             Row{Spacer(Modifier.height(3.dp))}
@@ -293,10 +289,14 @@ fun MagicFragment(
     //show free spell dialog if displayed
     if(magFragVM.freeExchangeOpen.collectAsState().value)
         FreeSpellPick(
-            magFragVM,
-            SpellDetails,
-            openDetailAlert
+            magFragVM
         )
+
+    if(magFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            magFragVM.detailTitle.collectAsState().value,
+            magFragVM.detailItem.collectAsState().value!!
+        ) {magFragVM.toggleDetailAlertOpen()}
 }
 
 /**
@@ -397,13 +397,11 @@ private fun ZeonPurchaseItem(
  *
  * @param magFragVM viewModel that manages the data for this section of data
  * @param spellData SpellRowData for the individual element
- * @param openDetailAlert function to run when looking at an item's details
  */
 @Composable
 private fun SpellBookInvestment(
     magFragVM: MagicFragmentViewModel,
-    spellData: MagicFragmentViewModel.SpellRowData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    spellData: MagicFragmentViewModel.SpellRowData
 ){
     Column {
         Row(
@@ -468,8 +466,7 @@ private fun SpellBookInvestment(
                         SpellRow(
                             magFragVM,
                             it,
-                            true,
-                            openDetailAlert
+                            true
                         ) { magFragVM.reflectPrimaryElement(); magFragVM.setMagicLevelSpent()}
 
                         //increment free spell level
@@ -494,7 +491,6 @@ private fun SpellBookInvestment(
  * @param magFragVM viewModel that manages the data for this page
  * @param displayItem spell to display
  * @param buyable whether the row is a purchasable individual spell or just a display
- * @param openDetailAlert function to run when opening this spell's details
  * @param updateList function to run on a button change
  */
 @Composable
@@ -502,7 +498,6 @@ private fun SpellRow(
     magFragVM: MagicFragmentViewModel,
     displayItem: Spell,
     buyable: Boolean,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     updateList: () -> Unit
 ){
     Row(
@@ -530,7 +525,10 @@ private fun SpellRow(
 
         //create display button
         DetailButton(
-            onClick = {openDetailAlert(displayItem.name) @Composable{SpellDetails(displayItem)}},
+            onClick = {
+                magFragVM.setDetailItem(displayItem)
+                magFragVM.toggleDetailAlertOpen()
+            },
             modifier = Modifier
                 .weight(0.25f)
         )
@@ -653,13 +651,11 @@ private fun BuySingleFreeSpellButton(
  *
  * @param magFragVM viewModel that manages the data for this page
  * @param currentFreeSpell free spell currently in the slot
- * @param openDetailAlert function to run when looking at an item's details
  */
 @Composable
 private fun FreeSpellExchange(
     magFragVM: MagicFragmentViewModel,
-    currentFreeSpell: FreeSpell,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    currentFreeSpell: FreeSpell
 ){
     //get local context
     val context = LocalContext.current
@@ -706,59 +702,13 @@ private fun FreeSpellExchange(
         //show detail button if spell found
         else
             DetailButton(
-                onClick = {openDetailAlert(currentFreeSpell.name)
-                @Composable {SpellDetails(currentFreeSpell)}},
+                onClick = {
+                    magFragVM.setDetailItem(currentFreeSpell)
+                    magFragVM.toggleDetailAlertOpen()
+                },
                 modifier = Modifier
                     .weight(0.25f)
             )
-    }
-}
-
-//contents of the spell's detail dialog
-val SpellDetails = @Composable {spell: Spell ->
-    //get active or passive text
-    val action =
-        if(spell.isActive)
-            stringResource(R.string.activeLabel)
-        else
-            stringResource(R.string.passiveLabel)
-
-    //get daily text if able
-    val daily =
-        if(spell.isDaily)
-            stringResource(R.string.dailyLabel)
-        else
-            ""
-
-    //create string of the spell's categories
-    var spellType = ""
-    spell.type.forEach{
-        spellType += it.name + " "
-    }
-
-    //create string of forbidden elements if this is a free spell
-    var forbiddenList = ""
-    if(spell is FreeSpell){
-        spell.forbiddenElements.forEach {
-            forbiddenList += it.name + " "
-        }
-    }
-
-    Column{
-        Row{Text(text = stringResource(R.string.actionLabel) + action)}
-        Row{Text(text = stringResource(R.string.elementLabel) + spell.inBook.name)}
-        Row{Text(text = stringResource(R.string.levelText) + spell.level.toString())}
-        Row{Text(text = stringResource(R.string.zeonCostLabel) + spell.zCost.toString())}
-        Row{Text(text = spell.effect)}
-        Row{Text(text = stringResource(R.string.addedEffectLabel) + spell.addedEffect)}
-        Row{Text(text = stringResource(R.string.maxZeonLabel) + spell.zMax)}
-        if(spell.maintenance != null)
-            Row{Text(text = stringResource(R.string.maintenanceLabel) + "1 every " + spell.maintenance + daily)}
-        else
-            Row{Text(text = stringResource(R.string.noneLabel))}
-        Row{Text(text = stringResource(R.string.typeLabel) + spellType)}
-        if(spell is FreeSpell)
-            Row{Text(text = stringResource(R.string.forbiddenLabel) + forbiddenList)}
     }
 }
 
@@ -776,5 +726,5 @@ fun MagicPreview(){
     magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[2]!!)
     magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[3]!!)
 
-    MagicFragment(magFragVM, {_, _ -> }, homePageVM)
+    MagicFragment(magFragVM, homePageVM)
 }

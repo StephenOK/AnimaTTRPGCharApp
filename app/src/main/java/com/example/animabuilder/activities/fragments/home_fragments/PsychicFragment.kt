@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,8 +20,8 @@ import com.example.animabuilder.DetailButton
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
 
@@ -32,13 +31,11 @@ import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
  * User can select the psychic powers their character can use.
  *
  * @param psyFragVM viewModel that is to be run on this page
- * @param openDetailAlert function to run when looking at an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ) {
     LazyColumn(
@@ -97,10 +94,16 @@ fun PsychicFragment(
         items(psyFragVM.allDisciplines){
             DisciplineDisplay(
                 it,
-                openDetailAlert
+                psyFragVM
             )
         }
     }
+
+    if(psyFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            psyFragVM.detailTitle.collectAsState().value,
+            psyFragVM.detailItem.collectAsState().value!!
+        ){psyFragVM.toggleDetailAlertOpen()}
 }
 
 /**
@@ -182,12 +185,12 @@ private fun PsychicPurchaseTable(
  * that discipline.
  *
  * @param discipline information regarding the specific Psychic Discipline
- * @param openDetailAlert function to run when looking at a power's details
+ * @param psyFragVM viewModel that manages this fragment
  */
 @Composable
 private fun DisciplineDisplay(
     discipline: PsychicFragmentViewModel.DisciplineItemData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    psyFragVM: PsychicFragmentViewModel
 ){
     Column(
         modifier = Modifier
@@ -225,7 +228,7 @@ private fun DisciplineDisplay(
                 discipline.powerList.forEach {
                     PsyPowerRow(
                         it,
-                        openDetailAlert
+                        psyFragVM
                     )
                 }
             }
@@ -237,12 +240,12 @@ private fun DisciplineDisplay(
  * Display for a Psychic Power.
  *
  * @param power the displayed object
- * @param openDetailAlert function to run when looking at a power's details
+ * @param psyFragVM viewModel that manages this page
  */
 @Composable
 private fun PsyPowerRow(
     power: PsychicFragmentViewModel.PowerItemData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    psyFragVM: PsychicFragmentViewModel
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -277,39 +280,13 @@ private fun PsyPowerRow(
 
         //power's detail button
         DetailButton(
-            onClick = {openDetailAlert(power.item.name) @Composable{PowerDetails(power.item)}},
+            onClick = {
+                psyFragVM.setDetailItem(power.item)
+                psyFragVM.toggleDetailAlertOpen()
+            },
             modifier = Modifier
                 .weight(0.25f)
         )
-    }
-}
-
-//detail display for the inputted Psychic Power
-val PowerDetails = @Composable{power: PsychicPower ->
-    //retrieve level, if power is active, and if power is maintained
-    val itemLevel = if(power.level > 0) power.level.toString() else stringResource(R.string.notApplicable)
-    val isActive = if(power.active) stringResource(R.string.activeLabel) else stringResource(R.string.passiveLabel)
-    val isMaintained = if(power.maintained) stringResource(R.string.yesLabel) else stringResource(R.string.noLabel)
-
-    Column{
-        //display power values
-        Row{Text(text = stringResource(R.string.levelText) + " $itemLevel") }
-        Row{Text(text = stringResource(R.string.actionLabel) + " $isActive")}
-        Row{Text(text = stringResource(R.string.maintenanceLabel) + " $isMaintained")}
-        Row{Text(text = power.description)}
-
-        Spacer(Modifier.height(20.dp))
-
-        //display power's Effects Table
-        power.effects.forEach{
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Text(text = stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)], modifier = Modifier.weight(0.5f))
-                Text(text = it, modifier = Modifier.weight(0.5f))
-            }
-        }
     }
 }
 
@@ -322,5 +299,5 @@ fun PsychicPreview(){
 
     psyFragVM.allDisciplines[0].toggleOpen()
 
-    PsychicFragment(psyFragVM, {_, _, -> }, homePageFrag)
+    PsychicFragment(psyFragVM, homePageFrag)
 }

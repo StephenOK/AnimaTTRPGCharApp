@@ -25,14 +25,39 @@ class AdvantageFragmentViewModel(
     private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent.value).toString())
     val creationPoints = _creationPoints.asStateFlow()
 
+    //initialize alert open state for removing The Gift
     private val _giftAlertOpen = MutableStateFlow(false)
     val giftAlertOpen = _giftAlertOpen.asStateFlow()
+
+    //initialize detail alert open state
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    //initialize item in detail alert
+    private val _detailItem = MutableStateFlow<Advantage?>(null)
+    val detailItem = _detailItem.asStateFlow()
 
     //initialize list of taken advantages
     val takenAdvantages = mutableStateListOf<Advantage>()
 
+    /**
+     * Toggles the open state of the Gift removal dialog.
+     */
     fun toggleGiftAlertOn(){_giftAlertOpen.update{!giftAlertOpen.value}}
 
+    /**
+     * Toggles the open state of the detail alert.
+     */
+    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    /**
+     * Sets the item to be displayed in the detail alert.
+     */
+    fun setDetailItem(item: Advantage){_detailItem.update{item}}
+
+    /**
+     * Retrieves the Gift advantage from the character, if they have it.
+     */
     fun getGift(): Advantage?{
         takenAdvantages.forEach{
             if(it.name == "The Gift")

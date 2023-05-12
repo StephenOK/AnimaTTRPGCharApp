@@ -22,6 +22,8 @@ import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.dialogs.CustomTechnique
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
+import com.example.animabuilder.activities.fragments.dialogs.TechContents
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
@@ -36,14 +38,12 @@ import com.example.animabuilder.view_models.models.KiFragmentViewModel
  * Dominion Techniques are taken and created in this page.
  *
  * @param kiFragVM viewModel to run for this page
- * @param openDetailAlert function to run when opening an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ) {
     //get fragment's context
@@ -163,8 +163,7 @@ fun KiFragment(
                     kiFragVM.getAllKiAbilities().forEach {
                         KiAbilityRow(
                             kiFragVM,
-                            it,
-                            openDetailAlert
+                            it
                         )
                     }
                 }
@@ -198,7 +197,7 @@ fun KiFragment(
                 ) {
                     //display each prebuilt technique
                     kiFragVM.getAllTechniques().forEach {
-                        TechniqueRow(kiFragVM, it, openDetailAlert)
+                        TechniqueRow(kiFragVM, it)
                     }
 
                     //button for custom technique creation
@@ -210,7 +209,7 @@ fun KiFragment(
 
                     //display custom techniques
                     kiFragVM.getCustomTechniques().forEach {
-                        TechniqueRow(kiFragVM, it, openDetailAlert)
+                        TechniqueRow(kiFragVM, it)
                     }
                 }
             }
@@ -219,7 +218,12 @@ fun KiFragment(
 
     //dialog for custom technique creation
     if(kiFragVM.customTechOpen.collectAsState().value)
-        CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM), TechContents)
+        CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM)){TechContents(it)}
+    if(kiFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            kiFragVM.detailName.collectAsState().value,
+            kiFragVM.detailItem.collectAsState().value!!
+        ){kiFragVM.toggleDetailAlertOn()}
 }
 
 /**
@@ -238,7 +242,7 @@ private fun KiFromStatRow(
     ){
         //display stat name
         Text(
-            text = kiRowData.title,
+            text = stringArrayResource(R.array.primaryCharArray)[kiRowData.title],
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .weight(0.13f)
@@ -285,13 +289,11 @@ private fun KiFromStatRow(
  *
  * @param kiFragVM viewModel managing this page's data
  * @param ability ki ability to display in this row
- * @param openDetailAlert function to run on opening an item's details
  */
 @Composable
 private fun KiAbilityRow(
     kiFragVM: KiFragmentViewModel,
-    ability: KiAbility,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    ability: KiAbility
 ){
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -319,7 +321,10 @@ private fun KiAbilityRow(
 
         //button to display ki ability details
         DetailButton(
-            onClick = {openDetailAlert(ability.name) @Composable { KiContents(ability) } },
+            onClick = {
+                kiFragVM.setDetailItem(ability)
+                kiFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier.weight(0.25f)
         )
     }
@@ -330,13 +335,11 @@ private fun KiAbilityRow(
  *
  * @param kiFragVM viewModel that is managing the data on this page
  * @param toShow technique associated with the row
- * @param openDetailAlert function to run when opening this item's details
  */
 @Composable
 private fun TechniqueRow(
     kiFragVM: KiFragmentViewModel,
-    toShow: Technique,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    toShow: Technique
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -372,56 +375,13 @@ private fun TechniqueRow(
 
         //give button to display technique's details
         DetailButton(
-            onClick = {openDetailAlert(toShow.name) @Composable {TechContents(toShow)}},
+            onClick = {
+                kiFragVM.setDetailItem(toShow)
+                kiFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier
                 .weight(0.25f)
         )
-    }
-}
-
-//detail composable for a ki ability
-val KiContents = @Composable
-{ability: KiAbility ->
-    Column{
-        val preString =
-            if(ability.prerequisites != null)
-                ability.prerequisites.name
-            else
-                "null"
-
-        InfoRow(stringResource(R.string.prereqLabel), preString)
-        Text(text = ability.description)
-    }
-}
-
-//detail composable for a technique
-val TechContents = @Composable
-{technique: Technique ->
-    Column {
-        technique.givenAbilities.forEach {
-            Row { Text(text = it.name + " " + it.effect) }
-        }
-
-        if (technique.isMaintained()){
-            Row {
-                Text(text = stringResource(R.string.maintenanceLabel))
-                for(index in 0..5){
-                    if(technique.maintArray[index] != 0)
-                        Text(text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")")
-                }
-            }
-        }
-
-        val kiBuilds = technique.statSpent()
-
-        for(index in 0..5){
-            if(kiBuilds[index] > 0)
-                InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
-        }
-
-        InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
-
-        Text(text = technique.description)
     }
 }
 
@@ -430,10 +390,10 @@ val TechContents = @Composable
 fun KiPreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki)
     kiFragVM.toggleTechListOpen()
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    KiFragment(kiFragVM, {_, _ -> }, homePageVM)
+    KiFragment(kiFragVM, homePageVM)
 }

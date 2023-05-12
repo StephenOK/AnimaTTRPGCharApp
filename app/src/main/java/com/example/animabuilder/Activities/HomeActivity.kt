@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.NavHost
@@ -23,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.animabuilder.R
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
-import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.view_models.CustomFactory
 import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 import com.example.animabuilder.view_models.models.CharacterFragmentViewModel
@@ -54,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
     enum class ScreenPage{
         Character,
         Combat,
-        Secondary_Characteristics,
+        SecondaryCharacteristics,
         Advantages,
         Modules,
         Ki,
@@ -77,9 +75,6 @@ class HomeActivity : AppCompatActivity() {
             BaseCharacter(File(this.filesDir, filename))
 
         setContent{
-            //get local context
-            val context = LocalContext.current
-
             //get scaffold state, coroutine scope, and navigation controller
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -87,52 +82,52 @@ class HomeActivity : AppCompatActivity() {
 
             //create viewModels for the home page and home alert items
             val homePageVM: HomePageViewModel by viewModels{
-                CustomFactory(HomePageViewModel::class.java, charInstance, context)
+                CustomFactory(HomePageViewModel::class.java, charInstance)
             }
 
             val homeAlertsVM: HomePageAlertViewModel by viewModels{
-                CustomFactory(HomePageAlertViewModel::class.java, charInstance, context)
+                CustomFactory(HomePageAlertViewModel::class.java, charInstance)
             }
 
             //create viewModels for each individual fragment
             val charFragVM: CharacterFragmentViewModel by viewModels{
-                CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(CharacterFragmentViewModel::class.java, charInstance)
             }
 
             val combatFragVM: CombatFragViewModel by viewModels{
-                CustomFactory(CombatFragViewModel::class.java, charInstance, context)
+                CustomFactory(CombatFragViewModel::class.java, charInstance)
             }
 
             val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
-                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance)
             }
 
             val advantageFragVM: AdvantageFragmentViewModel by viewModels{
-                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance)
             }
 
             val modFragVM: ModuleFragmentViewModel by viewModels{
-                CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(ModuleFragmentViewModel::class.java, charInstance)
             }
 
             val kiFragVM: KiFragmentViewModel by viewModels{
-                CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(KiFragmentViewModel::class.java, charInstance)
             }
 
             val magFragVM: MagicFragmentViewModel by viewModels{
-                CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(MagicFragmentViewModel::class.java, charInstance)
             }
 
             val summonFragVM: SummoningFragmentViewModel by viewModels{
-                CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(SummoningFragmentViewModel::class.java, charInstance)
             }
 
             val psyFragVM: PsychicFragmentViewModel by viewModels{
-                CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(PsychicFragmentViewModel::class.java, charInstance)
             }
 
             val equipFragVM: EquipmentFragmentViewModel by viewModels{
-                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
+                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance)
             }
 
             //scaffold for the home page
@@ -251,7 +246,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to secondary characteristics page
-                    composable(route = ScreenPage.Secondary_Characteristics.name){
+                    composable(route = ScreenPage.SecondaryCharacteristics.name){
                         secondaryFragVM.refreshPage()
                         SecondaryAbilityFragment(secondaryFragVM, homePageVM)
                     }
@@ -260,7 +255,6 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Advantages.name){
                         AdvantageFragment(
                             advantageFragVM,
-                            homeAlertsVM.openDetailAlert,
                             homePageVM
                         )
                     }
@@ -270,7 +264,6 @@ class HomeActivity : AppCompatActivity() {
                         modFragVM.refreshPage()
                         ModuleFragment(
                             modFragVM,
-                            homeAlertsVM.openDetailAlert,
                             homePageVM
                         )
                     }
@@ -280,7 +273,6 @@ class HomeActivity : AppCompatActivity() {
                         kiFragVM.refreshPage()
                         KiFragment(
                             kiFragVM,
-                            homeAlertsVM.openDetailAlert,
                             homePageVM
                         )
                     }
@@ -290,7 +282,6 @@ class HomeActivity : AppCompatActivity() {
                         magFragVM.refreshPage()
                         MagicFragment(
                             magFragVM,
-                            homeAlertsVM.openDetailAlert,
                             homePageVM
                         )
                     }
@@ -309,26 +300,20 @@ class HomeActivity : AppCompatActivity() {
                         psyFragVM.refreshPage()
                         PsychicFragment(
                             psyFragVM,
-                            homeAlertsVM.openDetailAlert,
                             homePageVM
                         )
                     }
 
                     //route to equipment page
                     composable(route = ScreenPage.Equipment.name){
-                        EquipmentFragment(
-                            equipFragVM,
-                            homeAlertsVM.openDetailAlert
-                        )
+                        equipFragVM.refreshPage()
+                        EquipmentFragment(equipFragVM)
                     }
                 }
 
                 //show exit alert if user opens it
                 if(homeAlertsVM.exitOpen.collectAsState().value)
                     ExitAlert(filename, charInstance) {homeAlertsVM.toggleExitAlert() }
-                //show detail alert if user opens one
-                if(homeAlertsVM.detailAlertOn.collectAsState().value)
-                    DetailAlert(homeAlertsVM)
             }
         }
     }

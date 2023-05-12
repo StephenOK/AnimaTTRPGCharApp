@@ -81,6 +81,22 @@ class MagicFragmentViewModel(
     private val _selectedFreeSpell = MutableStateFlow<FreeSpell?>(null)
     val selectedFreeSpell = _selectedFreeSpell.asStateFlow()
 
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    private val _detailTitle = MutableStateFlow("")
+    val detailTitle = _detailTitle.asStateFlow()
+
+    private val _detailItem = MutableStateFlow<Spell?>(null)
+    val detailItem = _detailItem.asStateFlow()
+
+    fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    fun setDetailItem(item: Spell){
+        _detailTitle.update{item.name}
+        _detailItem.update{item}
+    }
+
     fun isGifted(): Boolean{
         return charInstance.advantageRecord.getAdvantage("The Gift") != null
     }

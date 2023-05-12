@@ -1,9 +1,13 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
@@ -14,14 +18,20 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.activities.fragments.dialogs.EquipmentItemPurchase
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.CoinType
-import com.example.animabuilder.character_creation.equipment.general_goods.Availability
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralCategory
 import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
 import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
@@ -30,38 +40,76 @@ import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
  * Fragment that manages the character's inventory.
  *
  * @param equipFragVM viewModel that manages the character's data
- * @param openDetailAlert method to run when opening an item's details
  */
 @Composable
 fun EquipmentFragment(
-    equipFragVM: EquipmentFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    equipFragVM: EquipmentFragmentViewModel
 ) {
-    LazyColumn{
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 30.dp,
+                end = 30.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
         //create inputs for each maximum coin expenditure
         items(equipFragVM.allQuantityMaximums){MaximumDisplay(it)}
 
-        //display spent coin
-        item{
-            Row {
-                SpentDisplay(CoinType.Gold, equipFragVM.getCoinSpent(CoinType.Gold))
-                SpentDisplay(CoinType.Silver, equipFragVM.getCoinSpent(CoinType.Silver))
-                SpentDisplay(CoinType.Copper, equipFragVM.getCoinSpent(CoinType.Copper))
-            }
-        }
-
         if(equipFragVM.getBonusWealth() > 0){
+            item{Spacer(Modifier.height(10.dp))}
             item{
                 Text(text =
-                    stringResource(R.string.bonusWealthLabel) +
-                            equipFragVM.getBonusWealth().toString()
+                stringResource(R.string.bonusWealthLabel) +
+                        equipFragVM.getBonusWealth().toString() + " GC"
                 )
             }
         }
 
+        item{Spacer(Modifier.height(20.dp))}
+
+        //display spent coin
+        item{
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+            ){
+                SpentDisplay(
+                    CoinType.Gold,
+                    equipFragVM.getCoinSpent(CoinType.Gold),
+                    Modifier.weight(0.2f)
+                )
+                SpentDisplay(
+                    CoinType.Silver,
+                    equipFragVM.getCoinSpent(CoinType.Silver),
+                    Modifier.weight(0.2f)
+                )
+                SpentDisplay(
+                    CoinType.Copper,
+                    equipFragVM.getCoinSpent(CoinType.Copper),
+                    Modifier.weight(0.2f)
+                )
+            }
+        }
+
+        item{Spacer(Modifier.height(10.dp))}
+
         //display all purchasable items by category
         items(equipFragVM.allCategoryData){
-            CategoryButton(equipFragVM, it, openDetailAlert)
+            CategoryButton(equipFragVM, it)
+        }
+
+        item{Spacer(Modifier.height(20.dp))}
+
+        item{
+            Text(
+                text = stringResource(R.string.inventoryHeader),
+                textAlign = TextAlign.Center
+            )
         }
 
         //display current inventory
@@ -73,6 +121,11 @@ fun EquipmentFragment(
     //display purchase options alert if currently visible
     if(equipFragVM.itemPurchaseOpen.collectAsState().value)
         EquipmentItemPurchase(equipFragVM)
+    if(equipFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            equipFragVM.detailTitle.collectAsState().value,
+            equipFragVM.detailItem.collectAsState().value!!
+        ){equipFragVM.toggleDetailAlertOpen()}
 }
 
 /**
@@ -82,15 +135,27 @@ fun EquipmentFragment(
  */
 @Composable
 fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
-    //display header
-    Text(text = stringResource(input.nameRef))
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.7f),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        //display header
+        Text(
+            text = stringResource(input.nameRef),
+            modifier = Modifier
+                .weight(0.25f)
+        )
 
-    //display input
-    NumberInput(
-        inputText = input.maxValue.collectAsState().value,
-        inputFunction = {input.setMaxValue(it.toInt())},
-        emptyFunction = {input.setMaxValue("")}
-    )
+        //display input
+        NumberInput(
+            inputText = input.maxValue.collectAsState().value,
+            inputFunction = { input.setMaxValue(it.toInt()) },
+            emptyFunction = { input.setMaxValue("") },
+            modifier = Modifier
+                .weight(0.45f)
+        )
+    }
 }
 
 /**
@@ -98,16 +163,18 @@ fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
  *
  * @param equipFragVM viewModel managing this section
  * @param item category data for this section
- * @param openDetailAlert function to run when looking at an item's details
  */
 @Composable
 fun CategoryButton(
     equipFragVM: EquipmentFragmentViewModel,
-    item: EquipmentFragmentViewModel.CategoryData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    item: EquipmentFragmentViewModel.CategoryData
 ){
     //create button that displays category name
-    Button(onClick = {item.toggleCatOpen()}){
+    Button(
+        onClick = {item.toggleCatOpen()},
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+    ){
         Text(text = stringResource(item.nameRef))
     }
 
@@ -116,7 +183,7 @@ fun CategoryButton(
         Column{
             //create a row for each item
             item.reference.itemsAvailable.forEach{
-                EquipmentRow(equipFragVM, it, item.reference, openDetailAlert)
+                EquipmentRow(equipFragVM, it, item.reference)
             }
         }
     }
@@ -128,25 +195,39 @@ fun CategoryButton(
  * @param equipFragVM viewModel that manages this page
  * @param item piece of equipment to display
  * @param ownCategory category the item is from
- * @param openDetailAlert function to run on looking at the equipment details
  */
 @Composable
 fun EquipmentRow(
     equipFragVM: EquipmentFragmentViewModel,
     item: GeneralEquipment,
-    ownCategory: GeneralCategory,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit
+    ownCategory: GeneralCategory
 ){
-    Row{
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //button to add item
-        Button(onClick = {
-            equipFragVM.toggleItemPurchaseOpen()
-            equipFragVM.setPurchasedItem(item)
-            equipFragVM.setPurchasingCategory(ownCategory)
-        }) {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Item")}
+        Button(
+            onClick = {
+                equipFragVM.toggleItemPurchaseOpen()
+                equipFragVM.setPurchasedItem(item)
+                equipFragVM.setPurchasingCategory(ownCategory)
+            },
+            modifier = Modifier
+                .weight(0.2f)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "Add Item"
+            )
+        }
 
         //display equipment name
-        Text(text = item.name)
+        Text(
+            text = item.name,
+            modifier = Modifier
+                .weight(0.35f),
+            textAlign = TextAlign.Center
+        )
 
         //display item's base cost
         Text(text = item.baseCost.toString() +
@@ -154,26 +235,20 @@ fun EquipmentRow(
                     CoinType.Copper -> " CC"
                     CoinType.Silver -> " SC"
                     CoinType.Gold -> " GC"
-                }
+                },
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
         )
-
-        //display item's weight, if available
-        if(item.weight != null)
-            Text(text = item.weight.toString())
-        else
-            Spacer(Modifier.weight(0.1f))
-
-        //display item's rarity
-        Text(text = when(item.availability){
-            Availability.Common -> ""
-            Availability.Uncommon -> "U"
-            Availability.Rare -> "R"
-        })
 
         //display details button
         DetailButton(
-            onClick = {openDetailAlert(item.name){EquipmentDetails(item)}},
+            onClick = {
+                equipFragVM.setDetailItem(item)
+                equipFragVM.toggleDetailAlertOpen()
+            },
             modifier = Modifier
+                .weight(0.25f)
         )
     }
 }
@@ -183,10 +258,19 @@ fun EquipmentRow(
  *
  * @param type kind of coin displayed in this row
  * @param value amount of coin spent
+ * @param modifier code to alter the form of the item
  */
 @Composable
-fun SpentDisplay(type: CoinType, value: Int){
-    Text(text = type.name + ": $value")
+fun SpentDisplay(
+    type: CoinType,
+    value: Int,
+    modifier: Modifier
+){
+    Text(
+        text = type.name + ": $value",
+        modifier = modifier,
+        textAlign = TextAlign.Center
+    )
 }
 
 /**
@@ -206,38 +290,44 @@ fun HeldItemRow(
             " " + equipFragVM.getCategory(input)!!.qualityInput!![input.currentQuality].qualityType
         else ""
 
-    Row{
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //display item removal button
-        Button(onClick = {equipFragVM.removeItem(input)})
+        Button(
+            onClick = {equipFragVM.removeItem(input)},
+            modifier = Modifier
+                .weight(0.2f)
+        )
         {Icon(imageVector = Icons.Filled.Clear, contentDescription = "Remove Item")}
 
         //display item name
-        Text(text = titleString)
+        Text(
+            text = titleString,
+            modifier = Modifier
+                .weight(0.55f),
+            textAlign = TextAlign.Center
+        )
 
         //display number of the held item
-        Text(text = equipFragVM.getQuantity(input).toString())
+        Text(
+            text = equipFragVM.getQuantity(input).toString(),
+            modifier = Modifier
+                .weight(0.25f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
-//details composable for a piece of equipment
-val EquipmentDetails = @Composable {item: GeneralEquipment ->
-    //create price of the object
-    val priceString = item.baseCost.toString() +
-            when(item.coinType){
-                CoinType.Gold -> " GC"
-                CoinType.Silver -> " SC"
-                CoinType.Copper -> " CC"
-            }
+@Preview
+@Composable
+fun EquipmentPreview(){
+    val charInstance = BaseCharacter()
+    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
-    Column{
-        //display item's cost
-        Row{Text(text = stringResource(R.string.basePriceLabel) + priceString)}
+    //equipFragVM.allCategoryData[8].toggleCatOpen()
 
-        //display item's weight, if any given
-        if(item.weight != null)
-            Row{Text(text = stringResource(R.string.weightLabel) + item.weight.toString())}
-
-        //display item's availability
-        Row{Text(text = stringResource(R.string.availabilityLabel) + item.availability.name)}
-    }
+    EquipmentFragment(equipFragVM)
 }

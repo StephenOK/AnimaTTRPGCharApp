@@ -1,22 +1,343 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import com.example.animabuilder.view_models.models.HomePageAlertViewModel
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.animabuilder.InfoRow
+import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
+import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
+import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
+import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
+import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
+import com.example.animabuilder.character_creation.attributes.modules.MartialArt
+import com.example.animabuilder.character_creation.attributes.modules.StyleModule
+import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
+import com.example.animabuilder.character_creation.equipment.CoinType
+import com.example.animabuilder.character_creation.equipment.general_goods.GeneralEquipment
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
+import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
+import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
 
 /**
  * Shows an alert that gives details on the item in question.
  *
- * @param masterModel source of item information
+ *
  */
 @Composable
-fun DetailAlert(masterModel: HomePageAlertViewModel) {
+fun DetailAlert(
+    title: String,
+    item: Any,
+    closeFunc: () -> Unit
+) {
     DialogFrame(
-        "Description of " + masterModel.detailItem.collectAsState().value,
-        {LazyColumn{item{masterModel.detailContents.collectAsState().value()}}},
-        {TextButton(onClick = {masterModel.closeDetailAlert()}){ Text(text = "Close")}}
+        "Description of $title",
+        {
+            LazyColumn{
+                item{
+                    when(item){
+                        is Advantage -> AdvantageDetails(item)
+                        is Weapon -> WeaponContents(item)
+                        is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
+                        is StyleModule -> {Text(text = item.description)}
+                        is MartialArt -> MartialContents(item)
+                        is KiAbility -> KiContents(item)
+                        is Technique -> TechContents(item)
+                        is Spell -> SpellDetails(item)
+                        is PsychicPower -> PowerDetails(item)
+                        is GeneralEquipment -> EquipmentDetails(item)
+                        else -> Text(text = "Failed to show object details.")
+                    }
+                }
+            }
+        },
+        {TextButton(onClick = {closeFunc()}){ Text(text = "Close")}}
     )
+}
+
+@Composable
+private fun AdvantageDetails(item: Advantage){
+    //retrieve the costs of the item
+    var costString = ""
+    item.cost.forEach{
+        costString += "$it "
+    }
+
+    Column{
+        //display advantage's description
+        Row{Text(text = item.description)}
+
+        //display advantage's effect, if one given
+        if(item.effect != null)
+            Row{Text(text = "Effect: " + item.effect)}
+
+        //display advantage's restriction, if one given
+        if(item.restriction != null)
+            Row{Text(text = "Restriction: " + item.restriction)}
+
+        //display advantage's special, if one given
+        if(item.special != null)
+            Row{Text(text = "Special: " + item.special)}
+
+        //display available costs
+        Row{Text(text = "Cost: $costString")}
+    }
+}
+
+//contents for the weapon's details
+@Composable
+private fun WeaponContents(input: Weapon) {
+    Column {
+        //display either damage or own strength value
+        if(input.damage != null)
+            InfoRow(stringResource(R.string.damageLabel), input.damage.toString())
+        else
+            InfoRow(stringResource(R.string.strengthLabel), input.ownStrength.toString())
+
+        //display weapon's speed
+        InfoRow(stringResource(R.string.speedLabel), input.speed.toString())
+
+        //display one-handed strength if available
+        if(input.oneHandStr != null)
+            InfoRow(stringResource(R.string.oneHandedLabel), input.oneHandStr.toString())
+
+        //display two-handed strength if available
+        if(input.twoHandStr != null)
+            InfoRow(stringResource(R.string.twoHandedLabel), input.twoHandStr.toString())
+
+        //display primary attack type
+        if(input.primaryType != null)
+            InfoRow(stringResource(R.string.damageTypeLabel), input.primaryType.name)
+
+        //display secondary attack type
+        if(input.secondaryType != null)
+            InfoRow(stringResource(R.string.secondaryTypeLabel), input.secondaryType.name)
+
+        //display weapon category
+        if(input is MixedWeapon)
+            InfoRow(stringResource(R.string.weaponTypeLabel), input.mixedType[0].name + "/" + input.mixedType[1].name)
+        else
+            InfoRow(stringResource(R.string.weaponTypeLabel), input.type.name)
+
+        //display weapon's fortitude, breakage, and presence
+        InfoRow(stringResource(R.string.fortitudeLabel), input.fortitude.toString())
+        if(input.breakage != null)
+            InfoRow(stringResource(R.string.breakageLabel), input.breakage.toString())
+        InfoRow(stringResource(R.string.presenceLabel) + ": ", input.presence.toString())
+
+        //display weapon's rate of fire, reload rate, and range
+        if(input is ProjectileWeapon) {
+            if (input.type == WeaponType.Throwing)
+                InfoRow(stringResource(R.string.fireRateLabel), input.reloadOrRate.toString())
+            else
+                InfoRow(stringResource(R.string.reloadLabel), input.reloadOrRate.toString())
+            if (input.range != null)
+                InfoRow(stringResource(R.string.rangeLabel), input.range.toString() + "m")
+        }
+
+        //initialize ability output and loop counter
+        var abilityString = ""
+        var counter = 0
+
+        //if there are abilities given
+        if(input.ability != null){
+            input.ability.forEach{
+                //add ability to the output string
+                abilityString += it.name
+
+                //display strength of trapping ability
+                if(it == WeaponAbility.Trapping)
+                    abilityString += "(" + input.ownStrength + ")"
+
+                //delimit the separation between abilities
+                if(counter < input.ability.count() - 1){
+                    abilityString += "/"
+                    counter++
+                }
+            }
+
+            //show ability string
+            InfoRow(stringResource(R.string.abilityLabel), abilityString)
+        }
+
+        //show description
+        Text(text = input.description)
+    }
+}
+
+@Composable
+private fun ArchetypeContents(detailList: List<Weapon>){
+    Column {
+        //display each weapon's name
+        detailList.forEach {
+            Text(text = it.name)
+        }
+    }
+}
+
+@Composable
+private fun MartialContents(item: MartialArt){
+    Column{
+        //show art's prerequisites and description
+        InfoRow(stringResource(R.string.prereqLabel), item.prereqList)
+        Text(text = item.description)
+    }
+}
+
+@Composable
+private fun KiContents(ability: KiAbility) {
+    Column{
+        val preString =
+            if(ability.prerequisites != null)
+                ability.prerequisites.name
+            else
+                "null"
+
+        InfoRow(stringResource(R.string.prereqLabel), preString)
+        Text(text = ability.description)
+    }
+}
+
+@Composable
+fun TechContents(technique: Technique) {
+    Column {
+        technique.givenAbilities.forEach {
+            Row { Text(text = it.name + " " + it.effect) }
+        }
+
+        if (technique.isMaintained()){
+            Row {
+                Text(text = stringResource(R.string.maintenanceLabel))
+                for(index in 0..5){
+                    if(technique.maintArray[index] != 0)
+                        Text(text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")")
+                }
+            }
+        }
+
+        val kiBuilds = technique.statSpent()
+
+        for(index in 0..5){
+            if(kiBuilds[index] > 0)
+                InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
+        }
+
+        InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
+
+        Text(text = technique.description)
+    }
+}
+
+@Composable
+fun SpellDetails(spell: Spell){
+    //get active or passive text
+    val action =
+        if(spell.isActive)
+            stringResource(R.string.activeLabel)
+        else
+            stringResource(R.string.passiveLabel)
+
+    //get daily text if able
+    val daily =
+        if(spell.isDaily)
+            stringResource(R.string.dailyLabel)
+        else
+            ""
+
+    //create string of the spell's categories
+    var spellType = ""
+    spell.type.forEach{
+        spellType += it.name + " "
+    }
+
+    //create string of forbidden elements if this is a free spell
+    var forbiddenList = ""
+    if(spell is FreeSpell){
+        spell.forbiddenElements.forEach {
+            forbiddenList += it.name + " "
+        }
+    }
+
+    Column{
+        Row{Text(text = stringResource(R.string.actionLabel) + action)}
+        Row{Text(text = stringResource(R.string.elementLabel) + spell.inBook.name)}
+        Row{Text(text = stringResource(R.string.levelText) + spell.level.toString())}
+        Row{Text(text = stringResource(R.string.zeonCostLabel) + spell.zCost.toString())}
+        Row{Text(text = spell.effect)}
+        Row{Text(text = stringResource(R.string.addedEffectLabel) + spell.addedEffect)}
+        Row{Text(text = stringResource(R.string.maxZeonLabel) + spell.zMax)}
+        if(spell.maintenance != null)
+            Row{Text(text = stringResource(R.string.maintenanceLabel) + "1 every " + spell.maintenance + daily)}
+        else
+            Row{Text(text = stringResource(R.string.noneLabel))}
+        Row{Text(text = stringResource(R.string.typeLabel) + spellType)}
+        if(spell is FreeSpell)
+            Row{Text(text = stringResource(R.string.forbiddenLabel) + forbiddenList)}
+    }
+}
+
+@Composable
+fun PowerDetails(power: PsychicPower){
+    //retrieve level, if power is active, and if power is maintained
+    val itemLevel = if(power.level > 0) power.level.toString() else stringResource(R.string.notApplicable)
+    val isActive = if(power.active) stringResource(R.string.activeLabel) else stringResource(R.string.passiveLabel)
+    val isMaintained = if(power.maintained) stringResource(R.string.yesLabel) else stringResource(R.string.noLabel)
+
+    Column{
+        //display power values
+        Row{Text(text = stringResource(R.string.levelText) + " $itemLevel") }
+        Row{Text(text = stringResource(R.string.actionLabel) + " $isActive")}
+        Row{Text(text = stringResource(R.string.maintenanceLabel) + " $isMaintained")}
+        Row{Text(text = power.description)}
+
+        Spacer(Modifier.height(20.dp))
+
+        //display power's Effects Table
+        power.effects.forEach{
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(text = stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)], modifier = Modifier.weight(0.5f))
+                Text(text = it, modifier = Modifier.weight(0.5f))
+            }
+        }
+    }
+}
+
+@Composable
+fun EquipmentDetails(item: GeneralEquipment){
+    //create price of the object
+    val priceString = item.baseCost.toString() +
+            when(item.coinType){
+                CoinType.Gold -> " GC"
+                CoinType.Silver -> " SC"
+                CoinType.Copper -> " CC"
+            }
+
+    Column{
+        //display item's cost
+        Row{Text(text = stringResource(R.string.basePriceLabel) + priceString)}
+
+        //display item's weight, if any given
+        if(item.weight != null)
+            Row{Text(text = stringResource(R.string.weightLabel) + item.weight.toString() + " kg")}
+
+        //display item's availability
+        Row{Text(text = stringResource(R.string.availabilityLabel) + item.availability.name)}
+    }
 }

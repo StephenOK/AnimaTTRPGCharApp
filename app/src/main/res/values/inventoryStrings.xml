@@ -24,4 +24,6 @@
     <string name = "maxCopperLabel">Copper Max: </string>
 
     <string name = "bonusWealthLabel">Bonus Wealth: </string>
+
+    <string name = "inventoryHeader">Inventory</string>
 </resources>

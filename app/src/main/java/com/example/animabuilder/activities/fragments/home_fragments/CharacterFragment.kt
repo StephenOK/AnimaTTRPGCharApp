@@ -99,7 +99,7 @@ fun CharacterPageFragment(
 
         //display gender bonus selection if the character is a duk'zarist
         item{
-            if(charFragVM.raceDropdown.output.collectAsState().value == stringArrayResource(R.array.raceArray)[6]){
+            if(charFragVM.raceDropdown.output.collectAsState().value == 6){
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -278,6 +278,8 @@ private fun DropdownObject(
     item: CharacterFragmentViewModel.DropdownData,
     maxNumVM: HomePageViewModel
 ){
+    val options = stringArrayResource(item.options)
+
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -286,7 +288,7 @@ private fun DropdownObject(
     ){
         //object to hold the dropdown menu
         OutlinedTextField(
-            value = item.output.collectAsState().value,
+            value = options[item.output.collectAsState().value],
             onValueChange = {},
             modifier = Modifier
                 .clickable { item.openToggle() }
@@ -310,10 +312,10 @@ private fun DropdownObject(
             modifier = Modifier.width(with(LocalDensity.current) { item.size.value.width.toDp() })
         ) {
             //create an object for each option in the inputted list
-            item.options.forEach { stringIn ->
+            options.forEach { stringIn ->
                 DropdownMenuItem(onClick = {
                     //set the new item to show
-                    item.setOutput(item.options.indexOf(stringIn))
+                    item.setOutput(options.indexOf(stringIn))
                     maxNumVM.updateMaximums()
                     maxNumVM.updateExpenditures()
                 }) {
@@ -340,7 +342,7 @@ private fun PrimaryRow(
     ){
         //row label
         Text(
-            text = "${primeItem.name}:",
+            text = stringArrayResource(R.array.primaryCharArray)[primeItem.name],
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.2f))
 
@@ -392,7 +394,7 @@ fun CharacterPreview(){
     charInstance.setOwnClass(3)
     charInstance.setOwnRace(6)
 
-    val charFragVM = CharacterFragmentViewModel(charInstance, LocalContext.current)
+    val charFragVM = CharacterFragmentViewModel(charInstance)
     charFragVM.toggleGender()
 
     CharacterPageFragment(

@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -18,16 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.animabuilder.DetailButton
-import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
+import com.example.animabuilder.activities.fragments.dialogs.DetailAlert
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.modules.MartialArt
 import com.example.animabuilder.character_creation.attributes.modules.StyleModule
 import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.Weapon
-import com.example.animabuilder.character_creation.equipment.weapons.WeaponAbility
-import com.example.animabuilder.character_creation.equipment.weapons.WeaponType
-import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.MixedWeapon
-import com.example.animabuilder.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
 
@@ -38,13 +33,11 @@ import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
  * Martial arts are available and account for their qualifications when taken.
  *
  * @param modFragVM viewModel to run with this fragment
- * @param openDetailAlert function to run when looking at an item's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 fun ModuleFragment(
     modFragVM: ModuleFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ) {
     LazyColumn(
@@ -77,7 +70,6 @@ fun ModuleFragment(
             WeaponRow(
                 modFragVM,
                 modFragVM.getUnarmed(),
-                openDetailAlert,
                 homePageVM
             )
         }
@@ -87,7 +79,6 @@ fun ModuleFragment(
             WeaponListButton(
                 modFragVM,
                 weaponButton,
-                openDetailAlert,
                 homePageVM
             )
         }
@@ -97,7 +88,6 @@ fun ModuleFragment(
         //display archetype, martial art, and style buttons
         item{ArchetypeButton(
             modFragVM,
-            openDetailAlert,
             homePageVM
         )}
 
@@ -105,14 +95,19 @@ fun ModuleFragment(
 
         item{MartialButton(
             modFragVM,
-            openDetailAlert,
             homePageVM
         )}
 
         item{Spacer(Modifier.height(25.dp))}
 
-        item{StyleButton(modFragVM, openDetailAlert, homePageVM)}
+        item{StyleButton(modFragVM, homePageVM)}
     }
+
+    if(modFragVM.detailAlertOpen.collectAsState().value)
+        DetailAlert(
+            modFragVM.detailName.collectAsState().value,
+            modFragVM.detailItem.collectAsState().value!!
+        ){modFragVM.toggleDetailAlertOn()}
 }
 
 /**
@@ -121,14 +116,12 @@ fun ModuleFragment(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param weaponData information regarding this type of weapon
- * @param openDetailAlert function to run when opening a weapon's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun WeaponListButton(
     modFragVM: ModuleFragmentViewModel,
     weaponData: ModuleFragmentViewModel.WeaponListData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //button for displaying the list
@@ -151,7 +144,7 @@ private fun WeaponListButton(
             if(weaponData.wholeClass) {
                 ArchetypeRow(
                     weaponData.weaponArchetype,
-                    openDetailAlert,
+                    modFragVM,
                     homePageVM
                 )
 
@@ -163,7 +156,6 @@ private fun WeaponListButton(
                 WeaponRow(
                     modFragVM,
                     it,
-                    openDetailAlert,
                     homePageVM
                 )
             }
@@ -175,13 +167,11 @@ private fun WeaponListButton(
  * Button that reveals a list of all archetype modules the character can take.
  *
  * @param modFragVM viewModel that manages the data for this page
- * @param openDetailAlert function to run when looking at an archetype's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ArchetypeButton(
     modFragVM: ModuleFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //button for displaying archetype list
@@ -202,7 +192,7 @@ private fun ArchetypeButton(
             modFragVM.allArchetypeData.forEach{
                 ArchetypeRow(
                     it,
-                    openDetailAlert,
+                    modFragVM,
                     homePageVM
                 )
             }
@@ -214,13 +204,11 @@ private fun ArchetypeButton(
  * Button that reveals a list of all weapon styles the character can take.
  *
  * @param modFragVM viewModel that manages the data for this page
- * @param openDetailAlert function to run when looking at the style's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun StyleButton(
     modFragVM: ModuleFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //button for displaying weapon styles list
@@ -241,7 +229,6 @@ private fun StyleButton(
                 StyleRow(
                     modFragVM,
                     it,
-                    openDetailAlert,
                     homePageVM
                 )
             }
@@ -253,13 +240,11 @@ private fun StyleButton(
  * Button that reveals the martial arts available to the player.
  *
  * @param modFragVM viewModel that manages this page's data
- * @param openDetailAlert function to run when looking at a martial art's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MartialButton(
     modFragVM: ModuleFragmentViewModel,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     //button for displaying martial arts list
@@ -291,7 +276,6 @@ private fun MartialButton(
                 MartialArtRow(
                     modFragVM,
                     it,
-                    openDetailAlert,
                     homePageVM
                 )
             }
@@ -304,14 +288,12 @@ private fun MartialButton(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param input weapon to display info on
- * @param openDetailAlert function to run when looking at a weapon's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun WeaponRow(
     modFragVM: ModuleFragmentViewModel,
     input: Weapon,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     Row(
@@ -357,7 +339,10 @@ private fun WeaponRow(
 
         //create a button to display the weapon's details
         DetailButton(
-            onClick = {openDetailAlert(input.name) @Composable{WeaponContents(input)}},
+            onClick = {
+                modFragVM.setDetailItem(input)
+                modFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier.weight(0.25f)
         )
     }
@@ -367,13 +352,13 @@ private fun WeaponRow(
  * Creates a row that displays data on an archetype module.
  *
  * @param item data on the inputted archetype
- * @param openDetailAlert function to run when looking at an archetype's details
+ * @param modFragVM viewModel that manages this fragment's data
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ArchetypeRow(
     item: ModuleFragmentViewModel.ArchetypeData,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
+    modFragVM: ModuleFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
     Row(
@@ -381,8 +366,7 @@ private fun ArchetypeRow(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
-        val itemString = LocalContext.current.getString(item.name) + " " +
-                LocalContext.current.resources.getString(R.string.moduleSuffix)
+        val itemString = stringResource(item.name) + " " + stringResource(R.string.moduleSuffix)
 
         Spacer(modifier = Modifier.weight(0.1f))
         Checkbox(
@@ -413,7 +397,10 @@ private fun ArchetypeRow(
 
         //create a button to display the archetype's contents
         DetailButton(
-            onClick = {openDetailAlert(itemString) @Composable {ArchetypeContents(item.items)}},
+            onClick = {
+                modFragVM.setDetailItem(itemString, item)
+                modFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier.weight(0.25f)
         )
     }
@@ -424,14 +411,12 @@ private fun ArchetypeRow(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param style displayed item
- * @param openDetailAlert function to run when looking at the style's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun StyleRow(
     modFragVM: ModuleFragmentViewModel,
     style: StyleModule,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     Row(
@@ -466,7 +451,10 @@ private fun StyleRow(
 
         //make display button for style's details
         DetailButton(
-            onClick = {openDetailAlert(style.name) @Composable {Text(text = style.description)}},
+            onClick = {
+                modFragVM.setDetailItem(style)
+                modFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier.weight(0.2f)
         )
     }
@@ -477,14 +465,12 @@ private fun StyleRow(
  *
  * @param modFragVM viewModel that manages the data for this page
  * @param martialArt item to be displayed
- * @param openDetailAlert function to run when looking at the martial art's details
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun MartialArtRow(
     modFragVM: ModuleFragmentViewModel,
     martialArt: MartialArt,
-    openDetailAlert: (String, @Composable () -> Unit) -> Unit,
     homePageVM: HomePageViewModel
 ){
     Row(
@@ -518,111 +504,12 @@ private fun MartialArtRow(
 
         //display details button for the martial art
         DetailButton(
-            onClick = {openDetailAlert(martialArt.name) @Composable {MartialContents(martialArt.prereqList, martialArt.description)}},
+            onClick = {
+                modFragVM.setDetailItem(martialArt)
+                modFragVM.toggleDetailAlertOn()
+            },
             modifier = Modifier.weight(0.25f)
         )
-    }
-}
-
-//contents for the weapon's details
-val WeaponContents = @Composable
-{input: Weapon ->
-    Column {
-        //display either damage or own strength value
-        if(input.damage != null)
-            InfoRow(stringResource(R.string.damageLabel), input.damage.toString())
-        else
-            InfoRow(stringResource(R.string.strengthLabel), input.ownStrength.toString())
-
-        //display weapon's speed
-        InfoRow(stringResource(R.string.speedLabel), input.speed.toString())
-
-        //display one-handed strength if available
-        if(input.oneHandStr != null)
-            InfoRow(stringResource(R.string.oneHandedLabel), input.oneHandStr.toString())
-
-        //display two-handed strength if available
-        if(input.twoHandStr != null)
-            InfoRow(stringResource(R.string.twoHandedLabel), input.twoHandStr.toString())
-
-        //display primary attack type
-        if(input.primaryType != null)
-            InfoRow(stringResource(R.string.damageTypeLabel), input.primaryType.name)
-
-        //display secondary attack type
-        if(input.secondaryType != null)
-            InfoRow(stringResource(R.string.secondaryTypeLabel), input.secondaryType.name)
-
-        //display weapon category
-        if(input is MixedWeapon)
-            InfoRow(stringResource(R.string.weaponTypeLabel), input.mixedType[0].name + "/" + input.mixedType[1].name)
-        else
-            InfoRow(stringResource(R.string.weaponTypeLabel), input.type.name)
-
-        //display weapon's fortitude, breakage, and presence
-        InfoRow(stringResource(R.string.fortitudeLabel), input.fortitude.toString())
-        if(input.breakage != null)
-            InfoRow(stringResource(R.string.breakageLabel), input.breakage.toString())
-        InfoRow(stringResource(R.string.presenceLabel) + ": ", input.presence.toString())
-
-        //display weapon's rate of fire, reload rate, and range
-        if(input is ProjectileWeapon) {
-            if (input.type == WeaponType.Throwing)
-                InfoRow(stringResource(R.string.fireRateLabel), input.reloadOrRate.toString())
-            else
-                InfoRow(stringResource(R.string.reloadLabel), input.reloadOrRate.toString())
-            if (input.range != null)
-                InfoRow(stringResource(R.string.rangeLabel), input.range.toString() + "m")
-        }
-
-        //initialize ability output and loop counter
-        var abilityString = ""
-        var counter = 0
-
-        //if there are abilities given
-        if(input.ability != null){
-            input.ability.forEach{
-                //add ability to the output string
-                abilityString += it.name
-
-                //display strength of trapping ability
-                if(it == WeaponAbility.Trapping)
-                    abilityString += "(" + input.ownStrength + ")"
-
-                //delimit the separation between abilities
-                if(counter < input.ability.count() - 1){
-                    abilityString += "/"
-                    counter++
-                }
-            }
-
-            //show ability string
-            InfoRow(stringResource(R.string.abilityLabel), abilityString)
-        }
-
-        //show description
-        Text(text = input.description)
-    }
-}
-
-//contents for the archetype's description
-val ArchetypeContents = @Composable
-{detailList: List<Weapon> ->
-    Column {
-        //display each weapon's name
-        detailList.forEach {
-            Text(text = it.name)
-        }
-    }
-}
-
-//contents for the martial art's description
-val MartialContents = @Composable
-{preReqList: String, description: String ->
-    Column{
-        //show art's prerequisites and description
-        InfoRow(stringResource(R.string.prereqLabel), preReqList)
-        Text(text = description)
     }
 }
 
@@ -637,5 +524,5 @@ fun ModulePreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    ModuleFragment(moduleFragVM, {_, _ -> }, homePageVM)
+    ModuleFragment(moduleFragVM, homePageVM)
 }

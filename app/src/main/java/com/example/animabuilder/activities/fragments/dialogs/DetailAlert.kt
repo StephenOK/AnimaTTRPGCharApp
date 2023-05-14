@@ -1,9 +1,9 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
@@ -13,9 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.animabuilder.InfoRow
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.advantages.advantage_types.Advantage
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.example.animabuilder.character_creation.attributes.ki_abilities.techniques.Technique
@@ -45,7 +52,7 @@ fun DetailAlert(
     closeFunc: () -> Unit
 ) {
     DialogFrame(
-        "Description of $title",
+        title,
         {
             LazyColumn{
                 item{
@@ -74,38 +81,85 @@ private fun AdvantageDetails(item: Advantage){
     //retrieve the costs of the item
     var costString = ""
     item.cost.forEach{
-        costString += "$it "
+        costString += "$it"
+        if(item.cost.last() != it) costString += ", "
     }
 
     Column{
         //display advantage's description
-        Row{Text(text = item.description)}
+        Row{Text(text = "\t${item.description}")}
 
         //display advantage's effect, if one given
-        if(item.effect != null)
-            Row{Text(text = "Effect: " + item.effect)}
+        if(item.effect != null) {
+            Spacer(Modifier.height(10.dp))
+            Row {
+                Text(
+                    buildAnnotatedString{
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(R.string.effectLabel))
+                        }
+
+                        append(" ${item.effect}")
+                    }
+                )
+            }
+        }
 
         //display advantage's restriction, if one given
-        if(item.restriction != null)
-            Row{Text(text = "Restriction: " + item.restriction)}
+        if(item.restriction != null) {
+            Spacer(Modifier.height(10.dp))
+            Row {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(R.string.restrictionLabel))
+                        }
+
+                        append(" ${item.restriction}")
+                    }
+                )
+            }
+        }
 
         //display advantage's special, if one given
-        if(item.special != null)
-            Row{Text(text = "Special: " + item.special)}
+        if(item.special != null) {
+            Spacer(Modifier.height(10.dp))
+            Row {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                            append(stringResource(R.string.specialDetailLabel))
+                        }
+
+                        append(" ${item.special}")
+                    }
+                )
+            }
+        }
 
         //display available costs
-        Row{Text(text = "Cost: $costString")}
+        Spacer(Modifier.height(10.dp))
+        Row{
+            Text(
+                buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                        append(stringResource(R.string.costLabel))
+                    }
+
+                    append(" $costString")
+                }
+            )
+        }
     }
 }
 
-//contents for the weapon's details
 @Composable
 private fun WeaponContents(input: Weapon) {
     Column {
         //display either damage or own strength value
         if(input.damage != null)
             InfoRow(stringResource(R.string.damageLabel), input.damage.toString())
-        else
+        else if (input.ownStrength != null)
             InfoRow(stringResource(R.string.strengthLabel), input.ownStrength.toString())
 
         //display weapon's speed
@@ -174,14 +228,20 @@ private fun WeaponContents(input: Weapon) {
             InfoRow(stringResource(R.string.abilityLabel), abilityString)
         }
 
+        Spacer(Modifier.height(10.dp))
+
         //show description
-        Text(text = input.description)
+        Text(text = "\t${input.description}")
     }
 }
 
 @Composable
 private fun ArchetypeContents(detailList: List<Weapon>){
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
         //display each weapon's name
         detailList.forEach {
             Text(text = it.name)
@@ -194,7 +254,8 @@ private fun MartialContents(item: MartialArt){
     Column{
         //show art's prerequisites and description
         InfoRow(stringResource(R.string.prereqLabel), item.prereqList)
-        Text(text = item.description)
+        Spacer(Modifier.height(10.dp))
+        Text(text = "\t${item.description}")
     }
 }
 
@@ -208,26 +269,26 @@ private fun KiContents(ability: KiAbility) {
                 "null"
 
         InfoRow(stringResource(R.string.prereqLabel), preString)
-        Text(text = ability.description)
+        Spacer(Modifier.height(10.dp))
+        Text(text = "\t${ability.description}")
     }
 }
 
 @Composable
 fun TechContents(technique: Technique) {
-    Column {
+    Column{
         technique.givenAbilities.forEach {
-            Row { Text(text = it.name + " " + it.effect) }
-        }
-
-        if (technique.isMaintained()){
             Row {
-                Text(text = stringResource(R.string.maintenanceLabel))
-                for(index in 0..5){
-                    if(technique.maintArray[index] != 0)
-                        Text(text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")")
-                }
+                Text(
+                    text = it.name + " " + it.effect,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             }
         }
+
+        Spacer(Modifier.height(10.dp))
 
         val kiBuilds = technique.statSpent()
 
@@ -236,9 +297,30 @@ fun TechContents(technique: Technique) {
                 InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
         }
 
+        if (technique.isMaintained()){
+            Spacer(Modifier.height(5.dp))
+            Text(
+                text = stringResource(R.string.maintenanceLabel),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+            for(index in 0..5){
+                if(technique.maintArray[index] != 0)
+                    Text(
+                        text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")",
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+            }
+        }
+
+        Spacer(Modifier.height(5.dp))
         InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
 
-        Text(text = technique.description)
+        Spacer(Modifier.height(10.dp))
+        Text(text = "\t${technique.description}")
     }
 }
 
@@ -254,7 +336,7 @@ fun SpellDetails(spell: Spell){
     //get daily text if able
     val daily =
         if(spell.isDaily)
-            stringResource(R.string.dailyLabel)
+            " ${stringResource(R.string.dailyLabel)}"
         else
             ""
 
@@ -272,21 +354,28 @@ fun SpellDetails(spell: Spell){
         }
     }
 
+    if(forbiddenList.isEmpty())
+        forbiddenList = stringResource(R.string.noneLabel)
+
     Column{
-        Row{Text(text = stringResource(R.string.actionLabel) + action)}
-        Row{Text(text = stringResource(R.string.elementLabel) + spell.inBook.name)}
-        Row{Text(text = stringResource(R.string.levelText) + spell.level.toString())}
-        Row{Text(text = stringResource(R.string.zeonCostLabel) + spell.zCost.toString())}
-        Row{Text(text = spell.effect)}
-        Row{Text(text = stringResource(R.string.addedEffectLabel) + spell.addedEffect)}
-        Row{Text(text = stringResource(R.string.maxZeonLabel) + spell.zMax)}
+        InfoRow(stringResource(R.string.actionLabel), action)
+        InfoRow(stringResource(R.string.elementLabel), spell.inBook.name)
+        InfoRow(stringResource(R.string.levelText), spell.level.toString())
+        InfoRow(stringResource(R.string.zeonCostLabel), spell.zCost.toString())
+        Spacer(Modifier.height(10.dp))
+
+        Row{Text(text = "\t${spell.effect}")}
+        Spacer(Modifier.height(10.dp))
+
+        InfoRow(stringResource(R.string.addedEffectLabel), spell.addedEffect)
+        InfoRow(stringResource(R.string.maxZeonLabel), "Intelligence x " + spell.zMax.toString())
         if(spell.maintenance != null)
-            Row{Text(text = stringResource(R.string.maintenanceLabel) + "1 every " + spell.maintenance + daily)}
+            InfoRow(stringResource(R.string.maintenanceLabel), " 1 every " + spell.maintenance + daily)
         else
-            Row{Text(text = stringResource(R.string.noneLabel))}
-        Row{Text(text = stringResource(R.string.typeLabel) + spellType)}
+            InfoRow(stringResource(R.string.maintenanceLabel), stringResource(R.string.noneLabel))
+        InfoRow(stringResource(R.string.typeLabel), spellType)
         if(spell is FreeSpell)
-            Row{Text(text = stringResource(R.string.forbiddenLabel) + forbiddenList)}
+            InfoRow(stringResource(R.string.forbiddenLabel), forbiddenList)
     }
 }
 
@@ -299,22 +388,20 @@ fun PowerDetails(power: PsychicPower){
 
     Column{
         //display power values
-        Row{Text(text = stringResource(R.string.levelText) + " $itemLevel") }
-        Row{Text(text = stringResource(R.string.actionLabel) + " $isActive")}
-        Row{Text(text = stringResource(R.string.maintenanceLabel) + " $isMaintained")}
-        Row{Text(text = power.description)}
+        InfoRow(stringResource(R.string.levelText), " $itemLevel")
+        InfoRow(stringResource(R.string.actionLabel), " $isActive")
+        InfoRow(stringResource(R.string.maintenanceLabel), " $isMaintained")
+        Spacer(Modifier.height(10.dp))
 
-        Spacer(Modifier.height(20.dp))
+        Row{Text(text = "\t${power.description}")}
+        Spacer(Modifier.height(10.dp))
 
         //display power's Effects Table
         power.effects.forEach{
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Text(text = stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)], modifier = Modifier.weight(0.5f))
-                Text(text = it, modifier = Modifier.weight(0.5f))
-            }
+            InfoRow(
+                stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)],
+                it
+            )
         }
     }
 }
@@ -331,13 +418,96 @@ fun EquipmentDetails(item: GeneralEquipment){
 
     Column{
         //display item's cost
-        Row{Text(text = stringResource(R.string.basePriceLabel) + priceString)}
+        InfoRow(stringResource(R.string.basePriceLabel), priceString)
 
         //display item's weight, if any given
         if(item.weight != null)
-            Row{Text(text = stringResource(R.string.weightLabel) + item.weight.toString() + " kg")}
+            InfoRow(stringResource(R.string.weightLabel), item.weight.toString() + " kg")
+
 
         //display item's availability
-        Row{Text(text = stringResource(R.string.availabilityLabel) + item.availability.name)}
+        InfoRow(stringResource(R.string.availabilityLabel), item.availability.name)
     }
+}
+
+@Preview
+@Composable
+fun AdvantageDetailPreview(){
+    val charInstance = BaseCharacter()
+    val advantage = charInstance.advantageRecord.commonAdvantages.characteristicPoint
+    DetailAlert(advantage.name, advantage){}
+}
+
+@Preview
+@Composable
+fun WeaponDetailPreview(){
+    val charInstance = BaseCharacter()
+    val weapon = charInstance.weaponProficiencies.projectiles.crossbow
+
+    DetailAlert(weapon.name, weapon){}
+}
+
+@Preview
+@Composable
+fun ModuleDetailPreview(){
+    val charInstance = BaseCharacter()
+    val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
+    val module = modFragVM.allArchetypeData[12]
+
+    DetailAlert(stringResource(module.name), module){}
+}
+
+@Preview
+@Composable
+fun MartialDetailPreview(){
+    val charInstance = BaseCharacter()
+    val martialArt = charInstance.weaponProficiencies.martials.aikido
+
+    DetailAlert(martialArt.name, martialArt){}
+}
+
+@Preview
+@Composable
+fun KiDetailPreview(){
+    val charInstance = BaseCharacter()
+    val kiAbility = charInstance.ki.kiRecord.kiControl
+
+    DetailAlert(kiAbility.name, kiAbility){}
+}
+
+@Preview
+@Composable
+fun TechniqueDetailPreview(){
+    val charInstance = BaseCharacter()
+    val technique = charInstance.ki.allTechniques[0]
+    technique.maintArray[4] = 2
+
+    DetailAlert(technique.name, technique){}
+}
+
+@Preview
+@Composable
+fun SpellDetailPreview(){
+    val charInstance = BaseCharacter()
+    val spell = charInstance.magic.freeBook.fifthBook[3]
+
+    DetailAlert(spell.name, spell){}
+}
+
+@Preview
+@Composable
+fun PowerDetailPreview(){
+    val charInstance = BaseCharacter()
+    val power = charInstance.psychic.cryokinesis.crystallize
+
+    DetailAlert(power.name, power){}
+}
+
+@Preview
+@Composable
+fun EquipmentDetailPreview(){
+    val charInstance = BaseCharacter()
+    val item = charInstance.inventory.miscellaneous.excellentLock
+
+    DetailAlert(item.name, item){}
 }

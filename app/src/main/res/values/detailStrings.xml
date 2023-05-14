@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "effectLabel">Effect:</string>
+    <string name = "restrictionLabel">Restriction:</string>
+    <string name = "specialDetailLabel">Special:</string>
+    <string name = "costLabel">Cost:</string>
+</resources>

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
@@ -35,10 +36,12 @@ fun DialogFrame(
                 Row(
                     Modifier
                         .align(Alignment.TopCenter)
-                        .height(50.dp)
+                        .height(50.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = dialogTitle
+                        text = dialogTitle,
+                        fontWeight = FontWeight.Bold
                     )
                 }
 
@@ -47,6 +50,7 @@ fun DialogFrame(
                     Modifier
                         .align(Alignment.Center)
                         .height(500.dp)
+                        .fillMaxWidth(0.85f)
                 ){
                     mainContent()
                 }
@@ -56,7 +60,8 @@ fun DialogFrame(
                     Modifier
                         .align(Alignment.BottomCenter)
                         .height(50.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
                 ){
                     buttonContent()
                 }

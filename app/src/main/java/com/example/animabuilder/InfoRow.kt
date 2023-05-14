@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 /**
@@ -33,10 +34,11 @@ fun InfoRow(
             modifier = Modifier
                 .weight(0.5f),
             textAlign = TextAlign.Right,
-            color = color
+            color = color,
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.05f))
 
         Text(
             text = info,

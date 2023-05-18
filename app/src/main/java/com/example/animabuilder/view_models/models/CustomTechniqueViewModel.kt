@@ -316,6 +316,8 @@ class CustomTechniqueViewModel(
         _techniqueIndex.update{input}
         _dropdownTitle.update{listSource.value[techniqueIndex.value]}
 
+        tableClear()
+
         when(input){
             //Attack Ability
             1 -> {
@@ -647,7 +649,7 @@ class CustomTechniqueViewModel(
                 setElementList(listOf(Element.Free))
             }
 
-            else -> {tableClear()}
+            else -> {}
         }
 
         //clear all checklists

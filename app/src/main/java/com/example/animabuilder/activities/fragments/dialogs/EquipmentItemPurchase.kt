@@ -1,6 +1,10 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.RadioButton
@@ -8,12 +12,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.animabuilder.InfoRow
 import com.example.animabuilder.NumberInput
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.equipment.CoinType
 import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
-import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Dialog that allows the user to determine a purchased item's quality and quantity.
@@ -27,36 +36,66 @@ fun EquipmentItemPurchase(
     DialogFrame(
         "Purchase Details",
         {
-            LazyColumn {
+            LazyColumn (
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
                 //input for number of the item bought
                 item {
                     NumberInput(
                         inputText = equipFragVM.purchasedNumber.collectAsState().value,
                         inputFunction = { equipFragVM.setPurchasedNumber(it.toInt()) },
-                        emptyFunction = { equipFragVM.setPurchasedNumber("") }
+                        emptyFunction = { equipFragVM.setPurchasedNumber("") },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
                     )
                 }
 
                 //quality options of the item bought, if available
                 if(equipFragVM.currentQuality.value != null) {
                     items(equipFragVM.purchasingCategory.value!!.qualityInput!!){
-                        Row {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(0.6f),
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
                             RadioButton(
                                 selected = it == equipFragVM.currentQuality.collectAsState().value,
-                                onClick = {equipFragVM.setCurrentQuality(it)}
+                                onClick = {equipFragVM.setCurrentQuality(it)},
+                                modifier = Modifier
+                                    .weight(0.1f)
                             )
-                            Text(text = it.qualityType)
+                            Text(
+                                text = it.qualityType,
+                                modifier = Modifier
+                                    .weight(0.2f)
+                                    .clickable{equipFragVM.setCurrentQuality(it)}
+                            )
                         }
                     }
                 }
 
+                item{Spacer(Modifier.height(10.dp))}
+
                 //display total purchase  cost
-                item {
-                    Row {
-                        TotalDisplay(CoinType.Gold, equipFragVM.totalGoldPurchase)
-                        TotalDisplay(CoinType.Silver, equipFragVM.totalSilverPurchase)
-                        TotalDisplay(CoinType.Copper, equipFragVM.totalCopperPurchase)
-                    }
+                item{
+                    InfoRow(
+                        CoinType.Gold.name,
+                        equipFragVM.totalGoldPurchase.collectAsState().value
+                    )
+                }
+
+                item{
+                    InfoRow(
+                        CoinType.Silver.name,
+                        equipFragVM.totalSilverPurchase.collectAsState().value
+                    )
+                }
+
+                item{
+                    InfoRow(
+                        CoinType.Copper.name,
+                        equipFragVM.totalCopperPurchase.collectAsState().value
+                    )
                 }
             }
         },
@@ -74,17 +113,14 @@ fun EquipmentItemPurchase(
     )
 }
 
-/**
- * Display for the cost in the indicated coin amount.
- *
- * @param value coin type to display
- * @param display string stateflow of the amount
- */
+@Preview
 @Composable
-fun TotalDisplay(
-    value: CoinType,
-    display: StateFlow<String>
-){
-    Text(text = value.name + ": ")
-    Text(text = display.collectAsState().value)
+fun PurchasePreview(){
+    val charInstance = BaseCharacter()
+
+    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
+    equipFragVM.setPurchasedItem(charInstance.inventory.weapons.arquebus)
+    equipFragVM.setPurchasingCategory(charInstance.inventory.weapons)
+
+    EquipmentItemPurchase(equipFragVM)
 }

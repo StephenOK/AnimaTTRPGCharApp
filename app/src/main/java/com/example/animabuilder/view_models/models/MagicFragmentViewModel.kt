@@ -472,7 +472,7 @@ class MagicFragmentViewModel(
      *
      * @param input level to apply to the free spell
      */
-    private fun setFreeLevel(input: Int){_freeLevel.update{input}}
+    fun setFreeLevel(input: Int){_freeLevel.update{input}}
 
     /**
      * Attempt to open the free spell exchange dialog.

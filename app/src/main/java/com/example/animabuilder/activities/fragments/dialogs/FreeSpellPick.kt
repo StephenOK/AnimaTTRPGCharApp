@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,8 +9,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.animabuilder.DetailButton
+import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.view_models.models.MagicFragmentViewModel
 
@@ -79,14 +84,25 @@ private fun PickFreeRow(
     magFragVM: MagicFragmentViewModel,
     displayItem: FreeSpell
 ){
-    Row{
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         //radio button to denote user's selection
         RadioButton(
             selected = displayItem == magFragVM.selectedFreeSpell.collectAsState().value,
-            onClick = {magFragVM.setSelectedFreeSpell(displayItem)}
+            onClick = {magFragVM.setSelectedFreeSpell(displayItem)},
+            modifier = Modifier
+                .weight(0.1f)
         )
         //spell's name
-        Text(text = displayItem.name)
+        Text(
+            text = displayItem.name,
+            modifier = Modifier
+                .weight(0.65f)
+                .clickable{magFragVM.setSelectedFreeSpell(displayItem)},
+            textAlign = TextAlign.Center
+        )
+
         //button to show the spell's details
         DetailButton(
             onClick = {
@@ -94,6 +110,18 @@ private fun PickFreeRow(
                 magFragVM.toggleDetailAlertOpen()
             },
             modifier = Modifier
+                .weight(0.25f)
         )
     }
+}
+
+@Preview
+@Composable
+fun FreeSpellPreview(){
+    val charInstance = BaseCharacter()
+
+    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance)
+    magFragVM.setFreeLevel(8)
+
+    FreeSpellPick(magFragVM)
 }

@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.content.Intent
 import android.widget.*
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.BaseCharacter
+import com.example.animabuilder.view_models.CustomFactory
 import com.example.animabuilder.view_models.models.MainPageViewModel
 
 /**
@@ -26,7 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             //start up main page's viewModel
-            val mainVM = viewModel<MainPageViewModel>()
+            val mainVM: MainPageViewModel by viewModels{
+                CustomFactory(MainPageViewModel::class.java, BaseCharacter())
+            }
 
             //display both buttons on page
             Column(
@@ -36,17 +42,13 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ){
-                MainButton(mainVM.newChar)
-                MainButton(mainVM.loadChar)
+                mainVM.allButtons.forEach{
+                    MainButton(mainVM, it)
+                }
             }
 
-            //display new character alert if it's open
-            if(mainVM.newChar.isOpen.collectAsState().value)
-                MakeAlert(mainVM.newChar)
-
-            //display load character alert if it's open
-            else if(mainVM.loadChar.isOpen.collectAsState().value)
-                MakeAlert(mainVM.loadChar)
+            if(mainVM.actionOpen.collectAsState().value)
+                MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
         }
     }
 
@@ -56,12 +58,19 @@ class MainActivity : AppCompatActivity() {
      * @param item holds the data to be used in this specific button's action
      */
     @Composable
-    private fun MainButton(item: MainPageViewModel.AlertData){
+    private fun MainButton(
+        mainVM: MainPageViewModel,
+        item: MainPageViewModel.AlertData
+    ){
         Row {
             Button(
                 //open alert on click
-                onClick = {item.toggleOpen()},
-                modifier = Modifier.width(200.dp)
+                onClick = {
+                    mainVM.setCurrentAlert(item)
+                    mainVM.toggleActionOpen()
+                },
+                modifier = Modifier
+                    .width(200.dp)
             ){
                 Text(text = stringResource(item.titleRef))
             }
@@ -74,50 +83,35 @@ class MainActivity : AppCompatActivity() {
      * @param item data package to use in this alert
      */
     @Composable
-    private fun MakeAlert(
+    fun MakeAlert(
+        mainVM: MainPageViewModel,
         item: MainPageViewModel.AlertData
     ){
+        val context = LocalContext.current
+
         AlertDialog(
             onDismissRequest = {
                 //clear name and toggle open status
                 item.setCharacterName("")
-                item.toggleOpen()
+                mainVM.toggleActionOpen()
             },
             //get and display item's title
-            title = {Text(text = stringResource(item.headerRef))},
-            text = {
-                //display for new character
-                if(item.headerRef == R.string.newCharacterHeader)
-                    item.NewDisplay()
-                //display for loading a character
-                else
-                    item.LoadDisplay()
+            title = {
+                Text(
+                    text = stringResource(item.headerRef),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             },
+            text = {item.MakeDisplay()},
             confirmButton = {
                 TextButton(onClick = {
-                    //initialize intent
-                    val toNextPage = Intent(this@MainActivity, HomeActivity::class.java)
-
-                    //ready filename to pass
-                    val filename =
-                        if(item.headerRef == R.string.newCharacterHeader)
-                            "AnimaChar" + item.characterName.value
-                        else item.characterName.value
-
-                    //ready boolean for new character
-                    val isNew = item.headerRef == R.string.newCharacterHeader
-
                     //terminate process and notify user of failure
                     if(item.characterName.value == "")
                         Toast.makeText(this@MainActivity, item.failedText, Toast.LENGTH_SHORT).show()
-                    else{
-                        //prepare data for next activity
-                        toNextPage.putExtra("filename", filename)
-                        toNextPage.putExtra("isNew", isNew)
-
-                        //start next activity
-                        startActivity(toNextPage)
-                    }
+                    else
+                        item.clickAct(context, item.characterName.value)
                 }) {
                     Text(text = stringResource(item.buttonName))
                 }
@@ -126,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 TextButton(onClick = {
                     //clear name and toggle open status
                     item.setCharacterName("")
-                    item.toggleOpen()
+                    mainVM.toggleActionOpen()
                 }){
                     Text(text = "Cancel")
                 }

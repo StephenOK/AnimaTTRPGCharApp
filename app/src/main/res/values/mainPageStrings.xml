@@ -2,9 +2,11 @@
 <resources>
     <string name = "newCharacterTitle">NEW CHARACTER</string>
     <string name = "loadCharacterTitle">LOAD CHARACTER</string>
+    <string name = "deleteCharacterTitle">DELETE CHARACTER</string>
 
     <string name = "newCharacterHeader">Save Character As:</string>
     <string name = "loadCharacterHeader">Load Character:</string>
+    <string name = "deleteCharacterHeader">Choose Characters to Delete:</string>
 
     <string name = "newButtonConfirm">Create</string>
     <string name = "loadButtonConfirm">Load</string>

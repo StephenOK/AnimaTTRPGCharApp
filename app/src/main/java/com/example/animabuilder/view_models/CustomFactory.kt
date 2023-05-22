@@ -11,6 +11,7 @@ import com.example.animabuilder.view_models.models.HomePageAlertViewModel
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.KiFragmentViewModel
 import com.example.animabuilder.view_models.models.MagicFragmentViewModel
+import com.example.animabuilder.view_models.models.MainPageViewModel
 import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
 import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
 import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
@@ -23,6 +24,10 @@ class CustomFactory(
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(viewModel)){
             when(viewModel){
+                MainPageViewModel::class.java ->{
+                    return MainPageViewModel() as T
+                }
+
                 HomePageViewModel::class.java ->{
                     return HomePageViewModel(
                         charInstance

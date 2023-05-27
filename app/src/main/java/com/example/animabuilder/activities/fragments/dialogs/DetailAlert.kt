@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -71,6 +72,8 @@ fun DetailAlert(
                     }
                 }
             }
+
+            BackHandler{closeFunc()}
         },
         {TextButton(onClick = {closeFunc()}){ Text(text = "Close")}}
     )

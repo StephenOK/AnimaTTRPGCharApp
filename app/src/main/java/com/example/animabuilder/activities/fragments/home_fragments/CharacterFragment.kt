@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import com.example.animabuilder.R
 import androidx.compose.foundation.clickable
@@ -35,13 +36,15 @@ import com.example.animabuilder.view_models.models.HomePageViewModel
  *
  * @param charFragVM viewModel for this page
  * @param maxNumVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
-    maxNumVM: HomePageViewModel
+    maxNumVM: HomePageViewModel,
+    backFunc: () -> Unit
 ){
     //get context and keyboard state
     val context = LocalContext.current
@@ -265,6 +268,8 @@ fun CharacterPageFragment(
             )
         }
     }
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -400,5 +405,5 @@ fun CharacterPreview(){
     CharacterPageFragment(
         charFragVM,
         HomePageViewModel(charInstance)
-    )
+    ) {}
 }

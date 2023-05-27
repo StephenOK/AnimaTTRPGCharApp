@@ -154,4 +154,6 @@
     <string name = "phrLabel">PhR</string>
     <string name = "vrLabel">VR</string>
     <string name = "psrLabel">PsR</string>
+
+    <string name = "selectLabel">Select</string>
 </resources>

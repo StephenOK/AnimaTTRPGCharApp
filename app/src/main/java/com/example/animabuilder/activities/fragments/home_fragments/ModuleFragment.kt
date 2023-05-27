@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,11 +35,13 @@ import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
  *
  * @param modFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun ModuleFragment(
     modFragVM: ModuleFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,6 +111,8 @@ fun ModuleFragment(
             modFragVM.detailName.collectAsState().value,
             modFragVM.detailItem.collectAsState().value!!
         ){modFragVM.toggleDetailAlertOn()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -524,5 +529,5 @@ fun ModulePreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    ModuleFragment(moduleFragVM, homePageVM)
+    ModuleFragment(moduleFragVM, homePageVM) {}
 }

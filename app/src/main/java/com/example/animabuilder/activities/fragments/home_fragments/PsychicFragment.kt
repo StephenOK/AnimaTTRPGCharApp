@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -32,11 +33,13 @@ import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
  *
  * @param psyFragVM viewModel that is to be run on this page
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -104,6 +107,8 @@ fun PsychicFragment(
             psyFragVM.detailTitle.collectAsState().value,
             psyFragVM.detailItem.collectAsState().value!!
         ){psyFragVM.toggleDetailAlertOpen()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -299,5 +304,5 @@ fun PsychicPreview(){
 
     psyFragVM.allDisciplines[0].toggleOpen()
 
-    PsychicFragment(psyFragVM, homePageFrag)
+    PsychicFragment(psyFragVM, homePageFrag) {}
 }

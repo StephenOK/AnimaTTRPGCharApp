@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.activity.compose.BackHandler
 import com.example.animabuilder.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -35,7 +36,8 @@ import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
 @Composable
 fun SecondaryAbilityFragment(
     secondaryFragVM: SecondaryFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,6 +72,8 @@ fun SecondaryAbilityFragment(
             MakeTableDisplay(it, homePageVM)
         }
     }
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -284,5 +288,5 @@ fun SecondaryPreview(){
 
     secondaryFragVM.allFields[2].toggleOpen()
 
-    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM)
+    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM) {}
 }

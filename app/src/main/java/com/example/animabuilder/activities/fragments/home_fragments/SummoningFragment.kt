@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,11 +29,13 @@ import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
  *
  * @param summoningVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun SummoningFragment(
     summoningVM: SummoningFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ){
     LazyColumn(
         modifier = Modifier
@@ -81,6 +84,8 @@ fun SummoningFragment(
             SummoningAbilityRow(it, homePageVM)
         }
     }
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -144,5 +149,5 @@ fun SummoningPreview(){
     val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning)
     val homePageVM = HomePageViewModel(charInstance)
 
-    SummoningFragment(summoningFragVM, homePageVM)
+    SummoningFragment(summoningFragVM, homePageVM) {}
 }

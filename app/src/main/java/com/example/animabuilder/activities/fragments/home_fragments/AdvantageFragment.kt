@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import com.example.animabuilder.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -46,11 +47,13 @@ import com.example.animabuilder.view_models.models.HomePageViewModel
  *
  * @param advantageFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun AdvantageFragment(
     advantageFragVM: AdvantageFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ){
     //initialize local context
     val context = LocalContext.current
@@ -117,6 +120,8 @@ fun AdvantageFragment(
             //notify user of failed acquisition
             if(input != null)
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show()
+            else
+                advantageFragVM.toggleAdvantageCostOn()
 
             homePageVM.updateExpenditures()
         }
@@ -151,6 +156,8 @@ fun AdvantageFragment(
             advantageFragVM.detailItem.collectAsState().value!!.name,
             advantageFragVM.detailItem.collectAsState().value!!
         ){advantageFragVM.toggleDetailAlertOn()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -340,5 +347,5 @@ fun AdvantagePreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    AdvantageFragment(advantageFragVM, homePageVM)
+    AdvantageFragment(advantageFragVM, homePageVM) {}
 }

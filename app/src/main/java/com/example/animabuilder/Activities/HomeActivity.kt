@@ -236,19 +236,28 @@ class HomeActivity : AppCompatActivity() {
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
                         charFragVM.refreshPage()
-                        CharacterPageFragment(charFragVM, homePageVM)
+                        CharacterPageFragment(
+                            charFragVM,
+                            homePageVM
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to combat abilities page
                     composable(route = ScreenPage.Combat.name){
                         combatFragVM.refreshPage()
-                        CombatFragment(combatFragVM, homePageVM)
+                        CombatFragment(
+                            combatFragVM,
+                            homePageVM
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to secondary characteristics page
                     composable(route = ScreenPage.SecondaryCharacteristics.name){
                         secondaryFragVM.refreshPage()
-                        SecondaryAbilityFragment(secondaryFragVM, homePageVM)
+                        SecondaryAbilityFragment(
+                            secondaryFragVM,
+                            homePageVM
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to advantages page
@@ -256,7 +265,7 @@ class HomeActivity : AppCompatActivity() {
                         AdvantageFragment(
                             advantageFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to combat page
@@ -265,7 +274,7 @@ class HomeActivity : AppCompatActivity() {
                         ModuleFragment(
                             modFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to ki page
@@ -274,7 +283,7 @@ class HomeActivity : AppCompatActivity() {
                         KiFragment(
                             kiFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to magic page
@@ -283,7 +292,7 @@ class HomeActivity : AppCompatActivity() {
                         MagicFragment(
                             magFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to summoning page
@@ -292,7 +301,7 @@ class HomeActivity : AppCompatActivity() {
                         SummoningFragment(
                             summonFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to psychic page
@@ -301,13 +310,15 @@ class HomeActivity : AppCompatActivity() {
                         PsychicFragment(
                             psyFragVM,
                             homePageVM
-                        )
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
 
                     //route to equipment page
                     composable(route = ScreenPage.Equipment.name){
                         equipFragVM.refreshPage()
-                        EquipmentFragment(equipFragVM)
+                        EquipmentFragment(
+                            equipFragVM
+                        ){homeAlertsVM.toggleExitAlert()}
                     }
                 }
 

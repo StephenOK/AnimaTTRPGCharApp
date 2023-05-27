@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -375,6 +376,14 @@ fun CustomTechnique(
 
                 //close dialog on invalid input
                 else -> {customTechVM.closeDialog()}
+            }
+
+            BackHandler{
+                when(customTechVM.customPageNum.value){
+                    1 -> kiFragVM.toggleCustomTechOpen()
+                    5 -> customTechVM.setCustomPageNum(3)
+                    else -> customTechVM.setCustomPageNum(customTechVM.customPageNum.value - 1)
+                }
             }
         },
         {
@@ -978,7 +987,7 @@ fun CustomTechniquePreview(){
     )
 
     customTechVM.setMaintenanceSelection(true)
-    customTechVM.setTechniqueName("Testorino")
+    customTechVM.setTechniqueName("Test Tech")
 
     CustomTechnique(kiFragVM, customTechVM){TechContents(it)}
 }

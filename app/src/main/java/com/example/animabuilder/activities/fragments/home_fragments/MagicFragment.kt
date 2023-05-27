@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,11 +40,13 @@ import com.example.animabuilder.view_models.models.MagicFragmentViewModel
  *
  * @param magFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ) {
     LazyColumn(
         Modifier
@@ -297,6 +300,8 @@ fun MagicFragment(
             magFragVM.detailTitle.collectAsState().value,
             magFragVM.detailItem.collectAsState().value!!
         ) {magFragVM.toggleDetailAlertOpen()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -726,5 +731,5 @@ fun MagicPreview(){
     magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[2]!!)
     magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[3]!!)
 
-    MagicFragment(magFragVM, homePageVM)
+    MagicFragment(magFragVM, homePageVM) {}
 }

@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.animabuilder.R
 import com.example.animabuilder.DetailButton
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
@@ -59,15 +62,17 @@ fun FreeSpellPick(
                     }
                 }
             }
+
+            BackHandler{magFragVM.toggleFreeExchangeOpen()}
         },
         {
             //confirmation button adds spell to character
             TextButton(onClick = {magFragVM.addFreeSpell()})
-            {Text(text = "Confirm")}
+            {Text(text = stringResource(R.string.confirmLabel))}
 
             //back button closes dialog
             TextButton(onClick = {magFragVM.toggleFreeExchangeOpen() }) {
-                Text(text = "Back")
+                Text(text = stringResource(R.string.backLabel))
             }
         }
     )

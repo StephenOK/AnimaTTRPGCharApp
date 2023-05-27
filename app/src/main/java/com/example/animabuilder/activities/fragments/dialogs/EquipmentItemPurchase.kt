@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -98,6 +99,8 @@ fun EquipmentItemPurchase(
                     )
                 }
             }
+
+            BackHandler{equipFragVM.toggleItemPurchaseOpen()}
         },
         {
             //button to confirm purchase

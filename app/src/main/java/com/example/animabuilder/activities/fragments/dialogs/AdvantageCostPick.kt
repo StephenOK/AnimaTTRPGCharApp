@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.dialogs
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 
@@ -31,13 +34,15 @@ fun AdvantageCostPick(
     advantageFragVM: AdvantageFragmentViewModel,
     closeDialog: (String?) -> Unit
 ){
+    val currentPage = advantageFragVM.adjustingPage.collectAsState().value
+
     DialogFrame(
         "Select Items for Advantage",
         {
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                when (advantageFragVM.adjustingPage.value) {
+                when (currentPage) {
                     //page for type options
                     1 -> {
                         //for each available option
@@ -61,13 +66,18 @@ fun AdvantageCostPick(
                                         text = it,
                                         modifier = Modifier
                                             .weight(0.2f)
-                                            .clickable{advantageFragVM.setOptionPicked(advantageFragVM.adjustedAdvantage.value!!.options!!.indexOf(it))},
+                                            .clickable {
+                                                advantageFragVM.setOptionPicked(
+                                                    advantageFragVM.adjustedAdvantage.value!!.options!!.indexOf(
+                                                        it
+                                                    )
+                                                )
+                                            },
                                         textAlign = TextAlign.Center
                                     )
                                 }
                             }
                         }
-
                     }
 
                     //page for cost option
@@ -98,8 +108,26 @@ fun AdvantageCostPick(
                     }
                 }
             }
+
+            BackHandler(currentPage == 1) {
+                closeDialog(null)
+            }
+
+            BackHandler(currentPage == 2) {
+                if(advantageFragVM.adjustedAdvantage.value!!.options != null)
+                    advantageFragVM.setAdjustingPage(1)
+                else closeDialog(null)
+            }
         },
         {
+            if(advantageFragVM.adjustingPage.collectAsState().value == 2 &&
+                    advantageFragVM.adjustedAdvantage.collectAsState().value!!.options != null)
+                TextButton(onClick = {
+                    advantageFragVM.setAdjustingPage(1)
+                }) {
+                    Text(text = stringResource(R.string.backLabel))
+                }
+
             //button for user's item selection
             TextButton(onClick = {
                 when(advantageFragVM.adjustingPage.value){
@@ -117,12 +145,12 @@ fun AdvantageCostPick(
                         closeDialog(advantageFragVM.acquireAdvantage())
                 }
             }) {
-                Text(text = "Select")
+                Text(text = stringResource(R.string.selectLabel))
             }
 
             //close selection dialog
             TextButton(onClick = {closeDialog(null)}) {
-                Text(text = "Cancel")
+                Text(text = stringResource(R.string.cancelLabel))
             }
         }
     )

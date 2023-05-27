@@ -1,6 +1,7 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,12 +40,14 @@ import com.example.animabuilder.view_models.models.KiFragmentViewModel
  *
  * @param kiFragVM viewModel to run for this page
  * @param homePageVM viewModel that manages the bottom bar display
+ * @param backFunc function to run on user's back button input
  */
 
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    backFunc: () -> Unit
 ) {
     //get fragment's context
     val context = LocalContext.current
@@ -224,6 +227,8 @@ fun KiFragment(
             kiFragVM.detailName.collectAsState().value,
             kiFragVM.detailItem.collectAsState().value!!
         ){kiFragVM.toggleDetailAlertOn()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -395,5 +400,5 @@ fun KiPreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    KiFragment(kiFragVM, homePageVM)
+    KiFragment(kiFragVM, homePageVM) {}
 }

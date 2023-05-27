@@ -2,7 +2,6 @@ package com.example.animabuilder.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.Intent
 import android.widget.*
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CustomFactory
 import com.example.animabuilder.view_models.models.MainPageViewModel

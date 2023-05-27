@@ -84,9 +84,6 @@ class AdvantageFragmentViewModel(
         //update advantages taken on successful acquisition
         if(attemptAction == null) updateAdvantagesTaken()
 
-        //deactivate advantage cost dialog
-        toggleAdvantageCostOn()
-
         //return status
         return attemptAction
     }

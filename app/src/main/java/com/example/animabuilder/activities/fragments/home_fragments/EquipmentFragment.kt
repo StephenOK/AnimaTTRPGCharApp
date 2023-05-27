@@ -1,5 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -40,10 +41,12 @@ import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
  * Fragment that manages the character's inventory.
  *
  * @param equipFragVM viewModel that manages the character's data
+ * @param backFunc function to run on user's back button input
  */
 @Composable
 fun EquipmentFragment(
-    equipFragVM: EquipmentFragmentViewModel
+    equipFragVM: EquipmentFragmentViewModel,
+    backFunc: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -126,6 +129,8 @@ fun EquipmentFragment(
             equipFragVM.detailTitle.collectAsState().value,
             equipFragVM.detailItem.collectAsState().value!!
         ){equipFragVM.toggleDetailAlertOpen()}
+
+    BackHandler{backFunc()}
 }
 
 /**
@@ -329,5 +334,5 @@ fun EquipmentPreview(){
 
     //equipFragVM.allCategoryData[8].toggleCatOpen()
 
-    EquipmentFragment(equipFragVM)
+    EquipmentFragment(equipFragVM) {}
 }

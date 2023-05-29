@@ -1,8 +1,10 @@
 package com.example.animabuilder.activities
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
@@ -14,6 +16,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentManager
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CustomFactory
 import com.example.animabuilder.view_models.models.MainPageViewModel
@@ -27,12 +31,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val context = LocalContext.current as Activity
+
             //start up main page's viewModel
             val mainVM: MainPageViewModel by viewModels{
                 CustomFactory(MainPageViewModel::class.java, BaseCharacter())
             }
 
-            //display both buttons on page
+            //display all buttons on page
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -43,6 +49,12 @@ class MainActivity : AppCompatActivity() {
                 mainVM.allButtons.forEach{
                     MainButton(mainVM, it)
                 }
+
+                TextButton(onClick = {context.finish()}) {
+                    Text(text = stringResource(R.string.exitLabel))
+                }
+
+                BackHandler{context.finish()}
             }
 
             if(mainVM.actionOpen.collectAsState().value)
@@ -110,6 +122,8 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, item.failedText, Toast.LENGTH_SHORT).show()
                     else
                         item.clickAct(context, item.characterName.value)
+
+                    mainVM.toggleActionOpen()
                 }) {
                     Text(text = stringResource(item.buttonName))
                 }

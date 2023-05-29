@@ -35,9 +35,19 @@ class MainPageViewModel: ViewModel() {
         R.string.newButtonConfirm,
         "File must have a name!",
         {context, name ->
-            val toNextPage = Intent(context, HomeActivity::class.java)
+            val fileList = context.fileList()
 
-            val filename = "AnimaChar$name"
+            val fileBase = "AnimaChar$name"
+            var fileNum = 0
+
+            var filename = fileBase
+
+            while(fileList.contains(filename)) {
+                fileNum++
+                filename = "$fileBase($fileNum)"
+            }
+
+            val toNextPage = Intent(context, HomeActivity::class.java)
 
             toNextPage.putExtra("filename", filename)
             toNextPage.putExtra("isNew", true)

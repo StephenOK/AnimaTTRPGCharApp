@@ -1,12 +1,12 @@
 package com.example.animabuilder.activities
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.NavHost
@@ -59,7 +60,24 @@ class HomeActivity : AppCompatActivity() {
         Magic,
         Summoning,
         Psychic,
-        Equipment
+        Equipment;
+
+        companion object {
+            fun toAddress(input: ScreenPage): Int {
+                return when (input) {
+                    Character -> R.string.charLabel
+                    Combat -> R.string.combatLabel
+                    SecondaryCharacteristics -> R.string.secondaryLabel
+                    Advantages -> R.string.advantageLabel
+                    Modules -> R.string.modulesLabel
+                    Ki -> R.string.kiLabel
+                    Magic -> R.string.magicLabel
+                    Summoning -> R.string.summonLabel
+                    Psychic -> R.string.psychicLabel
+                    Equipment -> R.string.equipmentLabel
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +91,9 @@ class HomeActivity : AppCompatActivity() {
             BaseCharacter()
         else
             BaseCharacter(File(this.filesDir, filename))
+
+        if(isNew)
+            attemptSave(filename, charInstance)
 
         setContent{
             //get scaffold state, coroutine scope, and navigation controller
@@ -137,7 +158,11 @@ class HomeActivity : AppCompatActivity() {
                 //home page's top bar
                 topBar = {TopAppBar (
                     //update title with any page change
-                    title = {Text(text = homePageVM.currentFragment.collectAsState().value.name)},
+                    title = {
+                        Text(
+                            text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
+                        )
+                    },
 
                     //icon to open the navigation drawer
                     navigationIcon = {
@@ -156,29 +181,36 @@ class HomeActivity : AppCompatActivity() {
 
                 //navigation drawer
                 drawerContent = {
-                    Column{
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ){
                         //for each page enumeration present
                         enumValues<ScreenPage>().forEach {
                             //create a drawer button with the given onclick function
-                            DrawerButton(it.name)
-                            {
+                            DrawerButton(
+                                ScreenPage.toAddress(it),
+                                homePageVM.currentFragment.collectAsState().value != it
+                            ){
                                 //change page if not on own page
                                 if(homePageVM.currentFragment.value != it) {
                                     homePageVM.setCurrentFragment(it)
                                     scope.launch { scaffoldState.drawerState.close() }
-                                    navController.navigate(it.name)
+                                    navController.navigate(it.name){
+                                        popUpTo(0)
+                                    }
                                 }
                             }
                         }
 
                         //drawer button for saving the character
-                        DrawerButton("Save"){
+                        DrawerButton(R.string.saveLabel){
                             scope.launch{scaffoldState.drawerState.close()}
                             attemptSave(filename, charInstance)
                         }
 
                         //drawer button for exiting the character creator
-                        DrawerButton("Exit"){
+                        DrawerButton(R.string.exitLabel){
                             scope.launch{scaffoldState.drawerState.close()}
                             homeAlertsVM.toggleExitAlert()
                         }
@@ -336,9 +368,28 @@ class HomeActivity : AppCompatActivity() {
      * @param action function to run on user input
      */
     @Composable
-    private fun DrawerButton(display:String, action: () -> Unit){
-        TextButton(onClick = {action()}) {
-            Text(text = display)
+    private fun DrawerButton(
+        display: Int,
+        colorVal: Boolean = true,
+        action: () -> Unit
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable{action()}
+        ){
+            TextButton(
+                onClick = { action() }
+            ) {
+                Text(
+                    text = stringResource(display),
+                    color =
+                        if(colorVal)
+                            Color.Black
+                        else
+                            Color.Blue
+                )
+            }
         }
     }
 
@@ -453,7 +504,8 @@ class HomeActivity : AppCompatActivity() {
                 TextButton(
                     onClick = {
                         attemptSave(filename, charInstance)
-                        exitPage()}
+                        finish()
+                    }
                 ){
                     Text(text = "Save")
                 }},
@@ -461,18 +513,11 @@ class HomeActivity : AppCompatActivity() {
                 //leave page without saving
                 TextButton(
                     onClick = {
-                        exitPage()
+                        finish()
                     }){
                     Text(text = "Exit")
                 }
             }
         )
-    }
-
-    /**
-     * Function that transfers the user back to the main page.
-     */
-    private fun exitPage(){
-        startActivity(Intent(this@HomeActivity, MainActivity::class.java))
     }
 }

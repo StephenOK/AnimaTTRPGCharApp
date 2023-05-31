@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -66,6 +67,8 @@ fun CombatFragment(
 
         //character life point row
         item {
+            val lifeMultDP = stringResource(R.string.dpLabel, combatFragVM.getLifeDP())
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.lifePointLabel), textAlign = TextAlign.Center, modifier = Modifier.weight(0.2f))
 
@@ -89,7 +92,15 @@ fun CombatFragment(
                         homePageVM.updateExpenditures()
                     },
                     emptyFunction = {combatFragVM.setLifeMults("")},
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier
+                        .onFocusChanged {
+                            if (it.isFocused)
+                                combatFragVM.setLifeDPLabel(lifeMultDP)
+                            else
+                                combatFragVM.setLifeDPLabel("")
+                        }
+                        .weight(0.2f),
+                    label = combatFragVM.lifeDPLabel.collectAsState().value
                 )
 
                 //display life point total
@@ -223,6 +234,8 @@ private fun CombatItemRow(
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
+        val focusString = stringResource(R.string.dpLabel, combatItem.growthGetter())
+
         //row label
         Text(
             text = stringResource(combatItem.label),
@@ -237,7 +250,13 @@ private fun CombatItemRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {combatItem.setPointsIn("")},
-            modifier = Modifier.weight(0.2f),
+            modifier = Modifier
+                .onFocusChanged {
+                    if (it.isFocused) combatItem.setLabelDisplay(focusString)
+                    else combatItem.setLabelDisplay("")
+                }
+                .weight(0.2f),
+            label = combatItem.labelDisplay.collectAsState().value,
             color =
                 if(combatItem.label != R.string.wearLabel)
                     combatFragVM.pointColor.collectAsState().value
@@ -312,7 +331,11 @@ private fun ResistanceRow(
 @Composable
 fun CombatPreview(){
     val charInstance = BaseCharacter()
-    val combatFragVM = CombatFragViewModel(charInstance.combat, charInstance.primaryList)
+    val combatFragVM = CombatFragViewModel(
+        charInstance.combat,
+        charInstance.primaryList,
+        charInstance.ownClass
+    )
     val homePageFragVM = HomePageViewModel(charInstance)
 
     CombatFragment(

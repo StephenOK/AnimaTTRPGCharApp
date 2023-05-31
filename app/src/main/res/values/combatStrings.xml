@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "lifePointLabel">Life Points</string>
+    <string name = "multLabel">Multiplier</string>
+
+    <string name = "attackLabel">Attack</string>
+    <string name = "blockLabel">Block</string>
+    <string name = "dodgeLabel">Dodge</string>
+    <string name = "wearLabel">Wear Armor</string>
+
+    <string name = "drLabel">DR</string>
+    <string name = "mrLabel">MR</string>
+    <string name = "phrLabel">PhR</string>
+    <string name = "vrLabel">VR</string>
+    <string name = "psrLabel">PsR</string>
+
+    <string name = "totalInitiative">Total Initiative</string>
+    <string name = "fatigueLabel">Fatigue</string>
+    <string name = "regenLabel">Regeneration</string>
+</resources>

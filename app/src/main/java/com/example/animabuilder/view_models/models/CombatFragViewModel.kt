@@ -1,8 +1,10 @@
 package com.example.animabuilder.view_models.models
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.combat.CombatAbilities
 import com.example.animabuilder.character_creation.attributes.combat.CombatItem
 import com.example.animabuilder.character_creation.attributes.combat.ResistanceItem
@@ -20,7 +22,8 @@ import kotlinx.coroutines.flow.update
  */
 class CombatFragViewModel(
     private val combat: CombatAbilities,
-    primaryList: PrimaryList
+    primaryList: PrimaryList,
+    val charClass: MutableState<CharClass>
 ): ViewModel() {
     //initialize text color for the combat items
     private val _pointColor = MutableStateFlow(Color.Black)
@@ -33,6 +36,11 @@ class CombatFragViewModel(
     //initialize maximum life point display
     private val _lifeTotal = MutableStateFlow(combat.lifeMax.value.toString())
     val lifeTotal = _lifeTotal.asStateFlow()
+
+    private val _lifeDPLabel = MutableStateFlow("")
+    val lifeDPLabel = _lifeDPLabel.asStateFlow()
+
+    fun setLifeDPLabel(input: String){_lifeDPLabel.update{input}}
 
     /**
      * Defines the color of the text for the combat items.
@@ -108,6 +116,12 @@ class CombatFragViewModel(
      */
     private fun setLifeTotal(input: String){_lifeTotal.update{input}}
 
+    fun getLifeDP(): Int{return charClass.value.lifePointMultiple}
+    fun getAttackDP(): Int{return charClass.value.atkGrowth}
+    fun getBlockDP(): Int{return charClass.value.blockGrowth}
+    fun getDodgeDP(): Int{return charClass.value.dodgeGrowth}
+    fun getWearDP(): Int{return charClass.value.armorGrowth}
+
     //initialize all resistance display items
     private val disRes = ResistanceData(
         R.string.drLabel,
@@ -142,28 +156,32 @@ class CombatFragViewModel(
         combat,
         R.string.attackLabel,
         combat.attack,
-        pointColor.value
+        pointColor.value,
+        {getAttackDP()}
     ) { setPointColor(it) }
 
     private val block = CombatItemData(
         combat,
         R.string.blockLabel,
         combat.block,
-        pointColor.value
+        pointColor.value,
+        {getBlockDP()}
     ) { setPointColor(it) }
 
     private val dodge = CombatItemData(
         combat,
         R.string.dodgeLabel,
         combat.dodge,
-        pointColor.value
+        pointColor.value,
+        {getDodgeDP()}
     ) { setPointColor(it) }
 
     private val wearArmor = CombatItemData(
         combat,
         R.string.wearLabel,
         combat.wearArmor,
-        Color.Black
+        Color.Black,
+        {getWearDP()}
     ) {}
 
     //gather all combat item data
@@ -195,6 +213,7 @@ class CombatFragViewModel(
         val label: Int,
         val item: CombatItem,
         val color: Color,
+        val growthGetter: () -> Int,
         val setPointColor: (Color) -> Unit
     ){
         //initialize user's input value into this ability
@@ -204,6 +223,9 @@ class CombatFragViewModel(
         //initialize final display for this stat
         private val _totalVal = MutableStateFlow(item.total.value.toString())
         val totalVal = _totalVal.asStateFlow()
+
+        private val _labelDisplay = MutableStateFlow("")
+        val labelDisplay = _labelDisplay.asStateFlow()
 
         /**
          * Sets the purchased amount for this item as indicated.
@@ -234,6 +256,7 @@ class CombatFragViewModel(
          */
         fun setPointsIn(input: String){_pointsIn.update{input}}
         fun setTotalVal() {_totalVal.update{item.total.value.toString()}}
+        fun setLabelDisplay(input: String){_labelDisplay.update{input}}
     }
 
     /**

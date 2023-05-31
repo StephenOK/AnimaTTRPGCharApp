@@ -47,7 +47,8 @@ class CustomFactory(
                 CombatFragViewModel::class.java ->{
                     return CombatFragViewModel(
                         charInstance.combat,
-                        charInstance.primaryList
+                        charInstance.primaryList,
+                        charInstance.ownClass
                     ) as T
                 }
 
@@ -73,26 +74,30 @@ class CustomFactory(
 
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
-                        charInstance.ki
+                        charInstance.ki,
+                        charInstance.ownClass
                     ) as T
                 }
 
                 MagicFragmentViewModel::class.java ->{
                     return MagicFragmentViewModel(
                         charInstance.magic,
-                        charInstance
+                        charInstance,
+                        charInstance.ownClass
                     ) as T
                 }
 
                 SummoningFragmentViewModel::class.java ->{
                     return SummoningFragmentViewModel(
-                        charInstance.summoning
+                        charInstance.summoning,
+                        charInstance.ownClass
                     ) as T
                 }
 
                 PsychicFragmentViewModel::class.java ->{
                     return PsychicFragmentViewModel(
                         charInstance.psychic,
+                        charInstance.ownClass,
                         charInstance.primaryList.dex.outputMod.value
                     ) as T
                 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "charLabel">Character</string>
+    <string name = "combatLabel">Combat</string>
+    <string name = "secondaryLabel">Secondary Characteristics</string>
+    <string name = "advantageLabel">Advantages</string>
+    <string name = "modulesLabel">Modules</string>
+    <string name = "kiLabel">Ki</string>
+    <string name = "magicLabel">Magic</string>
+    <string name = "summonLabel">Summoning</string>
+    <string name = "psychicLabel">Psychic</string>
+    <string name = "equipmentLabel">Equipment</string>
+
+    <string name = "saveLabel">Save</string>
+    <string name = "exitLabel">Exit</string>
+</resources>

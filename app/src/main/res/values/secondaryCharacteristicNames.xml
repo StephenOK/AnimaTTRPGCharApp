@@ -57,7 +57,8 @@
         <item>Sleight of Hand</item>
     </string-array>
 
-
+    <string name = "natNotTaken">+ 0</string>
+    <string name = "natTaken">+ 5</string>
 
     <string name = "freelancerPrompt">Select Freelancer\'s Bonuses: </string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.magic.Magic
 import com.example.animabuilder.character_creation.attributes.magic.spells.FreeSpell
 import com.example.animabuilder.character_creation.attributes.magic.spells.Spell
@@ -25,11 +26,15 @@ import kotlinx.coroutines.flow.update
  */
 class MagicFragmentViewModel(
     private val magic: Magic,
-    private val charInstance: BaseCharacter
+    private val charInstance: BaseCharacter,
+    val charClass: MutableState<CharClass>
 ): ViewModel() {
     //initialize the character's bought zeon input
     private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.value.toString())
     val boughtZeonString = _boughtZeonString.asStateFlow()
+
+    private val _boughtZeonDP = MutableStateFlow("")
+    val boughtZeonDP = _boughtZeonDP.asStateFlow()
 
     //initialize the character's maximum zeon display
     private val _maxZeonString = MutableStateFlow(magic.zeonMax.value.toString())
@@ -101,12 +106,17 @@ class MagicFragmentViewModel(
         return charInstance.advantageRecord.getAdvantage("The Gift") != null
     }
 
+    fun getBoughtZeonDP(): Int{return charClass.value.zeonGrowth}
+    fun getZeonAccDP(): Int{return charClass.value.maGrowth}
+    fun getMagProjDP(): Int{return charClass.value.maProjGrowth}
+
     //create item to manage zeon accumulation
     private val zeonAccumulation = ZeonPurchaseItemData(
         R.string.zeonAccumulationLabel,
         {magic.baseZeonAcc.value},
         {magic.zeonAccMult.value},
         {magic.zeonAccTotal.value},
+        {getZeonAccDP()},
         {
             if(it >= 1){
                 magic.buyZeonAcc(it)
@@ -123,6 +133,7 @@ class MagicFragmentViewModel(
         {charInstance.primaryList.dex.outputMod.value},
         {magic.boughtMagProjection.value},
         {magic.magProjTotal.value},
+        {getMagProjDP()},
         {
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
@@ -360,6 +371,8 @@ class MagicFragmentViewModel(
         _boughtZeonString.update{input}
     }
 
+    fun setBoughtZeonDP(input: String){_boughtZeonDP.update{input}}
+
     /**
      * Change the character's magic imbalance input.
      *
@@ -533,6 +546,7 @@ class MagicFragmentViewModel(
         val baseInput: () -> Int,
         val boughtInput: () -> Int,
         totalInput: () -> Int,
+        val dpGetter: () -> Int,
         val buyItem: (Int) -> Unit,
         val changeColor: () -> Color,
         val updateTotal: (MutableStateFlow<String>) -> Unit
@@ -548,6 +562,9 @@ class MagicFragmentViewModel(
         //initialize the color of the displayed text
         private val _textColor = MutableStateFlow(changeColor())
         val textColor = _textColor.asStateFlow()
+
+        private val _dpDisplay = MutableStateFlow("")
+        val dpDisplay = _dpDisplay.asStateFlow()
 
         /**
          * Set the bought amount to the desired input.
@@ -572,6 +589,8 @@ class MagicFragmentViewModel(
          * Sets the color of this item's text to the indicated value.
          */
         fun setNewColor(){_textColor.update{changeColor()}}
+
+        fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
         /**
          * Refreshes the input and total for this item's data.

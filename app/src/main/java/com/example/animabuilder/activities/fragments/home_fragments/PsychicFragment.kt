@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -122,6 +123,12 @@ private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
     homePageVM: HomePageViewModel
 ){
+    val dpString =
+        if(tableData.dpGetter != null)
+            stringResource(R.string.dpLabel, tableData.dpGetter!!())
+        else
+            ""
+
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(Modifier.weight(0.25f))
         Text(
@@ -170,7 +177,14 @@ private fun PsychicPurchaseTable(
             inputFunction = {tableData.setPurchaseAmount(it.toInt())},
             emptyFunction = {tableData.setPurchaseAmount("")},
             modifier = Modifier
+                .onFocusChanged {
+                    if(it.isFocused)
+                        tableData.setDPDisplay(dpString)
+                    else
+                        tableData.setDPDisplay("")
+                }
                 .weight(0.25f),
+            label = tableData.dpDisplay.collectAsState().value,
             postRun = {homePageVM.updateExpenditures()},
             color = tableData.textColor.collectAsState().value
         )
@@ -299,7 +313,11 @@ private fun PsyPowerRow(
 @Composable
 fun PsychicPreview(){
     val charInstance = BaseCharacter()
-    val psyFragVM = PsychicFragmentViewModel(charInstance.psychic, charInstance.primaryList.dex.outputMod.value)
+    val psyFragVM = PsychicFragmentViewModel(
+        charInstance.psychic,
+        charInstance.ownClass,
+        charInstance.primaryList.dex.outputMod.value
+    )
     val homePageFrag = HomePageViewModel(charInstance)
 
     psyFragVM.allDisciplines[0].toggleOpen()

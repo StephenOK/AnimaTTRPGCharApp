@@ -239,7 +239,7 @@ class CharacterFragmentViewModel(
 
     //set class dropdown data
     private val classDropdown = DropdownData(
-        R.string.classText,
+        R.string.classLabel,
         R.array.classArray,
         charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
     ) {

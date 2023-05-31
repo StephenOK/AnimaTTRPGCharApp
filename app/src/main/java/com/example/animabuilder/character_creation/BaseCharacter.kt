@@ -34,6 +34,7 @@ class BaseCharacter {
     val isMale = mutableStateOf(true)
 
     //list of secondary abilities
+    val rules = RuleRecord(this@BaseCharacter)
     val primaryList = PrimaryList(this@BaseCharacter)
     val combat = CombatAbilities(this@BaseCharacter)
     val secondaryList = SecondaryList(this@BaseCharacter)
@@ -479,6 +480,8 @@ class BaseCharacter {
         val readChar = InputStreamReader(restoreChar, StandardCharsets.UTF_8)
         val fileReader = BufferedReader(readChar)
 
+        rules.loadRules(fileReader)
+
         //get the character's name
         charName.value = fileReader.readLine()
 
@@ -546,6 +549,8 @@ class BaseCharacter {
         get() {
             //initialize byte stream
             byteArray = ByteArrayOutputStream()
+
+            rules.writeRules()
 
             //add name data
             addNewData(charName.value)

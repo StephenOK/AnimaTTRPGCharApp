@@ -14,9 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentManager
+import androidx.compose.ui.unit.sp
 import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CustomFactory
@@ -46,6 +47,18 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ){
+                Text(
+                    text = stringResource(R.string.mainTitle),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = stringResource(R.string.mainSubtitle),
+                    fontSize = 20.sp
+                )
+
+                Spacer(Modifier.height(30.dp))
+
                 mainVM.allButtons.forEach{
                     MainButton(mainVM, it)
                 }

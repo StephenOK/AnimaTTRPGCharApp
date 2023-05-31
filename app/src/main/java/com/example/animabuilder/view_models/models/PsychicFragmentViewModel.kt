@@ -1,8 +1,10 @@
 package com.example.animabuilder.view_models.models
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.psychic.Discipline
 import com.example.animabuilder.character_creation.attributes.psychic.Psychic
 import com.example.animabuilder.character_creation.attributes.psychic.PsychicPower
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.update
  */
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
+    private val charClass: MutableState<CharClass>,
     dexMod: Int
 ): ViewModel() {
     //initialize character's free psychic point text
@@ -86,7 +89,8 @@ class PsychicFragmentViewModel(
         {psychic.psyPotentialBase.value},
         {psychic.pointsInPotential.value},
         {psychic.psyPotentialTotal.value},
-        {Color.Black}
+        null,
+        {Color.Black},
     ){input, item ->
         psychic.setPointPotential(input)
         item.update{psychic.psyPotentialTotal.value.toString()}
@@ -99,6 +103,7 @@ class PsychicFragmentViewModel(
         {psychic.innatePsyPoints.value},
         {psychic.boughtPsyPoints.value},
         {psychic.totalPsychicPoints.value},
+        {charClass.value.psyPointGrowth},
         {Color.Black}
     ){input, item ->
         psychic.buyPsyPoints(input)
@@ -112,6 +117,7 @@ class PsychicFragmentViewModel(
         {dexMod},
         {psychic.psyProjectionBought.value},
         {psychic.psyProjectionTotal.value},
+        {charClass.value.psyProjGrowth},
         {
             if(psychic.getValidProjection())
                 Color.Black
@@ -221,6 +227,7 @@ class PsychicFragmentViewModel(
         val baseString: () -> Int,
         val boughtVal: () -> Int,
         val totalVal: () -> Int,
+        val dpGetter: (() -> Int)?,
         val changeColor: () -> Color,
         val totalUpdate: (Int, MutableStateFlow<String>) -> Unit
     ){
@@ -235,6 +242,9 @@ class PsychicFragmentViewModel(
         //initialize text's color
         private val _textColor = MutableStateFlow(changeColor())
         val textColor = _textColor.asStateFlow()
+
+        private val _dpDisplay = MutableStateFlow("")
+        val dpDisplay = _dpDisplay.asStateFlow()
 
         /**
          * Sets the purchased amount to the indicated value.
@@ -258,6 +268,8 @@ class PsychicFragmentViewModel(
          * Sets the color of the displayed input text.
          */
         fun setTextColor(){_textColor.update{changeColor()}}
+
+        fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
         /**
          * Refreshes the item value on loading this page.

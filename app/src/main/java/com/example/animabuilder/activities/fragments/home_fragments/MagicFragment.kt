@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -105,6 +106,8 @@ fun MagicFragment(
 
         //zeon point maximum row
         item {
+            val dpString = stringResource(R.string.dpLabel, magFragVM.getBoughtZeonDP())
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ){
@@ -121,7 +124,14 @@ fun MagicFragment(
                     inputFunction = {input -> magFragVM.setBoughtZeonString(input.toInt())},
                     emptyFunction = {magFragVM.setBoughtZeonString("")},
                     modifier = Modifier
+                        .onFocusChanged {
+                            if (it.isFocused)
+                                magFragVM.setBoughtZeonDP(dpString)
+                            else
+                                magFragVM.setBoughtZeonDP("")
+                        }
                         .weight(0.25f),
+                    label = magFragVM.boughtZeonDP.collectAsState().value,
                     postRun = {homePageVM.updateExpenditures()},
                     readOnly = !magFragVM.isGifted()
                 )
@@ -355,6 +365,8 @@ private fun ZeonPurchaseItem(
             )
         }
 
+        val dpString = stringResource(R.string.dpLabel, tableItem.dpGetter())
+
         //display table items
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -373,7 +385,14 @@ private fun ZeonPurchaseItem(
                 inputFunction = {tableItem.setBoughtString(it.toInt())},
                 emptyFunction = {tableItem.setBoughtString("")},
                 modifier = Modifier
+                    .onFocusChanged {
+                        if(it.isFocused)
+                            tableItem.setDPDisplay(dpString)
+                        else
+                            tableItem.setDPDisplay("")
+                    }
                     .weight(0.3f),
+                label = tableItem.dpDisplay.collectAsState().value,
                 postRun = {homePageVM.updateExpenditures()},
                 color = tableItem.textColor.collectAsState().value,
                 readOnly = !magFragVM.isGifted()
@@ -721,7 +740,7 @@ private fun FreeSpellExchange(
 @Composable
 fun MagicPreview(){
     val charInstance = BaseCharacter()
-    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance)
+    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance, charInstance.ownClass)
     val homePageVM = HomePageViewModel(charInstance)
 
     magFragVM.setImbalanceIsAttack(false)

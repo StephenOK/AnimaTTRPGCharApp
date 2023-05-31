@@ -206,6 +206,9 @@ class SecondaryFragmentViewModel(
         private val _totalOutput = MutableStateFlow(secondaryItem.total.value.toString())
         val totalOutput = _totalOutput.asStateFlow()
 
+        private val _dpDisplay = MutableStateFlow("")
+        val dpDisplay = _dpDisplay.asStateFlow()
+
         /**
          * Retrieves the name of the characteristic.
          *
@@ -285,6 +288,8 @@ class SecondaryFragmentViewModel(
             _classPoints.update{secondaryItem.classPointTotal.value.toString()}
             updateTotal()
         }
+
+        fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
         fun updateTotal(){_totalOutput.update{secondaryItem.total.value.toString()}}
     }

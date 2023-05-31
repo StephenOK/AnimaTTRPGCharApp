@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -103,6 +104,8 @@ private fun SummoningAbilityRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
+        val dpDisplay = stringResource(R.string.dpLabel, inputData.dpGetter())
+
         //display item, points from modifier, and points from class
         Text(
             text = stringResource(inputData.nameRef),
@@ -128,7 +131,15 @@ private fun SummoningAbilityRow(
             inputText = inputData.boughtVal.collectAsState().value,
             inputFunction = {inputData.setBoughtVal(it.toInt())},
             emptyFunction = {inputData.setBoughtVal("")},
-            modifier = Modifier.weight(0.25f),
+            modifier = Modifier
+                .onFocusChanged {
+                    if(it.isFocused)
+                        inputData.setDPLabel(dpDisplay)
+                    else
+                        inputData.setDPLabel("")
+                }
+                .weight(0.25f),
+            label = inputData.dpLabel.collectAsState().value,
             postRun = {homePageVM.updateExpenditures()}
         )
 
@@ -146,7 +157,7 @@ private fun SummoningAbilityRow(
 @Composable
 fun SummoningPreview(){
     val charInstance = BaseCharacter()
-    val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning)
+    val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning, charInstance.ownClass)
     val homePageVM = HomePageViewModel(charInstance)
 
     SummoningFragment(summoningFragVM, homePageVM) {}

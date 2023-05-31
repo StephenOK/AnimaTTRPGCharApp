@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "raceText">Race</string>
+    <string name = "expText">Exp</string>
+
+    <string-array name = "raceArray">
+        <item>Human</item>
+        <item>Sylvain</item>
+        <item>Jayan</item>
+        <item>D\'Anjayni</item>
+        <item>Ebudan</item>
+        <item>Daimah</item>
+        <item>Duk\'zarist</item>
+    </string-array>
+
+    <string-array name = "classArray">
+        <item>Freelancer</item>
+        <item>Warrior</item>
+        <item>Acrobatic Warrior</item>
+        <item>Paladin</item>
+        <item>Dark Paladin</item>
+        <item>Weaponsmaster</item>
+        <item>Technician</item>
+        <item>Tao</item>
+        <item>Ranger</item>
+        <item>Shadow</item>
+        <item>Thief</item>
+        <item>Assassin</item>
+        <item>Wizard</item>
+        <item>Warlock</item>
+        <item>Illusionist</item>
+        <item>Wizard Mentalist</item>
+        <item>Summoner</item>
+        <item>Warrior Summoner</item>
+        <item>Mentalist</item>
+        <item>Warrior Mentalist</item>
+    </string-array>
+
+    <string-array name = "levelCountArray">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string name = "maleString">Male Bonus (PhR)</string>
+    <string name = "femaleString">Female Bonus (MR)</string>
+
+    <string name = "isMagPaladin">Take magic abilities</string>
+
+    <string name = "sizeCat">Size Category:</string>
+    <string name = "appearance">Appearance:</string>
+    <string name = "movement">Movement Value:</string>
+    <string name = "weightIndex">Weight Index:</string>
+    <string name = "gnosisLabel">Gnosis:</string>
+</resources>

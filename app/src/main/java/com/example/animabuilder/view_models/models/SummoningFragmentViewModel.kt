@@ -1,7 +1,9 @@
 package com.example.animabuilder.view_models.models
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.animabuilder.R
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.summoning.SummonAbility
 import com.example.animabuilder.character_creation.attributes.summoning.Summoning
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +17,33 @@ import kotlinx.coroutines.flow.update
  * @param summoning character's summoning abilities
  */
 class SummoningFragmentViewModel(
-    val summoning: Summoning
+    val summoning: Summoning,
+    val charClass: MutableState<CharClass>
 ): ViewModel() {
     //initialize all summoning ability data
-    private val summon = SummonItemData(R.string.summonTitle, summoning.summon)
-    private val control = SummonItemData(R.string.controlTitle, summoning.control)
-    private val bind = SummonItemData(R.string.bindTitle, summoning.bind)
-    private val banish = SummonItemData(R.string.banishTitle, summoning.banish)
+    private val summon =
+        SummonItemData(
+            R.string.summonTitle,
+            summoning.summon
+        ){charClass.value.summonGrowth}
+
+    private val control =
+        SummonItemData(
+            R.string.controlTitle,
+            summoning.control
+        ){charClass.value.controlGrowth}
+
+    private val bind =
+        SummonItemData(
+            R.string.bindTitle,
+            summoning.bind
+        ){charClass.value.bindGrowth}
+
+    private val banish =
+        SummonItemData(
+            R.string.banishTitle,
+            summoning.banish
+        ){charClass.value.banishGrowth}
 
     //gather all summoning items
     val allRows = listOf(summon, control, bind, banish)
@@ -34,7 +56,8 @@ class SummoningFragmentViewModel(
      */
     class SummonItemData(
         val nameRef: Int,
-        val item: SummonAbility
+        val item: SummonAbility,
+        val dpGetter: () -> Int
     ){
         //initialize bought input
         private val _boughtVal = MutableStateFlow(item.buyVal.value.toString())
@@ -43,6 +66,9 @@ class SummoningFragmentViewModel(
         //initialize total display
         private val _total = MutableStateFlow(item.abilityTotal.value.toString())
         val total = _total.asStateFlow()
+
+        private val _dpLabel = MutableStateFlow("")
+        val dpLabel = _dpLabel.asStateFlow()
 
         /**
          * Change bought input to the indicated value.
@@ -61,6 +87,8 @@ class SummoningFragmentViewModel(
          * @param input new string to display
          */
         fun setBoughtVal(input: String){_boughtVal.update{input}}
+
+        fun setDPLabel(input: String){_dpLabel.update{input}}
 
         /**
          * Refreshes the item on page loading.

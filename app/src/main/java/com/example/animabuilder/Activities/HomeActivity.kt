@@ -234,19 +234,19 @@ class HomeActivity : AppCompatActivity() {
                             )
                             //combat column
                             Text(
-                                text = stringResource(R.string.dpCombatLabel),
+                                text = stringResource(R.string.combatLabel),
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.weight(0.2f)
                             )
                             //magic column
                             Text(
-                                text = stringResource(R.string.dpMagicLabel),
+                                text = stringResource(R.string.magicLabel),
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.weight(0.2f)
                             )
                             //psychic column
                             Text(
-                                text = stringResource(R.string.dpPsychicLabel),
+                                text = stringResource(R.string.psychicLabel),
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.weight(0.2f)
                             )

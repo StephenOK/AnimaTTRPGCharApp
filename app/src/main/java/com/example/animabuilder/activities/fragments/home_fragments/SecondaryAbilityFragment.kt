@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -92,7 +93,7 @@ private fun FreelancerDropdown(
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .onGloballyPositioned {coordinates ->
+                .onGloballyPositioned { coordinates ->
                     item.setSize(coordinates.size.toSize())
                 },
             readOnly = true,
@@ -227,10 +228,13 @@ private fun MakeRow(
         modifier = Modifier.fillMaxWidth()
     ){
         //characteristic label
-        Text(text = stringArrayResource(R.array.secondaryCharacteristics)[item.getName()],
-            textAlign = TextAlign.Start)
-        Text(text = "(" + item.getMultiplier().toString() + ")")
+        Text(
+            text = stringArrayResource(R.array.secondaryCharacteristics)[item.getName()],
+            textAlign = TextAlign.Start
+        )
     }
+
+    val dpVal = stringResource(R.string.dpLabel, item.getMultiplier())
 
     Row(
         //modifier = Modifier.fillMaxWidth(),
@@ -242,7 +246,15 @@ private fun MakeRow(
             inputText = item.pointInput.collectAsState().value,
             inputFunction = {item.setPointInput(it.toInt())},
             emptyFunction = {item.setPointInput("")},
-            modifier = Modifier.weight(0.15f),
+            modifier = Modifier
+                .onFocusChanged {
+                    if(it.isFocused)
+                        item.setDPDisplay(dpVal)
+                    else
+                        item.setDPDisplay("")
+                }
+                .weight(0.15f),
+            label = item.dpDisplay.collectAsState().value,
             postRun = {homePageVM.updateExpenditures()}
         )
 

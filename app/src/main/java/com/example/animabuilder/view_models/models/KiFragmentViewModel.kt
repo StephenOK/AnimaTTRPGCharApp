@@ -3,6 +3,7 @@ package com.example.animabuilder.view_models.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.animabuilder.character_creation.attributes.class_objects.CharClass
 import com.example.animabuilder.character_creation.attributes.ki_abilities.Ki
 import com.example.animabuilder.character_creation.attributes.ki_abilities.KiStat
 import com.example.animabuilder.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -18,7 +19,8 @@ import kotlinx.coroutines.flow.update
  * @param ki character's ki ability data
  */
 class KiFragmentViewModel(
-    private val ki: Ki
+    private val ki: Ki,
+    private val charClass: MutableState<CharClass>
 ): ViewModel() {
     //initialize remaining martial knowledge display
     private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value.toString())
@@ -52,6 +54,9 @@ class KiFragmentViewModel(
 
     private val _detailItem = MutableStateFlow<Any?>(null)
     val detailItem = _detailItem.asStateFlow()
+
+    fun getKiPointDP(): Int{return charClass.value.kiGrowth}
+    fun getKiAccDP(): Int{return charClass.value.kiAccumMult}
 
     fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
 
@@ -314,6 +319,9 @@ class KiFragmentViewModel(
         private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value.toString())
         val pointTotalString = _pointTotalString.asStateFlow()
 
+        private val _pointDPLabel = MutableStateFlow("")
+        val pointDPLabel = _pointDPLabel.asStateFlow()
+
         //initialize accumulation input
         private val _accInputString = MutableStateFlow(item.boughtAccumulation.value.toString())
         val accInputString = _accInputString.asStateFlow()
@@ -321,6 +329,9 @@ class KiFragmentViewModel(
         //initialize characteristic ki accumulation total
         private val _accTotalString = MutableStateFlow(item.totalAccumulation.value.toString())
         val accTotalString = _accTotalString.asStateFlow()
+
+        private val _accDPLabel = MutableStateFlow("")
+        val accDPLabel = _accDPLabel.asStateFlow()
 
         /**
          * Set the bought value for ki points to the inputted value.
@@ -341,6 +352,8 @@ class KiFragmentViewModel(
          */
         fun setPointInputString(input: String){_pointInputString.update{input}}
 
+        fun setPointDPLabel(input: String){_pointDPLabel.update{input}}
+
         /**
          * Set the bought value for ki accumulation to the inputted value.
          *
@@ -359,6 +372,8 @@ class KiFragmentViewModel(
          * @param input value to display
          */
         fun setAccInputString(input: String){_accInputString.update{input}}
+
+        fun setAccDPLabel(input: String){_accDPLabel.update{input}}
 
         fun refreshItem(){
             setPointInputString(item.boughtKiPoints.value.toString())

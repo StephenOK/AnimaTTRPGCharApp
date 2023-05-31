@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
@@ -111,6 +112,7 @@ fun KiFragment(
         items(kiFragVM.allRowData) {kiRowInput ->
             KiFromStatRow(
                 kiRowInput,
+                kiFragVM,
                 homePageVM
             )
         }
@@ -240,8 +242,12 @@ fun KiFragment(
 @Composable
 private fun KiFromStatRow(
     kiRowData: KiFragmentViewModel.KiRowData,
+    kiFragVM: KiFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
+    val pointDP = stringResource(R.string.dpLabel, kiFragVM.getKiPointDP())
+    val accDP = stringResource(R.string.dpLabel, kiFragVM.getKiAccDP())
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -264,7 +270,15 @@ private fun KiFromStatRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setPointInputString("")},
-            modifier = Modifier.weight(0.13f)
+            modifier = Modifier
+                .onFocusChanged {
+                    if (it.isFocused)
+                        kiRowData.setPointDPLabel(pointDP)
+                    else
+                        kiRowData.setPointDPLabel("")
+                }
+                .weight(0.13f),
+            label = kiRowData.pointDPLabel.collectAsState().value
         )
 
         //display for ki points from this stat
@@ -281,7 +295,15 @@ private fun KiFromStatRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setAccInputString("")},
-            modifier = Modifier.weight(0.13f)
+            modifier = Modifier
+                .onFocusChanged {
+                    if (it.isFocused)
+                        kiRowData.setAccDPLabel(accDP)
+                    else
+                        kiRowData.setAccDPLabel("")
+                }
+                .weight(0.13f),
+            label = kiRowData.accDPLabel.collectAsState().value
         )
 
         //display for ki accumulation from this stat
@@ -395,7 +417,7 @@ private fun TechniqueRow(
 fun KiPreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass)
     kiFragVM.toggleTechListOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

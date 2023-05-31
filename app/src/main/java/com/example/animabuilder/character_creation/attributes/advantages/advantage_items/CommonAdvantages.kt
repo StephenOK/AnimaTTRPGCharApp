@@ -17,25 +17,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         "Jump",
         "Ride",
         "Swim",
-        "Art",
-        "Dance",
-        "Forging",
-        "Music",
-        "Sleight of Hand",
-        "Notice",
-        "Search",
-        "Track",
+
         "Intimidate",
         "Leadership",
         "Persuasion",
         "Style",
-        "Disguise",
-        "Hide",
-        "Lock Pick",
-        "Poisons",
-        "Theft",
-        "Stealth",
-        "Trap Lore",
+
+        "Notice",
+        "Search",
+        "Track",
+
         "Animals",
         "Appraisal",
         "Herbal Lore",
@@ -46,9 +37,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         "Navigate",
         "Occult",
         "Sciences",
+
         "Composure",
         "Feats of Strength",
-        "Withstand Pain"
+        "Withstand Pain",
+
+        "Disguise",
+        "Hide",
+        "Lock Pick",
+        "Poisons",
+        "Theft",
+        "Stealth",
+        "Trap Lore",
+
+        "Art",
+        "Dance",
+        "Forging",
+        "Music",
+        "Sleight of Hand"
     )
 
     val fieldNames = listOf("Athletics", "Creative", "Perceptive", "Social", "Subterfuge",

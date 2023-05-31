@@ -137,7 +137,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
                 //stop acquisition if growth goes to zero
                 if(prevGrowth - toAdd.cost[takenCost] <= 0)
-                    return "Cannot reduce field growth below zero"
+                    return "Cannot reduce field growth to zero"
             }
 
             //no need to acquire more disciplines if all are already taken

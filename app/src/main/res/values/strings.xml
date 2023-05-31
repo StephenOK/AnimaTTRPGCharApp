@@ -1,11 +1,11 @@
 <resources>
     <string name = "app_name">AnimaBuilder</string>
 
-    <string name = "nameText">Name:</string>
-    <string name = "classText">Class:</string>
-    <string name = "raceText">Race:</string>
-    <string name = "levelText">Level:</string>
-    <string name = "expText">Exp:</string>
+    <string name = "mainTitle">Anima: Beyond Fantasy</string>
+    <string name = "mainSubtitle">Unofficial Character Creator</string>
+
+    <string name = "nameText">Name</string>
+    <string name = "levelText">Level</string>
 
     <string name = "nav_open">Open</string>
     <string name = "nav_close">Close</string>
@@ -21,68 +21,7 @@
         <item>PER</item>
     </string-array>
 
-    <string name = "sizeCat">Size Category: </string>
-    <string name = "appearance">Appearance: </string>
-    <string name = "movement">Movement Value: </string>
-    <string name = "weightIndex">Weight Index: </string>
-    <string name = "gnosisLabel">Gnosis: </string>
-
-    <string-array name = "classArray">
-        <item>Freelancer</item>
-        <item>Warrior</item>
-        <item>Acrobatic Warrior</item>
-        <item>Paladin</item>
-        <item>Dark Paladin</item>
-        <item>Weaponsmaster</item>
-        <item>Technician</item>
-        <item>Tao</item>
-        <item>Ranger</item>
-        <item>Shadow</item>
-        <item>Thief</item>
-        <item>Assassin</item>
-        <item>Wizard</item>
-        <item>Warlock</item>
-        <item>Illusionist</item>
-        <item>Wizard Mentalist</item>
-        <item>Summoner</item>
-        <item>Warrior Summoner</item>
-        <item>Mentalist</item>
-        <item>Warrior Mentalist</item>
-    </string-array>
-
-    <string-array name = "raceArray">
-        <item>Human</item>
-        <item>Sylvain</item>
-        <item>Jayan</item>
-        <item>D\'Anjayni</item>
-        <item>Ebudan</item>
-        <item>Daimah</item>
-        <item>Duk\'zarist</item>
-    </string-array>
-
-    <string-array name = "levelCountArray">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-    </string-array>
+    <string name = "presenceLabel">Presence</string>
 
     <string name = "baseLabel">Base</string>
     <string name = "boughtLabel">Bought</string>
@@ -90,14 +29,6 @@
     <string name = "bonusLabel">Bonus</string>
     <string name = "specialLabel">Spec</string>
     <string name = "totalLabel">Total</string>
-
-    <string name = "multLabel">Multiplier</string>
-
-    <string name = "lifePointLabel">Life Points: </string>
-    <string name = "presenceLabel">Presence</string>
-    <string name = "totalInitiative">Total Initiative: </string>
-    <string name = "fatigueLabel">Fatigue: </string>
-    <string name = "regenLabel">Regeneration: </string>
 
     <string name = "yesLabel">Yes</string>
     <string name = "noLabel">No</string>
@@ -115,15 +46,6 @@
     <string name = "descriptionLabel">Description</string>
     <string name = "descriptionOfLabel">Description of </string>
 
-    <string name = "maleString">Male Bonus (PhR)</string>
-    <string name = "femaleString">Female Bonus (MR)</string>
-
-    <string name = "isMagPaladin">Take magic abilities</string>
-
-    <string name = "dpCombatLabel">Combat</string>
-    <string name = "dpMagicLabel">Magic</string>
-    <string name = "dpPsychicLabel">Psychic</string>
-
     <string name = "pointsLabel">Points</string>
     <string name = "classLabel">Class</string>
     <string name = "natLabel">Nat</string>
@@ -133,41 +55,10 @@
 
     <string name = "scoreLabel">Score</string>
 
-    <string name = "natNotTaken">+ 0</string>
-    <string name = "natTaken">+ 5</string>
-
-    <string name = "summonTitle">Summoning</string>
-    <string name = "controlTitle">Control</string>
-    <string name = "bindTitle">Bind</string>
-    <string name = "banishTitle">Banish</string>
-
     <string name = "maintenanceLabel">Maintenance: </string>
     <string name = "prereqLabel">Prerequisites: </string>
 
-    <string name = "attackLabel">Attack</string>
-    <string name = "blockLabel">Block</string>
-    <string name = "dodgeLabel">Dodge</string>
-    <string name = "wearLabel">Wear Armor</string>
-
-    <string name = "drLabel">DR</string>
-    <string name = "mrLabel">MR</string>
-    <string name = "phrLabel">PhR</string>
-    <string name = "vrLabel">VR</string>
-    <string name = "psrLabel">PsR</string>
-
     <string name = "selectLabel">Select</string>
 
-    <string name = "charLabel">Character</string>
-    <string name = "combatLabel">Combat</string>
-    <string name = "secondaryLabel">Secondary Characteristics</string>
-    <string name = "advantageLabel">Advantages</string>
-    <string name = "modulesLabel">Modules</string>
-    <string name = "kiLabel">Ki</string>
-    <string name = "magicLabel">Magic</string>
-    <string name = "summonLabel">Summoning</string>
-    <string name = "psychicLabel">Psychic</string>
-    <string name = "equipmentLabel">Equipment</string>
-
-    <string name = "saveLabel">Save</string>
-    <string name = "exitLabel">Exit</string>
+    <string name = "dpLabel">%1d DP</string>
 </resources>

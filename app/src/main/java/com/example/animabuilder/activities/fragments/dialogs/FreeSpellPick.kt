@@ -125,7 +125,7 @@ private fun PickFreeRow(
 fun FreeSpellPreview(){
     val charInstance = BaseCharacter()
 
-    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance)
+    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance, charInstance.ownClass)
     magFragVM.setFreeLevel(8)
 
     FreeSpellPick(magFragVM)

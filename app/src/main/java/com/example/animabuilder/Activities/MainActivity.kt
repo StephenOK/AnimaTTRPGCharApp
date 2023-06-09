@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
@@ -25,13 +24,14 @@ import com.example.animabuilder.view_models.models.MainPageViewModel
 
 /**
  * Startup activity for the app.
- * Gives the option to load a character or create a new one.
+ * Gives the option to load, delete, or create a new character.
  */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            //initialize current context
             val context = LocalContext.current as Activity
 
             //start up main page's viewModel
@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
                 CustomFactory(MainPageViewModel::class.java, BaseCharacter())
             }
 
-            //display all buttons on page
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -47,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
             ){
+                //display app title
                 Text(
                     text = stringResource(R.string.mainTitle),
                     fontSize = 30.sp,
@@ -59,17 +59,18 @@ class MainActivity : AppCompatActivity() {
 
                 Spacer(Modifier.height(30.dp))
 
+                //display user's options
                 mainVM.allButtons.forEach{
                     MainButton(mainVM, it)
                 }
 
+                //button to close app
                 TextButton(onClick = {context.finish()}) {
                     Text(text = stringResource(R.string.exitLabel))
                 }
-
-                BackHandler{context.finish()}
             }
 
+            //display user's selected action alert
             if(mainVM.actionOpen.collectAsState().value)
                 MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
         }
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Create a button for the main page.
      *
+     * @param mainVM viewModel of the current page
      * @param item holds the data to be used in this specific button's action
      */
     @Composable
@@ -87,9 +89,11 @@ class MainActivity : AppCompatActivity() {
     ){
         Row {
             Button(
-                //open alert on click
                 onClick = {
+                    //set selected action
                     mainVM.setCurrentAlert(item)
+
+                    //open associated alert
                     mainVM.toggleActionOpen()
                 },
                 modifier = Modifier
@@ -103,6 +107,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Creates an alert for the user to interact with.
      *
+     * @param mainVM viewModel of the current page
      * @param item data package to use in this alert
      */
     @Composable
@@ -130,12 +135,19 @@ class MainActivity : AppCompatActivity() {
             text = {item.MakeDisplay()},
             confirmButton = {
                 TextButton(onClick = {
-                    //terminate process and notify user of failure
+                    //terminate process if no selection made
                     if(item.characterName.value == "")
-                        Toast.makeText(this@MainActivity, item.failedText, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            baseContext.resources.getString(item.failedText),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    //run action on user's indicated character
                     else
                         item.clickAct(context, item.characterName.value)
 
+                    //close the dialog
                     mainVM.toggleActionOpen()
                 }) {
                     Text(text = stringResource(item.buttonName))
@@ -147,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     item.setCharacterName("")
                     mainVM.toggleActionOpen()
                 }){
-                    Text(text = "Cancel")
+                    Text(text = stringResource(R.string.cancelLabel))
                 }
             }
         )

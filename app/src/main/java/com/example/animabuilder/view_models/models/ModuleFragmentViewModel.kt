@@ -29,13 +29,25 @@ class ModuleFragmentViewModel(
     private val _archetypeOpen = MutableStateFlow(false)
     val archetypeOpen = _archetypeOpen.asStateFlow()
 
+    //initialize open state of the martial art menu
+    private val _martialOpen = MutableStateFlow(false)
+    val martialOpen = _martialOpen.asStateFlow()
+
     //initialize open state of the style module menu
     private val _styleOpen = MutableStateFlow(false)
     val styleOpen = _styleOpen.asStateFlow()
 
-    //initialize open state of the martial art menu
-    private val _martialOpen = MutableStateFlow(false)
-    val martialOpen = _martialOpen.asStateFlow()
+    //initialize open state of the detail alert
+    private val _detailAlertOpen = MutableStateFlow(false)
+    val detailAlertOpen = _detailAlertOpen.asStateFlow()
+
+    //header of the detail alert
+    private val _detailName = MutableStateFlow("")
+    val detailName = _detailName.asStateFlow()
+
+    //item to be displayed in the detail alert
+    private val _detailItem = MutableStateFlow<Any?>(null)
+    val detailItem = _detailItem.asStateFlow()
 
     //initialize list of secondary weapon checkboxes
     val allSecondaryWeapons = mutableMapOf<Weapon, MutableState<Boolean>>()
@@ -49,37 +61,6 @@ class ModuleFragmentViewModel(
     //initialize list of style module checkboxes
     val allStyles = mutableMapOf<StyleModule, MutableState<Boolean>>()
 
-    private val _detailAlertOpen = MutableStateFlow(false)
-    val detailAlertOpen = _detailAlertOpen.asStateFlow()
-
-    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
-
-    private val _detailName = MutableStateFlow("")
-    val detailName = _detailName.asStateFlow()
-
-    private val _detailItem = MutableStateFlow<Any?>(null)
-    val detailItem = _detailItem.asStateFlow()
-
-    fun setDetailItem(input: Weapon){
-        _detailName.update{input.name}
-        _detailItem.update{input}
-    }
-
-    fun setDetailItem(name: String, input: ArchetypeData){
-        _detailName.update{name}
-        _detailItem.update{input}
-    }
-
-    fun setDetailItem(input: StyleModule){
-        _detailName.update{input.name}
-        _detailItem.update{input}
-    }
-
-    fun setDetailItem(input: MartialArt){
-        _detailName.update{input.name}
-        _detailItem.update{input}
-    }
-
     /**
      * Sets the character's primary weapon to the inputted item.
      *
@@ -89,6 +70,11 @@ class ModuleFragmentViewModel(
         weaponProficiencies.setPrimaryWeapon(input.name)
         _primaryWeapon.update{input}
     }
+
+    /**
+     * Changes the open state of the archetype module list.
+     */
+    fun toggleArchetypeOpen() {_archetypeOpen.update{!archetypeOpen.value}}
 
     /**
      * Determine that the inputted weapon is gained from a character's selected archetype.
@@ -108,9 +94,9 @@ class ModuleFragmentViewModel(
     }
 
     /**
-     * Changes the open state of the archetype module list.
+     * Changes the open state of the martial arts list.
      */
-    fun toggleArchetypeOpen() {_archetypeOpen.update{!archetypeOpen.value}}
+    fun toggleMartialOpen() {_martialOpen.update{!martialOpen.value}}
 
     /**
      * Changes the open state of the style module list.
@@ -118,37 +104,50 @@ class ModuleFragmentViewModel(
     fun toggleStyleOpen() {_styleOpen.update{!styleOpen.value}}
 
     /**
-     * Changes the open state of the martial arts list.
+     * Toggles the open state of the detail alert.
      */
-    fun toggleMartialOpen() {_martialOpen.update{!martialOpen.value}}
+    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
 
     /**
-     * Retrieves the unarmed weapon from the record.
+     * Sets the weapon to get the details of.
      *
-     * @return the stats for unarmed combat
+     * @param input weapon to get the details of
      */
-    fun getUnarmed(): Weapon{return weaponProficiencies.unarmed}
+    fun setDetailItem(input: Weapon){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
 
     /**
-     * Retrieves information on all style modules.
+     * Sets the archetype module to get the details of.
      *
-     * @return all style module data
+     * @param name title of the archetype module
+     * @param input list of weapons in the archetype
      */
-    fun getAllStyles(): List<StyleModule>{return weaponProficiencies.styles.allStyles}
+    fun setDetailItem(name: String, input: ArchetypeData){
+        _detailName.update{name}
+        _detailItem.update{input}
+    }
 
     /**
-     * Retrieves the character's maximum number of martial arts they can take.
+     * Sets the style module to get the details of.
      *
-     * @return number of martial arts available to the user
+     * @param input style module to get the details of
      */
-    fun getMartialMax(): Int{return weaponProficiencies.martialMax.value}
+    fun setDetailItem(input: StyleModule){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
 
     /**
-     * Retrieves information on all martial arts.
+     * Sets the martial art to get the details of.
      *
-     * @return all martial art data
+     * @param input martial art to get the details of
      */
-    fun getAllMartials(): List<MartialArt>{return weaponProficiencies.martials.allMartialArts}
+    fun setDetailItem(input: MartialArt){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
 
     /**
      * Add or remove the indicated individual weapon module.
@@ -158,7 +157,7 @@ class ModuleFragmentViewModel(
      */
     fun changeIndividualModule(item: Weapon, input: Boolean){
         weaponProficiencies.changeIndividualModule(item, input)
-        allSecondaryWeapons[item]!!.value = input
+        allSecondaryWeapons[item]!!.value = weaponProficiencies.individualModules.contains(item) || weaponProficiencies.fullModWeapons.contains(item)
     }
 
     /**
@@ -182,58 +181,94 @@ class ModuleFragmentViewModel(
         allStyles[item]!!.value = input
     }
 
+    /**
+     * Retrieves the unarmed weapon from the record.
+     *
+     * @return the stats for unarmed combat
+     */
+    fun getUnarmed(): Weapon{return weaponProficiencies.unarmed}
+
+    /**
+     * Retrieves the character's maximum number of martial arts they can take.
+     *
+     * @return number of martial arts available to the user
+     */
+    fun getMartialMax(): Int{return weaponProficiencies.martialMax.value}
+
+    /**
+     * Retrieves information on all martial arts.
+     *
+     * @return all martial art data
+     */
+    fun getAllMartials(): List<MartialArt>{return weaponProficiencies.martials.allMartialArts}
+
+    /**
+     * Retrieves information on all style modules.
+     *
+     * @return all style module data
+     */
+    fun getAllStyles(): List<StyleModule>{return weaponProficiencies.styles.allStyles}
+
     //initialize all weapon data for each weapon category
     private val shorts = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.shortLabel,
-        weaponProficiencies.shortArms.shortArms,
+        weaponProficiencies.allArchetypes[13],
         true
     )
 
     private val axes = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.axeLabel,
-        weaponProficiencies.axes.axes,
+        weaponProficiencies.allArchetypes[14],
         true
     )
 
     private val maces = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.maceLabel,
-        weaponProficiencies.maces.maces,
+        weaponProficiencies.allArchetypes[15],
         true
     )
 
     private val swords = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.swordLabel,
-        weaponProficiencies.swords.swords,
+        weaponProficiencies.allArchetypes[16],
         true
     )
 
     private val twoHandeds = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.twoHandLabel,
-        weaponProficiencies.twoHanded.twoHanded,
+        weaponProficiencies.allArchetypes[17],
         true
     )
 
     private val poles = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.poleLabel,
-        weaponProficiencies.poles.poles,
+        weaponProficiencies.allArchetypes[18],
         true
     )
 
     private val cords = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.cordLabel,
-        weaponProficiencies.cords.cords,
+        weaponProficiencies.allArchetypes[19],
         true
     )
 
     private val mixed = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.mixedLabel,
         weaponProficiencies.mixed.mixed,
         false
@@ -241,6 +276,7 @@ class ModuleFragmentViewModel(
 
     private val shields = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.shieldLabel,
         weaponProficiencies.shields.shields,
         true
@@ -248,6 +284,7 @@ class ModuleFragmentViewModel(
 
     private val projectiles = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.projectileLabel,
         weaponProficiencies.projectiles.projectiles,
         true
@@ -255,6 +292,7 @@ class ModuleFragmentViewModel(
 
     private val thrown = WeaponListData(
         weaponProficiencies,
+        this,
         R.string.thrownLabel,
         weaponProficiencies.thrown.thrown,
         true
@@ -266,78 +304,91 @@ class ModuleFragmentViewModel(
     //initialize all archetype data for each archetype module
     private val barbarianArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[0],
         R.string.barbarianLabel
     )
 
     private val ninjaArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[1],
         R.string.ninjaLabel
     )
 
     private val duelArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[2],
         R.string.duelLabel
     )
 
     private val pirateArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[3],
         R.string.pirateLabel
     )
 
     private val nomadArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[4],
         R.string.nomadLabel
     )
 
     private val hunterArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[5],
         R.string.hunterLabel
     )
 
     private val knightArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[6],
         R.string.knightLabel
     )
 
     private val gladiatorArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[7],
         R.string.gladiatorLabel
     )
 
     private val assassinArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[8],
         R.string.assassinLabel
     )
 
     private val soldierArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[9],
         R.string.soldierLabel
     )
 
     private val indigenousArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[10],
         R.string.indigenousLabel
     )
 
     private val banditArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[11],
         R.string.banditLabel
     )
 
     private val improvisedArchetype = ArchetypeData(
         weaponProficiencies,
+        this,
         weaponProficiencies.allArchetypes[12],
         R.string.improvisedLabel
     )
@@ -351,12 +402,14 @@ class ModuleFragmentViewModel(
      * Data object that holds information on the inputted weapon type.
      *
      * @param weaponProficiencies character's weapon proficiencies ability
+     * @param modFragVM viewModel this object is housed in
      * @param nameRef string name of the weapon category
      * @param items list of weapon associated with this list
      * @param wholeClass true if the module has a whole weapons archetype
      */
     class WeaponListData(
         weaponProficiencies: WeaponProficiencies,
+        val modFragVM: ModuleFragmentViewModel,
         val nameRef: Int,
         val items: List<Weapon>,
         val wholeClass: Boolean
@@ -373,6 +426,7 @@ class ModuleFragmentViewModel(
         //create an archetype data object for the whole class module
         val weaponArchetype = ArchetypeData(
             weaponProficiencies,
+            modFragVM,
             items,
             nameRef
         )
@@ -382,11 +436,13 @@ class ModuleFragmentViewModel(
      * Data object that holds information on the inputted archetype module.
      *
      * @param weaponProficiencies character's weapon proficiencies ability
+     * @param modFragVM viewModel that this data is housed in
      * @param items list of weapons associated with this archetype
      * @param name label for this archetype
      */
     class ArchetypeData(
         private val weaponProficiencies: WeaponProficiencies,
+        private val modFragVM: ModuleFragmentViewModel,
         val items: List<Weapon>,
         val name: Int
     ){
@@ -400,6 +456,9 @@ class ModuleFragmentViewModel(
         fun toggleCheck(){
             _takenCheck.update{!takenCheck.value}
             weaponProficiencies.updateModulesTaken(items, takenCheck.value)
+            modFragVM.allSecondaryWeapons.forEach{
+                it.value.value = weaponProficiencies.fullModWeapons.contains(it.key)
+            }
         }
     }
 

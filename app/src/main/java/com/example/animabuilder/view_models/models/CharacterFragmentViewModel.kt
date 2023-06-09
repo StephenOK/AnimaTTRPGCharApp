@@ -26,6 +26,64 @@ class CharacterFragmentViewModel(
     private val _nameInput = MutableStateFlow(charInstance.charName.value)
     val nameInput = _nameInput.asStateFlow()
 
+    //initialize input for the character's experience points
+    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.value.toString())
+    val experiencePoints = _experiencePoints.asStateFlow()
+
+    //initialize character's gender tracker
+    private val _isMale = MutableStateFlow(charInstance.isMale.value)
+    val isMale = _isMale.asStateFlow()
+
+    //initialize display for character's gender
+    private val _genderString = MutableStateFlow(
+        if(charInstance.isMale.value) R.string.maleString
+        else R.string.femaleString
+    )
+    val genderString = _genderString.asStateFlow()
+
+    //initialize magic paladin open state
+    private val _magPaladinOpen = MutableStateFlow(getPaladin())
+    val magPaladinOpen = _magPaladinOpen.asStateFlow()
+
+    //initialize magic paladin checkbox input
+    private val _magPaladin = MutableStateFlow(charInstance.classes.magPaladin.value)
+    val magPaladin = _magPaladin.asStateFlow()
+
+    //initialize the character's size category display
+    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value.toString())
+    val sizeInput = _sizeInput.asStateFlow()
+
+    //initialize the character's appearance input string
+    private val _appearInput = MutableStateFlow(charInstance.appearance.value.toString())
+    val appearInput = _appearInput.asStateFlow()
+
+    //initialize the character's movement value display
+    private val _movementDisplay = MutableStateFlow(
+        if(charInstance.movement.value == 0)
+            R.string.specialLabelCaps
+        else
+            R.string.movementLabelM
+    )
+    val movementDisplay = _movementDisplay.asStateFlow()
+
+    //initialize character's gnosis input
+    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.value.toString())
+    val gnosisDisplay = _gnosisDisplay.asStateFlow()
+
+    //initialize the character's weight index display
+    private val _weightIndex = MutableStateFlow(
+        when(charInstance.primaryList.str.total.value) {
+            in 0 .. 11 -> R.string.weightLabelKG
+            in 12..19 -> R.string.weightLabelTons
+            else -> R.string.specialLabelCaps
+        }
+    )
+    val weightIndex = _weightIndex.asStateFlow()
+
+    //initialize level bonus string color
+    private val _bonusColor = MutableStateFlow(Color.Black)
+    val bonusColor = _bonusColor.asStateFlow()
+
     /**
      * Sets the character's name to the user's input.
      *
@@ -35,10 +93,6 @@ class CharacterFragmentViewModel(
         charInstance.charName.value = newIn
         _nameInput.update{newIn}
     }
-
-    //initialize input for the character's experience points
-    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.value.toString())
-    val experiencePoints = _experiencePoints.asStateFlow()
 
     /**
      * Sets the number of experience points the character currently has.
@@ -57,17 +111,6 @@ class CharacterFragmentViewModel(
      */
     fun setExp(input: String){_experiencePoints.update{input}}
 
-    //initialize character's gender tracker
-    private val _isMale = MutableStateFlow(charInstance.isMale.value)
-    val isMale = _isMale.asStateFlow()
-
-    //initialize display for character's gender
-    private val _genderString = MutableStateFlow(
-        if(charInstance.isMale.value) R.string.maleString
-        else R.string.femaleString
-    )
-    val genderString = _genderString.asStateFlow()
-
     /**
      * Swaps the character's gender to the other one.
      */
@@ -82,14 +125,6 @@ class CharacterFragmentViewModel(
         else
             _genderString.update{R.string.femaleString}
     }
-
-    //initialize magic paladin open state
-    private val _magPaladinOpen = MutableStateFlow(getPaladin())
-    val magPaladinOpen = _magPaladinOpen.asStateFlow()
-
-    //initialize magic paladin checkbox input
-    private val _magPaladin = MutableStateFlow(charInstance.classes.magPaladin.value)
-    val magPaladin = _magPaladin.asStateFlow()
 
     /**
      * Sets the visibility of the paladin boon option checkbox.
@@ -114,18 +149,10 @@ class CharacterFragmentViewModel(
                 charInstance.ownClass.value == charInstance.classes.darkPaladin
     }
 
-    //initialize the character's size category display
-    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value.toString())
-    val sizeInput = _sizeInput.asStateFlow()
-
     /**
      * Sets the size category display to the character's value.
      */
     private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value.toString()}}
-
-    //initialize the character's appearance input string
-    private val _appearInput = MutableStateFlow(charInstance.appearance.value.toString())
-    val appearInput = _appearInput.asStateFlow()
 
     /**
      * Attempts to change the character's appearance to the inputted value.
@@ -164,53 +191,60 @@ class CharacterFragmentViewModel(
         return charInstance.advantageRecord.getAdvantage("Unattractive") == null
     }
 
-    //initialize the character's movement value display
-    private val _movementDisplay = MutableStateFlow(charInstance.movement.value.toString() + "m")
-    val movementDisplay = _movementDisplay.asStateFlow()
-
     /**
      * Sets the display for the character's movement value as defined in the character.
      */
     fun setMovementDisplay(){
         if(charInstance.movement.value == 0)
-            _movementDisplay.update{"SPECIAL"}
+            _movementDisplay.update{R.string.specialLabelCaps}
         else
-            _movementDisplay.update{charInstance.movement.value.toString() + " m"}
+            _movementDisplay.update{R.string.movementLabelM}
     }
 
-    //initialize character's gnosis input
-    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.value.toString())
-    val gnosisDisplay = _gnosisDisplay.asStateFlow()
+    /**
+     * Retrieves the character's movement value.
+     *
+     * @return character's movement value in meters
+     */
+    fun getCharMovement(): Int{return charInstance.movement.value}
 
+    /**
+     * Sets the character's gnosis value to the indicated number.
+     *
+     * @param input value to set the gnosis to
+     */
     fun setGnosisDisplay(input: Int){
         charInstance.gnosis.value = input
         setGnosisDisplay(input.toString())
     }
 
+    /**
+     * Sets the displayed gnosis string to the indicated value.
+     *
+     * @param input new value to display
+     */
     fun setGnosisDisplay(input: String){_gnosisDisplay.update{input}}
-
-    //initialize the character's weight index display
-    private val _weightIndex = MutableStateFlow(
-        if(charInstance.primaryList.str.total.value < 12) charInstance.weightIndex.value.toString() + " kg"
-        else charInstance.weightIndex.value.toString() + " tons"
-    )
-    val weightIndex = _weightIndex.asStateFlow()
 
     /**
      * Sets the display for the character's movement value as defined in the character.
      */
     fun setWeightIndex(){
-        if(charInstance.weightIndex.value == 0)
-            _weightIndex.update{"SPECIAL"}
-        else if(charInstance.primaryList.str.total.value < 12)
-            _weightIndex.update{charInstance.weightIndex.value.toString() + " kg"}
-        else
-            _weightIndex.update{charInstance.weightIndex.value.toString() + " tons"}
+        when(charInstance.primaryList.str.total.value) {
+            in 0 .. 11 ->
+                _weightIndex.update{R.string.weightLabelKG}
+            in 12..19 ->
+                _weightIndex.update{R.string.weightLabelTons}
+            else ->
+                _weightIndex.update{R.string.specialLabelCaps}
+        }
     }
 
-    //initialize level bonus string color
-    private val _bonusColor = MutableStateFlow(Color.Black)
-    val bonusColor = _bonusColor.asStateFlow()
+    /**
+     * Retrieves the character's weight value.
+     *
+     * @return the character's weight
+     */
+    fun getCharWeight(): Int{return charInstance.weightIndex.value}
 
     /**
      * Sets the text color based on the applied level bonuses to the character.
@@ -333,13 +367,13 @@ class CharacterFragmentViewModel(
         initialIndex: Int,
         val onChange: (Int) -> Unit
     ){
-        //initialize box size
-        private val _size = MutableStateFlow(Size.Zero)
-        val size = _size.asStateFlow()
-
         //initialize the selected item
         private val _output = MutableStateFlow(initialIndex)
         val output = _output.asStateFlow()
+
+        //initialize box size
+        private val _size = MutableStateFlow(Size.Zero)
+        val size = _size.asStateFlow()
 
         //initialize dropdown's open state
         private val _isOpen = MutableStateFlow(false)
@@ -348,13 +382,6 @@ class CharacterFragmentViewModel(
         //initialize dropdown icon
         private val _icon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
         val icon = _icon.asStateFlow()
-
-        /**
-         * Setter for the item's size.
-         *
-         * @param input size to define for this object
-         */
-        fun setSize(input: Size){_size.update{input}}
 
         /**
          * Sets the item to the indicated index.
@@ -370,10 +397,19 @@ class CharacterFragmentViewModel(
         }
 
         /**
+         * Setter for the item's size.
+         *
+         * @param input size to define for this object
+         */
+        fun setSize(input: Size){_size.update{input}}
+
+        /**
          * Changes the open state of the dropdown item.
          */
         fun openToggle() {
             _isOpen.update{!isOpen.value}
+
+            //set icon to the appropriate value
             _icon.update{
                 if(isOpen.value) Icons.Filled.KeyboardArrowUp
                 else Icons.Filled.KeyboardArrowDown
@@ -429,6 +465,7 @@ class CharacterFragmentViewModel(
          * @param input string item to now display
          */
         fun setInput(input: String){
+            //only change value if character does not have the indicated advantagae
             if(primaryStat.charInstance.advantageRecord.getAdvantage(
                     "Increase One Characteristic to Nine",
                     primaryStat.charIndex,
@@ -436,6 +473,8 @@ class CharacterFragmentViewModel(
                 ) == null
             )
                 _input.update{input}
+
+            //otherwise, keep value at 9
             else _input.update{"9"}
         }
 

@@ -568,7 +568,95 @@ class ClassInstances(private val charInstance: BaseCharacter){
     ranger, shadow, thief, assassin, wizard, warlock, illusionist, wizMentalist, summoner, warSummoner,
     mentalist, warMentalist)
 
+    //initialize freelancer bonus selections
+    val freelancerSelection = mutableListOf(0, 0, 0)
+
+    //initialize paladin's magic selection
     val magPaladin = mutableStateOf(true)
+
+    /**
+     * Finds the class based on the inputted class name
+     *
+     * @param input desired class to find
+     * @return character class to find or null indicator
+     */
+    fun findClass(input: String): CharClass?{
+        allClasses.forEach{
+            if(it.heldClass == input) return it
+        }
+
+        return null
+    }
+
+    /**
+     * Function to run on the character's selection of the freelancer class.
+     */
+    fun freelancerAdded(){
+        freelancerSelection.forEach{
+            //update characteristic's class value if a selection was made
+            if(it != 0)
+                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(10)
+        }
+    }
+
+    /**
+     * Function to run on the character's change from the freelancer class.
+     */
+    fun freelancerRemoved(){
+        //update characteristic's class value if a selection was made
+        freelancerSelection.forEach{
+            if(it != 0)
+                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
+        }
+    }
+
+    /**
+     * Attempts to change the selection in the indicated record index.
+     *
+     * @param index record location to set the selection to
+     * @param input value to set the selection to
+     * @return value recorded after operation
+     */
+    fun setSelection(
+        index: Int,
+        input: Int
+    ): Int{
+        //record current selected value
+        val prevIndex = freelancerSelection[index] - 1
+
+        //if user is clearing selection
+        if(input == 0) {
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+
+            //set new input
+            freelancerSelection[index] = 0
+        }
+
+        //user is making a selection
+        else{
+            //determine that this input is not taken in another record index
+            freelancerSelection.forEach{
+                //return current value if match found
+                if(it == input)
+                    return freelancerSelection[index]
+            }
+
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+
+            //set new input
+            freelancerSelection[index] = input
+
+            //add new bonus
+            charInstance.secondaryList.fullList[input - 1].setClassPointsPerLevel(10)
+        }
+
+        //return changed value
+        return freelancerSelection[index]
+    }
 
     /**
      * Toggles the user's selection for their paladin boon.
@@ -624,98 +712,24 @@ class ClassInstances(private val charInstance: BaseCharacter){
         }
     }
 
-    //initialize freelancer bonus selections
-    val freelancerSelection = mutableListOf(0, 0, 0)
-
     /**
-     * Function to run on the character's selection of the freelancer class.
-     */
-    fun freelancerAdded(){
-        freelancerSelection.forEach{
-            //update characteristic's class value if a selection was made
-            if(it != 0)
-                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(10)
-        }
-    }
-
-    /**
-     * Function to run on the character's change from the freelancer class.
-     */
-    fun freelancerRemoved(){
-        //update characteristic's class value if a selection was made
-        freelancerSelection.forEach{
-            if(it != 0)
-                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
-        }
-    }
-
-    /**
-     * Attempts to change the selection in the indicated record index.
+     * Loads character class data from file.
      *
-     * @param index record location to set the selection to
-     * @param input value to set the selection to
-     * @return value recorded after operation
+     * @param fileReader object that reads the file
      */
-    fun setSelection(index: Int, input: Int): Int{
-        //record current selected value
-        val prevIndex = freelancerSelection[index] - 1
-
-        //if user is clearing selection
-        if(input == 0) {
-            //remove previous bonus if one taken
-            if(prevIndex >= 0)
-                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
-
-            //set new input
-            freelancerSelection[index] = 0
-        }
-
-        //user is making a selection
-        else{
-            //determine that this input is not taken in another record index
-            freelancerSelection.forEach{
-                //return current value if match found
-                if(it == input)
-                    return freelancerSelection[index]
-            }
-
-            //remove previous bonus if one taken
-            if(prevIndex >= 0)
-                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
-
-            //set new input
-            freelancerSelection[index] = input
-
-            //add new bonus
-            charInstance.secondaryList.fullList[input - 1].setClassPointsPerLevel(10)
-        }
-
-        //return changed value
-        return freelancerSelection[index]
-    }
-
-    /**
-     * Finds the class based on the inputted class name
-     *
-     * @param input desired class to find
-     * @return character class to find or null indicator
-     */
-    fun findClass(input: String): CharClass?{
-        allClasses.forEach{
-            if(it.heldClass == input) return it
-        }
-
-        return null
-    }
-
     fun loadClassData(fileReader: BufferedReader){
+        //get paladin's selection
         magPaladin.value = fileReader.readLine().toBoolean()
 
+        //get each freelancer selected characteristic
         freelancerSelection[0] = fileReader.readLine().toInt()
         freelancerSelection[1] = fileReader.readLine().toInt()
         freelancerSelection[2] = fileReader.readLine().toInt()
     }
 
+    /**
+     * Writes the data in this section to file.
+     */
     fun writeClassData(){
         charInstance.addNewData(magPaladin.value)
 

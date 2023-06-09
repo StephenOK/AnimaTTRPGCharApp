@@ -35,9 +35,11 @@ fun EquipmentItemPurchase(
     equipFragVM: EquipmentFragmentViewModel
 ){
     DialogFrame(
-        "Purchase Details",
+        stringResource(R.string.purchaseDialogHeader),
         {
             LazyColumn (
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 //input for number of the item bought
@@ -77,7 +79,7 @@ fun EquipmentItemPurchase(
 
                 item{Spacer(Modifier.height(10.dp))}
 
-                //display total purchase  cost
+                //display total purchase cost
                 item{
                     InfoRow(
                         CoinType.Gold.name,
@@ -100,6 +102,7 @@ fun EquipmentItemPurchase(
                 }
             }
 
+            //close dialog on back press
             BackHandler{equipFragVM.toggleItemPurchaseOpen()}
         },
         {

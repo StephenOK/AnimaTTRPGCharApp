@@ -1,9 +1,11 @@
 package com.example.animabuilder.character_creation.attributes.modules
 
+import com.example.animabuilder.character_creation.BaseCharacter
+
 /**
  * Record of martial arts the character may acquire.
  */
-class MartialArts{
+class MartialArts(private val charInstance: BaseCharacter) {
     val kempo = MartialArt(
         "Kempo",
         "This is a freewheeling style of combat that uses combinations of " +
@@ -14,7 +16,7 @@ class MartialArts{
                 "character's Strength bonus. Kempo uses the Blunt Table.",
         "None",
         10
-    )
+    ){true}
 
     val capoeira = MartialArt(
         "Capoeira",
@@ -27,7 +29,7 @@ class MartialArts{
                 "also gain a class bonus of +10 to their Dodge ability.",
         "Dance 40",
         10
-    )
+    ){charInstance.secondaryList.dance.total.value >= 40}
 
     val taiChi = MartialArt(
         "Tai Chi",
@@ -40,7 +42,7 @@ class MartialArts{
                 "attacks occur on the Blunt Table, and not the Energy Table.",
         "Use of Ki",
         30
-    )
+    ){charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfKi)}
 
     val shotokan = MartialArt(
         "Shotokan",
@@ -51,7 +53,7 @@ class MartialArts{
                 "of 30, plus the character's Strength bonus. It uses the Blunt Table.",
         "None",
         10
-    )
+    ){true}
 
     val sambo = MartialArt(
         "Sambo",
@@ -64,7 +66,7 @@ class MartialArts{
                 "gain a bonus of +10 to their Block ability when unarmed.",
         "None",
         10
-    )
+    ){true}
 
     val kungFu = MartialArt(
         "Kung Fu",
@@ -82,7 +84,11 @@ class MartialArts{
                 "bonus, and attacks occur on the Blunt Table.",
         "Acrobatics 40, Sleight of Hand 40, Style 20",
         10
-    )
+    ){
+        charInstance.secondaryList.acrobatics.total .value>= 40 &&
+            charInstance.secondaryList.sleightHand.total.value >= 40 &&
+            charInstance.secondaryList.style.total.value >= 20
+    }
 
     val taekwondo = MartialArt(
         "Taekwondo",
@@ -96,7 +102,7 @@ class MartialArts{
                 "weapon. Taekwondo uses the Blunt Table.",
         "None",
         10
-    )
+    ){true}
 
     val aikido = MartialArt(
         "Aikido",
@@ -112,7 +118,7 @@ class MartialArts{
                 "of Aikido also receive a +10 bonus to either their Block or Dodge ability while unarmed.",
         "Sleight of Hand 40",
         10
-    )
+    ){charInstance.secondaryList.sleightHand.total.value >= 40}
 
     val muayThai = MartialArt(
         "Muay Thai",
@@ -123,7 +129,7 @@ class MartialArts{
                 "It uses the Blunt Table.",
         "Feats of Strength 40",
         10
-    )
+    ){charInstance.secondaryList.strengthFeat.total.value >= 40}
 
     val grappling = MartialArt(
         "Grappling",
@@ -136,7 +142,7 @@ class MartialArts{
                 "Blunt Table.",
         "Feats of Strength 40",
         10
-    )
+    ){charInstance.secondaryList.strengthFeat.total.value >= 40}
 
     val melkaiah = MartialArt(
         "Melkaiah",
@@ -149,7 +155,12 @@ class MartialArts{
                 "of Melkaiah also gain a +10 bonus to their Attack ability while unarmed.",
         "Grappling or Sambo, Inhumanity, more than 160 in both Attack and Defense (Unarmed)",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(grappling) || charInstance.weaponProficiencies.takenMartialList.contains(sambo)) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.inhumanity) &&
+                charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val seraphite = MartialArt(
         "Seraphite",
@@ -163,7 +174,12 @@ class MartialArts{
                 "a -30 to his Defense ability. This must be declared before calculation of Initiative.",
         "Shotokan or Kempo, Precision Extrusion, more than 180 Attack (Unarmed)",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(shotokan) || charInstance.weaponProficiencies.takenMartialList.contains(kempo)) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion) &&
+                charInstance.combat.attack.total.value >= 180 &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val dumah = MartialArt(
         "Dumah",
@@ -178,7 +194,10 @@ class MartialArts{
                 "Practitioners of Dumah also gain a +20 bonus to their Attack ability while unarmed",
         "Kempo or Capoeira, Presence Extrusion",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(kempo) || charInstance.weaponProficiencies.takenMartialList.contains(capoeira)) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
+    }
 
     val emp = MartialArt(
         "Emp",
@@ -191,7 +210,11 @@ class MartialArts{
                 "ability while unarmed and a +10 to their Initiative when using martial arts.",
         "Kempo or Taekwondo, Mastery of Attack (Unarmed)",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(kempo) || charInstance.weaponProficiencies.takenMartialList.contains(taekwondo)) &&
+                charInstance.combat.attack.total.value >= 200 &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val enuth = MartialArt(
         "Enuth",
@@ -209,7 +232,11 @@ class MartialArts{
                 "Dodge abilities while unarmed.",
         "Sambo or Shotokan, more than 160 in both Attack and Defense (Unarmed)",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(sambo) || charInstance.weaponProficiencies.takenMartialList.contains(shotokan)) &&
+                charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val shephon = MartialArt(
         "Shephon",
@@ -221,7 +248,12 @@ class MartialArts{
                 "also gains a +20 to their Block and Dodge abilities while unarmed.",
         "Aikido and Kung Fu, Ki Control, Mastery of Defense (Unarmed)",
         10
-    )
+    ){
+        charInstance.weaponProficiencies.takenMartialList.contains(aikido) && charInstance.weaponProficiencies.takenMartialList.contains(kungFu) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl) &&
+                (charInstance.combat.block.total.value >= 200 || charInstance.combat.dodge.total.value >= 200) &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val asakusen = MartialArt(
         "Asakusen",
@@ -236,7 +268,11 @@ class MartialArts{
                 "the same way as is done for Kung Fu.",
         "Kung Fu, more than 16- in both Attack and Defense (Unarmed)",
         10
-    )
+    ){
+        charInstance.weaponProficiencies.takenMartialList.contains(kungFu) &&
+                charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val velez = MartialArt(
         "Velez",
@@ -251,7 +287,10 @@ class MartialArts{
                 "Velez also gain a +20 bonus to either their Block or Dodge ability while unarmed.",
         "Tai Chi or Kung Fu, Presence Extrusion",
         20
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(taiChi) || charInstance.weaponProficiencies.takenMartialList.contains(kungFu)) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
+    }
 
     val selene = MartialArt(
         "Selene",
@@ -266,7 +305,11 @@ class MartialArts{
                 "also gain a +20 bonus to Block and Dodge when unarmed.",
         "Aikido, Mastery of Block or Dodge (Unarmed)",
         10
-    )
+    ){
+        charInstance.weaponProficiencies.takenMartialList.contains(aikido) &&
+                (charInstance.combat.block.total.value >= 200 || charInstance.combat.dodge.total.value >= 200) &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val hakyoukuken = MartialArt(
         "Hakyoukuken",
@@ -285,7 +328,12 @@ class MartialArts{
                 "+10 to Attack when unarmed.",
         "Shotokan or Muay Thai, Use of Necessary Energy, Mastery in Attack (Unarmed)",
         10
-    )
+    ){
+        (charInstance.weaponProficiencies.takenMartialList.contains(shotokan) || charInstance.weaponProficiencies.takenMartialList.contains(muayThai)) &&
+                charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfNecessaryEnergy) &&
+                charInstance.combat.attack.total.value >= 200 &&
+                (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+    }
 
     val allMartialArts = listOf(kempo, capoeira, taiChi, shotokan, sambo, kungFu, taekwondo,
         aikido, muayThai, grappling, melkaiah, seraphite, dumah, emp, enuth, shephon, asakusen,

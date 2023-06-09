@@ -1,5 +1,6 @@
 package com.example.animabuilder.character_creation.attributes.ki_abilities.techniques
 
+import com.example.animabuilder.R
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.character_creation.Element
 import java.util.Collections
@@ -224,14 +225,14 @@ class Technique(
      * @param charMax amount of points the character can spend on the technique
      * @return error message that is the reason of failure, if addition failed
      */
-    fun validEffectAddition(input: TechniqueEffect?, charMax: Int): String?{
+    fun validEffectAddition(input: TechniqueEffect?, charMax: Int): Int?{
         //assert a non-null effect input
         if(input == null)
-            return "No Effect Selected"
+            return R.string.emptyEffectNotice
 
         //reject if technique has equivalent effect
         if(getAbility(input.name) != null)
-            return "Technique is already present"
+            return R.string.existingEffect
 
         //check if able to take Elemental Binding effect
         if(input.name == "Elemental Binding" && input.elements != listOf<Element>()){
@@ -249,17 +250,17 @@ class Technique(
 
                 //fail if effect is invalid to bind to
                 if(!isBound)
-                    return "Cannot currently bind to selected element(s)"
+                    return R.string.elementConflict
             }
         }
 
         //check that effect meets Elemental Binding requirements
         if(!checkElementalBinding(input))
-            return "Cannot take because of Elemental Binding"
+            return R.string.bindingRestriction
 
         //reject if incompatible level
         if(input.lvl > level)
-            return "Cannot take an effect of that level"
+            return R.string.techLevelRestriction
 
         //determine maximum MK for the technique
         val max = when(level){
@@ -271,11 +272,11 @@ class Technique(
 
         //reject if maximum cost exceeded by effect
         if(mkCost() + input.mkCost > max)
-            return "Maximum technique cost exceeded"
+            return R.string.techCostRestriction
 
         //reject if total technique cost exceeds character's ability
         if(mkCost() + input.mkCost > charMax)
-            return "Technique would exceed character's limit"
+            return R.string.techMKRestriction
 
         //return valid input indication
         return null
@@ -345,9 +346,9 @@ class Technique(
             givenAbilities.clear()
 
         //perform action as long as list is not empty
-        else if(givenAbilities.isNotEmpty()){
+        else{
             //while pointer is within effect list
-            for(index in 0 .. givenAbilities.size){
+            for(index in 0 until givenAbilities.size){
                 //once pointer finds positive effect
                 if(!givenAbilities[index].elements.contains(Element.Free)) {
                     //initialize replacement ki build list
@@ -382,7 +383,7 @@ class Technique(
         //write technique's level
         charInstance.addNewData(level)
 
-        //write meintenance array
+        //write maintenance array
         maintArray.forEach{charInstance.addNewData(it)}
 
         //write number of effects

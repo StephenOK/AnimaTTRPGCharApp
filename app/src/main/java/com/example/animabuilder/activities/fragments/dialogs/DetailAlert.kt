@@ -44,7 +44,9 @@ import com.example.animabuilder.view_models.models.ModuleFragmentViewModel
 /**
  * Shows an alert that gives details on the item in question.
  *
- *
+ * @param title displayed header item
+ * @param item object whose details are being displayed
+ * @param closeFunc function to run on alert closure
  */
 @Composable
 fun DetailAlert(
@@ -57,28 +59,56 @@ fun DetailAlert(
         {
             LazyColumn{
                 item{
+                    //display the item's detail composable
                     when(item){
+                        //advantage or disadvantage
                         is Advantage -> AdvantageDetails(item)
+
+                        //weapon
                         is Weapon -> WeaponContents(item)
+
+                        //archetype
                         is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
+
+                        //style module
                         is StyleModule -> {Text(text = item.description)}
+
+                        //martial art
                         is MartialArt -> MartialContents(item)
+
+                        //ki ability
                         is KiAbility -> KiContents(item)
+
+                        //dominion technique
                         is Technique -> TechContents(item)
+
+                        //magical spell
                         is Spell -> SpellDetails(item)
+
+                        //psychic power
                         is PsychicPower -> PowerDetails(item)
+
+                        //inventory item
                         is GeneralEquipment -> EquipmentDetails(item)
-                        else -> Text(text = "Failed to show object details.")
+
+                        //failed item input
+                        else -> Text(text = stringResource(R.string.detailFailure))
                     }
                 }
             }
 
+            //run close function on back press
             BackHandler{closeFunc()}
         },
-        {TextButton(onClick = {closeFunc()}){ Text(text = "Close")}}
+        {TextButton(onClick = {closeFunc()}){ Text(text = stringResource(R.string.closeLabel))}}
     )
 }
 
+/**
+ * Shows details of the given advantage.
+ *
+ * @param item advantage to show the details of
+ */
 @Composable
 private fun AdvantageDetails(item: Advantage){
     //retrieve the costs of the item
@@ -156,6 +186,11 @@ private fun AdvantageDetails(item: Advantage){
     }
 }
 
+/**
+ * Shows details of the given weapon.
+ *
+ * @param input weapon to display the details of
+ */
 @Composable
 private fun WeaponContents(input: Weapon) {
     Column {
@@ -238,6 +273,11 @@ private fun WeaponContents(input: Weapon) {
     }
 }
 
+/**
+ * Shows details of the given weapon archetype.
+ *
+ * @param detailList weapon list to display the details of
+ */
 @Composable
 private fun ArchetypeContents(detailList: List<Weapon>){
     Column(
@@ -252,6 +292,11 @@ private fun ArchetypeContents(detailList: List<Weapon>){
     }
 }
 
+/**
+ * Shows details of the given martial art.
+ *
+ * @param item martial art to display the details of
+ */
 @Composable
 private fun MartialContents(item: MartialArt){
     Column{
@@ -262,24 +307,39 @@ private fun MartialContents(item: MartialArt){
     }
 }
 
+/**
+ * Shows details of the given ki ability.
+ *
+ * @param ability ki ability to display the details of
+ */
 @Composable
 private fun KiContents(ability: KiAbility) {
     Column{
+        //construct prerequisites needed
         val preString =
             if(ability.prerequisites != null)
                 ability.prerequisites.name
             else
-                "null"
+                ""
 
+        //display ability's prerequisites
         InfoRow(stringResource(R.string.prereqLabel), preString)
         Spacer(Modifier.height(10.dp))
+
+        //display ability's effect
         Text(text = "\t${ability.description}")
     }
 }
 
+/**
+ * Shows details of the given dominion technique.
+ *
+ * @param technique dominion technique to display the details of
+ */
 @Composable
 fun TechContents(technique: Technique) {
     Column{
+        //display all of the technique's abilities
         technique.givenAbilities.forEach {
             Row {
                 Text(
@@ -293,21 +353,28 @@ fun TechContents(technique: Technique) {
 
         Spacer(Modifier.height(10.dp))
 
+        //initialize list of accumulation needed
         val kiBuilds = technique.statSpent()
 
+        //display each required build needed
         for(index in 0..5){
             if(kiBuilds[index] > 0)
                 InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
         }
 
+        //if this technique is maintainable
         if (technique.isMaintained()){
             Spacer(Modifier.height(5.dp))
+
+            //display maintenance total
             Text(
                 text = stringResource(R.string.maintenanceLabel),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
+
+            //display maintenance by stat
             for(index in 0..5){
                 if(technique.maintArray[index] != 0)
                     Text(
@@ -320,13 +387,22 @@ fun TechContents(technique: Technique) {
         }
 
         Spacer(Modifier.height(5.dp))
+
+        //display total accumulation
         InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
 
         Spacer(Modifier.height(10.dp))
+
+        //display technique description
         Text(text = "\t${technique.description}")
     }
 }
 
+/**
+ * Shows details of the given spell.
+ *
+ * @param spell magic spell to display the details of
+ */
 @Composable
 fun SpellDetails(spell: Spell){
     //get active or passive text
@@ -371,17 +447,36 @@ fun SpellDetails(spell: Spell){
         Spacer(Modifier.height(10.dp))
 
         InfoRow(stringResource(R.string.addedEffectLabel), spell.addedEffect)
-        InfoRow(stringResource(R.string.maxZeonLabel), "Intelligence x " + spell.zMax.toString())
+        InfoRow(
+            stringResource(R.string.maxZeonLabel),
+            stringResource(
+                R.string.intelligenceMultiplier,
+                spell.zMax
+            )
+        )
         if(spell.maintenance != null)
-            InfoRow(stringResource(R.string.maintenanceLabel), " 1 every " + spell.maintenance + daily)
+            InfoRow(
+                stringResource(R.string.maintenanceLabel),
+                stringResource(
+                    R.string.maintenanceAmount,
+                    spell.maintenance
+                ) + daily
+            )
         else
             InfoRow(stringResource(R.string.maintenanceLabel), stringResource(R.string.noneLabel))
+
         InfoRow(stringResource(R.string.typeLabel), spellType)
+
         if(spell is FreeSpell)
             InfoRow(stringResource(R.string.forbiddenLabel), forbiddenList)
     }
 }
 
+/**
+ * Shows details of the given psychic power.
+ *
+ * @param power psychic power to display the details of
+ */
 @Composable
 fun PowerDetails(power: PsychicPower){
     //retrieve level, if power is active, and if power is maintained
@@ -409,14 +504,19 @@ fun PowerDetails(power: PsychicPower){
     }
 }
 
+/**
+ * Shows details of the given equipment.
+ *
+ * @param item equipment to display the details of
+ */
 @Composable
 fun EquipmentDetails(item: GeneralEquipment){
     //create price of the object
-    val priceString = item.baseCost.toString() +
+    val priceString =
             when(item.coinType){
-                CoinType.Gold -> " GC"
-                CoinType.Silver -> " SC"
-                CoinType.Copper -> " CC"
+                CoinType.Gold -> stringResource(R.string.goldLabel, item.baseCost)
+                CoinType.Silver -> stringResource(R.string.silverLabel, item.baseCost)
+                CoinType.Copper -> stringResource(R.string.copperLabel, item.baseCost)
             }
 
     Column{

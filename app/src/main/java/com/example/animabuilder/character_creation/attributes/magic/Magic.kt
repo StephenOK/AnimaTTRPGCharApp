@@ -85,6 +85,9 @@ class Magic(private val charInstance: BaseCharacter){
     //initialize character's known spells
     val primaryElementList = mutableListOf<Element>()
 
+    //initialize list of natural paths taken
+    val naturalPaths = mutableListOf<Element>()
+
     //initialize points invested in each book
     val pointsInLightBook = mutableStateOf(0)
     val pointsInDarkBook = mutableStateOf(0)
@@ -116,9 +119,6 @@ class Magic(private val charInstance: BaseCharacter){
 
     //initialize full spell list
     val spellList = mutableListOf<Spell>()
-
-    //initialize list of natural paths taken
-    val naturalPaths = mutableListOf<Element>()
 
     //initialize if magic ties has been taken
     val magicTies = mutableStateOf(false)
@@ -298,34 +298,164 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Set the taken state of the Magic Ties disadvantage.
+     * Attempts to alter the primary status of the inputted element's book.
      *
-     * @param input taken state of the Magic Ties disadvantage
+     * @param primeElement element to add or remove
+     * @param changeTo true if making element primary; false if removing it
      */
-    @JvmName("setMagicTies1")
-    fun setMagicTies(input: Boolean){
-        if(input){
-            //clear any existing free spells
-            lightBookFreeSpells.clear()
-            darkBookFreeSpells.clear()
-            creationBookFreeSpells.clear()
-            destructionBookFreeSpells.clear()
-            airBookFreeSpells.clear()
-            earthBookFreeSpells.clear()
-            waterBookFreeSpells.clear()
-            fireBookFreeSpells.clear()
-            essenceBookFreeSpells.clear()
-            illusionBookFreeSpells.clear()
-            necromancyBookFreeSpells.clear()
+    fun changePrimaryBook(primeElement: Element, changeTo: Boolean){
+        //if adding primary element and character has investment in it
+        if(getElementInvestment(primeElement) != 0 && changeTo) {
+            //if primary list contains necromancy
+            if(primaryElementList.contains(Element.Necromancy)) {
+                //remove necromancy and perform change action from that
+                primaryElementList.remove(Element.Necromancy)
+                changeFromNecromancy(primeElement)
+            }
+            else {
+                //remove any present opposing element to the input
+                primaryElementList.removeAll(getOppositeElement(primeElement))
 
-            //clear individual spells obtained by the character
-            while(individualSpells.size > 0){
-                changeIndividualSpell(individualSpells[0], false)
+                //add element to the list
+                primaryElementList.add(primeElement)
             }
         }
 
-        //set magic ties value
-        magicTies.value = input
+        //if removing, do so and add opposing element if doing to is required
+        else if(!changeTo && oppositeInvestedIn(primeElement))
+            setOppositeAsPrimary(primeElement)
+
+        //update spells character has access to
+        updateSpellList()
+    }
+
+    /**
+     * Determines if any points are invested in any of the given element's opposites.
+     *
+     * @param element Element to check for opposite
+     * @return true if opposing element has any magic levels in it
+     */
+    private fun oppositeInvestedIn(element: Element): Boolean{
+        //return true if any points found in opposite
+        getOppositeElement(element).forEach{
+            if(getElementInvestment(it) > 0)
+                return true
+        }
+
+        //notify of no opposing element found
+        return false
+    }
+
+    /**
+     * Removes the given element from the primary element list and changes it to its opposite if able to.
+     *
+     * @param primary element to remove from the primary list
+     */
+    private fun setOppositeAsPrimary(primary: Element){
+        //remove the element from the primary element list
+        primaryElementList.remove(primary)
+
+        //perform necromancy specific action if that is what is being removed
+        if(primary == Element.Necromancy)
+            changeFromNecromancy(null)
+
+        else{
+            //look through element's opposites
+            getOppositeElement(primary).forEach{
+                //add element to primary list if invested in and no opposite element of it found
+                if(getElementInvestment(it) > 0 && !oppositeElementFound(it)) {
+                    if(!primaryElementList.contains(it))
+                        primaryElementList.add(it)
+                    return
+                }
+            }
+        }
+    }
+
+    /**
+     * Alters the primary elements list after removing the necromancy element.
+     *
+     * @param exception element to always set as primary if one is given
+     */
+    private fun changeFromNecromancy(exception: Element?){
+        //set higher of element pairs unless they are the exception
+        if(exception != Element.Light && exception != Element.Dark)
+            pickGreater(Element.Light, Element.Dark)
+        if(exception != Element.Creation && exception != Element.Destruction)
+            pickGreater(Element.Creation, Element.Destruction)
+        if(exception != Element.Air && exception != Element.Earth)
+            pickGreater(Element.Air, Element.Earth)
+        if(exception != Element.Water && exception != Element.Fire)
+            pickGreater(Element.Water, Element.Fire)
+        if(exception != Element.Essence && exception != Element.Illusion)
+            pickGreater(Element.Essence, Element.Illusion)
+
+        //set the exception as a primary element
+        if(exception != null)
+            primaryElementList.add(exception)
+    }
+
+    /**
+     * Sets the higher of the two given elements as a primary element.
+     *
+     * @param first one of the elements to compare
+     * @param second the other compared element
+     */
+    private fun pickGreater(first: Element, second: Element){
+        //retrieve elements' invested amounts
+        val firstInvestment = getElementInvestment(first)
+        val secondInvestment = getElementInvestment(second)
+
+        //as long as one element has some points investment in it
+        if(firstInvestment + secondInvestment != 0) {
+            //add more invested in element as a primary element
+            if (firstInvestment >= secondInvestment)
+                primaryElementList.add(first)
+            else
+                primaryElementList.add(second)
+        }
+    }
+
+    /**
+     * Determines if any one of the given element's opposites are a primary element.
+     *
+     * @param element Element to check for opposite
+     * @return true if an opposing element has been found
+     */
+    private fun oppositeElementFound(element: Element): Boolean{
+        //return true if one of the opposite elements is found
+        getOppositeElement(element).forEach {
+            if (primaryElementList.contains(it))
+                return true
+        }
+
+        //notify of no opposing element found
+        return false
+    }
+
+    /**
+     * Retrieves all opposite elements to the given one.
+     *
+     * @param inputElement element to find the opposite of
+     * @return set of opposing elements to the input
+     */
+    private fun getOppositeElement(inputElement: Element): List<Element>{
+        return when(inputElement){
+            Element.Light -> listOf(Element.Dark, Element.Necromancy)
+            Element.Dark -> listOf(Element.Light, Element.Necromancy)
+            Element.Creation -> listOf(Element.Destruction, Element.Necromancy)
+            Element.Destruction -> listOf(Element.Creation, Element.Necromancy)
+            Element.Air -> listOf(Element.Earth, Element.Necromancy)
+            Element.Earth -> listOf(Element.Air, Element.Necromancy)
+            Element.Water -> listOf(Element.Fire, Element.Necromancy)
+            Element.Fire -> listOf(Element.Water, Element.Necromancy)
+            Element.Essence -> listOf(Element.Illusion, Element.Necromancy)
+            Element.Illusion -> listOf(Element.Essence, Element.Necromancy)
+            Element.Necromancy -> listOf(Element.Light, Element.Dark, Element.Creation,
+                Element.Destruction, Element.Air, Element.Earth, Element.Water, Element.Fire,
+                Element.Essence, Element.Illusion)
+            else -> listOf()
+        }
     }
 
     /**
@@ -364,99 +494,29 @@ class Magic(private val charInstance: BaseCharacter){
         //remove individually bought spells obtained in this purchase
         individualSpells.removeIf{it.inBook == book && it.level <= cap}
         individualSpells.removeIf{it is FreeSpell && findFreeSpellElement(it) == book && it.level <= cap}
-
-        //update full spell list
-        updateSpellList()
     }
 
     /**
-     * Add a Free Spell to the character's indicated spell category.
+     * Get total invested points in the given element.
      *
-     * @param addItem spell granted to the character
-     * @param intoElement element the spell is bought under
+     * @param inputElement element to determine investment in
+     * @return points invested in this element
      */
-    fun addFreeSpell(addItem: FreeSpell, intoElement: Element){
-        //get the element list to add the spell to
-        val addToList = getElementFreeSpells(intoElement)
-
-        //look for a free spell of the same level in this element
-        addToList.forEach{
-            //replace it if found
-            if(it.level == addItem.level) {
-                addToList[addToList.indexOf(it)] = addItem
-                updateSpellList()
-                return
-            }
-        }
-
-        //add to list if none found
-        addToList.add(addItem)
-        updateSpellList()
-    }
-
-    /**
-     * Attempts to alter the primary status of the inputted element's book.
-     *
-     * @param primeElement element to add or remove
-     * @param changeTo true if making element primary; false if removing it
-     */
-    fun changePrimaryBook(primeElement: Element, changeTo: Boolean){
-        //if adding primary element and character has investment in it
-        if(getElementInvestment(primeElement) != 0 && changeTo) {
-            //if primary list contains necromancy
-            if(primaryElementList.contains(Element.Necromancy)) {
-                //remove necromancy and perform change action from that
-                primaryElementList.remove(Element.Necromancy)
-                changeFromNecromancy(primeElement)
-            }
-            else {
-                //remove any present opposing element to the input
-                primaryElementList.removeAll(getOppositeElement(primeElement))
-
-                //add element to the list
-                primaryElementList.add(primeElement)
-            }
-        }
-
-        //if removing, do so and add opposing element if doing to is required
-        else if(!changeTo && oppositeInvestedIn(primeElement))
-            setOppositeAsPrimary(primeElement)
-
-        //update spells character has access to
-        updateSpellList()
-    }
-
-    /**
-     * Re-evaluates what spells the character has access to.
-     */
-    fun updateSpellList(){
-        //clear magic level spent and list of usable spells
-        magicLevelSpent.value = 0
-        spellList.clear()
-
-        //get spells acquired from investment in books
-        addSpellsFromBook(pointsInLightBook.value, Element.Light, lightBook.fullBook)
-        addSpellsFromBook(pointsInDarkBook.value, Element.Dark, darkBook.fullBook)
-        addSpellsFromBook(pointsInCreateBook.value, Element.Creation, creationBook.fullBook)
-        addSpellsFromBook(pointsInDestructBook.value, Element.Destruction, destructionBook.fullBook)
-        addSpellsFromBook(pointsInAirBook.value, Element.Air, airBook.fullBook)
-        addSpellsFromBook(pointsInEarthBook.value, Element.Earth, earthBook.fullBook)
-        addSpellsFromBook(pointsInWaterBook.value, Element.Water, waterBook.fullBook)
-        addSpellsFromBook(pointsInFireBook.value, Element.Fire, fireBook.fullBook)
-        addSpellsFromBook(pointsInEssenceBook.value, Element.Essence, essenceBook.fullBook)
-        addSpellsFromBook(pointsInIllusionBook.value, Element.Illusion, illusionBook.fullBook)
-        addSpellsFromBook(pointsInNecroBook.value, Element.Necromancy, necromancyBook.fullBook)
-
-        //get spells acquired from individual purchases
-        individualSpells.forEach{
-            if(it is FreeSpell) {
-                magicLevelSpent.value += getIndividualCost(it.level, findFreeSpellElement(it))
-                spellList.add(getFreeSpell(it.level, findFreeSpellElement(it)))
-            }
-            else {
-                magicLevelSpent.value += getIndividualCost(it.level, it.inBook)
-                spellList.add(it)
-            }
+    private fun getElementInvestment(inputElement: Element): Int{
+        //return sum of individual spells bought and book point investment
+        return getIndividualPoints(inputElement) + when(inputElement){
+            Element.Light -> pointsInLightBook.value
+            Element.Dark -> pointsInDarkBook.value
+            Element.Creation -> pointsInCreateBook.value
+            Element.Destruction -> pointsInDestructBook.value
+            Element.Air -> pointsInAirBook.value
+            Element.Earth -> pointsInEarthBook.value
+            Element.Water -> pointsInWaterBook.value
+            Element.Fire -> pointsInFireBook.value
+            Element.Essence -> pointsInEssenceBook.value
+            Element.Illusion -> pointsInIllusionBook.value
+            Element.Necromancy -> pointsInNecroBook.value
+            else -> 0
         }
     }
 
@@ -553,6 +613,100 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Retrieve the associated element's free spells.
+     *
+     * @param inputElement element to find the free spells for
+     * @return list of free spells with the associated element
+     */
+    private fun getElementFreeSpells(inputElement: Element): MutableList<FreeSpell>{
+        return when(inputElement){
+            Element.Light -> lightBookFreeSpells
+            Element.Dark -> darkBookFreeSpells
+            Element.Creation -> creationBookFreeSpells
+            Element.Destruction -> destructionBookFreeSpells
+            Element.Air -> airBookFreeSpells
+            Element.Earth -> earthBookFreeSpells
+            Element.Water -> waterBookFreeSpells
+            Element.Fire -> fireBookFreeSpells
+            Element.Essence -> essenceBookFreeSpells
+            Element.Illusion -> illusionBookFreeSpells
+            Element.Necromancy -> necromancyBookFreeSpells
+            else -> mutableListOf()
+        }
+    }
+
+    /**
+     * Determines the element associated with the inputted free spell.
+     *
+     * @param find free spell to identify element of
+     * @return element associated with the inputted free spell
+     */
+    fun findFreeSpellElement(find: FreeSpell): Element{
+        //search through each list if it contains this spell
+        lightBookFreeSpells.forEach{
+            if(it == find) return Element.Light
+        }
+        darkBookFreeSpells.forEach{
+            if(it == find) return Element.Dark
+        }
+        creationBookFreeSpells.forEach{
+            if(it == find) return Element.Creation
+        }
+        destructionBookFreeSpells.forEach{
+            if(it == find) return Element.Destruction
+        }
+        airBookFreeSpells.forEach{
+            if(it == find) return Element.Air
+        }
+        earthBookFreeSpells.forEach{
+            if(it == find) return Element.Earth
+        }
+        waterBookFreeSpells.forEach{
+            if(it == find) return Element.Water
+        }
+        fireBookFreeSpells.forEach{
+            if(it == find) return Element.Fire
+        }
+        essenceBookFreeSpells.forEach{
+            if(it == find) return Element.Essence
+        }
+        illusionBookFreeSpells.forEach{
+            if(it == find) return Element.Illusion
+        }
+        necromancyBookFreeSpells.forEach{
+            if(it == find) return Element.Necromancy
+        }
+
+        //free spell is place holder and has associated element in its own data
+        return find.forbiddenElements[0]
+    }
+
+    /**
+     * Add a Free Spell to the character's indicated spell category.
+     *
+     * @param addItem spell granted to the character
+     * @param intoElement element the spell is bought under
+     */
+    fun addFreeSpell(addItem: FreeSpell, intoElement: Element){
+        //get the element list to add the spell to
+        val addToList = getElementFreeSpells(intoElement)
+
+        //look for a free spell of the same level in this element
+        addToList.forEach{
+            //replace it if found
+            if(it.level == addItem.level) {
+                addToList[addToList.indexOf(it)] = addItem
+                updateSpellList()
+                return
+            }
+        }
+
+        //add to list if none found
+        addToList.add(addItem)
+        updateSpellList()
+    }
+
+    /**
      * Attempt to add or remove an individual spell.
      *
      * @param targetSpell spell to add or remove from character
@@ -631,63 +785,10 @@ class Magic(private val charInstance: BaseCharacter){
 
             //remove primary element if required
             if(getElementInvestment(elementInput) == 0)
-                    setOppositeAsPrimary(elementInput)
+                setOppositeAsPrimary(elementInput)
         }
 
         updateSpellList()
-    }
-
-    /**
-     * Retrieves the cost of a spell based on its level and element.
-     *
-     * @param inputLevel level of the spell
-     * @param inputElement spell's associated element
-     * @return the magic levels needed to acquire a spell with these values
-     */
-    private fun getIndividualCost(inputLevel: Int, inputElement: Element): Int{
-        //initialize cost value
-        var cost = (ceil(inputLevel.toDouble()/10.0).toInt() * 2)
-
-        //double if opposing element is primary
-        if(oppositeElementFound(inputElement))
-            cost *= 2
-
-        //return final cost value
-        return cost
-    }
-
-    /**
-     * Determines if any one of the given element's opposites are a primary element.
-     *
-     * @param element Element to check for opposite
-     * @return true if an opposing element has been found
-     */
-    private fun oppositeElementFound(element: Element): Boolean{
-        //return true if one of the opposite elements is found
-        getOppositeElement(element).forEach {
-            if (primaryElementList.contains(it))
-                return true
-        }
-
-        //notify of no opposing element found
-        return false
-    }
-
-    /**
-     * Determines if any points are invested in any of the given element's opposites.
-     *
-     * @param element Element to check for opposite
-     * @return true if opposing element has any magic levels in it
-     */
-    private fun oppositeInvestedIn(element: Element): Boolean{
-        //return true if any points found in opposite
-        getOppositeElement(element).forEach{
-            if(getElementInvestment(it) > 0)
-                return true
-        }
-
-        //notify of no opposing element found
-        return false
     }
 
     /**
@@ -716,192 +817,56 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Get total invested points in the given element.
+     * Retrieves the cost of a spell based on its level and element.
      *
-     * @param inputElement element to determine investment in
-     * @return points invested in this element
+     * @param inputLevel level of the spell
+     * @param inputElement spell's associated element
+     * @return the magic levels needed to acquire a spell with these values
      */
-    private fun getElementInvestment(inputElement: Element): Int{
-        //return sum of individual spells bought and book point investment
-        return getIndividualPoints(inputElement) + when(inputElement){
-            Element.Light -> pointsInLightBook.value
-            Element.Dark -> pointsInDarkBook.value
-            Element.Creation -> pointsInCreateBook.value
-            Element.Destruction -> pointsInDestructBook.value
-            Element.Air -> pointsInAirBook.value
-            Element.Earth -> pointsInEarthBook.value
-            Element.Water -> pointsInWaterBook.value
-            Element.Fire -> pointsInFireBook.value
-            Element.Essence -> pointsInEssenceBook.value
-            Element.Illusion -> pointsInIllusionBook.value
-            Element.Necromancy -> pointsInNecroBook.value
-            else -> 0
-        }
+    private fun getIndividualCost(inputLevel: Int, inputElement: Element): Int{
+        //initialize cost value
+        var cost = (ceil(inputLevel.toDouble()/10.0).toInt() * 2)
+
+        //double if opposing element is primary
+        if(oppositeElementFound(inputElement))
+            cost *= 2
+
+        //return final cost value
+        return cost
     }
 
     /**
-     * Retrieve the associated element's free spells.
-     *
-     * @param inputElement element to find the free spells for
-     * @return list of free spells with the associated element
+     * Re-evaluates what spells the character has access to.
      */
-    private fun getElementFreeSpells(inputElement: Element): MutableList<FreeSpell>{
-        return when(inputElement){
-            Element.Light -> lightBookFreeSpells
-            Element.Dark -> darkBookFreeSpells
-            Element.Creation -> creationBookFreeSpells
-            Element.Destruction -> destructionBookFreeSpells
-            Element.Air -> airBookFreeSpells
-            Element.Earth -> earthBookFreeSpells
-            Element.Water -> waterBookFreeSpells
-            Element.Fire -> fireBookFreeSpells
-            Element.Essence -> essenceBookFreeSpells
-            Element.Illusion -> illusionBookFreeSpells
-            Element.Necromancy -> necromancyBookFreeSpells
-            else -> mutableListOf()
-        }
-    }
+    fun updateSpellList(){
+        //clear magic level spent and list of usable spells
+        magicLevelSpent.value = 0
+        spellList.clear()
 
-    /**
-     * Removes the given element from the primary element list and changes it to its opposite if able to.
-     *
-     * @param primary element to remove from the primary list
-     */
-    private fun setOppositeAsPrimary(primary: Element){
-        //remove the element from the primary element list
-        primaryElementList.remove(primary)
+        //get spells acquired from investment in books
+        addSpellsFromBook(pointsInLightBook.value, Element.Light, lightBook.fullBook)
+        addSpellsFromBook(pointsInDarkBook.value, Element.Dark, darkBook.fullBook)
+        addSpellsFromBook(pointsInCreateBook.value, Element.Creation, creationBook.fullBook)
+        addSpellsFromBook(pointsInDestructBook.value, Element.Destruction, destructionBook.fullBook)
+        addSpellsFromBook(pointsInAirBook.value, Element.Air, airBook.fullBook)
+        addSpellsFromBook(pointsInEarthBook.value, Element.Earth, earthBook.fullBook)
+        addSpellsFromBook(pointsInWaterBook.value, Element.Water, waterBook.fullBook)
+        addSpellsFromBook(pointsInFireBook.value, Element.Fire, fireBook.fullBook)
+        addSpellsFromBook(pointsInEssenceBook.value, Element.Essence, essenceBook.fullBook)
+        addSpellsFromBook(pointsInIllusionBook.value, Element.Illusion, illusionBook.fullBook)
+        addSpellsFromBook(pointsInNecroBook.value, Element.Necromancy, necromancyBook.fullBook)
 
-        //perform necromancy specific action if that is what is being removed
-        if(primary == Element.Necromancy)
-            changeFromNecromancy(null)
-
-        else{
-            //look through element's opposites
-            getOppositeElement(primary).forEach{
-                //add element to primary list if invested in and no opposite element of it found
-                if(getElementInvestment(it) > 0 && !oppositeElementFound(it)) {
-                    if(!primaryElementList.contains(it))
-                        primaryElementList.add(it)
-                    return
-                }
+        //get spells acquired from individual purchases
+        individualSpells.forEach{
+            if(it is FreeSpell) {
+                magicLevelSpent.value += getIndividualCost(it.level, findFreeSpellElement(it))
+                spellList.add(getFreeSpell(it.level, findFreeSpellElement(it)))
+            }
+            else {
+                magicLevelSpent.value += getIndividualCost(it.level, it.inBook)
+                spellList.add(it)
             }
         }
-    }
-
-    /**
-     * Alters the primary elements list after removing the necromancy element.
-     *
-     * @param exception element to always set as primary if one is given
-     */
-    private fun changeFromNecromancy(exception: Element?){
-
-        //set higher of element pairs unless they are the exception
-        if(exception != Element.Light && exception != Element.Dark)
-            pickGreater(Element.Light, Element.Dark)
-        if(exception != Element.Creation && exception != Element.Destruction)
-            pickGreater(Element.Creation, Element.Destruction)
-        if(exception != Element.Air && exception != Element.Earth)
-            pickGreater(Element.Air, Element.Earth)
-        if(exception != Element.Water && exception != Element.Fire)
-            pickGreater(Element.Water, Element.Fire)
-        if(exception != Element.Essence && exception != Element.Illusion)
-            pickGreater(Element.Essence, Element.Illusion)
-
-        //set the exception as a primary element
-        if(exception != null)
-            primaryElementList.add(exception)
-    }
-
-    /**
-     * Sets the higher of the two given elements as a primary element.
-     *
-     * @param first one of the elements to compare
-     * @param second the other compared element
-     */
-    private fun pickGreater(first: Element, second: Element){
-        //retrieve elements' invested amounts
-        val firstInvestment = getElementInvestment(first)
-        val secondInvestment = getElementInvestment(second)
-
-        //as long as one element has some points investment in it
-        if(firstInvestment + secondInvestment != 0) {
-            //add more invested in element as a primary element
-            if (firstInvestment >= secondInvestment)
-                primaryElementList.add(first)
-            else
-                primaryElementList.add(second)
-        }
-    }
-
-    /**
-     * Retrieves all opposite elements to the given one.
-     *
-     * @param inputElement element to find the opposite of
-     * @return set of opposing elements to the input
-     */
-    private fun getOppositeElement(inputElement: Element): List<Element>{
-        return when(inputElement){
-            Element.Light -> listOf(Element.Dark, Element.Necromancy)
-            Element.Dark -> listOf(Element.Light, Element.Necromancy)
-            Element.Creation -> listOf(Element.Destruction, Element.Necromancy)
-            Element.Destruction -> listOf(Element.Creation, Element.Necromancy)
-            Element.Air -> listOf(Element.Earth, Element.Necromancy)
-            Element.Earth -> listOf(Element.Air, Element.Necromancy)
-            Element.Water -> listOf(Element.Fire, Element.Necromancy)
-            Element.Fire -> listOf(Element.Water, Element.Necromancy)
-            Element.Essence -> listOf(Element.Illusion, Element.Necromancy)
-            Element.Illusion -> listOf(Element.Essence, Element.Necromancy)
-            Element.Necromancy -> listOf(Element.Light, Element.Dark, Element.Creation,
-                Element.Destruction, Element.Air, Element.Earth, Element.Water, Element.Fire,
-                Element.Essence, Element.Illusion)
-            else -> listOf()
-        }
-    }
-
-    /**
-     * Determines the element associated with the inputted free spell.
-     *
-     * @param find free spell to identify element of
-     * @return element associated with the inputted free spell
-     */
-    fun findFreeSpellElement(find: FreeSpell): Element{
-        //search through each list if it contains this spell
-        lightBookFreeSpells.forEach{
-            if(it == find) return Element.Light
-        }
-        darkBookFreeSpells.forEach{
-            if(it == find) return Element.Dark
-        }
-        creationBookFreeSpells.forEach{
-            if(it == find) return Element.Creation
-        }
-        destructionBookFreeSpells.forEach{
-            if(it == find) return Element.Destruction
-        }
-        airBookFreeSpells.forEach{
-            if(it == find) return Element.Air
-        }
-        earthBookFreeSpells.forEach{
-            if(it == find) return Element.Earth
-        }
-        waterBookFreeSpells.forEach{
-            if(it == find) return Element.Water
-        }
-        fireBookFreeSpells.forEach{
-            if(it == find) return Element.Fire
-        }
-        essenceBookFreeSpells.forEach{
-            if(it == find) return Element.Essence
-        }
-        illusionBookFreeSpells.forEach{
-            if(it == find) return Element.Illusion
-        }
-        necromancyBookFreeSpells.forEach{
-            if(it == find) return Element.Necromancy
-        }
-
-        //free spell is place holder and has associated element in its own data
-        return find.forbiddenElements[0]
     }
 
     /**
@@ -929,13 +894,47 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Set the taken state of the Magic Ties disadvantage.
+     *
+     * @param input taken state of the Magic Ties disadvantage
+     */
+    @JvmName("setMagicTies1")
+    fun setMagicTies(input: Boolean){
+        if(input){
+            //clear any existing free spells
+            lightBookFreeSpells.clear()
+            darkBookFreeSpells.clear()
+            creationBookFreeSpells.clear()
+            destructionBookFreeSpells.clear()
+            airBookFreeSpells.clear()
+            earthBookFreeSpells.clear()
+            waterBookFreeSpells.clear()
+            fireBookFreeSpells.clear()
+            essenceBookFreeSpells.clear()
+            illusionBookFreeSpells.clear()
+            necromancyBookFreeSpells.clear()
+
+            //clear individual spells obtained by the character
+            while(individualSpells.size > 0){
+                changeIndividualSpell(individualSpells[0], false)
+            }
+        }
+
+        //set magic ties value
+        magicTies.value = input
+    }
+
+    /**
      * Function to run on confirmed removal of The Gift advantage.
      */
     fun loseMagic(){
+        //reset original zeon values
         buyZeon(0)
         buyZeonAcc(1)
         buyMagProj(0)
 
+        //clear spellbook
+        individualSpells.clear()
         buyBookLevels(0, Element.Light)
         buyBookLevels(0, Element.Dark)
         buyBookLevels(0, Element.Creation)
@@ -947,6 +946,20 @@ class Magic(private val charInstance: BaseCharacter){
         buyBookLevels(0, Element.Essence)
         buyBookLevels(0, Element.Illusion)
         buyBookLevels(0, Element.Necromancy)
+
+        lightBookFreeSpells.clear()
+        darkBookFreeSpells.clear()
+        creationBookFreeSpells.clear()
+        destructionBookFreeSpells.clear()
+        airBookFreeSpells.clear()
+        earthBookFreeSpells.clear()
+        waterBookFreeSpells.clear()
+        fireBookFreeSpells.clear()
+        essenceBookFreeSpells.clear()
+        illusionBookFreeSpells.clear()
+        necromancyBookFreeSpells.clear()
+
+        updateSpellList()
     }
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name = "techniqueAbilities">
-        <item>--Select an ability --</item>
+        <item>-- Select an ability --</item>
         <item>Attack Ability</item>
         <item>Counterattack Ability</item>
         <item>Block Ability</item>

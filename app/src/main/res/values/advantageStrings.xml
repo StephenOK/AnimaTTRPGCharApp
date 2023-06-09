@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name = "creationPointLabel">Creation Points:</string>
+
     <string name = "commonAdv">Common Advantages</string>
     <string name = "commonDisadv">Common Disadvantages</string>
     <string name = "magicAdv">Magic Advantages</string>
@@ -8,4 +10,7 @@
     <string name = "psychicDisadv">Psychic Disadvantages</string>
 
     <string name = "heldAdvantageLabel">Held Advantages/Disadvantages</string>
+    <string name = "racialAdvantageLabel">Racial Advantages</string>
+
+    <string name = "giftWarning">Removing The Gift will remove any magic investments made. Proceed?</string>
 </resources>

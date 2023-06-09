@@ -127,4 +127,13 @@ class Mixed: Serializable {
 
     val mixed = listOf(bastardSword, flail, foil, halberd, heavyBattleMace, kusariGama,
         largeMultiFlail, scythe, twoHandAxe)
+
+    val shortAdditions = listOf(foil, kusariGama)
+    val axeAdditions = listOf(twoHandAxe)
+    val maceAdditions = listOf(flail, heavyBattleMace, largeMultiFlail)
+    val swordAdditions = listOf(bastardSword, foil)
+    val twoHandedAdditions = listOf(bastardSword, halberd, heavyBattleMace, largeMultiFlail,
+        scythe, twoHandAxe)
+    val poleAdditions = listOf(halberd, scythe)
+    val cordAdditions = listOf(flail, kusariGama)
 }

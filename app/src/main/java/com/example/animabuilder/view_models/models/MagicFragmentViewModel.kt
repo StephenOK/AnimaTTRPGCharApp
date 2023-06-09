@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.update
  *
  * @param magic character's magic abilities section
  * @param charInstance full character object
+ * @param charClass state of this character's class
  */
 class MagicFragmentViewModel(
     private val magic: Magic,
@@ -33,6 +34,7 @@ class MagicFragmentViewModel(
     private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.value.toString())
     val boughtZeonString = _boughtZeonString.asStateFlow()
 
+    //initialize character's zeon point DP cost
     private val _boughtZeonDP = MutableStateFlow("")
     val boughtZeonDP = _boughtZeonDP.asStateFlow()
 
@@ -57,7 +59,10 @@ class MagicFragmentViewModel(
     val imbalanceIsAttack = _imbalanceIsAttack.asStateFlow()
 
     //initialize the display of the character's imbalance bias
-    private val _imbalanceTypeString = MutableStateFlow(if(magic.imbalanceIsAttack.value)"Attack" else "Block")
+    private val _imbalanceTypeString = MutableStateFlow(
+        if(magic.imbalanceIsAttack.value) R.string.offenseLabel
+        else R.string.defenseLabel
+    )
     val imbalanceTypeString = _imbalanceTypeString.asStateFlow()
 
     //initialize the displays for the character's offensive and defensive magic projections
@@ -86,29 +91,356 @@ class MagicFragmentViewModel(
     private val _selectedFreeSpell = MutableStateFlow<FreeSpell?>(null)
     val selectedFreeSpell = _selectedFreeSpell.asStateFlow()
 
+    //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
+    //initialize the title of the detail alert
     private val _detailTitle = MutableStateFlow("")
     val detailTitle = _detailTitle.asStateFlow()
 
+    //initialize the item displayed in the alert
     private val _detailItem = MutableStateFlow<Spell?>(null)
     val detailItem = _detailItem.asStateFlow()
 
+    //initialize list of primary element checkboxes
+    val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
+
+    //initialize character's learned spells
+    val heldSpells = mutableStateListOf<Spell>()
+
+    /**
+     * Change the character's bought zeon display.
+     *
+     * @param input new value to display
+     */
+    fun setBoughtZeonString(input: String){
+        _boughtZeonString.update{input}
+    }
+
+    /**
+     * Sets the display for the character's zeon cost DP.
+     *
+     * @param input new value to display
+     */
+    fun setBoughtZeonDP(input: String){_boughtZeonDP.update{input}}
+
+    /**
+     * Change the character's bought zeon input.
+     *
+     * @param input value to set the bought zeon to
+     */
+    fun setBoughtZeonString(input: Int){
+        magic.buyZeon(input)
+        setBoughtZeonString(input.toString())
+        _maxZeonString.update{magic.zeonMax.value.toString()}
+    }
+
+    /**
+     * Change the character's magic imbalance input.
+     *
+     * @param input value to set the magic imbalance to
+     */
+    fun setProjectionImbalance(input: Int){
+        magic.magProjImbalance.value = input
+        setProjectionImbalance(input.toString())
+        refreshImbalance(imbalanceIsAttack.value)
+    }
+
+    /**
+     * Calculates the character's imbalance value depending on the projection bias.
+     *
+     * @param additionMade true if the bias favors this item
+     * @return actual projection value determined
+     */
+    private fun determineImbalanceValue(additionMade: Boolean): Int{
+        return if(additionMade)
+            magic.magProjTotal.value + magic.magProjImbalance.value
+        else
+            magic.magProjTotal.value - magic.magProjImbalance.value
+    }
+
+    /**
+     * Sets the spent magic level display to the character's held value.
+     */
+    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.value.toString()}}
+
+    /**
+     * Change the character's magic imbalance display.
+     *
+     * @param input new value to display
+     */
+    fun setProjectionImbalance(input: String){_projectionImbalance.update{input}}
+
+    /**
+     * Sets the magic imbalance bias to the inputted value.
+     *
+     * @param input true if setting bias to offense
+     */
+    fun setImbalanceIsAttack(input: Boolean){
+        _imbalanceIsAttack.update{input}
+        refreshImbalance(input)
+        _imbalanceTypeString.update{if(input) R.string.offenseLabel else R.string.defenseLabel}
+    }
+
+    /**
+     * Updates the offense and defense projections.
+     */
+    private fun refreshImbalance(input: Boolean){
+        _offenseImbalance.update{determineImbalanceValue(input).toString()}
+        _defenseImbalance.update{determineImbalanceValue(!input).toString()}
+    }
+
+    /**
+     * Attempt to open the free spell exchange dialog.
+     *
+     * @param freeSpell spell to set for choosing the free spell of
+     * @return true if cannot open dialog
+     */
+    fun tryExchangeOpen(
+        freeSpell: FreeSpell
+    ): Boolean{
+        //terminate if character has Magic Ties disadvantage
+        if(magic.magicTies.value)
+            return true
+
+        //set free spell values
+        setFreeElement(getFreeElement(freeSpell))
+        setFreeLevel(freeSpell.level)
+        toggleFreeExchangeOpen()
+
+        //terminate process
+        return false
+    }
+
+    /**
+     * Changes the free spell exchange's open state.
+     */
+    fun toggleFreeExchangeOpen() {_freeExchangeOpen.update{!freeExchangeOpen.value}}
+
+    /**
+     * Set the free spell's element to the indicated value.
+     *
+     * @param input element to apply to the free spell
+     */
+    private fun setFreeElement(input: Element){_freeElement.update{input}}
+
+    /**
+     * Set the free spell's level to the indicated value.
+     *
+     * @param input level to apply to the free spell
+     */
+    fun setFreeLevel(input: Int){_freeLevel.update{input}}
+
+    /**
+     * Retrieve the inputted free spell's associated element.
+     *
+     * @param input free spell to check
+     * @return element associated with this spell
+     */
+    fun getFreeElement(input: FreeSpell): Element{return magic.findFreeSpellElement(input)}
+
+    /**
+     * Adds a primary element checkbox to the master list.
+     *
+     * @param input element to add to the master list
+     */
+    private fun addPrimaryElementBox(input: Element){
+        primaryElementBoxes += Pair(input, mutableStateOf(magic.primaryElementList.contains(input)))
+    }
+
+    /**
+     * Attempt to change the character's primary element as indicated by the user.
+     *
+     * @param item element to change the state of
+     * @param input value to attempt to change it to
+     */
+    fun changePrimaryBook(item: Element, input: Boolean){
+        magic.changePrimaryBook(item, input)
+        reflectPrimaryElement()
+        setMagicLevelSpent()
+    }
+
+    /**
+     * Change the primary element checkboxes to reflect the character's primary element list.
+     */
+    fun reflectPrimaryElement(){
+        primaryElementBoxes.forEach{
+            it.value.value = magic.primaryElementList.contains(it.key)
+        }
+    }
+
+    /**
+     * Sets the free spell to the inputted item.
+     *
+     * @param input free spell to set
+     */
+    fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
+
+    /**
+     * Gets a color based on whether the character can cast the indicated spell.
+     *
+     * @param input spell to check the castability of
+     */
+    fun getCastableColor(input: Int): Color{
+        //return red if character cannot cast it
+        return if((input in 81..90 && charInstance.gnosis.value < 25) ||
+            (input > 90 && charInstance.gnosis.value < 40))
+            Color.Red
+
+        //return black if castable
+        else Color.Black
+    }
+
+    /**
+     * Opens and closes the detail alert as needed.
+     */
     fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
 
+    /**
+     * Sets the item displayed in the detail alert.
+     *
+     * @param item displayed spell in the detail alert
+     */
     fun setDetailItem(item: Spell){
         _detailTitle.update{item.name}
         _detailItem.update{item}
     }
 
+    /**
+     * Determines if the character possesses The Gift Advantage.
+     *
+     * @return true if character has this advantage
+     */
     fun isGifted(): Boolean{
         return charInstance.advantageRecord.getAdvantage("The Gift") != null
     }
 
+    /**
+     * Retrieves the base zeon points the character has.
+     *
+     * @return character's base zeon
+     */
+    fun getBaseZeon(): Int{return magic.baseZeon.value}
+
+    /**
+     * Retrieves the zeon the character gained from levels.
+     *
+     * @return zeon points gained from class levels
+     */
+    fun getClassZeon(): Int{return magic.zeonFromClass.value}
+
+    /**
+     * Gets the DP cost of the character's zeon point acquisitions.
+     *
+     * @return the DP cost of zeon points
+     */
     fun getBoughtZeonDP(): Int{return charClass.value.zeonGrowth}
+
+    /**
+     * Gets the DP cost of the character's magic accumulation.
+     *
+     * @return the DP cost of magic accumulation
+     */
     fun getZeonAccDP(): Int{return charClass.value.maGrowth}
+
+    /**
+     * Gets the DP cost of the character's magic projection.
+     *
+     * @return the DP cost of magic projection
+     */
     fun getMagProjDP(): Int{return charClass.value.maProjGrowth}
+
+    /**
+     * Retrieve the maximum magic level the character can spend.
+     *
+     * @return the maximum magic level string
+     */
+    fun getMagicLevelMax(): String{return magic.magicLevelMax.value.toString()}
+
+    /**
+     * Retrieves the book of free spells.
+     *
+     * @return free spell record
+     */
+    fun getFreeSpellbook(): FreeBook{return magic.freeBook}
+
+    /**
+     * Determine if the character is holding the inputted spell.
+     *
+     * @param item spell to determine the character has
+     * @return true if the character has learned this spell
+     */
+    fun getSpellHeld(item: Spell): Boolean{return magic.hasCopyOf(item)}
+
+    /**
+     * Determines if the character is holding the inputted free spell.
+     *
+     * @param level free spell's level
+     * @param element free spell's associated element
+     * @return true if the character has learned this spell
+     */
+    fun getFreeSpellHeld(level: Int, element: Element): Boolean{
+        return magic.hasCopyOf(magic.getFreeSpell(level, element))
+    }
+
+    /**
+     * Add or remove the spell to the character's learned list.
+     *
+     * @param item spell to change the learned state of
+     */
+    fun changeIndividualSpell(item: Spell){
+        magic.changeIndividualSpell(item, !magic.individualSpells.contains(item))
+        updateHeldSpells()
+    }
+
+    /**
+     * Add or remove the free spell to the character's learned list.
+     *
+     * @param level free spell's level
+     * @param element free spell's associated element
+     */
+    fun changeIndividualFreeSpell(level: Int, element: Element){
+        magic.changeIndividualFreeSpell(level, element, !getFreeSpellHeld(level, element))
+        updateHeldSpells()
+    }
+
+    /**
+     * Add the user's selected free spell item to the character.
+     */
+    fun addFreeSpell(){
+        if(selectedFreeSpell.value != null){
+            //create the free spell
+            val item = FreeSpell(
+                selectedFreeSpell.value!!.name,
+                selectedFreeSpell.value!!.isActive,
+                freeLevel.value,
+                selectedFreeSpell.value!!.zCost,
+                selectedFreeSpell.value!!.effect,
+                selectedFreeSpell.value!!.addedEffect,
+                selectedFreeSpell.value!!.zMax,
+                selectedFreeSpell.value!!.maintenance,
+                selectedFreeSpell.value!!.isDaily,
+                selectedFreeSpell.value!!.type,
+                selectedFreeSpell.value!!.forbiddenElements
+            )
+
+            //add it to the character
+            magic.addFreeSpell(item, freeElement.value)
+            updateHeldSpells()
+
+            //close the free exchange dialog
+            toggleFreeExchangeOpen()
+        }
+    }
+
+    /**
+     * Refresh the full list of the character's learned spells
+     */
+    fun updateHeldSpells(){
+        heldSpells.clear()
+        heldSpells.addAll(magic.spellList)
+    }
 
     //create item to manage zeon accumulation
     private val zeonAccumulation = ZeonPurchaseItemData(
@@ -242,295 +574,6 @@ class MagicFragmentViewModel(
     val allBooks = listOf(lightBook, darkBook, creationBook, destructionBook, airBook, earthBook,
         waterBook, fireBook, essenceBook, illusionBook, necromancyBook)
 
-    //initialize character's learned spells
-    val heldSpells = mutableStateListOf<Spell>()
-
-    /**
-     * Refresh the full list of the character's learned spells
-     */
-    fun updateHeldSpells(){
-        heldSpells.clear()
-        heldSpells.addAll(magic.spellList)
-    }
-
-    /**
-     * Retrieve the inputted free spell's associated element.
-     *
-     * @param input free spell to check
-     * @return element associated with this spell
-     */
-    fun getFreeElement(input: FreeSpell): Element{return magic.findFreeSpellElement(input)}
-
-    /**
-     * Retrieves the base zeon points the character has.
-     *
-     * @return character's base zeon
-     */
-    fun getBaseZeon(): Int{return magic.baseZeon.value}
-
-    /**
-     * Retrieves the zeon the character gained from levels.
-     *
-     * @return zeon points gained from class levels
-     */
-    fun getClassZeon(): Int{return magic.zeonFromClass.value}
-
-    /**
-     * Retrieves the book of free spells.
-     *
-     * @return free spell record
-     */
-    fun getFreeSpellbook(): FreeBook{return magic.freeBook}
-
-    /**
-     * Determine if the character is holding the inputted spell.
-     *
-     * @param item spell to determine the character has
-     * @return true if the character has learned this spell
-     */
-    fun getSpellHeld(item: Spell): Boolean{return magic.hasCopyOf(item)}
-
-    /**
-     * Determines if the character is holding the inputted free spell.
-     *
-     * @param level free spell's level
-     * @param element free spell's associated element
-     * @return true if the character has learned this spell
-     */
-    fun getFreeSpellHeld(level: Int, element: Element): Boolean{
-        return magic.hasCopyOf(magic.getFreeSpell(level, element))
-    }
-
-    /**
-     * Add or remove the spell to the character's learned list.
-     *
-     * @param item spell to change the learned state of
-     */
-    fun changeIndividualSpell(item: Spell){
-        magic.changeIndividualSpell(item, !magic.individualSpells.contains(item))
-        updateHeldSpells()
-    }
-
-    /**
-     * Add or remove the free spell to the character's learned list.
-     *
-     * @param level free spell's level
-     * @param element free spell's associated element
-     */
-    fun changeIndividualFreeSpell(level: Int, element: Element){
-        magic.changeIndividualFreeSpell(level, element, !getFreeSpellHeld(level, element))
-        updateHeldSpells()
-    }
-
-    /**
-     * Add the user's selected free spell item to the character.
-     */
-    fun addFreeSpell(){
-        if(selectedFreeSpell.value != null){
-            //create the free spell
-            val item = FreeSpell(
-                selectedFreeSpell.value!!.name,
-                selectedFreeSpell.value!!.isActive,
-                freeLevel.value,
-                selectedFreeSpell.value!!.zCost,
-                selectedFreeSpell.value!!.effect,
-                selectedFreeSpell.value!!.addedEffect,
-                selectedFreeSpell.value!!.zMax,
-                selectedFreeSpell.value!!.maintenance,
-                selectedFreeSpell.value!!.isDaily,
-                selectedFreeSpell.value!!.type,
-                selectedFreeSpell.value!!.forbiddenElements
-            )
-
-            //add it to the character
-            magic.addFreeSpell(item, freeElement.value)
-            updateHeldSpells()
-
-            //close the free exchange dialog
-            toggleFreeExchangeOpen()
-        }
-    }
-
-    /**
-     * Change the character's bought zeon input.
-     *
-     * @param input value to set the bought zeon to
-     */
-    fun setBoughtZeonString(input: Int){
-        magic.buyZeon(input)
-        setBoughtZeonString(input.toString())
-        _maxZeonString.update{magic.zeonMax.value.toString()}
-    }
-
-    /**
-     * Change the character's bought zeon display.
-     *
-     * @param input new value to display
-     */
-    fun setBoughtZeonString(input: String){
-        _boughtZeonString.update{input}
-    }
-
-    fun setBoughtZeonDP(input: String){_boughtZeonDP.update{input}}
-
-    /**
-     * Change the character's magic imbalance input.
-     *
-     * @param input value to set the magic imbalance to
-     */
-    fun setProjectionImbalance(input: Int){
-        magic.magProjImbalance.value = input
-        setProjectionImbalance(input.toString())
-        refreshImbalance(imbalanceIsAttack.value)
-    }
-
-    /**
-     * Change the character's magic imbalance display.
-     *
-     * @param input new value to display
-     */
-    fun setProjectionImbalance(input: String){_projectionImbalance.update{input}}
-
-    /**
-     * Sets the magic imbalance bias to the inputted value.
-     *
-     * @param input true if setting bias to offense
-     */
-    fun setImbalanceIsAttack(input: Boolean){
-        _imbalanceIsAttack.update{input}
-        refreshImbalance(input)
-        _imbalanceTypeString.update{if(input) "Offense" else "Defense"}
-    }
-
-    /**
-     * Updates the offense and defense projections.
-     */
-    private fun refreshImbalance(input: Boolean){
-        _offenseImbalance.update{determineImbalanceValue(input).toString()}
-        _defenseImbalance.update{determineImbalanceValue(!input).toString()}
-    }
-
-    /**
-     * Retrieve the maximum magic level the character can spend.
-     *
-     * @return the maximum magic level string
-     */
-    fun getMagicLevelMax(): String{return magic.magicLevelMax.value.toString()}
-
-    /**
-     * Sets the spent magic level display to the character's held value.
-     */
-    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.value.toString()}}
-
-    //initialize list of primary element checkboxes
-    val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
-
-    /**
-     * Adds a primary element checkbox to the master list.
-     *
-     * @param input element to add to the master list
-     */
-    private fun addPrimaryElementBox(input: Element){
-        primaryElementBoxes += Pair(input, mutableStateOf(magic.primaryElementList.contains(input)))
-    }
-
-    /**
-     * Attempt to change the character's primary element as indicated by the user.
-     *
-     * @param item element to change the state of
-     * @param input value to attempt to change it to
-     */
-    fun changePrimaryBook(item: Element, input: Boolean){
-        magic.changePrimaryBook(item, input)
-        reflectPrimaryElement()
-        setMagicLevelSpent()
-    }
-
-    /**
-     * Change the primary element checkboxes to reflect the character's primary element list.
-     */
-    fun reflectPrimaryElement(){
-        primaryElementBoxes.forEach{
-            it.value.value = magic.primaryElementList.contains(it.key)
-        }
-    }
-
-    /**
-     * Calculates the character's imbalance value depending on the projection bias.
-     *
-     * @param additionMade true if the bias favors this item
-     * @return actual projection value determined
-     */
-    private fun determineImbalanceValue(additionMade: Boolean): Int{
-        return if(additionMade)
-            magic.magProjTotal.value + magic.magProjImbalance.value
-        else
-            magic.magProjTotal.value - magic.magProjImbalance.value
-    }
-
-    /**
-     * Changes the free spell exchange's open state.
-     */
-    fun toggleFreeExchangeOpen() {_freeExchangeOpen.update{!freeExchangeOpen.value}}
-
-    /**
-     * Set the free spell's element to the indicated value.
-     *
-     * @param input element to apply to the free spell
-     */
-    private fun setFreeElement(input: Element){_freeElement.update{input}}
-
-    /**
-     * Set the free spell's level to the indicated value.
-     *
-     * @param input level to apply to the free spell
-     */
-    fun setFreeLevel(input: Int){_freeLevel.update{input}}
-
-    /**
-     * Attempt to open the free spell exchange dialog.
-     *
-     * @param freeSpell spell to set for choosing the free spell of
-     * @return true if cannot open dialog
-     */
-    fun tryExchangeOpen(
-        freeSpell: FreeSpell
-    ): Boolean{
-        //terminate if character has Magic Ties disadvantage
-        if(magic.magicTies.value)
-            return true
-
-        //set free spell values
-        setFreeElement(getFreeElement(freeSpell))
-        setFreeLevel(freeSpell.level)
-        toggleFreeExchangeOpen()
-
-        //terminate process
-        return false
-    }
-
-    /**
-     * Sets the free spell to the inputted item.
-     *
-     * @param input free spell to set
-     */
-    fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
-
-    /**
-     * Gets a color based on whether the character can cast the indicated spell.
-     *
-     * @param input spell to check the castability of
-     */
-    fun getCastableColor(input: Int): Color{
-        //return red if character cannot cast it
-        return if((input in 81..90 && charInstance.gnosis.value < 25) ||
-            (input > 90 && charInstance.gnosis.value < 40))
-            Color.Red
-
-        //return black if castable
-        else Color.Black
-    }
-
     /**
      * Class that holds data on a zeon purchase item.
      *
@@ -538,7 +581,9 @@ class MagicFragmentViewModel(
      * @param baseInput base value of the stat
      * @param boughtInput initial bought value for this item
      * @param totalInput initial total value for this item
+     * @param dpGetter retrieves the DP needed for this item
      * @param buyItem function to run on a change in the purchase amount
+     * @param changeColor function to run to determine the text color
      * @param updateTotal function to run on the change of the total output
      */
     class ZeonPurchaseItemData(
@@ -555,16 +600,16 @@ class MagicFragmentViewModel(
         private val _boughtString = MutableStateFlow(boughtInput().toString())
         val boughtString = _boughtString.asStateFlow()
 
-        //initialize total amount display
-        private val _totalString = MutableStateFlow(totalInput().toString())
-        val totalString = _totalString.asStateFlow()
-
         //initialize the color of the displayed text
         private val _textColor = MutableStateFlow(changeColor())
         val textColor = _textColor.asStateFlow()
 
         private val _dpDisplay = MutableStateFlow("")
         val dpDisplay = _dpDisplay.asStateFlow()
+
+        //initialize total amount display
+        private val _totalString = MutableStateFlow(totalInput().toString())
+        val totalString = _totalString.asStateFlow()
 
         /**
          * Set the bought amount to the desired input.
@@ -579,18 +624,23 @@ class MagicFragmentViewModel(
         }
 
         /**
+         * Sets the color of this item's text to the indicated value.
+         */
+        fun setNewColor(){_textColor.update{changeColor()}}
+
+        /**
+         * Sets the DP display to the indicated value.
+         *
+         * @param input new item to display
+         */
+        fun setDPDisplay(input: String){_dpDisplay.update{input}}
+
+        /**
          * Set the bought display to the inputted value.
          *
          * @param input string to now display
          */
         fun setBoughtString(input: String){_boughtString.update{input}}
-
-        /**
-         * Sets the color of this item's text to the indicated value.
-         */
-        fun setNewColor(){_textColor.update{changeColor()}}
-
-        fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
         /**
          * Refreshes the input and total for this item's data.
@@ -631,6 +681,8 @@ class MagicFragmentViewModel(
          */
         fun setElementInvestment(input: Int){
             magic.buyBookLevels(input, spellElement)
+            magic.updateSpellList()
+
             setElementInvestment(input.toString())
             magFragVM.updateHeldSpells()
         }
@@ -651,6 +703,9 @@ class MagicFragmentViewModel(
          */
         fun toggleListOpen() {_listOpen.update{!listOpen.value}}
 
+        /**
+         * Refreshes this item on a page refresh.
+         */
         fun refreshItem(){
             _elementInvestment.update{pointsIn().toString()}
         }

@@ -74,12 +74,20 @@ class StyleInstances{
 
     val exceptions = listOf(magAsAttack, magAsDefense, psyProjection)
 
+    /**
+     * Retrieves the desired style module.
+     *
+     * @param input name of the style to find
+     */
     fun getStyle(input: String): StyleModule?{
+        //for all styles on record
         allStyles.forEach{
+            //return any positive match
             if(it.name == input)
                 return it
         }
 
+        //notify of failed find
         return null
     }
 }

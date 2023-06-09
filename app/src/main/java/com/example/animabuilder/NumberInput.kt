@@ -34,6 +34,7 @@ fun NumberInput(
     inputText: String,
     inputFunction: (String) -> Unit,
     emptyFunction: () -> Unit,
+
     modifier: Modifier = Modifier,
     label: String = "",
     postRun: () -> Unit = {},

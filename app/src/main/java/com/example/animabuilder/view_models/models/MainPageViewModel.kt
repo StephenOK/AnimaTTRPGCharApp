@@ -33,28 +33,36 @@ class MainPageViewModel: ViewModel() {
         R.string.newCharacterTitle,
         R.string.newCharacterHeader,
         R.string.newButtonConfirm,
-        "File must have a name!",
+        R.string.emptyNewChar,
         {context, name ->
+            //get all current files
             val fileList = context.fileList()
 
+            //initialize file name and counter
             val fileBase = "AnimaChar$name"
             var fileNum = 0
 
+            //construct initial file name
             var filename = fileBase
 
+            //change file name until it is unique
             while(fileList.contains(filename)) {
                 fileNum++
                 filename = "$fileBase($fileNum)"
             }
 
+            //initialize next intent
             val toNextPage = Intent(context, HomeActivity::class.java)
 
+            //add file's name and notify of new character
             toNextPage.putExtra("filename", filename)
             toNextPage.putExtra("isNew", true)
 
+            //move to new intention
             startActivity(context, toNextPage, null)
         }
     ){characterName, setCharacterName ->
+        //display character name input
         TextInput(
             display = characterName.collectAsState().value,
             onValueChange = {setCharacterName(it)}
@@ -66,24 +74,26 @@ class MainPageViewModel: ViewModel() {
         R.string.loadCharacterTitle,
         R.string.loadCharacterHeader,
         R.string.loadButtonConfirm,
-        "Please select a file",
+        R.string.noCharSelected,
         {context, name ->
+            //initialize next intent
             val toNextPage = Intent(context, HomeActivity::class.java)
 
+            //add file's name and notify of existing character
             toNextPage.putExtra("filename", name)
             toNextPage.putExtra("isNew", false)
 
+            //move to new intention
             startActivity(context, toNextPage, null)
         }
     ){characterName, setCharacterName ->
-        val context = LocalContext.current
-
-        val fileList = context.fileList()
+        //get current file list and sort alphabetically
+        val fileList = LocalContext.current.fileList()
         fileList.sort()
 
         LazyColumn{
-            //display each file name as a radio button
             fileList.forEach{
+                //check if file is a character file
                 if(it.contains("AnimaChar")) {
                     item {
                         Row(
@@ -91,16 +101,18 @@ class MainPageViewModel: ViewModel() {
                                 .fillMaxWidth()
                                 .selectable(
                                     selected = characterName.collectAsState().value == it,
-                                    onClick = { setCharacterName(it) }
+                                    onClick = {setCharacterName(it)}
                                 ),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start
                         ) {
+                            //display selected item
                             RadioButton(
                                 selected = (it == characterName.collectAsState().value),
                                 onClick = {setCharacterName(it)}
                             )
 
+                            //display file name with relevant information
                             Text(text = it.drop(9))
                         }
                     }
@@ -113,18 +125,19 @@ class MainPageViewModel: ViewModel() {
         R.string.deleteCharacterTitle,
         R.string.deleteCharacterHeader,
         R.string.deleteLabel,
-        "No character selected",
+        R.string.noCharSelected,
         {context, name ->
+            //delete the selected file
             context.deleteFile(name)
         }
     ){characterName, setCharacterName ->
-        val context = LocalContext.current
-
-        val fileList = context.fileList()
+        //get files and sort alphabetically
+        val fileList = LocalContext.current.fileList()
         fileList.sort()
 
         LazyColumn{
             fileList.forEach{
+                //if the file is a character file
                 if(it.contains("AnimaChar")){
                     item{
                         Row(
@@ -136,11 +149,13 @@ class MainPageViewModel: ViewModel() {
                                 ),
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                            //display selection button
                             RadioButton(
                                 selected = characterName.collectAsState().value == it,
                                 onClick = {setCharacterName(it)}
                             )
 
+                            //display the relevant file name
                             Text(text = it.drop(9))
                         }
                     }
@@ -149,16 +164,27 @@ class MainPageViewModel: ViewModel() {
         }
     }
 
+    //gather all button data
     val allButtons = listOf(newChar, loadChar, deleteChar)
 
+    //initialize currently selected alert option
     private val _currentAlert = MutableStateFlow(newChar)
     val currentAlert = _currentAlert.asStateFlow()
 
-    fun setCurrentAlert(input: AlertData){_currentAlert.update{input}}
-
+    //initialize action dialog's open state
     private val _actionOpen = MutableStateFlow(false)
     val actionOpen = _actionOpen.asStateFlow()
 
+    /**
+     * Sets the current action the user is taking.
+     *
+     * @param input action the user is taking
+     */
+    fun setCurrentAlert(input: AlertData){_currentAlert.update{input}}
+
+    /**
+     * Opens and closes the action dialog prompt.
+     */
     fun toggleActionOpen(){_actionOpen.update{!actionOpen.value}}
 
     /**
@@ -168,12 +194,14 @@ class MainPageViewModel: ViewModel() {
      * @param headerRef string used on the alert header
      * @param buttonName string used on the alert's confirmation button
      * @param failedText error string when there is a failed confirmation
+     * @param clickAct action to run on confirmation action
+     * @param display composable to display in the action dialog
      */
     class AlertData(
         val titleRef: Int,
         val headerRef: Int,
         val buttonName: Int,
-        val failedText: String,
+        val failedText: Int,
         val clickAct: (Context, String) -> Unit,
         val display: @Composable (StateFlow<String>, (String) -> Unit) -> Unit
     ){

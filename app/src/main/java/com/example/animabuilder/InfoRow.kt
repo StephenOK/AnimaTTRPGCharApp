@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
  *
  * @param label name of the item displayed
  * @param info associated value for the listed item
+ * @param percent amount of the row the label will take
+ * @param color text color to use
  */
 @Composable
 fun InfoRow(

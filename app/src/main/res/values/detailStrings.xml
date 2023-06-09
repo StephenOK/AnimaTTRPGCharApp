@@ -4,4 +4,9 @@
     <string name = "restrictionLabel">Restriction:</string>
     <string name = "specialDetailLabel">Special:</string>
     <string name = "costLabel">Cost:</string>
+
+    <string name = "intelligenceMultiplier">Intelligence x %1d</string>
+    <string name = "maintenanceAmount">1 every %1d</string>
+
+    <string name = "detailFailure">Failed to show object details.</string>
 </resources>

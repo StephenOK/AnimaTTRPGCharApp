@@ -7,8 +7,8 @@
     <string name = "nameText">Name</string>
     <string name = "levelText">Level</string>
 
-    <string name = "nav_open">Open</string>
-    <string name = "nav_close">Close</string>
+    <string name = "openLabel">Open</string>
+    <string name = "closeLabel">Close</string>
 
     <string-array name = "primaryCharArray">
         <item>STR</item>
@@ -40,6 +40,7 @@
     <string name = "cancelLabel">Cancel</string>
     <string name = "deleteLabel">Delete</string>
     <string name = "editLabel">Edit</string>
+    <string name = "detailLabel">Details</string>
     <string name = "noneLabel">None</string>
     <string name = "notApplicable">N/A</string>
 
@@ -61,4 +62,10 @@
     <string name = "selectLabel">Select</string>
 
     <string name = "dpLabel">%1d DP</string>
+    <string name = "weightLabelKG">%1d kg</string>
+    <string name = "weightLabelTons">%1d tons</string>
+    <string name = "movementLabelM">%1d m</string>
+    <string name = "specialLabelCaps">SPECIAL</string>
+
+    <string name = "exitTitle">Save before exiting?</string>
 </resources>

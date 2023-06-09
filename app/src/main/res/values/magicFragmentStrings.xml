@@ -10,8 +10,10 @@
     <string name = "innateMagic">Innate Magic: </string>
     <string name = "imbalanceLabel">Projection Imbalance: </string>
 
-    <string name = "offenseLabel">Offense: </string>
-    <string name = "defenseLabel">Defense: </string>
+    <string name = "offenseLabel">Offense</string>
+    <string name = "defenseLabel">Defense</string>
+    <string name = "offenseHeader">Offense: %s</string>
+    <string name = "defenseHeader">Defense: %s</string>
 
     <string name = "magicLevelLabel">Magic Levels: </string>
     <string name = "magicLevelSpentLabel">Magic Levels Spent: </string>
@@ -25,6 +27,9 @@
     <string name = "spellPurchase">Buy Spell</string>
 
     <string name = "changeSpellLabel">Change Free Spell</string>
+    <string name = "freeLevelLabel">Free Spell(Lvl %1d)</string>
+    <string name = "emptySlotLabel">Empty Free Slot</string>
+    <string name = "currentFreeSpell">%s\n%s Lvl %1d</string>
 
     <string name = "activeLabel">Active</string>
     <string name = "passiveLabel">Passive</string>
@@ -37,4 +42,6 @@
     <string name = "maxZeonLabel">Maximum Zeon:  </string>
     <string name = "typeLabel">Type: </string>
     <string name = "forbiddenLabel">Forbidden Elements: </string>
+
+    <string name = "freeSpellDialogHeader">Choose Free Spell</string>
 </resources>

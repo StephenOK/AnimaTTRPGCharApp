@@ -1,7 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -41,20 +40,17 @@ import com.example.animabuilder.view_models.models.KiFragmentViewModel
  *
  * @param kiFragVM viewModel to run for this page
  * @param homePageVM viewModel that manages the bottom bar display
- * @param backFunc function to run on user's back button input
  */
 
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
-    homePageVM: HomePageViewModel,
-    backFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     //get fragment's context
     val context = LocalContext.current
 
     LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
@@ -63,12 +59,15 @@ fun KiFragment(
                 bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
-            )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         //header for ki point and accumulation table
         item {
             Row {
                 Spacer(modifier = Modifier.weight(0.13f))
+
+                //ki point items
                 Text(
                     text = stringResource(R.string.statKiLabel),
                     modifier = Modifier
@@ -87,6 +86,8 @@ fun KiFragment(
                         .weight(0.13f),
                     textAlign = TextAlign.Center
                 )
+
+                //ki accumulation items
                 Text(
                     text = stringResource(R.string.statAccLabel),
                     modifier = Modifier
@@ -118,36 +119,42 @@ fun KiFragment(
         }
 
         item {
+            //display both overall totals
             Row {
                 Text(
                     text = stringResource(R.string.totalLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.13f)
+                    modifier = Modifier
+                        .weight(0.13f),
+                    textAlign = TextAlign.Center
                 )
 
                 //display total ki points
                 Spacer(Modifier.weight(0.26f))
                 Text(
                     text = kiFragVM.kiPointTotal.collectAsState().value,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.13f)
+                    modifier = Modifier
+                        .weight(0.13f),
+                    textAlign = TextAlign.Center
                 )
 
                 //display total accumulation
                 Spacer(Modifier.weight(0.26f))
                 Text(
                     text = kiFragVM.kiAccTotal.collectAsState().value,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.13f)
+                    modifier = Modifier
+                        .weight(0.13f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //display martial knowledge values
+        //display maximum MK to spent
         item{InfoRow(stringResource(R.string.maxMKLabel), kiFragVM.getMartialMax())}
         item{Spacer(Modifier.height(10.dp))}
+
+        //display remaining MK to spend
         item{InfoRow(stringResource(R.string.remainingMKLabel), kiFragVM.remainingMK.collectAsState().value)}
         item{Spacer(Modifier.height(10.dp))}
 
@@ -155,7 +162,8 @@ fun KiFragment(
         item {
             Button(
                 onClick = {kiFragVM.toggleKiListOpen() },
-                modifier = Modifier.width(250.dp)
+                modifier = Modifier
+                    .width(250.dp)
             ) {
                 Text(text = stringResource(R.string.kiAbilityLabel))
             }
@@ -183,11 +191,12 @@ fun KiFragment(
                     if (!kiFragVM.toggleTechListOpen())
                         Toast.makeText(
                             context,
-                            "You need Ki Control for Dominion Techniques",
+                            context.getString(R.string.kiControlRequired),
                             Toast.LENGTH_SHORT
                         ).show()
                 },
-                modifier = Modifier.width(250.dp)
+                modifier = Modifier
+                    .width(250.dp)
             ) {
                 Text(text = stringResource(R.string.dominionLabel))
             }
@@ -197,7 +206,8 @@ fun KiFragment(
         item {
             AnimatedVisibility(visible = kiFragVM.techListOpen.collectAsState().value) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     //display each prebuilt technique
@@ -224,19 +234,20 @@ fun KiFragment(
     //dialog for custom technique creation
     if(kiFragVM.customTechOpen.collectAsState().value)
         CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM)){TechContents(it)}
+
+    //dialog for an item's details
     if(kiFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
             kiFragVM.detailName.collectAsState().value,
             kiFragVM.detailItem.collectAsState().value!!
         ){kiFragVM.toggleDetailAlertOn()}
-
-    BackHandler{backFunc()}
 }
 
 /**
  * Creates a display row for ki point and accumulation purchases of an individual primary characteristic.
  *
  * @param kiRowData data specific to this row's stat
+ * @param kiFragVM viewModel that manages this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
@@ -245,6 +256,7 @@ private fun KiFromStatRow(
     kiFragVM: KiFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
+    //initialize DP cost strings for ki points and accumulation
     val pointDP = stringResource(R.string.dpLabel, kiFragVM.getKiPointDP())
     val accDP = stringResource(R.string.dpLabel, kiFragVM.getKiAccDP())
 
@@ -254,13 +266,18 @@ private fun KiFromStatRow(
         //display stat name
         Text(
             text = stringArrayResource(R.array.primaryCharArray)[kiRowData.title],
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.13f)
+                .weight(0.13f),
+            textAlign = TextAlign.Center
         )
 
         //get stat's inherit ki points
-        Text(text = kiRowData.item.baseKiPoints.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(
+            text = kiRowData.item.baseKiPoints.value.toString(),
+            modifier = Modifier
+                .weight(0.13f),
+            textAlign = TextAlign.Center
+        )
 
         //ki points purchased input
         NumberInput(
@@ -282,10 +299,20 @@ private fun KiFromStatRow(
         )
 
         //display for ki points from this stat
-        Text(text = kiRowData.pointTotalString.collectAsState().value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(
+            text = kiRowData.pointTotalString.collectAsState().value,
+            modifier = Modifier
+                .weight(0.13f),
+            textAlign = TextAlign.Center
+        )
 
         //get stat's inherit accumulation
-        Text(text = kiRowData.item.baseAccumulation.value.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(
+            text = kiRowData.item.baseAccumulation.value.toString(),
+            modifier = Modifier
+                .weight(0.13f),
+            textAlign = TextAlign.Center
+        )
 
         //ki accumulation purchased input
         NumberInput(
@@ -307,7 +334,12 @@ private fun KiFromStatRow(
         )
 
         //display for ki accumulation from this stat
-        Text(text = kiRowData.accTotalString.collectAsState().value, textAlign = TextAlign.Center, modifier = Modifier.weight(0.13f))
+        Text(
+            text = kiRowData.accTotalString.collectAsState().value,
+            modifier = Modifier
+                .weight(0.13f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -323,7 +355,8 @@ private fun KiAbilityRow(
     ability: KiAbility
 ){
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
         //checkbox to take or remove the ability
@@ -336,13 +369,15 @@ private fun KiAbilityRow(
         //display ki ability name and cost
         Text(
             text = ability.name,
-            modifier = Modifier.weight(0.45f),
+            modifier = Modifier
+                .weight(0.45f),
             textAlign = TextAlign.Center
         )
 
         Text(
-            text = ability.mkCost.toString() + " " + stringResource(R.string.mkLabel),
-            modifier = Modifier.weight(0.2f),
+            text = stringResource(R.string.mkLabel, ability.mkCost),
+            modifier = Modifier
+                .weight(0.2f),
             textAlign = TextAlign.Center
         )
 
@@ -352,7 +387,8 @@ private fun KiAbilityRow(
                 kiFragVM.setDetailItem(ability)
                 kiFragVM.toggleDetailAlertOn()
             },
-            modifier = Modifier.weight(0.25f)
+            modifier = Modifier
+                .weight(0.25f)
         )
     }
 }
@@ -369,7 +405,8 @@ private fun TechniqueRow(
     toShow: Technique
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
         //checkbox to apply or remove technique to the character
@@ -388,7 +425,7 @@ private fun TechniqueRow(
             textAlign = TextAlign.Center
         )
         Text(
-            text = toShow.mkCost().toString() + " " + stringResource(R.string.mkLabel),
+            text = stringResource(R.string.mkLabel, toShow.mkCost()),
             modifier = Modifier
                 .weight(0.2f),
             textAlign = TextAlign.Center
@@ -422,5 +459,5 @@ fun KiPreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    KiFragment(kiFragVM, homePageVM) {}
+    KiFragment(kiFragVM, homePageVM)
 }

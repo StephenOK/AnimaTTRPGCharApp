@@ -15,11 +15,11 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     //set default presence
     val presence = mutableStateOf(20)
 
-    //character's maximum hp
-    val lifeMax = mutableStateOf(0)
-    val lifeClassTotal = mutableStateOf(0)
+    //character's health items
     val lifeBase = mutableStateOf(0)
     val lifeMultsTaken = mutableStateOf(0)
+    val lifeClassTotal = mutableStateOf(0)
+    val lifeMax = mutableStateOf(0)
 
     //initialize the character's combat data
     val attack = CombatItem(charInstance)
@@ -94,8 +94,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun updateClassLife(){
         lifeClassTotal.value =
-            if(charInstance.lvl.value != 0) charInstance.ownClass.value.lifePointsPerLevel * charInstance.lvl.value
+            if(charInstance.lvl.value != 0)
+                charInstance.ownClass.value.lifePointsPerLevel * charInstance.lvl.value
             else charInstance.ownClass.value.lifePointsPerLevel/2
+
         updateLifePoints()
     }
 
@@ -103,7 +105,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Updates the character's total life points
      */
     fun updateLifePoints(){
-        lifeMax.value = lifeBase.value + (lifeMultsTaken.value * charInstance.primaryList.con.total.value) + lifeClassTotal.value
+        lifeMax.value =
+            lifeBase.value +
+                    (lifeMultsTaken.value * charInstance.primaryList.con.total.value) +
+                    lifeClassTotal.value
     }
 
     /**

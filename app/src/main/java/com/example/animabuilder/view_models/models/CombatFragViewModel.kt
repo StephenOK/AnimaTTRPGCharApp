@@ -19,16 +19,13 @@ import kotlinx.coroutines.flow.update
  *
  * @param combat character's combat abilities
  * @param primaryList character's primary characteristics that affect this section
+ * @param charClass character's character object for DP displays
  */
 class CombatFragViewModel(
     private val combat: CombatAbilities,
     primaryList: PrimaryList,
-    val charClass: MutableState<CharClass>
+    private val charClass: MutableState<CharClass>
 ): ViewModel() {
-    //initialize text color for the combat items
-    private val _pointColor = MutableStateFlow(Color.Black)
-    val pointColor = _pointColor.asStateFlow()
-
     //initialize life multiples taken input string
     private val _lifeMults = MutableStateFlow(combat.lifeMultsTaken.value.toString())
     val lifeMults = _lifeMults.asStateFlow()
@@ -40,56 +37,9 @@ class CombatFragViewModel(
     private val _lifeDPLabel = MutableStateFlow("")
     val lifeDPLabel = _lifeDPLabel.asStateFlow()
 
-    fun setLifeDPLabel(input: String){_lifeDPLabel.update{input}}
-
-    /**
-     * Defines the color of the text for the combat items.
-     *
-     * @param input color to set
-     */
-    private fun setPointColor(input: Color){_pointColor.update{input}}
-
-    /**
-     * Retrieves the character's presence to display.
-     *
-     * @return string of the character's presence
-     */
-    fun getPresence(): String{return combat.presence.value.toString()}
-
-    /**
-     * Retrieves the character's initiative to display.
-     *
-     * @return string of the character's initiative
-     */
-    fun getInitiativeTotal(): String{return combat.totalInitiative.value.toString()}
-
-    /**
-     * Retrieves the character's fatigue to display.
-     *
-     * @return string of the character's fatigue
-     */
-    fun getFatigue(): String{return combat.fatigue.value.toString()}
-
-    /**
-     * Retrieves the character's regeneration to display.
-     *
-     * @return string of the character's regeneration
-     */
-    fun getRegen(): String{return combat.totalRegen.value.toString()}
-
-    /**
-     * Retrieves the character's base life points to display.
-     *
-     * @return string of the character's base life points
-     */
-    fun getBaseLife(): String{return combat.lifeBase.value.toString()}
-
-    /**
-     * Retrieves the character's life points gained from class levels to display.
-     *
-     * @return string of the character's life points from levels
-     */
-    fun getClassLife(): String{return combat.lifeClassTotal.value.toString()}
+    //initialize text color for the combat items
+    private val _pointColor = MutableStateFlow(Color.Black)
+    val pointColor = _pointColor.asStateFlow()
 
     /**
      * Changes the number of life multiples the character has obtained.
@@ -116,11 +66,68 @@ class CombatFragViewModel(
      */
     private fun setLifeTotal(input: String){_lifeTotal.update{input}}
 
+    /**
+     * Changes the display of the life mult DP cost.
+     *
+     * @param input new string to display
+     */
+    fun setLifeDPLabel(input: String){_lifeDPLabel.update{input}}
+
+    /**
+     * Defines the color of the text for the combat items.
+     *
+     * @param input color to set
+     */
+    private fun setPointColor(input: Color){_pointColor.update{input}}
+
+    /**
+     * Retrieves the character's presence to display.
+     *
+     * @return string of the character's presence
+     */
+    fun getPresence(): String{return combat.presence.value.toString()}
+
+    /**
+     * Retrieves the character's base life points to display.
+     *
+     * @return string of the character's base life points
+     */
+    fun getBaseLife(): String{return combat.lifeBase.value.toString()}
+
+    /**
+     * Retrieves the character's life points gained from class levels to display.
+     *
+     * @return string of the character's life points from levels
+     */
+    fun getClassLife(): String{return combat.lifeClassTotal.value.toString()}
+
+    /**
+     * Retrieves the character's DP cost for life mults.
+     *
+     * @return value of the DP required
+     */
     fun getLifeDP(): Int{return charClass.value.lifePointMultiple}
-    fun getAttackDP(): Int{return charClass.value.atkGrowth}
-    fun getBlockDP(): Int{return charClass.value.blockGrowth}
-    fun getDodgeDP(): Int{return charClass.value.dodgeGrowth}
-    fun getWearDP(): Int{return charClass.value.armorGrowth}
+
+    /**
+     * Retrieves the character's initiative to display.
+     *
+     * @return string of the character's initiative
+     */
+    fun getInitiativeTotal(): String{return combat.totalInitiative.value.toString()}
+
+    /**
+     * Retrieves the character's fatigue to display.
+     *
+     * @return string of the character's fatigue
+     */
+    fun getFatigue(): String{return combat.fatigue.value.toString()}
+
+    /**
+     * Retrieves the character's regeneration to display.
+     *
+     * @return string of the character's regeneration
+     */
+    fun getRegen(): String{return combat.totalRegen.value.toString()}
 
     //initialize all resistance display items
     private val disRes = ResistanceData(
@@ -157,7 +164,7 @@ class CombatFragViewModel(
         R.string.attackLabel,
         combat.attack,
         pointColor.value,
-        {getAttackDP()}
+        {charClass.value.atkGrowth}
     ) { setPointColor(it) }
 
     private val block = CombatItemData(
@@ -165,7 +172,7 @@ class CombatFragViewModel(
         R.string.blockLabel,
         combat.block,
         pointColor.value,
-        {getBlockDP()}
+        {charClass.value.blockGrowth}
     ) { setPointColor(it) }
 
     private val dodge = CombatItemData(
@@ -173,7 +180,7 @@ class CombatFragViewModel(
         R.string.dodgeLabel,
         combat.dodge,
         pointColor.value,
-        {getDodgeDP()}
+        {charClass.value.dodgeGrowth}
     ) { setPointColor(it) }
 
     private val wearArmor = CombatItemData(
@@ -181,7 +188,7 @@ class CombatFragViewModel(
         R.string.wearLabel,
         combat.wearArmor,
         Color.Black,
-        {getWearDP()}
+        {charClass.value.armorGrowth}
     ) {}
 
     //gather all combat item data
@@ -206,6 +213,8 @@ class CombatFragViewModel(
      * @param combat section of the character to work on
      * @param label name of the item in question
      * @param item data regarding this individual item
+     * @param color color the string will be depending on the stat qualification
+     * @param growthGetter function to run to get the stat's associated DP amount
      * @param setPointColor changes the point color in the combat fragment's view model
      */
     class CombatItemData(
@@ -224,6 +233,7 @@ class CombatFragViewModel(
         private val _totalVal = MutableStateFlow(item.total.value.toString())
         val totalVal = _totalVal.asStateFlow()
 
+        //initialize the DP display for this stat
         private val _labelDisplay = MutableStateFlow("")
         val labelDisplay = _labelDisplay.asStateFlow()
 
@@ -255,7 +265,17 @@ class CombatFragViewModel(
          * @param input value to set this to
          */
         fun setPointsIn(input: String){_pointsIn.update{input}}
+
+        /**
+         * Sets the displayed total to the appropriate value.
+         */
         fun setTotalVal() {_totalVal.update{item.total.value.toString()}}
+
+        /**
+         * Sets the DP label to the inputted value.
+         *
+         * @param input new string to display
+         */
         fun setLabelDisplay(input: String){_labelDisplay.update{input}}
     }
 

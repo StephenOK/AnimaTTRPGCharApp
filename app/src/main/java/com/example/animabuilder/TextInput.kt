@@ -28,13 +28,16 @@ fun TextInput(
     label: String = "",
     color: Color = Color.Black
 ) {
+    //initialize keyboard controller
     val keyboardActive = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
         value = display,
         onValueChange = {
+            //close keyboard if enter pressed
             if(it.contains('\n'))
                 keyboardActive?.hide()
+            //otherwise, update string input
             else
                 onValueChange(it)
         },

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.animabuilder.R
+import com.example.animabuilder.ScreenPage
 import com.example.animabuilder.activities.fragments.home_fragments.*
 import com.example.animabuilder.character_creation.BaseCharacter
 import com.example.animabuilder.view_models.CustomFactory
@@ -28,7 +30,6 @@ import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 import com.example.animabuilder.view_models.models.CharacterFragmentViewModel
 import com.example.animabuilder.view_models.models.CombatFragViewModel
 import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
-import com.example.animabuilder.view_models.models.HomePageAlertViewModel
 import com.example.animabuilder.view_models.models.HomePageViewModel
 import com.example.animabuilder.view_models.models.KiFragmentViewModel
 import com.example.animabuilder.view_models.models.MagicFragmentViewModel
@@ -46,40 +47,7 @@ import java.io.IOException
  * Instantiates all viewModels used in the character pages.
  * Initially loads the CharacterPageFragment.
  */
-
 class HomeActivity : AppCompatActivity() {
-
-    //enumeration for current displayed page
-    enum class ScreenPage{
-        Character,
-        Combat,
-        SecondaryCharacteristics,
-        Advantages,
-        Modules,
-        Ki,
-        Magic,
-        Summoning,
-        Psychic,
-        Equipment;
-
-        companion object {
-            fun toAddress(input: ScreenPage): Int {
-                return when (input) {
-                    Character -> R.string.charLabel
-                    Combat -> R.string.combatLabel
-                    SecondaryCharacteristics -> R.string.secondaryLabel
-                    Advantages -> R.string.advantageLabel
-                    Modules -> R.string.modulesLabel
-                    Ki -> R.string.kiLabel
-                    Magic -> R.string.magicLabel
-                    Summoning -> R.string.summonLabel
-                    Psychic -> R.string.psychicLabel
-                    Equipment -> R.string.equipmentLabel
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,11 +55,13 @@ class HomeActivity : AppCompatActivity() {
         val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
 
+        //create character object
         val charInstance = if(isNew)
             BaseCharacter()
         else
             BaseCharacter(File(this.filesDir, filename))
 
+        //create file on new character creation
         if(isNew)
             attemptSave(filename, charInstance)
 
@@ -104,10 +74,6 @@ class HomeActivity : AppCompatActivity() {
             //create viewModels for the home page and home alert items
             val homePageVM: HomePageViewModel by viewModels{
                 CustomFactory(HomePageViewModel::class.java, charInstance)
-            }
-
-            val homeAlertsVM: HomePageAlertViewModel by viewModels{
-                CustomFactory(HomePageAlertViewModel::class.java, charInstance)
             }
 
             //create viewModels for each individual fragment
@@ -174,7 +140,7 @@ class HomeActivity : AppCompatActivity() {
                         {
                             Icon(
                                 imageVector = Icons.Filled.Menu,
-                                contentDescription = "Open"
+                                contentDescription = stringResource(R.string.openLabel)
                             )
                         }
                 })},
@@ -192,10 +158,13 @@ class HomeActivity : AppCompatActivity() {
                                 ScreenPage.toAddress(it),
                                 homePageVM.currentFragment.collectAsState().value != it
                             ){
-                                //change page if not on own page
+                                //if not on own page
                                 if(homePageVM.currentFragment.value != it) {
+                                    //change displayed fragment
                                     homePageVM.setCurrentFragment(it)
-                                    scope.launch { scaffoldState.drawerState.close() }
+                                    scope.launch {scaffoldState.drawerState.close()}
+
+                                    //remove backstack
                                     navController.navigate(it.name){
                                         popUpTo(0)
                                     }
@@ -212,7 +181,7 @@ class HomeActivity : AppCompatActivity() {
                         //drawer button for exiting the character creator
                         DrawerButton(R.string.exitLabel){
                             scope.launch{scaffoldState.drawerState.close()}
-                            homeAlertsVM.toggleExitAlert()
+                            homePageVM.toggleExitAlert()
                         }
                     }
                 },
@@ -263,7 +232,8 @@ class HomeActivity : AppCompatActivity() {
                 NavHost(
                     navController = navController,
                     startDestination = ScreenPage.Character.name,
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier
+                        .padding(it)
                 ){
                     //route to primary characteristics page
                     composable(route = ScreenPage.Character.name){
@@ -271,7 +241,7 @@ class HomeActivity : AppCompatActivity() {
                         CharacterPageFragment(
                             charFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to combat abilities page
@@ -280,7 +250,7 @@ class HomeActivity : AppCompatActivity() {
                         CombatFragment(
                             combatFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to secondary characteristics page
@@ -289,7 +259,7 @@ class HomeActivity : AppCompatActivity() {
                         SecondaryAbilityFragment(
                             secondaryFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to advantages page
@@ -297,7 +267,7 @@ class HomeActivity : AppCompatActivity() {
                         AdvantageFragment(
                             advantageFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to combat page
@@ -306,7 +276,7 @@ class HomeActivity : AppCompatActivity() {
                         ModuleFragment(
                             modFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to ki page
@@ -315,7 +285,7 @@ class HomeActivity : AppCompatActivity() {
                         KiFragment(
                             kiFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to magic page
@@ -324,7 +294,7 @@ class HomeActivity : AppCompatActivity() {
                         MagicFragment(
                             magFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to summoning page
@@ -333,7 +303,7 @@ class HomeActivity : AppCompatActivity() {
                         SummoningFragment(
                             summonFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to psychic page
@@ -342,7 +312,7 @@ class HomeActivity : AppCompatActivity() {
                         PsychicFragment(
                             psyFragVM,
                             homePageVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
 
                     //route to equipment page
@@ -350,21 +320,68 @@ class HomeActivity : AppCompatActivity() {
                         equipFragVM.refreshPage()
                         EquipmentFragment(
                             equipFragVM
-                        ){homeAlertsVM.toggleExitAlert()}
+                        )
                     }
                 }
 
                 //show exit alert if user opens it
-                if(homeAlertsVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) {homeAlertsVM.toggleExitAlert() }
+                if(homePageVM.exitOpen.collectAsState().value)
+                    ExitAlert(filename, charInstance) {homePageVM.toggleExitAlert() }
             }
+
+            BackHandler{homePageVM.toggleExitAlert()}
+        }
+    }
+
+    /**
+     * Attempts to save the character's data to its designated file.
+     *
+     * @param filename name of the file to save to
+     * @param charInstance character object to be saved
+     */
+    private fun attemptSave(
+        filename: String,
+        charInstance: BaseCharacter
+    ){
+        try{
+            //create file writer
+            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+
+            //get and write character's bytes
+            val charData = charInstance.bytes
+            saveStream.write(charData)
+            saveStream.close()
+
+            //notify of action completion
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.saveMessage),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify of no file found
+        catch(e: FileNotFoundException){
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileNotFound),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify of error in file writing
+        catch(e: IOException) {
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileError),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     /**
      * Creates a navigation button with the given inputs.
      *
-     * @param display name the button will have
+     * @param display address of the button's name string
+     * @param colorVal optional input for the displayed item's color
      * @param action function to run on user input
      */
     @Composable
@@ -376,7 +393,7 @@ class HomeActivity : AppCompatActivity() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable{action()}
+                .clickable { action() }
         ){
             TextButton(
                 onClick = { action() }
@@ -399,7 +416,9 @@ class HomeActivity : AppCompatActivity() {
      * @param item bottom bar row data that is to be displayed in this row
      */
     @Composable
-    private fun BottomBarRow(item: HomePageViewModel.BottomBarRowData){
+    private fun BottomBarRow(
+        item: HomePageViewModel.BottomBarRowData
+    ){
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -441,48 +460,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Attempts to save the character's data to its designated file.
-     *
-     * @param filename name of the file to save to
-     * @param charInstance character object to be saved
-     */
-    private fun attemptSave(filename: String, charInstance: BaseCharacter) {
-        try{
-            //create file writer
-            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
-
-            //get and write character's bytes
-            val charData = charInstance.bytes
-            saveStream.write(charData)
-            saveStream.close()
-
-            //notify of action completion
-            Toast.makeText(
-                this@HomeActivity,
-                "Save successful!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        //notify of no file found
-        catch(e: FileNotFoundException){
-            Toast.makeText(
-                this@HomeActivity,
-                "Unable to find file!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        //notify of error in file writing
-        catch(e: IOException) {
-            Toast.makeText(
-                this@HomeActivity,
-                "Failed to write data!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-
-    /**
      * Alert for when user wishes to leave the current activity.
      *
      * @param filename name of the character file for save option
@@ -498,7 +475,7 @@ class HomeActivity : AppCompatActivity() {
         AlertDialog(
             //only close alert on dismissal
             onDismissRequest = {closeDialog()},
-            title = {Text(text = "Save before exiting?")},
+            title = {Text(text = stringResource(R.string.exitTitle))},
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(
@@ -507,7 +484,7 @@ class HomeActivity : AppCompatActivity() {
                         finish()
                     }
                 ){
-                    Text(text = "Save")
+                    Text(text = stringResource(R.string.saveLabel))
                 }},
             dismissButton = {
                 //leave page without saving
@@ -515,7 +492,7 @@ class HomeActivity : AppCompatActivity() {
                     onClick = {
                         finish()
                     }){
-                    Text(text = "Exit")
+                    Text(text = stringResource(R.string.exitLabel))
                 }
             }
         )

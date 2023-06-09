@@ -1,6 +1,5 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,13 +29,11 @@ import com.example.animabuilder.view_models.models.SummoningFragmentViewModel
  *
  * @param summoningVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
- * @param backFunc function to run on user's back button input
  */
 @Composable
 fun SummoningFragment(
     summoningVM: SummoningFragmentViewModel,
-    homePageVM: HomePageViewModel,
-    backFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ){
     LazyColumn(
         modifier = Modifier
@@ -55,27 +52,27 @@ fun SummoningFragment(
                 Spacer(Modifier.weight(0.25f))
                 Text(
                     text = stringResource(R.string.baseLabel),
-                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .weight(0.15f)
+                        .weight(0.15f),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.classLabel),
-                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .weight(0.15f)
+                        .weight(0.15f),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.boughtLabel),
-                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .weight(0.25f)
+                        .weight(0.25f),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = stringResource(R.string.totalLabel),
-                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .weight(0.2f)
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -85,8 +82,6 @@ fun SummoningFragment(
             SummoningAbilityRow(it, homePageVM)
         }
     }
-
-    BackHandler{backFunc()}
 }
 
 /**
@@ -101,29 +96,31 @@ private fun SummoningAbilityRow(
     homePageVM: HomePageViewModel
 ){
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ){
+        //initialize DP cost display of this item
         val dpDisplay = stringResource(R.string.dpLabel, inputData.dpGetter())
 
         //display item, points from modifier, and points from class
         Text(
             text = stringResource(inputData.nameRef),
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.25f)
+                .weight(0.25f),
+            textAlign = TextAlign.Center
         )
         Text(
             text = inputData.item.modVal.value.toString(),
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.15f)
+                .weight(0.15f),
+            textAlign = TextAlign.Center
         )
         Text(
             text = inputData.item.levelTotal.value.toString(),
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.15f)
+                .weight(0.15f),
+            textAlign = TextAlign.Center
         )
 
         //display points bought and give option to buy points
@@ -146,9 +143,9 @@ private fun SummoningAbilityRow(
         //display final total
         Text(
             text = inputData.total.collectAsState().value,
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.2f)
+                .weight(0.2f),
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -160,5 +157,5 @@ fun SummoningPreview(){
     val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning, charInstance.ownClass)
     val homePageVM = HomePageViewModel(charInstance)
 
-    SummoningFragment(summoningFragVM, homePageVM) {}
+    SummoningFragment(summoningFragVM, homePageVM)
 }

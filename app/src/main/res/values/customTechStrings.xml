@@ -9,6 +9,49 @@
     <string name = "sixthPageTitle">Make Technique Maintainable?</string>
     <string name = "seventhPageTitle">Name your Technique: </string>
 
+    <string name = "primaryHeader">P</string>
+    <string name = "secondaryHeader">S</string>
+    <string name = "knowledgeCostHeader">MK</string>
+    <string name = "maintenanceHeader">Mt</string>
+    <string name = "levelHeader">Lvl</string>
+
+    <string name = "attackBonusHeader">Attack Bonus</string>
+    <string name = "blockBonusHeader">Block Bonus</string>
+    <string name = "dodgeBonusHeader">Dodge Bonus</string>
+    <string name = "damageBonusHeader">Damage Bonus</string>
+    <string name = "attacksHeader">Attacks</string>
+    <string name = "defensesHeader">Defenses</string>
+    <string name = "actionsHeader">Actions</string>
+    <string name = "initiativeBonusHeader">Initiative Bonus</string>
+    <string name = "phrHeader">PhR Check</string>
+    <string name = "precisionHeader">Precision</string>
+    <string name = "atHeader">AT</string>
+    <string name = "reductionHeader">Reduction</string>
+    <string name = "breakageHeader">Breakage</string>
+    <string name = "fortitudeHeader">Fortitude</string>
+    <string name = "distanceHeader">Distance</string>
+    <string name = "radiusHeader">Radius</string>
+    <string name = "criticalHeader">Critical</string>
+    <string name = "qualityHeader">Quality</string>
+    <string name = "trapHeader">Trap</string>
+    <string name = "projectionHeader">Projection</string>
+    <string name = "lpHeader">LP</string>
+    <string name = "effectHeader">Effect</string>
+    <string name = "mirageHeader">Mirages</string>
+
+    <string name = "optionalHeader">Optional Header: %s</string>
+    <string name = "sacrificeHeader">Sacrifice</string>
+    <string name = "continuousAttackHeader">Continuous Attack</string>
+    <string name = "fatigueBonusHeader">Added Fatigue Bonus</string>
+    <string name = "addedStateHeader">Added State</string>
+    <string name = "targetChoiceHeader">Target Choice</string>
+    <string name = "autoCritHeader">Automatic Critical</string>
+    <string name = "nonDetectionHeader">Non-Detection</string>
+    <string name = "mirrorEsotericHeader">Mirroring Esoteric Abilities</string>
+
+    <string name = "selectElementLabel">Select Element:</string>
+    <string name = "selectElementsLabel">Select Element(s):</string>
+
     <string name = "mkRange">Martial Knowledge Range: </string>
     <string name = "totalMaintCost">Total Maintenance Cost: </string>
 </resources>

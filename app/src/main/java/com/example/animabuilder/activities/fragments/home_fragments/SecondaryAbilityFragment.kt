@@ -1,6 +1,5 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import androidx.activity.compose.BackHandler
 import com.example.animabuilder.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -37,11 +36,9 @@ import com.example.animabuilder.view_models.models.SecondaryFragmentViewModel
 @Composable
 fun SecondaryAbilityFragment(
     secondaryFragVM: SecondaryFragmentViewModel,
-    homePageVM: HomePageViewModel,
-    backFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
@@ -50,13 +47,17 @@ fun SecondaryAbilityFragment(
                 bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
-            )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //open freelancer class bonus options if available
         item{
             if(secondaryFragVM.freelancerOptionsOpen.collectAsState().value){
                 Column {
+                    //section label
                     Text(text = stringResource(R.string.freelancerPrompt))
+
+                    //freelancer bonus dropdowns
                     FreelancerDropdown(secondaryFragVM.firstSelection)
                     Spacer(Modifier.height(5.dp))
                     FreelancerDropdown(secondaryFragVM.secondSelection)
@@ -73,8 +74,6 @@ fun SecondaryAbilityFragment(
             MakeTableDisplay(it, homePageVM)
         }
     }
-
-    BackHandler{backFunc()}
 }
 
 /**
@@ -101,7 +100,8 @@ private fun FreelancerDropdown(
                 Icon(
                     item.icon.collectAsState().value,
                     "contentDescription",
-                    modifier = Modifier.clickable{item.openToggle()}
+                    modifier = Modifier
+                        .clickable{item.openToggle()}
                 )
             }
         )
@@ -109,7 +109,8 @@ private fun FreelancerDropdown(
         DropdownMenu(
             expanded = item.isOpen.collectAsState().value,
             onDismissRequest = {item.openToggle()},
-            modifier = Modifier.width(with(LocalDensity.current){item.size.value.width.toDp()})
+            modifier = Modifier
+                .width(with(LocalDensity.current){item.size.value.width.toDp()})
         ) {
             //display all secondary characteristic options
             stringArrayResource(R.array.secondaryCharacteristics).forEach{
@@ -151,7 +152,8 @@ private fun MakeTableDisplay(
     //visibility group for the table
     AnimatedVisibility(
         visible = input.tableOpen.collectAsState().value,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
     ){
         Column {
             //make the header of this section
@@ -223,9 +225,10 @@ private fun MakeRow(
 ){
     Row{Spacer(Modifier.height(5.dp))}
     Row(
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        verticalAlignment = Alignment.CenterVertically
     ){
         //characteristic label
         Text(
@@ -234,10 +237,10 @@ private fun MakeRow(
         )
     }
 
+    //initialize DP cost display of this item
     val dpVal = stringResource(R.string.dpLabel, item.getMultiplier())
 
     Row(
-        //modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -259,14 +262,20 @@ private fun MakeRow(
         )
 
         //display associated mod value
-        Text(text = item.getModVal(),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.125f))
+        Text(
+            text = item.getModVal(),
+            modifier = Modifier
+                .weight(0.125f),
+            textAlign = TextAlign.Center
+        )
 
         //display associated class bonus value
-        Text(text = item.classPoints.collectAsState().value,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.125f))
+        Text(
+            text = item.classPoints.collectAsState().value,
+            modifier = Modifier
+                .weight(0.125f),
+            textAlign = TextAlign.Center
+        )
 
         //checkbox to apply natural bonus
         Checkbox(
@@ -275,19 +284,24 @@ private fun MakeRow(
                 //attempt to toggle natural bonus
                 item.setBonusNatCheck()
             },
-
-            modifier = Modifier.weight(0.125f)
+            modifier = Modifier
+                .weight(0.125f)
         )
 
         //display for the natural bonus value
-        Text(text = stringResource(item.checkedText.collectAsState().value),
-            modifier = Modifier.weight(0.1f)
+        Text(
+            text = stringResource(item.checkedText.collectAsState().value),
+            modifier = Modifier
+                .weight(0.1f)
         )
 
         //display for characteristic's total value
-        Text(text = item.totalOutput.collectAsState().value,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.125f))
+        Text(
+            text = item.totalOutput.collectAsState().value,
+            modifier = Modifier
+                .weight(0.125f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -300,5 +314,5 @@ fun SecondaryPreview(){
 
     secondaryFragVM.allFields[2].toggleOpen()
 
-    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM) {}
+    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM)
 }

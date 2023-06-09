@@ -1,7 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import com.example.animabuilder.R
 import androidx.compose.foundation.clickable
@@ -11,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -36,22 +34,17 @@ import com.example.animabuilder.view_models.models.HomePageViewModel
  *
  * @param charFragVM viewModel for this page
  * @param maxNumVM viewModel that manages the bottom bar display
- * @param backFunc function to run on user's back button input
  */
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
-    maxNumVM: HomePageViewModel,
-    backFunc: () -> Unit
+    maxNumVM: HomePageViewModel
 ){
     //get context and keyboard state
     val context = LocalContext.current
-    val keyboardActive = LocalSoftwareKeyboardController.current
 
     LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
@@ -60,19 +53,15 @@ fun CharacterPageFragment(
                 bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
-            )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //name input
         item {
             TextInput(
                 display = charFragVM.nameInput.collectAsState().value,
                 onValueChange = {
-                    //close keyboard if enter is pushed
-                    if (it.contains('\n'))
-                        keyboardActive?.hide()
-                    //otherwise, update name
-                    else
-                        charFragVM.setNameInput(it)
+                    charFragVM.setNameInput(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.8f),
@@ -125,6 +114,7 @@ fun CharacterPageFragment(
                     )
                 }
 
+                //optional spacing if character requires paladin options
                 if(!charFragVM.magPaladinOpen.collectAsState().value)
                     Spacer(Modifier.height(20.dp))
             }
@@ -134,9 +124,9 @@ fun CharacterPageFragment(
         item{
             if(charFragVM.magPaladinOpen.collectAsState().value){
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
+                        .fillMaxWidth(0.5f),
+                    verticalAlignment = Alignment.CenterVertically
                 ){
                     Checkbox(
                         checked = charFragVM.magPaladin.collectAsState().value,
@@ -168,8 +158,9 @@ fun CharacterPageFragment(
                 //score header
                 Text(
                     text = stringResource(R.string.scoreLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(Modifier.weight(0.01f))
@@ -177,22 +168,25 @@ fun CharacterPageFragment(
                 //level bonus input header
                 Text(
                     text = stringResource(R.string.bonusLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
 
                 //bonus header
                 Text(
                     text = stringResource(R.string.specialLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
 
                 //mod header
                 Text(
                     text = stringResource(R.string.modLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
+                    modifier = Modifier
+                        .weight(0.2f),
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -206,7 +200,7 @@ fun CharacterPageFragment(
 
         item{
             Row(
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth(0.7f)
             ){
                 NumberInput(
@@ -215,16 +209,19 @@ fun CharacterPageFragment(
                     inputFunction = {
                         //attempt new input and notify user of failed input
                         if (it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
-                            Toast.makeText(context, "Invalid Appearance Input", Toast.LENGTH_LONG)
-                                .show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.appearanceFailure),
+                                Toast.LENGTH_LONG
+                            ).show()
                     },
-                    modifier = Modifier
-                        .weight(0.5f),
                     emptyFunction = {
                         //clear input if user can change it
                         if (charFragVM.isNotUnattractive())
                             charFragVM.setAppearInput("")
                     },
+                    modifier = Modifier
+                        .weight(0.5f),
                     label = stringResource(R.string.appearance)
                 )
 
@@ -252,24 +249,36 @@ fun CharacterPageFragment(
             )
         }
 
-        //display character's movement value
         item{
+            //initialize character's movement value
+            val moveString =
+                if(charFragVM.getCharMovement() == 0)
+                    stringResource(charFragVM.movementDisplay.collectAsState().value)
+                else
+                    stringResource(charFragVM.movementDisplay.collectAsState().value, charFragVM.getCharMovement())
+
+            //display character's movement value
             InfoRow(
                 stringResource(R.string.movement),
-                charFragVM.movementDisplay.collectAsState().value
+                moveString
             )
         }
 
-        //display character's weight index
         item{
+            //retrieve current weight display string
+            val weightDisplay =
+                if(charFragVM.getCharWeight() != 0)
+                    stringResource(charFragVM.weightIndex.collectAsState().value, charFragVM.getCharWeight())
+                else
+                    stringResource(charFragVM.weightIndex.collectAsState().value)
+
+            //display character's weight index
             InfoRow(
                 stringResource(R.string.weightIndex),
-                charFragVM.weightIndex.collectAsState().value
+                weightDisplay
             )
         }
     }
-
-    BackHandler{backFunc()}
 }
 
 /**
@@ -283,13 +292,14 @@ private fun DropdownObject(
     item: CharacterFragmentViewModel.DropdownData,
     maxNumVM: HomePageViewModel
 ){
+    //initialize list for dropdown
     val options = stringArrayResource(item.options)
 
     Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth(0.8f),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ){
         //object to hold the dropdown menu
         OutlinedTextField(
@@ -314,7 +324,8 @@ private fun DropdownObject(
         DropdownMenu(
             expanded = item.isOpen.collectAsState().value,
             onDismissRequest = {item.openToggle()},
-            modifier = Modifier.width(with(LocalDensity.current) { item.size.value.width.toDp() })
+            modifier = Modifier
+                .width(with(LocalDensity.current){ item.size.value.width.toDp()})
         ) {
             //create an object for each option in the inputted list
             options.forEach { stringIn ->
@@ -348,9 +359,10 @@ private fun PrimaryRow(
         //row label
         Text(
             text = stringArrayResource(R.array.primaryCharArray)[primeItem.name],
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.2f))
-
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
+        )
         //user input section
         NumberInput(
             inputText = primeItem.input.collectAsState().value,
@@ -371,22 +383,26 @@ private fun PrimaryRow(
             inputText = primeItem.bonusInput.collectAsState().value,
             inputFunction = {primeItem.setBonusInput(it.toInt())},
             emptyFunction = {primeItem.setBonusInput("")},
-            modifier = Modifier.weight(0.2f),
+            modifier = Modifier
+                .weight(0.2f),
             color = charFragVM.bonusColor.collectAsState().value
         )
 
         //characteristic bonus display
         Text(
             text = primeItem.bonus.collectAsState().value,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
         )
 
         //mod display
         Text(
             text = primeItem.modTotal.collectAsState().value,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.2f))
+            modifier = Modifier
+                .weight(0.2f),
+            textAlign = TextAlign.Center
+        )
     }
 
     Spacer(Modifier.height(5.dp))
@@ -405,5 +421,5 @@ fun CharacterPreview(){
     CharacterPageFragment(
         charFragVM,
         HomePageViewModel(charInstance)
-    ) {}
+    )
 }

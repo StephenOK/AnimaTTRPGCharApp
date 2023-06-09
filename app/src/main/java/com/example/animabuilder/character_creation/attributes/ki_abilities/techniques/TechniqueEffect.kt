@@ -57,6 +57,24 @@ data class TechniqueEffect(
     }
 
     /**
+     * Checks if the inputted effect is identical to this one.
+     *
+     * @param compareTo effect to check equivalency with
+     * @return true if input matches this effect
+     */
+    fun equivalentTo(compareTo: TechniqueEffect): Boolean{
+        return compareTo.name == name &&
+                compareTo.effect == effect &&
+                compareTo.mkCost == mkCost &&
+                compareTo.maintTotal == maintTotal &&
+                compareTo.costPair.first == costPair.first &&
+                compareTo.costPair.second == costPair.second &&
+                compareTo.kiBuild == kiBuild &&
+                compareTo.elements == elements &&
+                compareTo.lvl == lvl
+    }
+
+    /**
      * Writes effect data to the save file for the character.
      */
     fun write(charInstance: BaseCharacter){
@@ -94,23 +112,5 @@ data class TechniqueEffect(
 
         //write the effect's level
         charInstance.addNewData(lvl)
-    }
-
-    /**
-     * Checks if the inputted effect is identical to this one.
-     *
-     * @param compareTo effect to check equivalency with
-     * @return true if input matches this effect
-     */
-    fun equivalentTo(compareTo: TechniqueEffect): Boolean{
-        return compareTo.name == name &&
-                compareTo.effect == effect &&
-                compareTo.mkCost == mkCost &&
-                compareTo.maintTotal == maintTotal &&
-                compareTo.costPair.first == costPair.first &&
-                compareTo.costPair.second == costPair.second &&
-                compareTo.kiBuild == kiBuild &&
-                compareTo.elements == elements &&
-                compareTo.lvl == lvl
     }
 }

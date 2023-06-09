@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding ki fragment.
  *
  * @param ki character's ki ability data
+ * @param charClass state of the character's current class
  */
 class KiFragmentViewModel(
     private val ki: Ki,
@@ -55,75 +56,11 @@ class KiFragmentViewModel(
     private val _detailItem = MutableStateFlow<Any?>(null)
     val detailItem = _detailItem.asStateFlow()
 
-    fun getKiPointDP(): Int{return charClass.value.kiGrowth}
-    fun getKiAccDP(): Int{return charClass.value.kiAccumMult}
-
-    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
-
-    fun setDetailItem(input: KiAbility){
-        _detailName.update{input.name}
-        _detailItem.update{input}
-    }
-
-    fun setDetailItem(input: Technique){
-        _detailName.update{input.name}
-        _detailItem.update{input}
-    }
-
     //initialize map of all ki ability checkboxes
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
 
     //initialize map of all technique checkboxes
     val allTechniques = mutableMapOf<Technique, MutableState<Boolean>>()
-
-    /**
-     * Retrieve the remaining martial knowledge the character possesses.
-     *
-     * @return numeric value of remaining martial knowledge
-     */
-    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining.value}
-
-    /**
-     * Retrieves the maximum martial knowledge the character can spend.
-     *
-     * @return string of the maximum martial knowledge capacity
-     */
-    fun getMartialMax(): String{return ki.martialKnowledgeMax.value.toString()}
-
-    /**
-     * Retrieves a list of all possible ki abilities.
-     *
-     * @return the full list of ki abilities the character may take
-     */
-    fun getAllKiAbilities(): List<KiAbility>{return ki.kiRecord.allKiAbilities}
-
-    /**
-     * Retrieves the list of techniques the character currently has.
-     *
-     * @return list of character's techniques
-     */
-    fun getAllTechniques(): List<Technique>{return ki.allTechniques}
-
-    /**
-     * Retrieves the list of custom techniques the character currently has.
-     *
-     * @return list of character's custom techniques
-     */
-    fun getCustomTechniques(): List<Technique>{return ki.customTechniques}
-
-    /**
-     * Retrieves the number of first level techniques the character has.
-     *
-     * @return number of first level techniques taken
-     */
-    fun getTakenFirstSize(): Int{return ki.takenFirstTechniques.size}
-
-    /**
-     * Retrieves the number of second level techniques the character has.
-     *
-     * @return number of second level techniques taken
-     */
-    fun getTakenSecondSize(): Int{return ki.takenSecondTechniques.size}
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -165,6 +102,31 @@ class KiFragmentViewModel(
      * Changes the custom technique dialog's open state.
      */
     fun toggleCustomTechOpen() {_customTechOpen.update{!customTechOpen.value}}
+
+    /**
+     * Changes the detail alert's open state.
+     */
+    fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    /**
+     * Sets a ki ability displayed in the detail alert.
+     *
+     * @param input ki ability to display in the details alert
+     */
+    fun setDetailItem(input: KiAbility){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
+
+    /**
+     * Sets a technique displayed in the detail alert.
+     *
+     * @param input technique to display in the detail alert
+     */
+    fun setDetailItem(input: Technique){
+        _detailName.update{input.name}
+        _detailItem.update{input}
+    }
 
     /**
      * Attempts to grant or remove the indicated ki ability to the character.
@@ -243,6 +205,69 @@ class KiFragmentViewModel(
     }
 
     /**
+     * Retrieve the remaining martial knowledge the character possesses.
+     *
+     * @return numeric value of remaining martial knowledge
+     */
+    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining.value}
+
+    /**
+     * Retrieves the maximum martial knowledge the character can spend.
+     *
+     * @return string of the maximum martial knowledge capacity
+     */
+    fun getMartialMax(): String{return ki.martialKnowledgeMax.value.toString()}
+
+    /**
+     * Retrieves the DP cost of ki points for this character.
+     *
+     * @return DP cost of ki points
+     */
+    fun getKiPointDP(): Int{return charClass.value.kiGrowth}
+
+    /**
+     * Retrieves the DP cost of ki accumulation for this character.
+     *
+     * @return DP cost of ki accumulation
+     */
+    fun getKiAccDP(): Int{return charClass.value.kiAccumMult}
+
+    /**
+     * Retrieves a list of all possible ki abilities.
+     *
+     * @return the full list of ki abilities the character may take
+     */
+    fun getAllKiAbilities(): List<KiAbility>{return ki.kiRecord.allKiAbilities}
+
+    /**
+     * Retrieves the list of techniques the character currently has.
+     *
+     * @return list of character's techniques
+     */
+    fun getAllTechniques(): List<Technique>{return ki.allTechniques}
+
+    /**
+     * Retrieves the list of custom techniques the character currently has.
+     *
+     * @return list of character's custom techniques
+     */
+    fun getCustomTechniques(): List<Technique>{return ki.customTechniques}
+
+    /**
+     * Retrieves the number of first level techniques the character has.
+     *
+     * @return number of first level techniques taken
+     */
+    fun getTakenFirstSize(): Int{return ki.takenFirstTechniques.size}
+
+    /**
+     * Retrieves the number of second level techniques the character has.
+     *
+     * @return number of second level techniques taken
+     */
+    fun getTakenSecondSize(): Int{return ki.takenSecondTechniques.size}
+
+    /**
      * Updates the checkboxes for techniques taken.
      */
     private fun updateTechTaken(){
@@ -315,10 +340,6 @@ class KiFragmentViewModel(
         private val _pointInputString = MutableStateFlow(item.boughtKiPoints.value.toString())
         val pointInputString = _pointInputString.asStateFlow()
 
-        //initialize characteristic ki point total
-        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value.toString())
-        val pointTotalString = _pointTotalString.asStateFlow()
-
         private val _pointDPLabel = MutableStateFlow("")
         val pointDPLabel = _pointDPLabel.asStateFlow()
 
@@ -326,12 +347,16 @@ class KiFragmentViewModel(
         private val _accInputString = MutableStateFlow(item.boughtAccumulation.value.toString())
         val accInputString = _accInputString.asStateFlow()
 
+        private val _accDPLabel = MutableStateFlow("")
+        val accDPLabel = _accDPLabel.asStateFlow()
+
+        //initialize characteristic ki point total
+        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value.toString())
+        val pointTotalString = _pointTotalString.asStateFlow()
+
         //initialize characteristic ki accumulation total
         private val _accTotalString = MutableStateFlow(item.totalAccumulation.value.toString())
         val accTotalString = _accTotalString.asStateFlow()
-
-        private val _accDPLabel = MutableStateFlow("")
-        val accDPLabel = _accDPLabel.asStateFlow()
 
         /**
          * Set the bought value for ki points to the inputted value.
@@ -352,6 +377,11 @@ class KiFragmentViewModel(
          */
         fun setPointInputString(input: String){_pointInputString.update{input}}
 
+        /**
+         * Sets the DP cost display to the indicated value.
+         *
+         * @param input new item to display
+         */
         fun setPointDPLabel(input: String){_pointDPLabel.update{input}}
 
         /**
@@ -395,14 +425,20 @@ class KiFragmentViewModel(
         }
     }
 
+    /**
+     * Refreshes the page on the user returning to it.
+     */
     fun refreshPage(){
+        //refresh each ki point and accumulation item
         allRowData.forEach{
             it.refreshItem()
         }
 
+        //close ki list if open
         if(kiListOpen.value)
             toggleKiListOpen()
 
+        //close tech list if open
         if(techListOpen.value)
             toggleTechListOpen()
     }

@@ -48,9 +48,12 @@ fun FreeSpellPick(
     }
 
     DialogFrame(
-        "Choose Free Spell",
+        stringResource(R.string.freeSpellDialogHeader),
         {
-            LazyColumn{
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
                 //create selection item for each available spell
                 items(freeList){
                     //determine that spell is legal for the book and not already taken
@@ -63,6 +66,7 @@ fun FreeSpellPick(
                 }
             }
 
+            //close dialog on back button press
             BackHandler{magFragVM.toggleFreeExchangeOpen()}
         },
         {

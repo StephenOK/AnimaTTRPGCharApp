@@ -1,6 +1,6 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import androidx.activity.compose.BackHandler
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,13 +35,11 @@ import com.example.animabuilder.view_models.models.PsychicFragmentViewModel
  *
  * @param psyFragVM viewModel that is to be run on this page
  * @param homePageVM viewModel that manages the bottom bar display
- * @param backFunc function to run on user's back button input
  */
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
-    homePageVM: HomePageViewModel,
-    backFunc: () -> Unit
+    homePageVM: HomePageViewModel
 ) {
     LazyColumn(
         modifier = Modifier
@@ -103,13 +102,12 @@ fun PsychicFragment(
         }
     }
 
+    //display psychic power details when requested
     if(psyFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
             psyFragVM.detailTitle.collectAsState().value,
             psyFragVM.detailItem.collectAsState().value!!
         ){psyFragVM.toggleDetailAlertOpen()}
-
-    BackHandler{backFunc()}
 }
 
 /**
@@ -123,12 +121,14 @@ private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
     homePageVM: HomePageViewModel
 ){
+    //get DP cost of table item if one available
     val dpString =
         if(tableData.dpGetter != null)
             stringResource(R.string.dpLabel, tableData.dpGetter!!())
         else
             ""
 
+    //construct item header
     Row(verticalAlignment = Alignment.CenterVertically){
         Spacer(Modifier.weight(0.25f))
         Text(
@@ -166,9 +166,9 @@ private fun PsychicPurchaseTable(
         //display value's base input
         Text(
             text = tableData.baseString().toString(),
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .weight(0.25f)
+                .weight(0.25f),
+            textAlign = TextAlign.Center
         )
 
         //input for user purchased value
@@ -178,7 +178,7 @@ private fun PsychicPurchaseTable(
             emptyFunction = {tableData.setPurchaseAmount("")},
             modifier = Modifier
                 .onFocusChanged {
-                    if(it.isFocused)
+                    if (it.isFocused)
                         tableData.setDPDisplay(dpString)
                     else
                         tableData.setDPDisplay("")
@@ -211,6 +211,9 @@ private fun DisciplineDisplay(
     discipline: PsychicFragmentViewModel.DisciplineItemData,
     psyFragVM: PsychicFragmentViewModel
 ){
+    //initialize context
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -224,8 +227,21 @@ private fun DisciplineDisplay(
             if(discipline.name != R.string.matrixLabel) {
                 Checkbox(
                     checked = discipline.investedIn.collectAsState().value,
-                    onCheckedChange = {discipline.setInvestedIn(it)},
-                    modifier = Modifier.weight(0.1f)
+                    onCheckedChange = {
+                        if(!psyFragVM.isLegalDiscipline(discipline.item))
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                    R.string.needDisciplineMessage,
+                                    context.getString(discipline.name)
+                                ),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        else
+                            discipline.setInvestedIn(it)
+                    },
+                    modifier = Modifier
+                        .weight(0.1f)
                 )
             }
             else
@@ -266,16 +282,42 @@ private fun PsyPowerRow(
     power: PsychicFragmentViewModel.PowerItemData,
     psyFragVM: PsychicFragmentViewModel
 ){
+    //initialize current context
+    val context = LocalContext.current
+
+    //construct potential bonus displayed for this power
+    val potentialString =
+        if(power.bonusGained.collectAsState().value != null)
+            stringResource(
+                R.string.potentialBonusLabel,
+                power.bonusGained.collectAsState().value!! * 10
+            )
+        else ""
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
         //checkbox to select or deselect this power
         Checkbox(
             checked = power.powerInvestedIn.collectAsState().value,
-            onCheckedChange = {power.setPowerInvestedIn(it)},
+            onCheckedChange = {
+                if(!psyFragVM.isLegalDiscipline(power.home.item))
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.needDisciplineMessage,
+                            context.getString(power.home.name)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                else
+                    power.setPowerInvestedIn(it)
+            },
             modifier = Modifier
                 .weight(0.1f)
         )
+
+        //display power name
         Text(
             text = power.item.name,
             modifier = Modifier
@@ -290,8 +332,9 @@ private fun PsyPowerRow(
             modifier = Modifier.weight(0.18f)
         )
 
+        //display enhancement value
         Text(
-            text = power.bonusGained.collectAsState().value,
+            text = potentialString,
             modifier = Modifier
                 .weight(0.17f),
             textAlign = TextAlign.Center
@@ -322,5 +365,5 @@ fun PsychicPreview(){
 
     psyFragVM.allDisciplines[0].toggleOpen()
 
-    PsychicFragment(psyFragVM, homePageFrag) {}
+    PsychicFragment(psyFragVM, homePageFrag)
 }

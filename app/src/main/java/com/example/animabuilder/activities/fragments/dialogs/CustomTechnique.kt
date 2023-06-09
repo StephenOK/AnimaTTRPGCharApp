@@ -58,6 +58,8 @@ fun CustomTechnique(
                 //page for determining technique level
                 1 -> {
                     Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ){
                         //prompt for technique's level
@@ -68,6 +70,7 @@ fun CustomTechnique(
                             textAlign = TextAlign.Center
                         )
 
+                        //display each level option
                         for(level in 1..3)
                             TechLevelSelection(
                                 level,
@@ -75,7 +78,7 @@ fun CustomTechnique(
                             )
 
 
-                        //display minimums and maximums
+                        //display technique cost minimums and maximums
                         InfoRow(
                             stringResource(R.string.mkRange),
                             customTechVM.costMinimum.collectAsState().value.toString() +
@@ -96,9 +99,7 @@ fun CustomTechnique(
                         Text(text = stringResource(R.string.secondPageTitle))
 
                         //create dropdown and displayed table
-                        TechniqueAbilityDropdown(
-                            customTechVM
-                        )
+                        TechniqueAbilityDropdown(customTechVM)
                     }
                 }
 
@@ -136,7 +137,7 @@ fun CustomTechnique(
                         //display total current MK cost
                         item{
                             Text(
-                                text = "MK: " + customTechVM.getTechniqueCost().toString(),
+                                text = stringResource(R.string.mkLabel, customTechVM.getTechniqueCost()),
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 textAlign = TextAlign.Center
@@ -165,7 +166,7 @@ fun CustomTechnique(
                             )
                         }
 
-                        //display each characteristic accumulation totals
+                        //display accumulation totals' header
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -178,6 +179,8 @@ fun CustomTechnique(
                                     textAlign = TextAlign.Center
                                 )
                         }
+
+                        //display each characteristic accumulation totals
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -238,7 +241,7 @@ fun CustomTechnique(
                                     .fillMaxWidth()
                             ) {
                                 Text(
-                                    text = "Make technique maintainable?",
+                                    text = stringResource(R.string.sixthPageTitle),
                                     modifier = Modifier
                                         .fillMaxWidth(),
                                     textAlign = TextAlign.Center
@@ -263,7 +266,7 @@ fun CustomTechnique(
                                     text = stringResource(R.string.yesLabel),
                                     modifier = Modifier
                                         .weight(0.2f)
-                                        .clickable{customTechVM.setMaintenanceSelection(true)},
+                                        .clickable { customTechVM.setMaintenanceSelection(true) },
                                     textAlign = TextAlign.Center
                                 )
                             }
@@ -286,7 +289,7 @@ fun CustomTechnique(
                                     text = stringResource(R.string.noLabel),
                                     modifier = Modifier
                                         .weight(0.2f)
-                                        .clickable{customTechVM.setMaintenanceSelection(false)},
+                                        .clickable { customTechVM.setMaintenanceSelection(false) },
                                     textAlign = TextAlign.Center
                                 )
                             }
@@ -306,7 +309,9 @@ fun CustomTechnique(
                                 Spacer(Modifier.height(5.dp))
 
                                 //make an input for each available stat
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ){
                                     for (index in 0..5)
                                         if (customTechVM.techHasAccIn(index))
                                             MaintenanceInput(customTechVM.allMaintInputs[index])
@@ -378,10 +383,16 @@ fun CustomTechnique(
                 else -> {customTechVM.closeDialog()}
             }
 
+            //handle any back inputs in dialog
             BackHandler{
                 when(customTechVM.customPageNum.value){
+                    //close dialog on first page
                     1 -> kiFragVM.toggleCustomTechOpen()
+
+                    //go to appropriate page from accumulation distribution
                     5 -> customTechVM.setCustomPageNum(3)
+
+                    //go to previous page on any other page value
                     else -> customTechVM.setCustomPageNum(customTechVM.customPageNum.value - 1)
                 }
             }
@@ -413,7 +424,7 @@ fun CustomTechnique(
                         if(attempt != null)
                             Toast.makeText(
                                 context,
-                                attempt,
+                                context.getString(attempt),
                                 Toast.LENGTH_SHORT
                             ).show()
                     }
@@ -452,7 +463,7 @@ fun CustomTechnique(
                         if (customTechVM.getSelectionPrice() > customTechVM.costMaximum.value)
                             Toast.makeText(
                                 context,
-                                "Cannot take all abilities: level cost exceeded",
+                                context.getString(R.string.abilityAdditionFailure),
                                 Toast.LENGTH_SHORT
                             ).show()
 
@@ -519,6 +530,12 @@ fun CustomTechnique(
     )
 }
 
+/**
+ * Radio button option when selecting the technique's level.
+ *
+ * @param level option value
+ * @param customTechVM viewModel that manages this dialog
+ */
 @Composable
 private fun TechLevelSelection(
     level: Int,
@@ -529,12 +546,15 @@ private fun TechLevelSelection(
             .fillMaxWidth(0.4f),
         verticalAlignment = Alignment.CenterVertically
     ){
+        //display item selection state
         RadioButton(
             selected = customTechVM.getTechniqueLevel() == level,
             onClick = {customTechVM.setTechniqueLevel(level)},
             modifier = Modifier
                 .weight(0.1f)
         )
+
+        //display option name
         Text(
             text = level.toString(),
             modifier = Modifier
@@ -678,11 +698,35 @@ private fun TechniqueTableHeader(
         Text(text = description, textAlign = TextAlign.Center, modifier = Modifier.weight(0.4f))
 
         //labels for primary and secondary costs, MK cost, maintenance cost, and effect level
-        Text(text = "P", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = "S", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = "MK", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = "Mt", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = "Lvl", textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
+        Text(
+            text = stringResource(R.string.primaryHeader),
+            modifier = Modifier
+                .weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(R.string.secondaryHeader),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(R.string.knowledgeCostHeader),
+            modifier = Modifier
+                .weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(R.string.maintenanceHeader),
+            modifier = Modifier
+                .weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(R.string.levelHeader),
+            modifier = Modifier
+                .weight(0.1f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -723,7 +767,11 @@ private fun TechniqueTableRow(
                     }
                     //display reason for invalid addition
                     else
-                        Toast.makeText(context, textOut, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(textOut),
+                            Toast.LENGTH_SHORT
+                        ).show()
                 }
                 //remove addition state
                 else
@@ -731,6 +779,7 @@ private fun TechniqueTableRow(
             },
             modifier = Modifier.weight(0.1f)
         )
+
         //display effect value, costs, and level
         Text(text = input.effect, textAlign = TextAlign.Center, modifier = Modifier.weight(0.4f))
         Text(text = input.primaryCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
@@ -756,6 +805,7 @@ private fun ElementalRow(
     val context = LocalContext.current
 
     Row{
+        //elemental selection checkbox
         Checkbox(
             checked = customTechVM.elementChecklist[elementType]!!.value,
             onCheckedChange = {
@@ -765,7 +815,7 @@ private fun ElementalRow(
                     val selection = customTechVM.getSelectedEffects()[0]!!
                     selection.elements.clear()
 
-                    //for elemental binding for two elements
+                    //for elemental binding of two elements
                     if(selection.effect == "Two Elements")
                         //change checkbox if input is valid
                         customTechVM.elementChecklist[elementType]!!.value = it && customTechVM.getSelectedElement(selection).size < 2
@@ -786,11 +836,15 @@ private fun ElementalRow(
 
                 //notify user of failure
                 else
-                    Toast.makeText(context, "Please select an effect first", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.emptyEffectNotice),
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
         )
 
-        //Display element name
+        //display element name
         Text(text = elementType.name)
     }
 }
@@ -819,6 +873,7 @@ private fun EditEffectRow(
             modifier = Modifier
                 .weight(0.1f)
         )
+
         //display effect
         Text(
             text = "${effectPair.key.name} ${effectPair.key.effect}",
@@ -829,7 +884,7 @@ private fun EditEffectRow(
 
     }
 
-    //display effect's cost and elements
+    //display effect's cost
     Row {
         Spacer(Modifier.weight(0.1f))
 
@@ -840,6 +895,7 @@ private fun EditEffectRow(
         )
     }
 
+    //display effect's elements
     Row{
         Spacer(Modifier.weight(0.1f))
 
@@ -886,7 +942,7 @@ private fun EditBuildRow(
 
         //display characteristic's additional cost
         Text(
-            text = "+" + item.home.buildAdditions[item.index],
+            text = "+${item.home.buildAdditions[item.index]}",
             modifier = Modifier
                 .weight(0.3f),
             textAlign = TextAlign.Center
@@ -945,6 +1001,7 @@ private fun getElementString(
         elementString += it.name
     }
 
+    //return element output
     return if (elementString.isNotEmpty()) stringResource(R.string.elementLabel) + " $elementString"
         else elementString
 }

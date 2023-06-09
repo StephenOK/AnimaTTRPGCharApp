@@ -54,13 +54,13 @@ class Inventory(val charInstance: BaseCharacter) {
     //initialize starting wealth bonus
     val wealthBonus = mutableStateOf(0)
 
+    //initialize bought items
+    val boughtGoods = mutableMapOf<GeneralEquipment, Int>()
+
     //initialize spent coin values
     val goldSpent = mutableStateOf(0.0)
     val silverSpent = mutableStateOf(0.0)
     val copperSpent = mutableStateOf(0.0)
-
-    //initialize bought items
-    val boughtGoods = mutableMapOf<GeneralEquipment, Int>()
 
     /**
      * Setter for the character's maximum gold limit.
@@ -183,25 +183,17 @@ class Inventory(val charInstance: BaseCharacter) {
     }
 
     /**
-     * Fixes the copper counter to display a valid value
+     * Fixes the gold counter to display a valid value.
      */
-    fun copperFix(){
-        //correct any negative copper value by converting silver to copper
-        while(copperSpent.value < 0){
-            copperSpent.value += 10
-            silverSpent.value -= 1
-            silverFix()
+    fun goldFix(){
+        //convert decimal gold to silver
+        if(goldSpent.value % 1.0 != 0.0){
+            silverSpent.value += (goldSpent.value % 1.0) * 100
+            goldSpent.value -= goldSpent.value % 1.0
         }
 
-        //convert sufficient copper amounts to silver
-        while(copperSpent.value >= 10){
-            copperSpent.value -= 10
-            silverSpent.value += 1
-        }
-
-        //fix silver if changes here caused needed changes
-        if(silverSpent.value > 100)
-            silverFix()
+        //fix the silver amount
+        silverFix()
     }
 
     /**
@@ -231,17 +223,25 @@ class Inventory(val charInstance: BaseCharacter) {
     }
 
     /**
-     * Fixes the gold counter to display a valid value.
+     * Fixes the copper counter to display a valid value
      */
-    fun goldFix(){
-        //convert decimal gold to silver
-        if(goldSpent.value % 1.0 != 0.0){
-            silverSpent.value += (goldSpent.value % 1.0) * 100
-            goldSpent.value -= goldSpent.value % 1.0
+    fun copperFix(){
+        //correct any negative copper value by converting silver to copper
+        while(copperSpent.value < 0){
+            copperSpent.value += 10
+            silverSpent.value -= 1
+            silverFix()
         }
 
-        //fix the silver amount
-        silverFix()
+        //convert sufficient copper amounts to silver
+        while(copperSpent.value >= 10){
+            copperSpent.value -= 10
+            silverSpent.value += 1
+        }
+
+        //fix silver if changes here caused needed changes
+        if(silverSpent.value > 100)
+            silverFix()
     }
 
     /**
@@ -271,7 +271,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param fileReader file data to input to this object
      */
     fun loadInventory(fileReader: BufferedReader){
-        //retrieve maximum gold values
+        //retrieve maximum coin values
         setMaxGold(fileReader.readLine().toInt())
         setMaxSilver(fileReader.readLine().toInt())
         setMaxCopper(fileReader.readLine().toInt())

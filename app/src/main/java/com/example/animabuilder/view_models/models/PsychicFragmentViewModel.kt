@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding psychic fragment.
  *
  * @param psychic character's psychic abilities
+ * @param charClass class record of the character
  * @param dexMod character's dexterity modifier
  */
 class PsychicFragmentViewModel(
@@ -28,10 +29,6 @@ class PsychicFragmentViewModel(
     private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints().toString())
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
-    //initialize character's taken number of innate slots
-    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.value.toString())
-    val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
-
     //initialize color of free point text
     private val _freePointColor = MutableStateFlow(
         if(psychic.getFreePsyPoints() >= 0) Color.Black
@@ -39,21 +36,21 @@ class PsychicFragmentViewModel(
     )
     val freePointColor = _freePointColor.asStateFlow()
 
+    //initialize character's taken number of innate slots
+    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.value.toString())
+    val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
+
+    //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
+    //initialize title of the detail alert
     private val _detailTitle = MutableStateFlow("")
     val detailTitle = _detailTitle.asStateFlow()
 
+    //initialize detail alert's displayed item
     private val _detailItem = MutableStateFlow<PsychicPower?>(null)
     val detailItem = _detailItem.asStateFlow()
-
-    fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
-
-    fun setDetailItem(input: PsychicPower){
-        _detailTitle.update{input.name}
-        _detailItem.update{input}
-    }
 
     /**
      * Updates the free psychic points display to reflect the value held in the character.
@@ -61,7 +58,9 @@ class PsychicFragmentViewModel(
     fun updateFreePsyPoints(){
         _freePsyPoints.update{psychic.getFreePsyPoints().toString()}
         _freePointColor.update{
+            //set to normal color for valid input
             if(psychic.getFreePsyPoints() >= 0) Color.Black
+            //notify user of illegal input
             else Color.Red
         }
     }
@@ -84,6 +83,29 @@ class PsychicFragmentViewModel(
      */
     fun setInnateSlotDisplay(input: String){_innateSlotDisplay.update{input}}
 
+    /**
+     * Opens and closes the detail alert as needed.
+     */
+    fun toggleDetailAlertOpen(){_detailAlertOpen.update{!detailAlertOpen.value}}
+
+    /**
+     * Sets the displayed content for the detail alert.
+     */
+    fun setDetailItem(input: PsychicPower){
+        _detailTitle.update{input.name}
+        _detailItem.update{input}
+    }
+
+    /**
+     * Returns if the inputted discipline is legally obtainable by the character.
+     *
+     * @param input discipline to check
+     */
+    fun isLegalDiscipline(input: Discipline): Boolean{
+        return psychic.legalDisciplines.contains(input)
+    }
+
+    //initialize data in regards to the character's psychic potential
     private val psychicPotential = PsychicPurchaseItemData(
         R.string.psyPotentialLabel,
         {psychic.psyPotentialBase.value},
@@ -205,7 +227,10 @@ class PsychicFragmentViewModel(
      */
     fun setAllPowers(){
         allDisciplines.forEach{
+            //set investment checkbox
             it.setInvestedIn()
+
+            //update each of the discipline's powers
             it.powerList.forEach{power ->
                 if(power.powerInvestedIn.value != psychic.masteredPowers.contains(power.item))
                     power.setPowerInvestedIn(psychic.masteredPowers.contains(power.item))
@@ -220,6 +245,8 @@ class PsychicFragmentViewModel(
      * @param baseString base score of the item
      * @param boughtVal initial amount purchased by the user
      * @param totalVal initial total for this stat
+     * @param dpGetter function to run to determine the DP needed for this item
+     * @param changeColor function to run to check to legitimacy of the inputted value
      * @param totalUpdate function to run on update of this item's value
      */
     class PsychicPurchaseItemData(
@@ -235,16 +262,16 @@ class PsychicFragmentViewModel(
         private val _purchaseAmount = MutableStateFlow(boughtVal().toString())
         val purchaseAmount = _purchaseAmount.asStateFlow()
 
-        //initialize total display for this item
-        private val _totalAmount = MutableStateFlow(totalVal().toString())
-        val totalAmount = _totalAmount.asStateFlow()
-
         //initialize text's color
         private val _textColor = MutableStateFlow(changeColor())
         val textColor = _textColor.asStateFlow()
 
         private val _dpDisplay = MutableStateFlow("")
         val dpDisplay = _dpDisplay.asStateFlow()
+
+        //initialize total display for this item
+        private val _totalAmount = MutableStateFlow(totalVal().toString())
+        val totalAmount = _totalAmount.asStateFlow()
 
         /**
          * Sets the purchased amount to the indicated value.
@@ -269,6 +296,9 @@ class PsychicFragmentViewModel(
          */
         fun setTextColor(){_textColor.update{changeColor()}}
 
+        /**
+         * Sets the displayed DP string.
+         */
         fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
         /**
@@ -366,8 +396,8 @@ class PsychicFragmentViewModel(
 
         //initialize display for bonus potential gained
         private val _bonusGained = MutableStateFlow(
-            if(psychic.masteredPowers.contains(item)) "+" + (psychic.masteredPowers[item]!! * 10).toString()
-            else ""
+            if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item]!!
+            else null
         )
         val bonusGained = _bonusGained.asStateFlow()
 
@@ -430,16 +460,24 @@ class PsychicFragmentViewModel(
             _bonusGained.update{
                 //display bonus to mastered power
                 if(psychic.masteredPowers.contains(item))
-                    "+" + (psychic.masteredPowers[item]!! * 10).toString() + " Potential"
+                    psychic.masteredPowers[item]!!
                 //display nothing if power isn't mastered
-                else ""
+                else null
             }
         }
     }
 
+    /**
+     * Refresh the displayed items for a page reload.
+     */
     fun refreshPage(){
+        //refresh each bought item
         buyItems.forEach{it.refreshItem()}
+
+        //refresh innate slots purchased
         setInnateSlotDisplay(psychic.innateSlotCount.value.toString())
+
+        //refresh all power and discipline data
         setAllPowers()
         allDisciplines.forEach{
             it.powerList.forEach{power ->

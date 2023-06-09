@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "primaryWeaponLabel">Current Primary Weapon: </string>
-    <string name = "maxMartialLabel">Max Martial Arts: </string>
+    <string name = "primaryWeaponLabel">Current Primary Weapon:\n%s</string>
+    <string name = "maxMartialLabel">Max Martial Arts: %1d</string>
 
     <string name = "archetypeLabel">Archetype Modules</string>
     <string name = "styleModLabel">Style Modules</string>
     <string name = "martialArtLabel">Martial Art</string>
 
-    <string name = "fiftyPointCost">50 DP</string>
-
-    <string name = "moduleSuffix"> Module</string>
+    <string name = "moduleSuffix">%s Module</string>
 
     <string name = "shortLabel">Short</string>
     <string name = "axeLabel">Axes</string>

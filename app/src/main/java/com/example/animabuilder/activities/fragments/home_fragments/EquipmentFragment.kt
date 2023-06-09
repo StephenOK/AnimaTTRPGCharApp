@@ -1,6 +1,5 @@
 package com.example.animabuilder.activities.fragments.home_fragments
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -41,12 +40,10 @@ import com.example.animabuilder.view_models.models.EquipmentFragmentViewModel
  * Fragment that manages the character's inventory.
  *
  * @param equipFragVM viewModel that manages the character's data
- * @param backFunc function to run on user's back button input
  */
 @Composable
 fun EquipmentFragment(
-    equipFragVM: EquipmentFragmentViewModel,
-    backFunc: () -> Unit
+    equipFragVM: EquipmentFragmentViewModel
 ) {
     LazyColumn(
         modifier = Modifier
@@ -63,38 +60,50 @@ fun EquipmentFragment(
         //create inputs for each maximum coin expenditure
         items(equipFragVM.allQuantityMaximums){MaximumDisplay(it)}
 
+        //display bonus wealth if any taken
         if(equipFragVM.getBonusWealth() > 0){
             item{Spacer(Modifier.height(10.dp))}
             item{
-                Text(text =
-                stringResource(R.string.bonusWealthLabel) +
-                        equipFragVM.getBonusWealth().toString() + " GC"
+                Text(
+                    text =
+                    stringResource(
+                        R.string.bonusWealthLabel,
+                        stringResource(R.string.goldLabel, equipFragVM.getBonusWealth())
+                    )
                 )
             }
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //display spent coin
+        //display all coin spent
         item{
             Row(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
             ){
+                //gold spent
                 SpentDisplay(
                     CoinType.Gold,
                     equipFragVM.getCoinSpent(CoinType.Gold),
-                    Modifier.weight(0.2f)
+                    Modifier
+                        .weight(0.2f)
                 )
+
+                //silver spent
                 SpentDisplay(
                     CoinType.Silver,
                     equipFragVM.getCoinSpent(CoinType.Silver),
-                    Modifier.weight(0.2f)
+                    Modifier
+                        .weight(0.2f)
                 )
+
+                //copper spent
                 SpentDisplay(
                     CoinType.Copper,
                     equipFragVM.getCoinSpent(CoinType.Copper),
-                    Modifier.weight(0.2f)
+                    Modifier
+                        .weight(0.2f)
                 )
             }
         }
@@ -108,6 +117,7 @@ fun EquipmentFragment(
 
         item{Spacer(Modifier.height(20.dp))}
 
+        //current inventory label
         item{
             Text(
                 text = stringResource(R.string.inventoryHeader),
@@ -124,13 +134,13 @@ fun EquipmentFragment(
     //display purchase options alert if currently visible
     if(equipFragVM.itemPurchaseOpen.collectAsState().value)
         EquipmentItemPurchase(equipFragVM)
+
+    //display item details if requested
     if(equipFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
             equipFragVM.detailTitle.collectAsState().value,
             equipFragVM.detailItem.collectAsState().value!!
         ){equipFragVM.toggleDetailAlertOpen()}
-
-    BackHandler{backFunc()}
 }
 
 /**
@@ -235,11 +245,11 @@ fun EquipmentRow(
         )
 
         //display item's base cost
-        Text(text = item.baseCost.toString() +
+        Text(text =
                 when(item.coinType){
-                    CoinType.Copper -> " CC"
-                    CoinType.Silver -> " SC"
-                    CoinType.Gold -> " GC"
+                    CoinType.Copper -> stringResource(R.string.copperLabel, item.baseCost)
+                    CoinType.Silver -> stringResource(R.string.silverLabel, item.baseCost)
+                    CoinType.Gold -> stringResource(R.string.goldLabel, item.baseCost)
                 },
             modifier = Modifier
                 .weight(0.2f),
@@ -272,7 +282,7 @@ fun SpentDisplay(
     modifier: Modifier
 ){
     Text(
-        text = type.name + ": $value",
+        text = stringResource(R.string.spentAmount, type.name, value),
         modifier = modifier,
         textAlign = TextAlign.Center
     )
@@ -332,7 +342,13 @@ fun EquipmentPreview(){
     val charInstance = BaseCharacter()
     val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
+    charInstance.advantageRecord.acquireAdvantage(
+        charInstance.advantageRecord.commonAdvantages.startingWealth,
+        null,
+        2
+    )
+
     //equipFragVM.allCategoryData[8].toggleCatOpen()
 
-    EquipmentFragment(equipFragVM) {}
+    EquipmentFragment(equipFragVM)
 }

@@ -9,7 +9,7 @@ import java.io.IOException
  * Object for a single secondary characteristic.
  * Updates total whenever there is a change in other any value.
  *
- * @param parent full list that holds this objejct
+ * @param parent full list that holds this object
  */
 
 class SecondaryCharacteristic(private val parent: SecondaryList){

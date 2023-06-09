@@ -53,6 +53,7 @@ class SummoningFragmentViewModel(
      *
      * @param nameRef string reference for this ability
      * @param item summoning ability for this item
+     * @param dpGetter function to run for the DP cost of this item
      */
     class SummonItemData(
         val nameRef: Int,
@@ -63,12 +64,13 @@ class SummoningFragmentViewModel(
         private val _boughtVal = MutableStateFlow(item.buyVal.value.toString())
         val boughtVal = _boughtVal.asStateFlow()
 
+        //initialize DP display
+        private val _dpLabel = MutableStateFlow("")
+        val dpLabel = _dpLabel.asStateFlow()
+
         //initialize total display
         private val _total = MutableStateFlow(item.abilityTotal.value.toString())
         val total = _total.asStateFlow()
-
-        private val _dpLabel = MutableStateFlow("")
-        val dpLabel = _dpLabel.asStateFlow()
 
         /**
          * Change bought input to the indicated value.
@@ -88,6 +90,11 @@ class SummoningFragmentViewModel(
          */
         fun setBoughtVal(input: String){_boughtVal.update{input}}
 
+        /**
+         * Change the DP display item to show the indicated item.
+         *
+         * @param input new item to display
+         */
         fun setDPLabel(input: String){_dpLabel.update{input}}
 
         /**

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
  * View model that manages the character's secondary characteristics.
  * Works on variables in the corresponding secondary fragment.
  *
+ * @param charInstance character object the user is working on
  * @param secondaryList character's secondary characteristic data
  */
 class SecondaryFragmentViewModel(
@@ -202,37 +203,13 @@ class SecondaryFragmentViewModel(
         private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.value.toString())
         val classPoints = _classPoints.asStateFlow()
 
-        //initialize the total score in this characteristic
-        private val _totalOutput = MutableStateFlow(secondaryItem.total.value.toString())
-        val totalOutput = _totalOutput.asStateFlow()
-
+        //initialize DP display
         private val _dpDisplay = MutableStateFlow("")
         val dpDisplay = _dpDisplay.asStateFlow()
 
-        /**
-         * Retrieves the name of the characteristic.
-         *
-         * @return characteristic's name
-         */
-        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem) + 1}
-
-        /**
-         * Retrieves the modifier value of the characteristic.
-         *
-         * @return displayed string for the characteristic's modifier
-         */
-        fun getModVal(): String{return secondaryItem.modVal.value.toString()}
-
-        /**
-         * Retrieves the character's development point cost.
-         *
-         * @return string of the characteristic's development point cost
-         */
-        fun getMultiplier(): Int{
-            return if(secondaryItem.devPerPoint.value > secondaryItem.developmentDeduction.value)
-                secondaryItem.devPerPoint.value - secondaryItem.developmentDeduction.value
-            else 1
-        }
+        //initialize the total score in this characteristic
+        private val _totalOutput = MutableStateFlow(secondaryItem.total.value.toString())
+        val totalOutput = _totalOutput.asStateFlow()
 
         /**
          * Attempts to change the natural bonus of this secondary characteristic.
@@ -289,9 +266,42 @@ class SecondaryFragmentViewModel(
             updateTotal()
         }
 
+        /**
+         * Sets the value displayed for DP needed for this item.
+         *
+         * @param input new item to display
+         */
         fun setDPDisplay(input: String){_dpDisplay.update{input}}
 
+        /**
+         * Updates the total value to the appropriate amount.
+         */
         fun updateTotal(){_totalOutput.update{secondaryItem.total.value.toString()}}
+
+        /**
+         * Retrieves the name of the characteristic.
+         *
+         * @return characteristic's name
+         */
+        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem) + 1}
+
+        /**
+         * Retrieves the modifier value of the characteristic.
+         *
+         * @return displayed string for the characteristic's modifier
+         */
+        fun getModVal(): String{return secondaryItem.modVal.value.toString()}
+
+        /**
+         * Retrieves the character's development point cost.
+         *
+         * @return string of the characteristic's development point cost
+         */
+        fun getMultiplier(): Int{
+            return if(secondaryItem.devPerPoint.value > secondaryItem.developmentDeduction.value)
+                secondaryItem.devPerPoint.value - secondaryItem.developmentDeduction.value
+            else 1
+        }
     }
 
     /**

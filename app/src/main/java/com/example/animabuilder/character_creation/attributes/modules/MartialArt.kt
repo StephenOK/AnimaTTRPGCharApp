@@ -7,10 +7,12 @@ package com.example.animabuilder.character_creation.attributes.modules
  * @param description details of the arts combat effects
  * @param prereqList prerequisites for having this art
  * @param mkBonus additional martial knowledge the character may gain from having this art
+ * @param qualification function to check if the character qualifies for this art
  */
 class MartialArt (
     val name: String,
     val description: String,
     val prereqList: String,
-    val mkBonus: Int
+    val mkBonus: Int,
+    val qualification: () -> Boolean
 )

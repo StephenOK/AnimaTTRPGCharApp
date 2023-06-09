@@ -20,6 +20,19 @@ import java.io.BufferedReader
  */
 
 class WeaponProficiencies(private val charInstance: BaseCharacter){
+    //get all weapon instances
+    val shortArms = ShortArms()
+    val axes = Axes()
+    val maces = Maces()
+    val swords = Swords()
+    val twoHanded = TwoHanded()
+    val poles = Poles()
+    val cords = Cords()
+    val mixed = Mixed()
+    val shields = Shields()
+    val projectiles = Projectiles()
+    val thrown = Thrown()
+
     //create data on the unarmed weapon
     val unarmed = Weapon(
         "Unarmed Combat",
@@ -36,60 +49,9 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
                 "with other weapons"
     )
 
-    //initialize character's primary weapon
-    val primaryWeapon = mutableStateOf(unarmed)
-
-    //initialize weapons individually taken and given from group modules
-    val individualModules = mutableListOf<Weapon>()
-    val fullModWeapons = mutableListOf<Weapon>()
-
-    //get all weapon instances
-    val shortArms = ShortArms()
-    val axes = Axes()
-    val maces = Maces()
-    val swords = Swords()
-    val twoHanded = TwoHanded()
-    val poles = Poles()
-    val cords = Cords()
-    val mixed = Mixed()
-    val shields = Shields()
-    val projectiles = Projectiles()
-    val thrown = Thrown()
-
-    //get martial arts and style modules
-    val martials = MartialArts()
-    val styles = StyleInstances()
-
     //make list of every weapon
     val allWeapons = shortArms.shortArms + axes.axes + maces.maces + swords.swords + twoHanded.twoHanded +
             poles.poles + cords.cords + mixed.mixed + shields.shields + projectiles.projectiles + thrown.thrown + unarmed
-
-    /**
-     * Set the character's primary weapon to the inputted string.
-     *
-     * @param input item to set as the primary weapon
-     */
-    fun setPrimaryWeapon(input: String){
-        primaryWeapon.value = findWeapon(input)
-        individualModules -= primaryWeapon.value
-        charInstance.updateTotalSpent()
-    }
-
-    /**
-     * Finds the weapon from the given string input.
-     *
-     * @param weaponName Name of the weapon the caller is looking for
-     */
-    fun findWeapon(weaponName: String): Weapon {
-        //search through all weapons until a match is found
-        allWeapons.forEach{
-            if(it.name == weaponName)
-                return it
-        }
-
-        //return unarmed if not found
-        return unarmed
-    }
 
     //gather all archetype modules
     val improvised = listOf(shortArms.brokenBottle, twoHanded.chair, shortArms.kitchenKnife,
@@ -133,20 +95,65 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
         banditWeapons,
         improvised,
 
-        shortArms.shortArms,
-        axes.axes,
-        maces.maces,
-        swords.swords,
-        twoHanded.twoHanded,
-        poles.poles,
-        cords.cords,
+        shortArms.shortArms + mixed.shortAdditions,
+        axes.axes + mixed.axeAdditions,
+        maces.maces + mixed.maceAdditions,
+        swords.swords + mixed.swordAdditions,
+        twoHanded.twoHanded + mixed.twoHandedAdditions,
+        poles.poles + mixed.poleAdditions,
+        cords.cords + mixed.cordAdditions,
         shields.shields,
         projectiles.projectiles,
         thrown.thrown
     )
 
+    //get martial arts and style modules
+    val martials = MartialArts(charInstance)
+    val styles = StyleInstances()
+
+    //initialize character's primary weapon
+    val primaryWeapon = mutableStateOf(unarmed)
+
+    //initialize weapons individually taken and given from group modules
+    val individualModules = mutableListOf<Weapon>()
+
     //list of modules the character has taken
     val takenModules = mutableListOf<List<Weapon>>()
+    val fullModWeapons = mutableListOf<Weapon>()
+
+    //initialize taken martial arts and maximum martial art quantity
+    val takenMartialList = mutableListOf<MartialArt>()
+    val martialMax = mutableStateOf(0)
+
+    //initialize list of taken style modules
+    val styleMods = mutableListOf<StyleModule>()
+
+    /**
+     * Finds the weapon from the given string input.
+     *
+     * @param weaponName Name of the weapon the caller is looking for
+     */
+    fun findWeapon(weaponName: String): Weapon {
+        //search through all weapons until a match is found
+        allWeapons.forEach{
+            if(it.name == weaponName)
+                return it
+        }
+
+        //return unarmed if not found
+        return unarmed
+    }
+
+    /**
+     * Set the character's primary weapon to the inputted string.
+     *
+     * @param input item to set as the primary weapon
+     */
+    fun setPrimaryWeapon(input: String){
+        primaryWeapon.value = findWeapon(input)
+        individualModules -= primaryWeapon.value
+        charInstance.updateTotalSpent()
+    }
 
     /**
      * Give or remove an individual weapon module as indicated by the input.
@@ -155,10 +162,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @param toAdd whether to add or remove the module
      */
     fun changeIndividualModule(input: Weapon, toAdd: Boolean){
-        //add or remove the module as indicated
-        if(toAdd)
+        //add module if requested and not taken by archetype
+        if(toAdd && !fullModWeapons.contains(input))
             individualModules += input
-        else
+        //remove module if requested
+        else if(!toAdd)
             individualModules -= input
 
         //update the points spent by the character
@@ -194,30 +202,6 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
         charInstance.updateTotalSpent()
     }
 
-    //initialize list of taken style modules
-    val styleMods = mutableListOf<StyleModule>()
-
-    /**
-     * Acquire or remove the indicated style.
-     *
-     * @param input style to alter with this action
-     * @param toAdd whether the style is being added or removed
-     */
-    fun changeStyle(input: StyleModule, toAdd: Boolean){
-        //add or remove the style as indicated
-        if(toAdd)
-            styleMods += input
-        else
-            styleMods -= input
-
-        //update development points spent
-        charInstance.updateTotalSpent()
-    }
-
-    //initialize taken martial arts and maximum martial art quantity
-    val takenMartialList = mutableListOf<MartialArt>()
-    val martialMax = mutableStateOf(0)
-
     /**
      * Attempts to add or remove a martial art from the character's taken martial arts.
      *
@@ -228,8 +212,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
         //if user tries to add the item
         if(isInput){
             //check that character qualifies for this addition
-            if(takenMartialList.size < martialMax.value && qualifies(changeItem)){
+            if(takenMartialList.size < martialMax.value && changeItem.qualification()){
+                //add martial art to record
                 takenMartialList += changeItem
+
+                //apply capoeira's dodge bonus
                 if(changeItem == martials.capoeira)
                     charInstance.combat.dodge.setClassBonus(10)
 
@@ -252,74 +239,11 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Checks whether the given martial art qualifies to be taken by the character.
-     *
-     * @param input the martial art to check
-     * @return true if character qualifies for the martial art
-     */
-    fun qualifies(input: MartialArt): Boolean{
-        when(input){
-            martials.kempo, martials.shotokan, martials.sambo, martials.taekwondo -> return true
-            martials.capoeira -> return charInstance.secondaryList.dance.total.value >= 40
-            martials.taiChi -> return charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfKi)
-            martials.kungFu -> return charInstance.secondaryList.acrobatics.total .value>= 40 &&
-                    charInstance.secondaryList.sleightHand.total.value >= 40 &&
-                    charInstance.secondaryList.style.total.value >= 20
-            martials.aikido -> return charInstance.secondaryList.sleightHand.total.value >= 40
-            martials.muayThai, martials.grappling -> return charInstance.secondaryList.strengthFeat.total.value >= 40
-
-            martials.melkaiah -> return (takenMartialList.contains(martials.grappling) || takenMartialList.contains(martials.sambo)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.inhumanity) &&
-                    charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.seraphite -> return (takenMartialList.contains(martials.shotokan) || takenMartialList.contains(martials.kempo)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion) &&
-                    charInstance.combat.attack.total.value >= 180 &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.dumah -> return (takenMartialList.contains(martials.kempo) || takenMartialList.contains(martials.capoeira)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
-
-            martials.emp -> return (takenMartialList.contains(martials.kempo) || takenMartialList.contains(martials.taekwondo)) &&
-                    charInstance.combat.attack.total.value >= 200 &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.enuth -> return (takenMartialList.contains(martials.sambo) || takenMartialList.contains(martials.shotokan)) &&
-                    charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.shephon -> return takenMartialList.contains(martials.aikido) && takenMartialList.contains(martials.kungFu) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl) &&
-                    (charInstance.combat.block.total.value >= 200 || charInstance.combat.dodge.total.value >= 200) &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.asakusen -> return takenMartialList.contains(martials.kungFu) &&
-                    charInstance.combat.attack.total.value >= 160 && (charInstance.combat.block.total.value >= 160 || charInstance.combat.dodge.total.value >= 160) &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.velez -> return (takenMartialList.contains(martials.taiChi) || takenMartialList.contains(martials.kungFu)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
-
-            martials.selene -> return takenMartialList.contains(martials.aikido) &&
-                    (charInstance.combat.block.total.value >= 200 || charInstance.combat.dodge.total.value >= 200) &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            martials.hakyoukuken -> return (takenMartialList.contains(martials.shotokan) || takenMartialList.contains(martials.muayThai)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfNecessaryEnergy) &&
-                    charInstance.combat.attack.total.value >= 200 &&
-                    (primaryWeapon.value == unarmed || individualModules.contains(unarmed))
-
-            else -> return false
-        }
-    }
-
-    /**
      * Check that all taken martial arts still qualify.
      */
     fun doubleCheck() {
         takenMartialList.forEach{
-            if(!qualifies(it))
+            if(!it.qualification())
                 takenMartialList -= it
         }
     }
@@ -345,13 +269,33 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
      * Determines the amount of martial knowledge gained from taken martial arts.
      */
     fun mkFromArts(): Int{
+        //initialize output
         var total = 0
 
+        //add bonus for each taken martial art
         takenMartialList.forEach{
             total += it.mkBonus
         }
 
+        //give output
         return total
+    }
+
+    /**
+     * Acquire or remove the indicated style.
+     *
+     * @param input style to alter with this action
+     * @param toAdd whether the style is being added or removed
+     */
+    fun changeStyle(input: StyleModule, toAdd: Boolean){
+        //add or remove the style as indicated
+        if(toAdd)
+            styleMods += input
+        else
+            styleMods -= input
+
+        //update development points spent
+        charInstance.updateTotalSpent()
     }
 
     /**

@@ -32,14 +32,17 @@ import com.example.animabuilder.view_models.models.AdvantageFragmentViewModel
 @Composable
 fun AdvantageCostPick(
     advantageFragVM: AdvantageFragmentViewModel,
-    closeDialog: (String?) -> Unit
+    closeDialog: (Int?) -> Unit
 ){
+    //initialize page tracker
     val currentPage = advantageFragVM.adjustingPage.collectAsState().value
 
     DialogFrame(
         "Select Items for Advantage",
         {
             LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 when (currentPage) {
@@ -109,17 +112,22 @@ fun AdvantageCostPick(
                 }
             }
 
+            //always close dialog on back press from options selection
             BackHandler(currentPage == 1) {
                 closeDialog(null)
             }
 
+            //back options for the cost selection
             BackHandler(currentPage == 2) {
+                //return to first page if multiples options
                 if(advantageFragVM.adjustedAdvantage.value!!.options != null)
                     advantageFragVM.setAdjustingPage(1)
+                //close dialog if no additional options available
                 else closeDialog(null)
             }
         },
         {
+            //button to go back if option is available
             if(advantageFragVM.adjustingPage.collectAsState().value == 2 &&
                     advantageFragVM.adjustedAdvantage.collectAsState().value!!.options != null)
                 TextButton(onClick = {

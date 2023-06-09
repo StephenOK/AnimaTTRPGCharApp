@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 /**
- * Frame to build other dialog objects onto
+ * Frame to build other dialog objects onto.
  *
  * @param dialogTitle header to display for the individual item
  * @param mainContent what to display in the main body of the dialog

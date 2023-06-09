@@ -23,7 +23,14 @@
     <string name = "maxSilverLabel">Silver Max: </string>
     <string name = "maxCopperLabel">Copper Max: </string>
 
-    <string name = "bonusWealthLabel">Bonus Wealth: </string>
+    <string name = "bonusWealthLabel">Bonus Wealth: %s</string>
+    <string name = "goldLabel">%1d GC</string>
+    <string name = "silverLabel">%1d SC</string>
+    <string name = "copperLabel">%1d CC</string>
+
+    <string name = "spentAmount">%s: %1d</string>
 
     <string name = "inventoryHeader">Inventory</string>
+
+    <string name = "purchaseDialogHeader">Purchase Details</string>
 </resources>

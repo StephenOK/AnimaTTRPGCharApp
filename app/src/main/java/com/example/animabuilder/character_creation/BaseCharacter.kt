@@ -33,11 +33,13 @@ class BaseCharacter {
     //character's gender (default male)
     val isMale = mutableStateOf(true)
 
-    //list of secondary abilities
+    //character's rule settings
     val rules = RuleRecord(this@BaseCharacter)
+
+    //list of secondary abilities
     val primaryList = PrimaryList(this@BaseCharacter)
     val combat = CombatAbilities(this@BaseCharacter)
-    val secondaryList = SecondaryList(this@BaseCharacter)
+    val secondaryList = SecondaryList(this@BaseCharacter, primaryList)
     val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
     val ki = Ki(this@BaseCharacter)
     val magic = Magic(this@BaseCharacter)
@@ -49,10 +51,11 @@ class BaseCharacter {
     //list of all classes available
     val classes = ClassInstances(this@BaseCharacter)
 
+    //list of all race advantages
+    val races = RaceAdvantages(this@BaseCharacter)
+
     //set default class to one with empty onTake and onRemove functions
     val ownClass = mutableStateOf(classes.mentalist)
-
-    val races = RaceAdvantages(this@BaseCharacter)
 
     //initialize character's race
     val ownRace = mutableStateOf<List<RacialAdvantage>>(listOf())

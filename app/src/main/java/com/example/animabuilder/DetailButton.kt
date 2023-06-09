@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 
 /**
  * Generic button that is attached to rows in order to display an object's details.
@@ -20,6 +21,6 @@ fun DetailButton(
         onClick = {onClick()},
         modifier = modifier
     ) {
-        Text(text = "Details")
+        Text(text = stringResource(R.string.detailLabel))
     }
 }

@@ -16,6 +16,6 @@
     <string name = "buyAccLabel">Buy\nAcc</string>
     <string name = "totalAccLabel">Acc\nTotal</string>
 
-    <string name = "mkLabel">MK</string>
+    <string name = "mkLabel">%1d MK</string>
     <string name = "totalAccumulation">Total Accumulation: </string>
 </resources>

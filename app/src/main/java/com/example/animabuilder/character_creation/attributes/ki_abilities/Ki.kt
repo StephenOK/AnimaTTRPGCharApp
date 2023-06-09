@@ -17,11 +17,140 @@ import java.io.BufferedReader
  * @param charInstance object that holds all of the character's data.
  */
 class Ki(private val charInstance: BaseCharacter){
+    //initialize martial knowledge values
+    val martialKnowledgeMax = mutableStateOf(0)
+    val martialKnowledgeSpec = mutableStateOf(0)
+    val martialKnowledgeRemaining = mutableStateOf(0)
+
+    //initialize stat ki points and accumulation
+    val strKi = KiStat(this@Ki)
+    val dexKi = KiStat(this@Ki)
+    val agiKi = KiStat(this@Ki)
+    val conKi = KiStat(this@Ki)
+    val powKi = KiStat(this@Ki)
+    val wpKi = KiStat(this@Ki)
+
+    //gather all ki stat items
+    val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+
+    //initialize value for total ki points bought
+    val totalPointBuy = mutableStateOf(0)
+
+    //initialize total bought accumulation value
+    val totalAccBuy = mutableStateOf(0)
+
+    //initialize total ki points
+    val totalKi = mutableStateOf(0)
+
+    //initialize total accumulation value
+    val totalAcc = mutableStateOf(0)
+
     //get data of ki techniques
     val kiRecord = KiRecord()
 
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
+
+    //get all prebuilt techniques
+    val allTechniques = TechniquePrebuilts().allTechniques
+
+    //initialize character's techniques of each level
+    val takenFirstTechniques = mutableListOf<Technique>()
+    val takenSecondTechniques = mutableListOf<Technique>()
+    val takenThirdTechniques = mutableListOf<Technique>()
+
+    //initialize character's custom techniques
+    val customTechniques = mutableListOf<Technique>()
+
+    //compile all of the character's techniques
+    val takenTechniques = (takenFirstTechniques + takenSecondTechniques + takenThirdTechniques).toMutableList()
+
+    /**
+     * Sets martial knowledge to the appropriate amount for each taken item.
+     */
+    fun updateMkSpent(){
+        //reset martial knowledge remaining to its maximum value
+        martialKnowledgeRemaining.value = martialKnowledgeMax.value
+
+        //removes martial knowledge for each ki ability taken
+        takenAbilities.forEach{
+            martialKnowledgeRemaining.value -= it.mkCost
+        }
+
+        //removes martial knowledge for each dominion technique taken
+        takenTechniques.forEach{
+            martialKnowledgeRemaining.value -= it.mkCost()
+        }
+    }
+
+    /**
+     * Changes the martial knowledge bonus by the inputted amount.
+     *
+     * @param input value to change the martial knowledge bonus by
+     */
+    fun updateMKSpec(input: Int){
+        martialKnowledgeSpec.value += input
+        updateMK()
+    }
+
+    /**
+     * Recalculates the character's maximum martial knowledge
+     */
+    fun updateMK(){
+        //determine MK gained from class levels
+        val classMK =
+            if(charInstance.lvl.value != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.value
+            //give half from one level if level 0 character
+            else charInstance.ownClass.value.mkPerLevel/2
+
+        martialKnowledgeMax.value = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.value
+        updateMkSpent()
+    }
+
+    /**
+     * Updates the total ki points bought for each KiStat item.
+     */
+    fun updateBoughtPoints(){
+        totalPointBuy.value = 0
+        allKiStats.forEach{totalPointBuy.value += it.boughtKiPoints.value}
+    }
+
+    /**
+     * Updates the total ki accumulation bought for each KiStat item.
+     */
+    fun updateBoughtAcc(){
+        totalAccBuy.value = 0
+        allKiStats.forEach{totalAccBuy.value += it.boughtAccumulation.value}
+    }
+
+    /**
+     * Recalculates the total ki points acquired by the character.
+     */
+    fun updateTotalPoints(){
+        totalKi.value = 0
+        allKiStats.forEach{totalKi.value += it.totalKiPoints.value}
+    }
+
+    /**
+     * Recalculates the total ki accumulation acquired by the character.
+     */
+    fun updateTotalAcc(){
+        totalAcc.value = 0
+        allKiStats.forEach{totalAcc.value += it.totalAccumulation.value}
+    }
+
+    /**
+     * Determines the development points spent in ki point and accumulation purchases.
+     */
+    fun calculateSpent(): Int{
+        var total = 0
+
+        //add bought ki points and accumulation values
+        total += totalPointBuy.value * charInstance.ownClass.value.kiGrowth
+        total += totalAccBuy.value * charInstance.ownClass.value.kiAccumMult
+
+        return total
+    }
 
     /**
      * Attempt to add a Ki Ability to the character.
@@ -59,19 +188,20 @@ class Ki(private val charInstance: BaseCharacter){
         updateMkSpent()
     }
 
-    //get all prebuilt techniques
-    val allTechniques = TechniquePrebuilts().allTechniques
+    /**
+     * Finds a ki ability based on its name.
+     *
+     * @param toFind name of the ki ability to find
+     * @return ki ability of the search if available
+     */
+    fun getAbility(toFind: String): KiAbility?{
+        kiRecord.allKiAbilities.forEach{
+            if(it.name == toFind)
+                return it
+        }
 
-    //initialize character's techniques of each level
-    val takenFirstTechniques = mutableListOf<Technique>()
-    val takenSecondTechniques = mutableListOf<Technique>()
-    val takenThirdTechniques = mutableListOf<Technique>()
-
-    //initialize character's custom techniques
-    val customTechniques = mutableListOf<Technique>()
-
-    //compile all of the character's techniques
-    val takenTechniques = (takenFirstTechniques + takenSecondTechniques + takenThirdTechniques).toMutableList()
+        return null
+    }
 
     /**
      * Attempts to add a technique to the character.
@@ -170,127 +300,28 @@ class Ki(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Recompiles the full technique list after a change in one of them
+     * Determines if a technique from file is equivalent to a prebuilt technique.
+     *
+     * @param compareTo technique to check against prebuilt techniques
+     * @return prebuilt technique if one matches
+     */
+    fun techEquivalent(compareTo: Technique): Technique?{
+        allTechniques.forEach{
+            if(it.equivalentTo(compareTo))
+                return it
+        }
+
+        return null
+    }
+
+    /**
+     * Recompiles the full technique list after a change in one of them.
      */
     fun updateFullList(){
         takenTechniques.clear()
         takenTechniques += takenFirstTechniques + takenSecondTechniques + takenThirdTechniques
         updateMkSpent()
     }
-
-    /**
-     * Sets martial knowledge to the appropriate amount for each taken item.
-     */
-    fun updateMkSpent(){
-        //reset martial knowledge remaining to its maximum value
-        martialKnowledgeRemaining.value = martialKnowledgeMax.value
-
-        //removes martial knowledge for each ki ability taken
-        takenAbilities.forEach{
-            martialKnowledgeRemaining.value -= it.mkCost
-        }
-
-        //removes martial knowledge for each dominion technique taken
-        takenTechniques.forEach{
-            martialKnowledgeRemaining.value -= it.mkCost()
-        }
-    }
-
-    //initialize martial knowledge values
-    val martialKnowledgeMax = mutableStateOf(0)
-    val martialKnowledgeSpec = mutableStateOf(0)
-    val martialKnowledgeRemaining = mutableStateOf(0)
-
-    //initialize stat ki points and accumulation
-    val strKi = KiStat(this@Ki)
-    val dexKi = KiStat(this@Ki)
-    val agiKi = KiStat(this@Ki)
-    val conKi = KiStat(this@Ki)
-    val powKi = KiStat(this@Ki)
-    val wpKi = KiStat(this@Ki)
-
-    //gather all ki stat items
-    val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
-
-    //initialize total ki points
-    val totalKi = mutableStateOf(0)
-
-    //initialize total accumulation value
-    val totalAcc = mutableStateOf(0)
-
-    /**
-     * Changes the martial knowledge bonus by the inputted amount.
-     *
-     * @param input value to change the martial knowledge bonus by
-     */
-    fun updateMKSpec(input: Int){
-        martialKnowledgeSpec.value += input
-        updateMK()
-    }
-
-    /**
-     * Recalculates the character's maximum martial knowledge
-     */
-    fun updateMK(){
-        val classMK =
-            if(charInstance.lvl.value != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.value
-            else charInstance.ownClass.value.mkPerLevel/2
-
-        martialKnowledgeMax.value = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.value
-        updateMkSpent()
-    }
-
-    //initialize value for total ki points bought
-    val totalPointBuy = mutableStateOf(0)
-
-    //initialize total bought accumulation value
-    val totalAccBuy = mutableStateOf(0)
-
-    /**
-     * Updates the total ki points bought for each KiStat item.
-     */
-    fun updateBoughtPoints(){
-        totalPointBuy.value = 0
-        allKiStats.forEach{totalPointBuy.value += it.boughtKiPoints.value}
-    }
-
-    /**
-     * Recalculates the total ki points acquired by the character.
-     */
-    fun updateTotalPoints(){
-        totalKi.value = 0
-        allKiStats.forEach{totalKi.value += it.totalKiPoints.value}
-    }
-
-    /**
-     * Updates the total ki accumulation bought for each KiStat item.
-     */
-    fun updateBoughtAcc(){
-        totalAccBuy.value = 0
-        allKiStats.forEach{totalAccBuy.value += it.boughtAccumulation.value}
-    }
-
-    /**
-     * Recalculates the total ki accumulation acquired by the character.
-     */
-    fun updateTotalAcc(){
-        totalAcc.value = 0
-        allKiStats.forEach{totalAcc.value += it.totalAccumulation.value}
-    }
-
-    /**
-     * Determines the development points spent in ki point and accumulation purchases.
-     */
-    fun calculateSpent(): Int{
-        var total = 0
-
-        //add bought ki points and accumulation values
-        total += totalPointBuy.value * charInstance.ownClass.value.kiGrowth
-        total += totalAccBuy.value * charInstance.ownClass.value.kiAccumMult
-
-        return total
-    }
-
 
     /**
      * Loads data in regards to this section from saved file data.
@@ -426,35 +457,5 @@ class Ki(private val charInstance: BaseCharacter){
         takenTechniques.forEach{
             it.write(charInstance)
         }
-    }
-
-    /**
-     * Finds a ki ability based on its name.
-     *
-     * @param toFind name of the ki ability to find
-     * @return ki ability of the search if available
-     */
-    fun getAbility(toFind: String): KiAbility?{
-        kiRecord.allKiAbilities.forEach{
-            if(it.name == toFind)
-                return it
-        }
-
-        return null
-    }
-
-    /**
-     * Determines if a technique from file is equivalent to a prebuilt technique.
-     *
-     * @param compareTo technique to check against prebuilt techniques
-     * @return prebuilt technique if one matches
-     */
-    fun techEquivalent(compareTo: Technique): Technique?{
-        allTechniques.forEach{
-            if(it.equivalentTo(compareTo))
-                return it
-        }
-
-        return null
     }
 }

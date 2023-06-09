@@ -37,16 +37,16 @@ class CustomTechniqueViewModel(
         mutableListOf()
     )
 
+    //create element lists for the relevant effects
+    private val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
+    private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
+
     //data table of technique effects
     private val techniqueDatabase = TechniqueTableDataRecord()
 
     //initialize the page tracker of the custom technique
     private val _customPageNum = MutableStateFlow(1)
     val customPageNum = _customPageNum.asStateFlow()
-
-    //initialize the size for the dropdowns in this dialog
-    private val _size = MutableStateFlow(Size.Zero)
-    val size = _size.asStateFlow()
 
     //initialize minimum and maximum costs of the custom technique
     private val _costMinimum = MutableStateFlow(20)
@@ -67,7 +67,7 @@ class CustomTechniqueViewModel(
     val techniqueIndex = _techniqueIndex.asStateFlow()
 
     //initialize the string in the dropdown
-    private val _dropdownTitle = MutableStateFlow("--Select an ability --")
+    private val _dropdownTitle = MutableStateFlow(context.resources.getStringArray(R.array.techniqueAbilities)[0])
     val dropdownTitle = _dropdownTitle.asStateFlow()
 
     //initialize open state of the effect selection dropdown
@@ -77,6 +77,10 @@ class CustomTechniqueViewModel(
     //initialize logo displayed on the dropdown
     private val _dropdownIcon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
     val dropdownIcon = _dropdownIcon.asStateFlow()
+
+    //initialize the size for the dropdowns in this dialog
+    private val _size = MutableStateFlow(Size.Zero)
+    val size = _size.asStateFlow()
 
     //initialize list of build additions for the selected technique effect
     private val _buildArray = MutableStateFlow<List<Int?>>(listOf())
@@ -132,60 +136,9 @@ class CustomTechniqueViewModel(
     //initialize list of ki builds for the technique's effects
     val editBuildList = mutableListOf<BuildPackage>()
 
-    //initialize build total displays for ki builds
-    private val strAccTotal = AccTotalString(this, 0)
-    private val dexAccTotal = AccTotalString(this, 1)
-    private val agiAccTotal = AccTotalString(this, 2)
-    private val conAccTotal = AccTotalString(this, 3)
-    private val powAccTotal = AccTotalString(this, 4)
-    private val wpAccTotal = AccTotalString(this, 5)
-
-    //gather all build displays
-    val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
-
     //initialize user's selection for technique maintenance
     private val _maintenanceSelection = MutableStateFlow(false)
     val maintenanceSelection = _maintenanceSelection.asStateFlow()
-
-    //initialize all input items for technique maintenance
-    private val strMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[0],
-        customTechnique,
-        0
-    )
-
-    private val dexMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[1],
-        customTechnique,
-        1
-    )
-
-    private val agiMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[2],
-        customTechnique,
-        2
-    )
-
-    private val conMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[3],
-        customTechnique,
-        3
-    )
-
-    private val powMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[4],
-        customTechnique,
-        4
-    )
-
-    private val wpMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[5],
-        customTechnique,
-        5
-    )
-
-    //gather all maintenance inputs
-    val allMaintInputs = listOf(strMaintInput, dexMaintInput, agiMaintInput, conMaintInput, powMaintInput, wpMaintInput)
 
     //initialize the name of the technique
     private val _techniqueName = MutableStateFlow(customTechnique.name)
@@ -195,23 +148,12 @@ class CustomTechniqueViewModel(
     private val _techniqueDesc = MutableStateFlow(customTechnique.description)
     val techniqueDesc = _techniqueDesc.asStateFlow()
 
-    //create element lists for the relevant effects
-    private val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
-    private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
-
     /**
      * Sets the page number of the custom technique.
      *
      * @param input page number to set the effect to
      */
     fun setCustomPageNum(input: Int){_customPageNum.update{input}}
-
-    /**
-     * Sets the dropdown item's size.
-     *
-     * @param input size to set the dropdown to
-     */
-    fun setSize(input: Size){_size.update{input}}
 
     /**
      * Sets the minimum cost required for the technique created.
@@ -226,13 +168,6 @@ class CustomTechniqueViewModel(
      * @param input maximum value to set
      */
     private fun setCostMaximum(input: Int){_costMaximum.update{input}}
-
-    /**
-     * Retrieves the current level of the custom technique.
-     *
-     * @return technique's level value
-     */
-    fun getTechniqueLevel(): Int{return customTechnique.level}
 
     /**
      * Sets the technique's level to the indicated value.
@@ -321,7 +256,7 @@ class CustomTechniqueViewModel(
         when(input){
             //Attack Ability
             1 -> {
-                setHeader("Attack Bonus")
+                setHeader(context.getString(R.string.attackBonusHeader))
                 setUseTable(techniqueDatabase.table1)
                 setBuildArray(listOf(2, 0, 2, null, 2, 3))
                 setElementList(listOf(Element.Fire, Element.Air, Element.Dark))
@@ -329,7 +264,7 @@ class CustomTechniqueViewModel(
 
             //Counterattack Ability
             2 -> {
-                setHeader("Attack Bonus")
+                setHeader(context.getString(R.string.attackBonusHeader))
                 setUseTable(techniqueDatabase.table2)
                 setBuildArray(listOf(2, 0, 2, null, 2, 3))
                 setElementList(listOf(Element.Water, Element.Air, Element.Earth))
@@ -337,7 +272,7 @@ class CustomTechniqueViewModel(
 
             //Block Ability
             3 -> {
-                setHeader("Block Bonus")
+                setHeader(context.getString(R.string.blockBonusHeader))
                 setUseTable(techniqueDatabase.table3)
                 setBuildArray(listOf(2, 0, 2, null, 2, 3))
                 setElementList(listOf(Element.Water, Element.Earth, Element.Light))
@@ -345,7 +280,7 @@ class CustomTechniqueViewModel(
 
             //Limited Block Ability
             4 -> {
-                setHeader("Block Bonus")
+                setHeader(context.getString(R.string.blockBonusHeader))
                 setUseTable(techniqueDatabase.table4)
                 setBuildArray(listOf(2, 0, 2, null, 2, 3))
                 setElementList(listOf(Element.Water, Element.Earth, Element.Light))
@@ -353,7 +288,7 @@ class CustomTechniqueViewModel(
 
             //Dodge Ability
             5 -> {
-                setHeader("Dodge Bonus")
+                setHeader(context.getString(R.string.dodgeBonusHeader))
                 setUseTable(techniqueDatabase.table5)
                 setBuildArray(listOf(null, 2, 0, 2, 2, 3))
                 setElementList(listOf(Element.Water, Element.Air, Element.Light))
@@ -361,7 +296,7 @@ class CustomTechniqueViewModel(
 
             //Limited Dodge Ability
             6 -> {
-                setHeader("Dodge Bonus")
+                setHeader(context.getString(R.string.dodgeBonusHeader))
                 setUseTable(techniqueDatabase.table6)
                 setBuildArray(listOf(null, 2, 0, 2, 2, 3))
                 setElementList(listOf(Element.Air, Element.Light, Element.Dark))
@@ -369,7 +304,7 @@ class CustomTechniqueViewModel(
 
             //Damage Multiplier
             7 -> {
-                setHeader("Multiplier")
+                setHeader(context.getString(R.string.multLabel))
                 setUseTable(techniqueDatabase.table7)
                 setBuildArray(listOf(0, 3, null, 2, 1, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -377,9 +312,9 @@ class CustomTechniqueViewModel(
 
             //Damage Augmentation
             8 -> {
-                setHeader("Damage Bonus")
+                setHeader(context.getString(R.string.damageBonusHeader))
                 setUseTable(techniqueDatabase.table8)
-                setOptHeader1("Optional Advantage: Sacrifice")
+                setOptHeader1(optionalHeaderComposer(R.string.sacrificeHeader))
                 setOptTable1(techniqueDatabase.table8a)
                 setBuildArray(listOf(0, 3, null, 1, 2, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -387,11 +322,11 @@ class CustomTechniqueViewModel(
 
             //Additional Attack
             9 -> {
-                setHeader("Attacks")
+                setHeader(context.getString(R.string.attacksHeader))
                 setUseTable(techniqueDatabase.table9)
-                setOptHeader1("Optional Advantage: Continuous Attack")
+                setOptHeader1(optionalHeaderComposer(R.string.continuousAttackHeader))
                 setOptTable1(techniqueDatabase.table9a)
-                setOptHeader2("Optional Advantage: Added Fatigue Bonus")
+                setOptHeader2(optionalHeaderComposer(R.string.fatigueBonusHeader))
                 setOptTable2(techniqueDatabase.table9b)
                 setBuildArray(listOf(null, 0, 2, 1, 3, 3))
                 setElementList(listOf(Element.Water, Element.Air))
@@ -399,9 +334,9 @@ class CustomTechniqueViewModel(
 
             //Limited Additional Attack
             10 -> {
-                setHeader("Attacks")
+                setHeader(context.getString(R.string.attacksHeader))
                 setUseTable(techniqueDatabase.table10)
-                setOptHeader1("Optional Advantage: Continuous Attack")
+                setOptHeader1(optionalHeaderComposer(R.string.continuousAttackHeader))
                 setOptTable1(techniqueDatabase.table10a)
                 setBuildArray(listOf(null, 0, 2, 1, 3, 3))
                 setElementList(listOf(Element.Water, Element.Air, Element.Dark))
@@ -409,9 +344,9 @@ class CustomTechniqueViewModel(
 
             //Additional Defense
             11 -> {
-                setHeader("Defenses")
+                setHeader(context.getString(R.string.defensesHeader))
                 setUseTable(techniqueDatabase.table11)
-                setOptHeader1("Optional Advantage: Added Fatigue Bonus")
+                setOptHeader1(optionalHeaderComposer(R.string.fatigueBonusHeader))
                 setOptTable1(techniqueDatabase.table11a)
                 setBuildArray(listOf(null, 1, 0, 1, 3, 3))
                 setElementList(listOf(Element.Light))
@@ -419,9 +354,9 @@ class CustomTechniqueViewModel(
 
             //Additional Action
             12 -> {
-                setHeader("Actions")
+                setHeader(context.getString(R.string.actionsHeader))
                 setUseTable(techniqueDatabase.table12)
-                setOptHeader1("Optional Advantage: Added Fatigue Bonus")
+                setOptHeader1(optionalHeaderComposer(R.string.fatigueBonusHeader))
                 setOptTable1(techniqueDatabase.table12a)
                 setBuildArray(listOf(null, 0, 1, 1, 3, 3))
                 setElementList(listOf(Element.Air))
@@ -429,7 +364,7 @@ class CustomTechniqueViewModel(
 
             //Initiative Augmentation
             13 -> {
-                setHeader("Initiative Bonus")
+                setHeader(context.getString(R.string.initiativeBonusHeader))
                 setUseTable(techniqueDatabase.table13)
                 setBuildArray(listOf(null, 1, 0, 2, 3, 3))
                 setElementList(listOf(Element.Air))
@@ -437,9 +372,9 @@ class CustomTechniqueViewModel(
 
             //States
             14 -> {
-                setHeader("PhR Check")
+                setHeader(context.getString(R.string.phrHeader))
                 setUseTable(techniqueDatabase.table14)
-                setOptHeader1("Optional Advantage: Added State")
+                setOptHeader1(optionalHeaderComposer(R.string.addedStateHeader))
                 setOptTable1(techniqueDatabase.table14a)
                 setBuildArray(listOf(4, 4, null, 4, 0, 1))
                 setElementList(listOf(Element.Light, Element.Dark))
@@ -447,7 +382,7 @@ class CustomTechniqueViewModel(
 
             //Combat Maneuvers and Aiming
             15 -> {
-                setHeader("Precision")
+                setHeader(context.getString(R.string.precisionHeader))
                 setUseTable(techniqueDatabase.table15)
                 setBuildArray(listOf(null, 0, 1, 2, 2, 2))
                 setElementList(listOf(Element.Air))
@@ -455,7 +390,7 @@ class CustomTechniqueViewModel(
 
             //Armor Increase
             16 -> {
-                setHeader("AT")
+                setHeader(context.getString(R.string.atHeader))
                 setUseTable(techniqueDatabase.table16)
                 setBuildArray(listOf(2, null, 3, 0, 1, 2))
                 setElementList(listOf(Element.Water, Element.Earth, Element.Light))
@@ -463,7 +398,7 @@ class CustomTechniqueViewModel(
 
             //Armor Destruction
             17 -> {
-                setHeader("Reduction")
+                setHeader(context.getString(R.string.reductionHeader))
                 setUseTable(techniqueDatabase.table17)
                 setBuildArray(listOf(0, 2, null, 2, 1, 2))
                 setElementList(listOf(Element.Fire, Element.Dark))
@@ -471,7 +406,7 @@ class CustomTechniqueViewModel(
 
             //Breakage Augmentation
             18 -> {
-                setHeader("Breakage")
+                setHeader(context.getString(R.string.breakageHeader))
                 setUseTable(techniqueDatabase.table18)
                 setBuildArray(listOf(0, 4, null, 2, 2, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -479,7 +414,7 @@ class CustomTechniqueViewModel(
 
             //Fortitude Augmentation
             19 -> {
-                setHeader("Fortitude")
+                setHeader(context.getString(R.string.fortitudeHeader))
                 setUseTable(techniqueDatabase.table19)
                 setBuildArray(listOf(0, 4, null, 2, 2, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -487,7 +422,7 @@ class CustomTechniqueViewModel(
 
             //Long-Distance Attack
             20 -> {
-                setHeader("Distance")
+                setHeader(context.getString(R.string.distanceHeader))
                 setUseTable(techniqueDatabase.table20)
                 setBuildArray(listOf(null, 2, 3, 4, 0, 1))
                 setElementList(listOf(Element.Fire, Element.Water, Element.Air))
@@ -495,9 +430,9 @@ class CustomTechniqueViewModel(
 
             //Area Attack
             21 -> {
-                setHeader("Radius")
+                setHeader(context.getString(R.string.radiusHeader))
                 setUseTable(techniqueDatabase.table21)
-                setOptHeader1("Optional Advantage: Target Choice")
+                setOptHeader1(optionalHeaderComposer(R.string.targetChoiceHeader))
                 setOptTable1(techniqueDatabase.table21a)
                 setBuildArray(listOf(null, 2, 3, 3, 0, 1))
                 setElementList(listOf(Element.Fire, Element.Light, Element.Dark))
@@ -505,7 +440,7 @@ class CustomTechniqueViewModel(
 
             //Automatic Transportation
             22 -> {
-                setHeader("Distance")
+                setHeader(context.getString(R.string.distanceHeader))
                 setUseTable(techniqueDatabase.table22)
                 setBuildArray(listOf(2, 2, 0, 2, 3, null))
                 setElementList(listOf(Element.Air, Element.Light, Element.Dark))
@@ -513,9 +448,9 @@ class CustomTechniqueViewModel(
 
             //Critical Enhancement
             23 -> {
-                setHeader("Critical")
+                setHeader(context.getString(R.string.criticalHeader))
                 setUseTable(techniqueDatabase.table23)
-                setOptHeader1("Optional Advantage: Automatic Critical")
+                setOptHeader1(optionalHeaderComposer(R.string.autoCritHeader))
                 setOptTable1(techniqueDatabase.table23a)
                 setBuildArray(listOf(1, 2, null, 2, 0, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -523,9 +458,9 @@ class CustomTechniqueViewModel(
 
             //Physical Ki Weapons
             24 -> {
-                setHeader("Quality")
+                setHeader(context.getString(R.string.qualityHeader))
                 setUseTable(techniqueDatabase.table24)
-                setOptHeader1("Optional Advantage: Projectiles")
+                setOptHeader1(optionalHeaderComposer(R.string.projectileLabel))
                 setOptTable1(techniqueDatabase.table24a)
                 setBuildArray(listOf(2, 3, null, 1, 0, 1))
                 setElementList(listOf(Element.Earth, Element.Light, Element.Dark))
@@ -533,7 +468,7 @@ class CustomTechniqueViewModel(
 
             //Trapping
             25 -> {
-                setHeader("Trap")
+                setHeader(context.getString(R.string.trapHeader))
                 setUseTable(techniqueDatabase.table25)
                 setBuildArray(listOf(0, 1, null, 2, 2, 2))
                 setElementList(listOf(Element.Earth))
@@ -541,7 +476,7 @@ class CustomTechniqueViewModel(
 
             //Projection
             26 -> {
-                setHeader("Projection")
+                setHeader(context.getString(R.string.projectionHeader))
                 setUseTable(techniqueDatabase.table26)
                 setBuildArray(listOf(0, 3, null, 2, 1, 1))
                 setElementList(listOf(Element.Fire, Element.Earth))
@@ -549,7 +484,7 @@ class CustomTechniqueViewModel(
 
             //Energy Shield
             27 -> {
-                setHeader("LP")
+                setHeader(context.getString(R.string.lpHeader))
                 setUseTable(techniqueDatabase.table27)
                 setBuildArray(listOf(2, 3, null, 2, 0, 1))
                 setElementList(listOf(Element.Water, Element.Light))
@@ -557,7 +492,7 @@ class CustomTechniqueViewModel(
 
             //Intangibility
             28 -> {
-                setHeader("Effect")
+                setHeader(context.getString(R.string.effectHeader))
                 setUseTable(techniqueDatabase.table28)
                 setBuildArray(listOf(3, 3, null, 3, 0, 1))
                 setElementList(listOf(Element.Water, Element.Light, Element.Dark))
@@ -565,9 +500,9 @@ class CustomTechniqueViewModel(
 
             //Mirage
             29 -> {
-                setHeader("Mirages")
+                setHeader(context.getString(R.string.mirageHeader))
                 setUseTable(techniqueDatabase.table29)
-                setOptHeader1("Optional advantage: Non-Detection")
+                setOptHeader1(optionalHeaderComposer(R.string.nonDetectionHeader))
                 setOptTable1(techniqueDatabase.table29a)
                 setBuildArray(listOf(null, 3, 2, 3, 1, 0))
                 setElementList(listOf(Element.Water, Element.Dark))
@@ -575,11 +510,11 @@ class CustomTechniqueViewModel(
 
             //Attack Mirroring
             30 -> {
-                setHeader("Effect")
+                setHeader(context.getString(R.string.effectHeader))
                 setUseTable(techniqueDatabase.table30)
-                setOptHeader1("Optional Advantage: Target Choice")
+                setOptHeader1(optionalHeaderComposer(R.string.targetChoiceHeader))
                 setOptTable1(listOf(TechniqueTableData("Target Choice", 2, 2, 10, 2, 1)))
-                setOptHeader2("Optional Advantage: Mirroring Esoteric Abilities")
+                setOptHeader2(optionalHeaderComposer(R.string.mirrorEsotericHeader))
                 setOptTable2(techniqueDatabase.table30a)
                 setBuildArray(listOf(2, 3, 3, null, 0, 1))
                 setElementList(listOf(Element.Water, Element.Light, Element.Dark))
@@ -587,7 +522,7 @@ class CustomTechniqueViewModel(
 
             //Energy Damaging Attack
             31 -> {
-                setHeader("Attack")
+                setHeader(context.getString(R.string.attackLabel))
                 setUseTable(techniqueDatabase.table31)
                 setBuildArray(listOf(3, 3, null, 2, 0, 1))
                 setElementList(listOf(Element.Fire, Element.Light, Element.Dark))
@@ -595,9 +530,9 @@ class CustomTechniqueViewModel(
 
             //Elemental Attack
             32 -> {
-                setHeader("Attack")
+                setHeader(context.getString(R.string.attackLabel))
                 setUseTable(techniqueDatabase.table32)
-                setOptHeader1("Select Element: ")
+                setOptHeader1(context.getString(R.string.selectElementLabel))
                 setOptElement(elementAttackList)
                 setBuildArray(listOf(3, 3, null, 2, 0, 1))
                 setElementList(listOf())
@@ -605,7 +540,7 @@ class CustomTechniqueViewModel(
 
             //Supernatural Attack
             33 -> {
-                setHeader("Attack")
+                setHeader(context.getString(R.string.attackLabel))
                 setUseTable(techniqueDatabase.table33)
                 setBuildArray(listOf(3, 3, null, 2, 0, 1))
                 setElementList(listOf(Element.Light, Element.Dark))
@@ -613,7 +548,7 @@ class CustomTechniqueViewModel(
 
             //Damage Resistance
             34 -> {
-                setHeader("LP")
+                setHeader(context.getString(R.string.lpHeader))
                 setUseTable(techniqueDatabase.table34)
                 setBuildArray(listOf(3, 3, null, 0, 3, 1))
                 setElementList(listOf(Element.Earth))
@@ -622,7 +557,7 @@ class CustomTechniqueViewModel(
             //ElementalBinding
             35 -> {
                 setUseTable(techniqueDatabase.table35)
-                setOptHeader1("Select Element(s): ")
+                setOptHeader1(context.getString(R.string.selectElementsLabel))
                 setOptElement(elementBindList)
                 setBuildArray(listOf(null, null, null, null, null, null))
                 setElementList(listOf())
@@ -697,6 +632,17 @@ class CustomTechniqueViewModel(
             else Icons.Filled.KeyboardArrowDown
         }
     }
+
+    fun optionalHeaderComposer(address: Int): String{
+        return context.getString(R.string.optionalHeader, context.getString(address))
+    }
+
+    /**
+     * Sets the dropdown item's size.
+     *
+     * @param input size to set the dropdown to
+     */
+    fun setSize(input: Size){_size.update{input}}
 
     /**
      * Sets the build addition list for the technique effect.
@@ -780,7 +726,7 @@ class CustomTechniqueViewModel(
      *
      * @return error message if effect addition failed
      */
-    fun attemptTechAddition(): String?{
+    fun attemptTechAddition(): Int?{
         //retrieve the effect the user has selected
         val addedTechniques = getSelectedEffects()
 
@@ -825,16 +771,6 @@ class CustomTechniqueViewModel(
     }
 
     /**
-     * Determines that the effect data can be added to the custom technique.
-     *
-     * @param effectInput effect data to attempt to add to the character
-     * @return error message if any failure occurs
-     */
-    fun validCheckInput(effectInput: TechniqueTableData): String?{
-        return customTechnique.validEffectAddition(dataToEffect(effectInput), kiFragVM.getMartialRemaining())
-    }
-
-    /**
      * Retrieve the technique effects the user has selected.
      *
      * @return list of effects selected by the user
@@ -872,6 +808,29 @@ class CustomTechniqueViewModel(
     }
 
     /**
+     * Retrieve the selection for the effect's element.
+     *
+     * @param input currently selected technique effect
+     */
+    fun getSelectedElement(input: TechniqueEffect): MutableList<Element>{
+        //return own elements if they have them
+        if(input.elements.isNotEmpty())
+            return input.elements
+
+        //initialize user selected output
+        val output = mutableListOf<Element>()
+
+        //get user's selected elements
+        elementChecklist.forEach{
+            if(it.value.value && !output.contains(it.key))
+                output.add(it.key)
+        }
+
+        //return user's selection
+        return output
+    }
+
+    /**
      * Retrieve the price of the user's additions.
      *
      * @return cost of the selected effects
@@ -888,6 +847,16 @@ class CustomTechniqueViewModel(
 
         //return final cost
         return output
+    }
+
+    /**
+     * Determines that the effect data can be added to the custom technique.
+     *
+     * @param effectInput effect data to attempt to add to the character
+     * @return error message if any failure occurs
+     */
+    fun validCheckInput(effectInput: TechniqueTableData): Int?{
+        return customTechnique.validEffectAddition(dataToEffect(effectInput), kiFragVM.getMartialRemaining())
     }
 
     /**
@@ -926,29 +895,6 @@ class CustomTechniqueViewModel(
     }
 
     /**
-     * Retrieve the selection for the effect's element.
-     *
-     * @param input currently selected technique effect
-     */
-    fun getSelectedElement(input: TechniqueEffect): MutableList<Element>{
-        //return own elements if they have them
-        if(input.elements.isNotEmpty())
-            return input.elements
-
-        //initialize user selected output
-        val output = mutableListOf<Element>()
-
-        //get user's selected elements
-        elementChecklist.forEach{
-            if(it.value.value && !output.contains(it.key))
-                output.add(it.key)
-        }
-
-        //return user's selection
-        return output
-    }
-
-    /**
      * Clears the inputted selection map.
      *
      * @param input map of checkboxes to be cleared
@@ -964,58 +910,6 @@ class CustomTechniqueViewModel(
         elementChecklist.forEach{
             it.value.value = false
         }
-    }
-
-    /**
-     * Retrieves the total cost of the custom technique.
-     *
-     * @return technique's cost value
-     */
-    fun getTechniqueCost(): Int{return customTechnique.mkCost()}
-
-    /**
-     * Retrieves the currently selected effects for the custom technique.
-     *
-     * @return list of custom technique's effects
-     */
-    fun getTechniqueEffects(): MutableList<TechniqueEffect>{return customTechnique.givenAbilities}
-
-    /**
-     * Item for total accumulation of a particular primary characteristic.
-     *
-     * @param customTechVM viewModel that manages the custom technique
-     * @param index primary characteristic location of the associated object
-     */
-    class AccTotalString(
-        private val customTechVM: CustomTechniqueViewModel,
-        val index: Int
-    ){
-        //initialize display string
-        private val _totalDisplay = MutableStateFlow("")
-        val totalDisplay = _totalDisplay.asStateFlow()
-
-        /**
-         * Sets the value of the display for the total build.
-         */
-        fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index).toString()}}
-    }
-
-    /**
-     * Retrieves the valid state of all of the technique's effects' builds.
-     *
-     * @return true if all effects have valid builds
-     */
-    fun getCheckBuilds(): Boolean{
-        return customTechnique.checkBuilds()
-    }
-
-    /**
-     * Retrieves the valid state of the technique's maintenance array.
-     *
-     * @return true if the maintenance input is valid
-     */
-    fun getMaintenanceCheck(): Boolean{
-        return customTechnique.checkMaintenance()
     }
 
     /**
@@ -1091,13 +985,6 @@ class CustomTechniqueViewModel(
     }
 
     /**
-     * Retrieves the total maintenance value of the custom technique.
-     *
-     * @return technique's maintenance cost
-     */
-    fun getMaintenanceTotal(): Int{return customTechnique.maintTotal()}
-
-    /**
      * Retrieves whether the indicated primary characteristic has any accumulation required for
      * this technique.
      *
@@ -1134,9 +1021,106 @@ class CustomTechniqueViewModel(
     fun getCustomTechnique(): Technique{return customTechnique}
 
     /**
+     * Retrieves the current level of the custom technique.
+     *
+     * @return technique's level value
+     */
+    fun getTechniqueLevel(): Int{return customTechnique.level}
+
+    /**
+     * Retrieves the total cost of the custom technique.
+     *
+     * @return technique's cost value
+     */
+    fun getTechniqueCost(): Int{return customTechnique.mkCost()}
+
+    /**
+     * Retrieves the currently selected effects for the custom technique.
+     *
+     * @return list of custom technique's effects
+     */
+    fun getTechniqueEffects(): MutableList<TechniqueEffect>{return customTechnique.givenAbilities}
+
+    /**
+     * Retrieves the valid state of all of the technique's effects' builds.
+     *
+     * @return true if all effects have valid builds
+     */
+    fun getCheckBuilds(): Boolean{
+        return customTechnique.checkBuilds()
+    }
+
+    /**
+     * Retrieves the valid state of the technique's maintenance array.
+     *
+     * @return true if the maintenance input is valid
+     */
+    fun getMaintenanceCheck(): Boolean{
+        return customTechnique.checkMaintenance()
+    }
+
+    /**
+     * Retrieves the total maintenance value of the custom technique.
+     *
+     * @return technique's maintenance cost
+     */
+    fun getMaintenanceTotal(): Int{return customTechnique.maintTotal()}
+
+    /**
      * Closes the custom technique dialog.
      */
     fun closeDialog(){kiFragVM.toggleCustomTechOpen()}
+
+    //initialize build total displays for ki builds
+    private val strAccTotal = AccTotalString(this, 0)
+    private val dexAccTotal = AccTotalString(this, 1)
+    private val agiAccTotal = AccTotalString(this, 2)
+    private val conAccTotal = AccTotalString(this, 3)
+    private val powAccTotal = AccTotalString(this, 4)
+    private val wpAccTotal = AccTotalString(this, 5)
+
+    //gather all build displays
+    val allAccs = listOf(strAccTotal, dexAccTotal, agiAccTotal, conAccTotal, powAccTotal, wpAccTotal)
+
+    //initialize all input items for technique maintenance
+    private val strMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[0],
+        customTechnique,
+        0
+    )
+
+    private val dexMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[1],
+        customTechnique,
+        1
+    )
+
+    private val agiMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[2],
+        customTechnique,
+        2
+    )
+
+    private val conMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[3],
+        customTechnique,
+        3
+    )
+
+    private val powMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[4],
+        customTechnique,
+        4
+    )
+
+    private val wpMaintInput = MaintInput(
+        context.resources.getStringArray(R.array.primaryCharArray)[5],
+        customTechnique,
+        5
+    )
+
+    //gather all maintenance inputs
+    val allMaintInputs = listOf(strMaintInput, dexMaintInput, agiMaintInput, conMaintInput, powMaintInput, wpMaintInput)
 
     /**
      * Batch of build input data associated with the inputted effect.
@@ -1203,6 +1187,26 @@ class CustomTechniqueViewModel(
             _display.update{input}
             customTechVM.allAccs[index].setTotalDisplay()
         }
+    }
+
+    /**
+     * Item for total accumulation of a particular primary characteristic.
+     *
+     * @param customTechVM viewModel that manages the custom technique
+     * @param index primary characteristic location of the associated object
+     */
+    class AccTotalString(
+        private val customTechVM: CustomTechniqueViewModel,
+        val index: Int
+    ){
+        //initialize display string
+        private val _totalDisplay = MutableStateFlow("")
+        val totalDisplay = _totalDisplay.asStateFlow()
+
+        /**
+         * Sets the value of the display for the total build.
+         */
+        fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index).toString()}}
     }
 
     /**

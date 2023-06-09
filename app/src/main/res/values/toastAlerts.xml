@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "emptyNewChar">File must have a name!</string>
+    <string name = "noCharSelected">No character selected!</string>
+
+    <string name = "saveMessage">Save successful!</string>
+    <string name = "fileNotFound">Unable to find file!</string>
+    <string name = "fileError">Failed to write data!</string>
+
+    <string name = "appearanceFailure">Invalid Appearance Input</string>
+
+    <string name = "excessDisadvantages">Cannot take more Disadvantages!</string>
+    <string name = "failedInput">Invalid input!</string>
+
+    <string name = "sylvainRestriction">Forbidden for Sylvain!</string>
+    <string name = "sylvainDarkRestriction">Cannot take Dark as a Sylvain!</string>
+
+    <string name = "jayanSizeRestriction">Cannot reduce size as Jayan!</string>
+    <string name = "jayanStrengthRestriction">Cannot reduce Strength as Jayan!</string>
+
+    <string name = "dukzaristRestriction">Forbidden for Duk\'zarist!</string>
+    <string name = "dukzaristLightRestriction">Cannot take Light as Duk\'zarist!</string>
+    <string name = "dukzaristPyroRestriction">Duk\'zarist must take Pyrokinesis first!</string>
+
+    <string name = "strengthIncreaseRestriction">Cannot increase Strength further!</string>
+    <string name = "dexterityIncreaseRestriction">Cannot increase Dexterity further!</string>
+    <string name = "agilityIncreaseRestriction">Cannot increase Agility further!</string>
+    <string name = "constitutionIncreaseRestriction">Cannot increase Constitution further!</string>
+    <string name = "intelligenceIncreaseRestriction">Cannot increase Intelligence further!</string>
+    <string name = "powerIncreaseRestriction">Cannot increase Power further!</string>
+    <string name = "willpowerIncreaseRestriction">Cannot increase Willpower further!</string>
+    <string name = "perceptionIncreaseRestriction">Cannot increase Perception further!</string>
+
+    <string name = "costReductionRestriction">Cannot reduce characteristic growth below zero!</string>
+    <string name = "fieldReductionRestriction">Cannot reduce field growth to zero!</string>
+
+    <string name = "redundantPsychicDiscipline">Already have access to all Disciplines!</string>
+    <string name = "classRestriction">Disadvantage forbidden to your class!</string>
+    <string name = "appearanceRestriction">Minimum appearance of 7 required!</string>
+
+    <string name = "magicBlockageRestriction">Cannot take this with Magic Blockage!</string>
+    <string name = "magicRecoveryRestriction">Cannot take this with Slow Recovery of Magic!</string>
+
+    <string name = "duplicateRestriction">You cannot have multiple copies of this Advantage!</string>
+    <string name = "duplicatePathRestriction">You cannot take the same Path multiple times!</string>
+
+    <string name = "failedPurchase">Cannot buy this Advantage!</string>
+
+    <string name = "kiControlRequired">You need Ki Control for Dominion Techniques!</string>
+    <string name = "abilityAdditionFailure">Cannot take all abilities: Level cost exceeded!</string>
+    <string name = "emptyEffectNotice">Please select an effect first!</string>
+
+    <string name = "existingEffect">Technique is already present!</string>
+    <string name = "elementConflict">Cannot currently bind to selected element(s)!</string>
+    <string name = "bindingRestriction">Cannot take because of Elemental Binding!</string>
+    <string name = "techLevelRestriction">Cannot take an effect of that level!</string>
+    <string name = "techCostRestriction">Maximum technique cost exceeded!</string>
+    <string name = "techMKRestriction">Technique would exceed character\'s limit!</string>
+
+    <string name = "needGiftMessage">You need The Gift in order to change this!</string>
+    <string name = "magicTiesRestriction">Magic Ties prevents getting Free Spells!</string>
+
+    <string name = "needDisciplineMessage">You lack the Advantage to access the %s Discipline!</string>
+</resources>

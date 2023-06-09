@@ -17,6 +17,8 @@
     <string name = "telemetryLabel">Telemetry</string>
     <string name = "matrixLabel">Matrix Powers</string>
 
+    <string name = "potentialBonusLabel">+%1d Potential</string>
+
     <string-array name = "difficultyTable">
         <item>Routine (20)</item>
         <item>Easy (40)</item>

@@ -948,14 +948,15 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null
     )
 
-    val advantages = listOf(characteristicPoint, acuteSenses, artifact, ambidextrous, characteristicToNine,
-        psyDisciplineAccess, charm, disquieting, animalAffinity, dangerSense, beenAround,
-        subjectAptitude, naturalPsychicPower, fieldAptitude, characteristicReroll, martialMastery,
-        goodLuck, kiRecovery, jackOfAllTrades, naturalArmor, mysticalArmor, untiring, uncommonSize,
-        startingWealth, increasedRegeneration, elan, painImmunity, gift, seeSupernatural, nightVision,
-        fortunate, freePsychicDiscipline, quickReflexes, learning, naturalLearner, fieldLearner,
-        exceptionalMagicResistance, exceptionalPhysicalResistance, exceptionalPsychicResistance,
-        lightSleeper)
+    val advantages = listOf(
+        gift, psyDisciplineAccess, freePsychicDiscipline, naturalPsychicPower, characteristicReroll,
+        characteristicPoint, characteristicToNine, exceptionalPhysicalResistance, exceptionalMagicResistance,
+        exceptionalPsychicResistance, subjectAptitude, fieldAptitude, naturalLearner, fieldLearner,
+        jackOfAllTrades, ambidextrous, increasedRegeneration, quickReflexes, naturalArmor, mysticalArmor,
+        painImmunity, untiring, uncommonSize, martialMastery, kiRecovery, goodLuck, fortunate,
+        startingWealth, artifact, animalAffinity, charm, disquieting, acuteSenses, nightVision,
+        dangerSense, seeSupernatural, lightSleeper, beenAround, learning, elan
+    )
 
 
 
@@ -1414,9 +1415,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null
     )
 
-    val disadvantages = listOf(badLuck, blind, deafness, mute, nearsighted, exclusiveWeapon, severeAllergy,
-        seriousVice, atrophiedLimb, seriousIllness, physicalWeakness, deepSleeper, deductCharacteristic,
-        unfortunate, easilyPossessed, exhausted, severePhobia, painVulnerability, sickly, slowHealer,
-        slowLearner, slowReactions, magicSusceptibility, poisonSusceptibility, unattractive,
-        temperatureVulnerability)
+    val disadvantages = listOf(
+        deductCharacteristic, physicalWeakness, poisonSusceptibility, sickly, magicSusceptibility,
+        painVulnerability, easilyPossessed, temperatureVulnerability, exclusiveWeapon, slowHealer,
+        slowReactions, exhausted, badLuck, unfortunate, unattractive, nearsighted, blind, deafness,
+        mute, atrophiedLimb, severePhobia, severeAllergy, seriousVice, seriousIllness, deepSleeper,
+        slowLearner
+    )
 }

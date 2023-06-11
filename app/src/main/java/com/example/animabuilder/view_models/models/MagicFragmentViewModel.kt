@@ -366,6 +366,20 @@ class MagicFragmentViewModel(
     fun getFreeSpellbook(): FreeBook{return magic.freeBook}
 
     /**
+     * Determines if the indicated spell can be individually bought or removed from the character.
+     *
+     * @param input spell to check
+     * @return true if individually purchasable
+     */
+    fun spellIsRemovable(input: Spell): Boolean{
+        return !magic.spellList.contains(input) || magic.individualSpells.contains(input)
+    }
+
+    fun freeSpellIsRemovable(level: Int, type: Element): Boolean{
+        return !getFreeSpellHeld(level, type) || magic.hasIndividualFreeCopyOf(level, type)
+    }
+
+    /**
      * Determine if the character is holding the inputted spell.
      *
      * @param item spell to determine the character has
@@ -738,6 +752,7 @@ class MagicFragmentViewModel(
         setBoughtZeonString(magic.boughtZeon.value)
         allPurchaseData.forEach{it.refreshItem()}
         setProjectionImbalance(magic.magProjImbalance.value.toString())
+        setMagicLevelSpent()
         allBooks.forEach{it.refreshItem()}
         reflectPrimaryElement()
         updateHeldSpells()

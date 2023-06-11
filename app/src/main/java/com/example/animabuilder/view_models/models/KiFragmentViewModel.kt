@@ -47,12 +47,15 @@ class KiFragmentViewModel(
     private val _customTechOpen = MutableStateFlow(false)
     val customTechOpen = _customTechOpen.asStateFlow()
 
+    //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
+    //initialize name of detailed item
     private val _detailName = MutableStateFlow("")
     val detailName = _detailName.asStateFlow()
 
+    //initialize item to get the details of
     private val _detailItem = MutableStateFlow<Any?>(null)
     val detailItem = _detailItem.asStateFlow()
 
@@ -146,7 +149,6 @@ class KiFragmentViewModel(
         else{
             //remove the item from the character
             ki.removeAbility(item)
-            allKiAbilities[item]!!.value = false
             updateKiTaken()
         }
 
@@ -161,6 +163,11 @@ class KiFragmentViewModel(
         //update each checkbox to match their taken state
         allKiAbilities.forEach{
             it.value.value = ki.takenAbilities.contains(it.key)
+        }
+
+        //update techniques taken in case of Ki Control removal
+        allTechniques.forEach{
+            it.value.value = ki.takenTechniques.contains(it.key)
         }
 
         //close the technique list if it is open and the character no longer has ki control
@@ -423,6 +430,10 @@ class KiFragmentViewModel(
         ki.allTechniques.forEach{
             allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
         }
+
+        ki.customTechniques.forEach{
+            allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
+        }
     }
 
     /**
@@ -434,12 +445,6 @@ class KiFragmentViewModel(
             it.refreshItem()
         }
 
-        //close ki list if open
-        if(kiListOpen.value)
-            toggleKiListOpen()
-
-        //close tech list if open
-        if(techListOpen.value)
-            toggleTechListOpen()
+        setRemainingMK()
     }
 }

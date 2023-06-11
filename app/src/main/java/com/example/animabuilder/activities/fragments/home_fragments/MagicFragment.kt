@@ -10,9 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -244,7 +241,7 @@ fun MagicFragment(
                 Button(
                     //switch imbalance preference
                     onClick = {
-                        magFragVM.setImbalanceIsAttack(magFragVM.imbalanceIsAttack.value)
+                        magFragVM.setImbalanceIsAttack(!magFragVM.imbalanceIsAttack.value)
                     },
                     modifier = Modifier
                         .weight(0.3f)
@@ -596,7 +593,7 @@ private fun SpellRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //make purchase button if buyable row
-        if(buyable)
+        if(buyable && magFragVM.spellIsRemovable(displayItem))
             BuySingleSpellButton(
                 magFragVM,
                 displayItem,
@@ -646,13 +643,17 @@ private fun FreeSpellRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //button to buy free spell individually
-        BuySingleFreeSpellButton(
-            magFragVM,
-            lvlVal,
-            eleVal,
-            Modifier.weight(0.35f),
-            updateList
-        )
+        if(magFragVM.freeSpellIsRemovable(lvlVal, eleVal)){
+            BuySingleFreeSpellButton(
+                magFragVM,
+                lvlVal,
+                eleVal,
+                Modifier.weight(0.35f),
+                updateList
+            )
+        }
+        else
+            Spacer(Modifier.weight(0.35f))
 
         //display free spell values
         Text(

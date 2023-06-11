@@ -174,7 +174,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                     }
 
                 //stop acquisition if growth goes to zero
-                if(prevGrowth - toAdd.cost[takenCost] <= 0)
+                if(prevGrowth - 1 <= 0)
                     return R.string.fieldReductionRestriction
             }
 

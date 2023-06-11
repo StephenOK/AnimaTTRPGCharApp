@@ -54,4 +54,5 @@
 
     <string name = "mkRange">Martial Knowledge Range: </string>
     <string name = "totalMaintCost">Total Maintenance Cost: </string>
+    <string name = "predeterminedPrompt">Set the cost of this effect: </string>
 </resources>

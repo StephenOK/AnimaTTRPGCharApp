@@ -465,7 +465,7 @@ class CharacterFragmentViewModel(
          * @param input string item to now display
          */
         fun setInput(input: String){
-            //only change value if character does not have the indicated advantagae
+            //only change value if character does not have the indicated advantage
             if(primaryStat.charInstance.advantageRecord.getAdvantage(
                     "Increase One Characteristic to Nine",
                     primaryStat.charIndex,
@@ -522,6 +522,7 @@ class CharacterFragmentViewModel(
     fun refreshPage(){
         setExp(charInstance.experiencePoints.value.toString())
         primaryDataList.forEach{it.refreshItem()}
+        setSizeInput()
         setAppearInput(charInstance.appearance.value.toString())
         setGnosisDisplay(charInstance.gnosis.value.toString())
     }

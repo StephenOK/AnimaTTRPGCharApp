@@ -1,6 +1,8 @@
 package com.example.animabuilder.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -48,6 +50,7 @@ import java.io.IOException
  * Initially loads the CharacterPageFragment.
  */
 class HomeActivity : AppCompatActivity() {
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,6 +69,9 @@ class HomeActivity : AppCompatActivity() {
             attemptSave(filename, charInstance)
 
         setContent{
+            //prevent user from flipping app
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
             //get scaffold state, coroutine scope, and navigation controller
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -264,6 +270,7 @@ class HomeActivity : AppCompatActivity() {
 
                     //route to advantages page
                     composable(route = ScreenPage.Advantages.name){
+                        advantageFragVM.refreshPage()
                         AdvantageFragment(
                             advantageFragVM,
                             homePageVM

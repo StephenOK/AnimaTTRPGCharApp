@@ -219,8 +219,10 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         }
     )
 
-    val advantages = listOf(elementalCompatibility, naturalPath, contestedSpellMastery, magicDevelopmentAptitude,
-        halfTreeAttuned, improvedInnateMagic, unspokenCasting, gesturelessCasting, superiorMagicRecovery)
+    val advantages = listOf(
+        naturalPath, elementalCompatibility, halfTreeAttuned, unspokenCasting, gesturelessCasting,
+        contestedSpellMastery, magicDevelopmentAptitude, improvedInnateMagic, superiorMagicRecovery
+    )
 
 
 
@@ -375,6 +377,8 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null
     )
 
-    val disadvantages = listOf(oralRequirement, requireGestures, magicalExhaustion, shamanism, magicalTies,
-        slowMagicRecovery, magicBlockage, actionRequirement)
+    val disadvantages = listOf(
+        oralRequirement, requireGestures, shamanism, actionRequirement, magicalExhaustion, magicalTies,
+        slowMagicRecovery, magicBlockage
+    )
 }

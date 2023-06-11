@@ -244,5 +244,15 @@ class AdvantageFragmentViewModel(
         fun toggleOpen() {_isOpen.update{!isOpen.value}}
     }
 
-    init{updateAdvantagesTaken()}
+    init{
+        updateAdvantagesTaken()
+    }
+
+    /**
+     * Refreshes the page items on the fragment's reload.
+     */
+    fun refreshPage(){
+        //update the advantage list
+        updateAdvantagesTaken()
+    }
 }

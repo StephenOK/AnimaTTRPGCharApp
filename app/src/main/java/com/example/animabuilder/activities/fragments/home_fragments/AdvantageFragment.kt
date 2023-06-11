@@ -76,7 +76,8 @@ fun AdvantageFragment(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //display each list of base advantages
@@ -110,63 +111,64 @@ fun AdvantageFragment(
                 AdvantageRow(it, advantageFragVM, null, {}, null)
             }
         }
-    }
 
-    //display advantage choices if available
-    if(advantageFragVM.advantageCostOn.collectAsState().value)
-        AdvantageCostPick(
-            advantageFragVM
-        ){input: Int? ->
-            //notify user of failed acquisition
-            if(input != null)
-                Toast.makeText(
-                    context,
-                    context.getString(input),
-                    Toast.LENGTH_LONG
-                ).show()
-            else
-                advantageFragVM.toggleAdvantageCostOn()
 
-            homePageVM.updateExpenditures()
+        //display advantage choices if available
+        if(advantageFragVM.advantageCostOn.collectAsState().value)
+            AdvantageCostPick(
+                advantageFragVM
+            ){input: Int? ->
+                //notify user of failed acquisition
+                if(input != null)
+                    Toast.makeText(
+                        context,
+                        context.getString(input),
+                        Toast.LENGTH_LONG
+                    ).show()
+                else
+                    advantageFragVM.toggleAdvantageCostOn()
+
+                homePageVM.updateExpenditures()
+            }
+
+        //warn user of removal of gift action
+        if(advantageFragVM.giftAlertOpen.collectAsState().value){
+            AlertDialog(
+                onDismissRequest = {},
+                text = {
+                    Text(
+                        text = stringResource(R.string.giftWarning)
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        //remove gift advantage
+                        advantageFragVM.removeAdvantage(advantageFragVM.getGift()!!)
+
+                        //update expenditures after change
+                        homePageVM.updateExpenditures()
+
+                        //close gift alert
+                        advantageFragVM.toggleGiftAlertOn()
+                    }) {
+                        Text(text = stringResource(R.string.confirmLabel))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {advantageFragVM.toggleGiftAlertOn()}){
+                        Text(text = stringResource(R.string.cancelLabel))
+                    }
+                }
+            )
         }
 
-    //warn user of removal of gift action
-    if(advantageFragVM.giftAlertOpen.collectAsState().value){
-        AlertDialog(
-            onDismissRequest = {},
-            text = {
-                Text(
-                    text = stringResource(R.string.giftWarning)
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    //remove gift advantage
-                    advantageFragVM.removeAdvantage(advantageFragVM.getGift()!!)
-
-                    //update expenditures after change
-                    homePageVM.updateExpenditures()
-
-                    //close gift alert
-                    advantageFragVM.toggleGiftAlertOn()
-                }) {
-                    Text(text = stringResource(R.string.confirmLabel))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {advantageFragVM.toggleGiftAlertOn()}){
-                    Text(text = stringResource(R.string.cancelLabel))
-                }
-            }
-        )
+        //display an advantage's details if open
+        if(advantageFragVM.detailAlertOpen.collectAsState().value)
+            DetailAlert(
+                advantageFragVM.detailItem.collectAsState().value!!.name,
+                advantageFragVM.detailItem.collectAsState().value!!
+            ){advantageFragVM.toggleDetailAlertOn()}
     }
-
-    //display an advantage's details if open
-    if(advantageFragVM.detailAlertOpen.collectAsState().value)
-        DetailAlert(
-            advantageFragVM.detailItem.collectAsState().value!!.name,
-            advantageFragVM.detailItem.collectAsState().value!!
-        ){advantageFragVM.toggleDetailAlertOn()}
 }
 
 /**

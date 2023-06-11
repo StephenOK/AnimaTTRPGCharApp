@@ -130,6 +130,10 @@ class CustomTechniqueViewModel(
     //initialize checklist for element selection
     val elementChecklist = mutableMapOf<Element, MutableState<Boolean>>()
 
+    //initialize cost display for
+    private val _predeterminedCost = MutableStateFlow("20")
+    val predeterminedCost = _predeterminedCost.asStateFlow()
+
     //initialize checklist for deleting technique effects
     val deletionChecklist = mutableMapOf<TechniqueEffect, MutableState<Boolean>>()
 
@@ -735,34 +739,30 @@ class CustomTechniqueViewModel(
 
         //for each valid technique selection
         addedTechniques.forEach{
-            if(it != null){
-                //attempt to add the effect
-                val newInput =
-                    customTechnique.validEffectAddition(it, kiFragVM.getMartialRemaining() - additionCost)
+            //attempt to add the effect
+            val newInput =
+                customTechnique.validEffectAddition(it, kiFragVM.getMartialRemaining() - additionCost)
 
-                //add cost if no error
-                if(newInput == null){
-                    additionCost += it.mkCost
-                }
-
-                //return error if failed
-                else
-                    return newInput
+            //add cost if no error
+            if(newInput == null){
+                additionCost += it.mkCost
             }
+
+            //return error if failed
+            else
+                return newInput
         }
 
         //for each valid technique selection
         addedTechniques.forEach{
-            if(it != null) {
-                //retrieve the technique's element
-                it.elements = getSelectedElement(it)
+            //retrieve the technique's element
+            it.elements = getSelectedElement(it)
 
-                //add disadvantage flag if adding elemental binding
-                if(techniqueIndex.value == 35) it.elements += Element.Free
+            //add disadvantage flag if adding elemental binding
+            if(techniqueIndex.value == 35) it.elements += Element.Free
 
-                //add effects to technique
-                customTechnique.givenAbilities.add(it)
-            }
+            //add effects to technique
+            customTechnique.givenAbilities.add(it)
         }
 
         //reset dropdown and terminate method
@@ -775,9 +775,9 @@ class CustomTechniqueViewModel(
      *
      * @return list of effects selected by the user
      */
-    fun getSelectedEffects(): List<TechniqueEffect?>{
+    fun getSelectedEffects(): List<TechniqueEffect>{
         //initialize output list
-        val output = mutableListOf<TechniqueEffect?>()
+        val output = mutableListOf<TechniqueEffect>()
 
         //check the main table for a valid technique input
         mainChecklist.forEach{
@@ -801,6 +801,55 @@ class CustomTechniqueViewModel(
                 output.add(dataToEffect(it.key))
                 return@forEach
             }
+        }
+
+        //check for legal state technique addition
+        if(techniqueIndex.value == 14){
+            //merge two options into one technique
+            return if(output.size == 2)
+                    listOf(
+                        TechniqueEffect(
+                            output[0].name,
+                            "${output[0].effect} (${output[1].effect})",
+                            output[0].mkCost + output[1].mkCost,
+                            output[0].maintTotal + output[1].maintTotal,
+                            Pair(
+                                output[0].costPair.first + output[1].costPair.first,
+                                output[0].costPair.second + output[1].costPair.second
+                            ),
+                            mutableListOf(
+                                output[0].kiBuild[0] + output[1].kiBuild[0],
+                                output[0].kiBuild[1] + output[1].kiBuild[1],
+                                output[0].kiBuild[2] + output[1].kiBuild[2],
+                                output[0].kiBuild[3] + output[1].kiBuild[3],
+                                output[0].kiBuild[4] + output[1].kiBuild[4],
+                                output[0].kiBuild[5] + output[1].kiBuild[5]
+                            ),
+                            output[0].buildAdditions,
+                            output[0].elements,
+                            if(output[0].lvl > output[1].lvl) output[0].lvl else output[1].lvl
+                        )
+                    )
+
+                //return no technique if incomplete state technique
+                else
+                    listOf()
+        }
+
+        if(techniqueIndex.value == 38 && output.isNotEmpty()){
+            return listOf(
+                TechniqueEffect(
+                    output[0].name,
+                    output[0].effect,
+                    predeterminedCost.value.toInt() * -1,
+                    output[0].maintTotal,
+                    output[0].costPair,
+                    output[0].kiBuild,
+                    output[0].buildAdditions,
+                    output[0].elements,
+                    output[0].lvl
+                )
+            )
         }
 
         //return list of selections
@@ -841,8 +890,7 @@ class CustomTechniqueViewModel(
 
         //add the price of each selected effect
         getSelectedEffects().forEach{
-            if(it != null)
-                output += it.mkCost
+            output += it.mkCost
         }
 
         //return final cost
@@ -911,6 +959,20 @@ class CustomTechniqueViewModel(
             it.value.value = false
         }
     }
+
+    /**
+     * Sets the displayed value for the predetermination cost with an integer check.
+     *
+     * @param input integer to convert to string
+     */
+    fun setPredeterminedCost(input: Int){setPredeterminedCost(input.toString())}
+
+    /**
+     * Sets the displayed value for the predetermination cost.
+     *
+     * @param input new item to display
+     */
+    fun setPredeterminedCost(input: String){_predeterminedCost.update{input}}
 
     /**
      * Retrieves the total cost of ki build needed for one index.
@@ -1176,6 +1238,7 @@ class CustomTechniqueViewModel(
         fun setDisplay(input: Int){
             setDisplay(input.toString())
             home.kiBuild[index] = input
+            customTechVM.allAccs[index].setTotalDisplay()
         }
 
         /**
@@ -1185,7 +1248,6 @@ class CustomTechniqueViewModel(
          */
         fun setDisplay(input: String){
             _display.update{input}
-            customTechVM.allAccs[index].setTotalDisplay()
         }
     }
 

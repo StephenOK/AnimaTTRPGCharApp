@@ -180,12 +180,27 @@ class Ki(private val charInstance: BaseCharacter){
         takenAbilities -= item
 
         //make sure any other ability is not disqualified by this one's removal
-        takenAbilities.removeIf{
-            it.prerequisites != null && !takenAbilities.contains(it.prerequisites)
-        }
+        takenAbilities.removeIf{!isQualified(it)}
+
+        //remove techniques if Ki Control removed
+        if(!takenAbilities.contains(kiRecord.kiControl))
+            while(takenTechniques.isNotEmpty())
+                removeTechnique(takenTechniques[0])
 
         //update martial knowledge expenditure
         updateMkSpent()
+    }
+
+    /**
+     * Determines if the inputted Ki Ability is valid for the character to have.
+     * 
+     * @param input Ki Ability to check
+     * @return true if ability is a valid addition
+     */
+    fun isQualified(input: KiAbility): Boolean{
+        //return true for no prerequisites or all prerequisites met
+        return input.prerequisites == null ||
+                (takenAbilities.contains(input.prerequisites) && isQualified(input.prerequisites))
     }
 
     /**

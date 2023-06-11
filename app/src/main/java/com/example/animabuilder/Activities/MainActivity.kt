@@ -1,6 +1,8 @@
 package com.example.animabuilder.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -27,10 +29,14 @@ import com.example.animabuilder.view_models.models.MainPageViewModel
  * Gives the option to load, delete, or create a new character.
  */
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            //prevent user from flipping app
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
             //initialize current context
             val context = LocalContext.current as Activity
 

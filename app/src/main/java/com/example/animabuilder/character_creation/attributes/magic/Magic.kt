@@ -894,6 +894,24 @@ class Magic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Determines if a free spell of identical level and element is taken by the character.
+     *
+     * @param level desired level of the search
+     * @param type desired element of the search
+     * @return true if matching items found in a spell
+     */
+    fun hasIndividualFreeCopyOf(level: Int, type: Element): Boolean{
+        individualSpells.forEach{
+            if(it is FreeSpell){
+                if(it.level == level && findFreeSpellElement(it) == type)
+                    return true
+            }
+        }
+
+        return false
+    }
+
+    /**
      * Set the taken state of the Magic Ties disadvantage.
      *
      * @param input taken state of the Magic Ties disadvantage

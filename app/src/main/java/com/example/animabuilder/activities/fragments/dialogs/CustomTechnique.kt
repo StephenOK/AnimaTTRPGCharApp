@@ -470,10 +470,8 @@ fun CustomTechnique(
                         //proceed to next page if any ability was added
                         else if (customTechVM.getSelectionPrice() != 0) {
                             customTechVM.getSelectedEffects().forEach{
-                                if(it != null) {
-                                    it.elements = customTechVM.getSelectedElement(it)
-                                    customTechVM.getTechniqueEffects().add(it)
-                                }
+                                it.elements = customTechVM.getSelectedElement(it)
+                                customTechVM.getTechniqueEffects().add(it)
                             }
 
                             customTechVM.setPickingPrimary(false)
@@ -676,6 +674,29 @@ private fun TechniqueAbilityDropdown(
                     )
                 }
             }
+
+            //if selecting a predetermination effect
+            if(customTechVM.techniqueIndex.value == 38){
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Text(
+                            text = stringResource(R.string.predeterminedPrompt),
+                            modifier = Modifier
+                                .weight(0.6f),
+                            textAlign = TextAlign.Center
+                        )
+                        NumberInput(
+                            inputText = customTechVM.predeterminedCost.collectAsState().value,
+                            inputFunction = { customTechVM.setPredeterminedCost(it.toInt()) },
+                            emptyFunction = { customTechVM.setPredeterminedCost("") },
+                            modifier = Modifier
+                                .weight(0.4f)
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -812,7 +833,7 @@ private fun ElementalRow(
                 //make sure an effect is selected first
                 if(customTechVM.getSelectedEffects().isNotEmpty()){
                     //retrieve selection and clear elements
-                    val selection = customTechVM.getSelectedEffects()[0]!!
+                    val selection = customTechVM.getSelectedEffects()[0]
                     selection.elements.clear()
 
                     //for elemental binding of two elements

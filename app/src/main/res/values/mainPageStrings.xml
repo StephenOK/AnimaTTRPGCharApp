@@ -3,10 +3,13 @@
     <string name = "newCharacterTitle">NEW CHARACTER</string>
     <string name = "loadCharacterTitle">LOAD CHARACTER</string>
     <string name = "deleteCharacterTitle">DELETE CHARACTER</string>
+    <string name = "sharingTitle">Analytics Sharing</string>
 
     <string name = "newCharacterHeader">Save Character As:</string>
     <string name = "loadCharacterHeader">Load Character:</string>
     <string name = "deleteCharacterHeader">Choose Characters to Delete:</string>
+    <string name = "sharingHeader">Share your crash and performance data?</string>
+    <string name = "defaultShareNotice">Sharing is turned off by default. Any changes made apply on restart.</string>
 
     <string name = "newButtonConfirm">Create</string>
     <string name = "loadButtonConfirm">Load</string>

@@ -1,0 +1,80 @@
+package com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances
+
+import com.paetus.animaCharCreator.character_creation.equipment.CoinType
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Availability
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
+
+class Dwellings: GeneralCategory(listOf(
+    QualityModifier("Mediocre Quality", 0.5, Availability.Common),
+    QualityModifier("Decent Quality", 1.0, Availability.Common),
+    QualityModifier("Good Quality", 2.0, Availability.Common),
+    QualityModifier("Luxurious", 10.0, Availability.Common),
+    QualityModifier("Urban Area", 2.0, Availability.Common)
+)) {
+    val shack = GeneralEquipment(
+        "Shack",
+        15.0,
+        CoinType.Gold,
+        null,
+        Availability.Common,
+        null
+    )
+
+    val house = GeneralEquipment(
+        "House",
+        60.0,
+        CoinType.Gold,
+        null,
+        Availability.Common,
+        null
+    )
+
+    val largeHouse = GeneralEquipment(
+        "Large House",
+        150.0,
+        CoinType.Gold,
+        null,
+        Availability.Common,
+        null
+    )
+
+    val mansion = GeneralEquipment(
+        "Mansion",
+        800.0,
+        CoinType.Gold,
+        null,
+        Availability.Common,
+        null
+    )
+
+    val palace = GeneralEquipment(
+        "Palace",
+        2000.0,
+        CoinType.Gold,
+        null,
+        Availability.Uncommon,
+        null
+    )
+
+    val castle = GeneralEquipment(
+        "Castle",
+        30000.0,
+        CoinType.Gold,
+        null,
+        Availability.Rare,
+        null
+    )
+
+    init{
+        itemsAvailable.addAll(listOf(
+            shack,
+            house,
+            largeHouse,
+            mansion,
+            palace,
+            castle
+        ))
+    }
+}

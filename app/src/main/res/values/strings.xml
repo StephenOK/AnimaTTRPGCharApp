@@ -1,5 +1,5 @@
 <resources>
-    <string name = "app_name">AnimaBuilder</string>
+    <string name = "app_name">Anima Character Creator</string>
 
     <string name = "mainTitle">Anima: Beyond Fantasy</string>
     <string name = "mainSubtitle">Unofficial Character Creator</string>
@@ -7,8 +7,13 @@
     <string name = "nameText">Name</string>
     <string name = "levelText">Level</string>
 
+    <string name = "sendData">Send</string>
+    <string name = "notSendData">Don\'t Send</string>
+
     <string name = "openLabel">Open</string>
     <string name = "closeLabel">Close</string>
+
+    <string name="emptyItem"/>
 
     <string-array name = "primaryCharArray">
         <item>STR</item>
@@ -45,7 +50,6 @@
     <string name = "notApplicable">N/A</string>
 
     <string name = "descriptionLabel">Description</string>
-    <string name = "descriptionOfLabel">Description of </string>
 
     <string name = "pointsLabel">Points</string>
     <string name = "classLabel">Class</string>

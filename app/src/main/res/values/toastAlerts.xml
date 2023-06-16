@@ -3,6 +3,8 @@
     <string name = "emptyNewChar">File must have a name!</string>
     <string name = "noCharSelected">No character selected!</string>
 
+    <string name = "selectSharePreference">You haven\'t made a selection!</string>
+
     <string name = "saveMessage">Save successful!</string>
     <string name = "fileNotFound">Unable to find file!</string>
     <string name = "fileError">Failed to write data!</string>

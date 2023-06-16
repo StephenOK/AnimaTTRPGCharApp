@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "444666438098",
+    "project_id": "animabuilder",
+    "storage_bucket": "animabuilder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444666438098:android:3acc9a7b2edda454eaa80b",
+        "android_client_info": {
+          "package_name": "com.paetus.animaCharCreator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444666438098-d09nhbp2m8iugf5un451ao1uc0dtmc31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCijmPaQrP47K2QUwsktJzZ61AYLY-zeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444666438098-d09nhbp2m8iugf5un451ao1uc0dtmc31.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

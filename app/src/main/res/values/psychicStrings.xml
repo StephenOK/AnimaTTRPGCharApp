@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name = "psyPointLabel">Psychic Points</string>
-    <string name = "pointsInPotential">Psychic Points in Potential</string>
     <string name = "psyProjectionLabel">Psychic Projection</string>
     <string name = "psyPotentialLabel">Psychic Potential</string>
     <string name = "freePsyPointLabel">Free Psychic Points: </string>

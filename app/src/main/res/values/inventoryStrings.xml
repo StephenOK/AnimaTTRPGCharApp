@@ -24,9 +24,9 @@
     <string name = "maxCopperLabel">Copper Max: </string>
 
     <string name = "bonusWealthLabel">Bonus Wealth: %s</string>
-    <string name = "goldLabel">%1d GC</string>
-    <string name = "silverLabel">%1d SC</string>
-    <string name = "copperLabel">%1d CC</string>
+    <string name = "goldLabel">%.2f GC</string>
+    <string name = "silverLabel">%.2f SC</string>
+    <string name = "copperLabel">%.2f CC</string>
 
     <string name = "spentAmount">%s: %1d</string>
 

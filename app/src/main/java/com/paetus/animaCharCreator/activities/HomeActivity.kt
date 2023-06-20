@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.NavHost
@@ -72,6 +73,8 @@ class HomeActivity : AppCompatActivity() {
             //prevent user from flipping app
             this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+            val context = LocalContext.current
+
             //get scaffold state, coroutine scope, and navigation controller
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -79,48 +82,48 @@ class HomeActivity : AppCompatActivity() {
 
             //create viewModels for the home page and home alert items
             val homePageVM: HomePageViewModel by viewModels{
-                CustomFactory(HomePageViewModel::class.java, charInstance)
+                CustomFactory(HomePageViewModel::class.java, charInstance, context)
             }
 
             //create viewModels for each individual fragment
             val charFragVM: CharacterFragmentViewModel by viewModels{
-                CustomFactory(CharacterFragmentViewModel::class.java, charInstance)
+                CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
             }
 
             val combatFragVM: CombatFragViewModel by viewModels{
-                CustomFactory(CombatFragViewModel::class.java, charInstance)
+                CustomFactory(CombatFragViewModel::class.java, charInstance, context)
             }
 
             val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
-                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance)
+                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
             }
 
             val advantageFragVM: AdvantageFragmentViewModel by viewModels{
-                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance)
+                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
             }
 
             val modFragVM: ModuleFragmentViewModel by viewModels{
-                CustomFactory(ModuleFragmentViewModel::class.java, charInstance)
+                CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
             }
 
             val kiFragVM: KiFragmentViewModel by viewModels{
-                CustomFactory(KiFragmentViewModel::class.java, charInstance)
+                CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
             }
 
             val magFragVM: MagicFragmentViewModel by viewModels{
-                CustomFactory(MagicFragmentViewModel::class.java, charInstance)
+                CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
             }
 
             val summonFragVM: SummoningFragmentViewModel by viewModels{
-                CustomFactory(SummoningFragmentViewModel::class.java, charInstance)
+                CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
             }
 
             val psyFragVM: PsychicFragmentViewModel by viewModels{
-                CustomFactory(PsychicFragmentViewModel::class.java, charInstance)
+                CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
             }
 
             val equipFragVM: EquipmentFragmentViewModel by viewModels{
-                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance)
+                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
             }
 
             //scaffold for the home page

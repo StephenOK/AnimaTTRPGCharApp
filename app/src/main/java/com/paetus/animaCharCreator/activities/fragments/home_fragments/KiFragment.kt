@@ -368,7 +368,7 @@ private fun KiAbilityRow(
 
         //display ki ability name and cost
         Text(
-            text = ability.name,
+            text = stringResource(ability.name),
             modifier = Modifier
                 .weight(0.45f),
             textAlign = TextAlign.Center
@@ -454,7 +454,7 @@ private fun TechniqueRow(
 fun KiPreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass, LocalContext.current)
     kiFragVM.toggleTechListOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

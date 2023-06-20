@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
             //start up main page's viewModel
             val mainVM: MainPageViewModel by viewModels{
-                CustomFactory(MainPageViewModel::class.java, BaseCharacter())
+                CustomFactory(MainPageViewModel::class.java, BaseCharacter(), context)
             }
 
             Column(

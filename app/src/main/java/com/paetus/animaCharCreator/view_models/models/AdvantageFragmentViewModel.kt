@@ -113,7 +113,7 @@ class AdvantageFragmentViewModel(
         //for each advantage the character has
         takenAdvantages.forEach{
             //return found gift advantage
-            if(it.name == "The Gift")
+            if(it.name == R.string.gift)
                 return it
         }
 

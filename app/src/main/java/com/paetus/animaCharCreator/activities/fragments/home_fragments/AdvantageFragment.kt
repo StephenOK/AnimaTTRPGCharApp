@@ -165,7 +165,7 @@ fun AdvantageFragment(
         //display an advantage's details if open
         if(advantageFragVM.detailAlertOpen.collectAsState().value)
             DetailAlert(
-                advantageFragVM.detailItem.collectAsState().value!!.name,
+                stringResource(advantageFragVM.detailItem.collectAsState().value!!.name),
                 advantageFragVM.detailItem.collectAsState().value!!
             ){advantageFragVM.toggleDetailAlertOn()}
     }
@@ -280,8 +280,8 @@ private fun AdvantageRow(
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
-        if(takenAddition != null) item.name + takenAddition
-        else item.name
+        if(takenAddition != null) stringResource(item.name) + takenAddition
+        else stringResource(item.name)
 
     Row(
         modifier = Modifier
@@ -352,7 +352,7 @@ private fun HeldAdvantageDisplay(
     )
     {
         //toggle gift alert if advantage is gift
-        if(item.name == "The Gift")
+        if(item.name == R.string.gift)
             advantageFragVM.toggleGiftAlertOn()
 
         //otherwise, simply remove advantage

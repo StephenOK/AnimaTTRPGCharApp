@@ -41,27 +41,27 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         //search through each base list to find a match
         commonAdvantages.advantages.forEach{
             //return if a common advantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
         magicAdvantages.advantages.forEach{
             //return if a magic advantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
         psychicAdvantages.advantages.forEach{
             //return if a psychic advantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
         commonAdvantages.disadvantages.forEach{
             //return if a common disadvantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
         magicAdvantages.disadvantages.forEach{
             //return if a magic disadvantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
         psychicAdvantages.disadvantages.forEach{
             //return if a psychic disadvantage matches
-            if(it.name == toFind) return it
+            if(it.saveTag == toFind) return it
         }
 
         //return null for no match found
@@ -207,13 +207,14 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         }
 
         //check if able to take multiple times
-        if(toAdd.special == null && this.getAdvantage(toAdd.name) != null)
+        if(toAdd.special == null && this.getAdvantage(toAdd.saveTag) != null)
             return R.string.duplicateRestriction
         else if(taken != null && getAdvantage("Natural Knowledge of a Path", taken, takenCost) != null)
             return R.string.duplicatePathRestriction
 
         //create advantage to take
         val copyAdvantage = Advantage(
+            toAdd.saveTag,
             toAdd.name,
             toAdd.description,
             toAdd.effect,
@@ -276,7 +277,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if match is found
-            if(it.name == itemName) return it
+            if(it.saveTag == itemName) return it
         }
 
         //return null if no match
@@ -299,7 +300,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         //search through all acquired advantages
         takenAdvantages.forEach{
             //return if identical advantage found
-            if(it.name == itemName && it.picked == itemTaken && it.pickedCost == itemCost) return it
+            if(it.saveTag == itemName && it.picked == itemTaken && it.pickedCost == itemCost) return it
         }
 
         //return null if no match
@@ -366,7 +367,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
         //write advantage data
         takenAdvantages.forEach{
-            charInstance.addNewData(it.name)
+            charInstance.addNewData(it.saveTag)
             charInstance.addNewData(it.picked)
             charInstance.addNewData(it.pickedCost)
         }

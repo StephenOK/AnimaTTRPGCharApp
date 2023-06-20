@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "sylvResDesc">As a reflection of their former existence, the Sylvain Nephilim are exceptionally resistant to magic, psychic attacks, and disease. They apply a bonus of +10 to their Magic Resistance (MR) and Psychic Resistance (PsR), a +20 to Disease Resistance (DR), and a +5 to Physical Resistance (PhR) and Venom Resistance (VR). In addition, a Nephilim cannot choose the following Disadvantages: Sickly, Serious Illness, or Susceptible to Magic.</string>
+    <string name = "lightInclineDesc">All Sylvain possess a natural inclination to Light. That natural inclination gives them a special resistance of +10 against any effect based on The Light. However, that inclination also impedes them from choosing the Elemental Compatibility (Dark) Advantage.</string>
+    <string name = "sylvainHealingDesc">Sylvain possess an incredible capacity for recovering from physical injury. They add one point to their natural Regeneration.</string>
+    <string name = "lightSenseDesc">Sylvain perceive a Dark or Light essence emanating from certain reincarnated souls. Thus, they can sense the presence of any other Sylvain or Duk\'zarist Nephilim present - although that does not mean they can identify them as such. This ability does not enable Sylvain to detect an individual hidden by spells or Ki abilities.</string>
+    <string name = "sylvainSoulDesc">Like all Nephilim, the elvish soul of the Sylvain is conflicted by the contrast between what he learns while living and his ancient memories. For that reason, a Sylvain suffers a -4 penalty to all Experience Points awarded by the Game Master at the end of each gaming session.</string>
+
+    <string name = "giantDesc">Jayan add 2 points to their Size Characteristic and may not choose to reduce it using the Uncommon Size Advantage.</string>
+    <string name = "standFatigueDesc">The Jayan tire less than other characters with the same Constitution, and therefore they add 1 point to their maximum Fatigue number.</string>
+    <string name = "damageResDesc">Jayan souls make their bodies much more resistant to the shock produced by damage. As a result, they apply a +15 bonus to their Physical Resistance (PhR).</string>
+    <string name = "uncommonStrDesc">Because of their enhanced muscular development, Jayan add 1 point to their Strength. Additionally, Jayan may not use the Deduct Two Points from a Characteristic Disadvantage to lower their Strength.</string>
+    <string name = "spiritVisionDesc">The residual power of the Jayan\'s Third Eye has left them with the ability to see spirits under certain conditions. To do so, they must close their eyes and allow their unconscious to look for spiritual beings. While doing so, Jayan cannot see anything in the material world. This ability does not permit a character to see spells, mystical effects, or psychic matrices - only souls invisible to the human eye.</string>
+    <string name = "jayanMagSusDesc">Spells and mystical effects are especially effective against Jayan, who suffer a -10 penalty to their Magic Resistance (MR).</string>
+    <string name = "jayanSoulDesc">Like all Nephilim, the Jayan experiences conflict between what he learns while living and his ancient memories. For that reason, a Jayan suffers a -3 penalty to all Experience Points awarded by the Game Master ata the end of each gaming session.</string>
+
+    <string name = "withoutTraceDesc">When a D\'Anjayni travels barefoot, his tracks erase themselves as he goes. Anyone attempting to track a D\'Anjayni moving in this way suffers a -40 penalty to their Ability Check.</string>
+    <string name = "forgetDesc">When D\'Anjayni wish, they may pass unnoticed wherever they go; even those who saw them will not remember much about them. They are capable of having a conversation with one or more people while leaving those persons unable to remember their description or the topic of conversation. In game terms, anyone who sees or speaks with a D\'Anjayni character must pass a Magic Resistance (MR) Check of 100. Failure indicates that the person in question has forgotten the description of the D\'Anjayni and the conversation topic itself. This ability is considered the equivalent of an automatic mystical effect whose only conditions are an encounter with a D\'Anjayni character who has not mentioned his true name. It is almost impossible to detect the use of this ability, even for someone who can see magic. The persons affected do not realize anything unnatural has happened. A wizard must pass a magical Difficulty Check of Impossible to detect the use of this ability. This special skill ceases to have effect if the D\'Anjayni reveals his true name during the conversation, or if he runs into individuals who know his true identity.</string>
+    <string name = "commonAppearDesc">Because of their average looks, D\'Anjayni never possess an Appearance of less than 3 nor more than 7.</string>
+    <string name = "undetectDesc">The D\'Anjayni have the mystical ability to resist detection by magical or Ki-based means. For that reason, D\'Anjayni apply a bonus of +30 to their Resistance to detection. In addition, they have a natural understanding of the use of Ki Concealment, which they perform adding a bonus of +30.</string>
+    <string name = "silentWhisperDesc">It is quite difficult to hear the words of a D\'Anjayni if they are not directed at you. Anyone but the intended listener trying to overhear a D\'Anjayni applies a -60 penalty to the Ability Check.</string>
+    <string name = "danjayniSoulDesc">Like all Nephilim, the D\'Anjayni experience conflict between what they learn while living and their ancient memories. For that reason, a D\'Anjayni suffers a -3 penalty to all Experience Points awarded by the Game Master at the end of each gaming session.</string>
+
+    <string name = "orinieDesc">The mystical symbol with which the Ebudan are born is known as the Or\'inie. It works as a shield against anything that might threaten to turn them from their Sue\'Aman. As a consequence, Ebudan apply a bonus of +30 to their resistance against Forgetfulness and Emotional Control effects that might impede the fulfillment of their destiny. Once an Ebudan obtains his Sue\'Aman, this ability disappears completely.</string>
+    <string name = "celestEssenceDesc">When an Ebudan has achieved his set purpose, his full spiritual essence suffuses his body, preventing him from suffering natural physical injuries. In game terms, the Ebudan becomes invulnerable to any natural attack that isn\'t capable of damaging Energy.</string>
+    <string name = "seraphWingDesc">The moment they achieve their purpose, Ebudan recover part of their lost essence and gain two luminous wings. These energy wings represent the feathery appendages the Ebudan used to possess in their former lives. They can summon these wings of energy at will, but doing so requires an entire combat turn. An Ebudan\'s energy wings grant him Flight Value 12. They can only use this ability after they achieve their Sue\'Aman.</string>
+    <string name = "ebudanSoulDesc">Like all Nephilim, the Ebudan experience conflict between what they learn while living and their ancient memories. For that reason, an Ebudan suffers a -3 penalty to all Experience Points awarded by the Game Master at the end of each gaming session.</string>
+
+    <string name = "seeEssenceDesc">The eyes of the Daimah see the souls of the living immediately identifying the elemental or spiritual ties of any type of being. This ability is treated as an innate power of detection, but an individual can also resist it naturally with a Magic Resistance Check of 140.</string>
+    <string name = "forestSenseDesc">Though they cannot literally talk with plants, the Daimah can sense the feelings of nature (both plants and animals), detecting such things as fear, calm, or even just disquiet.</string>
+    <string name = "natureCureDesc">As long as they are within the forest, the soul of the Daimah provides their bodies with the essence of life around them. Therefore, while in thick forest or jungle, Daimah add three points to their Regeneration.</string>
+    <string name = "forestMoveDesc">The Daimah recognize nature as their home, and nature accepts them. No matter how thick the forest or how tangled the brush, Daimah suffer no penalties to movement.</string>
+    <string name = "smallSizeDesc">The Daimah are not usually tall or heavily built. They subtract 1 from their Size Characteristic.</string>
+    <string name = "daimahSoulDesc">Like all Nephilim, the Daimah experience conflict between what they learn while living and their ancient memories. For that reason, a Daimah suffers a -2 penalty to all Experience Points awarded by the Game Master at the end of each gaming session.</string>
+
+    <string name = "dukResDesc">The souls of the Duk\'zarist influence their human bodies at every stage of development, thereby greatly increasing their resistances. This ability acts differently in men and women. Male souls apply a bonus of +15 to all Resistance rolls except Physical Resistance (PhR), for which they receive +20. Female Duk\'zarist gain a +15 to all Resistance rolls except Magic Resistance (MR), for which they receive +20.</string>
+    <string name = "darkInclineDesc">The Duk\'zarist souls have an unbalanced inclination toward the Dark. That natural inclination gives them a special resistance of +10 against any effect based on The Dark. However, that inclination also impedes them from choosing the Elemental Compatibility (Light) Advantage.</string>
+    <string name = "deathWithstandDesc">When they are in a state between life and death, the Duk\'zarist do not need to pass a Physical Resistance (PhR) Check to survive; since their souls are so firmly wedded to their bodies, they automatically pass such checks.</string>
+    <string name = "dukRegenDesc">Duk\'zarist possess an incredible capacity for recovering from any physical injury. They add one point to their natural Regeneration.</string>
+    <string name = "limitedNeedsDesc">The Duk\'zarist need much less rest and nourishment than any other race; they can survive on one-third the sleep and food required by humans.</string>
+    <string name = "darkSenseDesc">Duk\'zarist perceive the Dark or Light essence emanating from certain reincarnated souls. Thus, they can sense the presence of any other Sylvain or Duk\'zarist Nephilim present - although that does not mean they can identify them as such. This ability does not enable Duk\'zarist to detect an individual hidden by spells or Ki abilities.</string>
+    <string name = "dukNightVisDesc">The eyes of the Duk\'zarist are more adapted to darkness than any other human being. In game terms, this ability is not as developed as that acquired through spending a Creation Point, but it permits the Duk\'zarist to reduce any penalty due to natural darkness by one-half.</string>
+    <string name = "devoteFireDesc">The psychic powers of the Duk\'zarist are naturally tied to fire. If they develop their mental abilities, the first one they must acquire is the discipline of Pyrokinesis.</string>
+    <string name = "perfectBodDesc">The essence of the Duk\'zarist prevents their bodies from developing any natural malformation. A Duk\'zarist cannot choose the following Disadvantages: Atrophied Limb, Blind, Deafness, Mute, Nearsighted, Physical Weakness, Serious Illness, Sickly, and Susceptible to Poisons.</string>
+    <string name = "metalAllergyDesc">The only weakness of the Duk\'zarist in their past lives was their vulnerability to metals, especially iron and iron-alloys. The original Duk\'zarist could be killed even by simple contact with metal; swords harmed them more because they were made of metal than because they were sharp. Although in a limited way, the reborn Duk\'zarist have inherited part of this disadvantage. If their skin makes contact with any metal containing iron, the Duk\'zarist must pass a check of their base Presence against a Difficulty of 60. If they fail, they suffer an adverse reaction causing an All Action Penalty equivalent to the margin by which they failed the check. If the metal is pure iron, the check is against a Difficulty of 80. These negative effects disappear at a rate of 10 points per minute. The Duk\'zarist Nephilim can use clothing and gloves to avoid these effects.</string>
+    <string name = "dukzaristSoulDesc">Like all Nephilim, the Duk\'zarist experience conflict between what they learn while living and their ancient memories. For that reason, a Duk\'zarist suffers a -5 penalty to all Experience Points awarded by the Game Master at the end of each gaming session.</string>
+
+    <string name = "charPointDesc">One of the character\'s attributes is greater than before.</string>
+    <string name = "charPointEffect">Add a point to the value of a single Characteristic.</string>
+    <string name = "charPointRestriction">Strength, Dexterity, Agility, and Constitution cannot be increased to more than 11 through this Advantage. Intelligence, Power, Willpower, and Perception cannot be increased to more than 13 through this Advantage.</string>
+
+    <string name = "acuteDesc">The character\'s senses are as developed as those of an animal.</string>
+    <string name = "acuteEffect">This Advantage adds 1 point to the character\'s Perception when making Characteristic Checks. It also adds a special bonus of +30 to Notice and Search.</string>
+
+    <string name = "artifactDesc">The character possesses a mystical device of enormous power.</string>
+    <string name = "artifactEffect">The player and the Game Master must agree on the abilities of the device. Spending additional points increases the capabilities of the object.</string>
+
+    <string name = "ambiDesc">An ambidextrous person can use both hands equally well.</string>
+    <string name = "ambiEffect">An ambidextrous character can perform maneuvers with either hand. In combat, he suffers only -10 to attacks with an additional weapon.</string>
+
+    <string name = "charTo9Desc">This advantage allows a player to increase the value of one of his character\'s Primary Characteristics.</string>
+    <string name = "charTo9Effect">Substitute one Characteristic\'s value for a 9, no matter what its original value was.</string>
+
+    <string name = "disciplineAccDesc">The character is gifted with the ability to use the powers of a single psychic discipline. Its abilities are limited to a single field and, no matter how much it increases his potential, he will not have access to powers that are greater than his natural capacities.</string>
+    <string name = "disciplineAccEff">This Advantage allows use of PP to acquire affinity to a single psychic discipline and the matrix powers.</string>
+
+    <string name = "charmDesc">The character has a certain personal magnetism that makes others react positively toward him. He always receives a positive reaction from people who do not know him, and some individuals may even be slightly more permissive with him.</string>
+    <string name = "charmEffect">The limits of this Advantage must be decided by the Game Master.</string>
+
+    <string name = "disquietDesc">A character with this Advantage can make people nervous whenever he wishes. He can also discourage violence against himself or force intimidating people to agree with him.</string>
+    <string name = "disquietEffect">The limits of this Advantage must be decided by the Game Master.</string>
+
+    <string name = "affinityDesc">A character with this Advantage has a special link with animals that allows him to obtain a positive reaction. He is also able to communicate in a limited way with them, understanding their general intentions, and vice versa.</string>
+    <string name = "affinityEffect">The limits of this Advantage must be decided by the GM. In any case, an animal trained to attack will still do so in spite of this Advantage, but probably after giving a warning and offering a character an opportunity to escape. When combat against an animal is unavoidable, a character with this Advantage will always be the last person attacked if he is in a group.</string>
+
+    <string name = "dangerSenseDesc">Characters with this Advantage have a sixth sense, which allows them to detect when something dangerous approaches or threatens them - though they will not be able to detect the origin or nature of the danger until they see it.</string>
+    <string name = "dangerSenseEff">The character cannot be taken by surprise, unless his opponent\'s Initiative score is 150 points or more higher than his.</string>
+
+    <string name = "beenAroundDesc">The character has already had experiences in the real world, by which he has learned great lessons.</string>
+    <string name = "beenAroundEff">The character begins the game with 50, 100, or 150 additional Experience Points, depending on the amount of Creation Points spent. For example, spending 3 CP increases the character\'s Experience Points by 150. This increase permits a conventional rise in level if the necessary point total is reached.</string>
+
+    <string name = "subjAptDesc">A character with this Advantage has an enormous capacity to learn a single Secondary Ability, which allows him to develop it with very little effort.</string>
+    <string name = "subjAptEff">This Advantage reduces the Development Cost of a single Secondary Ability for each Creation Point spent. For example, a Wizard\'s player could reduce the cost of the Composure ability from 3 to 2 if he spent 1 point on this Advantage, or even to 1 if he spent 2 points.</string>
+    <string name = "subjAptRestriction">Development Costs cannot be reduced below 1. This Advantage works only for Secondary Abilities.</string>
+
+    <string name = "natPsyPowDesc">The character has a limited psychic capacity that allows him to use one Psychic Ability unconsciously. He doesn\'t know the origin of the power or have complete control over it, but he can use it whenever he needs to.</string>
+    <string name = "natPsyPowEff">The character can naturally use one specific Psychic Ability. He is not a true psychic and cannot use Psychic Points to acquire new abilities or to harness the power that he has. His psychic potential is not based on Willpower and does not require rolling dice, but automatically is Difficult (DIF). The chosen power can be of any level, but it cannot have a base requirement greater than Difficult. It can be used once per minute without the character suffering a penalty, but each additional use without the required rest inflicts 1 point of Fatigue. Spending additional points increases the natural psychic potential to Very Difficult (VDF) and Absurd (ABS), respectively.</string>
+
+    <string name = "fieldAptDesc">As per Aptitude in a Subject, except that in this case, the character has a great capacity to learn an entire area of Secondary Abilities.</string>
+    <string name = "fieldAptEff">The Development Cost for a field of Secondary Abilities is reduced by 1 point. If the character\'s class offers a Secondary Ability within this field at a reduced cost, the benefits of this Advantage apply in addition to the class benefit. For example, if a Ranger decides to reduce the cost of the abilities of the Intellectual field, these will cost 2 instead of 3. The Medicine ability, which normally costs 2, will now cost only 1.</string>
+    <string name = "fieldAptRestriction">Development Costs cannot be reduced below 1. This Advantage works only for Secondary Abilities.</string>
+
+    <string name = "charRerollDesc">This Advantage allows a player to modify one of his character\'s Primary Characteristics.</string>
+    <string name = "charRerollEff">Players may roll one additional die once they have generated Characteristics and use the result in place of one of the previous rolls. The new number cannot be less than the character\'s lowest roll.</string>
+    <string name = "charRerollRestriction">This Advantage is not compatible with the fourth method of generating Characteristics.</string>
+
+    <string name = "mmDesc">The Martial Knowledge of a character with this Advantage is superior to others of his level. Usually, the character has received special training that has allowed him to explore his Ki abilities - although it is also possible that he has simply been born with enormous natural ability.</string>
+    <string name = "mmEff">Adds 40 points to a character\'s Martial Knowledge (MK). Additional Creation Points increase this amount to 80 and 120 points, respectively. For example, a character whose player spends 2 Creation Points would receive 80 additional points to his Martial Knowledge.</string>
+
+    <string name = "goodLuckDesc">Characters with this Advantage are exceptionally lucky in everything they do and very rarely commit a serious mistake.</string>
+    <string name = "goodLuckEff">The required number to fumble is reduced by 1 point. In normal circumstances, therefore, the character will only fumble on a roll of 2. If a character with this Advantage attains mastery in any ability, he will fumble only on a 1 when using it.</string>
+
+    <string name = "kiRecoverDesc">This Advantage allows a character\'s spiritual energy to recover more quickly than normal.</string>
+    <string name = "kiRecoverEff">The character recovers 1 point of Ki every ten minutes, instead of every hour. Spending additional Creation Points decreases the recovery time to five minutes and one minute, respectively.</string>
+
+    <string name = "jackDesc">Characters with this Advantage can adapt to any need that arises and develop knowledge in all fields and subjects. No matter how rare or unusual the Secondary Ability needed, they will always shave some knowledge or skill useful in that situation.</string>
+    <string name = "jackEff">The character never applies the -30 penalty for not spending DP in a Secondary Ability, and he also receives a special bonus of +10 in all his Secondary Abilities.</string>
+
+    <string name = "natArmorDesc">The character has extremely resistant skin and very hard muscles - such that it is very difficult to penetrate them.</string>
+    <string name = "natArmorEff">Grants natural armor of 2 against all classes of attacks except Energy-based ones. Although it counts as armor, penalties are not applied for using additional armor layers.</string>
+
+    <string name = "mysArmorDesc">The character\'s aura forms a layer of mystical energy that protect him against supernatural attacks.</string>
+    <string name = "mysArmorEff">Grants a character a natural armor of 4 against Energy-based attacks. Although it counts as armor, penalties are not applied for using additional armor layers.</string>
+
+    <string name = "untiringDesc">A character with this Advantage possesses a superior endurance relative to what his Constitution would indicate.</string>
+    <string name = "untiringEff">A player can add 3 points to his character\'s Fatigue. Spending additional Creation Points adds 6 and 9 points respectively. Thus a character whose player spends 2 Creation Points on this Advantage would add 6 to his Fatigue score.</string>
+
+    <string name = "uncommonSizeDesc">A character with this Advantage possesses an unusual Size relative to his Strength and Constitution. This allows someone who should be a colossal mass of muscles to be a small person, or vice versa.</string>
+    <string name = "uncommonSizeEff">The player can increase or decrease his character\'s Size up to 5 points during character creation.</string>
+
+    <string name = "startWealthDesc">The character has a great fortune in materials and equipment.</string>
+    <string name = "startWealthEff">This Advantage provides starting money or equipment valued at 2,000 gold crowns (GC). Further points spent increase this amount to 5,000 and 10,000 respectively.</string>
+    <string name = "startWealthRestriction">The Game Master may prefer to give a different amount of money, tailored to his game. In this case, both the GM and the player should decide the amount.</string>
+
+    <string name = "regenDesc">Wounds suffered by the character heal easily.</string>
+    <string name = "regenEff">This Advantage increases the character\'s Regeneration by two levels. Spending additional points increases Regeneration by four and six levels, respectively.</string>
+
+    <string name = "elanDesc">A character with this Advantage has attracted the attention of a Shajad or a Beryl. Generally, this means that an ancestor of the character was bound to the being and it still maintains some type of bond with all the members of the family. It is also possible that this attention is due to some actions the character has taken. At the moment, he enjoys its favor - although after the player begins playing his character, the relationship will depend on how he behaves.</string>
+    <string name = "elanEff">The character has Elan 25 for the entity he chooses. Spending additional points increases the level to 45 and 60, respectively. Thus, a character whose player spent 2 Creation Points on this Advantage would have Elan of 45 with the particular Shajad or Beryl whose favor he enjoys.</string>
+
+    <string name = "painImmuneDesc">A character with this Advantage is especially resistant to the effects of pain and fatigue.</string>
+    <string name = "painImmuneEff">Penalties caused by pain and Fatigue are reduced by half.</string>
+
+    <string name = "giftDesc">The character can feel and control supernatural energies inherent within his own soul. Magic flows through his very spirit, and with the appropriate knowledge, the character with this Advantage will be able to cast spells.</string>
+    <string name = "giftEff">The character can see and use magic. He also adds a special bonus of +10 to his MR, since his supernatural nature better resists mystical effects.</string>
+
+    <string name = "seeSuperDesc">A character with this Advantage can perceive the Soul Flow and at the same time perceive the energy of psychic matrices.</string>
+    <string name = "seeSuperEff">The character sees supernatural things - including magic and psychic matrices - as spiritual creatures. He does not apply the blinded penalty in any of these situations.</string>
+
+    <string name = "nightVisDesc">This Advantage allows a character to see in the dark and to adapt quickly to any change in light intensity.</string>
+    <string name = "nightVisEff">The character may ignore any penalty caused by the dark - except for magically induced dark or absolute lack of light, in which case the penalty is reduced by half.</string>
+
+    <string name = "fortuneDesc">A Fortunate character enjoys true luck. He can often escape difficult situations due to his lucky star.</string>
+    <string name = "fortuneEff">The limits of this Advantage must be decided by the Game Master. In any case, the character will never suffer the negative effects of a trap or an attack determined solely by chance.</string>
+
+    <string name = "allDiscDesc">Characters with this Advantage may use any type of psychic discipline and its abilities.</string>
+    <string name = "allDiscEff">This Advantage enables the character to use as many Psychic Disciplines as he wishes using his Psychic Points.</string>
+
+    <string name = "reflexDesc">The character has exceptional reflexes that allow him to respond quickly to any situation.</string>
+    <string name = "reflexEff">Grants a special bonus of +25 to a character\'s initiative score. Spending additional Creation Points will increase this bonus to +45 and +60, respectively. Thus, a character whose player spends 2 Creation Points on this Advantage receives a +45 bonus to his Initiative score.</string>
+
+    <string name = "learningDesc">Characters with this Advantage possess an enormous capacity to learn and develop their potential, always gaining the maximum benefit from whatever they have seen or done.</string>
+    <string name = "learningEff">Characters gain an additional 3 Experience Points when the Game Master grants points at the end of each game session. Spending additional Creation Points increases the benefit to 6 and 9 points respectively.</string>
+
+    <string name = "natLearnDesc">Characters with this Advantage naturally improve in a specific Secondary Ability.</string>
+    <string name = "natLearnEff">Grants a character an innate special modifier of +10 per level in a single Secondary Ability. Add this modifier to any other innate class-based bonus the character receives. Spending additional points on this Advantage increases the bonus to +20 and +30, respectively. Thus, a character whose player spends 2 Creation Points on this Advantage would receive a modifier of +20 per level to a single Secondary Ability.</string>
+
+    <string name = "fieldLearnDesc">As Natural Learner, but in this case the character improves in all the Secondary Abilities that belong to a certain field.</string>
+    <string name = "fieldLearnEff">Grants a special +5 per level bonus to all the Secondary Abilities in a field. Add this bonus to any other innate class-based bonus the character receives. Spending an additional point on this Advantage increases the bonus to +10. Thus a character whose player spends 3 Creation Points on this Advantage would receive a modifier of +10 per level to all Secondary Abilities in Athletics, for example.</string>
+
+    <string name = "exMagResDesc">Characters with this Advantage possess heightened resistance to magical attacks and effects.</string>
+    <string name = "exMagResEff">Add a special bonus of +25 to Magic Resistance (MR). Spending a second Creation Point increases the bonus to +50.</string>
+
+    <string name = "exPhysResDesc">Characters with this Advantage possess heightened resistance to physical attacks and effects. Damage, poisons, and disease do not affect them as they do other people.</string>
+    <string name = "exPhysResEff">Add a special bonus of +25 to Physical Resistance (PhR), Venom Resistance (VR), and Disease Resistance (DR). Spending a second Creation Point increases the bonus to +50.</string>
+
+    <string name = "exPsyResDesc">The mind fo a character with this Advantage possesses very strong mental barriers that protect him from psychic attacks and other negative psychic effects.</string>
+    <string name = "exPsyResEff">This Advantage adds a special bonus of +25 to a character\'s Psychic Resistance (PsR). Spending a second Creation Point increases the bonus to +50.</string>
+
+    <string name = "lightSleepDesc">A character with this Advantage remains partially conscious while sleeping and is able to wake at the slightest noise or movement.</string>
+    <string name = "lightSleepEff">The character applies a penalty of only -20 to his Notice ability while sleeping.</string>
+
+    <string name = "elementCompDesc">A character with this Advantage is naturally compatible with the powers of a specific magical path, being simultaneously weaker in its opposite. His essence is bound strongly to this element, and his magic is more powerful when he uses those spells.</string>
+    <string name = "elementCompEff">The character has a special bonus of +20 to his MA and to his MR in the magical path that he chooses. When he uses spells of the opposed path, he has a penalty of -20 to his MA and to his MR. If the chosen path is necromancy, apply the penalty to all other paths.</string>
+
+    <string name = "natPathDesc">A character with this Advantage possesses the capacity to cast certain spells naturally without having to study them. He can unconsciously weave the powers of the Soul Flow for one Path - as if the Path were simply responding to his abilities. The character knows how to use the spells perfectly, but he does not understand the theory behind them, nor can he explain it to others.</string>
+    <string name = "natPathEff">This Advantage grants innate knowledge of a Path at level 40 without investing Magic Levels points. As it is innate knowledge, the wizard can continue to develop it beyond level 40 by spending new Magic Level points.</string>
+    <string name = "natPathSpec">This Advantage can be acquired again for different Paths.</string>
+
+    <string name = "contestMasterDesc">The attack spells of a character with this Advantage are greater when it clashes against another Supernatural Beam.</string>
+    <string name = "contestMasterEff">The character applies a bonus of +50 to his roll to calculate the result of a Collision against another beam.</string>
+
+    <string name = "magDevAptDesc">A character with this Advantage has the capacity to understand and achieve levels of power with his spells far greater than his Intelligence would normally allow.</string>
+    <string name = "magDevAptEff">A player can add 3 points to his character\'s Intelligence to determine the maximum potential of the spell. This bonus is not applied to any other ability - not even to calculate the character\'s level of magic.</string>
+
+    <string name = "halfTreeDesc">As in Elemental Compatibility, but in this case the character is naturally compatible with the magic of half of the Mystical Tree.</string>
+    <string name = "halfTreeEff">The wizard has a special bonus of +20 to his MA and his MR in the five magical Paths of a segment of the Tree. In the rest, he has a penalty of -20 to his MA and his MR.</string>
+    <string name = "halfTreeRestriction">Necromancy is not included in this Advantage.</string>
+
+    <string name = "innateDesc">A character with this Advantage cna execute his innate spells with a greater potential than normal.</string>
+    <string name = "innateEff">The innate spells of the wizard add +10 to their potential as indicated by their MA. Additional Creation Points increase the value to +20 and +30, respectively. Thus a wizard with a MA of 100 whose player spent 2 points in this Advantage could cast his innate spells with a value of up to 60 (40 by his MA, plus 20 due to the Advantage).</string>
+
+    <string name = "unspokenDesc">A character with this Advantage does not need to speak to control the powers of the Soul Flow of souls.</string>
+    <string name = "unspokenEff">The character can cast spells in complete silence without reducing his MA.</string>
+
+    <string name = "gesturelessDesc">A character with this Advantage does not need to make physical gestures to use his magic; he can take any type of physical action without affecting his powers.</string>
+    <string name = "gesturelessEff">The character does not reduce his MA if unable to gesture.</string>
+
+    <string name = "superRecoverDesc">The essence of a character with this Advantage acts like a magnet for magic, and he is able to regenerate his power at a faster rate than that of other mystical individuals.</string>
+    <string name = "superRecoverEff">The character recovers his Zeon at twice his normal Zeonic regeneration rate. Spending additional Creation Points will triple or quadruple the normal rate.</string>
+
+    <string name = "amplifyPowerDesc">A character with this Advantage can maintain his psychic powers with more force.</string>
+    <string name = "amplifyPowerEff">Any powers maintained in this way are one difficulty level higher than what the psychic could normally attain.</string>
+
+    <string name = "psyPointRecoverDesc">A character with this Advantage can easily recover from using his abilities.</string>
+    <string name = "psyPointRecoverEff">The character\'s recovery rate for Psychic Points is 1 point every 10 minutes. Spending additional Creation Points increases the rate to 1 point every five minutes or every minute, respectively.</string>
+
+    <string name = "psyFatResDesc">A character with this Advantage never experiences exhaustion when using his psychic powers.</string>
+    <string name = "psyFatResEff">If a character fails in the use of one of his powers, he does not lose Fatigue when he has used up his available PP. Third level powers are not affected by this Advantage.</string>
+
+    <string name = "passiveConcDesc">A character with this Advantage can concentrate in any situation, no matter the difficulty or complications.</string>
+    <string name = "passiveConcEff">The psychic can concentrate to harness a power even while executing active actions.</string>
+
+    <string name = "psyInclineDesc">A character with this Advantage has developed one of his Psychic Disciplines more than the rest of his abilities.</string>
+    <string name = "psyInclineEff">The character automatically gains one level of difficulty greater than normal when using the powers of a specific discipline.</string>
+
+    <string name = "badLuckDesc">Characters with this Disadvantage have very bad luck in doing what they set out to do; they fail much more than they would like.</string>
+    <string name = "badLuckEff">The required number for a fumble increases by 2 points. Normal abilities, therefore, fumble on a result of 5 (4 if the character possesses mastery in that ability).</string>
+
+    <string name = "focusDesc">Characters with the Advantage can harness their ability more than normal and focus their powers on a particular objective.</string>
+    <string name = "focusEff">Psychic Points spent to improve Psychic Projection increase the ability by +20 instead of +10.</string>
+
+    <string name = "exConcDesc">A character with this Advantage can concentrate much more than most psychics, thereby gaining greater benefits from his abilities.</string>
+    <string name = "exConcEff">The psychic doubles the bonus he normally gains from concentration. For example, if he concentrates for a full round, he gains +20 instead of +10.</string>
+
+    <string name = "blindDesc">A character with this Disadvantage is completely blind.</string>
+    <string name = "blindEff">The character cannot use any ability that requires sight. He applies the blinded penalty at all times.</string>
+
+    <string name = "deafDesc">A character with this Disadvantage cannot hear anything.</string>
+    <string name = "deafEff">The character cannot use any ability that requires hearing.</string>
+
+    <string name = "muteDesc">A character with this Disadvantage is incapable of speaking.</string>
+    <string name = "muteEff">The character cannot speak.</string>
+
+    <string name = "nearsightDesc">A character with this Disadvantage cannot see well. Many things appear blurry, and he has difficulty even reading.</string>
+    <string name = "nearsightEff">Apply a -50 penalty to any Notice and Search rolls using vision, and a -3 to any Perception Checks that require it. This penalty also applies to aiming. A character can reduce this penalty somewhat (as determined by the GM) by obtaining glasses.</string>
+
+    <string name = "exclusiveDesc">A character with this Disadvantage is accustomed to fighting exclusively with a specific weapon and therefore is less able to fight with other weapons.</string>
+    <string name = "exclusiveEff">The character applies a penalty of -30 to his combat ability with any weapon other than his preferred one.</string>
+    <string name = "exclusiveRestriction">Only classes in the Domine, Fighter, Prowler, and Novel Archetypes can acquire this Disadvantage.</string>
+
+    <string name = "allergyDesc">A character with this Disadvantage suffers from some type of allergy which is so serious that, by mere contact or inhalation, he will have a terrible allergic reaction lasting hours. Some examples of typical allergies are to metal, pollen, or even sunlight.</string>
+    <string name = "allergyEff">On making contact with the allergen, a character suffers penalties between -40 to -80 on all actions, depending on the severity or the length of time in contact with the allergen.</string>
+
+    <string name = "viceDesc">A character with this Disadvantage has an urgent need to take some type of action or to consume a specific substance daily and will do anything necessary to satisfy his vice - otherwise he will begin to feel very nervous and go into withdrawal.</string>
+    <string name = "viceEff">The character applies a cumulative penalty of -10 for every day that passes without satisfying his addiction (up to -100).</string>
+
+    <string name = "atrophyDesc">A character with this Disadvantage has a severe problem with one of his limbs. This limb may shake all the time, or it may not respond when most needed.</string>
+    <string name = "atrophyEff">The character applies a penalty of -80 to all physical actions that require the use of the atrophied limb.</string>
+
+    <string name = "illnessDesc">A character with this Disadvantage suffers from some type of degenerative disease that will end up killing him. Usually, he has an average of little more than half a year of life remaining when beginning the game. However, the period can be greater or lesser if the GM needs it to fit within the time frame of his campaign. A character with this Disadvantage is not only very playable, but he can also have an additional objective in finding a cure for himself.</string>
+    <string name = "illnessEff">The character applies a cumulative penalty of -10 to all actions for each month of game time that passes. The GM secretly determines the date when the character will die.</string>
+
+    <string name = "physWeakDesc">A character with this Disadvantage is exceptionally weak physically; whenever he receives a critical wound, he has a strong possibility of dying or of suffering irreversible damage.</string>
+    <string name = "physWeakEff">Reduce the Physical Resistance (PhR) of a character by half.</string>
+
+    <string name = "deepSleepDesc">A character with this Disadvantage sleeps very deeply and has difficulty awakening. He will remain asleep even with light physical contact, and when he finally does awaken, he will be stunned for several minutes.</string>
+    <string name = "deepSleepEff">The character applies a penalty of -200 to any Perceptive roll while sleeping. For the first ten turns after waking, he has a penalty of -40 to all actions.</string>
+
+    <string name = "charDeductDesc">One of the Characteristics of a character with this Disadvantage is less developed than it should be.</string>
+    <string name = "charDeductEff">Deduct 2 points from one of the character\'s Primary Characteristics.</string>
+    <string name = "charDeductRestriction">Characters can only acquire this Disadvantage once. You cannot reduce a Characteristic below 3.</string>
+
+    <string name = "unfortuneDesc">Misfortune follows the character wherever he goes. Terrible things happen to him no matter how much he tries to avoid them.</string>
+    <string name = "unfortuneEff">The GM will have to interpret the limits of this Disadvantage. In a group, an Unfortunate character will always be the one who "randomly" falls in the trap, and he will be the first one attacked when chance decides who is hit first.</string>
+
+    <string name = "possessedDesc">A character with this Disadvantage is easily controlled by any being with the ability to affect his mind or alter his personality - even if the character\'s will is strong.</string>
+    <string name = "possessedEff">The character receives -50 to any Physical Resistance or Magic Resistance against any type of domination or possession capable of modifying his conduct.</string>
+
+    <string name = "exhaustDesc">A character with this Disadvantage is vulnerable to Fatigue. Not only will he tire more easily than others, but he particularly suffers the effects of Fatigue.</string>
+    <string name = "exhaustEff">Doubles Fatigue penalties to actions and reduces the base Fatigue of the character by 1 point.</string>
+
+    <string name = "phobiaDesc">A character with this Disadvantage experiences a terrible fear of something, which forces him to behave irrationally in its presence. The exact nature of the phobia is at the discretion of the GM.</string>
+    <string name = "phobiaEff">The character suffers the Fear State whenever he encounters the object of his phobia.</string>
+
+    <string name = "painVulnDesc">The character has no resistance to physical pain, which terrifies him.</string>
+    <string name = "painVulnEff">Doubles any penalty caused by pain, including those produced by criticals or mystical effects.</string>
+
+    <string name = "sicklyDesc">A character with this Disadvantage suffers from bad health and sickens easily.</string>
+    <string name = "sicklyEff">Reduce the character\'s Disease Resistance (DR) by half.</string>
+
+    <string name = "slowHealDesc">A character with this Disadvantage possesses a very low recuperative capacity and recovers from wounds with great difficulty - even with supernatural aid.</string>
+    <string name = "slowHealEff">The character recovers only half the Life Points he should by whatever means, whether through normal or magical recuperation.</string>
+
+    <string name = "slowLearnDesc">A character with this Disadvantage cannot learn as quickly as a normal individual.</string>
+    <string name = "slowLearnEff">The character suffers a penalty of -4 Experience Points to those granted by the GM at the end of a session. An additional point in this Disadvantage increases the penalty to -8.</string>
+
+    <string name = "slowReactDesc">The character\'s reflexes leave him ill-prepared to respond quickly to events.</string>
+    <string name = "slowReactEff">The character applies a special penalty of -30 to his Initiative. An additional point in this Disadvantage increases the penalty to -60.</string>
+
+    <string name = "magSusceptDesc">A character with this Disadvantage is easily affected by magical energies</string>
+    <string name = "magSusceptEff">Reduce the character\'s MR by half.</string>
+
+    <string name = "venSusceptDesc">A character with this Disadvantage cannot combat the negative effects of any type of harmful substance.</string>
+    <string name = "venSusceptEff">Reduce the character\'s Venom Resistance (VR) by half.</string>
+
+    <string name = "unattractiveDesc">A character with this Disadvantage suffers from terrible deformities that make him very distasteful to look upon.</string>
+    <string name = "unattractiveEff">This Disadvantage reduces a character\'s Appearance to 2.</string>
+    <string name = "unattractiveRestriction">The character must have a minimum of 7 in Appearance and it must have been generated by means of a die roll, not chosen by the player.</string>
+
+    <string name = "tempVulnDesc">A character with this Disadvantage is particularly vulnerable to heat or cold (player\'s choice).</string>
+    <string name = "tempVulnEff">The character suffers a penalty of -80 to his Resistance against the chosen element and -30 to all actions in extreme climates.</string>
+
+    <string name = "requireOralDesc">A character with this Disadvantage cna only cast spells if he can speak</string>
+    <string name = "requireOralEff">The character must be able to speak to accumulate magic and to cast his spells.</string>
+
+    <string name = "requireGestureDesc">A character with this Disadvantage must have complete freedom of movement in order to control or use his powers.</string>
+    <string name = "requireGestureEff">The character must move freely to accumulate magic and cast spells.</string>
+
+    <string name = "magExhaustDesc">A character with this Disadvantage suffers intense fatigue whenever he uses magic. The mage will exhaust himself if he casts spells of great power, weakening if he uses his abilities too much.</string>
+    <string name = "magExhaustEff">The mage loses 1 point of Fatigue when casting a spell with a potential greater than 100, 2 if it is greater than 200, and 3 if it is greater than 300.</string>
+
+    <string name = "shamanDesc">The magic practiced by this character has a tribal and shamanic character. His supernatural powers are tied to the material world, and he needs certain components to channel them and cast spells.</string>
+    <string name = "shamanEff">The character requires material components to cast spells. Each spell requires a different component as determined by the GM - according to its origin and the knowledge of the character.</string>
+
+    <string name = "magTiesDesc">The powers of a character with this Disadvantage are tied to the same roots as the magical paths, so his capacity to develop or specify his own spells is practically impossible. The character obtains knowledge of his paths only and cannot research his own spells.</string>
+    <string name = "magTiesEff">The magician cannot choose free spells of his magical paths or freely access chosen spells.</string>
+
+    <string name = "slowMagRecDesc">Magic has problems passing through the wizard\'s essence; he experiences difficulties recovering power he has used.</string>
+    <string name = "slowMagRecEff">Reduce the Zeonic regeneration of the character by half.</string>
+
+    <string name = "magBlockDesc">Magic does not flow naturally through the body and soul of a character with this Disadvantage. Some type of blockage prevents him from channeling the powers of the environment, and his own soul does not regenerate magic either. When he uses his power, the character never recovers it by himself. The only way he can do so is to feed on the mystical energies of other magical beings or objects.</string>
+    <string name = "magBlockEff">The character lacks Zeonic regeneration and does not naturally recover the points of Zeon he consumes. He regains magic only by draining objects that allow it or living beings with the Gift.</string>
+    <string name = "magBlockRestriction">This Disadvantage cannot be combined with Slow Recovery of Magic</string>
+
+    <string name = "requireActionDesc">The control that a character has over the powers of the Soul Flow is fickle, and they respond for him only while he performs a certain action. If, for example, his magic is tied to dance, his spells will work only while he dances. It is possible that the magical powers work solely in specific situations or conditions, such as during the day or with one\'s feet on the ground.</string>
+    <string name = "requireActionEff">The character may use magic only if the specific action is performed or the specific conditions of the Disadvantage are met. If the action is a Secondary Ability, the character must roll a check against Difficult (DIF) to cast his spells.</string>
+
+    <string name = "psyExhaustDesc">The psychic powers of a character with this Disadvantage cause great physical stress upon his body, leaving him terribly exhausted even when using his low-level psychic abilities.</string>
+    <string name = "psyExhaustEff">The character loses double the points of Fatigue indicated whenever using psychic powers.</string>
+
+    <string name = "psyConsumptDesc">The psychic powers of a character with this Disadvantage create serious feedback in his body, causing internal damage.</string>
+    <string name = "psyConsumptEff">If the character suffers a psychic failure, he automatically loses the same number of Life Points as the number by which he failed.</string>
+
+    <string name = "singlePowerDesc">The psychic powers of the character do not allow him to use several abilities at once. If the character uses one power, his focus remains so intense that he cannot project others - except those maintained unconsciously.</string>
+    <string name = "singlePowerEff">The character can use only one psychic power per assault. This does not prevent him from continuing to use others which are maintained, as long as they began in previous assaults.</string>
+
+    <string name = "noConcDesc">The psychic powers of a character with this Disadvantage are too unreliable for him to plan ahead in their use.</string>
+    <string name = "noConcEff">A psychic with this Disadvantage does not apply bonuses to his psychic potential by concentrating.</string>
+
+    <string name = "advantageSpecial">You may take this Advantage as many times as you wish.</string>
+</resources>

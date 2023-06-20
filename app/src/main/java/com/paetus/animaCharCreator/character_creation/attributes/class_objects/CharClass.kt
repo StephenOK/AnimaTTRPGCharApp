@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 /**
  * Object class that holds values related to a character's class
  *
- * @param heldClass enumeration object that denotes the individual class
  * @param archetype enumeration list of archetypes related to this class
  *
  * @param lifePointMultiple cost of life point multiples for this class
@@ -45,7 +44,6 @@ package com.paetus.animaCharCreator.character_creation.attributes.class_objects
  * @param onRemove function to run on class removal
  */
 class CharClass(
-    val heldClass: String,
     val archetype: List<Archetype>,
 
     val lifePointMultiple: Int,

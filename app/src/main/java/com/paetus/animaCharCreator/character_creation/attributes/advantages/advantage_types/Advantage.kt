@@ -3,7 +3,8 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
 /**
  * Object that holds information on an advantage a character can take.
  *
- * @param name string name of the advantage
+ * @param saveTag identifier for the save file item
+ * @param name displayed name of the advantage
  * @param description details of the advantage
  * @param effect further details of the advantage's effects, if available
  * @param restriction details on the requirements needed for this advantage
@@ -16,11 +17,12 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
  * @param onRemove function to run on advantage's removal
  */
 open class Advantage(
-    val name: String,
-    val description: String,
-    val effect: String?,
-    val restriction: String?,
-    val special: String?,
+    val saveTag: String,
+    val name: Int,
+    val description: Int,
+    val effect: Int?,
+    val restriction: Int?,
+    val special: Int?,
     val options: List<String>?,
     val picked: Int?,
     val cost: List<Int>,
@@ -35,7 +37,8 @@ open class Advantage(
      * @return Equivalency between these two item
      */
     fun isEquivalent(comparison: Advantage): Boolean{
-        return name == comparison.name &&
+        return saveTag == comparison.saveTag &&
+                name == comparison.name &&
                 description == comparison.description &&
                 effect == comparison.effect &&
                 restriction == comparison.restriction &&

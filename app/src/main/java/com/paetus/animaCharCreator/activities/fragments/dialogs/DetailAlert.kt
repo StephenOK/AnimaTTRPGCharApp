@@ -12,6 +12,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -120,7 +121,7 @@ private fun AdvantageDetails(item: Advantage){
 
     Column{
         //display advantage's description
-        Row{Text(text = "\t${item.description}")}
+        Row{Text(text = "\t${stringResource(item.description)}")}
 
         //display advantage's effect, if one given
         if(item.effect != null) {
@@ -132,7 +133,7 @@ private fun AdvantageDetails(item: Advantage){
                             append(stringResource(R.string.effectLabel))
                         }
 
-                        append(" ${item.effect}")
+                        append(" ${stringResource(item.effect)}")
                     }
                 )
             }
@@ -148,7 +149,7 @@ private fun AdvantageDetails(item: Advantage){
                             append(stringResource(R.string.restrictionLabel))
                         }
 
-                        append(" ${item.restriction}")
+                        append(" ${stringResource(item.restriction)}")
                     }
                 )
             }
@@ -164,7 +165,7 @@ private fun AdvantageDetails(item: Advantage){
                             append(stringResource(R.string.specialDetailLabel))
                         }
 
-                        append(" ${item.special}")
+                        append(" ${stringResource(item.special)}")
                     }
                 )
             }
@@ -318,7 +319,7 @@ private fun KiContents(ability: KiAbility) {
         //construct prerequisites needed
         val preString =
             if(ability.prerequisites != null)
-                ability.prerequisites.name
+                stringResource(ability.prerequisites.name)
             else
                 ""
 
@@ -327,7 +328,7 @@ private fun KiContents(ability: KiAbility) {
         Spacer(Modifier.height(10.dp))
 
         //display ability's effect
-        Text(text = "\t${ability.description}")
+        Text(text = "\t${stringResource(ability.description)}")
     }
 }
 
@@ -538,7 +539,7 @@ fun EquipmentDetails(item: GeneralEquipment){
 fun AdvantageDetailPreview(){
     val charInstance = BaseCharacter()
     val advantage = charInstance.advantageRecord.commonAdvantages.characteristicPoint
-    DetailAlert(advantage.name, advantage){}
+    DetailAlert(LocalContext.current.getString(advantage.name), advantage){}
 }
 
 @Preview
@@ -575,7 +576,7 @@ fun KiDetailPreview(){
     val charInstance = BaseCharacter()
     val kiAbility = charInstance.ki.kiRecord.kiControl
 
-    DetailAlert(kiAbility.name, kiAbility){}
+    DetailAlert(stringResource(kiAbility.name), kiAbility){}
 }
 
 @Preview

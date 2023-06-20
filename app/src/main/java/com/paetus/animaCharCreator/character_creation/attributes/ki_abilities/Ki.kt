@@ -211,7 +211,7 @@ class Ki(private val charInstance: BaseCharacter){
      */
     fun getAbility(toFind: String): KiAbility?{
         kiRecord.allKiAbilities.forEach{
-            if(it.name == toFind)
+            if(it.saveTag == toFind)
                 return it
         }
 
@@ -464,7 +464,7 @@ class Ki(private val charInstance: BaseCharacter){
         //write number of ki abilities taken and specific abilities taken
         charInstance.addNewData(takenAbilities.size)
         takenAbilities.forEach{
-            charInstance.addNewData(it.name)
+            charInstance.addNewData(it.saveTag)
         }
 
         //write number of techniques taken and data on each technique

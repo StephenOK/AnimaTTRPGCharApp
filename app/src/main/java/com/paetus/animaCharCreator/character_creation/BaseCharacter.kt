@@ -135,20 +135,6 @@ class BaseCharacter {
     }
 
     /**
-     * Setter for class with String input.
-     */
-    fun setOwnClass(className: String) {
-        //undo current class buffs
-        ownClass.value.onRemove()
-
-        //change class and apply new buffs
-        ownClass.value = classes.findClass(className)!!
-        ownClass.value.onTake()
-
-        updateClassInputs()
-    }
-
-    /**
      * Setter for class with Integer input.
      */
     fun setOwnClass(classInt: Int){
@@ -498,7 +484,7 @@ class BaseCharacter {
         setGender(fileReader.readLine().toBoolean())
 
         //get the character's class, race, and level
-        setOwnClass(fileReader.readLine())
+        setOwnClass(fileReader.readLine().toInt())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
 
@@ -556,7 +542,7 @@ class BaseCharacter {
             //initialize byte stream
             byteArray = ByteArrayOutputStream()
 
-            addNewData(BuildConfig.VERSION_NAME)
+            addNewData(BuildConfig.VERSION_CODE)
 
             rules.writeRules()
 
@@ -570,7 +556,7 @@ class BaseCharacter {
             addNewData(isMale.value.toString())
 
             //add class, race, and level data
-            addNewData(ownClass.value.heldClass)
+            addNewData(classes.allClasses.indexOf(ownClass.value))
             addNewData(races.getNameOfList(ownRace.value))
             addNewData(lvl.value)
 

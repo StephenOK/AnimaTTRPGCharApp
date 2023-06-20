@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -25,7 +26,8 @@ import com.paetus.animaCharCreator.view_models.models.SummoningFragmentViewModel
  */
 class CustomFactory(
     private val viewModel: Class<*>,
-    private val charInstance: BaseCharacter
+    private val charInstance: BaseCharacter,
+    private val context: Context
 ): ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(viewModel)){
@@ -86,7 +88,8 @@ class CustomFactory(
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
                         charInstance.ki,
-                        charInstance.ownClass
+                        charInstance.ownClass,
+                        context
                     ) as T
                 }
 

@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,8 @@ import kotlinx.coroutines.flow.update
  */
 class KiFragmentViewModel(
     private val ki: Ki,
-    private val charClass: MutableState<CharClass>
+    private val charClass: MutableState<CharClass>,
+    private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
     private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value.toString())
@@ -117,7 +119,7 @@ class KiFragmentViewModel(
      * @param input ki ability to display in the details alert
      */
     fun setDetailItem(input: KiAbility){
-        _detailName.update{input.name}
+        _detailName.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 

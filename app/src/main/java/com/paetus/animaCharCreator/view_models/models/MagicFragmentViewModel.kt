@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,8 @@ import kotlinx.coroutines.flow.update
 class MagicFragmentViewModel(
     private val magic: Magic,
     private val charInstance: BaseCharacter,
-    val charClass: MutableState<CharClass>
+    val charClass: MutableState<CharClass>,
+    val context: Context
 ): ViewModel() {
     //initialize the character's bought zeon input
     private val _boughtZeonString = MutableStateFlow(magic.boughtZeon.value.toString())
@@ -303,7 +305,7 @@ class MagicFragmentViewModel(
      * @param item displayed spell in the detail alert
      */
     fun setDetailItem(item: Spell){
-        _detailTitle.update{item.name}
+        _detailTitle.update{context.getString(item.name)}
         _detailItem.update{item}
     }
 
@@ -313,7 +315,7 @@ class MagicFragmentViewModel(
      * @return true if character has this advantage
      */
     fun isGifted(): Boolean{
-        return charInstance.advantageRecord.getAdvantage("The Gift") != null
+        return charInstance.advantageRecord.getAdvantage("gift") != null
     }
 
     /**
@@ -426,6 +428,7 @@ class MagicFragmentViewModel(
         if(selectedFreeSpell.value != null){
             //create the free spell
             val item = FreeSpell(
+                selectedFreeSpell.value!!.saveName,
                 selectedFreeSpell.value!!.name,
                 selectedFreeSpell.value!!.isActive,
                 freeLevel.value,

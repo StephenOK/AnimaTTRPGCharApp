@@ -188,7 +188,7 @@ class CharacterFragmentViewModel(
      * @return true if character has the Unattractive disadvantage
      */
     fun isNotUnattractive(): Boolean{
-        return charInstance.advantageRecord.getAdvantage("Unattractive") == null
+        return charInstance.advantageRecord.getAdvantage("unattractive") == null
     }
 
     /**

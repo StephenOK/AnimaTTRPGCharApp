@@ -605,7 +605,7 @@ private fun SpellRow(
 
         //display spell name
         Text(
-            text = displayItem.name,
+            text = stringResource(displayItem.name),
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center,
@@ -773,7 +773,7 @@ private fun FreeSpellExchange(
 
     //set spell name if one given
     val spellName =
-        if(currentFreeSpell.name != "PlaceHolder") currentFreeSpell.name
+        if(currentFreeSpell.saveName != "PlaceHolder") stringResource(currentFreeSpell.name)
         else stringResource(R.string.emptySlotLabel)
 
     Row{
@@ -813,7 +813,7 @@ private fun FreeSpellExchange(
         )
 
         //show nothing here if no spell found
-        if(currentFreeSpell.name == "PlaceHolder"){Spacer(Modifier.weight(0.25f))}
+        if(currentFreeSpell.saveName == "PlaceHolder"){Spacer(Modifier.weight(0.25f))}
 
         //show detail button if spell found
         else
@@ -832,7 +832,12 @@ private fun FreeSpellExchange(
 @Composable
 fun MagicPreview(){
     val charInstance = BaseCharacter()
-    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance, charInstance.ownClass)
+    val magFragVM = MagicFragmentViewModel(
+        charInstance.magic,
+        charInstance,
+        charInstance.ownClass,
+        LocalContext.current
+    )
     val homePageVM = HomePageViewModel(charInstance)
 
     magFragVM.setImbalanceIsAttack(false)

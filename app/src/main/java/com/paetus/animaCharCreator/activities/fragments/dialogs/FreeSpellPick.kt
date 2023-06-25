@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -105,7 +106,7 @@ private fun PickFreeRow(
         )
         //spell's name
         Text(
-            text = displayItem.name,
+            text = stringResource(displayItem.name),
             modifier = Modifier
                 .weight(0.65f)
                 .clickable{magFragVM.setSelectedFreeSpell(displayItem)},
@@ -129,7 +130,12 @@ private fun PickFreeRow(
 fun FreeSpellPreview(){
     val charInstance = BaseCharacter()
 
-    val magFragVM = MagicFragmentViewModel(charInstance.magic, charInstance, charInstance.ownClass)
+    val magFragVM = MagicFragmentViewModel(
+        charInstance.magic,
+        charInstance,
+        charInstance.ownClass,
+        LocalContext.current
+    )
     magFragVM.setFreeLevel(8)
 
     FreeSpellPick(magFragVM)

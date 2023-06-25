@@ -18,13 +18,13 @@ import com.paetus.animaCharCreator.character_creation.Element
  * @param type category of spell
  */
 open class Spell(
-    val name: String,
+    val name: Int,
     val inBook: Element,
     val isActive: Boolean,
     val level: Int,
     val zCost: Int,
-    val effect: String,
-    val addedEffect: String,
+    val effect: Int,
+    val addedEffect: Int,
     val zMax: Int,
     val maintenance: Int?,
     val isDaily: Boolean,

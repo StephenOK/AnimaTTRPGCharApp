@@ -6,6 +6,7 @@ import com.paetus.animaCharCreator.character_creation.Element
  * A spell with no associated element.
  * Can by taken as part of any spellbook.
  *
+ * @param saveName name to write to file
  * @param name name of the spell
  * @param isActive whether the spell is active or passive
  * @param level associated level of the spell
@@ -19,15 +20,28 @@ import com.paetus.animaCharCreator.character_creation.Element
  * @param forbiddenElements books the spell is not permitted to be in
  */
 class FreeSpell(
-    name: String,
+    val saveName: String,
+    name: Int,
     isActive: Boolean,
     level: Int,
     zCost: Int,
-    effect: String,
-    addedEffect: String,
+    effect: Int,
+    addedEffect: Int,
     zMax: Int,
     maintenance: Int?,
     isDaily: Boolean,
     type: List<SpellType>,
     val forbiddenElements: List<Element>
-) : Spell(name, Element.Free, isActive, level, zCost, effect, addedEffect, zMax, maintenance, isDaily, type)
+) : Spell(
+    name,
+    Element.Free,
+    isActive,
+    level,
+    zCost,
+    effect,
+    addedEffect,
+    zMax,
+    maintenance,
+    isDaily,
+    type
+)

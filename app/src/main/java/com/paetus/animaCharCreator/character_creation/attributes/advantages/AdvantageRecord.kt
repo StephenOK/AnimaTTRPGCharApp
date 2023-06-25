@@ -180,7 +180,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
             //no need to acquire more disciplines if all are already taken
             commonAdvantages.psyDisciplineAccess -> {
-                if(this.getAdvantage("Free Access to Any Psychic Discipline") != null)
+                if(this.getAdvantage("allPsyDisciplines") != null)
                     return R.string.redundantPsychicDiscipline
             }
 
@@ -199,10 +199,10 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
             //prevent either of these disadvantages from being taken with the other one
             magicAdvantages.slowMagicRecovery ->
-                if(this.getAdvantage("Magic Blockage") != null)
+                if(this.getAdvantage("magicBlockage") != null)
                     return R.string.magicBlockageRestriction
             magicAdvantages.magicBlockage ->
-                if(this.getAdvantage("Slow Magic Recovery") != null)
+                if(this.getAdvantage("slowMagRecover") != null)
                     return R.string.magicRecoveryRestriction
         }
 

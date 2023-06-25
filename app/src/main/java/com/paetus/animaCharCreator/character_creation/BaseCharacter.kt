@@ -373,7 +373,7 @@ class BaseCharacter {
     @JvmName("setAppearance1")
     fun setAppearance(input: Int){
         //set appearance to 2 if character has unattractive disadvantage
-        if(advantageRecord.getAdvantage("Unattractive") != null)
+        if(advantageRecord.getAdvantage("unattractive") != null)
             appearance.value = 2
 
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race

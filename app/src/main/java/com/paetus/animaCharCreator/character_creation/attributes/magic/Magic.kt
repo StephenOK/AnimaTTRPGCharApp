@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic
 
 import androidx.compose.runtime.mutableStateOf
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
@@ -599,11 +600,12 @@ class Magic(private val charInstance: BaseCharacter){
         //return a placeholder for no valid spell found
         return FreeSpell(
             "PlaceHolder",
+            R.string.emptyItem,
             false,
             inputLevel,
             0,
-            "This is not a real spell. This is a placeholder object.",
-            "This is not a spell. You can't add more Zeon to it.",
+            R.string.emptyItem,
+            R.string.emptyItem,
             0,
             null,
             false,
@@ -750,7 +752,11 @@ class Magic(private val charInstance: BaseCharacter){
      * @param elementInput associated element of the target free spell
      * @param isBought true if acquiring the spell; false if removing it
      */
-    fun changeIndividualFreeSpell(levelInput: Int, elementInput: Element, isBought: Boolean){
+    fun changeIndividualFreeSpell(
+        levelInput: Int,
+        elementInput: Element,
+        isBought: Boolean
+    ){
         //terminate process if Magic Ties disadvantage is taken
         if(magicTies.value)
             return
@@ -775,7 +781,7 @@ class Magic(private val charInstance: BaseCharacter){
         else{
             //remove the appropriate spell from the list
             individualSpells.forEach{
-                if(it.name == "PlaceHolder" && it.level == levelInput && findFreeSpellElement(it as FreeSpell) == elementInput){
+                if(it is FreeSpell && it.level == levelInput && findFreeSpellElement(it) == elementInput){
                     individualSpells.remove(it)
                 }
             }
@@ -879,7 +885,7 @@ class Magic(private val charInstance: BaseCharacter){
     fun hasCopyOf(check: Spell): Boolean{
         spellList.forEach{
             //return true if input is a placeholder of identical element and level
-            if(check is FreeSpell && it is FreeSpell && check.name == "PlaceHolder"){
+            if(check is FreeSpell && it is FreeSpell && check.saveName == "PlaceHolder"){
                 if(it.level == check.level && findFreeSpellElement(it) == findFreeSpellElement(check))
                     return true
             }
@@ -1032,18 +1038,16 @@ class Magic(private val charInstance: BaseCharacter){
 
         //get each individual spell saved
         for(index in 0 until fileReader.readLine().toInt()){
-            //get its name
-            val spellName = fileReader.readLine()
-
             //construct placeholder spell if indicated by spellName
-            if(spellName == "PlaceHolder"){
+            if(fileReader.readLine().toBoolean()){
                 individualSpells.add(FreeSpell(
                     "PlaceHolder",
+                    R.string.emptyItem,
                     false,
                     fileReader.readLine().toInt(),
                     0,
-                    "This is not a real spell. This is a placeholder object.",
-                    "This is not a spell. You can't add more Zeon to it.",
+                    R.string.emptyItem,
+                    R.string.emptyItem,
                     0,
                     null,
                     false,
@@ -1069,9 +1073,12 @@ class Magic(private val charInstance: BaseCharacter){
                     else -> listOf()
                 }
 
-                searchList.forEach{
-                    if(it != null && it.name == spellName)
+                val searchLevel = fileReader.readLine().toInt()
+                searchList.forEach search@{
+                    if(it != null && it.level == searchLevel) {
                         individualSpells.add(it)
+                        return@search
+                    }
                 }
             }
         }
@@ -1133,13 +1140,16 @@ class Magic(private val charInstance: BaseCharacter){
         //write all individually bought spells to file
         charInstance.addNewData(individualSpells.size)
         individualSpells.forEach{
-            charInstance.addNewData(it.name)
             if(it is FreeSpell){
+                charInstance.addNewData(true)
                 charInstance.addNewData(it.level)
                 charInstance.addNewData(findFreeSpellElement(it).name)
             }
-            else
+            else {
+                charInstance.addNewData(false)
                 charInstance.addNewData(it.inBook.name)
+                charInstance.addNewData(it.level)
+            }
         }
 
         //save data on free spell investment
@@ -1186,8 +1196,9 @@ class Magic(private val charInstance: BaseCharacter){
 
             //search for the spell in the book
             searchList.forEach{
-                if(it.name == searchName)
+                if(it.saveName == searchName)
                     loadTo.add(FreeSpell(
+                        it.saveName,
                         it.name,
                         it.isActive,
                         searchLevel,
@@ -1216,7 +1227,7 @@ class Magic(private val charInstance: BaseCharacter){
         //write each spell's level and name
         saveItem.forEach{
             charInstance.addNewData(it.level)
-            charInstance.addNewData(it.name)
+            charInstance.addNewData(it.saveName)
         }
     }
 }

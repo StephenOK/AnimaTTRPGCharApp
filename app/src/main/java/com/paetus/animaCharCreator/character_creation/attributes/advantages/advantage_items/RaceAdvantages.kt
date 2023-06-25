@@ -91,7 +91,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         R.string.giant,
         R.string.giantDesc,
         {_, _ ->
-            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage("Uncommon Size")
+            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage("uncommonSize")
             if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
                 charInstance.advantageRecord.removeAdvantage(uncommonSizeHeld)
 

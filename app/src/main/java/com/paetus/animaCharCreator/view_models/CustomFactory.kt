@@ -98,7 +98,8 @@ class CustomFactory(
                     return MagicFragmentViewModel(
                         charInstance.magic,
                         charInstance,
-                        charInstance.ownClass
+                        charInstance.ownClass,
+                        context
                     ) as T
                 }
 

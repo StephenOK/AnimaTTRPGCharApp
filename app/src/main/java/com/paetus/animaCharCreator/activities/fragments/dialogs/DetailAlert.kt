@@ -444,10 +444,10 @@ fun SpellDetails(spell: Spell){
         InfoRow(stringResource(R.string.zeonCostLabel), spell.zCost.toString())
         Spacer(Modifier.height(10.dp))
 
-        Row{Text(text = "\t${spell.effect}")}
+        Row{Text(text = "\t${stringResource(spell.effect)}")}
         Spacer(Modifier.height(10.dp))
 
-        InfoRow(stringResource(R.string.addedEffectLabel), spell.addedEffect)
+        InfoRow(stringResource(R.string.addedEffectLabel), stringResource(spell.addedEffect))
         InfoRow(
             stringResource(R.string.maxZeonLabel),
             stringResource(
@@ -595,7 +595,7 @@ fun SpellDetailPreview(){
     val charInstance = BaseCharacter()
     val spell = charInstance.magic.freeBook.fifthBook[3]
 
-    DetailAlert(spell.name, spell){}
+    DetailAlert(stringResource(spell.name), spell){}
 }
 
 @Preview

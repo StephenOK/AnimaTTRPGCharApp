@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponType
@@ -11,7 +12,8 @@ import java.io.Serializable
  */
 class Thrown: Serializable {
     val bolas = ProjectileWeapon(
-        "Bolas",
+        "bolas",
+        R.string.bolas,
         30,
         -10,
         5, null,
@@ -19,13 +21,12 @@ class Thrown: Serializable {
         6, 2, 15,
         80, 20,
         listOf(WeaponAbility.Trapping, WeaponAbility.Complex, WeaponAbility.Special), 10,
-        "A throwing weapon made up of three balls of metal or reinforced leather tied " +
-                "together by cords. It is used to capture an opponent. Unlike other weapons used " +
-                "for capture, it does not suffer a -40 penalty when trying to trap an opponent."
+        R.string.bolasDesc
     )
 
     val chakram = ProjectileWeapon(
-        "Chakram",
+        "chakram",
+        R.string.chakram,
         40,
         0,
         6, null,
@@ -33,14 +34,12 @@ class Thrown: Serializable {
         9, 2, 20,
         80, 30,
         listOf(WeaponAbility.Special), null,
-        "Indigenous weapon that consists of a circular blade, used as a thrown weapon. " +
-                "It's known as Turcus in other cultures. It can return after being thrown if it " +
-                "doesn't hit anything. To catch it requires beating a Very Difficult Sleight of " +
-                "Hand Check."
+        R.string.chakramDesc
     )
 
     val darts = ProjectileWeapon(
-        "Darts",
+        "darts",
+        R.string.darts,
         20,
         20,
         3, null,
@@ -48,11 +47,12 @@ class Thrown: Serializable {
         3, -4, 15,
         40, 20,
         null, null,
-        "Small metal-tipped darts designed to be thrown by hand."
+        R.string.dartsDesc
     )
 
     val spikedBall = ProjectileWeapon(
-        "Spiked Ball",
+        "spikedBall",
+        R.string.spikeBall,
         20,
         0,
         5, null,
@@ -60,7 +60,7 @@ class Thrown: Serializable {
         10, 2, 15,
         50, 20,
         null, null,
-        "Metallic balls equipped with spikes to facilitate their being thrown."
+        R.string.spikeBallDesc
     )
 
     val thrown = listOf(bolas, chakram, darts, spikedBall)

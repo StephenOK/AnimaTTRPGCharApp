@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,8 @@ import kotlinx.coroutines.flow.update
  * @param weaponProficiencies character's module object
  */
 class ModuleFragmentViewModel(
-    private val weaponProficiencies: WeaponProficiencies
+    private val weaponProficiencies: WeaponProficiencies,
+    val context: Context
 ) : ViewModel() {
     //initialize character's current primary weapon selection
     private val _primaryWeapon = MutableStateFlow(weaponProficiencies.primaryWeapon.value)
@@ -67,7 +69,7 @@ class ModuleFragmentViewModel(
      * @param input weapon to set as the primary one
      */
     fun setPrimaryWeapon(input: Weapon){
-        weaponProficiencies.setPrimaryWeapon(input.name)
+        weaponProficiencies.setPrimaryWeapon(input.saveName)
         _primaryWeapon.update{input}
     }
 
@@ -114,7 +116,7 @@ class ModuleFragmentViewModel(
      * @param input weapon to get the details of
      */
     fun setDetailItem(input: Weapon){
-        _detailName.update{input.name}
+        _detailName.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 
@@ -135,7 +137,7 @@ class ModuleFragmentViewModel(
      * @param input style module to get the details of
      */
     fun setDetailItem(input: StyleModule){
-        _detailName.update{input.name}
+        _detailName.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 
@@ -145,7 +147,7 @@ class ModuleFragmentViewModel(
      * @param input martial art to get the details of
      */
     fun setDetailItem(input: MartialArt){
-        _detailName.update{input.name}
+        _detailName.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 
@@ -214,56 +216,63 @@ class ModuleFragmentViewModel(
         weaponProficiencies,
         this,
         R.string.shortLabel,
-        weaponProficiencies.allArchetypes[13],
-        true
+        weaponProficiencies.shortArms.shortArms,
+        true,
+        weaponProficiencies.allArchetypes["short"]!!
     )
 
     private val axes = WeaponListData(
         weaponProficiencies,
         this,
         R.string.axeLabel,
-        weaponProficiencies.allArchetypes[14],
-        true
+        weaponProficiencies.axes.axes,
+        true,
+        weaponProficiencies.allArchetypes["axe"]!!
     )
 
     private val maces = WeaponListData(
         weaponProficiencies,
         this,
         R.string.maceLabel,
-        weaponProficiencies.allArchetypes[15],
-        true
+        weaponProficiencies.maces.maces,
+        true,
+        weaponProficiencies.allArchetypes["mace"]!!
     )
 
     private val swords = WeaponListData(
         weaponProficiencies,
         this,
         R.string.swordLabel,
-        weaponProficiencies.allArchetypes[16],
-        true
+        weaponProficiencies.swords.swords,
+        true,
+        weaponProficiencies.allArchetypes["sword"]!!
     )
 
     private val twoHandeds = WeaponListData(
         weaponProficiencies,
         this,
         R.string.twoHandLabel,
-        weaponProficiencies.allArchetypes[17],
-        true
+        weaponProficiencies.twoHanded.twoHanded,
+        true,
+        weaponProficiencies.allArchetypes["twoHanded"]!!
     )
 
     private val poles = WeaponListData(
         weaponProficiencies,
         this,
         R.string.poleLabel,
-        weaponProficiencies.allArchetypes[18],
-        true
+        weaponProficiencies.poles.poles,
+        true,
+        weaponProficiencies.allArchetypes["pole"]!!
     )
 
     private val cords = WeaponListData(
         weaponProficiencies,
         this,
         R.string.cordLabel,
-        weaponProficiencies.allArchetypes[19],
-        true
+        weaponProficiencies.cords.cords,
+        true,
+        weaponProficiencies.allArchetypes["cord"]!!
     )
 
     private val mixed = WeaponListData(
@@ -271,7 +280,8 @@ class ModuleFragmentViewModel(
         this,
         R.string.mixedLabel,
         weaponProficiencies.mixed.mixed,
-        false
+        false,
+        null
     )
 
     private val shields = WeaponListData(
@@ -279,7 +289,8 @@ class ModuleFragmentViewModel(
         this,
         R.string.shieldLabel,
         weaponProficiencies.shields.shields,
-        true
+        true,
+        weaponProficiencies.allArchetypes["shield"]!!
     )
 
     private val projectiles = WeaponListData(
@@ -287,7 +298,8 @@ class ModuleFragmentViewModel(
         this,
         R.string.projectileLabel,
         weaponProficiencies.projectiles.projectiles,
-        true
+        true,
+        weaponProficiencies.allArchetypes["projectile"]!!
     )
 
     private val thrown = WeaponListData(
@@ -295,7 +307,8 @@ class ModuleFragmentViewModel(
         this,
         R.string.thrownLabel,
         weaponProficiencies.thrown.thrown,
-        true
+        true,
+        weaponProficiencies.allArchetypes["thrown"]
     )
 
     //gather all weapon data
@@ -305,91 +318,91 @@ class ModuleFragmentViewModel(
     private val barbarianArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[0],
+        weaponProficiencies.allArchetypes["barbarian"]!!,
         R.string.barbarianLabel
     )
 
     private val ninjaArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[1],
+        weaponProficiencies.allArchetypes["ninja"]!!,
         R.string.ninjaLabel
     )
 
     private val duelArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[2],
+        weaponProficiencies.allArchetypes["duel"]!!,
         R.string.duelLabel
     )
 
     private val pirateArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[3],
+        weaponProficiencies.allArchetypes["pirate"]!!,
         R.string.pirateLabel
     )
 
     private val nomadArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[4],
+        weaponProficiencies.allArchetypes["nomad"]!!,
         R.string.nomadLabel
     )
 
     private val hunterArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[5],
+        weaponProficiencies.allArchetypes["hunter"]!!,
         R.string.hunterLabel
     )
 
     private val knightArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[6],
+        weaponProficiencies.allArchetypes["knight"]!!,
         R.string.knightLabel
     )
 
     private val gladiatorArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[7],
+        weaponProficiencies.allArchetypes["gladiator"]!!,
         R.string.gladiatorLabel
     )
 
     private val assassinArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[8],
+        weaponProficiencies.allArchetypes["assassin"]!!,
         R.string.assassinLabel
     )
 
     private val soldierArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[9],
+        weaponProficiencies.allArchetypes["soldier"]!!,
         R.string.soldierLabel
     )
 
     private val indigenousArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[10],
+        weaponProficiencies.allArchetypes["indigenous"]!!,
         R.string.indigenousLabel
     )
 
     private val banditArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[11],
+        weaponProficiencies.allArchetypes["bandit"]!!,
         R.string.banditLabel
     )
 
     private val improvisedArchetype = ArchetypeData(
         weaponProficiencies,
         this,
-        weaponProficiencies.allArchetypes[12],
+        weaponProficiencies.allArchetypes["improvised"]!!,
         R.string.improvisedLabel
     )
 
@@ -404,15 +417,16 @@ class ModuleFragmentViewModel(
      * @param weaponProficiencies character's weapon proficiencies ability
      * @param modFragVM viewModel this object is housed in
      * @param nameRef string name of the weapon category
-     * @param items list of weapon associated with this list
+     * @param displayItems list of weapon associated with this list
      * @param wholeClass true if the module has a whole weapons archetype
      */
     class WeaponListData(
         weaponProficiencies: WeaponProficiencies,
         val modFragVM: ModuleFragmentViewModel,
         val nameRef: Int,
-        val items: List<Weapon>,
-        val wholeClass: Boolean
+        val displayItems: List<Weapon>,
+        val wholeClass: Boolean,
+        archetypeItems: List<Weapon>?
     ){
         //initialize open state of the list
         private val _listOpen = MutableStateFlow(false)
@@ -424,12 +438,13 @@ class ModuleFragmentViewModel(
         fun toggleListOpen() {_listOpen.update{!listOpen.value}}
 
         //create an archetype data object for the whole class module
-        val weaponArchetype = ArchetypeData(
+        val weaponArchetype = if(wholeClass) ArchetypeData(
             weaponProficiencies,
             modFragVM,
-            items,
+            archetypeItems!!,
             nameRef
         )
+        else null
     }
 
     /**
@@ -469,7 +484,7 @@ class ModuleFragmentViewModel(
         }
 
         //create checkboxes for each archetype module
-        weaponProficiencies.allArchetypes.forEach{
+        weaponProficiencies.allArchetypes.values.forEach{
             allArchetypes += Pair(it, mutableStateOf(weaponProficiencies.takenModules.contains(it)))
         }
 

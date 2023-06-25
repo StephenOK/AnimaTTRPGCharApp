@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
 /**
  * Special type of weapon that utilizes ranged combat.
  *
+ * @param saveName name to write to the save file
  * @param name name of the weapon
  * @param damage base damage of the weapon
  * @param speed change in initiative the character has when wielding this weapon
@@ -25,7 +26,8 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
  * @param description details of the weapon
  */
 class ProjectileWeapon(
-    name: String,
+    saveName: String,
+    name: Int,
     damage: Int?,
     speed: Int,
     oneHandStr: Int?,
@@ -40,6 +42,6 @@ class ProjectileWeapon(
     val range: Int?,
     ability: List<WeaponAbility>?,
     ownStrength: Int?,
-    description: String
-): Weapon(name, damage, speed, oneHandStr, twoHandStr, primaryType, secondaryType, type,
+    description: Int
+): Weapon(saveName, name, damage, speed, oneHandStr, twoHandStr, primaryType, secondaryType, type,
     fortitude, breakage, presence, ability, ownStrength, description)

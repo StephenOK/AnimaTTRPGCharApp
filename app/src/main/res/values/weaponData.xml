@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "battleAxe">Battle Axe</string>
+    <string name = "battleAxeDesc">A more manageable version of the Two-handed Axe, a Battle Axe can be wielded with just one hand.</string>
+
+    <string name = "handAxe">Hand Axe</string>
+    <string name = "handAxeDesc">These are light axes used with a single hand. They usually have a counterweight that facilitates their use as thrown weapons. They measure from 30 to 60 centimeters in length.</string>
+
+    <string name = "chain">Chain</string>
+    <string name = "chainDesc">A length of metal links.</string>
+
+    <string name = "gladNet">Gladiator\'s Net</string>
+    <string name = "gladNetDesc">This weapon is a narrow net with weighted hooks designed to entangle the person at whom it is swung or thrown. Although it is a hand-to-hand weapon, its attack is against an area three meters wide, and it can entangle various targets. Do not apply either the Strength Bonus of the character or the -40 penalty usually applied to maneuvers aimed at capturing the enemy when utilizing this weapon.</string>
+
+    <string name = "lasso">Lasso</string>
+    <string name = "lassoDesc">A lasso is a rope prepared with a running knot for trapping animals or people. As a special rule, it does not apply the Strength of the person to calculate the damage caused. It requires both hands for use.</string>
+
+    <string name = "whip">Whip</string>
+    <string name = "whipDesc">A whip is a cord or chain appropriately made to be used as a weapon. It is used with rapid flicks of the wrist and is capable of cutting or trapping an opponent.</string>
+
+    <string name = "nunchakus">Nunchakus</string>
+    <string name = "nunchakusDesc">These are two short sticks of wood or metal connected by a short chain.</string>
+
+    <string name = "club">Club</string>
+    <string name = "clubDesc">Made of wood or just stone, the Club is the quintessential Impact weapon.</string>
+
+    <string name = "greatWarhammer">Great Warhammer</string>
+    <string name = "greatWarhammerDesc">A very large two-handed Impact weapon. It consists of a straight shaft crowned with an enormous metal hammer. Some have sharp pointed tips on the side so that they can be used for a second type of attack, a penetrating, or Thrust, attack.</string>
+
+    <string name = "mace">Mace</string>
+    <string name = "maceDesc">This weapon consists of a wood or metal shaft about half a meter long topped with a heavy round or spherical head.</string>
+
+    <string name = "warhammer">Warhammer</string>
+    <string name = "warhammerDesc">A crushing weapon consisting of a shaft topped by a great steel hammerhead.</string>
+
+    <string name = "bastardSword">Bastard Sword</string>
+    <string name = "bastardSwordDesc">This is a sword halfway between a Long Sword and the Two-handed Sword, measuring about 130 centimeters long. The weapon\'s long grip and counterweight allow it to be used with either one or two hands.</string>
+
+    <string name = "flail">Flail</string>
+    <string name = "flailDesc">This is a shaft of wood or metal with a chain that ends in a spiked metal ball. A version exists with several smaller chains.</string>
+
+    <string name = "foil">Foil</string>
+    <string name = "foilDesc">A sword that is more slender and flexible than the Rapier. It is used as a Thrust weapon.</string>
+
+    <string name = "halberd">Halberd</string>
+    <string name = "halberdDesc">The halberd is a weapon made of a pole of wood or metal that ends in an axe-like edged blade. It measures a total of between 150 and 200 centimeters in length.</string>
+
+    <string name = "heavyBattleMace">Heavy Battle-Mace</string>
+    <string name = "heavyBattleMaceDesc">A heavier version of the Mace with a shaft almost one meter long. It is topped with a weight of enormous proportions. Due to its size, it is usually used with both hands.</string>
+
+    <string name = "largeMultiFlail">Large Multi-Headed Flail</string>
+    <string name = "largeMultiFlailDesc">A Flail of enormous dimensions. It has various chains coming from the end of its shaft, each ending in a spiked metal ball.</string>
+
+    <string name = "scythe">Scythe</string>
+    <string name = "scytheDesc">This weapon consists of a long shaft ending in a long curved blade. It also has a handle allowing it to be used with two hands.</string>
+
+    <string name = "twoHandAxe">Two-Handed Axe</string>
+    <string name = "twoHandAxeDesc">An enormous axe with a counterweight at the base of the handle. Depending on the design, it can be single- or double-bladed. Its size makes it almost imperative to wield it with both hands. It can measure from 100 to 170 centimeters long.</string>
+
+    <string name = "kusari">Kusari-Gama</string>
+    <string name = "kusariDesc">This is a sickle of Asian design that has a chain attached to the bottom used to trap opponents. Although both hands are used, the Strength bonus is not doubled. It can be used for conventional attacks, or by whipping the chain to try to trap an opponent, in which case it causes a Base Damage of only 10.</string>
+
+    <string name = "cavLance">Cavalry Lance</string>
+    <string name = "cavLanceDesc">A longer and heavier version of the traditional lance, it measures from three to four meters long and can only be wielded from horseback. If it is used to block an attack, the defender applies a -30 penalty to his ability.</string>
+
+    <string name = "harpoon">Harpoon</string>
+    <string name = "harpoonDesc">This is a short-hafted weapon similar to a Javelin, but with a barbed tip.</string>
+
+    <string name = "javelin">Javelin</string>
+    <string name = "javelinDesc">A short spear used almost exclusively for throwing.</string>
+
+    <string name = "lance">Lance</string>
+    <string name = "lanceDesc">The lance is the quintessential pole weapon. It consists of a long shaft of wood or metal ending in a fine two-edged point. It is very suitable for use from horseback, or for keeping enemies at a distance. It can measure from 150 to 220 centimeters long. Although it can be used with just one hand, fighting in that fashion brings on a -10 penalty to the attack, unless being used to resist a charge.</string>
+
+    <string name = "quarterstaff">Quarterstaff</string>
+    <string name = "quarterstaffDesc">This weapon is a pole of wood or metal that may be as long as two meters. Although it can be used with just one hand, fighting that way causes a -10 penalty to a character\'s Attack ability.</string>
+
+    <string name = "trident">Trident</string>
+    <string name = "tridentDesc">A spear or lance with a three part tip resembling a fork. Its design does allow it to be thrown. It is slightly larger than the trident used for fishing.</string>
+
+    <string name = "haruNoOkina">Haru No Okina</string>
+    <string name = "haruNoOkinaDesc">A weapon of oriental origin, it consists of two long poles connected by chains to a third, shorter section. Each of the longer poles ends in a blade like that of the halberd, but smaller. It is used placing the middle, shortest section against the back, while the longer poles are maneuvered with each hand. To lend greater power to the strikes, the weapon is twirled to use centrifugal force. Although both hands are used, the Strength bonus is not doubled. The Three-section Glaive allows a second attack per turn, as though a second weapon were being used, but applying a penalty of only -10 to a character\'s Attack ability.</string>
+
+    <string name = "arquebus">Arquebus</string>
+    <string name = "arquebusDesc">The arquebus is a firearm made from a long metal tube through which a ball of lead shot is propelled by an explosion of gunpowder. The arquebus is basically a cannon small enough to be carried and fired by a lone man. Like crossbows, they do not depend on the Strength of the user and, therefore, do not use any Strength bonus the character may have. Instead, the Arquebus has its own Strength, an 11, for which a +20 is added to the base damage of the shot fired. If a fumble is rolled with a level of less than 80 with the arquebus, the weapon fails to fire. If the fumble is higher than 80, the arquebus bursts, which ruins the weapon. For each +5 to the weapon\'s quality, a point is added to the Strength with which it fires, and also adds 15 to the level of Fumble required to make it burst.</string>
+
+    <string name = "blowgun">Blowgun</string>
+    <string name = "blowgunDesc">This is a hollow tube of wood or metal from 30 to 90 centimeters long. It is used to shoot small darts, which are usually poisoned. As a special rule, the blowgun does not apply the Strength of the person to calculate the damage caused. It requires both hands for use.</string>
+
+    <string name = "compositeBow">Composite Bow</string>
+    <string name = "compositeBowDesc">This is the largest and most powerful type of bow. It is made of three pieces and measures about two and a half meters long. It requires two hands to use, but its Strength bonus is not doubled.</string>
+
+    <string name = "crossbow">Crossbow</string>
+    <string name = "crossbowDesc">A bow mounted on a stock with a groove from which crossbow bolts are fired. It is cocked using a small winch. Crossbows do not depend on the Strength of the user and, therefore, do not use any Strength bonus a character may have. Instead, they have their own Strength score (8) for which a +10 is added to the Base Damage of the quarrels fired. Each +5 to the weapon\'s quality, aside from improving its accuracy, adds a point to the Strength with which it fires. It requires both hands for use.</string>
+
+    <string name = "repeatCrossbow">Repeating Crossbow</string>
+    <string name = "repeatCrossbowDesc">In reality, this is not a different class of weapon from the normal crossbow, so it can be used without any need to develop a separate expertise. It is simply equipped with a system of gears that enable it to fire a larger number of quarrels without needing to reload. Usually it has a magazine containing from between 4 to 8 quarrels. It requires both hands to use.</string>
+
+    <string name = "heavyCrossbow">Heavy Crossbow</string>
+    <string name = "heavyCrossbowDesc">A large and heavy crossbow. It has a Strength of 10 and so it possesses a bonus of +15 to the Base Damage of its quarrels. It requires both hands for use.</string>
+
+    <string name = "miniCrossbow">Miniature Crossbow</string>
+    <string name = "miniCrossbowDesc">A crossbow of very small size which may be fired with just one hand. It has a Strength of 5, and so no bonus is added to the Base Damage. In game terms, it works the same way as a normal crossbow, and so it is not necessary to learn its use separately.</string>
+
+    <string name = "shortBow">Short Bow</string>
+    <string name = "shortBowDesc">This weapon consists of a taut cord attached to either end of a singular curved piece of flexible wood and is less than 120 centimeters tall. It requires two hands to use, but its Strength bonus is not doubled.</string>
+
+    <string name = "longbow">Longbow</string>
+    <string name = "longbowDesc">Like the Short Bow, but with a size of between one-and-a-half and two meters tall. It requires two hands to use, but its Strength Bonus is not doubled.</string>
+
+    <string name = "matchlock">Matchlock Pistol</string>
+    <string name = "matchlockDesc">A smaller and more complex version of the arquebus that can be fired with one hand. Like its larger counterpart, it has its own Strength score (9), for which a bonus of +10 is added to the Base Damage of the shot it fires. If a Fumble is rolled with a level of less than 80, the weapon misfires. If the Fumble is 80 or higher, it bursts, which ruins the weapon. For each +5 to the weapon\'s quality, a point is added to the Strength with which it fires, and also adds 15 to the level of Fumble required to make it burst.</string>
+
+    <string name = "sling">Sling</string>
+    <string name = "slingDesc">This is a small leather pouch tied to a cord. It is used with a spinning motion to throw stones.</string>
+
+    <string name = "lightBallista">Light Ballista</string>
+    <string name = "lightBallistaDesc">The ballista is a crossbow of enormous proportions that is used as a siege weapon. It is moved on wheels because its large size makes it impossible to carry. Light ballistae are manned by three persons, two who move it laterally, and a third who aims and fires. Ballistae do not depend on the Strength of the user and, therefore, do not use the Strength Bonuses of their crews. Instead the weapon has its own Strength score (12), for which a +20 is added to the Base Damage of the quarrels fired. Each +5 to the weapon\'s quality, aside from improving its accuracy, adds a point to the Strength with which it fires. As a special rule, the tremendous penetrating power of the quarrel fired by the ballista allows it to make a type of area attack in a straight line 3 meters long from its initial point of impact.</string>
+
+    <string name = "heavyBallista">Heavy Ballista</string>
+    <string name = "heavyBallistaDesc">A larger version of the Light Ballista that requires five persons to manage. It has a Strength of 13, and so adds a +25 to the Base Damage from its quarrels. Each +5 to the weapon\'s quality, aside from improving its accuracy, adds a point to the Strength with which it fires. Its area attack extends for 5 meters in a straight line from its initial point of impact.</string>
+
+    <string name = "cannon">Cannon</string>
+    <string name = "cannonDesc">A firearm made of a large metal tube from which a large metal shell is propelled by gunpowder. The shell is made to explode, creating a cloud of shrapnel with a radius of 5 to 10 meters. Although the shell itself attacks in a conventional way, the explosion does not. The accuracy is checked to see if the shell hits where intended (using Table 45). After that, if a victim attempts to Dodge or Block, he must pass a Dodge or Athleticism check of Absurd difficulty if he is at greater than half the radius of the explosion, or against an Almost Impossible level difficulty otherwise. Cannons do not depend on the Strength of the user, instead they have their own Strength score (13), for which reason a +25 is added to the Base Damage of the shells fired. If a Fumble less than 70 is rolled with a cannon, the weapon fails to fire. If the Fumble is higher than 70, the cannon bursts, which ruins the weapon. For each +5 to the weapon\'s quality, a point is added to the Strength with which its shells fire. It also adds 15 to the level of Fumble required to make it burst.</string>
+
+    <string name = "buckler">Buckler</string>
+    <string name = "bucklerDesc">This is a very small shield no more than 30 centimeters across. The greatest advantage of the buckler is that it can be fastened directly onto the forearm, allowing both hands to remain free. A buckler grants its user +10 to their Blocking ability and +5 to their Dodging ability.</string>
+
+    <string name = "shield">Shield</string>
+    <string name = "shieldDesc">A metal or reinforced wood surface with handles on the back so it can be held. It is used mostly as a means of defense. A shield grants its user +20 to their Blocking ability and +10 to their Dodging ability.</string>
+
+    <string name = "fullShield">Full Shield</string>
+    <string name = "fullShieldDesc">A large heavy shield often as tall as a man. Generally used by infantry soldiers, it has either a square or pointed base allowing it to be stuck into the ground by its own weight. A full shield grants its user +30 to their Blocking ability and +15 to their Dodging ability.</string>
+
+    <string name = "cestus">Cestus</string>
+    <string name = "cestusDesc">Metal covering for the hands, kneecaps, elbows, or forearms that includes knives or spikes used for striking an enemy.</string>
+
+    <string name = "dagger">Dagger</string>
+    <string name = "daggerDesc">A combat knife roughly 20 to 30 centimeters long. It is usually sharpened on both edges and balanced for throwing.</string>
+
+    <string name = "hook">Hook</string>
+    <string name = "hookDesc">A weapon that is small and curved with a sharp point.</string>
+
+    <string name = "parryDagger">Parrying Dagger</string>
+    <string name = "parryDaggerDesc">A variation on the traditional dagger designed to block the attacks of enemy weapons and trap them with the hilt. At its base are two sharp edges.</string>
+
+    <string name = "shortSword">Short Sword</string>
+    <string name = "shortSwordDesc">A straight sharp blade about 50 centimeters long. Although it can cut, it is used principally as a Thrust weapon. Its reduced size makes it a very discrete weapon.</string>
+
+    <string name = "stiletto">Stiletto</string>
+    <string name = "stilettoDesc">A sharp needle-like knife whose main purpose is for throwing, although it can be used in hand-to-hand combat.</string>
+
+    <string name = "boomerang">Boomerang</string>
+    <string name = "boomerangDesc">A curved stick of wood or metal designed to be thrown and to return if it doesn\'t hit anything. To catch it requires a Difficult Sleight of Hand Check.</string>
+
+    <string name = "claws">Claws</string>
+    <string name = "clawsDesc">Knives on a glove made to resemble animal claws.</string>
+
+    <string name = "katar">Katar</string>
+    <string name = "katarDesc">A gauntlet equipped with knife blades 25 to 30 centimeters long. It possesses a complex mechanism that allows the blades to be extended and spun. In those cases, they can block projectiles like a buckler.</string>
+
+    <string name = "raven">Raven</string>
+    <string name = "ravenDesc">A multi-bladed knife in the shape of a star with a hole in the center. The thumb is placed in the hole and the knife is spun hard. As it spins, it can block missile attacks as though it were a buckler.</string>
+
+    <string name = "sai">Sai</string>
+    <string name = "saiDesc">An unsharpened, pointed, knife-like weapon whose cross guard curves forward to resemble a trident. It is used primarily to block an opponent\'s weapon.</string>
+
+    <string name = "shuko">Shuko</string>
+    <string name = "shukoDesc">This is a claw-like device held in the palms of the hands. It is used both as a weapon and as a tool for climbing. Shuko adds a +10 to a character\'s Climb ability.</string>
+
+    <string name = "shuriken">Shuriken</string>
+    <string name = "shurikenDesc">Small Asian metal weapons used exclusively for throwing. They can be various shapes, from simple sharp-edged disks to star-shaped knives.</string>
+
+    <string name = "tanto">Tanto</string>
+    <string name = "tantoDesc">Another oriental weapon, it resembles the Katana but is much smaller.</string>
+
+    <string name = "tessen">Tessen (War Fan)</string>
+    <string name = "tessenDesc">An especially exotic oriental weapon, its appearance is that of a fan, but sharp knives have replaced the wooden slates of the fan. The base of the fan is a heavy counterweight that can deliver an Impact attack.</string>
+
+    <string name = "tonfa">Tonfa</string>
+    <string name = "tonfaDesc">This is a club with a short handle sticking out in the middle used while being held along the line of the forearm.</string>
+
+    <string name = "broadsword">Broadsword</string>
+    <string name = "broadswordDesc">A straight-bladed weapon slightly shorter than the Long sword. It is characterized by its broad blade and great fortitude.</string>
+
+    <string name = "longsword">Long Sword</string>
+    <string name = "longswordDesc">A cutting blade with a sharp point. It is generally 90 to 110 centimeters long.</string>
+
+    <string name = "rapier">Rapier</string>
+    <string name = "rapierDesc">A fine and stylized two-edged sword.</string>
+
+    <string name = "saber">Saber</string>
+    <string name = "saberDesc">A light curved blade that is similar and less durable than the Long Sword, but much more maneuverable.</string>
+
+    <string name = "scimitar">Scimitar</string>
+    <string name = "scimitarDesc">A large curved sword generally shorter than the Long Sword, but with a broader blade.</string>
+
+    <string name = "katana">Katana</string>
+    <string name = "katanaDesc">A sword of Asian design, it has a curved blade sharpened on only one edge. Similar to a saber, it is considerably heavier and more effective, but not as resistant to breaking.</string>
+
+    <string name = "twoBladeKatana">Two-Bladed Katana</string>
+    <string name = "twoBladeKatanaDesc">This is a staff with a Katana on each end. It is held and maneuvered holding the long central shaft. Although both hands must be used, the Strength bonus is not doubled. Because of the way it is wielded, it allows a second attack per turn, as though a second weapon were being used. However, it applies a penalty of only -10 to a character\'s Attack ability when being used in that way.</string>
+
+    <string name = "bolas">Bolas</string>
+    <string name = "bolasDesc">A throwing weapon made up of three balls of metal or reinforced leather tied together by cords. It is used to capture an opponent. Unlike other weapons used for capture, it does not suffer a -40 penalty when trying to trap an opponent.</string>
+
+    <string name = "chakram">Chakram</string>
+    <string name = "chakramDesc">Indigenous weapon that consists of a circular blade, used as a thrown weapon. It\'s known as Turcus in other cultures. It can return after being thrown if it doesn\'t hit anything. To catch it requires beating a Very Difficult Sleight of Hand Check.</string>
+
+    <string name = "darts">Darts</string>
+    <string name = "dartsDesc">Small metal-tipped darts designed to be thrown by hand.</string>
+
+    <string name = "spikeBall">Spiked Ball</string>
+    <string name = "spikeBallDesc">Metallic balls equipped with spikes to facilitate their being thrown.</string>
+
+    <string name = "twoHandSword">Two-Handed Sword</string>
+    <string name = "twoHandSwordDesc">The Two-handed Sword is the greatest of swords and can be measured more than 160 centimeters long. Used almost exclusively with two hands, it is an awkward, but very deadly weapon.</string>
+
+    <string name = "nodachi">Nodachi</string>
+    <string name = "nodachiDesc">A larger version of the Katana. It is used in a similar way, but it is much longer and thicker.</string>
+
+    <string name = "swordBreaker">Sword Breaker</string>
+    <string name = "swordBreakerDesc">This is a short sword of great weight, containing a blade of almost 25 centimeters wide. Due to its enormous Impact potential, it is often used to break weapons or break through an enemy\'s armor.</string>
+
+    <string name = "hoe">Hoe</string>
+    <string name = "woodsmanAxe">Woodsman\'s Axe</string>
+    <string name = "hammer">Hammer</string>
+    <string name = "metalBar">Metal Bar</string>
+    <string name = "torch">Torch</string>
+    <string name = "vase">Vase</string>
+    <string name = "woodenPole">Wooden Pole</string>
+    <string name = "brokenBottle">Broken Bottle</string>
+    <string name = "kitchenKnife">Kitchen Knife</string>
+    <string name = "pick">Pick</string>
+    <string name = "sickle">Sickle</string>
+    <string name = "chair">Chair</string>
+
+    <string name = "unarmed">Unarmed Combat</string>
+    <string name = "unarmedDesc">This is not a weapon, of course. Rather, these are the numbers used for a character fighting without weapons. The attacks made are made by punching, kicking, head-butting, and biting. Fighting unarmed requires the use of the whole body, so a character fighting this way cannot apply the rules for attacks with other weapons</string>
+</resources>

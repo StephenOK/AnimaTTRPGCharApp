@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
@@ -12,7 +13,8 @@ import java.io.Serializable
  */
 class Axes: Serializable {
     val battleAxe = ProjectileWeapon(
-        "Battle Axe",
+        "battleAxe",
+        R.string.battleAxe,
         70,
         -30,
         7, null,
@@ -20,12 +22,12 @@ class Axes: Serializable {
         15, 5, 25,
         100, 5,
         listOf(WeaponAbility.Throwable), null,
-        "A more manageable version of the Two-handed Axe, a Battle Axe can be wielded " +
-                "with just one hand."
+        R.string.battleAxeDesc
     )
 
     val handAxe = ProjectileWeapon(
-        "Hand Axe",
+        "handAxe",
+        R.string.handAxe,
         45,
         0,
         5, null,
@@ -33,31 +35,31 @@ class Axes: Serializable {
         13, 4, 15,
         80, 10,
         listOf(WeaponAbility.Throwable), null,
-        "These are light axes used with a single hand. They usually have a " +
-                "counterweight that facilitates their use as thrown weapons. They measure from " +
-                "30 to 60 centimeters in length."
+        R.string.handAxeDesc
     )
 
     val hoe = Weapon(
-        "Hoe",
+        "hoe",
+        R.string.hoe,
         30,
         -20,
         4, null,
         AttackType.Cut, AttackType.Impact, WeaponType.Axe,
         10, 1, 15,
         null, null,
-        ""
+        R.string.emptyItem
     )
 
     val woodAxe = Weapon(
-        "Woodsman's Axe",
+        "woodAxe",
+        R.string.woodsmanAxe,
         40,
         -10,
         7, 5,
         AttackType.Cut, null, WeaponType.Axe,
         12, 3, 15,
         listOf(WeaponAbility.OneOrTwoHanded), null,
-        ""
+        R.string.emptyItem
     )
 
     val axes = listOf(battleAxe, handAxe, hoe, woodAxe)

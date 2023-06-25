@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "battoJutsu">Batto Jutsu/Iai Jutsu</string>
+    <string name = "battoJutsuDesc">This skill permits a character to unsheathe his weapon with perfect ease. The character can unsheathe his weapon without applying the -25 penalty to the Attack or Block abilities. It has no effect for two-handed weapons.</string>
+
+    <string name = "areaAttack">Area Attack</string>
+    <string name = "areaAttackDesc">The character specializes in broad maneuvers that can take out various enemies with greater ease. This reduces the penalty for an Area Attack maneuver by half. Therefore a character applies a -25 to his attack ability when using this attack.</string>
+
+    <string name = "preciseAttack">Precision Attack</string>
+    <string name = "preciseAttackDesc">The character has a marked ability to put his adversary in a Menace Position. This reduces the penalty for a Put at Weapon\'s Point maneuver by half. Therefore a character applies -50 to his attack ability when using this attack.</string>
+
+    <string name = "disarm">Disarming Attack</string>
+    <string name = "disarmDesc">A character with this ability has specialized in disarming his opponents. This reduces the penalty for a Disarm maneuver to -20.</string>
+
+    <string name = "magAsAttack">Magic Projection as an Attack</string>
+    <string name = "magAsAttackDesc">This represents a character\'s joining of his combat knowledge with the ability to direct spells at an opponent. For this character, spells act like real weapons that he can project like a true martial ability. This allows the character to use his attack ability when undertaking an offensive Magic Projection. Only the base ability score is used, not the points for innate improvement that come from combat classes. This module cannot be used to launch passive or defensive spells.</string>
+
+    <string name = "magAsDefense">Magic Projection as a Defense</string>
+    <string name = "magAsDefenseDesc">The character uses his defensive knowledge to project his passive and shielding spells as though they were weapons or armor that intercept the attacks of his enemies. This permits a character\'s Defense ability to be used as a defensive Magic Projection. Only the base ability is used, not the points for innate improvement that come from particular classes. This module cannot be used to direct offensive spells.</string>
+
+    <string name = "psyProj">Psychic Projection Module</string>
+    <string name = "psyProjDesc">The character uses his Combat Abilities to project his mental powers as if they were actual weapons. This gives the character the ability to use Combat Abilities as a Psychic Projection. The offensive is used to attack, and the defensive to raise shields. Only the base ability is used, not the points for innate improvement that come from particular classes.</string>
+</resources>

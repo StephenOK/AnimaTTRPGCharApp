@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +58,7 @@ fun ModuleFragment(
             Text(
                 text = stringResource(
                     R.string.primaryWeaponLabel,
-                    modFragVM.primaryWeapon.collectAsState().value.name
+                    stringResource(modFragVM.primaryWeapon.collectAsState().value.name)
                 ),
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -140,7 +141,7 @@ private fun WeaponListButton(
             //display whole class module if one is available
             if(weaponData.wholeClass) {
                 ArchetypeRow(
-                    weaponData.weaponArchetype,
+                    weaponData.weaponArchetype!!,
                     modFragVM,
                     homePageVM
                 )
@@ -149,7 +150,7 @@ private fun WeaponListButton(
             }
 
             //display all weapons from the given list
-            weaponData.items.forEach{
+            weaponData.displayItems.forEach{
                 WeaponRow(
                     modFragVM,
                     it,
@@ -208,7 +209,7 @@ private fun WeaponRow(
 
         //display weapon name
         Text(
-            text = input.name,
+            text = stringResource(input.name),
             modifier = Modifier
                 .weight(0.55f),
             textAlign = TextAlign.Center
@@ -405,7 +406,7 @@ private fun MartialArtRow(
 
         //display name and bonus martial knowledge of this martial art
         Text(
-            text = martialArt.name,
+            text = stringResource(martialArt.name),
             modifier = Modifier
                 .weight(0.45f),
             textAlign = TextAlign.Center
@@ -495,7 +496,7 @@ private fun StyleRow(
 
         //display style's name and cost
         Text(
-            text = style.name,
+            text = stringResource(style.name),
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center
@@ -524,7 +525,7 @@ private fun StyleRow(
 fun ModulePreview(){
     val charInstance = BaseCharacter()
 
-    val moduleFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
+    val moduleFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, LocalContext.current)
     //moduleFragVM.allWeapons[7].toggleListOpen()
     moduleFragVM.toggleArchetypeOpen()
 

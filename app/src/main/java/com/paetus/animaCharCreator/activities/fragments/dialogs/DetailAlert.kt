@@ -72,7 +72,7 @@ fun DetailAlert(
                         is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
 
                         //style module
-                        is StyleModule -> {Text(text = item.description)}
+                        is StyleModule -> {Text(text = stringResource(item.description))}
 
                         //martial art
                         is MartialArt -> MartialContents(item)
@@ -270,7 +270,7 @@ private fun WeaponContents(input: Weapon) {
         Spacer(Modifier.height(10.dp))
 
         //show description
-        Text(text = "\t${input.description}")
+        Text(text = "\t${stringResource(input.description)}")
     }
 }
 
@@ -288,7 +288,7 @@ private fun ArchetypeContents(detailList: List<Weapon>){
     ){
         //display each weapon's name
         detailList.forEach {
-            Text(text = it.name)
+            Text(text = stringResource(it.name))
         }
     }
 }
@@ -302,9 +302,9 @@ private fun ArchetypeContents(detailList: List<Weapon>){
 private fun MartialContents(item: MartialArt){
     Column{
         //show art's prerequisites and description
-        InfoRow(stringResource(R.string.prereqLabel), item.prereqList)
+        InfoRow(stringResource(R.string.prereqLabel), stringResource(item.prereqList))
         Spacer(Modifier.height(10.dp))
-        Text(text = "\t${item.description}")
+        Text(text = "\t${stringResource(item.description)}")
     }
 }
 
@@ -548,14 +548,14 @@ fun WeaponDetailPreview(){
     val charInstance = BaseCharacter()
     val weapon = charInstance.weaponProficiencies.projectiles.crossbow
 
-    DetailAlert(weapon.name, weapon){}
+    DetailAlert(stringResource(weapon.name), weapon){}
 }
 
 @Preview
 @Composable
 fun ModuleDetailPreview(){
     val charInstance = BaseCharacter()
-    val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies)
+    val modFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, LocalContext.current)
     val module = modFragVM.allArchetypeData[12]
 
     DetailAlert(stringResource(module.name), module){}
@@ -567,7 +567,7 @@ fun MartialDetailPreview(){
     val charInstance = BaseCharacter()
     val martialArt = charInstance.weaponProficiencies.martials.aikido
 
-    DetailAlert(martialArt.name, martialArt){}
+    DetailAlert(stringResource(martialArt.name), martialArt){}
 }
 
 @Preview

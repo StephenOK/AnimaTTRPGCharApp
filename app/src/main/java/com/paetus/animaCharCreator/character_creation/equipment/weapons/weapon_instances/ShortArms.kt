@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
@@ -12,19 +13,20 @@ import java.io.Serializable
  */
 class ShortArms: Serializable {
     val cestus = Weapon(
-        "Cestus",
+        "cestus",
+        R.string.cestus,
         25,
         10,
         3, null,
         AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         11, -2, 15,
         null, null,
-        "Metal covering for the hands, kneecaps, elbows, or forearms that includes " +
-                "knives or spikes used for striking an enemy."
+        R.string.cestusDesc
     )
 
     val dagger = ProjectileWeapon(
-        "Dagger",
+        "dagger",
+        R.string.dagger,
         30,
         20,
         3, null,
@@ -32,23 +34,24 @@ class ShortArms: Serializable {
         10, -2, 15,
         50,  20,
         listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        "A combat knife roughly 20 to 30 centimeters long. It is usually sharpened " +
-                "on both edges and balanced for throwing."
+        R.string.daggerDesc
     )
 
     val hook = Weapon(
-        "Hook",
+        "hook",
+        R.string.hook,
         30,
         10,
         3, null,
         AttackType.Thrust, null, WeaponType.Short,
         11, -2, 15,
         null, null,
-        "A weapon that is small and curved with a sharp point."
+        R.string.hookDesc
     )
 
     val parryDagger = ProjectileWeapon(
-        "Parrying Dagger",
+        "parryDagger",
+        R.string.parryDagger,
         30,
         15,
         3, null,
@@ -56,25 +59,24 @@ class ShortArms: Serializable {
         12, 0, 20,
         50, 15,
         listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        "A variation on the traditional dagger designed to block the attacks of enemy " +
-                "weapons and trap them with the hilt. At its base are two sharp edges."
+        R.string.parryDaggerDesc
     )
 
     val shortSword = Weapon(
-        "Short Sword",
+        "shortSword",
+        R.string.shortSword,
         40,
         15,
         4, null,
         AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         12, 1, 20,
         listOf(WeaponAbility.Precision), null,
-        "A straight sharp blade about 50 centimeters long. Although it can cut, it " +
-                "is used principally as a Thrust weapon. Its reduced size makes it a very " +
-                "discrete weapon."
+        R.string.shortSwordDesc
     )
 
     val stiletto = ProjectileWeapon(
-        "Stiletto",
+        "stiletto",
+        R.string.stiletto,
         25,
         20,
         3, null,
@@ -82,12 +84,12 @@ class ShortArms: Serializable {
         8, -3, 15,
         30, 30,
         listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        "A sharp needle-like knife whose main purpose is for throwing, although it can " +
-                "be used in hand-to-hand combat."
+        R.string.stilettoDesc
     )
 
     val boomerang = ProjectileWeapon(
-        "Boomerang",
+        "boomerang",
+        R.string.boomerang,
         30,
         10,
         4, null,
@@ -95,74 +97,72 @@ class ShortArms: Serializable {
         10, 0, 15,
         60, 20,
         listOf(WeaponAbility.Throwable, WeaponAbility.Special), null,
-        "A curved stick of wood or metal designed to be thrown and to return if it " +
-                "doesn't hit anything. To catch it requires a Difficult Sleight of Hand Check."
+        R.string.boomerangDesc
     )
 
     val claws = Weapon(
-        "Claws",
+        "claws",
+        R.string.claws,
         30,
         15,
         4, null,
         AttackType.Cut, AttackType.Thrust, WeaponType.Short,
         12, 2, 15,
         null, null,
-        "Knives on a glove made to resemble animal claws."
+        R.string.clawsDesc
     )
 
     val katar = Weapon(
-        "Katar",
+        "katar",
+        R.string.katar,
         40,
         10,
         8, null,
         AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         13, 3, 25,
         listOf(WeaponAbility.Complex, WeaponAbility.Special), null,
-        "A gauntlet equipped with knife blades 25 to 30 centimeters long. It possesses a " +
-                "complex mechanism that allows the blades to be extended and spun. In those " +
-                "cases, they can block projectiles like a buckler."
+        R.string.katarDesc
     )
 
     val raven = Weapon(
-        "Raven",
+        "raven",
+        R.string.raven,
         35,
         10,
         4, null,
         AttackType.Impact, AttackType.Cut, WeaponType.Short,
         11, 2, 25,
         listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special), null,
-        "A multi-bladed knife in the shape of a star with a hole in the center. The " +
-                "thumb is placed in the hole and the knife is spun hard. As it spins, it can " +
-                "block missile attacks as though it were a buckler."
+        R.string.ravenDesc
     )
 
     val sai = Weapon(
-        "Sai",
+        "sai",
+        R.string.sai,
         35,
         15,
         4, null,
         AttackType.Thrust, AttackType.Cut, WeaponType.Short,
         12, 0, 25,
         listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), null,
-        "An unsharpened, pointed, knife-like weapon whose cross guard curves forward to " +
-                "resemble a trident. It is used primarily to block an opponent's weapon."
+        R.string.saiDesc
     )
 
     val shuko = Weapon(
-        "Shuko",
+        "shuko",
+        R.string.shuko,
         20,
         10,
         4, null,
         AttackType.Thrust, null, WeaponType.Short,
         9, -2, 25,
         listOf(WeaponAbility.Special), null,
-        "This is a claw-like device held in the palms of the hands. It is used both as " +
-                "a weapon and as a tool for climbing. Shuko adds a +10 to a character's Climb " +
-                "ability."
+        R.string.shukoDesc
     )
 
     val shuriken = ProjectileWeapon(
-        "Shuriken",
+        "shuriken",
+        R.string.shuriken,
         25,
         20,
         4, null,
@@ -170,23 +170,24 @@ class ShortArms: Serializable {
         10, 1, 20,
         30, 20,
         listOf(WeaponAbility.Throwable), null,
-        "Small Asian metal weapons used exclusively for throwing. They can be " +
-                "various shapes, from simple sharp-edged disks to star-shaped knives."
+        R.string.shurikenDesc
     )
 
     val tanto = Weapon(
-        "Tanto",
+        "tanto",
+        R.string.tanto,
         40,
         20,
         3, null,
         AttackType.Cut, null, WeaponType.Short,
         9, 1, 40,
         listOf(WeaponAbility.Precision), null,
-        "Another oriental weapon, it resembles the Katana but is much smaller."
+        R.string.tantoDesc
     )
 
     val tessen = ProjectileWeapon(
-        "Tessen (War Fan)",
+        "tessen",
+        R.string.tessen,
         30,
         20,
         4, null,
@@ -194,65 +195,67 @@ class ShortArms: Serializable {
         8, 0, 25,
         40, 20,
         listOf(WeaponAbility.Precision, WeaponAbility.Throwable), null,
-        "An especially exotic oriental weapon, its appearance is that of a fan, but " +
-                "sharp knives have replaced the wooden slates of the fan. The base of the fan is " +
-                "a heavy counterweight that can deliver an Impact attack."
+        R.string.tessenDesc
     )
 
     val tonfa = Weapon(
-        "Tonfa",
+        "tonfa",
+        R.string.tonfa,
         30,
         20,
         4, null,
         AttackType.Impact, null, WeaponType.Short,
         13, 0, 25,
         listOf(WeaponAbility.Precision), null,
-        "This is a club with a short handle sticking out in the middle used while " +
-                "being held along the line of the forearm."
+        R.string.tonfaDesc
     )
 
     val brokenBottle = Weapon(
-        "Broken Bottle",
+        "brokenBottle",
+        R.string.brokenBottle,
         15,
         10,
         3, null,
         AttackType.Cut, AttackType.Impact, WeaponType.Short,
         5, -3, 15,
         null, null,
-        ""
+        R.string.emptyItem
     )
 
     val kitchenKnife = Weapon(
-        "Kitchen Knife",
+        "kitchenKnife",
+        R.string.kitchenKnife,
         25,
         10,
         4, null,
         AttackType.Cut, null, WeaponType.Short,
         9, -1, 10,
         null, null,
-        ""
+        R.string.emptyItem
     )
 
     val pick = Weapon(
-        "Pick",
+        "pick",
+        R.string.pick,
         40,
         -20,
         5, null,
         AttackType.Thrust, null, WeaponType.Short,
         10, 3, 15,
         null, null,
-        ""
+        R.string.emptyItem
     )
 
     val sickle = Weapon(
-        "Sickle",
+        "sickle",
+        R.string.sickle,
         35,
         -10,
         4, null,
         AttackType.Cut, AttackType.Thrust, WeaponType.Short,
         8, 0, 15,
         null, null,
-        ""
+        R.string.emptyItem
     )
 
     val shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,

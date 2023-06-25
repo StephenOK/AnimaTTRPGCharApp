@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
 /**
  * Combat item that a character may wield.
  *
+ * @param saveName name to write to the character's file
  * @param name name of the weapon
  *
  * @param damage base damage of the weapon
@@ -29,7 +30,8 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
  * @param description details of the weapon
  */
 open class Weapon(
-    val name: String,
+    val saveName: String,
+    val name: Int,
 
     val damage: Int?,
     val speed: Int,
@@ -48,5 +50,5 @@ open class Weapon(
 
     val ability: List<WeaponAbility>?,
     val ownStrength: Int?,
-    val description: String
+    val description: Int
 )

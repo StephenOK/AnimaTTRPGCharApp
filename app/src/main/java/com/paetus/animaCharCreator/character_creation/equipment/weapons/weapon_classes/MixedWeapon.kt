@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
 /**
  * A weapon that fits multiple types.
  *
+ * @param saveName name to write to file for this item
  * @param name name of the weapon
  * @param damage base damage the weapon can do
  * @param speed change to the character's initiative when wielding this weapon
@@ -23,7 +24,8 @@ import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponTy
  * @param description details of the item in question
  */
 class MixedWeapon(
-    name: String,
+    saveName: String,
+    name: Int,
     damage: Int,
     speed: Int,
     oneHandStr: Int,
@@ -36,6 +38,6 @@ class MixedWeapon(
     presence: Int,
     ability: List<WeaponAbility>?,
     ownStrength: Int?,
-    description: String
-): Weapon(name, damage, speed, oneHandStr, twoHandStr, primaryType, secondaryType, WeaponType.Mixed,
+    description: Int
+): Weapon(saveName, name, damage, speed, oneHandStr, twoHandStr, primaryType, secondaryType, WeaponType.Mixed,
     fortitude, breakage, presence, ability, ownStrength, description)

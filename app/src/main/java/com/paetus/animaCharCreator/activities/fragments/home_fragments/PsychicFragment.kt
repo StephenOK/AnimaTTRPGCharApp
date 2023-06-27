@@ -319,7 +319,7 @@ private fun PsyPowerRow(
 
         //display power name
         Text(
-            text = power.item.name,
+            text = stringResource(power.item.name),
             modifier = Modifier
                 .weight(0.3f)
         )
@@ -359,7 +359,8 @@ fun PsychicPreview(){
     val psyFragVM = PsychicFragmentViewModel(
         charInstance.psychic,
         charInstance.ownClass,
-        charInstance.primaryList.dex.outputMod.value
+        charInstance.primaryList.dex.outputMod.value,
+        LocalContext.current
     )
     val homePageFrag = HomePageViewModel(charInstance)
 

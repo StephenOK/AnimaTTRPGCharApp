@@ -492,7 +492,7 @@ fun PowerDetails(power: PsychicPower){
         InfoRow(stringResource(R.string.maintenanceLabel), " $isMaintained")
         Spacer(Modifier.height(10.dp))
 
-        Row{Text(text = "\t${power.description}")}
+        Row{Text(text = "\t${stringResource(power.description)}")}
         Spacer(Modifier.height(10.dp))
 
         //display power's Effects Table
@@ -604,7 +604,7 @@ fun PowerDetailPreview(){
     val charInstance = BaseCharacter()
     val power = charInstance.psychic.cryokinesis.crystallize
 
-    DetailAlert(power.name, power){}
+    DetailAlert(stringResource(power.name), power){}
 }
 
 @Preview

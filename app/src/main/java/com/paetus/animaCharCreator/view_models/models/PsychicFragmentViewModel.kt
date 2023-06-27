@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -23,7 +24,8 @@ import kotlinx.coroutines.flow.update
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
     private val charClass: MutableState<CharClass>,
-    dexMod: Int
+    dexMod: Int,
+    val context: Context
 ): ViewModel() {
     //initialize character's free psychic point text
     private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints().toString())
@@ -92,7 +94,7 @@ class PsychicFragmentViewModel(
      * Sets the displayed content for the detail alert.
      */
     fun setDetailItem(input: PsychicPower){
-        _detailTitle.update{input.name}
+        _detailTitle.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 

@@ -1,18 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available matrix abilities any psychic may acquire.
  */
-class MatrixPowers: Discipline(){
+class MatrixPowers: Discipline("matrixPowers"){
     val senseMatrices = PsychicPower(
-        "Sense Matrices",
+        "senseMatrices",
+        R.string.senseMatrices,
         0,
         true,
         true,
-        "The psychic is able to sense the use of Powers and notice the Presence of individuals who share this ability. In this way, characters \"see\" the energy of the matrices. Therefore, they suffer no Blindness penalty against invisible Psychic Abilities. For instance, anyone reaching a Medium-level Difficulty will be able to sense active Psychic Matrices and detect latent Powers in people, all within a 25-meter area.",
+        R.string.senseMatricesDesc,
         listOf(
             "Fatigue 1",
             "10-meter radius/See active Psychic Matrices",
@@ -29,11 +31,11 @@ class MatrixPowers: Discipline(){
 
     val destroyMatrices = PsychicPower(
         "Destroy Matrices",
+        R.string.destroyMatrices,
         0,
         false,
         true,
-        "This ability will destroy active Psychic Powers - provided they are not of a " +
-                "higher Difficulty than the Effects Table indicates.",
+        R.string.destroyMatricesDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -49,17 +51,12 @@ class MatrixPowers: Discipline(){
     )
 
     val hideMatrices = PsychicPower(
-        "Hide Matrices",
+        "hideMatrices",
+        R.string.hideMatrices,
         0,
         false,
         true,
-        "This Power hides the psychic's mental abilities from the Sense Matrices Power. " +
-                "Hide Matrices decreases the results for Sense Matrices by as many degrees of " +
-                "Difficulty as indicated on the Effects Table. If an adversary's Potential for " +
-                "Sense Matrices falls below the base requirement (that is, Easy), the psychic's " +
-                "Powers of the character remain unnoticed. The Sense Matrices Power is only " +
-                "annulled against the Psychic using Hide Matrices. It still works normally against " +
-                "other targets.",
+        R.string.hideMatricesDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -75,17 +72,12 @@ class MatrixPowers: Discipline(){
     )
 
     val linkMatrices = PsychicPower(
-        "Link Matrices",
+        "linkMatrices",
+        R.string.linkMatrices,
         0,
         true,
         true,
-        "This Power enables the psychic to connect the minds of several other psychic " +
-                "individuals to his own. In this way, one of the connected members is able to add " +
-                "the Willpower bonuses of others to his own Psychic Potential. Only one character " +
-                "can use his Psychic Abilities while linked, since the others are merely enhancing " +
-                "the Potential of one person. Connected characters must use their Powers to this " +
-                "effect voluntarily. The number of individuals admitted to the link is determined " +
-                "by a character's success in activating this Power (as detailed in the Effects Table below).",
+        R.string.linkMatricesDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -100,5 +92,12 @@ class MatrixPowers: Discipline(){
         )
     )
 
-    override var allPowers = listOf(senseMatrices, destroyMatrices, hideMatrices, linkMatrices)
+    init{
+        allPowers.addAll(listOf(
+            senseMatrices,
+            destroyMatrices,
+            hideMatrices,
+            linkMatrices
+        ))
+    }
 }

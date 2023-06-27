@@ -1,19 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available cryokinetic powers.
  */
-class Cryokinesis: Discipline(){
+class Cryokinesis: Discipline("cryokinesis"){
     val createChill = PsychicPower(
-        "Create Chill",
+        "createChill",
+        R.string.createChillPow,
         1,
         true,
         true,
-        "This Power creates several levels of Cold Intensity. If applied to liquid " +
-                "bodies, Create Chill may produce ice.",
+        R.string.createChillPowDesc,
         listOf(
             "Fatigue 1",
             "1 Intensity",
@@ -29,15 +30,12 @@ class Cryokinesis: Discipline(){
     )
 
     val freeze = PsychicPower(
-        "Freeze",
+        "freeze",
+        R.string.freezePow,
         1,
         true,
         true,
-        "This Power freezes anybody who fails the required check. The victim receives " +
-                "an All Action Penalty equivalent to the amount by which he failed the check. If " +
-                "the difference is higher than 40, the victim is frozen and subject to Partial " +
-                "Paralysis. The Cold AT may be used defensively against this Power. Affected " +
-                "individuals can make a new check every 5 turns.",
+        R.string.freezePowDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -53,15 +51,12 @@ class Cryokinesis: Discipline(){
     )
 
     val senseTemperature = PsychicPower(
-        "Sense Temperature",
+        "senseTemp",
+        R.string.senseTemp,
         1,
         true,
         true,
-        "The character can sense any variation in weather temperature - including live " +
-                "body heat - within the area of effect. This ability can overcome walls or " +
-                "obstacles that are not based on Energy. However, it is useless against Ki " +
-                "Concealment or opponents who do not emit heat. All individuals within the area " +
-                "will be equally affected without the need of Psychic Projection.",
+        R.string.senseTempDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -77,15 +72,12 @@ class Cryokinesis: Discipline(){
     )
 
     val eliminateCold = PsychicPower(
-        "Eliminate Cold",
+        "elimCold",
+        R.string.elimCold,
         1,
         true,
         false,
-        "This Power decreases the temperature of an object, being, or zone by several " +
-                "Intensities. When cast upon a cold=based being, Eliminate Cold causes 5 Life " +
-                "Points of damage points for every diminished Intensity - provided the creature " +
-                "fails the appropriate PhR Check. Creatures with Damage Resistance receive 25 Life " +
-                "Points of damage for each level of Intensity diminished.",
+        R.string.elimColdDesc,
         listOf(
             "Fatigue 1",
             "-1 Intensity/80 PhR",
@@ -101,15 +93,12 @@ class Cryokinesis: Discipline(){
     )
 
     val coldDominion = PsychicPower(
-        "Cold Dominion",
+        "coldDominion",
+        R.string.coldDominion,
         1,
         true,
         true,
-        "Psychics with this Power can control ice and cold within a given area. They may " +
-                "modify it in any way they please, breaking it or causing it to shift its shape. " +
-                "An elemental creature can avoid the effects of Cold Dominion by passing a PhR " +
-                "Check against the appropriate target Difficulty (as detailed in the Effects " +
-                "Table below).",
+        R.string.coldDominionDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -125,17 +114,12 @@ class Cryokinesis: Discipline(){
     )
 
     val crystallize = PsychicPower(
-        "Crystallize",
+        "crystallize",
+        R.string.crystallize,
         2,
         true,
         true,
-        "This Power crystallizes any type of body that fails the required PhR Check. All " +
-                "things frozen in this way become exceptionally brittle and likely to break at the " +
-                "slightest bump. A crystallized character is subject to Minor Paralysis and " +
-                "automatically suffers a Critical with a -40 penalty to his PhR Checks upon " +
-                "suffering any sort of damage. Creatures with Damage Resistance will not receive " +
-                "a direct Critical, but their whole body will be regarded as a vulnerable spot " +
-                "from then on.",
+        R.string.crystallizeDesc,
         listOf(
             "Fatigue 12",
             "Fatigue 8",
@@ -151,14 +135,12 @@ class Cryokinesis: Discipline(){
     )
 
     val iceSplinters = PsychicPower(
-        "Ice Splinters",
+        "iceSplinters",
+        R.string.iceSplinters,
         2,
         true,
         false,
-        "The psychic creates ice splinters that he can use as projectiles during an " +
-                "attack. They strike on the Cold or Thrust AT with a Base Damage that varies " +
-                "according to the Effects Table. These projectiles are perfectly visible to " +
-                "everyone, including characters without the ability to see Psychic Matrices.",
+        R.string.iceSplintersDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -174,12 +156,12 @@ class Cryokinesis: Discipline(){
     )
 
     val decreaseTemperature = PsychicPower(
-        "Decrease Ambient Temperature",
+        "decreaseTemp",
+        R.string.decreaseTemp,
         2,
         true,
         true,
-        "The psychic is in control of the temperature and can decrease it considerably " +
-                "in a wide area of effect.",
+        R.string.decreaseTempDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -195,15 +177,12 @@ class Cryokinesis: Discipline(){
     )
 
     val iceShield = PsychicPower(
-        "Ice Shield",
+        "iceShield",
+        R.string.iceShield,
         2,
         false,
         true,
-        "This Power creates a shield of ice that protects the psychic from any " +
-                "non-Energy-based source of attack and beams from Light or Darkness. Unlike " +
-                "other Powers, Ice Shield works on the same Life Points with which it has been " +
-                "created. Once created, the shield loses 5 Life Points per turn until it reaches " +
-                "an amount that the psychic can maintain naturally.",
+        R.string.iceShieldDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -219,16 +198,12 @@ class Cryokinesis: Discipline(){
     )
 
     val absoluteZero = PsychicPower(
-        "Absolute Zero",
+        "absoluteZero",
+        R.string.absoluteZero,
         3,
         true,
         true,
-        "The psychic is able to cause the temperature to drop to absolute zero, " +
-                "destroying all organic or inorganic bodies within the radius. In gaming terms, " +
-                "every being or physical object failing a PhR Check with a difficulty of 100 " +
-                "each turn they remain within the area of effect are automatically destroyed by " +
-                "the complete cold. All individuals within the area will be affected equally " +
-                "without the need of Psychic Projection.",
+        R.string.absoluteZeroDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -244,20 +219,12 @@ class Cryokinesis: Discipline(){
     )
 
     val everlastingMoment = PsychicPower(
-        "Everlasting Moment",
+        "everlastMoment",
+        R.string.everlastMoment,
         3,
         true,
         true,
-        "Through cold manipulation, psychics can create a low temperature area within " +
-                "which any body in motion, except for his own, is immobilized - unless it passes " +
-                "the required PhR Check. If a character fails the check by more than 40 points, he " +
-                "is completely frozen and subject to Full Paralysis. A failure of less than 40 " +
-                "points inflicts an All Action Penalty equal to the Failure Level.\nPenalties " +
-                "last for as long as the Power is maintained. Characters are not entitled to new " +
-                "Resistance rolls while they remain in the area of effect. Even individuals who " +
-                "pass their PhR Check must repeat the check every 5 turns while in the area of " +
-                "effect. All individuals within the area will be affected equally without the " +
-                "need of Psychic Projection.",
+        R.string.everlastMomentDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -273,12 +240,12 @@ class Cryokinesis: Discipline(){
     )
 
     val majorCold = PsychicPower(
-        "Major Cold",
+        "majorCold",
+        R.string.majorCold,
         3,
         true,
         true,
-        "An amplified version of Create Chill. It permits psychics to generate " +
-                "temperatures of an extreme nature.",
+        R.string.majorColdDesc,
         listOf(
             "Fatigue 20",
             "Fatigue 16",
@@ -293,7 +260,20 @@ class Cryokinesis: Discipline(){
         )
     )
 
-    override var allPowers = listOf(createChill, freeze, senseTemperature, eliminateCold, coldDominion,
-        crystallize, iceSplinters, decreaseTemperature, iceShield, absoluteZero, everlastingMoment,
-        majorCold)
+    init{
+        allPowers.addAll(listOf(
+            createChill,
+            freeze,
+            senseTemperature,
+            eliminateCold,
+            coldDominion,
+            crystallize,
+            iceSplinters,
+            decreaseTemperature,
+            iceShield,
+            absoluteZero,
+            everlastingMoment,
+            majorCold
+        ))
+    }
 }

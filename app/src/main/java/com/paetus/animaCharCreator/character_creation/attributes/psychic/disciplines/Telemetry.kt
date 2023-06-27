@@ -1,20 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available telemetric powers.
  */
-class Telemetry: Discipline(){
+class Telemetry: Discipline("telemetry"){
     val senseResidues = PsychicPower(
-        "Sense Residues",
+        "senseResidues",
+        R.string.senseResidues,
         1,
         true,
         true,
-        "The psychic senses environmental residues of intense feelings emitted long " +
-                "ago. These feelings need to have been strong ones - such as a great passion or " +
-                "intense fear - in order for him to perceive them.",
+        R.string.senseResiduesDesc,
         listOf(
             "Fatigue 1",
             "One Hour",
@@ -30,13 +30,12 @@ class Telemetry: Discipline(){
     )
 
     val readPast = PsychicPower(
-        "Read The Past",
+        "readPast",
+        R.string.readPast,
         2,
         true,
         false,
-        "This Power enables the psychic to read the history of a specific object or place. " +
-                "Absolutely all events that have taken place within the time span of the Power " +
-                "can be read.",
+        R.string.readPastDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -52,17 +51,12 @@ class Telemetry: Discipline(){
     )
 
     val humanErudition = PsychicPower(
-        "Human Erudition",
+        "humanErudition",
+        R.string.humanErudition,
         2,
         true,
         false,
-        "This Power endows the psychic with the ability of analyzing an individual's " +
-                "past in the attempt of discovering actions he may have taken. The psychic may " +
-                "look for a specific action on the part of the target, or he may seek to find out " +
-                "what his actions were in a specific opportunity. He could, for instance, find " +
-                "out if a certain individual has committed murder, or learn exactly what the " +
-                "character was doing one week from then. Resisting this Power requires the victim " +
-                "to pass a PsR Check against the required target (as detailed in the Effects Table).",
+        R.string.humanEruditionDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -78,14 +72,12 @@ class Telemetry: Discipline(){
     )
 
     val seeHistory = PsychicPower(
-        "See In History",
+        "seeHistory",
+        R.string.seeHistory,
         3,
         true,
         true,
-        "This Power allows psychics to project their senses into the past in a manner " +
-                "such that they can witness any event that might have happened at the place where " +
-                "they are executing the Power. The number of years a psychic can go back is " +
-                "determined by his success in activating the Power (as detailed in the Effects Table).",
+        R.string.seeHistoryDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -100,5 +92,12 @@ class Telemetry: Discipline(){
         )
     )
 
-    override var allPowers = listOf(senseResidues, readPast, humanErudition, seeHistory)
+    init{
+        allPowers.addAll(listOf(
+            senseResidues,
+            readPast,
+            humanErudition,
+            seeHistory
+        ))
+    }
 }

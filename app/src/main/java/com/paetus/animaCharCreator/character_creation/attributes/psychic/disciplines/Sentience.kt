@@ -1,22 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available sentience powers.
  */
-class Sentience: Discipline(){
+class Sentience: Discipline("sentience"){
     val senseFeelings = PsychicPower(
-        "Sense Feelings",
+        "senseFeeling",
+        R.string.senseFeeling,
         1,
         true,
         true,
-        "The psychic can sense an individual's feelings at a particular moment. Resisting " +
-                "this Power requires the target to pass a PsR Check with a variable target that " +
-                "depends upon the psychic's success at activating the Power (as detailed in the " +
-                "Effects Table). The victim is entitled to a new check every 5 turns only if he " +
-                "suspects that he is a victim of this Power.",
+        R.string.senseFeelingDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -32,17 +30,12 @@ class Sentience: Discipline(){
     )
 
     val intensifyFeelings = PsychicPower(
-        "Intensify Feelings",
+        "intensifyFeeling",
+        R.string.intensifyFeeling,
         1,
         true,
         true,
-        "This Power intensifies an individual's dominant feeling or mood at a specific " +
-                "time. Bear in mind that the Power does not accentuate previously non-existent " +
-                "feelings. One might, for instance, drive an angry person mad with wrath, or have " +
-                "a sad person sink fast into depression. Characters wishing to resist this Power " +
-                "must pass a PsR Check (as detailed in the Effects Table). They are entitled to " +
-                "a new check every 5 turns only if they suspect that they have been subject to " +
-                "Intensify Feelings.",
+        R.string.intensifyFeelingDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -58,17 +51,12 @@ class Sentience: Discipline(){
     )
 
     val detectFeelings = PsychicPower(
-        "Detect Feelings",
+        "detectFeelings",
+        R.string.detectFeelings,
         1,
         true,
         true,
-        "This Power detects a specific feeling in any subject within its area of effect. " +
-                "For instance, if the psychic is seeking to detect anger, the search would turn " +
-                "up angry individuals within the area of influence. The affected party may resist " +
-                "by passing a PsR Check against a target difficulty that varies with the psychic's " +
-                "success in activating the Power (as detailed in the Effects Table). All " +
-                "individuals within the area will be affected equally without the need of " +
-                "Psychic Projection.",
+        R.string.detectFeelingsDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -84,19 +72,12 @@ class Sentience: Discipline(){
     )
 
     val connectSenses = PsychicPower(
-        "Connect Senses",
+        "connectSenses",
+        R.string.connectSenses,
         1,
         true,
         true,
-        "This Power links the psychic's senses with those of another individual, and " +
-                "vice versa, granting them both access to what each of them hears and sees. It " +
-                "is the exclusive prerogative of the psychic to deny access to his own senses. " +
-                "Characters who pass a PsR Check with a variable target difficulty (as detailed " +
-                "in the Effects Table) successfully resists this ability and deny the psychic " +
-                "access to their senses. If a character affected by Control Senses suspects that " +
-                "he is under the influence of the Power, he can make a new PsR Check every 5 " +
-                "turns. Maximum distance between the two connected bodies is determined by the " +
-                "psychic's success in activating the Power.",
+        R.string.connectSensesDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -112,15 +93,12 @@ class Sentience: Discipline(){
     )
 
     val projectSenses = PsychicPower(
-        "Project Senses",
+        "projectSenses",
+        R.string.projectSenses,
         2,
         true,
         true,
-        "Psychics are capable of projecting their senses at a distance. Once they do, " +
-                "they can use their Secondary Perceptive Abilities as if they were really " +
-                "standing in that place. The psychic's presence will only be detected by those " +
-                "individuals able to sense Psychic Matrices. The Power cannot get through against " +
-                "energy barriers and magically protected areas.",
+        R.string.projectSensesDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -136,14 +114,12 @@ class Sentience: Discipline(){
     )
 
     val eliminateSenses = PsychicPower(
-        "Eliminate Senses",
+        "eliminateSenses",
+        R.string.elimSenses,
         2,
         true,
         true,
-        "The psychic is able to temporarily eliminate one of his victim's five senses. " +
-                "One extra sense may be eliminated for every 20 points by which the victim fails " +
-                "his PsR Check. Victims will be allowed a new check every 5 turns, but they will " +
-                "only recover one sense at a time.",
+        R.string.elimSensesDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -160,19 +136,11 @@ class Sentience: Discipline(){
 
     val createFeelings = PsychicPower(
         "Create Feelings",
+        R.string.createFeelings,
         2,
         true,
         true,
-        "This Power instills new feelings in an individual. For instance, it may cause " +
-                "two people who despise each other to fall in love, or two lovers to be repelled " +
-                "by one another. This Power enables psychics to subject their opponents to any " +
-                "psychological state they desire - such as fear, sorrow, etc. Those wishing to " +
-                "resist these effects need to pass a PsR with a variable target that depends upon " +
-                "the psychic's success at activating this Power (as detailed in the Effects " +
-                "Table). If the nature of the feelings created is radically contrary to the " +
-                "victim's current emotional state, the target receives a +20 bonus to his PsR " +
-                "Check. Victims suspicious of the unnatural origin of their feelings can make new " +
-                "checks every 5 turns.",
+        R.string.createFeelingsDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 4",
@@ -188,21 +156,12 @@ class Sentience: Discipline(){
     )
 
     val infuseFeelings = PsychicPower(
-        "Infuse Feelings",
+        "infuseFeelings",
+        R.string.infuseFeeling,
         2,
         true,
         true,
-        "This Power will infuse an object or place with a strong feeling that " +
-                "automatically affects all individuals in contact with it. For instance an " +
-                "anger-infused sword would incite immense rage in anyone who touched it. If a " +
-                "place is infused, the total area that a character can affect with Infuse Feelings " +
-                "depends upon his success in activating this Power (as detailed in the Effects " +
-                "Table). Characters wishing to resist will need to pass a PsR Check with the " +
-                "appropriate target difficulty. Victims who become suspicious that their feelings " +
-                "are being manipulated by unnatural means can make new rolls every 5 turns. The " +
-                "psychic does not need to use his Psychic Projection. All it takes is his presence " +
-                "in the specific place or physical contact with the object. Effects vanish " +
-                "immediately outside the area or when contact with the object is interrupted.",
+        R.string.infuseFeelingsDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -218,19 +177,12 @@ class Sentience: Discipline(){
     )
 
     val destroyFeelings = PsychicPower(
-        "Destroy Feelings",
+        "destroyFeelings",
+        R.string.destroyFeelings,
         3,
         true,
         false,
-        "The psychic is able to eliminate unwanted feelings in any given individual. In " +
-                "order to use this Power, it is necessary to specify the exact feeling and " +
-                "identify whether it is of a general nature or associated with a particular " +
-                "element. Characters wishing to resist this Power need to pass a PsR Check at the " +
-                "required Difficulty. Deeply rooted emotions may give the resisting character a " +
-                "+20 bonus to his check. The psychic can erase one extra feeling for every 20 " +
-                "points by which the victim fails the PsR. If the victim fails the check by more " +
-                "than 80 points, the psychic could erase all feelings altogether from the victim's " +
-                "mind, turning him into a vegetable.",
+        R.string.destroyFeelingsDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -246,13 +198,12 @@ class Sentience: Discipline(){
     )
 
     val area = PsychicPower(
-        "Area",
+        "areaSentience",
+        R.string.areaSentience,
         3,
         true,
         true,
-        "This Power works like the Area Power in the Telepathy Discipline, except that " +
-                "it affects only Sentience Discipline Powers. In this way, all Sentience Powers " +
-                "used while Area is active will affect any individual within the indicated radius.",
+        R.string.areaSentienceDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -267,6 +218,18 @@ class Sentience: Discipline(){
         )
     )
 
-    override var allPowers = listOf(senseFeelings, intensifyFeelings, detectFeelings, connectSenses,
-        projectSenses, eliminateSenses, createFeelings, infuseFeelings, destroyFeelings, area)
+    init{
+        allPowers.addAll(listOf(
+            senseFeelings,
+            intensifyFeelings,
+            detectFeelings,
+            connectSenses,
+            projectSenses,
+            eliminateSenses,
+            createFeelings,
+            infuseFeelings,
+            destroyFeelings,
+            area
+        ))
+    }
 }

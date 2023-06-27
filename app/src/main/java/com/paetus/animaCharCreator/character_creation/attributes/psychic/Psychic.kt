@@ -404,35 +404,6 @@ class Psychic(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Retrieves the names of all Psychic Powers.
-     *
-     * @return string list of all power names
-     */
-    fun getAllPowerNames(): List<String>{
-        //initialize power list output
-        val output = mutableListOf<String>()
-
-        //gather all psychic powers
-        val psychicPowerList =
-            telepathy.allPowers +
-                    psychokinesis.allPowers +
-                    pyrokinesis.allPowers +
-                    cryokinesis.allPowers +
-                    physicalIncrease.allPowers +
-                    energyPowers.allPowers +
-                    sentiencePowers.allPowers +
-                    telemetry.allPowers
-
-        //add each name to the list
-        psychicPowerList.forEach {
-            output.add(it.name)
-        }
-
-        //return the full list
-        return output.toList()
-    }
-
-    /**
      * Determines the number of development points spent in this section.
      *
      * @return number of points spent in the psychic section
@@ -455,20 +426,32 @@ class Psychic(private val charInstance: BaseCharacter){
 
         //load discipline investment data
         for(index in 0 until fileReader.readLine().toInt()){
-            updateInvestment(allDisciplines[fileReader.readLine().toInt()], true)
+            val searchName = fileReader.readLine()
+            allDisciplines.forEach search@{
+                if(it.saveName == searchName) {
+                    updateInvestment(it, true)
+                    return@search
+                }
+            }
         }
 
         //load mastered powers
         for(index in 0 until fileReader.readLine().toInt()){
-            //retrieve discipline and power references
-            val powerDiscipline = allDisciplines[fileReader.readLine().toInt()]
-            val power = powerDiscipline.allPowers[fileReader.readLine().toInt()]
+            //retrieve power name
+            val spellName = fileReader.readLine()
 
-            //add power to character
-            masterPower(power, powerDiscipline, true)
+            allDisciplines.forEach headSearch@{discipline ->
+                discipline.allPowers.forEach{
+                    //find matching power
+                    if(it.saveName == spellName){
+                        masterPower(it, discipline, true)
 
-            //get user's enhancement of this power
-            enhancePower(power, fileReader.readLine().toInt())
+                        //apply enhancement value
+                        enhancePower(it, fileReader.readLine().toInt())
+                        return@headSearch
+                    }
+                }
+            }
         }
 
         //get number of innate slots purchased
@@ -487,15 +470,13 @@ class Psychic(private val charInstance: BaseCharacter){
         //add discipline data
         charInstance.addNewData(disciplineInvestment.size)
         disciplineInvestment.forEach{
-            charInstance.addNewData(allDisciplines.indexOf(it))
+            charInstance.addNewData(it.saveName)
         }
 
         //add mastered power data
         charInstance.addNewData(masteredPowers.size)
         masteredPowers.forEach{
-            val powerDiscipline = getPowerDiscipline(it.key)!!
-            charInstance.addNewData(allDisciplines.indexOf(powerDiscipline))
-            charInstance.addNewData(powerDiscipline.allPowers.indexOf(it.key))
+            charInstance.addNewData(it.key.saveName)
             charInstance.addNewData(it.value)
         }
 

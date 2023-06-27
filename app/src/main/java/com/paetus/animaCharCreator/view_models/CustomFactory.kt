@@ -117,7 +117,8 @@ class CustomFactory(
                     return PsychicFragmentViewModel(
                         charInstance.psychic,
                         charInstance.ownClass,
-                        charInstance.primaryList.dex.outputMod.value
+                        charInstance.primaryList.dex.outputMod.value,
+                        context
                     ) as T
                 }
 

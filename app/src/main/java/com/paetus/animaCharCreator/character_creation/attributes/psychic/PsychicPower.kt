@@ -3,6 +3,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.psychic
 /**
  * Psychic ability a character may acquire.
  *
+ * @param saveName name to write to the character's file
  * @param name name of the power
  * @param level strength indicator of the power
  * @param active whether the power is active or passive
@@ -11,10 +12,11 @@ package com.paetus.animaCharCreator.character_creation.attributes.psychic
  * @param effects table of effects depending on the player's dice roll
  */
 data class PsychicPower(
-    val name: String,
+    val saveName: String,
+    val name: Int,
     val level: Int,
     val active: Boolean,
     val maintained: Boolean,
-    val description: String,
+    val description: Int,
     val effects: List<String>
 )

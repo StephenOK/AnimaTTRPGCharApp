@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "areaScanning">Area Scanning</string>
+    <string name = "areaScanningDesc">This Power detects any active mind around the psychic. It may differentiate between simple psyches - such as that of animals - or those of a much more complex nature. However, it cannot locate a specific mind within the radius. Resisting this Power requires a character to make a successful PsR Check against the target Difficulty indicated by the Effects Table below. Characters failing this check will not bee entitled to new Resistance Checks while they remain within the scanned area. This ability does not call for Psychic Projection; it will automatically affect everyone within the area.</string>
+
+    <string name = "mentalRestraint">Mental Restraint</string>
+    <string name = "mentalRestraintDesc">The psychic is able to impose a very basic restraint upon his target, preventing the victim from performing a specific action. The ability will only work on Active actions - that is, those requiring a character\'s conscious will. It will not affect Passive actions or those executed by mere reaction. The affected character may resist the effect by making a successful PsR Check against the target Difficulty indicated by the Effects Table below. He is also granted one additional check every time he attempts to carry out the forbidden action. In the case of a very generic restraint, or if the prohibition limits the subject\'s freedom excessively, a +20 bonus may be applied to a victim\'s check.</string>
+
+    <string name = "mindReading">Mind Reading</string>
+    <string name = "mindReadingDesc">This Power allows the psychic to read a subject\'s current thoughts - although it does not permit him to delve into the victim\'s memories. Resisting this Power requires the victim to make a successful PsR Check against a target Difficulty listed along with the intensity of the effect below. A character can make a new check every 5 turns, as long as he is somehow aware of the fact that he is being targeted by this Power. So long as he is reading his opponent\'s intentions, the psychic can apply a +30 bonus to any actions pitted against him.</string>
+
+    <string name = "mentalComs">Mental Communication</string>
+    <string name = "mentalComsDesc">The psychic is able to engage in long distance conversation with another character whose approximate location is known. Unlike with other Powers, no Psychic Projection is required for setting the target. Maximum distance allowed for conversation is indicated by the Power\'s effects</string>
+
+    <string name = "psychicShield">Psychic Shield</string>
+    <string name = "psychicShieldDesc">Psychic Shield enhances the psychic\'s PsR. It may be used to enhance another person\'s PsR, but such an enhancement is reduced to half the bonus indicated.</string>
+
+    <string name = "psyIllusion">Psychic Illusion</string>
+    <string name = "psyIllusionDesc">This Power alters a subject\'s perception by introducing illusory images or sounds into his mind. It enables psychics to become invisible to individuals, to throw illusory rocks at them, or even make them think they are facing a dragon. If a character decides to form illusory creatures, they will Attack and Defend themselves using the character\'s own Psychic Projection, just as other illusions will (arrows, spells, explosions, etc.). Resisting this Power requires a character to make a successful PsR Check against the target Difficulty indicated by the Effects Table below. Naturally, damage is unreal and the opponent will be entitled to a new PsR Check upon being hit. If a character knows he is dealing with an illusion, he can make a PsR Check every turn.</string>
+
+    <string name = "mentalResearch">Mental Research</string>
+    <string name = "mentalResearchDesc">Using this Power, the psychic delves into another person\'s thoughts and memories. It is left to the GM\'s best judgment to decide the number of turns a psychic needs to find the desired information, depending on how deep it is buried in the character\'s memory. The psychic will have access to the victim\'s knowledge, but not to supernaturally altered memories. The affected party may resist the effect by making a successful PsR Check against the target Difficulty indicated by the Effects Table below. He is also granted one additional check every 5 turns.</string>
+
+    <string name = "psyAssault">Psychic Assault</string>
+    <string name = "psyAssaultDesc">The psychic casts an attack upon a subject\'s mind, weakening his mental resistance. The victim suffers a penalty to all PsR Checks equal to his Failure against the check to resist this Power. Weakened Resistance is recovered at a rate of 5 points per hour.</string>
+
+    <string name = "psyConnection">Psychic Connection</string>
+    <string name = "psyConnectionDesc">This Power connects the psychic\'s mind to the mind of another willing person, allowing them both to act upon each other\'s physical bodies. Characters participating in the switch retain their knowledge and skills, but they are subject to the Physical Characteristics of the host individual, which means their Base Abilities must be recalculated to account for the different advantages and disadvantages of the host\'s body. Since the soul does not transmigrate, spellcasters cannot cast spells upon introducing their mind into another physical form. This is a voluntary capability; characters cannot be forced to give up control of their bodies or to control another body from a distance. Characters in control of another body temporarily lose control of their own. If one participant dies while the connection is active, the Power is cancelled and the surviving participant returns to his normal state. The maximum distance between the bodies is determined by the success level reached using the Effects Table below.</string>
+
+    <string name = "alterMemory">Alter Memory</string>
+    <string name = "alterMemoryDesc">This Power permits a psychic to edit a subject\'s memories, eliminating them completely or creating new ones. The exact element to be deleted or created needs to be determined. Each point of difference between the victim\'s roll and the required PsR Check represents one hour of memories that a psychic can modify. Even though no maintenance is requires, the victim is entitled to a new PsR Check against the original target Difficulty if he sees or does anything that can prompt a deeply rooted memory to surface.</string>
+
+    <string name = "astralShape">Astral Shape</string>
+    <string name = "astralShapeDesc">The psychic can abandon his physical shape and project his mind in space. For as long as he remains in this state, he is absolutely intangible toward anything non-Energy based, and he is invisible to those without the ability to see Psychic Matrices. He can only be hurt by attacks that affect immaterial beings or damage their Resistances. If the psychic is damaged in this state, the damage is transposed to his physical body and causes the Astral Shape to be canceled. While in an Astral Shape, the psychic has a Flight Value equivalent to his Willpower, but he can only use mental abilities. If his real body should face death, the psychic is trapped in the Astral Shape until the time of its end, which would also beb the time of his own utter destruction.</string>
+
+    <string name = "psyTracking">Psychic Tracking</string>
+    <string name = "psyTrackingDesc">This Power allows the psychic to pinpoint the location of a specific subject\'s mind within range - as determined by the psychic\'s success in activating this Power. The psychic should know the matrix of the subject he is seeking, but he may also be after only certain mental patterns. Once he has found his subject, the psychic may maintain this Power so as to keep track of the subject\'s location at all times. Resisting this Power requires the victim to make a successful PsR Check against the target value indicated by the Effects Table below. The affected character is allowed a new check every 5 turns if he is aware that he is being targeted by this ability. No Psychic Projection is required. Psychic Tracking works automatically whenever the subject is inside the Power\'s area of action.</string>
+
+    <string name = "mindControl">Mind Control</string>
+    <string name = "mindControlDesc">The psychic obtains full control of the subject who fails the required PsR. The victim is entitled to a new check every day, as well as every time he receives an order completely against his normal behavior. He is able to apply a +20 to his PsR if he receives a life-endangering command or any order that would subject him to extreme actions.</string>
+
+    <string name = "psyDeath">Psychic Death</string>
+    <string name = "psyDeathDesc">This Power attacks a victim\'s mind and produces total devastation from within. The character loses one point of Intelligence and Willpower for every 10 points by which he fails the required Resistance. Characters recover lost points at a rate of one per day. However, if either of the two Characteristics should reach 0, the character has suffered catastrophic damage to mind and becomes a hollow shell, incapable of independent actions. Mindless bodies do not die. However, they can be controlled through Psychic Connection.</string>
+
+    <string name = "area">Area</string>
+    <string name = "areaDesc">Maintaining Area enables the psychic to use any other Telepathic Power on all subjects within the radius - as determined by the character\'s success in activating the Power. Specific targets may be designated as long as the psychic is aware of their presence within the radius. For instance, if a character utilizes Psychic Assault while this Power is maintained on a Very Difficult level, all individuals designated by the psychic within a 10 meter area will be attacked.</string>
+
+    <string name = "minorKinesis">Minor Psychokinesis</string>
+    <string name = "minorKinesisDesc">This Power allows a psychic to move inorganic matter from a distance. The weight and speed of the action depend upon the success a psychic has in using this Power (as detailed on the Effects Table). When used for hurling objects, as in long distance attacks, the character\'s Psychic Projection is reduced by half, because the control this Power offers isn\'t meant for that use. A fighter with this Power who uses the Psychic Projection Module can gain control of a weapon and perform a long distance attack using his Psychic Projection rather than his Attack score (provided of course he has developed his Attack Ability and Psychic Projection on equal terms).</string>
+
+    <string name = "kineticImpact">Psychokinetic Impact</string>
+    <string name = "kineticImpactDesc">This Power projects an invisible force that impacts its target with variable potency. Even though its main function is to push the target, Psychokinetic Impact can cause damage equal to twice the Strength bonus indicated on the Effects Table, plus whatever the GM regards suitable considering the surroundings.</string>
+
+    <string name = "psyKinTrap">Psychokinetic Trap</string>
+    <string name = "psyKinTrapDesc">This Power enables the user to carry out Trapping maneuvers through Psychic Projection - with no penalties. The success of the Power\'s activation determines the intensity of the Trap (as detailed in the Effects Table). The Power could become so strong as to trap several subjects within a given area. A -2 to the Power\'s Strength score applies when trapping multiple targets.</string>
+
+    <string name = "kineticShield">Psychokinetic Shield</string>
+    <string name = "kineticShieldDesc">This Power creates a psychokinetic shield that protects the user from physical attacks, including most weapons - even those with magical enchantments. It does not offer protection against spell or Energy-based damage. However, if a character creates a barrier with a Power level higher than Impossible, he can use it to stop ethereal effects and attacks. Upon reaching a certain level, the shield gains a damage barrier (as detailed on the Effects Table).\nUnlike other maintained Powers, which a character can only maintain at a strength equal to his Base Psychic Potential, the Psychokinetic Shield keeps the Life Points that it had when it was created. For example, someone with a Psychic Potential of 140 can Maintain a Power at a Very Difficult level (giving the shield 700 LP), but if he uses a Psychokinetic Shield and succeeds at activating the Power with a roll of 240 (giving it 1500 LP), the shield would maintain using the 1,500 LP instead of the 700 LP. However, in each subsequent turn, it loses 5 Life Points until it has only 700 LP - its normal Base Potential.</string>
+
+    <string name = "kineticArmor">Psychokinetic Armor</string>
+    <string name = "kineticArmorDesc">This Power creates a force armor around the psychic, or anyone he designates. The armor\'s AT offers protection against all attacks save those based upon Energy. It can be used in conjunction with any other protection as an additional layer, but it will not cause any special penalties.</string>
+
+    <string name = "detectMotion">Motion Detection</string>
+    <string name = "detectMotionDesc">All bodies in motion within the radius of this Power who fail the required PhR Check will be detected by the psychic. He will perceive the object\'s speed, size, and direction, but he will not be able to distinguish its shape. The ability will only work on physical material forms; things without substance will remain undetected. This ability does not call for Psychic Projection; it will automatically affect all parties within its area of effect. Ki Concealment works against this Power by providing a bonus to the PhR Check (as described in Chapter 10).</string>
+
+    <string name = "repulsion">Repulsion</string>
+    <string name = "repulsionDesc">Repulsion creates a barrier that violently repels any physical body that comes into contact with it - unless it wins an Opposed Strength or Agility Check. No Psychic Projection is necessary for focusing this Power. Repulsion affects all objects or individuals in touch with the barrier. At the time a character creates the barrier, he cannot use it against specific targets. The barrier\'s length is determined by the character\'s success in activating the Power (as detailed in the Effects Table). Its shape, however, is left to the psychic to determine - which means that he could even decide to wrap the barrier around his body.</string>
+
+    <string name = "ballistics">Ballistics</string>
+    <string name = "ballisticsDesc">The Power enables the psychic to throw objects with extreme precision using his Psychic Projection. The higher the character\'s potential, the higher the precision and quantity of elements he will be able to throw simultaneously, ranging from a simple dagger to thousands of huge rocks. Depending on the PC the psychic has obtained, he can increase either the number of objects, so as to cover a much larger area, or the precision of his power. In other words, he must make a choice between a bonus to his projection or to throwing a multitude of objects over an area of effect. For example, if he reached Difficulty Level Absurd, he would have to choose between receiving a +20 projection bonus to throwing an element, or to launching a shower of attacks that would cover a 15-meter radius. Damage will vary according to the elements being projected and to whether area of effect is being used or not. If only one object is being thrown, damage depends exclusively on the element being projected with Ballistics; if it is a weapon, it uses its Base Damage and adds the character\'s bonus for Willpower instead of Strength. For objects in area attacks, damage depends on the kind of elements being used: scenery elements (tables, chairs, rocks) or weapons. In the case of scenery elements, damage is determined by the GM, who will decide the value on a 30 to 150 scale, depending on how dangerous the elements of the scenery available to the psychic are. The use of a multitude of weapons increases their Base Damage by 50%%.\nProjectiles launched by this ability fall beyond the psychic\'s control; they need to be recovered before they can be used a second time.</string>
+
+    <string name = "shatter">Shatter</string>
+    <string name = "shatterDesc">This Psychic Power shatters a body, causing it to burst into pieces from the inside. If an object is targeted, it needs to pass a PhR Check to avoid being shattered. Note that Special Quality objects will not break automatically; they will lose one level for every 50 points by which they fail the check. If the target is a naturally live being, he needs to use his PhR against the required Difficulty or lose twice the number of LP by which he failed the check. If the target is an object with Structural Resistance or a creature with Damage Resistance, damage equals five times the check\'s Failure Level. Naturally, only material beings are susceptible to this Power.</string>
+
+    <string name = "kineticFlight">Psychokinetic Flight</string>
+    <string name = "kineticFlightDesc">The psychic gets to move freely through the air, with the Flight Value indicated by his success in activating the Power, as detailed on the Effects Table.</string>
+
+    <string name = "organicKinesis">Organic Psychokinesis</string>
+    <string name = "organicKinesisDesc">This Power allows the psychic to move material objects of an organic nature - provided that the target fails his PhR Check. Speed is determined by the psychic\'s success in activating the Power (as detailed in the Effects Table).</string>
+
+    <string name = "groundControl">Ground Control</string>
+    <string name = "groundControlDesc">Ground Control grants the psychic complete control of the area or terrain in which he stands. His dominion is absolute; he can create a small earthquake or build a huge stone wall - as long as he stays within the area of effect. If a psychic wishes to affect something that has been built, its possible destruction is subject ot its Damage Barrier.</string>
+
+    <string name = "atomRestructure">Atomic Restructuring</string>
+    <string name = "atomRestructureDesc">The psychic is capable of restructuring the atoms of any organic or inorganic material, transforming its substance and form. A psychic could turn a living being into a stone statue, or a pile of sand into coins of gold, for example. Nevertheless, a character\'s ability to mold and forge is limited by his knowledge of Art and Forging. However, the Difficulty for checks using these abilities are two levels lower than normal as the character can act freely upon the object to be changed. In terms of material remodeling, a character can alter the quality of an object five grades up or down. However, a psychic cannot make materials of a mystical nature - such as malebolgia, illuminatum, or stellar metal. The degree to which a character successfully activates this Power determines the maximum amount of mass affected, as well as the Resistance target Difficulty for those who do not wish to be affected by Atomic Restructuring (as detailed in the Effects Table below).</string>
+
+    <string name = "majorKinesis">Major Psychokinesis</string>
+    <string name = "majorKinesisDesc">This is an amplified version of Minor Psychokinesis that allows characters to move much heavier masses.</string>
+
+    <string name = "createFirePower">Create Fire</string>
+    <string name = "createFirePowerDesc">This Power creates Fire Intensities or arouses an existing flame to equal proportions. If used upon a body capable of catching fire, Create Fire does not require maintenance. If not, maintenance allows the flame to burn without consuming anything - although nothing prevents it from being extinguished.</string>
+
+    <string name = "extinguishFire">Extinguish Fire</string>
+    <string name = "extinguishFireDesc">This Power lowers the Intensity of an existing fire. When cast upon a heat-based being, the creature will suffer 5 Life Points of damage for every diminished Intensity - if it does not make a successful PhR Check. Damage Resistance creatures suffer 25 points of damage per Intensity. Bear in mind that a fire not completely extinguished may regain strength in the following turn.</string>
+
+    <string name = "controlFirePow">Control Fire</string>
+    <string name = "controlFirePowDesc">This Power controls the spread and size of a fire within the Intensity range specified by the psychic\'s success in activating this ability (as detailed in the Effects Table). For example, a character may direct the course of a fire to a settlement, ignoring the buildings he wishes to leave unharmed. Control Fire also allows the psychic to choose the shape and color of the flames. When used against fire with a Presence of its own, or an elemental creature, this effect can be avoided by passing a PhR Check against the Difficulty indicated in the Effects Table below.</string>
+
+    <string name = "immolate">Immolate</string>
+    <string name = "immolateDesc">The psychic creates an explosion of a variable Base Damage (using the Heat Attack Type) over a wide area. He cannot select targets inside the area, and he might even find himself affected unless he is careful. Since it usually takes the form of a fire ball, the attack is perfectly visible - even to those who cannot see Psychic Matrices.</string>
+
+    <string name = "igneousMaint">Igneous Maintenance</string>
+    <string name = "igneousMaintDesc">This Power keeps several fire Intensities burning and prevents them from extinguishing. There are no natural means for extinguishing fire maintained by this method - including by sand or water. In fact, fire sustained by Igneous Maintenance does not rely on any sort of fuel to burn.</string>
+
+    <string name = "fireImmunity">Fire Immunity</string>
+    <string name = "fireImmunityDesc">The psychic, or the character designated by him, gains immunity to several Heat Intensities - including those of a Supernatural nature. When receiving a fire-based attack, every Intensity level to which the character is immune decreases the attack\'s Base Damage by 5 points and raises his Resistances by +5 against effects.</string>
+
+    <string name = "igneousBarrier">Igneous Barrier</string>
+    <string name = "igneousBarrierDesc">This ability will create a fire barrier wherever the psychic needs it. Trespassers will automatically receive a Psychic Projection attack from its maker. It uses the Heat Attack Type and has a variable Base Damage. The maximum length of the barrier is determined by the character\'s success in activating the Power (as detailed in the Effects Table), but its shape is up to the psychic. In the same manner as Repulsion, Igneous Barrier cannot be cast directly upon targets.</string>
+
+    <string name = "raiseTempPower">Raise Temperature</string>
+    <string name = "raiseTempPowerDesc">The psychic can control the weather temperature and is able to increase it considerably in a wide radius.</string>
+
+    <string name = "consume">Consume</string>
+    <string name = "consumeDesc">This Power causes objects to burn internally, consuming their substance and reducing them to ashes. Whether it is inorganic objects (such as swords) or living beings, no material substance can avoid destruction by Consume. Characters affected by this Power need to pass a PhR Check to avoid its effects. Those who fail automatically suffer damage as indicated by the Effects Table below. Creatures with Damage Resistance multiply this amount by 5. No AT offers protection against this ability, not even Heat, since it operates directly from within the victim\'s bodies. Objects failing their Resistance Check will be automatically destroyed - except for those of exceptional quality, which will only lose one level of quality.</string>
+
+    <string name = "nova">Nova</string>
+    <string name = "novaDesc">This Power allows a character to consume his own vital energy in order to increase his psychic capabilities. In gaming terms, he is allowed to trade Life Points in exchange for a bonus to Psychic Potential. Each point consumed allows him to increase his Psychic Potential by 2 during the current turn. Note that beings with Damage Resistance multiply lost LP times 5. The maximum amount of Life Points a character can sacrifice per round is determined by his success in activating this Power (as detailed in the Effects Table). However, a character has the choice of investing fewer points than the maximum. Damage is fire based and heals half as fast as conventional wounds.</string>
+
+    <string name = "majorFire">Major Fire</string>
+    <string name = "majorFireDesc">An amplified version of Create Fire. A character can create flames and temperatures of much greater strength, according to the Effects Table below.</string>
+
+    <string name = "createChillPow">Create Chill</string>
+    <string name = "createChillPowDesc">This Power creates several levels of Cold Intensity. If applied to liquid bodies, Create Chill may produce ice.</string>
+
+    <string name = "freezePow">Freeze</string>
+    <string name = "freezePowDesc">This Power freezes anybody who fails the required check. The victim receives an All Action Penalty equivalent to the amount by which he failed the check. If the difference is higher than 40, the victim is frozen and subject to Partial Paralysis. The Cold AT may be used defensively against this Power. Affected individuals can make a new check every 5 turns.</string>
+
+    <string name = "senseTemp">Sense Temperature</string>
+    <string name = "senseTempDesc">The character can sense any variation in weather temperature - including live body heat - within the area of effect. This ability can overcome walls or obstacles that are not based on Energy. However, it is useless against Ki Concealment or opponents who do not emit heat. All individuals within the area will be equally affected without the need of Psychic Projection.</string>
+
+    <string name = "elimCold">Eliminate Cold</string>
+    <string name = "elimColdDesc">This Power decreases the temperature of an object, being, or zone by several Intensities. When cast upon a cold=based being, Eliminate Cold causes 5 Life Points of damage points for every diminished Intensity - provided the creature fails the appropriate PhR Check. Creatures with Damage Resistance receive 25 Life Points of damage for each level of Intensity diminished.</string>
+
+    <string name = "coldDominion">Cold Dominion</string>
+    <string name = "coldDominionDesc">Psychics with this Power can control ice and cold within a given area. They may modify it in any way they please, breaking it or causing it to shift its shape. An elemental creature can avoid the effects of Cold Dominion by passing a PhR Check against the appropriate target Difficulty (as detailed in the Effects Table below).</string>
+
+    <string name = "crystallize">Crystallize</string>
+    <string name = "crystallizeDesc">This Power crystallizes any type of body that fails the required PhR Check. All things frozen in this way become exceptionally brittle and likely to break at the slightest bump. A crystallized character is subject to Minor Paralysis and automatically suffers a Critical with a -40 penalty to his PhR Checks upon suffering any sort of damage. Creatures with Damage Resistance will not receive a direct Critical, but their whole body will be regarded as a vulnerable spot from then on.</string>
+
+    <string name = "iceSplinters">Ice Splinters</string>
+    <string name = "iceSplintersDesc">The psychic creates ice splinters that he can use as projectiles during an attack. They strike on the Cold or Thrust AT with a Base Damage that varies according to the Effects Table. These projectiles are perfectly visible to everyone, including characters without the ability to see Psychic Matrices.</string>
+
+    <string name = "decreaseTemp">Decrease Ambient Temperature</string>
+    <string name = "decreaseTempDesc">The psychic is in control of the temperature and can decrease it considerably in a wide area of effect.</string>
+
+    <string name = "iceShield">Ice Shield</string>
+    <string name = "iceShieldDesc">This Power creates a shield of ice that protects the psychic from any non-Energy-based source of attack and beams from Light or Darkness. Unlike other Powers, Ice Shield works on the same Life Points with which it has been created. Once created, the shield loses 5 Life Points per turn until it reaches an amount that the psychic can maintain naturally.</string>
+
+    <string name = "absoluteZero">Absolute Zero</string>
+    <string name = "absoluteZeroDesc">The psychic is able to cause the temperature to drop to absolute zero, destroying all organic or inorganic bodies within the radius. In gaming terms, every being or physical object failing a PhR Check with a difficulty of 100 each turn they remain within the area of effect are automatically destroyed by the complete cold. All individuals within the area will be affected equally without the need of Psychic Projection.</string>
+
+    <string name = "everlastMoment">Everlasting Moment</string>
+    <string name = "everlastMomentDesc">Through cold manipulation, psychics can create a low temperature area within which any body in motion, except for his own, is immobilized - unless it passes the required PhR Check. If a character fails the check by more than 40 points, he is completely frozen and subject to Full Paralysis. A failure of less than 40 points inflicts an All Action Penalty equal to the Failure Level.\nPenalties last for as long as the Power is maintained. Characters are not entitled to new Resistance rolls while they remain in the area of effect. Even individuals who pass their PhR Check must repeat the check every 5 turns while in the area of effect. All individuals within the area will be affected equally without the need of Psychic Projection.</string>
+
+    <string name = "majorCold">Major Cold</string>
+    <string name = "majorColdDesc">An amplified version of Create Chill. It permits psychics to generate temperatures of an extreme nature.</string>
+
+    <string name = "increaseJump">Increase Jump Ability</string>
+    <string name = "increaseJumpDesc">The psychic can jump extraordinarily high. The psychic adds a variable bonus to his Jump Ability (in some cases reaching to Inhuman or Zen levels), depending on his success in activating this Power.</string>
+
+    <string name = "increaseAbility">Increase Ability</string>
+    <string name = "increaseAbilityDesc">This Power enhances a psychic\'s Dexterity or Agility. If the psychic chooses Agility, only the Characteristic score increases; Movement Value does not increase. Progression is cut in half once the increased Characteristic reaches 10. In other words, two added points are necessary to increase one point past that number.</string>
+
+    <string name = "increaseAcrobatics">Increase Acrobatics</string>
+    <string name = "increaseAcrobaticsDesc">The psychic can perform stunning acrobatic tricks and somersaults of almost Supernatural proportions. To this effect, a certain bonus is added to the Acrobatics Ability. In some cases, a psychic\'s Acrobatics Ability can reach to Inhuman or even Zen levels.</string>
+
+    <string name = "increaseStrength">Increase Strength</string>
+    <string name = "increaseStrengthDesc">This Power increases the psychic\'s Strength. Progression is cut in half once the increased Characteristic has gone beyond 10. In other words, two added points are necessary to increase 1 point past that number.</string>
+
+    <string name = "inhumanityPower">Inhumanity</string>
+    <string name = "inhumanityPowerDesc">With this Power, psychics can reach Inhuman Difficulty levels when performing physical actions. In addition, Inhumanity improves all Athletics Secondary Abilities by applying bonuses to the corresponding rolls.</string>
+
+    <string name = "increaseMotion">Increase Motion</string>
+    <string name = "increaseMotionDesc">Psychics can move at much higher speeds than usual, increasing their Movement Value. Progression will be cut in half once their Movement Value reaches 10.</string>
+
+    <string name = "increaseReactionPower">Increase Reaction</string>
+    <string name = "increaseReactionPowerDesc">By increasing their reaction speed and enhancing their senses, this ability allows psychics to jump ahead of normal people when responding to events. Reaction Increase provides a special Initiative bonus for the next turn.</string>
+
+    <string name = "percIncrease">Perception Increase</string>
+    <string name = "percIncreaseDesc">This Power enhances a character\'s perceptive capabilities. In gaming terms, it adds points to a psychic\'s Perception. Progression will be cut in half if the Characteristic exceeds 10.</string>
+
+    <string name = "increaseEndurance">Increase Endurance</string>
+    <string name = "increaseEnduranceDesc">The psychic is able to strengthen his body\'s resistance by controlling his own cells. In this way, he can absorb damage and receive impacts without suffering the consequences. This Power increases a character\'s PhR as determined by the success achieved in activating it (see the Effects Table).</string>
+
+    <string name = "regenPower">Regeneration</string>
+    <string name = "regenPowerDesc">By controlling their bodies on a very primary level, psychics can increase their healing rate. This Power increases a character\'s Regeneration level - although it cannot increase it past 18.</string>
+
+    <string name = "fatigueEliminate">Fatigue Elimination</string>
+    <string name = "fatigueEliminateDesc">By using energy from their Psychic Matrix, characters can unload physical exhaustion, restoring some of their lost Fatigue Points. Fatigue Points lost due to failing in the use of Psychic Powers cannot be restored with this power.</string>
+
+    <string name = "totalIncrease">Total Increase</string>
+    <string name = "totalIncreaseDesc">Characters can increase all of their Physical Characteristics at once. This Power provides a bonus to Strength, Dexterity, Agility, Constitution, and also Perception. The effects of this Power will add up with those of any other increase kept active by the character. Progression will be cut in half once their characteristics reach 10.</string>
+
+    <string name = "imbue">Imbue</string>
+    <string name = "imbueDesc">This Power allows the psychic to use abilities from this Discipline on other characters. Imbued Powers cannot have an activation Difficulty higher than the one indicated on the Effects Table below.</string>
+
+    <string name = "createEnergyObj">Energy Object Creation</string>
+    <string name = "createEnergyObjDesc">This Power creates one simple material object, such as a sword, shaping it out of sheer energy. The material is Energy-based and has Resistance 25. If a character creates a weapon, it has a Base Damage between 80 and 120 (depending on size), and a natural speed of 10. Since it is pure energy, it does not use the character\'s Strength bonus, but it attacks on the Electricity AT.</string>
+
+    <string name = "energyDischarge">Energy Discharge</string>
+    <string name = "energyDischargeDesc">Energy Discharge allows characters to use their Psychic Projection for performing attacks. This Power uses the Electricity Attack Table with a Base Damage that varies according to the character\'s success at activating it (as detailed on the Effects Table below). If a character succeeds at an Impossible or higher level activation, Energy Discharge can even damage immaterial beings. This attack is perfectly visible - even to those who cannot see Psychic Matrices.</string>
+
+    <string name = "createEnergyPower">Create Energy</string>
+    <string name = "createEnergyPowerDesc">This Power creates Energy Intensities or arouses an existing source to equal proportions. Any type of energy may be created, from bonfires to lightning, provided that they do not have a Supernatural origin.</string>
+
+    <string name = "energyShield">Energy Shield</string>
+    <string name = "energyShieldDesc">This Power creates a shield of energy that protects the psychic from all sorts of attacks - including those of a Supernatural origin. Unlike other Powers, Energy Shield works on the same Life Points with which it was created instead of using the psychic\'s natural maintenance. However, once created, it loses 5 Life Points per turn until it reaches an amount that the psychic can maintain naturally.</string>
+
+    <string name = "senseEnergy">Sense Energy</string>
+    <string name = "senseEnergyDesc">The character can detect the energy around him including the Intensity and nature of the source - unless it is hidden in some way. This ability does not call for Psychic Projection, it will automatically affect all parties within its area of action.</string>
+
+    <string name = "modNature">Modify Nature</string>
+    <string name = "modNatureDesc">This Power allows a psychic to transfer several Intensities of a particular Energy Type to another type of Energy. For example, a character using Modify Nature might turn Fire into Electricity or Ice. A living being, or anything with a Presence of its own, can avoid the effects of this Power by making a successful PhR Check (as detailed in the Effects Table).</string>
+
+    <string name = "undoEnergy">Undo Energy</string>
+    <string name = "undoEnergyDesc">This Power decreases the Intensity level of Energy - except for those of a Supernatural origin. When used against an Energy-based being of any kind, it will cause 5 points of damage for every Intensity level decreased - unless the creature succeeds at a PhR Check with a target difficulty based upon the psychic\'s success at activating Undo Energy (as detailed on the Effects Table below). Note that creatures with Damage Resistance will suffer 25 points of damage for every Intensity level decrease.</string>
+
+    <string name = "immunityPower">Immunity</string>
+    <string name = "immunityPowerDesc">The psychic, or whoever he designates, becomes immune to several Intensities of a specific Energy Type. This is a single-type Immunity, which means that a character choosing immunity to Electricity will still be affected by Cold and Heat. Characters can reduce the Base Damage of an attack by 5 points for every Intensity level of their immunity. They also receive +5 to their Resistance Checks against effects from these attacks for every Intensity level of their immunity.</string>
+
+    <string name = "controlEnergy">Control Energy</string>
+    <string name = "controlEnergyDesc">This Power allows the psychic full control of several Cold, Heat, or Electricity Intensities. A character is free to manipulate and manage these Intensities as he wants - although his Psychic Projection will be reduced by half its value if he employs them offensively. A live being, or anything with a Presence of its own, can avoid the effects of this Power by making a successful PhR Check (as detailed in the Effects Table).</string>
+
+    <string name = "energyDome">Energy Dome</string>
+    <string name = "energyDomeDesc">The psychic is able to generate an energy dome that will destroy anything that comes its way. The attack will affect a wide area within which no targets can be selected. The attack uses the Electricity AT; its damage varies depending on the psychic\'s success in activating the Power (as detailed on the Effects Table). Note that the Energy Dome can become so pure that it damages immaterial beings. This attack is perfectly visible - even to those who cannot see Psychic Matrices.</string>
+
+    <string name = "majorEnergy">Major Energy</string>
+    <string name = "majorEnergyDesc">An amplified version of Create Energy, Major Energy is capable of provoking much more devastating effects.</string>
+
+    <string name = "senseFeeling">Sense Feelings</string>
+    <string name = "senseFeelingDesc">The psychic can sense an individual\'s feelings at a particular moment. Resisting this Power requires the target to pass a PsR Check with a variable target that depends upon the psychic\'s success at activating the Power (as detailed in the Effects Table). The victim is entitled to a new check every 5 turns only if he suspects that he is a victim of this Power.</string>
+
+    <string name = "intensifyFeeling">Intensify Feelings</string>
+    <string name = "intensifyFeelingDesc">This Power intensifies an individual\'s dominant feeling or mood at a specific time. Bear in mind that the Power does not accentuate previously non-existent feelings. One might, for instance, drive an angry person mad with wrath, or have a sad person sink fast into depression. Characters wishing to resist this Power must pass a PsR Check (as detailed in the Effects Table). They are entitled to a new check every 5 turns only if they suspect that they have been subject to Intensify Feelings.</string>
+
+    <string name = "detectFeelings">Detect Feelings</string>
+    <string name = "detectFeelingsDesc">This Power detects a specific feeling in any subject within its area of effect. For instance, if the psychic is seeking to detect anger, the search would turn up angry individuals within the area of influence. The affected party may resist by passing a PsR Check against a target difficulty that varies with the psychic\'s success in activating the Power (as detailed in the Effects Table). All individuals within the area will be affected equally without the need of Psychic Projection.</string>
+
+    <string name = "connectSenses">Connect Senses</string>
+    <string name = "connectSensesDesc">This Power links the psychic\'s senses with those of another individual, and vice versa, granting them both access to what each of them hears and sees. It is the exclusive prerogative of the psychic to deny access to his own senses. Characters who pass a PsR Check with a variable target difficulty (as detailed in the Effects Table) successfully resists this ability and deny the psychic access to their senses. If a character affected by Control Senses suspects that he is under the influence of the Power, he can make a new PsR Check every 5 turns. Maximum distance between the two connected bodies is determined by the psychic\'s success in activating the Power.</string>
+
+    <string name = "projectSenses">Project Senses</string>
+    <string name = "projectSensesDesc">Psychics are capable of projecting their senses at a distance. Once they do, they can use their Secondary Perceptive Abilities as if they were really standing in that place. The psychic\'s presence will only be detected by those individuals able to sense Psychic Matrices. The Power cannot get through against energy barriers and magically protected areas.</string>
+
+    <string name = "elimSenses">Eliminate Senses</string>
+    <string name = "elimSensesDesc">The psychic is able to temporarily eliminate one of his victim\'s five senses. One extra sense may be eliminated for every 20 points by which the victim fails his PsR Check. Victims will be allowed a new check every 5 turns, but they will only recover one sense at a time.</string>
+
+    <string name = "createFeelings">Create Feelings</string>
+    <string name = "createFeelingsDesc">This Power instills new feelings in an individual. For instance, it may cause two people who despise each other to fall in love, or two lovers to be repelled by one another. This Power enables psychics to subject their opponents to any psychological state they desire - such as fear, sorrow, etc. Those wishing to resist these effects need to pass a PsR with a variable target that depends upon the psychic\'s success at activating this Power (as detailed in the Effects Table). If the nature of the feelings created is radically contrary to the victim\'s current emotional state, the target receives a +20 bonus to his PsR Check. Victims suspicious of the unnatural origin of their feelings can make new checks every 5 turns.</string>
+
+    <string name = "infuseFeeling">Infuse Feelings</string>
+    <string name = "infuseFeelingsDesc">This Power will infuse an object or place with a strong feeling that automatically affects all individuals in contact with it. For instance an anger-infused sword would incite immense rage in anyone who touched it. If a place is infused, the total area that a character can affect with Infuse Feelings depends upon his success in activating this Power (as detailed in the Effects Table). Characters wishing to resist will need to pass a PsR Check with the appropriate target difficulty. Victims who become suspicious that their feelings are being manipulated by unnatural means can make new rolls every 5 turns. The psychic does not need to use his Psychic Projection. All it takes is his presence in the specific place or physical contact with the object. Effects vanish immediately outside the area or when contact with the object is interrupted.</string>
+
+    <string name = "destroyFeelings">Destroy Feelings</string>
+    <string name = "destroyFeelingsDesc">The psychic is able to eliminate unwanted feelings in any given individual. In order to use this Power, it is necessary to specify the exact feeling and identify whether it is of a general nature or associated with a particular element. Characters wishing to resist this Power need to pass a PsR Check at the required Difficulty. Deeply rooted emotions may give the resisting character a +20 bonus to his check. The psychic can erase one extra feeling for every 20 points by which the victim fails the PsR. If the victim fails the check by more than 80 points, the psychic could erase all feelings altogether from the victim\'s mind, turning him into a vegetable.</string>
+
+    <string name = "areaSentience">Area</string>
+    <string name = "areaSentienceDesc">This Power works like the Area Power in the Telepathy Discipline, except that it affects only Sentience Discipline Powers. In this way, all Sentience Powers used while Area is active will affect any individual within the indicated radius.</string>
+
+    <string name = "senseResidues">Sense Residues</string>
+    <string name = "senseResiduesDesc">The psychic senses environmental residues of intense feelings emitted long ago. These feelings need to have been strong ones - such as a great passion or intense fear - in order for him to perceive them.</string>
+
+    <string name = "readPast">Read the Past</string>
+    <string name = "readPastDesc">This Power enables the psychic to read the history of a specific object or place. Absolutely all events that have taken place within the time span of the Power can be read.</string>
+
+    <string name = "humanErudition">Human Erudition</string>
+    <string name = "humanEruditionDesc">This Power endows the psychic with the ability of analyzing an individual\'s past in the attempt of discovering actions he may have taken. The psychic may look for a specific action on the part of the target, or he may seek to find out what his actions were in a specific opportunity. He could, for instance, find out if a certain individual has committed murder, or learn exactly what the character was doing one week from then. Resisting this Power requires the victim to pass a PsR Check against the required target (as detailed in the Effects Table).</string>
+
+    <string name = "seeHistory">See In History</string>
+    <string name = "seeHistoryDesc">This Power allows psychics to project their senses into the past in a manner such that they can witness any event that might have happened at the place where they are executing the Power. The number of years a psychic can go back is determined by his success in activating the Power (as detailed in the Effects Table).</string>
+
+    <string name = "senseMatrices">Sense Matrices</string>
+    <string name = "senseMatricesDesc">The psychic is able to sense the use of Powers and notice the Presence of individuals who share this ability. In this way, characters "see" the energy of the matrices. Therefore, they suffer no Blindness penalty against invisible Psychic Abilities. For instance, anyone reaching a Medium-level Difficulty will be able to sense active Psychic Matrices and detect latent Powers in people, all within a 25-meter area.</string>
+
+    <string name = "destroyMatrices">Destroy Matrices</string>
+    <string name = "destroyMatricesDesc">This ability will destroy active Psychic Powers - provided they are not of a higher Difficulty than the Effects Table indicates.</string>
+
+    <string name = "hideMatrices">Hide Matrices</string>
+    <string name = "hideMatricesDesc">This Power hides the psychic\'s mental abilities from the Sense Matrices Power. Hide Matrices decreases the results for Sense Matrices by as many degrees of Difficulty as indicated on the Effects Table. If an adversary\'s Potential for Sense Matrices falls below the base requirement (that is, Easy), the psychic\'s Powers of the character remain unnoticed. The Sense Matrices Power is only annulled against the Psychic using Hide Matrices. It still works normally against other targets.</string>
+
+    <string name = "linkMatrices">Link Matrices</string>
+    <string name = "linkMatricesDesc">This Power enables the psychic to connect the minds of several other psychic individuals to his own. In this way, one of the connected members is able to add the Willpower bonuses of others to his own Psychic Potential. Only one character can use his Psychic Abilities while linked, since the others are merely enhancing the Potential of one person. Connected characters must use their Powers to this effect voluntarily. The number of individuals admitted to the link is determined by a character\'s success in activating this Power (as detailed in the Effects Table below).</string>
+</resources>

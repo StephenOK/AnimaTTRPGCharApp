@@ -1,20 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available physically increasing powers.
  */
-class PhysicalIncrease: Discipline(){
+class PhysicalIncrease: Discipline("physIncrease"){
     val increaseJump = PsychicPower(
-        "Increase Jump Ability",
+        "increaseJump",
+        R.string.increaseJump,
         1,
         true,
         true,
-        "The psychic can jump extraordinarily high. The psychic adds a variable bonus to " +
-                "his Jump Ability (in some cases reaching to Inhuman or Zen levels), depending on " +
-                "his success in activating this Power.",
+        R.string.increaseJumpDesc,
         listOf(
             "Fatigue 2",
             "+10 to Jump",
@@ -31,15 +31,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseAbility = PsychicPower(
-        "Increase Ability",
+        "increaseAbility",
+        R.string.increaseAbility,
         1,
         true,
         true,
-        "This Power enhances a psychic's Dexterity or Agility. If the psychic chooses " +
-                "Agility, only the Characteristic score increases; Movement Value does not " +
-                "increase. Progression is cut in half once the increased Characteristic reaches " +
-                "10. In other words, two added points are necessary to increase one point past " +
-                "that number.",
+        R.string.increaseAbilityDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -55,14 +52,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseAcrobatics = PsychicPower(
-        "Increase Acrobatics",
+        "increaseAcro",
+        R.string.increaseAcrobatics,
         1,
         true,
         true,
-        "The psychic can perform stunning acrobatic tricks and somersaults of almost " +
-                "Supernatural proportions. To this effect, a certain bonus is added to the " +
-                "Acrobatics Ability. In some cases, a psychic's Acrobatics Ability can reach to " +
-                "Inhuman or even Zen levels.",
+        R.string.increaseAcrobaticsDesc,
         listOf(
             "Fatigue 2",
             "+10 Acrobatics",
@@ -78,13 +73,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseStrength = PsychicPower(
-        "Increase Strength",
+        "increaseStr",
+        R.string.increaseStrength,
         1,
         true,
         true,
-        "This Power increases the psychic's Strength. Progression is cut in half once " +
-                "the increased Characteristic has gone beyond 10. In other words, two added points " +
-                "are necessary to increase 1 point past that number.",
+        R.string.increaseStrengthDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -100,13 +94,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val inhumanity = PsychicPower(
-        "Inhumanity",
+        "inhumanity",
+        R.string.inhumanityPower,
         1,
         true,
         true,
-        "With this Power, psychics can reach Inhuman Difficulty levels when performing " +
-                "physical actions. In addition, Inhumanity improves all Athletics Secondary " +
-                "Abilities by applying bonuses to the corresponding rolls.",
+        R.string.inhumanityPowerDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -122,12 +115,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseMotion = PsychicPower(
-        "Increase Motion",
+        "increaseMotion",
+        R.string.increaseMotion,
         1,
         true,
         true,
-        "Psychics can move at much higher speeds than usual, increasing their Movement " +
-                "Value. Progression will be cut in half once their Movement Value reaches 10.",
+        R.string.increaseMotionDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -143,13 +136,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseReaction = PsychicPower(
-        "Increase Reaction",
+        "increaseReaction",
+        R.string.increaseReactionPower,
         2,
         true,
         true,
-        "By increasing their reaction speed and enhancing their senses, this ability " +
-                "allows psychics to jump ahead of normal people when responding to events. " +
-                "Reaction Increase provides a special Initiative bonus for the next turn.",
+        R.string.increaseReactionPowerDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 4",
@@ -165,13 +157,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val perceptionIncrease = PsychicPower(
-        "Perception Increase",
+        "percIncrease",
+        R.string.percIncrease,
         2,
         true,
         true,
-        "This Power enhances a character's perceptive capabilities. In gaming terms, it " +
-                "adds points to a psychic's Perception. Progression will be cut in half if the " +
-                "Characteristic exceeds 10.",
+        R.string.percIncreaseDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 4",
@@ -187,14 +178,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val increaseEndurance = PsychicPower(
-        "Increase Endurance",
+        "increaseEndurance",
+        R.string.increaseEndurance,
         2,
         false,
         true,
-        "The psychic is able to strengthen his body's resistance by controlling his own " +
-                "cells. In this way, he can absorb damage and receive impacts without suffering " +
-                "the consequences. This Power increases a character's PhR as determined by the " +
-                "success achieved in activating it (see the Effects Table).",
+        R.string.increaseEnduranceDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 4",
@@ -210,13 +199,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val regeneration = PsychicPower(
-        "Regeneration",
+        "regeneration",
+        R.string.regenPower,
         2,
         true,
         true,
-        "By controlling their bodies on a very primary level, psychics can increase " +
-                "their healing rate. This Power increases a character's Regeneration level - " +
-                "although it cannot increase it past 18.",
+        R.string.regenPowerDesc,
         listOf(
             "+1 to Regeneration Level",
             "+2 to Regeneration Level",
@@ -229,13 +217,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val fatigueElimination = PsychicPower(
-        "Fatigue Elimination",
+        "fatigueEliminate",
+        R.string.fatigueEliminate,
         3,
         true,
         false,
-        "By using energy from their Psychic Matrix, characters can unload physical " +
-                "exhaustion, restoring some of their lost Fatigue Points. Fatigue Points lost due " +
-                "to failing in the use of Psychic Powers cannot be restored with this power.",
+        R.string.fatigueEliminateDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -251,15 +238,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val totalIncrease = PsychicPower(
-        "Total Increase",
+        "totalIncrease",
+        R.string.totalIncrease,
         3,
         true,
         true,
-        "Characters can increase all of their Physical Characteristics at once. This " +
-                "Power provides a bonus to Strength, Dexterity, Agility, Constitution, and also " +
-                "Perception. The effects of this Power will add up with those of any other " +
-                "increase kept active by the character. Progression will be cut in half once " +
-                "their characteristics reach 10.",
+        R.string.totalIncreaseDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -275,13 +259,12 @@ class PhysicalIncrease: Discipline(){
     )
 
     val imbue = PsychicPower(
-        "Imbue",
+        "imbue",
+        R.string.imbue,
         3,
         true,
         true,
-        "This Power allows the psychic to use abilities from this Discipline on other " +
-                "characters. Imbued Powers cannot have an activation Difficulty higher than the " +
-                "one indicated on the Effects Table below.",
+        R.string.imbueDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -296,7 +279,21 @@ class PhysicalIncrease: Discipline(){
         )
     )
 
-    override var allPowers = listOf(increaseJump, increaseAbility, increaseAcrobatics, increaseStrength,
-        inhumanity, increaseMotion, increaseReaction, perceptionIncrease, increaseEndurance,
-        regeneration, fatigueElimination, totalIncrease, imbue)
+    init {
+        allPowers.addAll(listOf(
+            increaseJump,
+            increaseAbility,
+            increaseAcrobatics,
+            increaseStrength,
+            inhumanity,
+            increaseMotion,
+            increaseReaction,
+            perceptionIncrease,
+            increaseEndurance,
+            regeneration,
+            fatigueElimination,
+            totalIncrease,
+            imbue
+        ))
+    }
 }

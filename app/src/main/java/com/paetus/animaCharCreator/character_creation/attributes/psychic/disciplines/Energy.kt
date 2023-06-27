@@ -1,22 +1,20 @@
 package com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 
 /**
  * Record of all of the available energy powers.
  */
-class Energy: Discipline(){
+class Energy: Discipline("energy"){
     val objectCreation = PsychicPower(
-        "Energy Object Creation",
+        "createEnergyObj",
+        R.string.createEnergyObj,
         1,
         true,
         true,
-        "This Power creates one simple material object, such as a sword, shaping it out " +
-                "of sheer energy. The material is Energy-based and has Resistance 25. If a " +
-                "character creates a weapon, it has a Base Damage between 80 and 120 (depending " +
-                "on size), and a natural speed of 10. Since it is pure energy, it does not use " +
-                "the character's Strength bonus, but it attacks on the Electricity AT.",
+        R.string.createEnergyObjDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -32,16 +30,12 @@ class Energy: Discipline(){
     )
 
     val energyDischarge = PsychicPower(
-        "Energy Discharge",
+        "energyDischarge",
+        R.string.energyDischarge,
         1,
         true,
         false,
-        "Energy Discharge allows characters to use their Psychic Projection for " +
-                "performing attacks. This Power uses the Electricity Attack Table with a Base " +
-                "Damage that varies according to the character's success at activating it (as " +
-                "detailed on the Effects Table below). If a character succeeds at an Impossible " +
-                "or higher level activation, Energy Discharge can even damage immaterial beings. " +
-                "This attack is perfectly visible - even to those who cannot see Psychic Matrices.",
+        R.string.energyDischargeDesc,
         listOf(
             "Fatigue 4",
             "Fatigue 2",
@@ -57,13 +51,12 @@ class Energy: Discipline(){
     )
 
     val createEnergy = PsychicPower(
-        "Create Energy",
+        "createEnergy",
+        R.string.createEnergyPower,
         1,
         true,
         true,
-        "This Power creates Energy Intensities or arouses an existing source to equal " +
-                "proportions. Any type of energy may be created, from bonfires to lightning, " +
-                "provided that they do not have a Supernatural origin.",
+        R.string.createEnergyPowerDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -79,39 +72,33 @@ class Energy: Discipline(){
     )
 
     val energyShield = PsychicPower(
-        "Energy Shield",
+        "energyShield",
+        R.string.energyShield,
         1,
         false,
         true,
-        "This Power creates a shield of energy that protects the psychic from all sorts " +
-                "of attacks - including those of a Supernatural origin. Unlike other Powers, " +
-                "Energy Shield works on the same Life Points with which it was created instead of " +
-                "using the psychic's natural maintenance. However, once created, it loses 5 " +
-                "Life Points per turn until it reaches an amount that the psychic can maintain " +
-                "naturally.",
+        R.string.energyShieldDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
             "Fatigue 2",
-            "300 Life Points",
-            "500 Life Points",
-            "800 Life Points",
-            "1000 Life Points",
-            "1400 Life Points",
-            "2000 Life Points",
-            "3000 Life Points"
+            "300 LP",
+            "500 LP",
+            "800 LP",
+            "1000 LP",
+            "1400 LP",
+            "2000 LP",
+            "3000 LP"
         )
     )
 
     val senseEnergy = PsychicPower(
-        "Sense Energy",
+        "senseEnergy",
+        R.string.senseEnergy,
         1,
         true,
         true,
-        "The character can detect the energy around him including the Intensity and " +
-                "nature of the source - unless it is hidden in some way. This ability does not " +
-                "call for Psychic Projection, it will automatically affect all parties within its " +
-                "area of action.",
+        R.string.senseEnergyDesc,
         listOf(
             "Fatigue 2",
             "Fatigue 1",
@@ -127,15 +114,12 @@ class Energy: Discipline(){
     )
 
     val modifyNature = PsychicPower(
-        "Modify Nature",
+        "modNature",
+        R.string.modNature,
         2,
         true,
         false,
-        "This Power allows a psychic to transfer several Intensities of a particular " +
-                "Energy Type to another type of Energy. For example, a character using Modify " +
-                "Nature might turn Fire into Electricity or Ice. A living being, or anything with " +
-                "a Presence of its own, can avoid the effects of this Power by making a successful " +
-                "PhR Check (as detailed in the Effects Table).",
+        R.string.modNatureDesc,
         listOf(
             "Fatigue 8",
             "Fatigue 6",
@@ -151,17 +135,12 @@ class Energy: Discipline(){
     )
 
     val undoEnergy = PsychicPower(
-        "Undo Energy",
+        "undoEnergy",
+        R.string.undoEnergy,
         2,
         true,
         false,
-        "This Power decreases the Intensity level of Energy - except for those of a " +
-                "Supernatural origin. When used against an Energy-based being of any kind, it " +
-                "will cause 5 points of damage for every Intensity level decreased - unless the " +
-                "creature succeeds at a PhR Check with a target difficulty based upon the " +
-                "psychic's success at activating Undo Energy (as detailed on the Effects Table " +
-                "below). Note that creatures with Damage Resistance will suffer 25 points of " +
-                "damage for every Intensity level decrease.",
+        R.string.undoEnergyDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -177,16 +156,12 @@ class Energy: Discipline(){
     )
 
     val immunity = PsychicPower(
-        "Immunity",
+        "immunity",
+        R.string.immunityPower,
         2,
         false,
         true,
-        "The psychic, or whoever he designates, becomes immune to several Intensities of " +
-                "a specific Energy Type. This is a single-type Immunity, which means that a " +
-                "character choosing immunity to Electricity will still be affected by Cold and " +
-                "Heat. Characters can reduce the Base Damage of an attack by 5 points for every " +
-                "Intensity level of their immunity. They also receive +5 to their Resistance " +
-                "Checks against effects from these attacks for every Intensity level of their immunity.",
+        R.string.immunityPowerDesc,
         listOf(
             "Fatigue 12",
             "Fatigue 8",
@@ -202,16 +177,12 @@ class Energy: Discipline(){
     )
 
     val controlEnergy = PsychicPower(
-        "Control Energy",
+        "controlEnergy",
+        R.string.controlEnergy,
         2,
         true,
         true,
-        "This Power allows the psychic full control of several Cold, Heat, or Electricity " +
-                "Intensities. A character is free to manipulate and manage these Intensities as he " +
-                "wants - although his Psychic Projection will be reduced by half its value if he " +
-                "employs them offensively. A live being, or anything with a Presence of its own, " +
-                "can avoid the effects of this Power by making a successful PhR Check (as detailed " +
-                "in the Effects Table).",
+        R.string.controlEnergyDesc,
         listOf(
             "Fatigue 6",
             "Fatigue 4",
@@ -227,16 +198,12 @@ class Energy: Discipline(){
     )
 
     val energyDome = PsychicPower(
-        "Energy Dome",
+        "energyDome",
+        R.string.energyDome,
         3,
         true,
         false,
-        "The psychic is able to generate an energy dome that will destroy anything that " +
-                "comes its way. The attack will affect a wide area within which no targets can " +
-                "be selected. The attack uses the Electricity AT; its damage varies depending on " +
-                "the psychic's success in activating the Power (as detailed on the Effects Table). " +
-                "Note that the Energy Dome can become so pure that it damages immaterial beings. " +
-                "This attack is perfectly visible - even to those who cannot see Psychic Matrices.",
+        R.string.energyDomeDesc,
         listOf(
             "Fatigue 16",
             "Fatigue 12",
@@ -252,12 +219,12 @@ class Energy: Discipline(){
     )
 
     val majorEnergy = PsychicPower(
-        "Major Energy",
+        "majorEnergy",
+        R.string.majorEnergy,
         3,
         true,
         true,
-        "An amplified version of Create Energy, Major Energy is capable of provoking " +
-                "much more devastating effects.",
+        R.string.majorEnergyDesc,
         listOf(
             "Fatigue 20",
             "Fatigue 16",
@@ -272,6 +239,19 @@ class Energy: Discipline(){
         )
     )
 
-    override var allPowers = listOf(objectCreation, energyDischarge, createEnergy, energyShield,
-        senseEnergy, modifyNature, undoEnergy, immunity, controlEnergy, energyDome, majorEnergy)
+    init{
+        allPowers.addAll(listOf(
+            objectCreation,
+            energyDischarge,
+            createEnergy,
+            energyShield,
+            senseEnergy,
+            modifyNature,
+            undoEnergy,
+            immunity,
+            controlEnergy,
+            energyDome,
+            majorEnergy
+        ))
+    }
 }

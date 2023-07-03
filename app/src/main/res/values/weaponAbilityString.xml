@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "abilityPrecision">Precision</string>
+    <string name = "abilityTwohanded">Two-Handed</string>
+    <string name = "abilityOneOrTwo">One- or Two-Handed</string>
+    <string name = "abilityComplex">Complex</string>
+    <string name = "abilityThrowable">Throwable</string>
+    <string name = "abilityTrapping">Trapping</string>
+    <string name = "abilityWeaponTrap">Weapon Trapping</string>
+    <string name = "abilitySpecial">Special</string>
+    <string name = "abilityOwnStrength">Own Strength</string>
+</resources>

@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.equipment
 
+import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
@@ -107,9 +108,15 @@ class Inventory(val charInstance: BaseCharacter) {
         //determine if the character already has a copy of this item
         boughtGoods.forEach{
             //match found based on name and quality
-            if(item.name == it.key.name && item.currentQuality == it.key.currentQuality){
+            if(item.saveName == it.key.saveName && item.currentQuality == it.key.currentQuality){
                 //replace input with the new value
-                boughtGoods.replace(it.key, it.value + quantity)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    boughtGoods.replace(it.key, it.value + quantity)
+                }
+                else{
+                    val newVal = it.value + quantity
+                    boughtGoods[it.key] = newVal
+                }
 
                 //set flag to true
                 foundItem = true
@@ -139,10 +146,16 @@ class Inventory(val charInstance: BaseCharacter) {
         //find the equipment item in the character's inventory
         boughtGoods.forEach{
             //find the item based on its name and quality
-            if(item.name == it.key.name && item.currentQuality == it.key.currentQuality){
+            if(item.saveName == it.key.saveName && item.currentQuality == it.key.currentQuality){
                 //remove one of the indicated items
                 val newVal = it.value - 1
-                boughtGoods.replace(it.key, newVal)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    boughtGoods.replace(it.key, newVal)
+                }
+                else{
+                    boughtGoods[it.key] = newVal
+                }
 
                 //set removed item key
                 checkedItem = it.key
@@ -302,7 +315,7 @@ class Inventory(val charInstance: BaseCharacter) {
 
         //write each item's name, quality, and quantity
         boughtGoods.forEach{
-            charInstance.addNewData(it.key.name)
+            charInstance.addNewData(it.key.saveName)
             charInstance.addNewData(it.key.currentQuality)
             charInstance.addNewData(it.value)
         }

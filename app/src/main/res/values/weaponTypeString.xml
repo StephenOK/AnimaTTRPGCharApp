@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "weaponShort">Short</string>
+    <string name = "weaponAxe">Axe</string>
+    <string name = "weaponMace">Mace</string>
+    <string name = "weaponSword">Sword</string>
+    <string name = "weaponTwohand">Two-Handed</string>
+    <string name = "weaponPole">Pole</string>
+    <string name = "weaponCord">Cord</string>
+    <string name = "weaponMixed">Mixed</string>
+    <string name = "weaponShield">Shield</string>
+    <string name = "weaponProj">Projectile</string>
+    <string name = "weaponThrowing">Throwing</string>
+    <string name = "weaponUnarmed">Unarmed</string>
+</resources>

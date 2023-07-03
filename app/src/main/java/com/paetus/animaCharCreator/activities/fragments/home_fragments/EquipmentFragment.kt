@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -238,7 +239,7 @@ fun EquipmentRow(
 
         //display equipment name
         Text(
-            text = item.name,
+            text = stringResource(item.name),
             modifier = Modifier
                 .weight(0.35f),
             textAlign = TextAlign.Center
@@ -300,9 +301,9 @@ fun HeldItemRow(
     input: GeneralEquipment
 ){
     //create name of the item to include quality, if any
-    val titleString = input.name +
+    val titleString = stringResource(input.name) +
         if(input.currentQuality != null)
-            " " + equipFragVM.getCategory(input)!!.qualityInput!![input.currentQuality].qualityType
+            " " + stringResource(equipFragVM.getCategory(input)!!.qualityInput!![input.currentQuality].qualityType)
         else ""
 
     Row(
@@ -340,7 +341,7 @@ fun HeldItemRow(
 @Composable
 fun EquipmentPreview(){
     val charInstance = BaseCharacter()
-    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
+    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory, LocalContext.current)
 
     charInstance.advantageRecord.acquireAdvantage(
         charInstance.advantageRecord.commonAdvantages.startingWealth,

@@ -3,6 +3,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 /**
  * Object class that holds values related to a character's class
  *
+ * @param saveName name to write to file
  * @param archetype enumeration list of archetypes related to this class
  *
  * @param lifePointMultiple cost of life point multiples for this class
@@ -44,6 +45,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.class_objects
  * @param onRemove function to run on class removal
  */
 class CharClass(
+    val saveName: String,
     val archetype: List<Archetype>,
 
     val lifePointMultiple: Int,

@@ -131,50 +131,52 @@ class HomeActivity : AppCompatActivity() {
                 scaffoldState = scaffoldState,
 
                 //home page's top bar
-                topBar = {TopAppBar (
-                    //update title with any page change
-                    title = {
-                        Text(
-                            text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
-                        )
-                    },
-
-                    //icon to open the navigation drawer
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                if(scaffoldState.drawerState.isClosed)
-                                    scope.launch{scaffoldState.drawerState.open()}
-                            })
-                        {
-                            Icon(
-                                imageVector = Icons.Filled.Menu,
-                                contentDescription = stringResource(R.string.openLabel)
+                topBar = {
+                    TopAppBar(
+                        //update title with any page change
+                        title = {
+                            Text(
+                                text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
                             )
-                        }
-                })},
+                        },
+
+                        //icon to open the navigation drawer
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    if (scaffoldState.drawerState.isClosed)
+                                        scope.launch { scaffoldState.drawerState.open() }
+                                })
+                            {
+                                Icon(
+                                    imageVector = Icons.Filled.Menu,
+                                    contentDescription = stringResource(R.string.openLabel)
+                                )
+                            }
+                        })
+                },
 
                 //navigation drawer
                 drawerContent = {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                    ){
+                    ) {
                         //for each page enumeration present
                         enumValues<ScreenPage>().forEach {
                             //create a drawer button with the given onclick function
                             DrawerButton(
                                 ScreenPage.toAddress(it),
                                 homePageVM.currentFragment.collectAsState().value != it
-                            ){
+                            ) {
                                 //if not on own page
-                                if(homePageVM.currentFragment.value != it) {
+                                if (homePageVM.currentFragment.value != it) {
                                     //change displayed fragment
                                     homePageVM.setCurrentFragment(it)
-                                    scope.launch {scaffoldState.drawerState.close()}
+                                    scope.launch { scaffoldState.drawerState.close() }
 
                                     //remove backstack
-                                    navController.navigate(it.name){
+                                    navController.navigate(it.name) {
                                         popUpTo(0)
                                     }
                                 }
@@ -182,14 +184,14 @@ class HomeActivity : AppCompatActivity() {
                         }
 
                         //drawer button for saving the character
-                        DrawerButton(R.string.saveLabel){
-                            scope.launch{scaffoldState.drawerState.close()}
+                        DrawerButton(R.string.saveLabel) {
+                            scope.launch { scaffoldState.drawerState.close() }
                             attemptSave(filename, charInstance)
                         }
 
                         //drawer button for exiting the character creator
-                        DrawerButton(R.string.exitLabel){
-                            scope.launch{scaffoldState.drawerState.close()}
+                        DrawerButton(R.string.exitLabel) {
+                            scope.launch { scaffoldState.drawerState.close() }
                             homePageVM.toggleExitAlert()
                         }
                     }
@@ -234,7 +236,8 @@ class HomeActivity : AppCompatActivity() {
                         BottomBarRow(homePageVM.maximums)
 
                         //create row for spent values
-                        BottomBarRow(homePageVM.expenditures)}
+                        BottomBarRow(homePageVM.expenditures)
+                    }
                 }
             ) {
                 //set navigation host in scaffold
@@ -243,9 +246,9 @@ class HomeActivity : AppCompatActivity() {
                     startDestination = ScreenPage.Character.name,
                     modifier = Modifier
                         .padding(it)
-                ){
+                ) {
                     //route to primary characteristics page
-                    composable(route = ScreenPage.Character.name){
+                    composable(route = ScreenPage.Character.name) {
                         charFragVM.refreshPage()
                         CharacterPageFragment(
                             charFragVM,
@@ -254,7 +257,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to combat abilities page
-                    composable(route = ScreenPage.Combat.name){
+                    composable(route = ScreenPage.Combat.name) {
                         combatFragVM.refreshPage()
                         CombatFragment(
                             combatFragVM,
@@ -263,7 +266,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to secondary characteristics page
-                    composable(route = ScreenPage.SecondaryCharacteristics.name){
+                    composable(route = ScreenPage.SecondaryCharacteristics.name) {
                         secondaryFragVM.refreshPage()
                         SecondaryAbilityFragment(
                             secondaryFragVM,
@@ -272,7 +275,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to advantages page
-                    composable(route = ScreenPage.Advantages.name){
+                    composable(route = ScreenPage.Advantages.name) {
                         advantageFragVM.refreshPage()
                         AdvantageFragment(
                             advantageFragVM,
@@ -281,7 +284,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to combat page
-                    composable(route = ScreenPage.Modules.name){
+                    composable(route = ScreenPage.Modules.name) {
                         modFragVM.refreshPage()
                         ModuleFragment(
                             modFragVM,
@@ -290,7 +293,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to ki page
-                    composable(route = ScreenPage.Ki.name){
+                    composable(route = ScreenPage.Ki.name) {
                         kiFragVM.refreshPage()
                         KiFragment(
                             kiFragVM,
@@ -299,7 +302,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to magic page
-                    composable(route = ScreenPage.Magic.name){
+                    composable(route = ScreenPage.Magic.name) {
                         magFragVM.refreshPage()
                         MagicFragment(
                             magFragVM,
@@ -308,7 +311,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to summoning page
-                    composable(route = ScreenPage.Summoning.name){
+                    composable(route = ScreenPage.Summoning.name) {
                         summonFragVM.refreshPage()
                         SummoningFragment(
                             summonFragVM,
@@ -317,7 +320,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to psychic page
-                    composable(route = ScreenPage.Psychic.name){
+                    composable(route = ScreenPage.Psychic.name) {
                         psyFragVM.refreshPage()
                         PsychicFragment(
                             psyFragVM,
@@ -326,7 +329,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     //route to equipment page
-                    composable(route = ScreenPage.Equipment.name){
+                    composable(route = ScreenPage.Equipment.name) {
                         equipFragVM.refreshPage()
                         EquipmentFragment(
                             equipFragVM
@@ -335,11 +338,11 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 //show exit alert if user opens it
-                if(homePageVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) {homePageVM.toggleExitAlert() }
+                if (homePageVM.exitOpen.collectAsState().value)
+                    ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
             }
 
-            BackHandler{homePageVM.toggleExitAlert()}
+            BackHandler { homePageVM.toggleExitAlert() }
         }
     }
 

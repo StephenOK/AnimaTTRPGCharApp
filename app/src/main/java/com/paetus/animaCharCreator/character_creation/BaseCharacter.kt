@@ -134,6 +134,22 @@ class BaseCharacter {
         updateClassInputs()
     }
 
+    fun setOwnClass(input: String){
+        //undo current class buffs
+        ownClass.value.onRemove()
+
+        //find new class and apply new buffs
+        classes.allClasses.forEach{
+            if(it.saveName == input){
+                ownClass.value = it
+                ownClass.value.onTake()
+                return@forEach
+            }
+        }
+
+        updateClassInputs()
+    }
+
     /**
      * Setter for class with Integer input.
      */
@@ -470,7 +486,7 @@ class BaseCharacter {
         val readChar = InputStreamReader(restoreChar, StandardCharsets.UTF_8)
         val fileReader = BufferedReader(readChar)
 
-        val version = fileReader.readLine()
+        val version = fileReader.readLine().toInt()
 
         rules.loadRules(fileReader)
 
@@ -484,7 +500,7 @@ class BaseCharacter {
         setGender(fileReader.readLine().toBoolean())
 
         //get the character's class, race, and level
-        setOwnClass(fileReader.readLine().toInt())
+        setOwnClass(fileReader.readLine())
         setOwnRace(fileReader.readLine())
         setLvl(fileReader.readLine().toInt())
 
@@ -553,10 +569,10 @@ class BaseCharacter {
             addNewData(experiencePoints.value)
 
             //add gender data
-            addNewData(isMale.value.toString())
+            addNewData(isMale.value)
 
             //add class, race, and level data
-            addNewData(classes.allClasses.indexOf(ownClass.value))
+            addNewData(ownClass.value.saveName)
             addNewData(races.getNameOfList(ownRace.value))
             addNewData(lvl.value)
 

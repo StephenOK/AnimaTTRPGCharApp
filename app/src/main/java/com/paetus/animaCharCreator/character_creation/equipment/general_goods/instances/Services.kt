@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.equipment.CoinType
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
@@ -7,13 +8,14 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
 class Services: GeneralCategory(listOf(
-    QualityModifier("Mediocre (Level 0)", 1.0, Availability.Common),
-    QualityModifier("Decent (Level 1)", 2.0, Availability.Common),
-    QualityModifier("Professional (Level 3)", 10.0, Availability.Uncommon),
-    QualityModifier("Celebrated (Level 5)", 100.0, Availability.Rare)
+    QualityModifier("Mediocre (Level 0)", R.string.mediocreLevel, 1.0, Availability.Common),
+    QualityModifier("Decent (Level 1)", R.string.decentLevel, 2.0, Availability.Common),
+    QualityModifier("Professional (Level 3)", R.string.professional, 10.0, Availability.Uncommon),
+    QualityModifier("Celebrated (Level 5)", R.string.celebrated, 100.0, Availability.Rare)
 )) {
     val artisan = GeneralEquipment(
         "Artisan",
+        R.string.artisan,
         10.0,
         CoinType.Silver,
         null,
@@ -23,6 +25,7 @@ class Services: GeneralCategory(listOf(
 
     val assassin = GeneralEquipment(
         "Assassin",
+        R.string.assassin,
         5.0,
         CoinType.Gold,
         null,
@@ -32,6 +35,7 @@ class Services: GeneralCategory(listOf(
 
     val guide = GeneralEquipment(
         "Guide",
+        R.string.guide,
         20.0,
         CoinType.Silver,
         null,
@@ -41,6 +45,7 @@ class Services: GeneralCategory(listOf(
 
     val blacksmith = GeneralEquipment(
         "Blacksmith",
+        R.string.blacksmith,
         25.0,
         CoinType.Silver,
         null,
@@ -50,6 +55,7 @@ class Services: GeneralCategory(listOf(
 
     val instructor = GeneralEquipment(
         "Teacher/Instructor",
+        R.string.teacher,
         1.0,
         CoinType.Gold,
         null,
@@ -59,6 +65,7 @@ class Services: GeneralCategory(listOf(
 
     val healer = GeneralEquipment(
         "Physician/Healer",
+        R.string.healer,
         1.0,
         CoinType.Gold,
         null,
@@ -68,6 +75,7 @@ class Services: GeneralCategory(listOf(
 
     val messenger = GeneralEquipment(
         "Messenger",
+        R.string.messenger,
         5.0,
         CoinType.Silver,
         null,
@@ -77,6 +85,7 @@ class Services: GeneralCategory(listOf(
 
     val mercenary = GeneralEquipment(
         "Mercenary",
+        R.string.mercenary,
         50.0,
         CoinType.Silver,
         null,
@@ -86,6 +95,7 @@ class Services: GeneralCategory(listOf(
 
     val lackey = GeneralEquipment(
         "Valet/Lackey",
+        R.string.valet,
         1.0,
         CoinType.Silver,
         null,
@@ -95,6 +105,7 @@ class Services: GeneralCategory(listOf(
 
     val thief = GeneralEquipment(
         "Thief",
+        R.string.thief,
         1.0,
         CoinType.Gold,
         null,
@@ -104,6 +115,7 @@ class Services: GeneralCategory(listOf(
 
     val troubadour = GeneralEquipment(
         "Troubadour",
+        R.string.troubadour,
         5.0,
         CoinType.Silver,
         null,

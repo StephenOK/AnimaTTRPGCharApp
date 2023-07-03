@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun EquipmentItemPurchase(
                                     .weight(0.1f)
                             )
                             Text(
-                                text = it.qualityType,
+                                text = stringResource(it.qualityType),
                                 modifier = Modifier
                                     .weight(0.2f)
                                     .clickable{equipFragVM.setCurrentQuality(it)}
@@ -124,7 +125,7 @@ fun EquipmentItemPurchase(
 fun PurchasePreview(){
     val charInstance = BaseCharacter()
 
-    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
+    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory, LocalContext.current)
     equipFragVM.setPurchasedItem(charInstance.inventory.weapons.arquebus)
     equipFragVM.setPurchasingCategory(charInstance.inventory.weapons)
 

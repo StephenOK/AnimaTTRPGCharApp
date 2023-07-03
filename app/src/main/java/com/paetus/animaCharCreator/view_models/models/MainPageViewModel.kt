@@ -16,27 +16,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.TextInput
 import com.paetus.animaCharCreator.activities.HomeActivity
+import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.io.File
 
 /**
  * View model that manages the main activity of the app.
  */
 class MainPageViewModel: ViewModel() {
+    //initialize open state of the data sharing alert
     private val _dataShareOpen = MutableStateFlow(false)
     val dataShareOpen = _dataShareOpen.asStateFlow()
 
+    //initialize the selected sharing state
     private val _shareSelection = MutableStateFlow<Boolean?>(null)
     val shareSelection = _shareSelection.asStateFlow()
 
+    //initialize failed load alert
+    private val _failedLoadOpen = MutableStateFlow(false)
+    val failedLoadOpen = _failedLoadOpen.asStateFlow()
+
+    /**
+     * Opens and closes the data sharing alert.
+     */
     fun toggleDataShareOpen(){_dataShareOpen.update{!dataShareOpen.value}}
 
+    /**
+     * Sets the sharing selection to the inputted value.
+     *
+     * @param input value to set the boolean to
+     */
     fun setShareSelection(input: Boolean){_shareSelection.update{input}}
+
+    /**
+     * Opens and closes the failed load alert.
+     */
+    fun toggleFailedLoadOpen(){_failedLoadOpen.update{!failedLoadOpen.value}}
 
     //initialize new character alert item
     private val newChar = AlertData(
@@ -93,8 +116,16 @@ class MainPageViewModel: ViewModel() {
             toNextPage.putExtra("filename", name)
             toNextPage.putExtra("isNew", false)
 
-            //move to new intention
-            startActivity(context, toNextPage, null)
+            try{
+                BaseCharacter(File(context.filesDir, name))
+
+                //move to next intention
+                startActivity(context, toNextPage, null)
+            }
+            catch(e: Exception){
+                Firebase.crashlytics.recordException(e)
+                toggleFailedLoadOpen()
+            }
         }
     ){characterName, setCharacterName ->
         //get current file list and sort alphabetically

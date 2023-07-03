@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             val context = LocalContext.current as Activity
 
             //start up main page's viewModel
-            val mainVM: MainPageViewModel by viewModels{
+            val mainVM: MainPageViewModel by viewModels {
                 CustomFactory(MainPageViewModel::class.java, BaseCharacter(), context)
             }
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .background(Color.White)
-            ){
+            ) {
                 //display app title
                 Text(
                     text = stringResource(R.string.mainTitle),
@@ -74,12 +74,12 @@ class MainActivity : AppCompatActivity() {
                 Spacer(Modifier.height(30.dp))
 
                 //display user's options
-                mainVM.allButtons.forEach{
+                mainVM.allButtons.forEach {
                     MainButton(mainVM, it)
                 }
 
                 //button to close app
-                TextButton(onClick = {context.finish()}) {
+                TextButton(onClick = { context.finish() }) {
                     Text(text = stringResource(R.string.exitLabel))
                 }
 
@@ -87,33 +87,35 @@ class MainActivity : AppCompatActivity() {
 
                 //button to open analytics sharing options
                 Button(
-                    onClick = {mainVM.toggleDataShareOpen()},
+                    onClick = { mainVM.toggleDataShareOpen() },
                     modifier = Modifier
                         .width(200.dp)
-                ){
+                ) {
                     Text(text = stringResource(R.string.sharingTitle))
                 }
             }
 
             //display user's selected action alert
-            if(mainVM.actionOpen.collectAsState().value)
+            if (mainVM.actionOpen.collectAsState().value)
                 MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
 
             //display share analytics selection option
-            if(mainVM.dataShareOpen.collectAsState().value)
+            if (mainVM.dataShareOpen.collectAsState().value)
                 AlertDialog(
-                    onDismissRequest = {mainVM.toggleDataShareOpen()},
-                    title = {Text(
-                        text = stringResource(R.string.sharingHeader)
-                    )},
+                    onDismissRequest = { mainVM.toggleDataShareOpen() },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.sharingHeader)
+                        )
+                    },
                     text = {
                         Column {
                             //user wishes to activate sharing
                             Row(
                                 modifier = Modifier
-                                    .clickable{mainVM.setShareSelection(true)},
+                                    .clickable { mainVM.setShareSelection(true) },
                                 verticalAlignment = Alignment.CenterVertically
-                            ){
+                            ) {
                                 RadioButton(
                                     selected = mainVM.shareSelection.collectAsState().value == true,
                                     onClick = { mainVM.setShareSelection(true) }
@@ -124,9 +126,9 @@ class MainActivity : AppCompatActivity() {
                             //user wishes to deactivate sharing
                             Row(
                                 modifier = Modifier
-                                    .clickable{mainVM.setShareSelection(false)},
+                                    .clickable { mainVM.setShareSelection(false) },
                                 verticalAlignment = Alignment.CenterVertically
-                            ){
+                            ) {
                                 RadioButton(
                                     selected = mainVM.shareSelection.collectAsState().value == false,
                                     onClick = { mainVM.setShareSelection(false) }
@@ -135,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             //notes about sharing
-                            Row{
+                            Row {
                                 Text(
                                     text = stringResource(R.string.defaultShareNotice),
                                     fontWeight = FontWeight.Bold
@@ -146,14 +148,13 @@ class MainActivity : AppCompatActivity() {
                     confirmButton = {
                         TextButton(
                             onClick = {
-                                if(mainVM.shareSelection.value != null) {
+                                if (mainVM.shareSelection.value != null) {
                                     Firebase.analytics.setAnalyticsCollectionEnabled(mainVM.shareSelection.value!!)
                                     Firebase.crashlytics.deleteUnsentReports()
                                     Firebase.crashlytics.setCrashlyticsCollectionEnabled(mainVM.shareSelection.value)
                                     Firebase.performance.setPerformanceCollectionEnabled(mainVM.shareSelection.value)
                                     mainVM.toggleDataShareOpen()
-                                }
-                                else
+                                } else
                                     Toast.makeText(
                                         context,
                                         context.getString(R.string.selectSharePreference),
@@ -166,9 +167,21 @@ class MainActivity : AppCompatActivity() {
                     },
                     dismissButton = {
                         TextButton(
-                            onClick = {mainVM.toggleDataShareOpen()}
+                            onClick = { mainVM.toggleDataShareOpen() }
                         ) {
                             Text(text = stringResource(R.string.cancelLabel))
+                        }
+                    }
+                )
+
+            if(mainVM.failedLoadOpen.collectAsState().value)
+                AlertDialog(
+                    onDismissRequest = {mainVM.toggleFailedLoadOpen()},
+                    title = {Text(text = stringResource(R.string.failedLoadTitle))},
+                    text = {Text(text = stringResource(R.string.failedLoadText))},
+                    confirmButton = {
+                        TextButton(onClick = {mainVM.toggleFailedLoadOpen()}) {
+                            Text(text = stringResource(R.string.closeLabel))
                         }
                     }
                 )

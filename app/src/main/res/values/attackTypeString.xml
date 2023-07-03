@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "attackCut">Cut</string>
+    <string name = "attackImpact">Impact</string>
+    <string name = "attackThrust">Thrust</string>
+    <string name = "attackHeat">Heat</string>
+    <string name = "attackCold">Cold</string>
+    <string name = "attackElec">Electric</string>
+    <string name = "attackEnergy">Energy</string>
+</resources>

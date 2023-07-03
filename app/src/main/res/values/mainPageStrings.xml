@@ -13,4 +13,7 @@
 
     <string name = "newButtonConfirm">Create</string>
     <string name = "loadButtonConfirm">Load</string>
+
+    <string name = "failedLoadTitle">Failed to Load Character</string>
+    <string name = "failedLoadText">Something went wrong when loading your file. If your data sharing has been turned on, a report has been sent.</string>
 </resources>

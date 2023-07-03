@@ -25,16 +25,20 @@ import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
 import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArt
 import com.paetus.animaCharCreator.character_creation.attributes.modules.StyleModule
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 import com.paetus.animaCharCreator.character_creation.equipment.CoinType
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
+import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
@@ -214,17 +218,21 @@ private fun WeaponContents(input: Weapon) {
 
         //display primary attack type
         if(input.primaryType != null)
-            InfoRow(stringResource(R.string.damageTypeLabel), input.primaryType.name)
+            InfoRow(stringResource(R.string.damageTypeLabel), stringResource(AttackType.toAddress(input.primaryType)))
 
         //display secondary attack type
         if(input.secondaryType != null)
-            InfoRow(stringResource(R.string.secondaryTypeLabel), input.secondaryType.name)
+            InfoRow(stringResource(R.string.secondaryTypeLabel), stringResource(AttackType.toAddress(input.secondaryType)))
 
         //display weapon category
         if(input is MixedWeapon)
-            InfoRow(stringResource(R.string.weaponTypeLabel), input.mixedType[0].name + "/" + input.mixedType[1].name)
+            InfoRow(
+                stringResource(R.string.weaponTypeLabel),
+                stringResource(WeaponType.toAddress(input.mixedType[0])) + "/" +
+                        stringResource(WeaponType.toAddress(input.mixedType[1]))
+            )
         else
-            InfoRow(stringResource(R.string.weaponTypeLabel), input.type.name)
+            InfoRow(stringResource(R.string.weaponTypeLabel), stringResource(WeaponType.toAddress(input.type)))
 
         //display weapon's fortitude, breakage, and presence
         InfoRow(stringResource(R.string.fortitudeLabel), input.fortitude.toString())
@@ -250,7 +258,7 @@ private fun WeaponContents(input: Weapon) {
         if(input.ability != null){
             input.ability.forEach{
                 //add ability to the output string
-                abilityString += it.name
+                abilityString += stringResource(WeaponAbility.getAddress(it))
 
                 //display strength of trapping ability
                 if(it == WeaponAbility.Trapping)
@@ -423,14 +431,14 @@ fun SpellDetails(spell: Spell){
     //create string of the spell's categories
     var spellType = ""
     spell.type.forEach{
-        spellType += it.name + " "
+        spellType += stringResource(SpellType.toAddress(it)) + " "
     }
 
     //create string of forbidden elements if this is a free spell
     var forbiddenList = ""
     if(spell is FreeSpell){
         spell.forbiddenElements.forEach {
-            forbiddenList += it.name + " "
+            forbiddenList += stringResource(Element.toAddress(it)) + " "
         }
     }
 
@@ -439,7 +447,7 @@ fun SpellDetails(spell: Spell){
 
     Column{
         InfoRow(stringResource(R.string.actionLabel), action)
-        InfoRow(stringResource(R.string.elementLabel), spell.inBook.name)
+        InfoRow(stringResource(R.string.elementLabel), stringResource(Element.toAddress(spell.inBook)))
         InfoRow(stringResource(R.string.levelText), spell.level.toString())
         InfoRow(stringResource(R.string.zeonCostLabel), spell.zCost.toString())
         Spacer(Modifier.height(10.dp))
@@ -530,7 +538,7 @@ fun EquipmentDetails(item: GeneralEquipment){
 
 
         //display item's availability
-        InfoRow(stringResource(R.string.availabilityLabel), item.availability.name)
+        InfoRow(stringResource(R.string.availabilityLabel), stringResource(Availability.toAddress(item.availability)))
     }
 }
 
@@ -539,7 +547,7 @@ fun EquipmentDetails(item: GeneralEquipment){
 fun AdvantageDetailPreview(){
     val charInstance = BaseCharacter()
     val advantage = charInstance.advantageRecord.commonAdvantages.characteristicPoint
-    DetailAlert(LocalContext.current.getString(advantage.name), advantage){}
+    DetailAlert(stringResource(advantage.name), advantage){}
 }
 
 @Preview
@@ -613,5 +621,5 @@ fun EquipmentDetailPreview(){
     val charInstance = BaseCharacter()
     val item = charInstance.inventory.miscellaneous.excellentLock
 
-    DetailAlert(item.name, item){}
+    DetailAlert(stringResource(item.name), item){}
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "elementLight">Light</string>
+    <string name = "elementDark">Dark</string>
+    <string name = "elementCreation">Creation</string>
+    <string name = "elementDestruction">Destruction</string>
+    <string name = "elementEssence">Essence</string>
+    <string name = "elementIllusion">Illusion</string>
+    <string name = "elementFire">Fire</string>
+    <string name = "elementWater">Water</string>
+    <string name = "elementEarth">Earth</string>
+    <string name = "elementAir">Air</string>
+    <string name = "elementNecro">Necromancy</string>
+    <string name = "elementFree">Free</string>
+</resources>

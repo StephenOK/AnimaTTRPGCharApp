@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation
 
+import com.paetus.animaCharCreator.R
+
 /**
  * Enumeration of elements for objects.
  * Covers all individual elements as well as non-elemental items (Free).
@@ -25,19 +27,27 @@ enum class Element {
          * @param input string to check against the listed elements.
          */
         fun fromString(input: String): Element{
+            Element.values().forEach{
+                if(it.name == input) return it
+            }
+
+            return Free
+        }
+
+        fun toAddress(input: Element): Int{
             return when(input){
-                "Light" -> Light
-                "Dark" -> Dark
-                "Creation" -> Creation
-                "Destruction" -> Destruction
-                "Essence" -> Essence
-                "Illusion" -> Illusion
-                "Fire" -> Fire
-                "Water" -> Water
-                "Earth" -> Earth
-                "Air" -> Air
-                "Necromancy" -> Necromancy
-                else -> Free
+                Light -> R.string.elementLight
+                Dark -> R.string.elementDark
+                Creation -> R.string.elementCreation
+                Destruction -> R.string.elementDestruction
+                Essence -> R.string.elementEssence
+                Illusion -> R.string.elementIllusion
+                Fire -> R.string.elementFire
+                Water -> R.string.elementWater
+                Earth -> R.string.elementEarth
+                Air -> R.string.elementAir
+                Necromancy -> R.string.elementNecro
+                Free -> R.string.elementFree
             }
         }
     }

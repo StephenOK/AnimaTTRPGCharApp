@@ -5,6 +5,7 @@ import com.paetus.animaCharCreator.character_creation.equipment.CoinType
 /**
  * Item representing a piece of equipment a character may purchase.
  *
+ * @param saveName string to write to the character's file
  * @param name string displaying the item
  * @param baseCost default cost of the item
  * @param coinType default coin  for the weapon's cost
@@ -13,7 +14,8 @@ import com.paetus.animaCharCreator.character_creation.equipment.CoinType
  * @param currentQuality quality index of this individual item
  */
 class GeneralEquipment(
-    val name: String,
+    val saveName: String,
+    val name: Int,
     val baseCost: Double,
     val coinType: CoinType,
     val weight: Double?,

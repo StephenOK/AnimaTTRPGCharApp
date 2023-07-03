@@ -20,7 +20,7 @@ open class GeneralCategory(val qualityInput: List<QualityModifier>?){
         //look at each available item
         itemsAvailable.forEach{
             //item name found
-            if(it.name == name){
+            if(it.saveName == name){
                 //determine cost multiplier
                 val multiplier =
                     if(qualityInput != null) qualityInput[quality!!].modifier
@@ -28,6 +28,7 @@ open class GeneralCategory(val qualityInput: List<QualityModifier>?){
 
                 //create and return appropriate item
                 return GeneralEquipment(
+                    it.saveName,
                     it.name,
                     it.baseCost * multiplier,
                     it.coinType,

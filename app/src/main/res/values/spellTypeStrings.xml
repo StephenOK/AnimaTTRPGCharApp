@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "spellAttack">Attack</string>
+    <string name = "spellDefense">Defense</string>
+    <string name = "spellSpiritual">Spiritual</string>
+    <string name = "spellEffect">Effect</string>
+    <string name = "spellAuto">Automatic</string>
+    <string name = "spellDetection">Detection</string>
+</resources>

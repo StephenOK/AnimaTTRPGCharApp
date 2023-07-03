@@ -12,6 +12,7 @@ import java.io.BufferedReader
 class ClassInstances(private val charInstance: BaseCharacter){
     val warrior =
         CharClass(
+            "warrior",
             listOf(Archetype.Fighter), 15,
             15, 5, 25, 3, 0.6,
             2, 2, 2, 2, 2, 20, 0.5,
@@ -37,6 +38,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         }
 
     val acroWarrior = CharClass(
+        "acroWarrior",
         listOf(Archetype.Fighter), 20,
         10, 10, 25, 3, 0.6,
         2, 3, 2, 2, 2, 20, 0.5,
@@ -64,6 +66,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val paladin = CharClass(
+        "paladin",
         listOf(Archetype.Fighter), 15,
         15, 5, 20, 3, 0.60,
         2, 2, 2, 2, 2, 20, 0.50,
@@ -102,6 +105,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val darkPaladin = CharClass(
+        "darkPaladin",
         listOf(Archetype.Fighter), 15,
         15, 5, 20, 3, 0.60,
         2, 2, 2, 2, 2, 20, 0.50,
@@ -142,6 +146,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val weaponMaster = CharClass(
+        "weaponMaster",
         listOf(Archetype.Fighter), 10,
         20, 5, 10, 3, 0.60,
         2, 2, 2, 1, 3, 30, 0.50,
@@ -163,6 +168,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val technician = CharClass(
+        "technician",
         listOf(Archetype.Domine), 20,
         5, 5, 50, 3, 0.60,
         2, 2, 2, 2, 1, 10, 0.50,
@@ -172,6 +178,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     ) { charInstance.combat.attack.setPointPerLevel(0) }
 
     val tao = CharClass(
+        "tao",
         listOf(Archetype.Fighter, Archetype.Domine), 20,
         10, 5, 30, 3, 0.60,
         2, 2, 2, 2, 2, 15, 0.50,
@@ -181,6 +188,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     ) { charInstance.secondaryList.style.setClassPointsPerLevel(0) }
 
     val ranger = CharClass(
+        "ranger",
         listOf(Archetype.Fighter, Archetype.Prowler), 20,
         10, 5, 20, 3, 0.60,
         2, 2, 2, 2, 2, 25, 0.50,
@@ -218,6 +226,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val shadow = CharClass(
+        "shadow",
         listOf(Archetype.Fighter, Archetype.Prowler), 20,
         5, 10, 25, 3, 0.60,
         2, 3, 2, 2, 2, 20, 0.50,
@@ -243,6 +252,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val thief = CharClass(
+        "thief",
         listOf(Archetype.Prowler), 20,
         5, 10, 20, 3, 0.50,
         2, 3, 2, 3, 2, 25, 0.50,
@@ -276,6 +286,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val assassin = CharClass(
+        "assassin",
         listOf(Archetype.Prowler), 20,
         5, 10, 20, 3, 0.50,
         2, 3, 2, 3, 2, 25, 0.50,
@@ -313,6 +324,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val wizard = CharClass(
+        "wizard",
         listOf(Archetype.Mystic), 20,
         5, 5, 10, 3, 0.50,
         3, 3, 2, 3, 3, 30, 0.60,
@@ -336,6 +348,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val warlock = CharClass(
+        "warlock",
         listOf(Archetype.Fighter, Archetype.Mystic), 20,
         10, 5, 20, 3, 0.50,
         2, 2, 2, 2, 2, 25, 0.50,
@@ -361,6 +374,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val illusionist = CharClass(
+        "illusionist",
         listOf(Archetype.Mystic, Archetype.Prowler), 20,
         5, 5, 20, 3, 0.50,
         3, 3, 2, 3, 2, 25, 0.60,
@@ -396,6 +410,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val wizMentalist = CharClass(
+        "wizMentalist",
         listOf(Archetype.Mystic, Archetype.Psychic), 20,
         5, 5, 10, 1, 0.50,
         3, 3, 2, 3, 3, 30, 0.50,
@@ -415,6 +430,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val summoner = CharClass(
+        "summoner",
         listOf(Archetype.Mystic), 20,
         5, 5, 10, 3, 0.50,
         3, 3, 2, 3, 3, 30, 0.60,
@@ -448,6 +464,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val warSummoner = CharClass(
+        "warSummoner",
         listOf(Archetype.Fighter, Archetype.Mystic), 20,
         10, 5, 20, 3, 0.50,
         2, 2, 2, 2, 2, 20, 0.50,
@@ -483,6 +500,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val mentalist = CharClass(
+        "mentalist",
         listOf(Archetype.Psychic), 20,
         5, 5, 10, 1, 0.50,
         3, 3, 2, 3, 3, 30, 0.50,
@@ -492,6 +510,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     ) {}
 
     val warMentalist = CharClass(
+        "warMentalist",
         listOf(Archetype.Fighter, Archetype.Psychic), 20,
         10, 5, 20, 1, 0.50,
         2, 2, 2, 2, 2, 25, 0.50,
@@ -509,6 +528,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
     }
 
     val freelancer = CharClass(
+        "freelancer",
         listOf(Archetype.Novel), 20,
         5, 5, 20, 2, 0.60,
         2, 2, 2, 2, 2, 20, 0.60,

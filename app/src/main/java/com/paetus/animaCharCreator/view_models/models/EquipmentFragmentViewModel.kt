@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
@@ -19,7 +20,8 @@ import kotlinx.coroutines.flow.update
  * @param inventory character's equipment object
  */
 class EquipmentFragmentViewModel(
-    private val inventory: Inventory
+    private val inventory: Inventory,
+    private val context: Context
 ) : ViewModel() {
     //initialize open state of item details
     private val _detailAlertOpen = MutableStateFlow(false)
@@ -79,7 +81,7 @@ class EquipmentFragmentViewModel(
      * @param input item to detail
      */
     fun setDetailItem(input: GeneralEquipment){
-        _detailTitle.update{input.name}
+        _detailTitle.update{context.getString(input.name)}
         _detailItem.update{input}
     }
 
@@ -255,6 +257,7 @@ class EquipmentFragmentViewModel(
         //construct item from data and add it to inventory
         inventory.buyItem(
             GeneralEquipment(
+                purchasedItem.value!!.saveName,
                 purchasedItem.value!!.name,
                 purchasedItem.value!!.baseCost * qualityMult,
                 purchasedItem.value!!.coinType,
@@ -304,7 +307,7 @@ class EquipmentFragmentViewModel(
      */
     fun getCategory(input: GeneralEquipment): GeneralCategory?{
         inventory.allCategories.forEach{
-            if(it.findEquipment(input.name, input.currentQuality) != null)
+            if(it.findEquipment(input.saveName, input.currentQuality) != null)
                 return it
         }
 

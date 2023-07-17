@@ -28,7 +28,9 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
@@ -85,7 +87,7 @@ fun DetailAlert(
                         is KiAbility -> KiContents(item)
 
                         //dominion technique
-                        is Technique -> TechContents(item)
+                        is TechniqueBase -> TechContents(item)
 
                         //magical spell
                         is Spell -> SpellDetails(item)
@@ -346,13 +348,23 @@ private fun KiContents(ability: KiAbility) {
  * @param technique dominion technique to display the details of
  */
 @Composable
-fun TechContents(technique: Technique) {
+fun TechContents(technique: TechniqueBase) {
     Column{
+        val fullList = stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(R.array.techniqueDisadvantages)
+
+        val desc =
+            if(technique is PrebuiltTech) stringResource(technique.description)
+            else (technique as Technique).description
+
         //display all of the technique's abilities
         technique.givenAbilities.forEach {
+            val namePrefix = fullList[it.data.name]
+
             Row {
                 Text(
-                    text = it.name + " " + it.effect,
+                    text = "$namePrefix " +
+                        if(it.data.effectVal != null) stringResource(it.data.effectRef, it.data.effectVal)
+                        else stringResource(it.data.effectRef),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -403,7 +415,7 @@ fun TechContents(technique: Technique) {
         Spacer(Modifier.height(10.dp))
 
         //display technique description
-        Text(text = "\t${technique.description}")
+        Text(text = "\t$desc")
     }
 }
 
@@ -591,10 +603,10 @@ fun KiDetailPreview(){
 @Composable
 fun TechniqueDetailPreview(){
     val charInstance = BaseCharacter()
-    val technique = charInstance.ki.allTechniques[0]
+    val technique = charInstance.ki.allPrebuilts[0]
     technique.maintArray[4] = 2
 
-    DetailAlert(technique.name, technique){}
+    DetailAlert(stringResource(technique.name), technique){}
 }
 
 @Preview

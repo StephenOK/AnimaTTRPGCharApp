@@ -38,7 +38,7 @@
     <string name = "effectHeader">Effect</string>
     <string name = "mirageHeader">Mirages</string>
 
-    <string name = "optionalHeader">Optional Header: %s</string>
+    <string name = "optionalHeader">Optional Advantage: %s</string>
     <string name = "sacrificeHeader">Sacrifice</string>
     <string name = "continuousAttackHeader">Continuous Attack</string>
     <string name = "fatigueBonusHeader">Added Fatigue Bonus</string>

@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.NumberInput
-import com.paetus.animaCharCreator.TechniqueTableData
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.Element
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
 
@@ -206,7 +206,9 @@ fun CustomTechnique(
                                 //display the effect's name
                                 item {
                                     Text(
-                                        text = it.input.name,
+                                        text = (stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(R.array.techniqueDisadvantages))[it.input.data.name] +
+                                            if(it.input.data.effectVal != null) stringResource(it.input.data.effectRef, it.input.data.effectVal)
+                                            else stringResource(it.input.data.effectRef),
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(
@@ -675,8 +677,8 @@ private fun TechniqueAbilityDropdown(
                 }
             }
 
-            //if selecting a predetermination effect
-            if(customTechVM.techniqueIndex.value == 38){
+            //if selecting a determined condition effect
+            if(customTechVM.getDeterminedConditions()){
                 item {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -802,12 +804,38 @@ private fun TechniqueTableRow(
         )
 
         //display effect value, costs, and level
-        Text(text = input.effect, textAlign = TextAlign.Center, modifier = Modifier.weight(0.4f))
-        Text(text = input.primaryCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = input.secondaryCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = input.mkCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = input.maintCost.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
-        Text(text = input.level.toString(), textAlign = TextAlign.Center, modifier = Modifier.weight(0.1f))
+        Text(
+            text =
+                if(input.effectVal != null) stringResource(input.effectRef, input.effectVal)
+                else stringResource(input.effectRef),
+            modifier = Modifier.weight(0.4f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = input.primaryCost.toString(),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = input.secondaryCost.toString(),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = input.mkCost.toString(),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = input.maintCost.toString(),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = input.level.toString(),
+            modifier = Modifier.weight(0.1f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -837,7 +865,7 @@ private fun ElementalRow(
                     selection.elements.clear()
 
                     //for elemental binding of two elements
-                    if(selection.effect == "Two Elements")
+                    if(selection.data.effectRef == R.string.twoElement)
                         //change checkbox if input is valid
                         customTechVM.elementChecklist[elementType]!!.value = it && customTechVM.getSelectedElement(selection).size < 2
 
@@ -897,12 +925,13 @@ private fun EditEffectRow(
 
         //display effect
         Text(
-            text = "${effectPair.key.name} ${effectPair.key.effect}",
+            text = (stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(R.array.techniqueDisadvantages))[effectPair.key.data.name] + " " +
+                if(effectPair.key.data.effectVal != null) stringResource(effectPair.key.data.effectRef, effectPair.key.data.effectVal!!)
+                else stringResource(effectPair.key.data.effectRef),
             modifier = Modifier
                 .weight(0.9f),
             fontWeight = FontWeight.Bold
         )
-
     }
 
     //display effect's cost
@@ -910,7 +939,7 @@ private fun EditEffectRow(
         Spacer(Modifier.weight(0.1f))
 
         Text(
-            text = stringResource(R.string.costLabel) + " ${effectPair.key.mkCost}",
+            text = stringResource(R.string.costLabel) + " ${effectPair.key.data.mkCost}",
             modifier = Modifier
                 .weight(0.9f)
         )
@@ -1036,33 +1065,6 @@ fun CustomTechniquePreview(){
 
     val customTechVM = CustomTechniqueViewModel(LocalContext.current, kiFragVM)
     customTechVM.setCustomPageNum(8)
-    customTechVM.getCustomTechnique().givenAbilities.add(
-        TechniqueEffect(
-            "Test",
-            "Value",
-            5,
-            1,
-            Pair(1, 2),
-            mutableListOf(0, 0, 0, 0, 0, 1),
-            listOf(0, 0, 0, 0, 0, 0),
-            mutableListOf(Element.Light),
-            1
-        )
-    )
-
-    customTechVM.getCustomTechnique().givenAbilities.add(
-        TechniqueEffect(
-            "Test2",
-            "Value",
-            5,
-            1,
-            Pair(1, 2),
-            mutableListOf(0, 2, 0, 0, 0, 0),
-            listOf(0, 0, 0, 0, 0, 0),
-            mutableListOf(Element.Light),
-            1
-        )
-    )
 
     customTechVM.setMaintenanceSelection(true)
     customTechVM.setTechniqueName("Test Tech")

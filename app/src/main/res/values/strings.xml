@@ -68,8 +68,26 @@
     <string name = "dpLabel">%1d DP</string>
     <string name = "weightLabelKG">%1d kg</string>
     <string name = "weightLabelTons">%1d tons</string>
-    <string name = "movementLabelM">%1d m</string>
+    <string name = "distanceLabelM">%1d m</string>
+    <string name = "distanceLabelKM">%1d km</string>
+
+    <string name = "justNum">%1d</string>
+    <string name = "addNumber">+%1d</string>
+    <string name = "subtractNumber">-%1d</string>
+    <string name = "multNumber">x%1d</string>
+
+    <string name = "subtractAT">-%1d AT</string>
+
     <string name = "specialLabelCaps">SPECIAL</string>
+
+    <string name = "moderate">Moderate</string>
+    <string name = "difficult">Difficult</string>
+    <string name = "veryDifficult">Very Difficult</string>
+    <string name = "absurd">Absurd</string>
+    <string name = "almostImpossible">Almost Impossible</string>
+    <string name = "impossible">Impossible</string>
+    <string name = "inhuman">Inhuman</string>
+    <string name = "zenData">Zen</string>
 
     <string name = "exitTitle">Save before exiting?</string>
 </resources>

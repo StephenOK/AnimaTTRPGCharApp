@@ -44,4 +44,42 @@
         <item>Special Requirements</item>
         <item>Predetermination</item>
     </string-array>
+
+    <string name = "vitalSacData">Vital Sacrifice</string>
+    <string name = "doubleVitalSac">Double Vital Sacrifice</string>
+    <string name = "healthSac">Health Sacrifice</string>
+    <string name = "charSac">Characteristic Sacrifice</string>
+    <string name = "continuousAttack">Continuous Attack</string>
+    <string name = "addFatigueBonus">Added Fatigue Bonus</string>
+    <string name = "targetChoice">Target Choice</string>
+    <string name = "autoCrit">Automatic Critical</string>
+    <string name = "projectileWeapon">Projectile Weapon</string>
+    <string name = "intangibility">Intangibility</string>
+    <string name = "attackMirror">Attack Mirroring</string>
+    <string name = "mirrorEsoteric">Mirror Esoteric Abilities</string>
+    <string name = "energyData">Energy</string>
+    <string name = "elementalData">Elemental</string>
+
+    <string name = "singleElement">Single Element</string>
+    <string name = "twoElement">Two Elements</string>
+    <string name = "noDamage">No Damage</string>
+    <string name = "halfDamage">Half Damage</string>
+    <string name = "singleIntensity">Single Intensity</string>
+    <string name = "majorIntensity">Major Intensity</string>
+    <string name = "determinedCondition">Determined Condition</string>
+    <string name = "predetermination">Predetermination</string>
+
+    <string name = "physReduction">PhR Reduction (%d)</string>
+    <string name = "blindnessData">Blindness (%d)</string>
+    <string name = "charReduction">Characteristic Reduction (%d)</string>
+    <string name = "partParalyze">Partial Paralysis (%d)</string>
+    <string name = "damage">Damage (%d)</string>
+    <string name = "unconscious">Unconscious (%d)</string>
+    <string name = "coma">Coma (%d)</string>
+    <string name = "totalParalyze">Total Paralysis (%d)</string>
+    <string name = "lifeDrain">Life Drain (%d)</string>
+    <string name = "controlData">Control (%d)</string>
+    <string name = "deathData">Death (%d)</string>
+
+    <string name = "unlimited">Unlimited</string>
 </resources>

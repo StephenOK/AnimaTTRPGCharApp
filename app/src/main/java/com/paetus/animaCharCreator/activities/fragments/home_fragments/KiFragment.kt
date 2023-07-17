@@ -27,7 +27,9 @@ import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.activities.fragments.dialogs.TechContents
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
@@ -211,7 +213,7 @@ fun KiFragment(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     //display each prebuilt technique
-                    kiFragVM.getAllTechniques().forEach {
+                    kiFragVM.getAllPrebuilts().forEach {
                         TechniqueRow(kiFragVM, it)
                     }
 
@@ -402,8 +404,12 @@ private fun KiAbilityRow(
 @Composable
 private fun TechniqueRow(
     kiFragVM: KiFragmentViewModel,
-    toShow: Technique
+    toShow: TechniqueBase
 ) {
+    val techName =
+        if(toShow is PrebuiltTech) stringResource(toShow.name)
+        else (toShow as Technique).name
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -419,7 +425,7 @@ private fun TechniqueRow(
 
         //show technique's name, cost, and level
         Text(
-            text = toShow.name,
+            text = techName,
             modifier = Modifier
                 .weight(0.35f),
             textAlign = TextAlign.Center

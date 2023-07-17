@@ -8,7 +8,10 @@ import com.paetus.animaCharCreator.character_creation.attributes.class_objects.C
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.KiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -65,7 +68,7 @@ class KiFragmentViewModel(
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
 
     //initialize map of all technique checkboxes
-    val allTechniques = mutableMapOf<Technique, MutableState<Boolean>>()
+    val allTechniques = mutableMapOf<TechniqueBase, MutableState<Boolean>>()
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -128,8 +131,11 @@ class KiFragmentViewModel(
      *
      * @param input technique to display in the detail alert
      */
-    fun setDetailItem(input: Technique){
-        _detailName.update{input.name}
+    fun setDetailItem(input: TechniqueBase){
+        _detailName.update{
+            if(input is PrebuiltTech) context.getString(input.name)
+            else (input as Technique).name
+        }
         _detailItem.update{input}
     }
 
@@ -183,11 +189,11 @@ class KiFragmentViewModel(
      * @param item technique to affect
      * @param input true if adding the item
      */
-    fun attemptTechniqueChange(item: Technique, input: Boolean){
+    fun attemptTechniqueChange(item: TechniqueBase, input: Boolean){
         //if attempting an addition
         if(input){
             //attempt to add to the character and reflect that change
-            if (ki.addTechnique(item))
+            if (ki.attemptTechAddition(item))
                 allTechniques[item]!!.value = true
         }
 
@@ -209,7 +215,7 @@ class KiFragmentViewModel(
      * @param item technique to add
      */
     fun addTechnique(item: Technique){
-        ki.addTechnique(item)
+        ki.attemptTechAddition(item)
         allTechniques += Pair(item, mutableStateOf(true))
     }
 
@@ -253,7 +259,9 @@ class KiFragmentViewModel(
      *
      * @return list of character's techniques
      */
-    fun getAllTechniques(): List<Technique>{return ki.allTechniques}
+    fun getAllPrebuilts(): List<TechniqueBase>{return ki.allPrebuilts}
+
+    fun getTechData(): TechniqueTableDataRecord{return ki.techniqueDatabase}
 
     /**
      * Retrieves the list of custom techniques the character currently has.
@@ -262,19 +270,7 @@ class KiFragmentViewModel(
      */
     fun getCustomTechniques(): List<Technique>{return ki.customTechniques}
 
-    /**
-     * Retrieves the number of first level techniques the character has.
-     *
-     * @return number of first level techniques taken
-     */
-    fun getTakenFirstSize(): Int{return ki.takenFirstTechniques.size}
-
-    /**
-     * Retrieves the number of second level techniques the character has.
-     *
-     * @return number of second level techniques taken
-     */
-    fun getTakenSecondSize(): Int{return ki.takenSecondTechniques.size}
+    fun getLevelCount(level: Int): Int{return ki.getLevelCount(level)}
 
     /**
      * Updates the checkboxes for techniques taken.
@@ -429,7 +425,7 @@ class KiFragmentViewModel(
         }
 
         //get each technique and designate a checkbox to it
-        ki.allTechniques.forEach{
+        ki.allPrebuilts.forEach{
             allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
         }
 

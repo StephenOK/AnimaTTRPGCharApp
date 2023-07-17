@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic
 
+import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -493,8 +494,21 @@ class Magic(private val charInstance: BaseCharacter){
         val cap = spent + if(naturalPaths.contains(book)) 40 else 0
 
         //remove individually bought spells obtained in this purchase
-        individualSpells.removeIf{it.inBook == book && it.level <= cap}
-        individualSpells.removeIf{it is FreeSpell && findFreeSpellElement(it) == book && it.level <= cap}
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            individualSpells.removeIf {it.inBook == book && it.level <= cap}
+            individualSpells.removeIf {it is FreeSpell && findFreeSpellElement(it) == book && it.level <= cap}
+        }
+        else{
+            val removeSpells = mutableListOf<Spell>()
+
+            individualSpells.forEach{
+                if((it.inBook == book && it.level <= cap) ||
+                    (it is FreeSpell && findFreeSpellElement(it) == book && it.level <= cap))
+                    removeSpells += it
+            }
+
+            individualSpells.removeAll(removeSpells)
+        }
     }
 
     /**

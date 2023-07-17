@@ -523,7 +523,7 @@ class BaseCharacter {
         weaponProficiencies.loadProficiencies(fileReader)
 
         //load character's ki abilities
-        ki.loadKiAttributes(fileReader)
+        ki.loadKiAttributes(fileReader, version)
 
         //load character's magic abilities
         magic.loadMagic(fileReader)

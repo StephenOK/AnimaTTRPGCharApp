@@ -8,11 +8,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Size
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.TechniqueTableData
-import com.paetus.animaCharCreator.TechniqueTableDataRecord
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.character_creation.Element
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.Technique
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniqueEffect
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,7 +41,7 @@ class CustomTechniqueViewModel(
     private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
     //data table of technique effects
-    private val techniqueDatabase = TechniqueTableDataRecord()
+    private val techniqueDatabase = kiFragVM.getTechData()
 
     //initialize the page tracker of the custom technique
     private val _customPageNum = MutableStateFlow(1)
@@ -218,8 +217,8 @@ class CustomTechniqueViewModel(
     fun minTechsMet(): Boolean{
         when(customTechnique.level){
             1 -> return true
-            2 -> return kiFragVM.getTakenFirstSize() >= 2
-            3 -> return kiFragVM.getTakenSecondSize() >= 2
+            2 -> return kiFragVM.getLevelCount(1) >= 2
+            3 -> return kiFragVM.getLevelCount(2) >= 2
         }
 
         return false
@@ -517,9 +516,9 @@ class CustomTechniqueViewModel(
                 setHeader(context.getString(R.string.effectHeader))
                 setUseTable(techniqueDatabase.table30)
                 setOptHeader1(optionalHeaderComposer(R.string.targetChoiceHeader))
-                setOptTable1(listOf(TechniqueTableData("Target Choice", 2, 2, 10, 2, 1)))
+                setOptTable1(techniqueDatabase.table30a)
                 setOptHeader2(optionalHeaderComposer(R.string.mirrorEsotericHeader))
-                setOptTable2(techniqueDatabase.table30a)
+                setOptTable2(techniqueDatabase.table30b)
                 setBuildArray(listOf(2, 3, 3, null, 0, 1))
                 setElementList(listOf(Element.Water, Element.Light, Element.Dark))
             }
@@ -745,7 +744,7 @@ class CustomTechniqueViewModel(
 
             //add cost if no error
             if(newInput == null){
-                additionCost += it.mkCost
+                additionCost += it.data.mkCost
             }
 
             //return error if failed
@@ -807,53 +806,64 @@ class CustomTechniqueViewModel(
         if(techniqueIndex.value == 14){
             //merge two options into one technique
             return if(output.size == 2)
-                    listOf(
-                        TechniqueEffect(
-                            output[0].name,
-                            "${output[0].effect} (${output[1].effect})",
-                            output[0].mkCost + output[1].mkCost,
-                            output[0].maintTotal + output[1].maintTotal,
-                            Pair(
-                                output[0].costPair.first + output[1].costPair.first,
-                                output[0].costPair.second + output[1].costPair.second
-                            ),
-                            mutableListOf(
-                                output[0].kiBuild[0] + output[1].kiBuild[0],
-                                output[0].kiBuild[1] + output[1].kiBuild[1],
-                                output[0].kiBuild[2] + output[1].kiBuild[2],
-                                output[0].kiBuild[3] + output[1].kiBuild[3],
-                                output[0].kiBuild[4] + output[1].kiBuild[4],
-                                output[0].kiBuild[5] + output[1].kiBuild[5]
-                            ),
-                            output[0].buildAdditions,
-                            output[0].elements,
-                            if(output[0].lvl > output[1].lvl) output[0].lvl else output[1].lvl
-                        )
+                listOf(
+                    TechniqueEffect(
+                        TechniqueTableData(
+                            14,
+                            output[1].data.effectRef,
+                            output[0].data.effectVal,
+                            output[0].data.primaryCost + output[1].data.primaryCost,
+                            output[0].data.secondaryCost + output[1].data.secondaryCost,
+                            output[0].data.mkCost + output[1].data.mkCost,
+                            output[0].data.maintCost,
+                            if(output[0].data.level > output[1].data.level) output[0].data.level else output[1].data.level
+                        ),
+                        mutableListOf(
+                            output[0].kiBuild[0] + output[1].kiBuild[0],
+                            output[0].kiBuild[1] + output[1].kiBuild[1],
+                            output[0].kiBuild[2] + output[1].kiBuild[2],
+                            output[0].kiBuild[3] + output[1].kiBuild[3],
+                            output[0].kiBuild[4] + output[1].kiBuild[4],
+                            output[0].kiBuild[5] + output[1].kiBuild[5]
+                        ),
+                        output[0].buildAdditions,
+                        output[0].elements
                     )
+                )
 
                 //return no technique if incomplete state technique
                 else
                     listOf()
         }
 
-        if(techniqueIndex.value == 38 && output.isNotEmpty()){
+        if(techniqueIndex.value == 37 && output.isNotEmpty()){
             return listOf(
                 TechniqueEffect(
-                    output[0].name,
-                    output[0].effect,
-                    predeterminedCost.value.toInt() * -1,
-                    output[0].maintTotal,
-                    output[0].costPair,
+                    TechniqueTableData(
+                        output[0].data.name,
+                        output[0].data.effectRef,
+                        null,
+                        output[0].data.primaryCost,
+                        output[0].data.secondaryCost,
+                        predeterminedCost.value.toInt() * -1,
+                        output[0].data.maintCost,
+                        output[0].data.level
+                    ),
                     output[0].kiBuild,
                     output[0].buildAdditions,
-                    output[0].elements,
-                    output[0].lvl
+                    output[0].elements
                 )
             )
         }
 
         //return list of selections
         return output.toList()
+    }
+
+    fun getDeterminedConditions(): Boolean{
+        return techniqueIndex.value == 37 &&
+                getSelectedEffects().isNotEmpty() &&
+                getSelectedEffects()[0].data.effectRef == R.string.determinedCondition
     }
 
     /**
@@ -890,7 +900,7 @@ class CustomTechniqueViewModel(
 
         //add the price of each selected effect
         getSelectedEffects().forEach{
-            output += it.mkCost
+            output += it.data.mkCost
         }
 
         //return final cost
@@ -913,10 +923,7 @@ class CustomTechniqueViewModel(
      * @param item technique table data to convert
      * @return effect to return from the table data
      */
-    private fun dataToEffect(item: TechniqueTableData): TechniqueEffect{
-        //get the name of the technique effect
-        val nameString = listSource.value[techniqueIndex.value]
-
+    private fun dataToEffect(item: TechniqueTableData): TechniqueEffect {
         //initialize the build for the technique
         val defaultBuild = mutableListOf(0, 0, 0, 0, 0, 0)
 
@@ -928,17 +935,11 @@ class CustomTechniqueViewModel(
                 defaultBuild[buildArray.value.indexOf(0)] = item.secondaryCost
         }
 
-        //return the composed technique
         return TechniqueEffect(
-            nameString,
-            item.effect,
-            item.mkCost,
-            item.maintCost,
-            Pair(item.primaryCost, item.secondaryCost),
+            item,
             defaultBuild,
             buildArray.value,
-            elementList.value.toMutableList(),
-            item.level
+            elementList.value.toMutableList()
         )
     }
 
@@ -1008,7 +1009,7 @@ class CustomTechniqueViewModel(
         //remove the effects from the custom technique
         deletionChecklist.forEach{
             if(it.value.value){
-                customTechnique.givenAbilities.remove(customTechnique.getAbility(it.key.name))
+                customTechnique.givenAbilities.remove(customTechnique.getAbility(it.key.data.name, it.key.data.primaryCost, it.key.data.secondaryCost, it.key.data.mkCost))
             }
         }
 
@@ -1080,7 +1081,7 @@ class CustomTechniqueViewModel(
      *
      * @return the whole technique being worked on.
      */
-    fun getCustomTechnique(): Technique{return customTechnique}
+    fun getCustomTechnique(): Technique {return customTechnique}
 
     /**
      * Retrieves the current level of the custom technique.

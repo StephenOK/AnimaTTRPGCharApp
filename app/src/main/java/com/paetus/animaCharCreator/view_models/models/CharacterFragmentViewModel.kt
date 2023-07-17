@@ -62,7 +62,7 @@ class CharacterFragmentViewModel(
         if(charInstance.movement.value == 0)
             R.string.specialLabelCaps
         else
-            R.string.movementLabelM
+            R.string.distanceLabelM
     )
     val movementDisplay = _movementDisplay.asStateFlow()
 
@@ -198,7 +198,7 @@ class CharacterFragmentViewModel(
         if(charInstance.movement.value == 0)
             _movementDisplay.update{R.string.specialLabelCaps}
         else
-            _movementDisplay.update{R.string.movementLabelM}
+            _movementDisplay.update{R.string.distanceLabelM}
     }
 
     /**

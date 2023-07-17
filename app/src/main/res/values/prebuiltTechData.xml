@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "excisum">Excisum Aeris</string>
+    <string name = "excisumDesc">This technique allows the character to emit a full Ki explosion at a specific moment, projecting a blow at such speed that it causes the air to warp while he advances to attack. This technique uses the Base Damage of the user\'s weapon.</string>
+
+    <string name = "velocitasVentas">Velocitas Ventas</string>
+    <string name = "velocitasVentasDesc">By increasing his speed beyond human limits, a character can travel so fast that his body seems to split. In this way, he can attack four times during the Combat Turn while also adding a bonus to his Final Initiative.</string>
+
+    <string name = "excisumMagister">Excisum Magister</string>
+    <string name = "excisumMagisterDesc">The fighter concentrates all his energy in a single move - an attack of such speed that it has the ability to split an opponent\'s body. This Technique increases both Base Initiative and Attack Ability.</string>
+
+    <string name = "magnusExacter">Magnus Exacter</string>
+    <string name = "magnusExacterDesc">The character moves at full speed shattering all obstacles in his way up to a 10 meter radius. The victims of the attack only manage to see someone suddenly materialize and charge against them, only to disappear soon after. This Technique uses the Base Damage of the user\'s weapon.</string>
+
+    <string name = "summum">Summum</string>
+    <string name = "summumDesc">The character reaches out his arms and vanishes momentarily. Right at that moment, he begins to materialize around the victim, continually going back and forth through his body, destroying him completely in the process. The attacker appears to vanish, then materialize in a whirling blur of motion that completely destroys his victim. This Technique allows a character to perform nine attacks in the same Combat Turn, the first of which is usually accompanied by Surprise due to its reaction speed.</string>
+
+    <string name = "feuer">Feuer</string>
+    <string name = "feuerDesc">By concentrating Ki in his weapon, a character can surround it with an aura of fire, thus increasing its Base Damage by 25 points and gaining the possibility of attacking in the Heat Table as a primary Critical. Feuer can be maintained investing 1 Ki Point for Will and 1 for Strength in each round. This is also a key Technique for performing subsequent attacks of greater power.</string>
+
+    <string name = "leFeu">Le Feu</string>
+    <string name = "leFeuDesc">This Technique unleashes a potent ball of fire which can strike a target up to 20 meters away. Le Feu does not use the weapon\'s damage, but twice the character\'s Base Presence plus his Power Bonus.</string>
+
+    <string name = "horecka">Horecka</string>
+    <string name = "horeckaDesc">This Technique unleashes an inferno that devours everything contained within 50 meter radius around the character in a huge explosion. This fire is so intense it doubles the weapon\'s original Base Damage. Horecka requires a character to maintain the first-level Technique, Feuer.</string>
+
+    <string name = "vatra">Vatra</string>
+    <string name = "vatraDesc">Like a phoenix, the attacker wreaths himself in flames and charges against his opponent with an attack that consumes him physically and spiritually. This attack increases damage, Attack Ability, and the resulting Critical (if any). Vatra requires a character to maintain the first-level Technique, Feuer.</string>
+
+    <string name = "eld">Eld</string>
+    <string name = "eldDesc">This frightening Technique has devastating effects, both on the victim and the performer. In order to employ it, a character must sacrifice part of his vital energy, suffering the resulting Damage in the process. In addition to the increase in the character\'s Attack Ability, the Base Damage is increased by an amount equivalent to twice the Life Points sacrificed. Eld requires a character to maintain the first-level Technique, Feuer.</string>
+
+    <string name = "theScales">The Scales</string>
+    <string name = "theScalesDesc">Dragons are equipped to face a multitude of enemies. Thus, they can repel several attacks without applying penalties. This Technique allows the user to repel seven attacks without compromising his ability.</string>
+
+    <string name = "theClaws">The Claws</string>
+    <string name = "theClawsDesc">There are few things as lethal as a dragon\'s claws. Executing this Technique permits the user to make two attacks, each with a 40-point bonus to Base Damage.</string>
+
+    <string name = "theFang">The Fang</string>
+    <string name = "theFangDesc">This attack lowers the victim\'s AT by 6 points while increasing offensive ability and reducing penalties for performing aimed Attacks.</string>
+
+    <string name = "theTail">The Tail</string>
+    <string name = "theTailDesc">A dragon\'s tail flap can send entire armies flying. This Technique allows a character to make a forceful attack within an 80-foot radius using his weapon\'s Base Damage and increasing its offensive ability. Any individual hit by this Technique must make and Opposed Check against Strength 16 or be knocked to the ground.</string>
+
+    <string name = "dragonBreath">The Dragon\'s Breath</string>
+    <string name = "dragonBreathDesc">This Technique fires a pulse of pure energy up to a maximum distance of 1 kilometer. At the will of the user, the pulse bursts, causing utter destruction in a 100 meter radius. The damage Dragon\'s Breath deals is twice the character\'s Base Presence, plus his Power Bonus, then multiplied by two. Dragon\'s Breath is a Predetermined Technique and must be declared before it is used.</string>
+</resources>

@@ -588,7 +588,16 @@ class Ki(private val charInstance: BaseCharacter){
         }
         catch(e: Exception) {
             return when (input.first()) {
-                '+' -> Pair(R.string.addNumber, input.drop(1).toInt())
+                '+' -> {
+                    try{Pair(R.string.addNumber, input.drop(1).toInt())}
+                    catch(e: Exception){
+                        try {
+                            Pair(R.string.distanceLabelM, input.dropLast(1).toInt())
+                        } catch (e: Exception) {
+                            Pair(R.string.distanceLabelKM, input.dropLast(2).toInt())
+                        }
+                    }
+                }
                 'x' -> Pair(R.string.multNumber, input.drop(1).toInt())
                 '-' -> {
                     try {

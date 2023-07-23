@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import android.content.Context
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
@@ -20,15 +19,14 @@ import kotlinx.coroutines.flow.update
  * @param inventory character's equipment object
  */
 class EquipmentFragmentViewModel(
-    private val inventory: Inventory,
-    private val context: Context
+    private val inventory: Inventory
 ) : ViewModel() {
     //initialize open state of item details
     private val _detailAlertOpen = MutableStateFlow(false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
     //initialize title of detail dialog
-    private val _detailTitle = MutableStateFlow("")
+    private val _detailTitle = MutableStateFlow(R.string.emptyItem)
     val detailTitle = _detailTitle.asStateFlow()
 
     //initialize item to detail
@@ -81,7 +79,7 @@ class EquipmentFragmentViewModel(
      * @param input item to detail
      */
     fun setDetailItem(input: GeneralEquipment){
-        _detailTitle.update{context.getString(input.name)}
+        _detailTitle.update{input.name}
         _detailItem.update{input}
     }
 

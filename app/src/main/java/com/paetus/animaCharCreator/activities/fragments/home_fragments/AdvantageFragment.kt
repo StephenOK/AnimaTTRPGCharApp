@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -114,12 +115,14 @@ fun AdvantageFragment(
 
 
         //display advantage choices if available
-        if(advantageFragVM.advantageCostOn.collectAsState().value)
+        if(advantageFragVM.advantageCostOn.collectAsState().value) {
+            advantageFragVM.emptyHalfAttuned()
+
             AdvantageCostPick(
                 advantageFragVM
-            ){input: Int? ->
+            ) { input: Int? ->
                 //notify user of failed acquisition
-                if(input != null)
+                if (input != null)
                     Toast.makeText(
                         context,
                         context.getString(input),
@@ -130,6 +133,7 @@ fun AdvantageFragment(
 
                 homePageVM.updateExpenditures()
             }
+        }
 
         //warn user of removal of gift action
         if(advantageFragVM.giftAlertOpen.collectAsState().value){
@@ -240,7 +244,8 @@ private fun AdvantageDisplay(
                             val resultText = advantageFragVM.acquireAdvantage(
                                 it,
                                 it.picked,
-                                it.pickedCost
+                                it.pickedCost,
+                                it.multPicked
                             )
 
                             //display text if unable to add advantage
@@ -335,7 +340,7 @@ private fun HeldAdvantageDisplay(
     //retrieve additional information on the advantage
     val nameAddition =
         if(item.picked != null)
-            " (${item.options!![item.picked]})"
+            " (${stringArrayResource(item.options!!)[item.picked]})"
         else null
 
     //display the advantage row
@@ -369,7 +374,7 @@ fun AdvantagePreview(){
     val charInstance = BaseCharacter()
     charInstance.setOwnRace(1)
 
-    charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0)
+    charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0, null)
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
     advantageFragVM.advantageButtons[4].toggleOpen()

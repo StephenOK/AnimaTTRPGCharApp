@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Energy: Discipline("energy"){
     val objectCreation = PsychicPower(
         "createEnergyObj",
-        R.string.createEnergyObj,
+        65,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Energy: Discipline("energy"){
 
     val energyDischarge = PsychicPower(
         "energyDischarge",
-        R.string.energyDischarge,
+        66,
         1,
         true,
         false,
@@ -52,7 +52,7 @@ class Energy: Discipline("energy"){
 
     val createEnergy = PsychicPower(
         "createEnergy",
-        R.string.createEnergyPower,
+        67,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Energy: Discipline("energy"){
 
     val energyShield = PsychicPower(
         "energyShield",
-        R.string.energyShield,
+        68,
         1,
         false,
         true,
@@ -94,7 +94,7 @@ class Energy: Discipline("energy"){
 
     val senseEnergy = PsychicPower(
         "senseEnergy",
-        R.string.senseEnergy,
+        69,
         1,
         true,
         true,
@@ -115,7 +115,7 @@ class Energy: Discipline("energy"){
 
     val modifyNature = PsychicPower(
         "modNature",
-        R.string.modNature,
+        70,
         2,
         true,
         false,
@@ -136,7 +136,7 @@ class Energy: Discipline("energy"){
 
     val undoEnergy = PsychicPower(
         "undoEnergy",
-        R.string.undoEnergy,
+        71,
         2,
         true,
         false,
@@ -157,7 +157,7 @@ class Energy: Discipline("energy"){
 
     val immunity = PsychicPower(
         "immunity",
-        R.string.immunityPower,
+        72,
         2,
         false,
         true,
@@ -178,7 +178,7 @@ class Energy: Discipline("energy"){
 
     val controlEnergy = PsychicPower(
         "controlEnergy",
-        R.string.controlEnergy,
+        73,
         2,
         true,
         true,
@@ -199,7 +199,7 @@ class Energy: Discipline("energy"){
 
     val energyDome = PsychicPower(
         "energyDome",
-        R.string.energyDome,
+        74,
         3,
         true,
         false,
@@ -220,7 +220,7 @@ class Energy: Discipline("energy"){
 
     val majorEnergy = PsychicPower(
         "majorEnergy",
-        R.string.majorEnergy,
+        75,
         3,
         true,
         true,

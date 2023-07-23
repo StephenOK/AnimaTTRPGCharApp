@@ -4,17 +4,19 @@
     <string name = "psyProjectionLabel">Psychic Projection</string>
     <string name = "psyPotentialLabel">Psychic Potential</string>
     <string name = "freePsyPointLabel">Free Psychic Points: </string>
-    <string name = "innateSlotLabel">Innate Slots: </string>
+    <string name = "innateSlotLabel">Innate Slots: </string>f
 
-    <string name = "telepathyLabel">Telepathy</string>
-    <string name = "kinesisLabel">Psychokinesis</string>
-    <string name = "pyroLabel">Pyrokinesis</string>
-    <string name = "cryoLabel">Cryokinesis</string>
-    <string name = "physIncreaseLabel">Physical Increase</string>
-    <string name = "energyLabel">Energy</string>
-    <string name = "sentienceLabel">Sentience</string>
-    <string name = "telemetryLabel">Telemetry</string>
-    <string name = "matrixLabel">Matrix Powers</string>
+    <string-array name = "disciplineNames">
+        <item>Telepathy</item>
+        <item>Psychokinesis</item>
+        <item>Pyrokinesis</item>
+        <item>Cryokinesis</item>
+        <item>Physical Increase</item>
+        <item>Energy</item>
+        <item>Sentience</item>
+        <item>Telemetry</item>
+        <item>Matrix Powers</item>
+    </string-array>
 
     <string name = "potentialBonusLabel">+%1d Potential</string>
 

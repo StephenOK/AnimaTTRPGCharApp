@@ -88,7 +88,11 @@ private fun FreelancerDropdown(
     Row{
         OutlinedTextField(
             //display currently selected characteristic
-            value = stringArrayResource(R.array.secondaryCharacteristics)[item.selectedIndex.collectAsState().value],
+            value =
+                if(item.selectedIndex.collectAsState().value == 0)
+                    stringResource(R.string.selectCharPrompt)
+                else
+                    stringArrayResource(R.array.secondaryCharacteristics)[item.selectedIndex.collectAsState().value - 1],
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
@@ -112,15 +116,18 @@ private fun FreelancerDropdown(
             modifier = Modifier
                 .width(with(LocalDensity.current){item.size.value.width.toDp()})
         ) {
+            DropdownMenuItem(onClick = {
+                item.setSelection(0)
+                item.openToggle()
+            }){Text(text = stringResource(R.string.selectCharPrompt))}
+
             //display all secondary characteristic options
             stringArrayResource(R.array.secondaryCharacteristics).forEach{
-                val index = stringArrayResource(R.array.secondaryCharacteristics).indexOf(it)
+                val index = stringArrayResource(R.array.secondaryCharacteristics).indexOf(it) + 1
                 DropdownMenuItem(onClick = {
                     item.setSelection(index)
                     item.openToggle()
-                }) {
-                    Text(text = it)
-                }
+                }) {Text(text = it)}
             }
         }
     }
@@ -145,7 +152,7 @@ private fun MakeTableDisplay(
     ){
         //button label
         Text(
-            text = stringResource(input.fieldName)
+            text = stringArrayResource(R.array.secondaryFields)[input.fieldName]
         )
     }
 
@@ -251,7 +258,7 @@ private fun MakeRow(
             emptyFunction = {item.setPointInput("")},
             modifier = Modifier
                 .onFocusChanged {
-                    if(it.isFocused)
+                    if (it.isFocused)
                         item.setDPDisplay(dpVal)
                     else
                         item.setDPDisplay("")

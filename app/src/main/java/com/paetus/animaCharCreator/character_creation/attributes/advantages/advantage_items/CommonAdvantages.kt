@@ -10,57 +10,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  * @param charInstance object holding the character's stats
  */
 class CommonAdvantages(private val charInstance: BaseCharacter) {
-    val characteristicList = listOf("STR", "DEX", "AGI", "CON", "INT", "POW", "WP", "PER")
-    val secondariesList = listOf(
-        "Acrobatics",
-        "Athleticism",
-        "Climb",
-        "Jump",
-        "Ride",
-        "Swim",
-
-        "Intimidate",
-        "Leadership",
-        "Persuasion",
-        "Style",
-
-        "Notice",
-        "Search",
-        "Track",
-
-        "Animals",
-        "Appraisal",
-        "Herbal Lore",
-        "History",
-        "Memorize",
-        "Magic Appraisal",
-        "Medic",
-        "Navigate",
-        "Occult",
-        "Sciences",
-
-        "Composure",
-        "Feats of Strength",
-        "Withstand Pain",
-
-        "Disguise",
-        "Hide",
-        "Lock Pick",
-        "Poisons",
-        "Theft",
-        "Stealth",
-        "Trap Lore",
-
-        "Art",
-        "Dance",
-        "Forging",
-        "Music",
-        "Sleight of Hand"
-    )
-
-    val fieldNames = listOf("Athletics", "Creative", "Perceptive", "Social", "Subterfuge",
-        "Intellectual", "Vigor")
-
     val characteristicPoint = Advantage(
         "characteristicPoint",
         R.string.addCharPoint,
@@ -68,17 +17,17 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.charPointEffect,
         R.string.charPointRestriction,
         R.string.advantageSpecial,
-        characteristicList,
+        R.array.primaryCharArray,
         0,
+        null,
         listOf(1),
         0,
         { input, _ ->
             charInstance.primaryList.allPrimaries[input!!].setBonus(1)
-        },
-        { input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].setBonus(-1)
         }
-    )
+    ) { input, _ ->
+        charInstance.primaryList.allPrimaries[input!!].setBonus(-1)
+    }
 
     val acuteSenses = Advantage(
         "acuteSenses",
@@ -89,23 +38,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         {_, _ ->
             charInstance.secondaryList.notice.setSpecial(30)
             charInstance.secondaryList.search.setSpecial(30)
-        },
-        {_, _ ->
-            charInstance.secondaryList.notice.setSpecial(-30)
-            charInstance.secondaryList.search.setSpecial(-30)
         }
-    )
+    ) { _, _ ->
+        charInstance.secondaryList.notice.setSpecial(-30)
+        charInstance.secondaryList.search.setSpecial(-30)
+    }
 
     val artifact = Advantage(
         "artifact",
         R.string.artifact,
         R.string.artifactDesc,
         R.string.artifactEffect,
+        null,
         null,
         null,
         null,
@@ -125,6 +75,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -138,8 +89,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.charTo9Effect,
         null,
         R.string.advantageSpecial,
-        characteristicList,
+        R.array.primaryCharArray,
         0,
+        null,
         listOf(2),
         0,
         {input, _ ->
@@ -155,33 +107,25 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.disciplineAccEff,
         null,
         null,
-        listOf(
-            "Telepathy",
-            "Psychokinesis",
-            "Pyrokinesis",
-            "Cryokinesis",
-            "Physical Increase",
-            "Energy",
-            "Sentience",
-            "Telemetry"
-        ),
+        R.array.disciplineNames,
         0,
+        null,
         listOf(1),
         0,
         {input, _ ->
             charInstance.psychic.legalDisciplines.add(charInstance.psychic.allDisciplines[input!!])
             charInstance.psychic.legalDisciplines.add(charInstance.psychic.matrixPowers)
-        },
-        {input, _ ->
-            charInstance.psychic.removeLegalDisciplineFromInt(input!!)
         }
-    )
+    ) { input, _ ->
+        charInstance.psychic.removeLegalDisciplineFromInt(input!!)
+    }
 
     val charm = Advantage(
         "charm",
         R.string.charm,
         R.string.charmDesc,
         R.string.charmEffect,
+        null,
         null,
         null,
         null,
@@ -201,6 +145,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -212,6 +157,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.animalAffinity,
         R.string.affinityDesc,
         R.string.affinityEffect,
+        null,
         null,
         null,
         null,
@@ -231,6 +177,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         null,
@@ -242,6 +189,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.beenAround,
         R.string.beenAroundDesc,
         R.string.beenAroundEff,
+        null,
         null,
         null,
         null,
@@ -259,19 +207,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.subjAptEff,
         R.string.subjAptRestriction,
         null,
-        secondariesList,
+        R.array.secondaryCharacteristics,
         0,
+        null,
         listOf(1, 2),
         0,
         {input, cost ->
             charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost)
             charInstance.updateTotalSpent()
-        },
-        {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost * -1)
-            charInstance.updateTotalSpent()
         }
-    )
+    ) { input, cost ->
+        charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost * -1)
+        charInstance.updateTotalSpent()
+    }
 
     val naturalPsychicPower = Advantage(
         "naturalPsychicPower",
@@ -280,103 +228,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.natPsyPowEff,
         null,
         null,
-        listOf(
-            "Area Scanning",
-            "Mental Restraint",
-            "Mind Reading",
-            "Mental Communication",
-            "Psychic Shield",
-            "Psychic Illusion",
-            "Mental Research",
-            "Psychic Assault",
-            "Psychic Connection",
-            "Alter Memory",
-            "Astral Shape",
-            "Psychic Tracking",
-            "Mind Control",
-            "Psychic Death",
-            "Area (Telepathy)",
-            "Minor Psychokinesis",
-            "Psychokinetic Impact",
-            "Psychokinetic Trap",
-            "Psychokinetic Shield",
-            "Psychokinetic Armor",
-            "Motion Detection",
-            "Repulsion",
-            "Ballistics",
-            "Shatter",
-            "Psychokinetic Flight",
-            "Organic Psychokinesis",
-            "Ground Control",
-            "Atomic Restructuring",
-            "Major Psychokinesis",
-            "Create Fire",
-            "Extinguish Fire",
-            "Control Fire",
-            "Immolate",
-            "Igneous Maintenance",
-            "Fire Immunity",
-            "Igneous Barrier",
-            "Raise Temperature",
-            "Consume",
-            "Nova",
-            "Major Fire",
-            "Create Chill",
-            "Freeze",
-            "Sense Temperature",
-            "Eliminate Cold",
-            "Cold Dominion",
-            "Crystallize",
-            "Ice Splinters",
-            "Decrease Ambient Temperature",
-            "Ice Shield",
-            "Absolute Zero",
-            "Everlasting Moment",
-            "Major Cold",
-            "Increase Jump Ability",
-            "Increase Ability",
-            "Increase Acrobatics",
-            "Increase Strength",
-            "Inhumanity",
-            "Increase Motion",
-            "Increase Reaction",
-            "Perception Increase",
-            "Increase Endurance",
-            "Regeneration",
-            "Fatigue Elimination",
-            "Total Increase",
-            "Imbue",
-            "Energy Object Creation",
-            "Energy Discharge",
-            "Create Energy",
-            "Energy Shield",
-            "Sense Energy",
-            "Modify Nature",
-            "Undo Energy",
-            "Immunity",
-            "Control Energy",
-            "Energy Dome",
-            "Major Energy",
-            "Sense Feelings",
-            "Intensify Feelings",
-            "Detect Feelings",
-            "Connect Senses",
-            "Project Senses",
-            "Eliminate Senses",
-            "Create Feelings",
-            "Infuse Feelings",
-            "Destroy Feelings",
-            "Area (Sentience",
-            "Sense Residues",
-            "Read the Past",
-            "Human Erudition",
-            "See In History",
-            "Sense Matrices",
-            "Destroy Matrices",
-            "Hide Matrices",
-            "Link Matrices"
-        ),
+        R.array.powerNames,
         0,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -390,21 +244,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.fieldAptEff,
         R.string.fieldAptRestriction,
         null,
-        fieldNames,
+        R.array.secondaryFields,
         0,
+        null,
         listOf(2),
         0,
         {input, _ ->
             val field = charInstance.secondaryList.intToField(input!!)
             field.forEach{it.setDevelopmentDeduction(1)}
             charInstance.updateTotalSpent()
-        },
-        {input, _ ->
-            val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setDevelopmentDeduction(-1)}
-            charInstance.updateTotalSpent()
         }
-    )
+    ) { input, _ ->
+        val field = charInstance.secondaryList.intToField(input!!)
+        field.forEach { it.setDevelopmentDeduction(-1) }
+        charInstance.updateTotalSpent()
+    }
 
     val characteristicReroll = Advantage(
         "characteristicReroll",
@@ -413,8 +267,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.charRerollEff,
         R.string.charRerollRestriction,
         R.string.advantageSpecial,
-        characteristicList,
+        R.array.primaryCharArray,
         0,
+        null,
         listOf(1),
         0,
         null,
@@ -430,6 +285,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         {_, cost ->
@@ -438,21 +294,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 2 -> charInstance.ki.updateMKSpec(80)
                 3 -> charInstance.ki.updateMKSpec(120)
             }
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.ki.updateMKSpec(-40)
-                2 -> charInstance.ki.updateMKSpec(-80)
-                3 -> charInstance.ki.updateMKSpec(-120)
-            }
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.ki.updateMKSpec(-40)
+            2 -> charInstance.ki.updateMKSpec(-80)
+            3 -> charInstance.ki.updateMKSpec(-120)
+        }
+    }
 
     val goodLuck = Advantage(
         "goodLuck",
         R.string.goodLuck,
         R.string.goodLuckDesc,
         R.string.goodLuckEff,
+        null,
         null,
         null,
         null,
@@ -472,6 +328,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         null,
@@ -487,23 +344,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         {_, _ ->
             charInstance.secondaryList.allTradesTaken.value = true
             charInstance.secondaryList.fullList.forEach{it.refreshTotal()}
-        },
-        {_, _ ->
-            charInstance.secondaryList.allTradesTaken.value = false
-            charInstance.secondaryList.fullList.forEach{it.refreshTotal()}
         }
-    )
+    ) { _, _ ->
+        charInstance.secondaryList.allTradesTaken.value = false
+        charInstance.secondaryList.fullList.forEach { it.refreshTotal() }
+    }
 
     val naturalArmor = Advantage(
         "naturalArmor",
         R.string.naturalArmor,
         R.string.natArmorDesc,
         R.string.natArmorEff,
+        null,
         null,
         null,
         null,
@@ -523,6 +381,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -538,6 +397,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         {_, cost ->
@@ -548,17 +408,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
             }
 
             charInstance.combat.updateFatigue()
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.specFatigue.value -= 3
-                2 -> charInstance.combat.specFatigue.value -= 6
-                3 -> charInstance.combat.specFatigue.value -= 9
-            }
-
-            charInstance.combat.updateFatigue()
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.combat.specFatigue.value -= 3
+            2 -> charInstance.combat.specFatigue.value -= 6
+            3 -> charInstance.combat.specFatigue.value -= 9
+        }
+
+        charInstance.combat.updateFatigue()
+    }
 
     val uncommonSize = Advantage(
         "uncommonSize",
@@ -567,17 +426,17 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.uncommonSizeEff,
         null,
         null,
-        listOf("-5", "-4", "-3", "-2", "-1", "1", "2", "3", "4", "5"),
+        R.array.sizeList,
         0,
+        null,
         listOf(1),
         0,
         {input, _ ->
             charInstance.changeSize(input!!)
-        },
-        {input, _ ->
-            charInstance.changeSize(9 - input!!)
         }
-    )
+    ) { input, _ ->
+        charInstance.changeSize(9 - input!!)
+    }
 
     val startingWealth = Advantage(
         "startingWealth",
@@ -585,6 +444,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.startWealthDesc,
         R.string.startWealthEff,
         R.string.startWealthRestriction,
+        null,
         null,
         null,
         null,
@@ -596,15 +456,15 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 2 -> charInstance.inventory.setWealthBonus(5000)
                 3 -> charInstance.inventory.setWealthBonus(10000)
             }
-        },
-        {_, _ -> charInstance.inventory.setWealthBonus(0)}
-    )
+        }
+    ) { _, _ -> charInstance.inventory.setWealthBonus(0) }
 
     val increasedRegeneration = Advantage(
         "increasedRegeneration",
         R.string.increaseRegen,
         R.string.regenDesc,
         R.string.regenEff,
+        null,
         null,
         null,
         null,
@@ -619,23 +479,23 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
             }
 
             charInstance.combat.updateRegeneration()
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.specRegen.value -= 2
-                2 -> charInstance.combat.specRegen.value -= 4
-                3 -> charInstance.combat.specRegen.value -= 6
-            }
-
-            charInstance.combat.updateRegeneration()
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.combat.specRegen.value -= 2
+            2 -> charInstance.combat.specRegen.value -= 4
+            3 -> charInstance.combat.specRegen.value -= 6
+        }
+
+        charInstance.combat.updateRegeneration()
+    }
 
     val elan = Advantage(
         "elan",
         R.string.elan,
         R.string.elanDesc,
         R.string.elanEff,
+        null,
         null,
         null,
         null,
@@ -655,6 +515,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -670,19 +531,20 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
-        null,
-        {_, _ ->
-            charInstance.magic.loseMagic()
-        }
-    )
+        null
+    ) { _, _ ->
+        charInstance.magic.loseMagic()
+    }
 
     val seeSupernatural = Advantage(
         "seeSupernatural",
         R.string.seeSupernatural,
         R.string.seeSuperDesc,
         R.string.seeSuperEff,
+        null,
         null,
         null,
         null,
@@ -702,6 +564,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -713,6 +576,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.fortunate,
         R.string.fortuneDesc,
         R.string.fortuneEff,
+        null,
         null,
         null,
         null,
@@ -732,6 +596,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(2),
         0,
         {_, _ ->
@@ -740,19 +605,19 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 charInstance.advantageRecord.removeAdvantage(removable)
 
             charInstance.psychic.legalDisciplines.addAll(charInstance.psychic.allDisciplines)
-        },
-        {_, _ ->
-            charInstance.psychic.allDisciplines.forEach{
-                charInstance.psychic.removeLegalDiscipline(it)
-            }
         }
-    )
+    ) { _, _ ->
+        charInstance.psychic.allDisciplines.forEach {
+            charInstance.psychic.removeLegalDiscipline(it)
+        }
+    }
 
     val quickReflexes = Advantage(
         "quickReflexes",
         R.string.quickReflexes,
         R.string.reflexDesc,
         R.string.reflexEff,
+        null,
         null,
         null,
         null,
@@ -765,21 +630,21 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 2 -> charInstance.combat.changeSpecInitiative(45)
                 3 -> charInstance.combat.changeSpecInitiative(60)
             }
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.changeSpecInitiative(-25)
-                2 -> charInstance.combat.changeSpecInitiative(-45)
-                3 -> charInstance.combat.changeSpecInitiative(-60)
-            }
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.combat.changeSpecInitiative(-25)
+            2 -> charInstance.combat.changeSpecInitiative(-45)
+            3 -> charInstance.combat.changeSpecInitiative(-60)
+        }
+    }
 
     val learning = Advantage(
         "learning",
         R.string.learning,
         R.string.learningDesc,
         R.string.learningEff,
+        null,
         null,
         null,
         null,
@@ -797,8 +662,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.natLearnEff,
         null,
         null,
-        secondariesList,
+        R.array.secondaryCharacteristics,
         0,
+        null,
         listOf(1, 2, 3),
         0,
         {input, cost ->
@@ -809,17 +675,16 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 2 -> characteristic.setSpecialPerLevel(20)
                 3 -> characteristic.setSpecialPerLevel(30)
             }
-        },
-        {input, cost ->
-            val characteristic = charInstance.secondaryList.fullList[input!!]
-
-            when(cost){
-                1 -> characteristic.setSpecialPerLevel(-10)
-                2 -> characteristic.setSpecialPerLevel(-20)
-                3 -> characteristic.setSpecialPerLevel(-30)
-            }
         }
-    )
+    ) { input, cost ->
+        val characteristic = charInstance.secondaryList.fullList[input!!]
+
+        when (cost) {
+            1 -> characteristic.setSpecialPerLevel(-10)
+            2 -> characteristic.setSpecialPerLevel(-20)
+            3 -> characteristic.setSpecialPerLevel(-30)
+        }
+    }
 
     val fieldLearner = Advantage(
         "fieldLearner",
@@ -828,8 +693,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.fieldLearnEff,
         null,
         null,
-        fieldNames,
+        R.array.secondaryFields,
         0,
+        null,
         listOf(2, 3),
         0,
         {input, cost ->
@@ -840,23 +706,23 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                     3 -> it.setSpecialPerLevel(10)
                 }
             }
-        },
-        {input, cost ->
-            val charList = charInstance.secondaryList.intToField(input!!)
-            charList.forEach{
-                when(cost){
-                    2 -> it.setSpecialPerLevel(-5)
-                    3 -> it.setSpecialPerLevel(-10)
-                }
+        }
+    ) { input, cost ->
+        val charList = charInstance.secondaryList.intToField(input!!)
+        charList.forEach {
+            when (cost) {
+                2 -> it.setSpecialPerLevel(-5)
+                3 -> it.setSpecialPerLevel(-10)
             }
         }
-    )
+    }
 
     val exceptionalMagicResistance = Advantage(
         "exceptionalMagRes",
         R.string.exceptionalMagRes,
         R.string.exMagResDesc,
         R.string.exMagResEff,
+        null,
         null,
         null,
         null,
@@ -868,20 +734,20 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 1 -> charInstance.combat.magicRes.setSpecial(25)
                 2 -> charInstance.combat.magicRes.setSpecial(50)
             }
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.magicRes.setSpecial(-25)
-                2 -> charInstance.combat.magicRes.setSpecial(-50)
-            }
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.combat.magicRes.setSpecial(-25)
+            2 -> charInstance.combat.magicRes.setSpecial(-50)
+        }
+    }
 
     val exceptionalPhysicalResistance = Advantage(
         "exceptionalPhysRes",
         R.string.exceptionalPhysRes,
         R.string.exPhysResDesc,
         R.string.exPhysResEff,
+        null,
         null,
         null,
         null,
@@ -901,28 +767,29 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                     charInstance.combat.diseaseRes.setSpecial(50)
                 }
             }
-        },
-        {_, cost ->
-            when(cost){
-                1 -> {
-                    charInstance.combat.physicalRes.setSpecial(-25)
-                    charInstance.combat.venomRes.setSpecial(-25)
-                    charInstance.combat.diseaseRes.setSpecial(-25)
-                }
-                2 -> {
-                    charInstance.combat.physicalRes.setSpecial(-50)
-                    charInstance.combat.venomRes.setSpecial(-50)
-                    charInstance.combat.diseaseRes.setSpecial(-50)
-                }
+        }
+    ) { _, cost ->
+        when (cost) {
+            1 -> {
+                charInstance.combat.physicalRes.setSpecial(-25)
+                charInstance.combat.venomRes.setSpecial(-25)
+                charInstance.combat.diseaseRes.setSpecial(-25)
+            }
+
+            2 -> {
+                charInstance.combat.physicalRes.setSpecial(-50)
+                charInstance.combat.venomRes.setSpecial(-50)
+                charInstance.combat.diseaseRes.setSpecial(-50)
             }
         }
-    )
+    }
 
     val exceptionalPsychicResistance = Advantage(
         "exceptionalPsyRes",
         R.string.exceptionalPsyRes,
         R.string.exPsyResDesc,
         R.string.exPsyResEff,
+        null,
         null,
         null,
         null,
@@ -934,20 +801,20 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
                 1 -> charInstance.combat.psychicRes.setSpecial(25)
                 2 -> charInstance.combat.psychicRes.setSpecial(50)
             }
-        },
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.psychicRes.setSpecial(-25)
-                2 -> charInstance.combat.psychicRes.setSpecial(-50)
-            }
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            1 -> charInstance.combat.psychicRes.setSpecial(-25)
+            2 -> charInstance.combat.psychicRes.setSpecial(-50)
+        }
+    }
 
     val lightSleeper = Advantage(
         "lightSleeper",
         R.string.lightSleeper,
         R.string.lightSleepDesc,
         R.string.lightSleepEff,
+        null,
         null,
         null,
         null,
@@ -981,6 +848,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -992,6 +860,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.blind,
         R.string.blindDesc,
         R.string.blindEff,
+        null,
         null,
         null,
         null,
@@ -1011,6 +880,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1022,6 +892,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.mute,
         R.string.muteDesc,
         R.string.muteEff,
+        null,
         null,
         null,
         null,
@@ -1041,6 +912,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1056,6 +928,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1067,6 +940,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.severeAllergy,
         R.string.allergyDesc,
         R.string.allergyEff,
+        null,
         null,
         null,
         null,
@@ -1086,6 +960,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1097,6 +972,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.atrophiedLimb,
         R.string.atrophyDesc,
         R.string.atrophyEff,
+        null,
         null,
         null,
         null,
@@ -1116,6 +992,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-2),
         0,
         null,
@@ -1131,17 +1008,18 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
-        {_, _ -> charInstance.combat.physicalRes.setMultiplier(0.5)},
-        {_, _ -> charInstance.combat.physicalRes.setMultiplier(1.0)}
-    )
+        {_, _ -> charInstance.combat.physicalRes.setMultiplier(0.5)}
+    ) { _, _ -> charInstance.combat.physicalRes.setMultiplier(1.0) }
 
     val deepSleeper = Advantage(
         "deepSleeper",
         R.string.deepSleeper,
         R.string.deepSleepDesc,
         R.string.deepSleepEff,
+        null,
         null,
         null,
         null,
@@ -1159,23 +1037,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.charDeductEff,
         R.string.charDeductRestriction,
         null,
-        characteristicList,
+        R.array.primaryCharArray,
         0,
+        null,
         listOf(-1),
         0,
         {input, _ ->
             charInstance.primaryList.allPrimaries[input!!].setBonus(-2)
-        },
-        {input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].setBonus(2)
         }
-    )
+    ) { input, _ ->
+        charInstance.primaryList.allPrimaries[input!!].setBonus(2)
+    }
 
     val unfortunate = Advantage(
         "unfortunate",
         R.string.unfortunate,
         R.string.unfortuneDesc,
         R.string.unfortuneEff,
+        null,
         null,
         null,
         null,
@@ -1195,6 +1074,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1210,23 +1090,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
             charInstance.combat.specFatigue.value -= 1
             charInstance.combat.updateFatigue()
-        },
-        {_, _ ->
-            charInstance.combat.specFatigue.value += 1
-            charInstance.combat.updateFatigue()
         }
-    )
+    ) { _, _ ->
+        charInstance.combat.specFatigue.value += 1
+        charInstance.combat.updateFatigue()
+    }
 
     val severePhobia = Advantage(
         "phobia",
         R.string.severePhobia,
         R.string.phobiaDesc,
         R.string.phobiaEff,
+        null,
         null,
         null,
         null,
@@ -1246,6 +1127,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -1261,11 +1143,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
-        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(0.5)},
-        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(1.0)}
-    )
+        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(0.5)}
+    ) { _, _ -> charInstance.combat.diseaseRes.setMultiplier(1.0) }
 
     val slowHealer = Advantage(
         "slowHeal",
@@ -1276,23 +1158,24 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
             charInstance.combat.specRegen.value -= 1
             charInstance.combat.updateRegeneration()
-        },
-        {_, _ ->
-            charInstance.combat.specRegen.value += 1
-            charInstance.combat.updateRegeneration()
         }
-    )
+    ) { _, _ ->
+        charInstance.combat.specRegen.value += 1
+        charInstance.combat.updateRegeneration()
+    }
 
     val slowLearner = Advantage(
         "slowLearner",
         R.string.slowLearner,
         R.string.slowLearnDesc,
         R.string.slowLearnEff,
+        null,
         null,
         null,
         null,
@@ -1312,6 +1195,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1, -2),
         0,
         {_, cost ->
@@ -1321,16 +1205,15 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
             }
 
             charInstance.combat.updateInitiative()
-        },
-        {_, cost ->
-            when(cost){
-                -1 -> charInstance.combat.specInitiative.value += 30
-                -2 -> charInstance.combat.specInitiative.value += 60
-            }
-
-            charInstance.combat.updateInitiative()
         }
-    )
+    ) { _, cost ->
+        when (cost) {
+            -1 -> charInstance.combat.specInitiative.value += 30
+            -2 -> charInstance.combat.specInitiative.value += 60
+        }
+
+        charInstance.combat.updateInitiative()
+    }
 
     val magicSusceptibility = Advantage(
         "magSusceptibility",
@@ -1341,11 +1224,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
-        {_, _ -> charInstance.combat.magicRes.setMultiplier(0.5) },
-        {_, _ -> charInstance.combat.magicRes.setMultiplier(1.0)}
-    )
+        {_, _ -> charInstance.combat.magicRes.setMultiplier(0.5) }
+    ) { _, _ -> charInstance.combat.magicRes.setMultiplier(1.0) }
 
     val poisonSusceptibility = Advantage(
         "venSusceptibility",
@@ -1356,11 +1239,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
-        {_, _ -> charInstance.combat.venomRes.setMultiplier(0.5)},
-        {_, _ -> charInstance.combat.venomRes.setMultiplier(1.0)}
-    )
+        {_, _ -> charInstance.combat.venomRes.setMultiplier(0.5)}
+    ) { _, _ -> charInstance.combat.venomRes.setMultiplier(1.0) }
 
     val unattractive = Advantage(
         "unattractive",
@@ -1368,6 +1251,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.unattractiveDesc,
         R.string.unattractiveEff,
         R.string.unattractiveRestriction,
+        null,
         null,
         null,
         null,
@@ -1386,8 +1270,9 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         R.string.tempVulnEff,
         null,
         null,
-        listOf("Heat", "Cold"),
+        R.array.tempVulnerableOptions,
         0,
+        null,
         listOf(-1),
         0,
         null,

@@ -12,5 +12,7 @@
     <string name = "heldAdvantageLabel">Held Advantages/Disadvantages</string>
     <string name = "racialAdvantageLabel">Racial Advantages</string>
 
+    <string name = "advantageSelectPrompt">Select Items for Advantage</string>
+
     <string name = "giftWarning">Removing The Gift will remove any magic investments made. Proceed?</string>
 </resources>

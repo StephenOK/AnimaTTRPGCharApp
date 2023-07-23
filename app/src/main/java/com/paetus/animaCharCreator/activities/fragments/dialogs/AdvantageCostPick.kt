@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,11 +36,14 @@ fun AdvantageCostPick(
     advantageFragVM: AdvantageFragmentViewModel,
     closeDialog: (Int?) -> Unit
 ){
+    //initialize current context
+    val context = LocalContext.current
+
     //initialize page tracker
     val currentPage = advantageFragVM.adjustingPage.collectAsState().value
 
     DialogFrame(
-        "Select Items for Advantage",
+        stringResource(R.string.advantageSelectPrompt),
         {
             LazyColumn(
                 modifier = Modifier
@@ -49,37 +54,11 @@ fun AdvantageCostPick(
                     //page for type options
                     1 -> {
                         //for each available option
-                        advantageFragVM.adjustedAdvantage.value!!.options!!.forEach {
-                            item {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.6f),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ){
-                                    //display a radio button
-                                    RadioButton(
-                                        selected = advantageFragVM.optionPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!.indexOf(it),
-                                        onClick = {advantageFragVM.setOptionPicked(advantageFragVM.adjustedAdvantage.value!!.options!!.indexOf(it))},
-                                        modifier = Modifier
-                                            .weight(0.1f)
-                                    )
-
-                                    //display name of option
-                                    Text(
-                                        text = it,
-                                        modifier = Modifier
-                                            .weight(0.2f)
-                                            .clickable {
-                                                advantageFragVM.setOptionPicked(
-                                                    advantageFragVM.adjustedAdvantage.value!!.options!!.indexOf(
-                                                        it
-                                                    )
-                                                )
-                                            },
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            }
+                        context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).forEach {
+                            if(advantageFragVM.adjustedAdvantage.value!!.name != R.string.halfTreeAttuned)
+                                item{OptionRow(advantageFragVM, it)}
+                            else
+                                item{HalfTreeOptions(advantageFragVM, it)}
                         }
                     }
 
@@ -87,26 +66,7 @@ fun AdvantageCostPick(
                     2 -> {
                         //for each cost available
                         advantageFragVM.adjustedAdvantage.value!!.cost.forEach {
-                            item {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ){
-                                    //display a radio button
-                                    RadioButton(
-                                        selected = advantageFragVM.costPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.cost.indexOf(it),
-                                        onClick = {advantageFragVM.setCostPicked(advantageFragVM.adjustedAdvantage.value!!.cost.indexOf(it))},
-                                        modifier = Modifier
-                                            .weight(0.1f)
-                                    )
-
-                                    //display the cost value
-                                    Text(
-                                        text = it.toString(),
-                                        modifier = Modifier
-                                            .weight(0.2f)
-                                    )
-                                }
-                            }
+                            item{CostRow(advantageFragVM, it)}
                         }
                     }
                 }
@@ -162,6 +122,110 @@ fun AdvantageCostPick(
             }
         }
     )
+}
+
+@Composable
+private fun OptionRow(
+    advantageFragVM: AdvantageFragmentViewModel,
+    name: String
+) {
+    if(advantageFragVM.adjustedAdvantage.collectAsState().value!!.name == R.string.psyDiscAccess &&
+        stringArrayResource(R.array.disciplineNames).indexOf(name) == 8)
+        return
+
+    val context = LocalContext.current
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(0.6f),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        //display a radio button
+        RadioButton(
+            selected = advantageFragVM.optionPicked.collectAsState().value == stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name),
+            onClick = {advantageFragVM.setOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))},
+            modifier = Modifier
+                .weight(0.1f)
+        )
+
+        //display name of option
+        Text(
+            text = name,
+            modifier = Modifier
+                .weight(0.2f)
+                .clickable {
+                    advantageFragVM.setOptionPicked(
+                        context.resources
+                            .getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
+                            .indexOf(
+                                name
+                            )
+                    )
+                },
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun HalfTreeOptions(
+    advantageFragVM: AdvantageFragmentViewModel,
+    name: String
+) {
+    if(stringArrayResource(R.array.elementList).indexOf(name) == 10)
+        return
+
+    val context = LocalContext.current
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(0.6f),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        RadioButton(
+            selected = advantageFragVM.halfAttunedOptions.collectAsState().value.contains(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name)),
+            onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))}
+        )
+
+        Text(
+            text = name,
+            modifier = Modifier
+                .weight(0.2f)
+                .clickable {
+                    advantageFragVM.addOptionPicked(
+                        context.resources
+                            .getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
+                            .indexOf(name)
+                    )
+                },
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun CostRow(
+    advantageFragVM: AdvantageFragmentViewModel,
+    item: Int
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        //display a radio button
+        RadioButton(
+            selected = advantageFragVM.costPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.cost.indexOf(item),
+            onClick = {advantageFragVM.setCostPicked(advantageFragVM.adjustedAdvantage.value!!.cost.indexOf(item))},
+            modifier = Modifier
+                .weight(0.1f)
+        )
+
+        //display the cost value
+        Text(
+            text = item.toString(),
+            modifier = Modifier
+                .weight(0.2f)
+        )
+    }
 }
 
 @Preview

@@ -32,43 +32,43 @@ class SecondaryFragmentViewModel(
     //initialize each secondary characteristic field data
     private val athletics = SecondaryFieldData(
         secondaryList,
-        R.string.athleticism,
+        0,
         secondaryList.intToField(0)
     )
 
     private val creative = SecondaryFieldData(
         secondaryList,
-        R.string.creativeLabel,
+        6,
         secondaryList.intToField(1)
     )
 
     private val perceptive = SecondaryFieldData(
         secondaryList,
-        R.string.perceptionLabel,
+        2,
         secondaryList.intToField(2)
     )
 
     private val social = SecondaryFieldData(
         secondaryList,
-        R.string.socialLabel,
+        1,
         secondaryList.intToField(3)
     )
 
     private val subterfuge = SecondaryFieldData(
         secondaryList,
-        R.string.subterfugeLabel,
+        5,
         secondaryList.intToField(4)
     )
 
     private val intellectual = SecondaryFieldData(
         secondaryList,
-        R.string.intellectualLabel,
+        3,
         secondaryList.intToField(5)
     )
 
     private val vigor = SecondaryFieldData(
         secondaryList,
-        R.string.vigorLabel,
+        4,
         secondaryList.intToField(6)
     )
 
@@ -283,7 +283,7 @@ class SecondaryFragmentViewModel(
          *
          * @return characteristic's name
          */
-        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem) + 1}
+        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem)}
 
         /**
          * Retrieves the modifier value of the characteristic.

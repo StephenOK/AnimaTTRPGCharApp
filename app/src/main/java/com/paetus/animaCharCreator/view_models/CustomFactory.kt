@@ -125,8 +125,7 @@ class CustomFactory(
                 //creating equipment viewModel
                 EquipmentFragmentViewModel::class.java ->{
                     return EquipmentFragmentViewModel(
-                        charInstance.inventory,
-                        context
+                        charInstance.inventory
                     ) as T
                 }
             }

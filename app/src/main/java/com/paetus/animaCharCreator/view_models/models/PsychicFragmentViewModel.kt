@@ -94,7 +94,7 @@ class PsychicFragmentViewModel(
      * Sets the displayed content for the detail alert.
      */
     fun setDetailItem(input: PsychicPower){
-        _detailTitle.update{context.getString(input.name)}
+        _detailTitle.update{context.resources.getStringArray(R.array.powerNames)[input.name]}
         _detailItem.update{input}
     }
 
@@ -160,63 +160,63 @@ class PsychicFragmentViewModel(
     private val telepathy = DisciplineItemData(
         psychic,
         this,
-        R.string.telepathyLabel,
+        0,
         psychic.telepathy
     )
 
     private val kinesis = DisciplineItemData(
         psychic,
         this,
-        R.string.kinesisLabel,
+        1,
         psychic.psychokinesis
     )
 
     private val pyrokinesis = DisciplineItemData(
         psychic,
         this,
-        R.string.pyroLabel,
+        2,
         psychic.pyrokinesis
     )
 
     private val cryokinesis = DisciplineItemData(
         psychic,
         this,
-        R.string.cryoLabel,
+        3,
         psychic.cryokinesis
     )
 
     private val physIncrease = DisciplineItemData(
         psychic,
         this,
-        R.string.physIncreaseLabel,
+        4,
         psychic.physicalIncrease
     )
 
     private val energy = DisciplineItemData(
         psychic,
         this,
-        R.string.energyLabel,
+        5,
         psychic.energyPowers
     )
 
     private val sentience = DisciplineItemData(
         psychic,
         this,
-        R.string.sentienceLabel,
+        6,
         psychic.sentiencePowers
     )
 
     private val telemetry = DisciplineItemData(
         psychic,
         this,
-        R.string.telemetryLabel,
+        7,
         psychic.telemetry
     )
 
     private val matrixPowers = DisciplineItemData(
         psychic,
         this,
-        R.string.matrixLabel,
+        8,
         psychic.matrixPowers
     )
 
@@ -410,7 +410,7 @@ class PsychicFragmentViewModel(
          */
         fun setPowerInvestedIn(input: Boolean){
             //attempt to add discipline if character does not currently have it
-            if(input && !psychic.disciplineInvestment.contains(home.item) && home.name != R.string.matrixLabel)
+            if(input && !psychic.disciplineInvestment.contains(home.item) && home.name != 8)
                 home.setInvestedIn(true)
 
             //change mastery as needed

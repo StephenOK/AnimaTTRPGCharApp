@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "athleticism">Athleticism</string>
-    <string name = "socialLabel">Social</string>
-    <string name = "perceptionLabel">Perception</string>
-    <string name = "intellectualLabel">Intellectual</string>
-    <string name = "vigorLabel">Vigor</string>
-    <string name = "subterfugeLabel">Subterfuge</string>
-    <string name = "creativeLabel">Creative</string>
+    <string-array name = "secondaryFields">
+        <item>Athleticism</item>
+        <item>Social</item>
+        <item>Perception</item>
+        <item>Intellectual</item>
+        <item>Vigor</item>
+        <item>Subterfuge</item>
+        <item>Creative</item>
+    </string-array>
+
+    <string name = "selectCharPrompt">--Select a Characteristic--</string>
 
     <string-array name="secondaryCharacteristics">
-        <item>--Select a Characteristic--</item>
-
         <item>Acrobatics</item>
         <item>Athletics</item>
         <item>Climb</item>

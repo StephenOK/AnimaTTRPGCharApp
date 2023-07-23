@@ -60,6 +60,9 @@ class AdvantageFragmentViewModel(
     //initialize list of taken advantages
     val takenAdvantages = mutableStateListOf<Advantage>()
 
+    private val _halfAttunedOptions = MutableStateFlow(listOf<Int>())
+    val halfAttunedOptions = _halfAttunedOptions.asStateFlow()
+
     /**
      * Change the on state of the advantage cost selection dialog.
      */
@@ -93,6 +96,22 @@ class AdvantageFragmentViewModel(
      * @param input option to set the selection to
      */
     fun setOptionPicked(input: Int?){_optionPicked.update{input}}
+
+    fun emptyHalfAttuned(){_halfAttunedOptions.update{listOf()}}
+
+    fun addOptionPicked(input: Int){
+        if(!halfAttunedOptions.value.contains(input))
+            _halfAttunedOptions.update{halfAttunedOptions.value + input}
+
+        if(input % 2 == 0){
+            if(halfAttunedOptions.value.contains(input + 1))
+                _halfAttunedOptions.update{halfAttunedOptions.value - (input + 1)}
+        }
+        else{
+            if(halfAttunedOptions.value.contains(input - 1))
+                _halfAttunedOptions.update{halfAttunedOptions.value - (input - 1)}
+        }
+    }
 
     /**
      * Set cost selection for the advantage selection dialog.
@@ -137,11 +156,17 @@ class AdvantageFragmentViewModel(
      * @return string message regarding nature of failure, if process fails
      */
     fun acquireAdvantage(): Int?{
+        val multInput =
+            if(adjustedAdvantage.value!!.name == R.string.halfTreeAttuned)
+                halfAttunedOptions.value.toList()
+            else null
+
         //attempt to add advantage and get message if it fails
         val attemptAction = advantageRecord.acquireAdvantage(
             adjustedAdvantage.value!!,
             optionPicked.value,
-            costPicked.value
+            costPicked.value,
+            multInput
         )
 
         //update advantages taken on successful acquisition
@@ -163,10 +188,11 @@ class AdvantageFragmentViewModel(
     fun acquireAdvantage(
         item: Advantage,
         taken: Int?,
-        takenCost: Int
+        takenCost: Int,
+        multTaken: List<Int>?
     ): Int?{
         //attempt to add advantage and get message if it fails
-        val attemptAction =  advantageRecord.acquireAdvantage(item, taken, takenCost)
+        val attemptAction =  advantageRecord.acquireAdvantage(item, taken, takenCost, multTaken)
 
         //update advantages taken on successful acquisition
         if(attemptAction == null) updateAdvantagesTaken()

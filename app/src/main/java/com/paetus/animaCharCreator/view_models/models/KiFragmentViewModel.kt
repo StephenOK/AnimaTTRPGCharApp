@@ -311,14 +311,14 @@ class KiFragmentViewModel(
     )
 
     private val kiPOW = KiRowData(
-        4,
+        5,
         ki.powKi,
         {setKiPointTotal() },
         {setKiAccTotal() }
     )
 
     private val kiWP = KiRowData(
-        5,
+        6,
         ki.wpKi,
         {setKiPointTotal() },
         {setKiAccTotal() }

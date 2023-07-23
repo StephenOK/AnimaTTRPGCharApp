@@ -12,4 +12,18 @@
     <string name = "elementAir">Air</string>
     <string name = "elementNecro">Necromancy</string>
     <string name = "elementFree">Free</string>
+
+    <string-array name = "elementList">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Creation</item>
+        <item>Destruction</item>
+        <item>Air</item>
+        <item>Earth</item>
+        <item>Water</item>
+        <item>Fire</item>
+        <item>Essence</item>
+        <item>Illusion</item>
+        <item>Necromancy</item>
+    </string-array>
 </resources>

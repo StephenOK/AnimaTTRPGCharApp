@@ -31,6 +31,7 @@ fun InfoRow(
         modifier = Modifier
             .fillMaxWidth(percent)
     ){
+        //display item label
         Text(
             text = label,
             modifier = Modifier
@@ -42,6 +43,7 @@ fun InfoRow(
 
         Spacer(modifier = Modifier.weight(0.05f))
 
+        //display item value
         Text(
             text = info,
             modifier = Modifier

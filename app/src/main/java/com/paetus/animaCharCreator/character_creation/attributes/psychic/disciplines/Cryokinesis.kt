@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Cryokinesis: Discipline("cryokinesis"){
     val createChill = PsychicPower(
         "createChill",
-        R.string.createChillPow,
+        40,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val freeze = PsychicPower(
         "freeze",
-        R.string.freezePow,
+        41,
         1,
         true,
         true,
@@ -52,7 +52,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val senseTemperature = PsychicPower(
         "senseTemp",
-        R.string.senseTemp,
+        42,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val eliminateCold = PsychicPower(
         "elimCold",
-        R.string.elimCold,
+        43,
         1,
         true,
         false,
@@ -94,7 +94,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val coldDominion = PsychicPower(
         "coldDominion",
-        R.string.coldDominion,
+        44,
         1,
         true,
         true,
@@ -115,7 +115,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val crystallize = PsychicPower(
         "crystallize",
-        R.string.crystallize,
+        45,
         2,
         true,
         true,
@@ -136,7 +136,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val iceSplinters = PsychicPower(
         "iceSplinters",
-        R.string.iceSplinters,
+        46,
         2,
         true,
         false,
@@ -157,7 +157,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val decreaseTemperature = PsychicPower(
         "decreaseTemp",
-        R.string.decreaseTemp,
+        47,
         2,
         true,
         true,
@@ -178,7 +178,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val iceShield = PsychicPower(
         "iceShield",
-        R.string.iceShield,
+        48,
         2,
         false,
         true,
@@ -199,7 +199,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val absoluteZero = PsychicPower(
         "absoluteZero",
-        R.string.absoluteZero,
+        49,
         3,
         true,
         true,
@@ -220,7 +220,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val everlastingMoment = PsychicPower(
         "everlastMoment",
-        R.string.everlastMoment,
+        50,
         3,
         true,
         true,
@@ -241,7 +241,7 @@ class Cryokinesis: Discipline("cryokinesis"){
 
     val majorCold = PsychicPower(
         "majorCold",
-        R.string.majorCold,
+        51,
         3,
         true,
         true,

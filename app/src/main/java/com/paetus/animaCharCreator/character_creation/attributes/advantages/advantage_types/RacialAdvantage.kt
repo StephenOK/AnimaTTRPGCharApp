@@ -13,5 +13,7 @@ class RacialAdvantage(
     description: Int,
     onTake: ((Int?, Int) -> Unit)?,
     onRemove: ((Int?, Int) -> Unit)?
-): Advantage("", name, description, null, null, null, null, null, listOf(0),
-    0, onTake, onRemove)
+): Advantage(
+    "", name, description, null, null, null, null, null, null,
+    listOf(0), 0, onTake, onRemove
+)

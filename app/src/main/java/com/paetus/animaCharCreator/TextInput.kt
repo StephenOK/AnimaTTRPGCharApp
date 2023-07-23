@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 fun TextInput(
     display: String,
     onValueChange: (String) -> Unit,
+
     modifier: Modifier = Modifier,
     label: String = "",
     color: Color = Color.Black
@@ -32,7 +33,9 @@ fun TextInput(
     val keyboardActive = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
+        //set initial display
         value = display,
+
         onValueChange = {
             //close keyboard if enter pressed
             if(it.contains('\n'))
@@ -41,6 +44,7 @@ fun TextInput(
             else
                 onValueChange(it)
         },
+
         textStyle = LocalTextStyle.current.copy(color = color),
         label = {Text(text = label)},
         modifier = modifier

@@ -171,13 +171,14 @@ fun CustomTechnique(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ){
-                            for(index in 0..5)
+                            listOf(0, 1, 2, 3, 5, 6).forEach {
                                 Text(
-                                    text = stringArrayResource(R.array.primaryCharArray)[index],
+                                    text = stringArrayResource(R.array.primaryCharArray)[it],
                                     modifier = Modifier
                                         .weight(0.13f),
                                     textAlign = TextAlign.Center
                                 )
+                            }
                         }
 
                         //display each characteristic accumulation totals

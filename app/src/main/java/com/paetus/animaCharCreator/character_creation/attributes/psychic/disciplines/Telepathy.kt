@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Telepathy: Discipline("telepathy"){
     val areaScanning = PsychicPower(
         "areaScanning",
-        R.string.areaScanning,
+        0,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Telepathy: Discipline("telepathy"){
 
     val mentalRestraint = PsychicPower(
         "mentalRestraint",
-        R.string.mentalRestraint,
+        1,
         1,
         true,
         true,
@@ -52,7 +52,7 @@ class Telepathy: Discipline("telepathy"){
 
     val mindReading = PsychicPower(
         "mindReading",
-        R.string.mindReading,
+        2,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Telepathy: Discipline("telepathy"){
 
     val mentalCommunication = PsychicPower(
         "mentalComs",
-        R.string.mentalComs,
+        3,
         1,
         true,
         true,
@@ -94,7 +94,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicShield = PsychicPower(
         "psyShield",
-        R.string.psychicShield,
+        4,
         1,
         false,
         true,
@@ -115,7 +115,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicIllusion = PsychicPower(
         "psyIllusion",
-        R.string.psyIllusion,
+        5,
         1,
         true,
         true,
@@ -136,7 +136,7 @@ class Telepathy: Discipline("telepathy"){
 
     val mentalResearch = PsychicPower(
         "mentalResearch",
-        R.string.mentalResearchDesc,
+        6,
         2,
         true,
         true,
@@ -157,7 +157,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicAssault = PsychicPower(
         "psyAssault",
-        R.string.psyAssault,
+        7,
         2,
         true,
         false,
@@ -178,7 +178,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicConnection = PsychicPower(
         "psyConnection",
-        R.string.psyConnection,
+        8,
         2,
         true,
         true,
@@ -199,7 +199,7 @@ class Telepathy: Discipline("telepathy"){
 
     val alterMemory = PsychicPower(
         "alterMemory",
-        R.string.alterMemory,
+        9,
         2,
         true,
         false,
@@ -220,7 +220,7 @@ class Telepathy: Discipline("telepathy"){
 
     val astralShape = PsychicPower(
         "astralShape",
-        R.string.astralShape,
+        10,
         2,
         true,
         true,
@@ -241,7 +241,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicTracking = PsychicPower(
         "psyTracking",
-        R.string.psyTracking,
+        11,
         2,
         true,
         true,
@@ -262,7 +262,7 @@ class Telepathy: Discipline("telepathy"){
 
     val mindControl = PsychicPower(
         "Mind Control",
-        R.string.mindControl,
+        12,
         3,
         true,
         true,
@@ -283,7 +283,7 @@ class Telepathy: Discipline("telepathy"){
 
     val psychicDeath = PsychicPower(
         "psyDeath",
-        R.string.psyDeath,
+        13,
         3,
         true,
         false,
@@ -304,7 +304,7 @@ class Telepathy: Discipline("telepathy"){
 
     val area = PsychicPower(
         "area",
-        R.string.area,
+        14,
         3,
         true,
         true,

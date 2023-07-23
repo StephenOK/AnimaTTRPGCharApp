@@ -1,5 +1,8 @@
 package com.paetus.animaCharCreator
 
+/**
+ * Enumeration that denotes the page of the character aspect that is being editted.
+ */
 enum class ScreenPage {
     Character,
     Combat,
@@ -17,6 +20,7 @@ enum class ScreenPage {
          * Convert a ScreenPage enumeration to a string reference.
          *
          * @param input enumeration to convert
+         * @return corresponding string resource for the inputted item
          */
         fun toAddress(input: ScreenPage): Int {
             return when (input) {

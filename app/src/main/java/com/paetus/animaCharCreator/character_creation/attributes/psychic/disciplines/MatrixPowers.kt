@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class MatrixPowers: Discipline("matrixPowers"){
     val senseMatrices = PsychicPower(
         "senseMatrices",
-        R.string.senseMatrices,
+        90,
         0,
         true,
         true,
@@ -31,7 +31,7 @@ class MatrixPowers: Discipline("matrixPowers"){
 
     val destroyMatrices = PsychicPower(
         "Destroy Matrices",
-        R.string.destroyMatrices,
+        91,
         0,
         false,
         true,
@@ -52,7 +52,7 @@ class MatrixPowers: Discipline("matrixPowers"){
 
     val hideMatrices = PsychicPower(
         "hideMatrices",
-        R.string.hideMatrices,
+        92,
         0,
         false,
         true,
@@ -73,7 +73,7 @@ class MatrixPowers: Discipline("matrixPowers"){
 
     val linkMatrices = PsychicPower(
         "linkMatrices",
-        R.string.linkMatrices,
+        93,
         0,
         true,
         true,

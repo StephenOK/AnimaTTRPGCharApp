@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Telemetry: Discipline("telemetry"){
     val senseResidues = PsychicPower(
         "senseResidues",
-        R.string.senseResidues,
+        86,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Telemetry: Discipline("telemetry"){
 
     val readPast = PsychicPower(
         "readPast",
-        R.string.readPast,
+        87,
         2,
         true,
         false,
@@ -52,7 +52,7 @@ class Telemetry: Discipline("telemetry"){
 
     val humanErudition = PsychicPower(
         "humanErudition",
-        R.string.humanErudition,
+        88,
         2,
         true,
         false,
@@ -73,7 +73,7 @@ class Telemetry: Discipline("telemetry"){
 
     val seeHistory = PsychicPower(
         "seeHistory",
-        R.string.seeHistory,
+        89,
         3,
         true,
         true,

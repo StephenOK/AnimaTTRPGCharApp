@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Psychokinesis: Discipline("psychokinesis"){
     val minorKinesis = PsychicPower(
         "minorKinesis",
-        R.string.minorKinesis,
+        15,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val kineticImpact = PsychicPower(
         "kineticImpact",
-        R.string.kineticImpact,
+        16,
         1,
         true,
         false,
@@ -52,7 +52,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val kineticTrap = PsychicPower(
         "kineticTrap",
-        R.string.psyKinTrap,
+        17,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val kineticShield = PsychicPower(
         "kineticShield",
-        R.string.kineticShield,
+        18,
         1,
         false,
         true,
@@ -94,7 +94,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val kineticArmor = PsychicPower(
         "kineticArmor",
-        R.string.kineticArmor,
+        19,
         1,
         false,
         true,
@@ -115,7 +115,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val motionDetection = PsychicPower(
         "detectMotion",
-        R.string.detectMotion,
+        20,
         2,
         true,
         true,
@@ -136,7 +136,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val repulsion = PsychicPower(
         "repulsion",
-        R.string.repulsion,
+        21,
         2,
         true,
         true,
@@ -157,7 +157,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val ballistics = PsychicPower(
         "ballistics",
-        R.string.ballistics,
+        22,
         2,
         true,
         false,
@@ -178,7 +178,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val shatter = PsychicPower(
         "shatter",
-        R.string.shatter,
+        23,
         2,
         true,
         false,
@@ -199,7 +199,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val kineticFlight = PsychicPower(
         "kineticFlight",
-        R.string.kineticFlight,
+        24,
         2,
         true,
         true,
@@ -220,7 +220,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val organicKinesis = PsychicPower(
         "organicKinesis",
-        R.string.organicKinesis,
+        25,
         2,
         true,
         true,
@@ -241,7 +241,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val groundControl = PsychicPower(
         "groundControl",
-        R.string.groundControl,
+        26,
         3,
         true,
         false,
@@ -262,7 +262,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val atomicRestructuring = PsychicPower(
         "atomRestructure",
-        R.string.atomRestructure,
+        27,
         3,
         true,
         false,
@@ -283,7 +283,7 @@ class Psychokinesis: Discipline("psychokinesis"){
 
     val majorKinesis = PsychicPower(
         "majorKinesis",
-        R.string.majorKinesis,
+        28,
         3,
         true,
         true,

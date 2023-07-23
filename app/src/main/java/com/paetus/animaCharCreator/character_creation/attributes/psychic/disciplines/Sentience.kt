@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Sentience: Discipline("sentience"){
     val senseFeelings = PsychicPower(
         "senseFeeling",
-        R.string.senseFeeling,
+        76,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Sentience: Discipline("sentience"){
 
     val intensifyFeelings = PsychicPower(
         "intensifyFeeling",
-        R.string.intensifyFeeling,
+        77,
         1,
         true,
         true,
@@ -52,7 +52,7 @@ class Sentience: Discipline("sentience"){
 
     val detectFeelings = PsychicPower(
         "detectFeelings",
-        R.string.detectFeelings,
+        78,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Sentience: Discipline("sentience"){
 
     val connectSenses = PsychicPower(
         "connectSenses",
-        R.string.connectSenses,
+        79,
         1,
         true,
         true,
@@ -94,7 +94,7 @@ class Sentience: Discipline("sentience"){
 
     val projectSenses = PsychicPower(
         "projectSenses",
-        R.string.projectSenses,
+        80,
         2,
         true,
         true,
@@ -115,7 +115,7 @@ class Sentience: Discipline("sentience"){
 
     val eliminateSenses = PsychicPower(
         "eliminateSenses",
-        R.string.elimSenses,
+        81,
         2,
         true,
         true,
@@ -136,7 +136,7 @@ class Sentience: Discipline("sentience"){
 
     val createFeelings = PsychicPower(
         "Create Feelings",
-        R.string.createFeelings,
+        82,
         2,
         true,
         true,
@@ -157,7 +157,7 @@ class Sentience: Discipline("sentience"){
 
     val infuseFeelings = PsychicPower(
         "infuseFeelings",
-        R.string.infuseFeeling,
+        83,
         2,
         true,
         true,
@@ -178,7 +178,7 @@ class Sentience: Discipline("sentience"){
 
     val destroyFeelings = PsychicPower(
         "destroyFeelings",
-        R.string.destroyFeelings,
+        84,
         3,
         true,
         false,
@@ -199,7 +199,7 @@ class Sentience: Discipline("sentience"){
 
     val area = PsychicPower(
         "areaSentience",
-        R.string.areaSentience,
+        85,
         3,
         true,
         true,

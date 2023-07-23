@@ -326,19 +326,19 @@ class CharacterFragmentViewModel(
     ){this.setSizeInput()}
 
     private val intelligenceData = PrimeCharacteristicData(
-        6,
+        4,
         charInstance.primaryList.int,
         {setBonusColor()}
     ){}
 
     private val powerData = PrimeCharacteristicData(
-        4,
+        5,
         charInstance.primaryList.pow,
         {setBonusColor()}
     ){}
 
     private val willpowerData = PrimeCharacteristicData(
-        5,
+        6,
         charInstance.primaryList.wp,
         {setBonusColor()}
     ){}

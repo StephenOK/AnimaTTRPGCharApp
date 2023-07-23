@@ -532,7 +532,7 @@ class BaseCharacter {
         summoning.loadSummoning(fileReader)
 
         //load character's advantage record
-        advantageRecord.loadAdvantages(fileReader)
+        advantageRecord.loadAdvantages(fileReader, version)
 
         //load character's psychic abilities
         psychic.loadPsychic(fileReader)
@@ -620,56 +620,11 @@ class BaseCharacter {
         }
 
     /**
-     * Adds new String data to the ByteOutputStream.
-     *
-     * @param toAdd string data to add to the byte array
-     */
-    fun addNewData(toAdd: String?) {
-        byteArray.write(
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
-            0,
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
-        )
-
-        writeEndLine()
-    }
-
-    /**
      * Adds new Int data to the output stream.
      *
      * @param toAdd integer data to add to the byte array
      */
-    fun addNewData(toAdd: Int?) {
-        byteArray.write(
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
-            0,
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
-        )
-
-        writeEndLine()
-    }
-
-    /**
-     * Adds new Double data to the output stream.
-     *
-     * @param toAdd double data to add to the byte array
-     */
-    fun addNewData(toAdd: Double?){
-        byteArray.write(
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
-            0,
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
-        )
-
-        writeEndLine()
-    }
-
-    /**
-     * Adds new Boolean data to the output stream.
-     *
-     * @param toAdd boolean data to add to the stream
-     */
-    fun addNewData(toAdd: Boolean?){
+    fun addNewData(toAdd: Any?) {
         byteArray.write(
             """$toAdd""".toByteArray(StandardCharsets.UTF_8),
             0,

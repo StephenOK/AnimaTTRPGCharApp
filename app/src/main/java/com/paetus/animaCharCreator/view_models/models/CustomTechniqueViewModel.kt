@@ -1171,13 +1171,13 @@ class CustomTechniqueViewModel(
     )
 
     private val powMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[4],
+        context.resources.getStringArray(R.array.primaryCharArray)[5],
         customTechnique,
         4
     )
 
     private val wpMaintInput = MaintInput(
-        context.resources.getStringArray(R.array.primaryCharArray)[5],
+        context.resources.getStringArray(R.array.primaryCharArray)[6],
         customTechnique,
         5
     )
@@ -1201,14 +1201,14 @@ class CustomTechniqueViewModel(
 
         init{
             //add a build item for each valid index input for this effect
-            for(index in 0..5){
-                if(input.buildAdditions[index] != null)
+            listOf(0, 1, 2, 3, 5, 6).forEach {
+                if(input.buildAdditions[it] != null)
                     buildItems +=
                         BuildItem(
                             customTechVM,
                             input,
-                            context.resources.getStringArray(R.array.primaryCharArray)[index],
-                            index
+                            context.resources.getStringArray(R.array.primaryCharArray)[it],
+                            it
                         )
             }
         }

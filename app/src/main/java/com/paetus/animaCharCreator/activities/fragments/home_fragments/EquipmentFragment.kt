@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -139,7 +138,7 @@ fun EquipmentFragment(
     //display item details if requested
     if(equipFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
-            equipFragVM.detailTitle.collectAsState().value,
+            stringResource(equipFragVM.detailTitle.collectAsState().value),
             equipFragVM.detailItem.collectAsState().value!!
         ){equipFragVM.toggleDetailAlertOpen()}
 }
@@ -341,12 +340,13 @@ fun HeldItemRow(
 @Composable
 fun EquipmentPreview(){
     val charInstance = BaseCharacter()
-    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory, LocalContext.current)
+    val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
     charInstance.advantageRecord.acquireAdvantage(
         charInstance.advantageRecord.commonAdvantages.startingWealth,
         null,
-        2
+        2,
+        null
     )
 
     //equipFragVM.allCategoryData[8].toggleCatOpen()

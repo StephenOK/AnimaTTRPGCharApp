@@ -79,7 +79,8 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     fun acquireAdvantage(
         toAdd: Advantage,
         taken: Int?,
-        takenCost: Int
+        takenCost: Int,
+        multTaken: List<Int>?
     ): Int?{
         //halt addition of fourth disadvantage
         if(toAdd.cost[takenCost] < 0 && countDisadvantages() >= 3)
@@ -197,6 +198,9 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             commonAdvantages.unattractive ->
                 if(charInstance.appearance.value < 7) return R.string.appearanceRestriction
 
+            magicAdvantages.halfTreeAttuned ->
+                if (multTaken!!.size != 5) return R.string.incompleteHalfTree
+
             //prevent either of these disadvantages from being taken with the other one
             magicAdvantages.slowMagicRecovery ->
                 if(this.getAdvantage("magicBlockage") != null)
@@ -222,6 +226,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             toAdd.special,
             toAdd.options,
             taken,
+            multTaken,
             toAdd.cost,
             takenCost,
             toAdd.onTake,
@@ -346,15 +351,36 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
      *
      * @param fileReader file reader to gather data from
      */
-    fun loadAdvantages(fileReader: BufferedReader){
+    fun loadAdvantages(fileReader: BufferedReader, version: Int){
         //retrieve number of taken advantages
         for(index in 0 until fileReader.readLine().toInt()){
-            //apply recorded advantage data
-            acquireAdvantage(
-                findAdvantage(fileReader.readLine())!!,
-                fileReader.readLine().toIntOrNull(),
-                fileReader.readLine().toInt()
-            )
+            if(version <= 13) {
+                //apply recorded advantage data
+                acquireAdvantage(
+                    findAdvantage(fileReader.readLine())!!,
+                    fileReader.readLine().toIntOrNull(),
+                    fileReader.readLine().toInt(),
+                    null
+                )
+            }
+            else{
+                val advName = findAdvantage(fileReader.readLine())!!
+                val advTaken = fileReader.readLine().toIntOrNull()
+                val advCost = fileReader.readLine().toInt()
+                val advMultTaken =
+                    if(fileReader.readLine().toIntOrNull() == null) null
+                    else{
+                        listOf(
+                            fileReader.readLine().toInt(),
+                            fileReader.readLine().toInt(),
+                            fileReader.readLine().toInt(),
+                            fileReader.readLine().toInt(),
+                            fileReader.readLine().toInt()
+                        )
+                    }
+
+                acquireAdvantage(advName, advTaken, advCost, advMultTaken)
+            }
         }
     }
 
@@ -370,6 +396,12 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             charInstance.addNewData(it.saveTag)
             charInstance.addNewData(it.picked)
             charInstance.addNewData(it.pickedCost)
+
+            if(it.multPicked == null) charInstance.addNewData(null)
+            else{
+                charInstance.addNewData(it.multPicked.size)
+                it.multPicked.forEach{charInstance.addNewData(it)}
+            }
         }
     }
 }

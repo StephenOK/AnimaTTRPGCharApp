@@ -221,7 +221,10 @@ class MainPageViewModel: ViewModel() {
      *
      * @param input action the user is taking
      */
-    fun setCurrentAlert(input: AlertData){_currentAlert.update{input}}
+    fun setCurrentAlert(input: AlertData){
+        _currentAlert.update{input}
+        toggleActionOpen()
+    }
 
     /**
      * Opens and closes the action dialog prompt.

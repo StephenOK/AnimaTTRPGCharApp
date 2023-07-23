@@ -44,6 +44,7 @@
     <string name = "magicRecoveryRestriction">Cannot take this with Slow Recovery of Magic!</string>
 
     <string name = "duplicateRestriction">You cannot have multiple copies of this Advantage!</string>
+    <string name = "incompleteHalfTree">You need to pick one of each pair of elements!</string>
     <string name = "duplicatePathRestriction">You cannot take the same Path multiple times!</string>
 
     <string name = "failedPurchase">Cannot buy this Advantage!</string>

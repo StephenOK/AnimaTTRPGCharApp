@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -40,6 +41,7 @@ import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.PsychicFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.SummoningFragmentViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
@@ -51,7 +53,6 @@ import java.io.IOException
  * Initially loads the CharacterPageFragment.
  */
 class HomeActivity : AppCompatActivity() {
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,324 +70,292 @@ class HomeActivity : AppCompatActivity() {
         if(isNew)
             attemptSave(filename, charInstance)
 
-        setContent{
-            //prevent user from flipping app
-            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        setContent{HomeContents(charInstance, filename) }
+    }
 
-            val context = LocalContext.current
+    @SuppressLint("SourceLockedOrientationActivity")
+    /**
+     * Display the general contents for the home page activity.
+     *
+     * @param charInstance character the user is editing
+     * @param filename name of the character's associated file
+     */
+    @Composable
+    private fun HomeContents(
+        charInstance: BaseCharacter,
+        filename: String
+    ) {
+        //prevent user from flipping app
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-            //get scaffold state, coroutine scope, and navigation controller
-            val scaffoldState = rememberScaffoldState()
-            val scope = rememberCoroutineScope()
-            val navController = rememberNavController()
+        //initialize current context
+        val context = LocalContext.current
 
-            //create viewModels for the home page and home alert items
-            val homePageVM: HomePageViewModel by viewModels{
-                CustomFactory(HomePageViewModel::class.java, charInstance, context)
-            }
+        //get scaffold state, coroutine scope, and navigation controller
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+        val navController = rememberNavController()
 
-            //create viewModels for each individual fragment
-            val charFragVM: CharacterFragmentViewModel by viewModels{
-                CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val combatFragVM: CombatFragViewModel by viewModels{
-                CustomFactory(CombatFragViewModel::class.java, charInstance, context)
-            }
-
-            val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
-                CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val advantageFragVM: AdvantageFragmentViewModel by viewModels{
-                CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val modFragVM: ModuleFragmentViewModel by viewModels{
-                CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val kiFragVM: KiFragmentViewModel by viewModels{
-                CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val magFragVM: MagicFragmentViewModel by viewModels{
-                CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val summonFragVM: SummoningFragmentViewModel by viewModels{
-                CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val psyFragVM: PsychicFragmentViewModel by viewModels{
-                CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
-            }
-
-            val equipFragVM: EquipmentFragmentViewModel by viewModels{
-                CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
-            }
-
-            //scaffold for the home page
-            Scaffold(
-                scaffoldState = scaffoldState,
-
-                //home page's top bar
-                topBar = {
-                    TopAppBar(
-                        //update title with any page change
-                        title = {
-                            Text(
-                                text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
-                            )
-                        },
-
-                        //icon to open the navigation drawer
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    if (scaffoldState.drawerState.isClosed)
-                                        scope.launch { scaffoldState.drawerState.open() }
-                                })
-                            {
-                                Icon(
-                                    imageVector = Icons.Filled.Menu,
-                                    contentDescription = stringResource(R.string.openLabel)
-                                )
-                            }
-                        })
-                },
-
-                //navigation drawer
-                drawerContent = {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        //for each page enumeration present
-                        enumValues<ScreenPage>().forEach {
-                            //create a drawer button with the given onclick function
-                            DrawerButton(
-                                ScreenPage.toAddress(it),
-                                homePageVM.currentFragment.collectAsState().value != it
-                            ) {
-                                //if not on own page
-                                if (homePageVM.currentFragment.value != it) {
-                                    //change displayed fragment
-                                    homePageVM.setCurrentFragment(it)
-                                    scope.launch { scaffoldState.drawerState.close() }
-
-                                    //remove backstack
-                                    navController.navigate(it.name) {
-                                        popUpTo(0)
-                                    }
-                                }
-                            }
-                        }
-
-                        //drawer button for saving the character
-                        DrawerButton(R.string.saveLabel) {
-                            scope.launch { scaffoldState.drawerState.close() }
-                            attemptSave(filename, charInstance)
-                        }
-
-                        //drawer button for exiting the character creator
-                        DrawerButton(R.string.exitLabel) {
-                            scope.launch { scaffoldState.drawerState.close() }
-                            homePageVM.toggleExitAlert()
-                        }
-                    }
-                },
-
-                //bottom bar keeps track of development point maximums and spent
-                bottomBar = {
-                    Column {
-                        //row for table header
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Spacer(Modifier.weight(0.2f))
-                            //total column
-                            Text(
-                                text = stringResource(R.string.totalLabel),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.weight(0.2f)
-                            )
-                            //combat column
-                            Text(
-                                text = stringResource(R.string.combatLabel),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.weight(0.2f)
-                            )
-                            //magic column
-                            Text(
-                                text = stringResource(R.string.magicLabel),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.weight(0.2f)
-                            )
-                            //psychic column
-                            Text(
-                                text = stringResource(R.string.psychicLabel),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.weight(0.2f)
-                            )
-                        }
-
-                        //create row for maximum values
-                        BottomBarRow(homePageVM.maximums)
-
-                        //create row for spent values
-                        BottomBarRow(homePageVM.expenditures)
-                    }
-                }
-            ) {
-                //set navigation host in scaffold
-                NavHost(
-                    navController = navController,
-                    startDestination = ScreenPage.Character.name,
-                    modifier = Modifier
-                        .padding(it)
-                ) {
-                    //route to primary characteristics page
-                    composable(route = ScreenPage.Character.name) {
-                        charFragVM.refreshPage()
-                        CharacterPageFragment(
-                            charFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to combat abilities page
-                    composable(route = ScreenPage.Combat.name) {
-                        combatFragVM.refreshPage()
-                        CombatFragment(
-                            combatFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to secondary characteristics page
-                    composable(route = ScreenPage.SecondaryCharacteristics.name) {
-                        secondaryFragVM.refreshPage()
-                        SecondaryAbilityFragment(
-                            secondaryFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to advantages page
-                    composable(route = ScreenPage.Advantages.name) {
-                        advantageFragVM.refreshPage()
-                        AdvantageFragment(
-                            advantageFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to combat page
-                    composable(route = ScreenPage.Modules.name) {
-                        modFragVM.refreshPage()
-                        ModuleFragment(
-                            modFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to ki page
-                    composable(route = ScreenPage.Ki.name) {
-                        kiFragVM.refreshPage()
-                        KiFragment(
-                            kiFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to magic page
-                    composable(route = ScreenPage.Magic.name) {
-                        magFragVM.refreshPage()
-                        MagicFragment(
-                            magFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to summoning page
-                    composable(route = ScreenPage.Summoning.name) {
-                        summonFragVM.refreshPage()
-                        SummoningFragment(
-                            summonFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to psychic page
-                    composable(route = ScreenPage.Psychic.name) {
-                        psyFragVM.refreshPage()
-                        PsychicFragment(
-                            psyFragVM,
-                            homePageVM
-                        )
-                    }
-
-                    //route to equipment page
-                    composable(route = ScreenPage.Equipment.name) {
-                        equipFragVM.refreshPage()
-                        EquipmentFragment(
-                            equipFragVM
-                        )
-                    }
-                }
-
-                //show exit alert if user opens it
-                if (homePageVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
-            }
-
-            BackHandler { homePageVM.toggleExitAlert() }
+        //create viewModels for the home page and home alert items
+        val homePageVM: HomePageViewModel by viewModels{
+            CustomFactory(HomePageViewModel::class.java, charInstance, context)
         }
+
+        //create viewModels for each individual fragment
+        val charFragVM: CharacterFragmentViewModel by viewModels{
+            CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val combatFragVM: CombatFragViewModel by viewModels{
+            CustomFactory(CombatFragViewModel::class.java, charInstance, context)
+        }
+
+        val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
+            CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val advantageFragVM: AdvantageFragmentViewModel by viewModels{
+            CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val modFragVM: ModuleFragmentViewModel by viewModels{
+            CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val kiFragVM: KiFragmentViewModel by viewModels{
+            CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val magFragVM: MagicFragmentViewModel by viewModels{
+            CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val summonFragVM: SummoningFragmentViewModel by viewModels{
+            CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val psyFragVM: PsychicFragmentViewModel by viewModels{
+            CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val equipFragVM: EquipmentFragmentViewModel by viewModels{
+            CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
+        }
+
+        //scaffold for the home page
+        Scaffold(
+            scaffoldState = scaffoldState,
+            topBar = {AppHeader(homePageVM, scaffoldState, scope) },
+            drawerContent = {
+                AppDrawer(
+                    homePageVM,
+                    filename,
+                    charInstance,
+                    scaffoldState,
+                    scope,
+                    navController
+                )
+            },
+            bottomBar = {AppFooter(homePageVM) }
+        ) {
+            //set navigation host in scaffold
+            NavHost(
+                navController = navController,
+                startDestination = ScreenPage.Character.name,
+                modifier = Modifier
+                    .padding(it)
+            ) {
+                //route to primary characteristics page
+                composable(route = ScreenPage.Character.name) {
+                    charFragVM.refreshPage()
+                    CharacterPageFragment(
+                        charFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to combat abilities page
+                composable(route = ScreenPage.Combat.name) {
+                    combatFragVM.refreshPage()
+                    CombatFragment(
+                        combatFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to secondary characteristics page
+                composable(route = ScreenPage.SecondaryCharacteristics.name) {
+                    secondaryFragVM.refreshPage()
+                    SecondaryAbilityFragment(
+                        secondaryFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to advantages page
+                composable(route = ScreenPage.Advantages.name) {
+                    advantageFragVM.refreshPage()
+                    AdvantageFragment(
+                        advantageFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to combat page
+                composable(route = ScreenPage.Modules.name) {
+                    modFragVM.refreshPage()
+                    ModuleFragment(
+                        modFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to ki page
+                composable(route = ScreenPage.Ki.name) {
+                    kiFragVM.refreshPage()
+                    KiFragment(
+                        kiFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to magic page
+                composable(route = ScreenPage.Magic.name) {
+                    magFragVM.refreshPage()
+                    MagicFragment(
+                        magFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to summoning page
+                composable(route = ScreenPage.Summoning.name) {
+                    summonFragVM.refreshPage()
+                    SummoningFragment(
+                        summonFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to psychic page
+                composable(route = ScreenPage.Psychic.name) {
+                    psyFragVM.refreshPage()
+                    PsychicFragment(
+                        psyFragVM,
+                        homePageVM
+                    )
+                }
+
+                //route to equipment page
+                composable(route = ScreenPage.Equipment.name) {
+                    equipFragVM.refreshPage()
+                    EquipmentFragment(
+                        equipFragVM
+                    )
+                }
+            }
+
+            //show exit alert if user opens it
+            if (homePageVM.exitOpen.collectAsState().value)
+                ExitAlert(filename, charInstance){homePageVM.toggleExitAlert()}
+        }
+
+        BackHandler{homePageVM.toggleExitAlert()}
     }
 
     /**
-     * Attempts to save the character's data to its designated file.
+     * Composes the top bar for the app in this activity.
      *
-     * @param filename name of the file to save to
-     * @param charInstance character object to be saved
+     * @param homePageVM viewModel that manages this activity
+     * @param scaffoldState state manager of the scaffold
+     * @param scope coroutine for this item
      */
-    private fun attemptSave(
+    @Composable
+    private fun AppHeader(
+        homePageVM: HomePageViewModel,
+        scaffoldState: ScaffoldState,
+        scope: CoroutineScope
+    ) {
+        TopAppBar(
+            //update title with any page change
+            title = {
+                Text(
+                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
+                )
+            },
+
+            //icon to open the navigation drawer
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+                        if (scaffoldState.drawerState.isClosed)
+                            scope.launch { scaffoldState.drawerState.open() }
+                    })
+                {
+                    Icon(
+                        imageVector = Icons.Filled.Menu,
+                        contentDescription = stringResource(R.string.openLabel)
+                    )
+                }
+            }
+        )
+    }
+
+    /**
+     * Composes the app sidebar for this activity.
+     *
+     * @param homePageVM viewModel that manages this section
+     * @param filename name of the file being worked on
+     * @param charInstance character object being worked on
+     * @param scaffoldState state manager of the activity's scaffold
+     * @param scope coroutine for this item
+     * @param navController navigation host this drawer affects
+     */
+    @Composable
+    private fun AppDrawer(
+        homePageVM: HomePageViewModel,
         filename: String,
-        charInstance: BaseCharacter
+        charInstance: BaseCharacter,
+        scaffoldState: ScaffoldState,
+        scope: CoroutineScope,
+        navController: NavHostController
     ){
-        try{
-            //create file writer
-            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            //for each page enumeration present
+            enumValues<ScreenPage>().forEach {
+                //create a drawer button with the given onclick function
+                DrawerButton(
+                    ScreenPage.toAddress(it),
+                    homePageVM.currentFragment.collectAsState().value != it
+                ) {
+                    //if not on own page
+                    if (homePageVM.currentFragment.value != it) {
+                        //change displayed fragment
+                        homePageVM.setCurrentFragment(it)
+                        scope.launch { scaffoldState.drawerState.close() }
 
-            //get and write character's bytes
-            val charData = charInstance.bytes
-            saveStream.write(charData)
-            saveStream.close()
+                        //remove backstack
+                        navController.navigate(it.name) {
+                            popUpTo(0)
+                        }
+                    }
+                }
+            }
 
-            //notify of action completion
-            Toast.makeText(
-                this@HomeActivity,
-                baseContext.resources.getString(R.string.saveMessage),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        //notify of no file found
-        catch(e: FileNotFoundException){
-            Toast.makeText(
-                this@HomeActivity,
-                baseContext.resources.getString(R.string.fileNotFound),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        //notify of error in file writing
-        catch(e: IOException) {
-            Toast.makeText(
-                this@HomeActivity,
-                baseContext.resources.getString(R.string.fileError),
-                Toast.LENGTH_SHORT
-            ).show()
+            //drawer button for saving the character
+            DrawerButton(R.string.saveLabel) {
+                scope.launch { scaffoldState.drawerState.close() }
+                attemptSave(filename, charInstance)
+            }
+
+            //drawer button for exiting the character creator
+            DrawerButton(R.string.exitLabel) {
+                scope.launch { scaffoldState.drawerState.close() }
+                homePageVM.toggleExitAlert()
+            }
         }
     }
 
@@ -412,7 +381,10 @@ class HomeActivity : AppCompatActivity() {
                 onClick = { action() }
             ) {
                 Text(
+                    //display page name
                     text = stringResource(display),
+
+                    //show blue if currently on this page
                     color =
                         if(colorVal)
                             Color.Black
@@ -420,6 +392,54 @@ class HomeActivity : AppCompatActivity() {
                             Color.Blue
                 )
             }
+        }
+    }
+
+    /**
+     * Composes bottom bar object for the app.
+     *
+     * @param homePageVM viewModel that manages this section
+     */
+    @Composable
+    private fun AppFooter(homePageVM: HomePageViewModel) {
+        Column {
+            //row for table header
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(Modifier.weight(0.2f))
+                //total column
+                Text(
+                    text = stringResource(R.string.totalLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                //combat column
+                Text(
+                    text = stringResource(R.string.combatLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                //magic column
+                Text(
+                    text = stringResource(R.string.magicLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+                //psychic column
+                Text(
+                    text = stringResource(R.string.psychicLabel),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+
+            //create row for maximum values
+            BottomBarRow(homePageVM.maximums)
+
+            //create row for spent values
+            BottomBarRow(homePageVM.expenditures)
         }
     }
 
@@ -509,5 +529,49 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    /**
+     * Attempts to save the character's data to its designated file.
+     *
+     * @param filename name of the file to save to
+     * @param charInstance character object to be saved
+     */
+    private fun attemptSave(
+        filename: String,
+        charInstance: BaseCharacter
+    ){
+        try{
+            //create file writer
+            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+
+            //get and write character's bytes
+            val charData = charInstance.bytes
+            saveStream.write(charData)
+            saveStream.close()
+
+            //notify of action completion
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.saveMessage),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify of no file found
+        catch(e: FileNotFoundException){
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileNotFound),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify of error in file writing
+        catch(e: IOException) {
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileError),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class PhysicalIncrease: Discipline("physIncrease"){
     val increaseJump = PsychicPower(
         "increaseJump",
-        R.string.increaseJump,
+        52,
         1,
         true,
         true,
@@ -32,7 +32,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseAbility = PsychicPower(
         "increaseAbility",
-        R.string.increaseAbility,
+        53,
         1,
         true,
         true,
@@ -53,7 +53,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseAcrobatics = PsychicPower(
         "increaseAcro",
-        R.string.increaseAcrobatics,
+        54,
         1,
         true,
         true,
@@ -74,7 +74,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseStrength = PsychicPower(
         "increaseStr",
-        R.string.increaseStrength,
+        55,
         1,
         true,
         true,
@@ -95,7 +95,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val inhumanity = PsychicPower(
         "inhumanity",
-        R.string.inhumanityPower,
+        56,
         1,
         true,
         true,
@@ -116,7 +116,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseMotion = PsychicPower(
         "increaseMotion",
-        R.string.increaseMotion,
+        57,
         1,
         true,
         true,
@@ -137,7 +137,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseReaction = PsychicPower(
         "increaseReaction",
-        R.string.increaseReactionPower,
+        58,
         2,
         true,
         true,
@@ -158,7 +158,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val perceptionIncrease = PsychicPower(
         "percIncrease",
-        R.string.percIncrease,
+        59,
         2,
         true,
         true,
@@ -179,7 +179,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val increaseEndurance = PsychicPower(
         "increaseEndurance",
-        R.string.increaseEndurance,
+        60,
         2,
         false,
         true,
@@ -200,7 +200,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val regeneration = PsychicPower(
         "regeneration",
-        R.string.regenPower,
+        61,
         2,
         true,
         true,
@@ -218,7 +218,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val fatigueElimination = PsychicPower(
         "fatigueEliminate",
-        R.string.fatigueEliminate,
+        62,
         3,
         true,
         false,
@@ -239,7 +239,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val totalIncrease = PsychicPower(
         "totalIncrease",
-        R.string.totalIncrease,
+        63,
         3,
         true,
         true,
@@ -260,7 +260,7 @@ class PhysicalIncrease: Discipline("physIncrease"){
 
     val imbue = PsychicPower(
         "imbue",
-        R.string.imbue,
+        64,
         3,
         true,
         true,

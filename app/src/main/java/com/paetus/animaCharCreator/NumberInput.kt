@@ -46,6 +46,7 @@ fun NumberInput(
     val keyboardActive = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
+        //set initial text input
         value = inputText,
 
         //get number keyboard for input

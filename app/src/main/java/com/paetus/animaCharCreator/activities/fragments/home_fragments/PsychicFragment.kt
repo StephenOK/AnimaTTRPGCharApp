@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -224,7 +225,7 @@ private fun DisciplineDisplay(
                 .fillMaxWidth(0.7f)
         ) {
             //create a checkbox for any discipline that isn't Matrix Powers
-            if(discipline.name != R.string.matrixLabel) {
+            if(discipline.name != 8) {
                 Checkbox(
                     checked = discipline.investedIn.collectAsState().value,
                     onCheckedChange = {
@@ -233,7 +234,7 @@ private fun DisciplineDisplay(
                                 context,
                                 context.getString(
                                     R.string.needDisciplineMessage,
-                                    context.getString(discipline.name)
+                                    context.resources.getStringArray(R.array.disciplineNames)[discipline.name]
                                 ),
                                 Toast.LENGTH_LONG
                             ).show()
@@ -253,7 +254,7 @@ private fun DisciplineDisplay(
                 modifier = Modifier
                     .weight(0.5f)
             ) {
-                Text(text = stringResource(discipline.name))
+                Text(text = stringArrayResource(R.array.disciplineNames)[discipline.name])
             }
         }
 
@@ -306,7 +307,7 @@ private fun PsyPowerRow(
                         context,
                         context.getString(
                             R.string.needDisciplineMessage,
-                            context.getString(power.home.name)
+                            context.resources.getStringArray(R.array.disciplineNames)[power.home.name]
                         ),
                         Toast.LENGTH_LONG
                     ).show()
@@ -319,7 +320,7 @@ private fun PsyPowerRow(
 
         //display power name
         Text(
-            text = stringResource(power.item.name),
+            text = stringArrayResource(R.array.powerNames)[power.item.name],
             modifier = Modifier
                 .weight(0.3f)
         )

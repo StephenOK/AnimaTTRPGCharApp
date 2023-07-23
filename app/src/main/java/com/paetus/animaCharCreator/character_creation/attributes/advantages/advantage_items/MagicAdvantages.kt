@@ -11,19 +11,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  * @param charInstance object holding the character's stats
  */
 class MagicAdvantages(private val charInstance: BaseCharacter){
-    val elementNames = listOf(
-        "Light",
-        "Dark",
-        "Creation",
-        "Destruction",
-        "Air",
-        "Earth",
-        "Water",
-        "Fire",
-        "Essence",
-        "Illusion"
-    )
-
     val elementalCompatibility = Advantage(
         "elementalCompatibility",
         R.string.elementCompatibility,
@@ -31,8 +18,9 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.elementCompEff,
         null,
         null,
-        (elementNames.toSet() + "Necromancy").toList(),
+        R.array.elementList,
         0,
+        null,
         listOf(1),
         0,
         null,
@@ -46,8 +34,9 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.natPathEff,
         null,
         R.string.natPathSpec,
-        elementNames,
+        R.array.elementList,
         0,
+        null,
         listOf(1),
         0,
         {input, _ ->
@@ -66,31 +55,31 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
             }
 
             charInstance.magic.updateSpellList()
-        },
-        {input, _ ->
-            when(input){
-                0 -> charInstance.magic.naturalPaths.remove(Element.Light)
-                1 -> charInstance.magic.naturalPaths.remove(Element.Dark)
-                2 -> charInstance.magic.naturalPaths.remove(Element.Creation)
-                3 -> charInstance.magic.naturalPaths.remove(Element.Destruction)
-                4 -> charInstance.magic.naturalPaths.remove(Element.Air)
-                5-> charInstance.magic.naturalPaths.remove(Element.Earth)
-                6-> charInstance.magic.naturalPaths.remove(Element.Water)
-                7-> charInstance.magic.naturalPaths.remove(Element.Fire)
-                8-> charInstance.magic.naturalPaths.remove(Element.Essence)
-                9-> charInstance.magic.naturalPaths.remove(Element.Illusion)
-                10-> charInstance.magic.naturalPaths.remove(Element.Necromancy)
-            }
-
-            charInstance.magic.updateSpellList()
         }
-    )
+    ) { input, _ ->
+        when (input) {
+            0 -> charInstance.magic.naturalPaths.remove(Element.Light)
+            1 -> charInstance.magic.naturalPaths.remove(Element.Dark)
+            2 -> charInstance.magic.naturalPaths.remove(Element.Creation)
+            3 -> charInstance.magic.naturalPaths.remove(Element.Destruction)
+            4 -> charInstance.magic.naturalPaths.remove(Element.Air)
+            5 -> charInstance.magic.naturalPaths.remove(Element.Earth)
+            6 -> charInstance.magic.naturalPaths.remove(Element.Water)
+            7 -> charInstance.magic.naturalPaths.remove(Element.Fire)
+            8 -> charInstance.magic.naturalPaths.remove(Element.Essence)
+            9 -> charInstance.magic.naturalPaths.remove(Element.Illusion)
+            10 -> charInstance.magic.naturalPaths.remove(Element.Necromancy)
+        }
+
+        charInstance.magic.updateSpellList()
+    }
 
     val contestedSpellMastery = Advantage(
         "contestedMastery",
         R.string.contestedMastery,
         R.string.contestMasterDesc,
         R.string.contestMasterEff,
+        null,
         null,
         null,
         null,
@@ -110,6 +99,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -123,8 +113,9 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.halfTreeEff,
         R.string.halfTreeRestriction,
         null,
-        elementNames,
+        R.array.elementList,
         0,
+        null,
         listOf(2),
         0,
         null,
@@ -136,6 +127,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.improvedInnate,
         R.string.innateDesc,
         R.string.innateEff,
+        null,
         null,
         null,
         null,
@@ -155,6 +147,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(1),
         0,
         null,
@@ -166,6 +159,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.gesturelessCast,
         R.string.gesturelessDesc,
         R.string.gesturelessEff,
+        null,
         null,
         null,
         null,
@@ -185,6 +179,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(1, 2, 3),
         0,
         {_, cost ->
@@ -193,11 +188,10 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
                 2 -> charInstance.magic.changeRecoveryMult(3.0)
                 3 -> charInstance.magic.changeRecoveryMult(4.0)
             }
-        },
-        {_, _ ->
-            charInstance.magic.changeRecoveryMult(1.0)
         }
-    )
+    ) { _, _ ->
+        charInstance.magic.changeRecoveryMult(1.0)
+    }
 
     val advantages = listOf(
         naturalPath, elementalCompatibility, halfTreeAttuned, unspokenCasting, gesturelessCasting,
@@ -217,6 +211,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -228,6 +223,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.gestureRequire,
         R.string.requireGestureDesc,
         R.string.requireGestureEff,
+        null,
         null,
         null,
         null,
@@ -247,6 +243,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         null,
@@ -258,6 +255,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         R.string.shamanism,
         R.string.shamanDesc,
         R.string.shamanEff,
+        null,
         null,
         null,
         null,
@@ -277,15 +275,15 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
             charInstance.magic.setMagicTies(true)
-        },
-        {_, _ ->
-            charInstance.magic.setMagicTies(false)
         }
-    )
+    ) { _, _ ->
+        charInstance.magic.setMagicTies(false)
+    }
 
     val slowMagicRecovery = Advantage(
         "slowMagRecover",
@@ -296,15 +294,15 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(-1),
         0,
         {_, _ ->
             charInstance.magic.changeRecoveryMult(0.5)
-        },
-        {_, _ ->
-            charInstance.magic.changeRecoveryMult(1.0)
         }
-    )
+    ) { _, _ ->
+        charInstance.magic.changeRecoveryMult(1.0)
+    }
 
     val magicBlockage = Advantage(
         "magicBlockage",
@@ -315,21 +313,22 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         null,
         null,
         null,
+        null,
         listOf(-2),
         0,
         {_, _ ->
             charInstance.magic.changeRecoveryMult(0.0)
-        },
-        {_, _ ->
-            charInstance.magic.changeRecoveryMult(1.0)
         }
-    )
+    ) { _, _ ->
+        charInstance.magic.changeRecoveryMult(1.0)
+    }
 
     val actionRequirement = Advantage(
         "actionRequire",
         R.string.actionRequire,
         R.string.requireActionDesc,
         R.string.requireActionEff,
+        null,
         null,
         null,
         null,

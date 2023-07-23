@@ -10,7 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 class Pyrokinesis: Discipline("pyrokinesis"){
     val createFire = PsychicPower(
         "createFire",
-        R.string.createFirePower,
+        29,
         1,
         true,
         true,
@@ -31,7 +31,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val extinguishFire = PsychicPower(
         "extinguishFire",
-        R.string.extinguishFire,
+        30,
         1,
         true,
         false,
@@ -52,7 +52,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val controlFire = PsychicPower(
         "controlFire",
-        R.string.controlFirePow,
+        31,
         1,
         true,
         true,
@@ -73,7 +73,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val immolate = PsychicPower(
         "immolate",
-        R.string.immolate,
+        32,
         1,
         true,
         false,
@@ -94,7 +94,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val igneousMaintenance = PsychicPower(
         "igneousMaint",
-        R.string.igneousMaint,
+        33,
         2,
         true,
         true,
@@ -115,7 +115,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val fireImmunity = PsychicPower(
         "fireImmunity",
-        R.string.fireImmunity,
+        34,
         2,
         false,
         true,
@@ -136,7 +136,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val igneousBarrier = PsychicPower(
         "igneousBarrier",
-        R.string.igneousBarrier,
+        35,
         2,
         true,
         true,
@@ -157,7 +157,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val raiseTemperature = PsychicPower(
         "raiseTemp",
-        R.string.raiseTempPower,
+        36,
         2,
         true,
         true,
@@ -178,7 +178,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val consume = PsychicPower(
         "consume",
-        R.string.consume,
+        37,
         3,
         true,
         false,
@@ -199,7 +199,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val nova = PsychicPower(
         "nova",
-        R.string.nova,
+        38,
         3,
         true,
         true,
@@ -220,7 +220,7 @@ class Pyrokinesis: Discipline("pyrokinesis"){
 
     val majorFire = PsychicPower(
         "majorFire",
-        R.string.majorFire,
+        39,
         3,
         true,
         true,

@@ -125,7 +125,24 @@ private fun AdvantageDetails(item: Advantage){
         if(item.cost.last() != it) costString += ", "
     }
 
+    var halfTunedTo = ""
+
+    if(item.multPicked != null) {
+        halfTunedTo += "("
+        item.multPicked.forEach {
+            halfTunedTo += stringArrayResource(R.array.elementList)[it]
+            if(item.multPicked.last() != it) halfTunedTo += ", "
+        }
+
+        halfTunedTo += ")"
+    }
+
     Column{
+        if(halfTunedTo.isNotEmpty()){
+            Row{Text(text = "\t$halfTunedTo")}
+            Spacer(Modifier.height(10.dp))
+        }
+
         //display advantage's description
         Row{Text(text = "\t${stringResource(item.description)}")}
 
@@ -378,9 +395,9 @@ fun TechContents(technique: TechniqueBase) {
         val kiBuilds = technique.statSpent()
 
         //display each required build needed
-        for(index in 0..5){
-            if(kiBuilds[index] > 0)
-                InfoRow(stringArrayResource(R.array.primaryCharArray)[index], kiBuilds[index].toString())
+        listOf(Pair(0, 0), Pair(1, 1), Pair(2, 2), Pair(3, 3), Pair(5, 4), Pair(6, 5)).forEach{(primary, ki) ->
+            if(kiBuilds[ki] > 0)
+                InfoRow(stringArrayResource(R.array.primaryCharArray)[primary], kiBuilds[ki].toString())
         }
 
         //if this technique is maintainable
@@ -396,10 +413,10 @@ fun TechContents(technique: TechniqueBase) {
             )
 
             //display maintenance by stat
-            for(index in 0..5){
-                if(technique.maintArray[index] != 0)
+            listOf(Pair(0, 0), Pair(1, 1), Pair(2, 2), Pair(3, 3), Pair(5, 4), Pair(6, 5)).forEach{(primary, ki) ->
+                if(technique.maintArray[ki] != 0)
                     Text(
-                        text = technique.maintArray[index].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[index] + ")",
+                        text = technique.maintArray[ki].toString() + " (" + stringArrayResource(R.array.primaryCharArray)[primary] + ")",
                         modifier = Modifier
                             .fillMaxWidth(),
                         textAlign = TextAlign.Center
@@ -624,7 +641,7 @@ fun PowerDetailPreview(){
     val charInstance = BaseCharacter()
     val power = charInstance.psychic.cryokinesis.crystallize
 
-    DetailAlert(stringResource(power.name), power){}
+    DetailAlert(stringArrayResource(R.array.powerNames)[power.name], power){}
 }
 
 @Preview

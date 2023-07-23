@@ -20,9 +20,9 @@
         <item>DEX</item>
         <item>AGI</item>
         <item>CON</item>
+        <item>INT</item>
         <item>POW</item>
         <item>WP</item>
-        <item>INT</item>
         <item>PER</item>
     </string-array>
 
@@ -79,6 +79,24 @@
     <string name = "subtractAT">-%1d AT</string>
 
     <string name = "specialLabelCaps">SPECIAL</string>
+
+    <string-array name = "sizeList">
+        <item>-5</item>
+        <item>-4</item>
+        <item>-3</item>
+        <item>-2</item>
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name = "tempVulnerableOptions">
+        <item>Heat</item>
+        <item>Cold</item>
+    </string-array>
 
     <string name = "moderate">Moderate</string>
     <string name = "difficult">Difficult</string>

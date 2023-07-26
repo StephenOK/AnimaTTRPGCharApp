@@ -533,11 +533,47 @@ fun PowerDetails(power: PsychicPower){
         Spacer(Modifier.height(10.dp))
 
         //display power's Effects Table
-        power.effects.forEach{
+        MakePowerTable(power)
+    }
+}
+
+@Composable
+private fun MakePowerTable(power: PsychicPower){
+    var index = 0
+
+    while(index < power.stringBaseCount[0]){
+        InfoRow(
+            stringArrayResource(R.array.difficultyTable)[index],
+            stringResource(R.string.fatigueBase, power.stringInput[index] as Int)
+        )
+
+        index++
+    }
+
+    power.stringBaseList.forEach{
+        while(index < power.stringBaseCount[power.stringBaseList.indexOf(it) + 1]){
+            val newIn = power.stringInput[index]
+
+            val display = when(newIn) {
+                is Int -> stringResource(it, newIn)
+                is Pair<*, *> -> {
+                    if(newIn.second is Int)
+                        stringResource(it, newIn.first!!, newIn.second!!)
+                    else
+                        stringResource(it, newIn.first!!, stringResource((newIn.second as () -> Int)()))
+                }
+                is List<*> ->
+                    stringResource(it, newIn[0] as Int, newIn[1] as Int, newIn[2] as Int)
+                null -> stringResource(it)
+                else -> stringResource(it, stringResource((newIn as () -> Int)()))
+            }
+
             InfoRow(
-                stringArrayResource(R.array.difficultyTable)[power.effects.indexOf(it)],
-                it
+                stringArrayResource(R.array.difficultyTable)[index],
+                display
             )
+
+            index++
         }
     }
 }
@@ -639,7 +675,7 @@ fun SpellDetailPreview(){
 @Composable
 fun PowerDetailPreview(){
     val charInstance = BaseCharacter()
-    val power = charInstance.psychic.cryokinesis.crystallize
+    val power = charInstance.psychic.matrixPowers.linkMatrices
 
     DetailAlert(stringArrayResource(R.array.powerNames)[power.name], power){}
 }

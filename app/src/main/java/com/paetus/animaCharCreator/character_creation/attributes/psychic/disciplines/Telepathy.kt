@@ -15,17 +15,18 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.areaScanningDesc,
+        listOf(R.string.psyResMeter, R.string.psyResKilometer),
+        listOf(2, 7, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "100 PsR/10-meter radius",
-            "120 PsR/50-meter radius",
-            "140 PsR/100-meter radius",
-            "160 PsR/250-meter radius",
-            "180 PsR/500-meter radius",
-            "200 PsR/1 kilometer radius",
-            "220 PsR/10 kilometer radius",
-            "260 PsR/100 kilometer radius"
+            2, 1,
+            Pair(100, 10),
+            Pair(120, 50),
+            Pair(140, 100),
+            Pair(160, 250),
+            Pair(180, 500),
+            Pair(200, 1),
+            Pair(220, 10),
+            Pair(260, 100)
         )
     )
 
@@ -36,17 +37,18 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.mentalRestraintDesc,
+        listOf(R.string.psyResInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "80 PsR",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR"
+            4, 2,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220
         )
     )
 
@@ -57,17 +59,18 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.mindReadingDesc,
+        listOf(R.string.psyResInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR",
-            "240 PsR"
+            2, 1,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220,
+            240
         )
     )
 
@@ -78,17 +81,18 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.mentalComsDesc,
+        listOf(R.string.meterInput, R.string.kilometerInput, R.string.anyDistance),
+        listOf(2, 4, 9, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "100 meters",
-            "500 meters",
-            "1 kilometer",
-            "10 kilometers",
-            "100 kilometers",
-            "1000 kilometers",
-            "5000 kilometers",
-            "Any distance"
+            2, 1,
+            100,
+            500,
+            1,
+            10,
+            100,
+            1000,
+            5000,
+            null
         )
     )
 
@@ -99,17 +103,18 @@ class Telepathy: Discipline("telepathy"){
         false,
         true,
         R.string.psychicShieldDesc,
+        listOf(R.string.addPsyRes),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "+10 PsR",
-            "+30 PsR",
-            "+50 PsR",
-            "+80 PsR",
-            "+120 PsR",
-            "+160 PsR",
-            "+200 PsR",
-            "+240 PsR"
+            2, 1,
+            10,
+            30,
+            50,
+            80,
+            120,
+            160,
+            200,
+            240
         )
     )
 
@@ -120,17 +125,18 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.psyIllusionDesc,
+        listOf(R.string.psyResInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "80 PsR",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR"
+            2, 1,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220
         )
     )
 
@@ -141,17 +147,17 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.mentalResearchDesc,
+        listOf(R.string.psyResInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "240 PsR"
+            6, 4, 2,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            240
         )
     )
 
@@ -162,17 +168,17 @@ class Telepathy: Discipline("telepathy"){
         true,
         false,
         R.string.psyAssaultDesc,
+        listOf(R.string.psyResInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 4",
-            "Fatigue 2",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR",
-            "260 PsR"
+            8, 4, 2,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220,
+            260
         )
     )
 
@@ -183,17 +189,17 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.psyConnectionDesc,
+        listOf(R.string.meterRadius, R.string.kilometerRadius, R.string.anyDistance),
+        listOf(3, 5, 9, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 meter radius",
-            "500 meter radius",
-            "1 kilometer radius",
-            "10 kilometer radius",
-            "100 kilometer radius",
-            "1000 kilometer radius",
-            "Any distance"
+            6, 4, 2,
+            100,
+            500,
+            1,
+            10,
+            100,
+            1000,
+            null
         )
     )
 
@@ -204,17 +210,16 @@ class Telepathy: Discipline("telepathy"){
         true,
         false,
         R.string.alterMemoryDesc,
+        listOf(R.string.psyResInput),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR"
+            8, 6, 4, 2,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200
         )
     )
 
@@ -225,17 +230,16 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.astralShapeDesc,
+        listOf(R.string.kilometerRadius, R.string.anyDistance),
+        listOf(4, 9, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "10 kilometer radius",
-            "100 kilometer radius",
-            "500 kilometer radius",
-            "1000 kilometer radius",
-            "5000 kilometer radius",
-            "Any distance"
+            8, 6, 4, 2,
+            10,
+            100,
+            500,
+            1000,
+            5000,
+            null
         )
     )
 
@@ -246,17 +250,16 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.psyTrackingDesc,
+        listOf(R.string.psyResKilometer, R.string.psyResAnyDistance),
+        listOf(4, 9, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "10 kilometer radius/140 PsR",
-            "100 kilometer radius/160 PsR",
-            "500 kilometer radius/180 PsR",
-            "1000 kilometer radius/200 PsR",
-            "5000 kilometer radius/220 PsR",
-            "Any distance/ 260 PsR"
+            8, 6, 4, 2,
+            Pair(140, 10),
+            Pair(160, 100),
+            Pair(180, 500),
+            Pair(200, 1000),
+            Pair(220, 5000),
+            260
         )
     )
 
@@ -267,17 +270,16 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.mindControlDesc,
+        listOf(R.string.psyResInput),
+        listOf(4, 10),
         listOf(
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "220 PsR"
+            12, 8, 6, 4,
+            100,
+            120,
+            140,
+            160,
+            180,
+            220
         )
     )
 
@@ -288,17 +290,15 @@ class Telepathy: Discipline("telepathy"){
         true,
         false,
         R.string.psyDeathDesc,
+        listOf(R.string.psyResInput),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "220 PsR",
-            "240 PsR"
+            16, 12, 8, 6, 4,
+            140,
+            160,
+            180,
+            220,
+            240
         )
     )
 
@@ -309,17 +309,16 @@ class Telepathy: Discipline("telepathy"){
         true,
         true,
         R.string.areaDesc,
+        listOf(R.string.meterInput, R.string.kilometerInput),
+        listOf(4, 6, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 4",
-            "10 meters",
-            "100 meters",
-            "1 kilometer",
-            "10 kilometers",
-            "100 kilometers",
-            "500 kilometers"
+            16, 12, 8, 4,
+            10,
+            100,
+            1,
+            10,
+            100,
+            500
         )
     )
 

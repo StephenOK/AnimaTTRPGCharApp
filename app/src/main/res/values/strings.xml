@@ -108,4 +108,6 @@
     <string name = "zenData">Zen</string>
 
     <string name = "exitTitle">Save before exiting?</string>
+
+    <string name = "errorText">Error</string>
 </resources>

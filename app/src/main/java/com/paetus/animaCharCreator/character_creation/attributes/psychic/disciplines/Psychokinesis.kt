@@ -15,17 +15,19 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.minorKinesisDesc,
+        listOf(R.string.kilogramsFlightValue),
+        listOf(1, 10),
         listOf(
-            "Fatigue 1",
-            "1 kg/Flight Value 4",
-            "2 kg/Flight Value 6",
-            "5 kg/Flight Value 8",
-            "10 kg/Flight Value 10",
-            "20 kg/Flight Value 12",
-            "40 kg/Flight Value 14",
-            "100 kg/Flight Value 16",
-            "200 kg/Flight Value 18",
-            "500 kg/Flight Value 20"
+            1,
+            Pair(1, 4),
+            Pair(2, 6),
+            Pair(5, 8),
+            Pair(10, 10),
+            Pair(20, 12),
+            Pair(40, 14),
+            Pair(100, 16),
+            Pair(200, 18),
+            Pair(500, 20)
         )
     )
 
@@ -36,17 +38,18 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         false,
         R.string.kineticImpactDesc,
+        listOf(R.string.strengthInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "Strength 8",
-            "Strength 10",
-            "Strength 12",
-            "Strength 14",
-            "Strength 15",
-            "Strength 16",
-            "Strength 18",
-            "Strength 20"
+            2, 1,
+            8,
+            10,
+            12,
+            14,
+            15,
+            16,
+            18,
+            20
         )
     )
 
@@ -57,17 +60,18 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.psyKinTrapDesc,
+        listOf(R.string.strengthInput, R.string.strengthWithRadius),
+        listOf(2, 5, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "Strength 6",
-            "Strength 8",
-            "Strength 10",
-            "Strength 12/5-meter radius",
-            "Strength 14/10-meter radius",
-            "Strength 15/50-meter radius",
-            "Strength 16/100-meter radius",
-            "Strength 18/500-meter radius"
+            2, 1,
+            6,
+            8,
+            10,
+            Pair(12, 5),
+            Pair(14, 10),
+            Pair(15, 50),
+            Pair(16, 100),
+            Pair(18, 500)
         )
     )
 
@@ -78,17 +82,18 @@ class Psychokinesis: Discipline("psychokinesis"){
         false,
         true,
         R.string.kineticShieldDesc,
+        listOf(R.string.lifePointInput, R.string.lifePointDamageBarrier, R.string.lifePointBarrierEnergy),
+        listOf(2, 6, 7, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "300 LP",
-            "500 LP",
-            "700 LP",
-            "1000 LP",
-            "1500 LP/Damage Barrier 60",
-            "2000 LP/Damage Barrier 80/Stops Energy",
-            "3000 LP/Damage Barrier 120/Stops Energy",
-            "5000 LP/Damage Barrier 160/Stops Energy"
+            2, 1,
+            300,
+            500,
+            700,
+            1000,
+            Pair(1500, 60),
+            Pair(2000, 80),
+            Pair(3000, 120),
+            Pair(5000, 160)
         )
     )
 
@@ -99,17 +104,18 @@ class Psychokinesis: Discipline("psychokinesis"){
         false,
         true,
         R.string.kineticArmorDesc,
+        listOf(R.string.armorTypeInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "AT 1",
-            "AT 2",
-            "AT 4",
-            "AT 6",
-            "AT 8",
-            "AT 10",
-            "AT 12",
-            "AT 14"
+            2, 1,
+            1,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14
         )
     )
 
@@ -120,17 +126,17 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.detectMotionDesc,
+        listOf(R.string.physResMeter, R.string.physResKilometer),
+        listOf(3, 7, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "120 PhR/10-meter radius",
-            "160 PhR/50-meter radius",
-            "200 PhR/100-meter radius",
-            "240 PhR/500-meter radius",
-            "280 PhR/1-kilometer radius",
-            "320 PhR/10-kilometer radius",
-            "400 PhR/100-kilometer radius"
+            4, 2, 1,
+            Pair(120, 10),
+            Pair(160, 50),
+            Pair(200, 100),
+            Pair(240, 500),
+            Pair(280, 1),
+            Pair(320, 10),
+            Pair(400, 100)
         )
     )
 
@@ -141,17 +147,16 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.repulsionDesc,
+        listOf(R.string.strengthInLine),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Strength 6/2-meter line",
-            "Strength 8/5-meter line",
-            "Strength 10/10-meter line",
-            "Strength 12/20-meter line",
-            "Strength 14/50-meter line",
-            "Strength 18/100-meter line"
+            8, 6, 4, 2,
+            Pair(6, 2),
+            Pair(8, 5),
+            Pair(10, 10),
+            Pair(12, 20),
+            Pair(14, 50),
+            Pair(18, 100)
         )
     )
 
@@ -162,17 +167,17 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         false,
         R.string.ballisticsDesc,
+        listOf(R.string.projectionRange),
+        listOf(3, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "+0 Projection/5 meters",
-            "+10 Projection/10 meters",
-            "+20 Projection/15 meters",
-            "+30 Projection/25 meters",
-            "+40 Projection/40 meters",
-            "+50 Projection/80 meters",
-            "+60 Projection/150 meters"
+            4, 2, 1,
+            Pair(0, 5),
+            Pair(10, 10),
+            Pair(20, 15),
+            Pair(30, 25),
+            Pair(40, 40),
+            Pair(50, 80),
+            Pair(60, 150)
         )
     )
 
@@ -183,17 +188,16 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         false,
         R.string.shatterDesc,
+        listOf(R.string.physResInput),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 PhR",
-            "120 PhR",
-            "140 PhR",
-            "160 PhR",
-            "180 PhR",
-            "220 PhR"
+            8, 6, 4, 2,
+            100,
+            120,
+            140,
+            160,
+            180,
+            220
         )
     )
 
@@ -204,17 +208,17 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.kineticFlightDesc,
+        listOf(R.string.flightInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "Flight Value 6",
-            "Flight Value 8",
-            "Flight Value 10",
-            "Flight Value 12",
-            "Flight Value 14",
-            "Flight Value 16",
-            "Flight Value 18"
+            4, 2, 1,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18
         )
     )
 
@@ -225,17 +229,17 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.organicKinesisDesc,
+        listOf(R.string.weightFlightPhys),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 kg/Flight Value 4/100 PhR",
-            "250 kg/Flight Value 6/120 PhR",
-            "500 kg/Flight Value 8/140 PhR",
-            "1000 kg/Flight Value 10/160 PhR",
-            "2500 kg/Flight Value 12/180 PhR",
-            "5000 kg/Flight Value 14/200 PhR",
-            "10000 kg/Flight Value 16/220 PhR"
+            6, 4, 2,
+            listOf(100, 4, 100),
+            listOf(250, 6, 120),
+            listOf(500, 8, 140),
+            listOf(1000, 10, 160),
+            listOf(2500, 12, 180),
+            listOf(5000, 14, 200),
+            listOf(10000, 16, 220)
         )
     )
 
@@ -246,17 +250,15 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         false,
         R.string.groundControlDesc,
+        listOf(R.string.meterRadiusBarrier, R.string.kilometerRadiusBarrier),
+        listOf(5, 9, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "10-meter radius/Damage Barrier 40",
-            "100-meter radius/Damage Barrier 60",
-            "250-meter radius/Damage Barrier 80",
-            "500-meter radius/Damage Barrier 100",
-            "1-kilometer radius/Damage Barrier 140"
+            16, 12, 8, 6, 4,
+            Pair(10, 40),
+            Pair(100, 60),
+            Pair(250, 80),
+            Pair(500, 100),
+            Pair(1, 140)
         )
     )
 
@@ -267,17 +269,13 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         false,
         R.string.atomRestructureDesc,
+        listOf(R.string.physResKilogram, R.string.physResTons),
+        listOf(7, 8, 10),
         listOf(
-            "Fatigue 24",
-            "Fatigue 20",
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "140 PhR/100 kg",
-            "160 PhR/10 tons",
-            "200 PhR/100 tons"
+            24, 20, 16, 12, 8, 6, 4,
+            Pair(140, 100),
+            Pair(160, 10),
+            Pair(200, 100)
         )
     )
 
@@ -288,17 +286,14 @@ class Psychokinesis: Discipline("psychokinesis"){
         true,
         true,
         R.string.majorKinesisDesc,
+        listOf(R.string.tonsFlightValue),
+        listOf(6, 10),
         listOf(
-            "Fatigue 24",
-            "Fatigue 20",
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 4",
-            "500 tons/Flight Value 4",
-            "10000 tons/Flight Value 6",
-            "100000 tons/Flight Value 8",
-            "1000000 tons/Flight Value 10"
+            24, 20, 16, 12, 8, 4,
+            Pair(500, 4),
+            Pair(10000, 6),
+            Pair(100000, 8),
+            Pair(1000000, 10)
         )
     )
 

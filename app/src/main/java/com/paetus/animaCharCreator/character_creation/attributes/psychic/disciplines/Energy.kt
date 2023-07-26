@@ -15,17 +15,17 @@ class Energy: Discipline("energy"){
         true,
         true,
         R.string.createEnergyObjDesc,
+        listOf(R.string.cubicMeterInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "1 cubic meter",
-            "2 cubic meters",
-            "3 cubic meters",
-            "4 cubic meters",
-            "5 cubic meters",
-            "10 cubic meters",
-            "20 cubic meters"
+            4, 2, 1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            10,
+            20
         )
     )
 
@@ -36,17 +36,17 @@ class Energy: Discipline("energy"){
         true,
         false,
         R.string.energyDischargeDesc,
+        listOf(R.string.damageInput, R.string.damageImmaterial),
+        listOf(3, 7, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "Damage 50",
-            "Damage 70",
-            "Damage 100",
-            "Damage 120",
-            "Damage 140/It affects immaterial beings",
-            "Damage 180/It affects immaterial beings",
-            "Damage 220/It affects immaterial beings"
+            4, 2, 1,
+            50,
+            70,
+            100,
+            120,
+            140,
+            180,
+            220
         )
     )
 
@@ -57,17 +57,18 @@ class Energy: Discipline("energy"){
         true,
         true,
         R.string.createEnergyPowerDesc,
+        listOf(R.string.intensities),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "1 Intensity",
-            "3 Intensities",
-            "5 Intensities",
-            "7 Intensities",
-            "10 Intensities",
-            "13 Intensities",
-            "16 Intensities",
-            "20 Intensities"
+            2, 1,
+            1,
+            3,
+            5,
+            7,
+            10,
+            13,
+            16,
+            20
         )
     )
 
@@ -78,17 +79,17 @@ class Energy: Discipline("energy"){
         false,
         true,
         R.string.energyShieldDesc,
+        listOf(R.string.lifePointInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "300 LP",
-            "500 LP",
-            "800 LP",
-            "1000 LP",
-            "1400 LP",
-            "2000 LP",
-            "3000 LP"
+            6, 4, 2,
+            300,
+            500,
+            800,
+            1000,
+            1400,
+            2000,
+            3000
         )
     )
 
@@ -99,17 +100,18 @@ class Energy: Discipline("energy"){
         true,
         true,
         R.string.senseEnergyDesc,
+        listOf(R.string.meterRadius, R.string.kilometerRadius),
+        listOf(2, 7, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "10-meter radius",
-            "50-meter radius",
-            "100-meter radius",
-            "250-meter radius",
-            "500-meter radius",
-            "1-kilometer radius",
-            "10-kilometer radius",
-            "100-kilometer radius"
+            2, 1,
+            10,
+            50,
+            100,
+            250,
+            500,
+            1,
+            10,
+            100
         )
     )
 
@@ -120,17 +122,16 @@ class Energy: Discipline("energy"){
         true,
         false,
         R.string.modNatureDesc,
+        listOf(R.string.physResIntensities),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "6 Intensities/100 PhR",
-            "8 Intensities/120 PhR",
-            "12 Intensities/140 PhR",
-            "16 Intensities/160 PhR",
-            "20 Intensities/180 PhR",
-            "25 Intensities/220 PhR"
+            8, 6, 4, 2,
+            Pair(100, 6),
+            Pair(120, 8),
+            Pair(140, 12),
+            Pair(160, 16),
+            Pair(180, 20),
+            Pair(220, 25)
         )
     )
 
@@ -141,17 +142,17 @@ class Energy: Discipline("energy"){
         true,
         false,
         R.string.undoEnergyDesc,
+        listOf(R.string.physResReduceIntense),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "-1 Intensity/100 PhR",
-            "-3 Intensities/120 PhR",
-            "-5 Intensities/140 PhR",
-            "-8 Intensities/160 PhR",
-            "-12 Intensities/180 PhR",
-            "-18 Intensities/200 PhR",
-            "-24 Intensities/240 PhR"
+            6, 4, 2,
+            Pair(100, 1),
+            Pair(120, 3),
+            Pair(140, 5),
+            Pair(160, 8),
+            Pair(180, 12),
+            Pair(200, 18),
+            Pair(240, 24)
         )
     )
 
@@ -162,17 +163,15 @@ class Energy: Discipline("energy"){
         false,
         true,
         R.string.immunityPowerDesc,
+        listOf(R.string.intensities),
+        listOf(5, 10),
         listOf(
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "10 Intensities",
-            "15 Intensities",
-            "20 Intensities",
-            "30 Intensities",
-            "40 Intensities"
+            12, 8, 6, 4, 2,
+            10,
+            15,
+            20,
+            30,
+            40
         )
     )
 
@@ -183,17 +182,17 @@ class Energy: Discipline("energy"){
         true,
         true,
         R.string.controlEnergyDesc,
+        listOf(R.string.physResIntensities),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "4 Intensities/80 PhR",
-            "6 Intensities/100 PhR",
-            "8 Intensities/120 PhR",
-            "12 Intensities/140 PhR",
-            "16 Intensities/160 PhR",
-            "20 Intensities/180 PhR",
-            "25 Intensities/220 PhR"
+            6, 4, 2,
+            Pair(80, 4),
+            Pair(100, 6),
+            Pair(120, 8),
+            Pair(140, 12),
+            Pair(160, 16),
+            Pair(180, 20),
+            Pair(220, 25)
         )
     )
 
@@ -204,17 +203,15 @@ class Energy: Discipline("energy"){
         true,
         false,
         R.string.energyDomeDesc,
+        listOf(R.string.baseDamageArea, R.string.baseDamageAreaImmaterial),
+        listOf(5, 8, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Base Damage 100/25-meter radius",
-            "Base Damage 120/50-meter radius",
-            "Base Damage 140/100-meter radius",
-            "Base Damage 160/200-meter radius/It affects immaterial beings",
-            "Base Damage 200/500-meter radius/It affects immaterial beings"
+            16, 12, 8, 6, 4,
+            Pair(100, 25),
+            Pair(120, 50),
+            Pair(140, 100),
+            Pair(160, 200),
+            Pair(200, 500)
         )
     )
 
@@ -225,17 +222,14 @@ class Energy: Discipline("energy"){
         true,
         true,
         R.string.majorEnergyDesc,
+        listOf(R.string.intensities),
+        listOf(6, 10),
         listOf(
-            "Fatigue 20",
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "25 Intensities",
-            "35 Intensities",
-            "45 Intensities",
-            "55 Intensities"
+            20, 16, 12, 8, 6, 4,
+            25,
+            35,
+            45,
+            55
         )
     )
 

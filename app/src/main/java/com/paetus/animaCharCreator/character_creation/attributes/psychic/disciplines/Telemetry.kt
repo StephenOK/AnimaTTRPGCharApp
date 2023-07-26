@@ -16,17 +16,18 @@ class Telemetry: Discipline("telemetry"){
         true,
         R.string.senseResiduesDesc,
         listOf(
-            "Fatigue 1",
-            "One Hour",
-            "Six Hours",
-            "One Day",
-            "Three Days",
-            "One Week",
-            "One Month",
-            "One Year",
-            "One Decade",
-            "One Century"
-        )
+            R.string.oneHour,
+            R.string.sixHours,
+            R.string.oneDay,
+            R.string.threeDays,
+            R.string.oneWeek,
+            R.string.oneMonth,
+            R.string.oneYear,
+            R.string.oneDecade,
+            R.string.oneCentury
+        ),
+        listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+        listOf(1, null, null, null, null, null, null, null, null, null)
     )
 
     val readPast = PsychicPower(
@@ -37,17 +38,15 @@ class Telemetry: Discipline("telemetry"){
         false,
         R.string.readPastDesc,
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "One Hour",
-            "Six Hours",
-            "One Day",
-            "One Week",
-            "One Month",
-            "One Year"
-        )
+            R.string.oneHour,
+            R.string.sixHours,
+            R.string.oneDay,
+            R.string.oneWeek,
+            R.string.oneMonth,
+            R.string.oneYear
+        ),
+        listOf(4, 5, 6, 7, 8, 9, 10),
+        listOf(8, 6, 4, 2, null, null, null, null, null, null)
     )
 
     val humanErudition = PsychicPower(
@@ -57,17 +56,17 @@ class Telemetry: Discipline("telemetry"){
         true,
         false,
         R.string.humanEruditionDesc,
+        listOf(R.string.psyResTime),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "One Day/80 PsR",
-            "One Week/100 PsR",
-            "One Month/120 PsR",
-            "One Year/140 PsR",
-            "Ten Years/160 PsR",
-            "Fifty Years/180 PsR",
-            "All of his life/200 PsR"
+            6, 4, 2,
+            Pair(80, {R.string.oneDay}),
+            Pair(100, {R.string.oneWeek}),
+            Pair(120, {R.string.oneMonth}),
+            Pair(140, {R.string.oneYear}),
+            Pair(160, {R.string.oneDecade}),
+            Pair(180, {R.string.fiftyYears}),
+            Pair(200, {R.string.lifelong})
         )
     )
 
@@ -79,17 +78,14 @@ class Telemetry: Discipline("telemetry"){
         true,
         R.string.seeHistoryDesc,
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "One Year",
-            "Ten Years",
-            "One Century",
-            "One Millennium",
-            "Any Amount of Time"
-        )
+            R.string.oneYear,
+            R.string.oneDecade,
+            R.string.oneCentury,
+            R.string.oneMillennium,
+            R.string.anyTimeAmount
+        ),
+        listOf(5, 6, 7, 8, 9, 10),
+        listOf(16, 12, 8, 6, 4, null, null, null, null, null)
     )
 
     init{

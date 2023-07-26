@@ -15,17 +15,19 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.createFirePowerDesc,
+        listOf(R.string.intensities),
+        listOf(1, 10),
         listOf(
-            "Fatigue 1",
-            "1 Intensity",
-            "3 Intensities",
-            "5 Intensities",
-            "7 Intensities",
-            "10 Intensities",
-            "13 Intensities",
-            "16 Intensities",
-            "20 Intensities",
-            "25 Intensities"
+            1,
+            1,
+            3,
+            5,
+            7,
+            10,
+            13,
+            16,
+            20,
+            25
         )
     )
 
@@ -36,17 +38,19 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         false,
         R.string.extinguishFireDesc,
+        listOf(R.string.physResReduceIntense),
+        listOf(1, 10),
         listOf(
-            "Fatigue 1",
-            "-1 Intensity/80 PhR",
-            "-3 intensities/100 PhR",
-            "-5 Intensities/120 PhR",
-            "-7 Intensities/140 PhR",
-            "-10 Intensities/160 PhR",
-            "-15 Intensities/180 PhR",
-            "-20 Intensities/200 PhR",
-            "-30 Intensities/220 PhR",
-            "-40 Intensities/260 PhR"
+            2,
+            Pair(80, 1),
+            Pair(100, 3),
+            Pair(120, 5),
+            Pair(140, 7),
+            Pair(160, 10),
+            Pair(180, 15),
+            Pair(200, 20),
+            Pair(220, 30),
+            Pair(260, 40)
         )
     )
 
@@ -57,17 +61,18 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.controlFireDesc,
+        listOf(R.string.physResIntensities),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "4 Intensities/80 PhR",
-            "6 Intensities/100 PhR",
-            "8 Intensities/120 PhR",
-            "12 Intensities/140 PhR",
-            "16 Intensities/160 PhR",
-            "20 Intensities/180 PhR",
-            "25 Intensities/200 PhR",
-            "30 Intensities/240 PhR"
+            2, 1,
+            Pair(80, 4),
+            Pair(100, 6),
+            Pair(120, 8),
+            Pair(140, 12),
+            Pair(160, 16),
+            Pair(180, 20),
+            Pair(200, 25),
+            Pair(240, 30)
         )
     )
 
@@ -78,17 +83,17 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         false,
         R.string.immolateDesc,
+        listOf(R.string.baseDamageArea),
+        listOf(3, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "Base Damage 60/5-meter radius",
-            "Base Damage 80/10-meter radius",
-            "Base Damage 100/20-meter radius",
-            "Base Damage 120/30-meter radius",
-            "Base Damage 150/50-meter radius",
-            "Base Damage 200/100-meter radius",
-            "Base Damage 250/200-meter radius"
+            4, 2, 1,
+            Pair(60, 5),
+            Pair(80, 10),
+            Pair(100, 20),
+            Pair(120, 30),
+            Pair(150, 50),
+            Pair(200, 100),
+            Pair(250, 200)
         )
     )
 
@@ -99,17 +104,17 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.igneousMaintDesc,
+        listOf(R.string.intensities),
+        listOf(3, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "5 Intensities",
-            "10 Intensities",
-            "15 Intensities",
-            "20 Intensities",
-            "30 Intensities",
-            "40 Intensities",
-            "50 Intensities"
+            4, 2, 1,
+            5,
+            10,
+            15,
+            20,
+            30,
+            40,
+            50
         )
     )
 
@@ -120,17 +125,17 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         false,
         true,
         R.string.fireImmuneDesc,
+        listOf(R.string.intensities),
+        listOf(3, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "5 Intensities",
-            "10 Intensities",
-            "15 Intensities",
-            "20 Intensities",
-            "30 Intensities",
-            "40 Intensities",
-            "50 Intensities"
+            4, 2, 1,
+            5,
+            10,
+            15,
+            20,
+            30,
+            40,
+            50
         )
     )
 
@@ -141,17 +146,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.igneousBarrierDesc,
+        listOf(R.string.baseDamageLine),
+        listOf(4, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "Base Damage 60/5 meters long",
-            "Base Damage 80/10 meters long",
-            "Base Damage 120/20 meters long",
-            "Base Damage 160/30 meters long",
-            "Base Damage 200/40 meters long",
-            "Base Damage 240/50 meters long"
+            6, 4, 2, 1,
+            Pair(60, 5),
+            Pair(80, 10),
+            Pair(120, 20),
+            Pair(160, 30),
+            Pair(200, 40),
+            Pair(240, 50)
         )
     )
 
@@ -162,17 +166,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.raiseTempPowerDesc,
+        listOf(R.string.tempIncreaseKilometer),
+        listOf(4, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "+5℃/1-kilometer radius",
-            "+10℃/5-kilometer radius",
-            "+15℃/10-kilometer radius",
-            "+20℃/25-kilometer radius",
-            "+30℃/50-kilometer radius",
-            "+40℃/100-kilometer radius"
+            6, 4, 2, 1,
+            Pair(5, 1),
+            Pair(10, 5),
+            Pair(15, 10),
+            Pair(20, 25),
+            Pair(30, 50),
+            Pair(40, 100)
         )
     )
 
@@ -183,17 +186,15 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         false,
         R.string.consumeDesc,
+        listOf(R.string.physResAutoDamage),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "120 PhR/Automatic Damage 80",
-            "140 PhR/Automatic Damage 120",
-            "160 PhR/Automatic Damage 160",
-            "180 PhR/Automatic Damage 200",
-            "220 PhR/Automatic Damage 250"
+            16, 12, 8, 6, 4,
+            Pair(120, 80),
+            Pair(140, 120),
+            Pair(160, 160),
+            Pair(180, 200),
+            Pair(220, 250)
         )
     )
 
@@ -204,17 +205,17 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.novaDesc,
+        listOf(R.string.lifePointInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "10 Life Points",
-            "20 Life Points",
-            "30 Life Points",
-            "40 Life Points",
-            "60 Life Points",
-            "80 Life Points",
-            "120 Life Points"
+            16, 12, 8,
+            10,
+            20,
+            30,
+            40,
+            60,
+            80,
+            120
         )
     )
 
@@ -225,17 +226,14 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         true,
         true,
         R.string.majorFireDesc,
+        listOf(R.string.intensities),
+        listOf(6, 10),
         listOf(
-            "Fatigue 20",
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "30 Intensities",
-            "40 Intensities",
-            "50 Intensities",
-            "60 Intensities"
+            20, 16, 12, 8, 6, 4,
+            30,
+            40,
+            50,
+            60
         )
     )
 

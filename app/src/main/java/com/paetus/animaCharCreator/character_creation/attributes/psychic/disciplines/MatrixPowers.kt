@@ -16,16 +16,24 @@ class MatrixPowers: Discipline("matrixPowers"){
         true,
         R.string.senseMatricesDesc,
         listOf(
-            "Fatigue 1",
-            "10-meter radius/See active Psychic Matrices",
-            "25-meter radius/Detect latent Powers in people",
-            "50-meter radius/Recognize the Power in use",
-            "100-meter radius",
-            "250-meter radius/Discern Disciplines of a psychic",
-            "500-meter radius/Discern psychic's Potential",
-            "1-kilometer radius/Discern psychic's free PP",
-            "10-kilometer radius/Notice another psychic's Powers",
-            "100-kilometer radius"
+            R.string.senseMatrixMeter,
+            R.string.meterInput,
+            R.string.senseMatrixMeter,
+            R.string.senseMatrixKilometer,
+            R.string.kilometerInput
+        ),
+        listOf(1, 4, 5, 7, 9, 10),
+        listOf(
+            1,
+            Pair(10, {R.string.seeMatrices}),
+            Pair(25, {R.string.detectPowers}),
+            Pair(50, {R.string.recognizePowers}),
+            100,
+            Pair(250, {R.string.discernDiscipline}),
+            Pair(500, {R.string.discernPsyPotential}),
+            Pair(1, {R.string.discernFreePP}),
+            Pair(10, {R.string.noticeAnothersPower}),
+            100
         )
     )
 
@@ -36,17 +44,17 @@ class MatrixPowers: Discipline("matrixPowers"){
         false,
         true,
         R.string.destroyMatricesDesc,
+        listOf(R.string.powerLevel),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Medium-level Powers",
-            "Difficult-level Powers",
-            "Very Difficult-level Powers",
-            "Absurd-level Powers",
-            "Almost Impossible-level Powers",
-            "Impossible-level Powers",
-            "Inhuman-level Powers"
+            6, 4, 2,
+            {R.string.moderate},
+            {R.string.difficult},
+            {R.string.veryDifficult},
+            {R.string.absurd},
+            {R.string.almostImpossible},
+            {R.string.impossible},
+            {R.string.inhuman}
         )
     )
 
@@ -57,18 +65,9 @@ class MatrixPowers: Discipline("matrixPowers"){
         false,
         true,
         R.string.hideMatricesDesc,
-        listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "-2 Difficulty Degrees",
-            "-3 Difficulty Degrees",
-            "-4 Difficulty Degrees",
-            "-5 Difficulty Degrees",
-            "-6 Difficulty Degrees",
-            "-7 Difficulty Degrees",
-            "-8 Difficulty Degrees",
-            "-9 Difficulty Degrees"
-        )
+        listOf(R.string.difficultyDegree),
+        listOf(2, 10),
+        listOf(2, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     )
 
     val linkMatrices = PsychicPower(
@@ -78,18 +77,9 @@ class MatrixPowers: Discipline("matrixPowers"){
         true,
         true,
         R.string.linkMatricesDesc,
-        listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "2 Individuals",
-            "3 Individuals",
-            "4 Individuals",
-            "6 Individuals",
-            "8 Individuals",
-            "10 Individuals",
-            "20 Individuals"
-        )
+        listOf(R.string.individualCount),
+        listOf(3, 10),
+        listOf(6, 4, 2, 2, 3, 4, 6, 8, 10, 20)
     )
 
     init{

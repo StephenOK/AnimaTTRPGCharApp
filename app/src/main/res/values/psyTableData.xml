@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "fatigueBase">Fatigue %1d</string>
+
+    <string name = "intensities">%1d Intensities</string>
+
+    <string name = "anyDistance">Any Distance</string>
+    <string name = "meterInput">%1d meters</string>
+    <string name = "kilometerInput">%1d kilometers</string>
+    <string name = "meterRadius">%1d-meter Radius</string>
+    <string name = "kilometerRadius">%1d-kilometer Radius</string>
+    <string name = "cubicMeterInput">%1d cubic meters</string>
+
+    <string name = "psyResInput">%1d PsR</string>
+    <string name = "addPsyRes">+%1d PsR</string>
+    <string name = "psyResMeter">%1d PsR/%1d-meter Radius</string>
+    <string name = "psyResKilometer">%1d PsR/%1d-kilometer Radius</string>
+    <string name = "psyResAnyDistance">%1d PsR/Any Distance</string>
+
+    <string name = "physResInput">%1d PhR</string>
+    <string name = "addPhysRes">+%1d PhR</string>
+    <string name = "physResIntensities">%1d PhR/%1d Intensities</string>
+    <string name = "physResReduceIntense">%1d PhR/-%1d Intensities</string>
+    <string name = "physResMeter">%1d PhR/%1d-meter radius</string>
+    <string name = "physResKilometer">%1d PhR/%1d-kilometer radius</string>
+    <string name = "physResKilogram">%1d PhR/%1d kg</string>
+    <string name = "physResTons">%1d PhR/%1d tons</string>
+    <string name = "physResAutoDamage">%1d PhR/Automatic Damage %1d</string>
+
+    <string name = "lifePointInput">%1d LP</string>
+    <string name = "lifePointDamageBarrier">%1d LP/Damage Barrier %1d</string>
+    <string name = "lifePointBarrierEnergy">%1d LP/Damage Barrier %1d/Stops Energy</string>
+
+    <string name = "baseDamageInput">Base Damage %1d</string>
+    <string name = "baseDamageArea">Base Damage %1d/%1d-meter Radius</string>
+    <string name = "baseDamageLine">Base Damage %1d/%1d meters Long</string>
+    <string name = "baseDamageAreaImmaterial">Base Damage %1d/%1d-meter Radius/It affects immaterial beings</string>
+
+    <string name = "damageInput">Damage %1d</string>
+    <string name = "damageImmaterial">Damage %1d/It affects immaterial beings</string>
+
+    <string name = "armorTypeInput">AT %1d</string>
+
+    <string name = "tempIncreaseKilometer">+%1d℃/%1d-kilometer Radius</string>
+    <string name = "tempDecreaseKilometer">-%1d℃/%1d-kilometer Radius</string>
+
+    <string name = "senseMatrixMeter">%1d-meter/%s</string>
+    <string name = "senseMatrixKilometer">%1d-kilometer/%s</string>
+    <string name = "powerLevel">%s-level Powers</string>
+    <string name = "difficultyDegree">-%1d Difficulty Degrees</string>
+    <string name = "individualCount">%1d Individuals</string>
+
+    <string name = "jumpIncrease">+%1d to Jump</string>
+    <string name = "jumpIncreaseInhuman">+%1d to Jump/Inhumanity</string>
+    <string name = "jumpIncreaseZen">+%1d to Jump/Zen</string>
+
+    <string name = "acroIncrease">+%1d Acrobatics</string>
+    <string name = "acroIncreaseInhuman">+%1d Acrobatics/Inhumanity</string>
+    <string name = "acroIncreaseZen">+%1d Acrobatics/Zen</string>
+
+    <string name = "inhumanityPower">Inhumanity</string>
+    <string name = "athleticsIncrease">Inhumanity/+%1d to Athletics Abilities</string>
+    <string name = "athleticsIncreaseZen">Zen/+%1d to Athletics Abilities</string>
+    <string name = "perceptionIncrease">Perception +%1d</string>
+
+    <string name = "strengthInput">Strength %1d</string>
+    <string name = "strengthIncrease">Strength +%1d</string>
+    <string name = "strengthWithRadius">Strength %1d/%1d-meter Radius</string>
+    <string name = "strengthInLine">Strength %1d/%1d-meter Line</string>
+    <string name = "dexOrAgiIncrease">Dex or Agi +%1d</string>
+    <string name = "physCharIncreaseInput">Physical Characteristics +%1d</string>
+
+    <string name = "movementValIncrease">Movement Value +%1d</string>
+    <string name = "initiativeIncrease">+%1d to Initiative</string>
+    <string name = "regenerationIncrease">+%1d to Regeneration Level</string>
+    <string name = "fatigueRecovery">Recovery of %1d Fatigue Points</string>
+    <string name = "completeRecovery">Complete Recovery</string>
+    <string name = "flightInput">Flight Value %1d</string>
+    <string name = "kilogramsFlightValue">%1d kg/Flight Value %1d</string>
+    <string name = "tonsFlightValue">%1d tons/Flight Value %1d</string>
+    <string name = "projectionRange">+%1d Projection/%1d meters</string>
+    <string name = "weightFlightPhys">%1d kg/Flight Value %1d/%1d PhR</string>
+    <string name = "meterRadiusBarrier">%1d-meter Radius/Damage Barrier %1d</string>
+    <string name = "kilometerRadiusBarrier">%1d-kilometer Radius/Damage Barrier %1d</string>
+
+    <string name = "oneHour">One Hour</string>
+    <string name = "sixHours">Six Hours</string>
+    <string name = "oneDay">One Day</string>
+    <string name = "threeDays">Three Days</string>
+    <string name = "oneWeek">One Week</string>
+    <string name = "oneMonth">One Month</string>
+    <string name = "oneYear">One Year</string>
+    <string name = "oneDecade">One Decade</string>
+    <string name = "fiftyYears">Fifty Years</string>
+    <string name = "oneCentury">One Century</string>
+    <string name = "oneMillennium">One Millennium</string>
+    <string name = "anyTimeAmount">Any Amount of Time</string>
+    <string name = "lifelong">All of his life</string>
+
+    <string name = "psyResTime">%1d PsR/%s</string>
+
+    <string name = "seeMatrices">See active Psychic Matrices</string>
+    <string name = "detectPowers">Detect latent Powers in people</string>
+    <string name = "recognizePowers">Recognize the Power in use</string>
+    <string name = "discernDiscipline">Discern Disciplines of a psychic</string>
+    <string name = "discernPsyPotential">Discern psychic\'s Potential</string>
+    <string name = "discernFreePP">Discern psychic\'s free PP</string>
+    <string name = "noticeAnothersPower">Notice another psychic\'s Powers</string>
+</resources>

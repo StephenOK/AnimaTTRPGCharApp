@@ -23,7 +23,7 @@
     <string-array name = "difficultyTable">
         <item>Routine (20)</item>
         <item>Easy (40)</item>
-        <item>Medium (80)</item>
+        <item>Moderate (80)</item>
         <item>Difficult (120)</item>
         <item>Very Difficult (140)</item>
         <item>Absurd (180)</item>

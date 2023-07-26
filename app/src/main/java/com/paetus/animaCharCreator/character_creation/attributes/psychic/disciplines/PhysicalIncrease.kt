@@ -15,18 +15,19 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseJumpDesc,
+        listOf(R.string.jumpIncrease, R.string.jumpIncreaseInhuman, R.string.jumpIncreaseZen),
+        listOf(1, 5, 8, 10),
         listOf(
-            "Fatigue 2",
-            "+10 to Jump",
-            "+20 to Jump",
-            "+40 to Jump",
-            "+80 to Jump",
-            "+120 to Jump/Inhumanity",
-            "+180 to Jump/Inhumanity",
-            "+220 to Jump/Inhumanity",
-            "+280 to Jump/Zen",
-            "+280 to Jump/Zen",
-            "+320 to Jump/Zen"
+            2,
+            10,
+            20,
+            40,
+            80,
+            120,
+            180,
+            220,
+            280,
+            320
         )
     )
 
@@ -37,17 +38,18 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseAbilityDesc,
+        listOf(R.string.dexOrAgiIncrease),
+        listOf(2, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Dex or Agi +1",
-            "Dex or Agi +2",
-            "Dex or Agi +3",
-            "Dex or Agi +4",
-            "Dex or Agi +5",
-            "Dex or Agi +6",
-            "Dex or Agi +8",
-            "Dex or Agi +10"
+            4, 2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            10
         )
     )
 
@@ -58,17 +60,19 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseAcrobaticsDesc,
+        listOf(R.string.acroIncrease, R.string.acroIncreaseInhuman, R.string.acroIncreaseZen),
+        listOf(1, 5, 8, 10),
         listOf(
-            "Fatigue 2",
-            "+10 Acrobatics",
-            "+20 Acrobatics",
-            "+40 Acrobatics",
-            "+80 Acrobatics",
-            "+120 Acrobatics/Inhumanity",
-            "+180 Acrobatics/Inhumanity",
-            "+220 Acrobatics/Inhumanity",
-            "+280 Acrobatics/Zen",
-            "+320 Acrobatics/Zen"
+            2,
+            10,
+            20,
+            40,
+            80,
+            120,
+            180,
+            220,
+            280,
+            320
         )
     )
 
@@ -79,17 +83,18 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseStrengthDesc,
+        listOf(R.string.strengthIncrease),
+        listOf(2, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Strength +1",
-            "Strength +2",
-            "Strength +3",
-            "Strength +4",
-            "Strength +5",
-            "Strength +6",
-            "Strength +8",
-            "Strength +10"
+            4, 2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            10
         )
     )
 
@@ -100,17 +105,18 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.inhumanityPowerDesc,
+        listOf(R.string.inhumanityPower, R.string.athleticsIncrease, R.string.athleticsIncreaseZen),
+        listOf(2, 3, 6, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Inhumanity",
-            "Inhumanity/+5 to Athletics Abilities",
-            "Inhumanity/+10 to Athletics Abilities",
-            "Inhumanity/+20 to Athletics Abilities",
-            "Zen/+30 to Athletics Abilities",
-            "Zen/+40 to Athletics Abilities",
-            "Zen/+60 to Athletics Abilities",
-            "Zen/+80 to Athletics Abilities"
+            4, 2,
+            null,
+            5,
+            10,
+            20,
+            30,
+            40,
+            60,
+            80
         )
     )
 
@@ -121,17 +127,17 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseMotionDesc,
+        listOf(R.string.movementValIncrease),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Movement Value +1",
-            "Movement Value +2",
-            "Movement Value +3",
-            "Movement Value +4",
-            "Movement Value +5",
-            "Movement Value +6",
-            "Movement Value +8"
+            6, 4, 2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8
         )
     )
 
@@ -142,17 +148,17 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.increaseReactionPowerDesc,
+        listOf(R.string.initiativeIncrease),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 4",
-            "Fatigue 2",
-            "+20 to Initiative",
-            "+40 to Initiative",
-            "+60 to Initiative",
-            "+80 to Initiative",
-            "+120 to Initiative",
-            "+160 to Initiative",
-            "+200 to Initiative"
+            8, 4, 2,
+            20,
+            40,
+            60,
+            80,
+            120,
+            160,
+            200
         )
     )
 
@@ -163,17 +169,17 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.percIncreaseDesc,
+        listOf(R.string.perceptionIncrease),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Perception +1",
-            "Perception +2",
-            "Perception +3",
-            "Perception +4",
-            "Perception +5",
-            "Perception +6",
-            "Perception +8"
+            8, 4, 2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8
         )
     )
 
@@ -184,17 +190,17 @@ class PhysicalIncrease: Discipline("physIncrease"){
         false,
         true,
         R.string.increaseEnduranceDesc,
+        listOf(R.string.addPhysRes),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 4",
-            "Fatigue 2",
-            "+10 to PhR",
-            "+20 to PhR",
-            "+40 to PhR",
-            "+80 to PhR",
-            "+120 to PhR",
-            "+160 to PhR",
-            "+200 to PhR"
+            8, 4, 2,
+            10,
+            20,
+            40,
+            80,
+            120,
+            160,
+            200
         )
     )
 
@@ -205,14 +211,17 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.regenPowerDesc,
+        listOf(R.string.regenerationIncrease),
+        listOf(3, 10),
         listOf(
-            "+1 to Regeneration Level",
-            "+2 to Regeneration Level",
-            "+4 to Regeneration Level",
-            "+6 to Regeneration Level",
-            "+8 to Regeneration Level",
-            "+10 to Regeneration Level",
-            "+12 to Regeneration Level"
+            8, 6, 4,
+            1,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12
         )
     )
 
@@ -223,17 +232,15 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         false,
         R.string.fatigueEliminateDesc,
+        listOf(R.string.fatigueRecovery, R.string.completeRecovery),
+        listOf(5, 9, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Recovery of 2 Fatigue Points",
-            "Recovery of 4 Fatigue Points",
-            "Recovery of 6 Fatigue Points",
-            "Recovery of 10 Fatigue Points",
-            "Complete Recovery"
+            16, 12, 8, 6, 4,
+            2,
+            4,
+            6,
+            10,
+            null
         )
     )
 
@@ -244,17 +251,15 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.totalIncreaseDesc,
+        listOf(R.string.physCharIncreaseInput),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Physical Characteristics +1",
-            "Physical Characteristics +2",
-            "Physical Characteristics +4",
-            "Physical Characteristics +6",
-            "Physical Characteristics +8"
+            16, 12, 8, 6, 4,
+            1,
+            2,
+            4,
+            6,
+            8
         )
     )
 
@@ -265,17 +270,15 @@ class PhysicalIncrease: Discipline("physIncrease"){
         true,
         true,
         R.string.imbueDesc,
+        listOf(R.string.powerLevel),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Very Difficult-level Powers",
-            "Absurd-level Powers",
-            "Almost Impossible-level Powers",
-            "Impossible-level Powers",
-            "Inhuman-level Powers"
+            16, 12, 8, 6, 4,
+            {R.string.veryDifficult},
+            {R.string.absurd},
+            {R.string.almostImpossible},
+            {R.string.impossible},
+            {R.string.inhuman}
         )
     )
 

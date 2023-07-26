@@ -15,17 +15,19 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.createChillPowDesc,
+        listOf(R.string.intensities),
+        listOf(1, 10),
         listOf(
-            "Fatigue 1",
-            "1 Intensity",
-            "3 Intensities",
-            "5 Intensities",
-            "7 Intensities",
-            "10 Intensities",
-            "13 Intensities",
-            "16 Intensities",
-            "20 Intensities",
-            "25 Intensities"
+            1,
+            1,
+            3,
+            5,
+            7,
+            10,
+            13,
+            16,
+            20,
+            25
         )
     )
 
@@ -36,17 +38,17 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.freezePowDesc,
+        listOf(R.string.physResInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "80 PhR",
-            "100 PhR",
-            "120 PhR",
-            "140 PhR",
-            "160 PhR",
-            "180 PhR",
-            "220 PhR"
+            8, 6, 4,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            220
         )
     )
 
@@ -57,17 +59,17 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.senseTempDesc,
+        listOf(R.string.meterRadius, R.string.kilometerRadius),
+        listOf(3, 7, 10),
         listOf(
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "10-meter radius",
-            "50-meter radius",
-            "100-meter radius",
-            "500-meter radius",
-            "1-kilometer radius",
-            "10-kilometer radius",
-            "100-kilometer radius"
+            4, 2, 1,
+            10,
+            50,
+            100,
+            500,
+            1,
+            10,
+            100
         )
     )
 
@@ -78,17 +80,19 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         false,
         R.string.elimColdDesc,
+        listOf(R.string.physResReduceIntense),
+        listOf(1, 10),
         listOf(
-            "Fatigue 1",
-            "-1 Intensity/80 PhR",
-            "-3 Intensities/100 PhR",
-            "-5 Intensities/120 PhR",
-            "-7 Intensities/140 PhR",
-            "-10 Intensities/160 PhR",
-            "-15 Intensities/180 PhR",
-            "-20 Intensities/200 PhR",
-            "-30 Intensities/220 PhR",
-            "-40 Intensities/260 PhR"
+            1,
+            Pair(80, 1),
+            Pair(100, 3),
+            Pair(120, 5),
+            Pair(140, 7),
+            Pair(160, 10),
+            Pair(180, 15),
+            Pair(200, 20),
+            Pair(220, 30),
+            Pair(260, 40)
         )
     )
 
@@ -99,17 +103,18 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.coldDominionDesc,
+        listOf(R.string.physResIntensities),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "4 Intensities/80 PhR",
-            "6 Intensities/100 PhR",
-            "8 Intensities/120 PhR",
-            "12 Intensities/140 PhR",
-            "16 Intensities/160 PhR",
-            "20 Intensities/180 PhR",
-            "25 Intensities/200 PhR",
-            "30 Intensities/240 PhR"
+            2, 1,
+            Pair(80, 4),
+            Pair(100, 6),
+            Pair(120, 8),
+            Pair(140, 12),
+            Pair(160, 16),
+            Pair(180, 20),
+            Pair(200, 25),
+            Pair(240, 30)
         )
     )
 
@@ -120,17 +125,15 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.crystallizeDesc,
+        listOf(R.string.physResInput),
+        listOf(5, 10),
         listOf(
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "120 PhR",
-            "140 PhR",
-            "160 PhR",
-            "180 PhR",
-            "220 PhR"
+            12, 8, 6, 4, 2,
+            120,
+            140,
+            160,
+            180,
+            220
         )
     )
 
@@ -141,17 +144,15 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         false,
         R.string.iceSplintersDesc,
+        listOf(R.string.baseDamageInput, R.string.baseDamageArea),
+        listOf(5, 8, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "Base Damage 80",
-            "Base Damage 100",
-            "Base Damage 120",
-            "Base Damage 160/5-meter area",
-            "Base Damage 200/25-meter area"
+            8, 6, 4, 2, 1,
+            80,
+            100,
+            120,
+            Pair(160, 5),
+            Pair(200, 25)
         )
     )
 
@@ -162,17 +163,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.decreaseTempDesc,
+        listOf(R.string.tempDecreaseKilometer),
+        listOf(4, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "Fatigue 1",
-            "-5℃/1-kilometer radius",
-            "-10℃/5-kilometer radius",
-            "-15℃/10-kilometer radius",
-            "-20℃/25-kilometer radius",
-            "-30℃/50-kilometer radius",
-            "-40℃/100-kilometer radius"
+            6, 4, 2, 1,
+            Pair(5, 1),
+            Pair(10, 5),
+            Pair(15, 10),
+            Pair(20, 25),
+            Pair(30, 50),
+            Pair(40, 100)
         )
     )
 
@@ -183,17 +183,17 @@ class Cryokinesis: Discipline("cryokinesis"){
         false,
         true,
         R.string.iceShieldDesc,
+        listOf(R.string.lifePointInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "600 LP",
-            "800 LP",
-            "1200 LP",
-            "1800 LP",
-            "2500 LP",
-            "4000 LP",
-            "6000 LP"
+            6, 4, 2,
+            600,
+            800,
+            1200,
+            1800,
+            2500,
+            4000,
+            6000
         )
     )
 
@@ -204,17 +204,15 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.absoluteZeroDesc,
+        listOf(R.string.meterRadius),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "5-meter radius",
-            "10-meter radius",
-            "20-meter radius",
-            "50-meter radius",
-            "100-meter radius"
+            16, 12, 8, 6, 4,
+            5,
+            10,
+            20,
+            50,
+            100
         )
     )
 
@@ -225,17 +223,15 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.everlastMomentDesc,
+        listOf(R.string.physResMeter),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "120 PhR/5-meter radius",
-            "140 PhR/10-meter radius",
-            "160 PhR/20-meter radius",
-            "180 PhR/50-meter radius",
-            "200 PhR/100-meter radius"
+            16, 12, 8, 6, 4,
+            Pair(120, 5),
+            Pair(140, 10),
+            Pair(160, 20),
+            Pair(180, 50),
+            Pair(200, 100)
         )
     )
 
@@ -246,17 +242,14 @@ class Cryokinesis: Discipline("cryokinesis"){
         true,
         true,
         R.string.majorColdDesc,
+        listOf(R.string.intensities),
+        listOf(6, 10),
         listOf(
-            "Fatigue 20",
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "30 Intensities",
-            "40 Intensities",
-            "50 Intensities",
-            "60 Intensities"
+            20, 16, 12, 8, 6, 4,
+            30,
+            40,
+            50,
+            60
         )
     )
 

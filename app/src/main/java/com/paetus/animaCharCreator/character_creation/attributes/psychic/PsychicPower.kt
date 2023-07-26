@@ -9,7 +9,6 @@ package com.paetus.animaCharCreator.character_creation.attributes.psychic
  * @param active whether the power is active or passive
  * @param maintained whether the power is maintainable
  * @param description details on the power's effects
- * @param effects table of effects depending on the player's dice roll
  */
 data class PsychicPower(
     val saveName: String,
@@ -18,5 +17,8 @@ data class PsychicPower(
     val active: Boolean,
     val maintained: Boolean,
     val description: Int,
-    val effects: List<String>
+
+    val stringBaseList: List<Int>,
+    val stringBaseCount: List<Int>,
+    val stringInput: List<Any?>
 )

@@ -15,17 +15,18 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.senseFeelingDesc,
+        listOf(R.string.psyResInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR",
-            "240 PsR"
+            2, 1,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220,
+            240
         )
     )
 
@@ -36,17 +37,18 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.intensifyFeelingDesc,
+        listOf(R.string.psyResInput),
+        listOf(2, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR",
-            "220 PsR",
-            "240 PsR"
+            2, 1,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            220,
+            240
         )
     )
 
@@ -57,17 +59,18 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.detectFeelingsDesc,
+        listOf(R.string.psyResMeter, R.string.psyResKilometer),
+        listOf(2, 7, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "80 PsR/10-meter radius",
-            "100 PsR/50-meter radius",
-            "120 PsR/100-meter radius",
-            "140 PsR/250-meter radius",
-            "160 PsR/500-meter radius",
-            "180 PsR/1-kilometer radius",
-            "200 PsR/10-kilometer radius",
-            "220 PsR/100-kilometer radius"
+            2, 1,
+            Pair(80, 10),
+            Pair(100, 50),
+            Pair(120, 100),
+            Pair(140, 250),
+            Pair(160, 500),
+            Pair(180, 1),
+            Pair(200, 10),
+            Pair(220, 100)
         )
     )
 
@@ -78,17 +81,18 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.connectSensesDesc,
+        listOf(R.string.psyResMeter, R.string.psyResKilometer, R.string.psyResAnyDistance),
+        listOf(2, 5, 9, 10),
         listOf(
-            "Fatigue 2",
-            "Fatigue 1",
-            "60 PsR/ 10-meter radius",
-            "80 PsR/100-meter radius",
-            "100 PsR/500-meter radius",
-            "120 PsR/1-kilometer radius",
-            "140 PsR/10-kilometer radius",
-            "160 PsR/100-kilometer radius",
-            "180 PsR/1000-kilometer radius",
-            "200 PsR/Any distance"
+            2, 1,
+            Pair(60, 10),
+            Pair(80, 100),
+            Pair(100, 500),
+            Pair(120, 1),
+            Pair(140, 10),
+            Pair(160, 100),
+            Pair(180, 1000),
+            200
         )
     )
 
@@ -99,17 +103,16 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.projectSensesDesc,
+        listOf(R.string.kilometerRadius, R.string.anyDistance),
+        listOf(4, 9, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "1-kilometer radius",
-            "10-kilometer radius",
-            "50-kilometer radius",
-            "100-kilometer radius",
-            "1000-kilometer radius",
-            "Any distance"
+            8, 6, 4, 2,
+            1,
+            10,
+            50,
+            100,
+            1000,
+            null
         )
     )
 
@@ -120,17 +123,16 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.elimSensesDesc,
+        listOf(R.string.psyResInput),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "220 PsR"
+            8, 6, 4, 2,
+            100,
+            120,
+            140,
+            160,
+            180,
+            220
         )
     )
 
@@ -141,17 +143,17 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.createFeelingsDesc,
+        listOf(R.string.psyResInput),
+        listOf(3, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 4",
-            "Fatigue 2",
-            "80 PsR",
-            "100 PsR",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR"
+            8, 4, 2,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200
         )
     )
 
@@ -162,17 +164,16 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.infuseFeelingsDesc,
+        listOf(R.string.psyResMeter),
+        listOf(4, 10),
         listOf(
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "Fatigue 2",
-            "100 PsR/5-meter radius",
-            "120 PsR/10-meter radius",
-            "140 PsR/25-meter radius",
-            "160 PsR/50-meter radius",
-            "180 PsR/100-meter radius",
-            "220 PsR/500-meter radius"
+            8, 6, 4, 2,
+            Pair(100, 5),
+            Pair(120, 10),
+            Pair(140, 25),
+            Pair(160, 50),
+            Pair(180, 100),
+            Pair(220, 500)
         )
     )
 
@@ -183,17 +184,15 @@ class Sentience: Discipline("sentience"){
         true,
         false,
         R.string.destroyFeelingsDesc,
+        listOf(R.string.psyResInput),
+        listOf(5, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 6",
-            "Fatigue 4",
-            "120 PsR",
-            "140 PsR",
-            "160 PsR",
-            "180 PsR",
-            "200 PsR"
+            16, 12, 8, 6, 4,
+            120,
+            140,
+            160,
+            180,
+            200
         )
     )
 
@@ -204,17 +203,16 @@ class Sentience: Discipline("sentience"){
         true,
         true,
         R.string.areaSentienceDesc,
+        listOf(R.string.meterRadius, R.string.kilometerRadius),
+        listOf(4, 6, 10),
         listOf(
-            "Fatigue 16",
-            "Fatigue 12",
-            "Fatigue 8",
-            "Fatigue 4",
-            "10-meter radius",
-            "100-meter radius",
-            "1-kilometer radius",
-            "10-kilometer radius",
-            "100-kilometer radius",
-            "500-kilometer radius"
+            16, 12, 8, 4,
+            10,
+            100,
+            1,
+            10,
+            100,
+            500
         )
     )
 

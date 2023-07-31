@@ -6,7 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -601,14 +601,15 @@ private fun TechniqueAbilityDropdown(
                 .width(with(LocalDensity.current) {customTechVM.size.value.width.toDp()})
         ) {
             customTechVM.listSource.collectAsState().value.forEach {
-                DropdownMenuItem(onClick = {
-                    customTechVM.setTechniqueIndex(customTechVM.listSource.value.indexOf(it))
+                DropdownMenuItem(
+                    text = {Text(text = it)},
+                    onClick = {
+                        customTechVM.setTechniqueIndex(customTechVM.listSource.value.indexOf(it))
 
-                    //close the dropdown list
-                    customTechVM.toggleDropdownOpen()
-                }) {
-                    Text(text = it)
-                }
+                        //close the dropdown list
+                        customTechVM.toggleDropdownOpen()
+                    }
+                )
             }
         }
 

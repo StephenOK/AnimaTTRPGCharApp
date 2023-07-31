@@ -12,14 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,6 +116,7 @@ fun AdvantageFragment(
 
         //display advantage choices if available
         if(advantageFragVM.advantageCostOn.collectAsState().value) {
+            //clear the half-attuned list
             advantageFragVM.emptyHalfAttuned()
 
             AdvantageCostPick(
@@ -128,9 +129,11 @@ fun AdvantageFragment(
                         context.getString(input),
                         Toast.LENGTH_LONG
                     ).show()
+                //otherwise, close dialog
                 else
                     advantageFragVM.toggleAdvantageCostOn()
 
+                //update spent DP
                 homePageVM.updateExpenditures()
             }
         }
@@ -158,6 +161,7 @@ fun AdvantageFragment(
                         Text(text = stringResource(R.string.confirmLabel))
                     }
                 },
+                //close dialog without removing The Gift
                 dismissButton = {
                     TextButton(onClick = {advantageFragVM.toggleGiftAlertOn()}){
                         Text(text = stringResource(R.string.cancelLabel))

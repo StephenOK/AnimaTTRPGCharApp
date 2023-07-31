@@ -184,7 +184,7 @@ class KiRecord{
 
     val zen = KiAbility(
         "zen",
-        R.string.zenDesc,
+        R.string.zen,
         inhumanity,
         50,
         R.string.zenDesc

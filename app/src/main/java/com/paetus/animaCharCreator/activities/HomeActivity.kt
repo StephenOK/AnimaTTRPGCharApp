@@ -9,11 +9,26 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -92,9 +107,10 @@ class HomeActivity : AppCompatActivity() {
         val context = LocalContext.current
 
         //get scaffold state, coroutine scope, and navigation controller
-        val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
         val navController = rememberNavController()
+
+        val drawerState = rememberDrawerState(DrawerValue.Closed)
 
         //create viewModels for the home page and home alert items
         val homePageVM: HomePageViewModel by viewModels{
@@ -142,122 +158,126 @@ class HomeActivity : AppCompatActivity() {
             CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
         }
 
-        //scaffold for the home page
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {AppHeader(homePageVM, scaffoldState, scope) },
+        ModalNavigationDrawer(
+            drawerState = drawerState,
             drawerContent = {
                 AppDrawer(
                     homePageVM,
                     filename,
                     charInstance,
-                    scaffoldState,
+                    drawerState,
                     scope,
                     navController
                 )
-            },
-            bottomBar = {AppFooter(homePageVM) }
-        ) {
-            //set navigation host in scaffold
-            NavHost(
-                navController = navController,
-                startDestination = ScreenPage.Character.name,
-                modifier = Modifier
-                    .padding(it)
-            ) {
-                //route to primary characteristics page
-                composable(route = ScreenPage.Character.name) {
-                    charFragVM.refreshPage()
-                    CharacterPageFragment(
-                        charFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to combat abilities page
-                composable(route = ScreenPage.Combat.name) {
-                    combatFragVM.refreshPage()
-                    CombatFragment(
-                        combatFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to secondary characteristics page
-                composable(route = ScreenPage.SecondaryCharacteristics.name) {
-                    secondaryFragVM.refreshPage()
-                    SecondaryAbilityFragment(
-                        secondaryFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to advantages page
-                composable(route = ScreenPage.Advantages.name) {
-                    advantageFragVM.refreshPage()
-                    AdvantageFragment(
-                        advantageFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to combat page
-                composable(route = ScreenPage.Modules.name) {
-                    modFragVM.refreshPage()
-                    ModuleFragment(
-                        modFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to ki page
-                composable(route = ScreenPage.Ki.name) {
-                    kiFragVM.refreshPage()
-                    KiFragment(
-                        kiFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to magic page
-                composable(route = ScreenPage.Magic.name) {
-                    magFragVM.refreshPage()
-                    MagicFragment(
-                        magFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to summoning page
-                composable(route = ScreenPage.Summoning.name) {
-                    summonFragVM.refreshPage()
-                    SummoningFragment(
-                        summonFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to psychic page
-                composable(route = ScreenPage.Psychic.name) {
-                    psyFragVM.refreshPage()
-                    PsychicFragment(
-                        psyFragVM,
-                        homePageVM
-                    )
-                }
-
-                //route to equipment page
-                composable(route = ScreenPage.Equipment.name) {
-                    equipFragVM.refreshPage()
-                    EquipmentFragment(
-                        equipFragVM
-                    )
-                }
             }
+        ){
+            //scaffold for the home page
+            Scaffold(
+                topBar = {AppHeader(homePageVM, drawerState, scope)},
+                bottomBar = {AppFooter(homePageVM) }
+            ) {
 
-            //show exit alert if user opens it
-            if (homePageVM.exitOpen.collectAsState().value)
-                ExitAlert(filename, charInstance){homePageVM.toggleExitAlert()}
+                //set navigation host in scaffold
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenPage.Character.name,
+                    modifier = Modifier
+                        .padding(it)
+                ) {
+                    //route to primary characteristics page
+                    composable(route = ScreenPage.Character.name) {
+                        charFragVM.refreshPage()
+                        CharacterPageFragment(
+                            charFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to combat abilities page
+                    composable(route = ScreenPage.Combat.name) {
+                        combatFragVM.refreshPage()
+                        CombatFragment(
+                            combatFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to secondary characteristics page
+                    composable(route = ScreenPage.SecondaryCharacteristics.name) {
+                        secondaryFragVM.refreshPage()
+                        SecondaryAbilityFragment(
+                            secondaryFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to advantages page
+                    composable(route = ScreenPage.Advantages.name) {
+                        advantageFragVM.refreshPage()
+                        AdvantageFragment(
+                            advantageFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to combat page
+                    composable(route = ScreenPage.Modules.name) {
+                        modFragVM.refreshPage()
+                        ModuleFragment(
+                            modFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to ki page
+                    composable(route = ScreenPage.Ki.name) {
+                        kiFragVM.refreshPage()
+                        KiFragment(
+                            kiFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to magic page
+                    composable(route = ScreenPage.Magic.name) {
+                        magFragVM.refreshPage()
+                        MagicFragment(
+                            magFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to summoning page
+                    composable(route = ScreenPage.Summoning.name) {
+                        summonFragVM.refreshPage()
+                        SummoningFragment(
+                            summonFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to psychic page
+                    composable(route = ScreenPage.Psychic.name) {
+                        psyFragVM.refreshPage()
+                        PsychicFragment(
+                            psyFragVM,
+                            homePageVM
+                        )
+                    }
+
+                    //route to equipment page
+                    composable(route = ScreenPage.Equipment.name) {
+                        equipFragVM.refreshPage()
+                        EquipmentFragment(
+                            equipFragVM
+                        )
+                    }
+                }
+
+                //show exit alert if user opens it
+                if (homePageVM.exitOpen.collectAsState().value)
+                    ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+            }
         }
 
         BackHandler{homePageVM.toggleExitAlert()}
@@ -267,13 +287,14 @@ class HomeActivity : AppCompatActivity() {
      * Composes the top bar for the app in this activity.
      *
      * @param homePageVM viewModel that manages this activity
-     * @param scaffoldState state manager of the scaffold
+     * @param drawerState state manager of the drawer state
      * @param scope coroutine for this item
      */
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun AppHeader(
         homePageVM: HomePageViewModel,
-        scaffoldState: ScaffoldState,
+        drawerState: DrawerState,
         scope: CoroutineScope
     ) {
         TopAppBar(
@@ -288,8 +309,10 @@ class HomeActivity : AppCompatActivity() {
             navigationIcon = {
                 IconButton(
                     onClick = {
-                        if (scaffoldState.drawerState.isClosed)
-                            scope.launch { scaffoldState.drawerState.open() }
+                        if (drawerState.isClosed)
+                            scope.launch{drawerState.open()}
+                        else
+                            scope.launch{drawerState.close()}
                     })
                 {
                     Icon(
@@ -307,7 +330,7 @@ class HomeActivity : AppCompatActivity() {
      * @param homePageVM viewModel that manages this section
      * @param filename name of the file being worked on
      * @param charInstance character object being worked on
-     * @param scaffoldState state manager of the activity's scaffold
+     * @param drawerState state manager of the activity's scaffold
      * @param scope coroutine for this item
      * @param navController navigation host this drawer affects
      */
@@ -316,81 +339,50 @@ class HomeActivity : AppCompatActivity() {
         homePageVM: HomePageViewModel,
         filename: String,
         charInstance: BaseCharacter,
-        scaffoldState: ScaffoldState,
+        drawerState: DrawerState,
         scope: CoroutineScope,
         navController: NavHostController
     ){
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            //for each page enumeration present
-            enumValues<ScreenPage>().forEach {
-                //create a drawer button with the given onclick function
-                DrawerButton(
-                    ScreenPage.toAddress(it),
-                    homePageVM.currentFragment.collectAsState().value != it
-                ) {
-                    //if not on own page
-                    if (homePageVM.currentFragment.value != it) {
-                        //change displayed fragment
-                        homePageVM.setCurrentFragment(it)
-                        scope.launch { scaffoldState.drawerState.close() }
+        ModalDrawerSheet {
+            LazyColumn {
+                //for each page enumeration present
+                items(enumValues<ScreenPage>()){
+                    NavigationDrawerItem(
+                        label = { Text(stringResource(ScreenPage.toAddress(it))) },
+                        selected = homePageVM.currentFragment.collectAsState().value == it,
+                        onClick = {
+                            homePageVM.setCurrentFragment(it)
+                            scope.launch { drawerState.close() }
 
-                        //remove backstack
-                        navController.navigate(it.name) {
-                            popUpTo(0)
+                            //remove backstack
+                            navController.navigate(it.name) {
+                                popUpTo(0)
+                            }
                         }
-                    }
+                    )
                 }
-            }
 
-            //drawer button for saving the character
-            DrawerButton(R.string.saveLabel) {
-                scope.launch { scaffoldState.drawerState.close() }
-                attemptSave(filename, charInstance)
-            }
+                item {
+                    NavigationDrawerItem(
+                        label = { Text(stringResource(R.string.saveLabel)) },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            attemptSave(filename, charInstance)
+                        }
+                    )
+                }
 
-            //drawer button for exiting the character creator
-            DrawerButton(R.string.exitLabel) {
-                scope.launch { scaffoldState.drawerState.close() }
-                homePageVM.toggleExitAlert()
-            }
-        }
-    }
-
-    /**
-     * Creates a navigation button with the given inputs.
-     *
-     * @param display address of the button's name string
-     * @param colorVal optional input for the displayed item's color
-     * @param action function to run on user input
-     */
-    @Composable
-    private fun DrawerButton(
-        display: Int,
-        colorVal: Boolean = true,
-        action: () -> Unit
-    ){
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { action() }
-        ){
-            TextButton(
-                onClick = { action() }
-            ) {
-                Text(
-                    //display page name
-                    text = stringResource(display),
-
-                    //show blue if currently on this page
-                    color =
-                        if(colorVal)
-                            Color.Black
-                        else
-                            Color.Blue
-                )
+                item {
+                    NavigationDrawerItem(
+                        label = { Text(stringResource(R.string.exitLabel)) },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            homePageVM.toggleExitAlert()
+                        }
+                    )
+                }
             }
         }
     }
@@ -402,7 +394,9 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun AppFooter(homePageVM: HomePageViewModel) {
-        Column {
+        Column (
+            modifier = Modifier.background(Color.White)
+        ){
             //row for table header
             Row(
                 horizontalArrangement = Arrangement.Center,

@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,6 +62,7 @@ fun DetailAlert(
     closeFunc: () -> Unit
 ) {
     DialogFrame(
+        //display dialog header
         title,
         {
             LazyColumn{
@@ -125,8 +126,8 @@ private fun AdvantageDetails(item: Advantage){
         if(item.cost.last() != it) costString += ", "
     }
 
+    //construct half attuned elements if necessary
     var halfTunedTo = ""
-
     if(item.multPicked != null) {
         halfTunedTo += "("
         item.multPicked.forEach {
@@ -138,6 +139,7 @@ private fun AdvantageDetails(item: Advantage){
     }
 
     Column{
+        //display half attuned elements if string was constructed
         if(halfTunedTo.isNotEmpty()){
             Row{Text(text = "\t$halfTunedTo")}
             Spacer(Modifier.height(10.dp))
@@ -367,8 +369,10 @@ private fun KiContents(ability: KiAbility) {
 @Composable
 fun TechContents(technique: TechniqueBase) {
     Column{
+        //compose all technique name options
         val fullList = stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(R.array.techniqueDisadvantages)
 
+        //retrieve technique's description
         val desc =
             if(technique is PrebuiltTech) stringResource(technique.description)
             else (technique as Technique).description
@@ -537,42 +541,65 @@ fun PowerDetails(power: PsychicPower){
     }
 }
 
+/**
+ * Composes the psychic power's effect table.
+ *
+ * @param power psychic power to create the table of
+ */
 @Composable
 private fun MakePowerTable(power: PsychicPower){
+    //initialize index referenced
     var index = 0
 
+    //for each indicated fatigued level
     while(index < power.stringBaseCount[0]){
+        //display the difficulty level with the fatigue gained from it
         InfoRow(
             stringArrayResource(R.array.difficultyTable)[index],
             stringResource(R.string.fatigueBase, power.stringInput[index] as Int)
         )
 
+        //increment to next index
         index++
     }
 
+    //for each remaining string display
     power.stringBaseList.forEach{
         while(index < power.stringBaseCount[power.stringBaseList.indexOf(it) + 1]){
+            //get the effect input
             val newIn = power.stringInput[index]
 
+            //get the string indicated by the input
             val display = when(newIn) {
+                //simply input integer
                 is Int -> stringResource(it, newIn)
+
+                //two inputs needed
                 is Pair<*, *> -> {
                     if(newIn.second is Int)
                         stringResource(it, newIn.first!!, newIn.second!!)
                     else
                         stringResource(it, newIn.first!!, stringResource((newIn.second as () -> Int)()))
                 }
+
+                //three inputs needed
                 is List<*> ->
                     stringResource(it, newIn[0] as Int, newIn[1] as Int, newIn[2] as Int)
+
+                //no input given
                 null -> stringResource(it)
+
+                //run a function to get a string reference
                 else -> stringResource(it, stringResource((newIn as () -> Int)()))
             }
 
+            //display table effect
             InfoRow(
                 stringArrayResource(R.array.difficultyTable)[index],
                 display
             )
 
+            //increment index
             index++
         }
     }

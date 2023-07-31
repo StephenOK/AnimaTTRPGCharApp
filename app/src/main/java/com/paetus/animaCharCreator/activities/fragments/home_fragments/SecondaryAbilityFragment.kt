@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,18 +116,24 @@ private fun FreelancerDropdown(
             modifier = Modifier
                 .width(with(LocalDensity.current){item.size.value.width.toDp()})
         ) {
-            DropdownMenuItem(onClick = {
-                item.setSelection(0)
-                item.openToggle()
-            }){Text(text = stringResource(R.string.selectCharPrompt))}
+            DropdownMenuItem(
+                text = {Text(text = stringResource(R.string.selectCharPrompt))},
+                onClick = {
+                    item.setSelection(0)
+                    item.openToggle()
+                }
+            )
 
             //display all secondary characteristic options
             stringArrayResource(R.array.secondaryCharacteristics).forEach{
                 val index = stringArrayResource(R.array.secondaryCharacteristics).indexOf(it) + 1
-                DropdownMenuItem(onClick = {
-                    item.setSelection(index)
-                    item.openToggle()
-                }) {Text(text = it)}
+                DropdownMenuItem(
+                    text = {Text(text = it)},
+                    onClick = {
+                        item.setSelection(index)
+                        item.openToggle()
+                    }
+                )
             }
         }
     }

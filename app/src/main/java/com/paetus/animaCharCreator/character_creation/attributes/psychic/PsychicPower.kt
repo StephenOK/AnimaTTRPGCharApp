@@ -9,6 +9,10 @@ package com.paetus.animaCharCreator.character_creation.attributes.psychic
  * @param active whether the power is active or passive
  * @param maintained whether the power is maintainable
  * @param description details on the power's effects
+ *
+ * @param stringBaseList list of effect descriptions needed for the effect table
+ * @param stringBaseCount number of inputs for fatigue and stringBaseList objects
+ * @param stringInput additional data needed for fatigue and the stringBaseList items
  */
 data class PsychicPower(
     val saveName: String,

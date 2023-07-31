@@ -7,7 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +46,7 @@ fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
     maxNumVM: HomePageViewModel
 ){
-    //get context and keyboard state
+    //get local context
     val context = LocalContext.current
 
     LazyColumn(
@@ -330,14 +335,15 @@ private fun DropdownObject(
         ) {
             //create an object for each option in the inputted list
             options.forEach { stringIn ->
-                DropdownMenuItem(onClick = {
-                    //set the new item to show
-                    item.setOutput(options.indexOf(stringIn))
-                    maxNumVM.updateMaximums()
-                    maxNumVM.updateExpenditures()
-                }) {
-                    Text(text = stringIn)
-                }
+                DropdownMenuItem(
+                    text = {Text(text = stringIn)},
+                    onClick = {
+                        //set the new item to show
+                        item.setOutput(options.indexOf(stringIn))
+                        maxNumVM.updateMaximums()
+                        maxNumVM.updateExpenditures()
+                    }
+                )
             }
         }
     }
@@ -364,7 +370,7 @@ private fun PrimaryRow(
                 .weight(0.2f),
             textAlign = TextAlign.Center
         )
-        //user input section
+        //input for characteristic score
         NumberInput(
             inputText = primeItem.input.collectAsState().value,
             inputFunction = {
@@ -389,7 +395,7 @@ private fun PrimaryRow(
             color = charFragVM.bonusColor.collectAsState().value
         )
 
-        //characteristic bonus display
+        //other bonus display
         Text(
             text = primeItem.bonus.collectAsState().value,
             modifier = Modifier

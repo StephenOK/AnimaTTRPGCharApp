@@ -5,9 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -124,15 +124,23 @@ fun AdvantageCostPick(
     )
 }
 
+/**
+ * Row displaying an option for the selected advantage.
+ *
+ * @param advantageFragVM viewModel working on the current section
+ * @param name description of the current option
+ */
 @Composable
 private fun OptionRow(
     advantageFragVM: AdvantageFragmentViewModel,
     name: String
 ) {
+    //do not display matrix powers for psychic discipline access
     if(advantageFragVM.adjustedAdvantage.collectAsState().value!!.name == R.string.psyDiscAccess &&
         stringArrayResource(R.array.disciplineNames).indexOf(name) == 8)
         return
 
+    //get current context
     val context = LocalContext.current
 
     Row(
@@ -167,14 +175,22 @@ private fun OptionRow(
     }
 }
 
+/**
+ * Composes an option when selecting for the Half-Attuned to Tree advantage.
+ *
+ * @param advantageFragVM viewModel working on this section
+ * @param name description of the current option
+ */
 @Composable
 private fun HalfTreeOptions(
     advantageFragVM: AdvantageFragmentViewModel,
     name: String
 ) {
+    //do not display necromancy for this option
     if(stringArrayResource(R.array.elementList).indexOf(name) == 10)
         return
 
+    //get current context
     val context = LocalContext.current
 
     Row(
@@ -182,11 +198,13 @@ private fun HalfTreeOptions(
             .fillMaxWidth(0.6f),
         verticalAlignment = Alignment.CenterVertically
     ){
+        //create radio button for this option
         RadioButton(
             selected = advantageFragVM.halfAttunedOptions.collectAsState().value.contains(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name)),
             onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))}
         )
 
+        //display option text
         Text(
             text = name,
             modifier = Modifier
@@ -203,6 +221,12 @@ private fun HalfTreeOptions(
     }
 }
 
+/**
+ * Compose a row for a cost option to select.
+ *
+ * @param advantageFragVM viewModel of the current section
+ * @param item cost to display in this row
+ */
 @Composable
 private fun CostRow(
     advantageFragVM: AdvantageFragmentViewModel,

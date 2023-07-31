@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +51,7 @@ fun CombatFragment(
                 end = 30.dp
             )
     ){
-        //create header row for combat items
+        //create header row for life points table
         item {
             Row {
                 Spacer(modifier = Modifier.weight(0.2f))

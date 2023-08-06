@@ -2,18 +2,17 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.R
@@ -45,7 +45,6 @@ fun PsychicFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -54,30 +53,72 @@ fun PsychicFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        //display psychic potential, point, and projection inputs
-        items(psyFragVM.buyItems){
-            PsychicPurchaseTable(it, homePageVM)
+        item{
+            GeneralCard{
+                //construct item header
+                Row(verticalAlignment = Alignment.CenterVertically){
+                    Spacer(Modifier.weight(0.25f))
+                    Text(
+                        text = stringResource(R.string.baseLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = stringResource(R.string.boughtLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                //display psychic potential, point, and projection inputs
+                psyFragVM.buyItems.forEach{
+                    PsychicPurchaseTable(it, homePageVM)
+                }
+            }
         }
+
+        item{Spacer(Modifier.height(10.dp))}
 
         //implement innate slot purchase input
         item{
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.6f),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    text = stringResource(R.string.innateSlotLabel),
+            val innateLabel = stringResource(R.string.psyPointInput, 2)
+
+            GeneralCard {
+                Row(
                     modifier = Modifier
-                        .weight(0.4f)
-                )
-                NumberInput(
-                    inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
-                    inputFunction = {psyFragVM.setInnateSlotDisplay(it.toInt())},
-                    emptyFunction = {psyFragVM.setInnateSlotDisplay("")},
-                    modifier = Modifier
-                        .weight(0.2f)
-                )
+                        .fillMaxWidth(0.6f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.innateSlotLabel),
+                        modifier = Modifier
+                            .weight(0.4f)
+                    )
+                    NumberInput(
+                        inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
+                        inputFunction = { psyFragVM.setInnateSlotDisplay(it.toInt()) },
+                        emptyFunction = { psyFragVM.setInnateSlotDisplay("") },
+                        modifier = Modifier
+                            .weight(0.2f)
+                            .onFocusChanged {
+                                if (it.isFocused)
+                                    psyFragVM.setInnateSlotLabel(innateLabel)
+                                else
+                                    psyFragVM.setInnateSlotLabel("")
+                            },
+                        label = psyFragVM.innateSlotLabel.collectAsState().value
+                    )
+                }
             }
         }
 
@@ -85,11 +126,17 @@ fun PsychicFragment(
 
         //display currently free psychic points
         item{
-            InfoRow(
-                stringResource(R.string.freePsyPointLabel),
-                psyFragVM.freePsyPoints.collectAsState().value,
-                color = psyFragVM.freePointColor.collectAsState().value
-            )
+            GeneralCard {
+                InfoRow(
+                    stringResource(R.string.freePsyPointLabel),
+                    psyFragVM.freePsyPoints.collectAsState().value,
+                    color =
+                        if (psyFragVM.freePointValid.collectAsState().value)
+                            MaterialTheme.colorScheme.secondary
+                        else
+                            MaterialTheme.colorScheme.onError
+                )
+            }
         }
 
         item{Spacer(Modifier.height(10.dp))}
@@ -123,36 +170,7 @@ private fun PsychicPurchaseTable(
     homePageVM: HomePageViewModel
 ){
     //get DP cost of table item if one available
-    val dpString =
-        if(tableData.dpGetter != null)
-            stringResource(R.string.dpLabel, tableData.dpGetter!!())
-        else
-            ""
-
-    //construct item header
-    Row(verticalAlignment = Alignment.CenterVertically){
-        Spacer(Modifier.weight(0.25f))
-        Text(
-            text = stringResource(R.string.baseLabel),
-            modifier = Modifier
-                .weight(0.25f),
-            textAlign = TextAlign.Center
-        )
-
-        Text(
-            text = stringResource(R.string.boughtLabel),
-            modifier = Modifier
-                .weight(0.25f),
-            textAlign = TextAlign.Center
-        )
-
-        Text(
-            text = stringResource(R.string.totalLabel),
-            modifier = Modifier
-                .weight(0.25f),
-            textAlign = TextAlign.Center
-        )
-    }
+    val dpString = stringResource(tableData.getResource(), tableData.getValue())
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -187,7 +205,7 @@ private fun PsychicPurchaseTable(
                 .weight(0.25f),
             label = tableData.dpDisplay.collectAsState().value,
             postRun = {homePageVM.updateExpenditures()},
-            color = tableData.textColor.collectAsState().value
+            isError = !tableData.inputValid.collectAsState().value
         )
 
         //display value's final total
@@ -260,7 +278,7 @@ private fun DisciplineDisplay(
 
         //display for discipline's Psychic Powers
         AnimatedVisibility(visible = discipline.isOpen.collectAsState().value) {
-            Column {
+            GeneralCard{
                 discipline.powerList.forEach {
                     PsyPowerRow(
                         it,

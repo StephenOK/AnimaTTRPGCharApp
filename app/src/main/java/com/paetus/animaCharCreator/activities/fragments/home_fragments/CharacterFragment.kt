@@ -1,12 +1,10 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -16,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
@@ -25,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.TextInput
@@ -52,7 +50,6 @@ fun CharacterPageFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -61,227 +58,226 @@ fun CharacterPageFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //name input
-        item {
-            TextInput(
-                display = charFragVM.nameInput.collectAsState().value,
-                onValueChange = {
-                    charFragVM.setNameInput(it)
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.8f),
-                label = stringResource(R.string.nameText)
-            )
-        }
-
-        //class, race, and level dropdown items
-        items(charFragVM.dropdownList){dropItem ->
-            DropdownObject(dropItem, maxNumVM)
-        }
-
-        //experience point input
         item{
-            NumberInput(
-                inputText = charFragVM.experiencePoints.collectAsState().value,
-                inputFunction = {charFragVM.setExp(it.toInt())},
-                emptyFunction = {charFragVM.setExp("")},
-                modifier = Modifier
-                    .fillMaxWidth(0.8f),
-                alignment = TextAlign.Left,
-                label = stringResource(R.string.expText)
-            )
+            GeneralCard{
+                //name input
+                TextInput(
+                    display = charFragVM.nameInput.collectAsState().value,
+                    onValueChange = {
+                        charFragVM.setNameInput(it)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f),
+                    label = stringResource(R.string.nameText)
+                )
+
+                //class, race, and level dropdown items
+                charFragVM.dropdownList.forEach {
+                    DropdownObject(it, maxNumVM)
+                }
+
+                //experience point input
+                NumberInput(
+                    inputText = charFragVM.experiencePoints.collectAsState().value,
+                    inputFunction = { charFragVM.setExp(it.toInt()) },
+                    emptyFunction = { charFragVM.setExp("") },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f),
+                    alignment = TextAlign.Left,
+                    label = stringResource(R.string.expText)
+                )
+            }
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
         //display gender bonus selection if the character is a duk'zarist
-        item{
-            if(charFragVM.raceDropdown.output.collectAsState().value == 6){
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                ){
-                    //display checkbox for selection
-                    Checkbox(
-                        checked = charFragVM.isMale.collectAsState().value,
-                        onCheckedChange = {charFragVM.toggleGender()},
-                        modifier = Modifier
-                            .weight(0.1f)
-                    )
-                    //display current selection
-                    Text(
-                        text = stringResource(charFragVM.genderString.collectAsState().value),
-                        modifier = Modifier
-                            .clickable { charFragVM.toggleGender() }
-                            .weight(0.5f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                //optional spacing if character requires paladin options
-                if(!charFragVM.magPaladinOpen.collectAsState().value)
-                    Spacer(Modifier.height(20.dp))
-            }
-        }
-
-        //implement paladin checkbox if necessary
-        item{
-            if(charFragVM.magPaladinOpen.collectAsState().value){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Checkbox(
-                        checked = charFragVM.magPaladin.collectAsState().value,
-                        onCheckedChange = {charFragVM.toggleMagPaladin()},
-                        modifier = Modifier
-                            .weight(0.1f)
-                    )
-
-                    Text(
-                        text = stringResource(R.string.isMagPaladin),
-                        modifier = Modifier
-                            .clickable { charFragVM.toggleMagPaladin() }
-                            .weight(0.5f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Spacer(Modifier.height(20.dp))
-            }
-        }
-
-        //primary characteristic table
         item {
-            //table header row
-            Row {
-                //column buffer
-                Spacer(modifier = Modifier.weight(0.2f))
+            if(charFragVM.raceDropdown.output.collectAsState().value == 6 ||
+                charFragVM.magPaladinOpen.collectAsState().value) {
+                GeneralCard {
+                    if (charFragVM.raceDropdown.output.collectAsState().value == 6) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ) {
+                            //display checkbox for selection
+                            Checkbox(
+                                checked = charFragVM.isMale.collectAsState().value,
+                                onCheckedChange = { charFragVM.toggleGender() },
+                                modifier = Modifier
+                                    .weight(0.1f)
+                            )
+                            //display current selection
+                            Text(
+                                text = stringResource(charFragVM.genderString.collectAsState().value),
+                                modifier = Modifier
+                                    .clickable { charFragVM.toggleGender() }
+                                    .weight(0.5f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
 
-                //score header
-                Text(
-                    text = stringResource(R.string.scoreLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //implement paladin checkbox if necessary
+                    if (charFragVM.magPaladinOpen.collectAsState().value) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = charFragVM.magPaladin.collectAsState().value,
+                                onCheckedChange = { charFragVM.toggleMagPaladin() },
+                                modifier = Modifier
+                                    .weight(0.1f)
+                            )
 
-                Spacer(Modifier.weight(0.01f))
+                            Text(
+                                text = stringResource(R.string.isMagPaladin),
+                                modifier = Modifier
+                                    .clickable { charFragVM.toggleMagPaladin() }
+                                    .weight(0.5f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
 
-                //level bonus input header
-                Text(
-                    text = stringResource(R.string.bonusLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-
-                //bonus header
-                Text(
-                    text = stringResource(R.string.specialLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-
-                //mod header
-                Text(
-                    text = stringResource(R.string.modLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    }
+                }
             }
         }
 
-        //create row for each primary characteristic
-        items(charFragVM.primaryDataList){
-            PrimaryRow(charFragVM, it)
+        item{Spacer(Modifier.height(20.dp))}
+
+        item{
+            GeneralCard{
+                //primary characteristic table
+                //table header row
+                Row {
+                    //column buffer
+                    Spacer(modifier = Modifier.weight(0.2f))
+
+                    //score header
+                    Text(
+                        text = stringResource(R.string.scoreLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(Modifier.weight(0.01f))
+
+                    //level bonus input header
+                    Text(
+                        text = stringResource(R.string.bonusLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    //bonus header
+                    Text(
+                        text = stringResource(R.string.specialLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    //mod header
+                    Text(
+                        text = stringResource(R.string.modLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                //create row for each primary characteristic
+                charFragVM.primaryDataList.forEach{
+                    PrimaryRow(charFragVM, it)
+                }
+            }
         }
 
         item{Spacer(modifier = Modifier.height(20.dp))}
 
         item{
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.7f)
-            ){
-                NumberInput(
-                    //create input for character's appearance score
-                    inputText = charFragVM.appearInput.collectAsState().value,
-                    inputFunction = {
-                        //attempt new input and notify user of failed input
-                        if (it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.appearanceFailure),
-                                Toast.LENGTH_LONG
-                            ).show()
-                    },
-                    emptyFunction = {
-                        //clear input if user can change it
-                        if (charFragVM.isNotUnattractive())
-                            charFragVM.setAppearInput("")
-                    },
+            GeneralCard{
+                Row(
                     modifier = Modifier
-                        .weight(0.5f),
-                    label = stringResource(R.string.appearance)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    NumberInput(
+                        //create input for character's appearance score
+                        inputText = charFragVM.appearInput.collectAsState().value,
+                        inputFunction = {
+                            //attempt new input and notify user of failed input
+                            if (it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.appearanceFailure),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                        },
+                        emptyFunction = {
+                            //clear input if user can change it
+                            if (charFragVM.isNotUnattractive())
+                                charFragVM.setAppearInput("")
+                        },
+                        modifier = Modifier
+                            .weight(0.5f),
+                        label = stringResource(R.string.appearance)
+                    )
+
+                    Spacer(Modifier.weight(0.01f))
+
+                    //create input for a character's gnosis
+                    NumberInput(
+                        inputText = charFragVM.gnosisDisplay.collectAsState().value,
+                        inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
+                        emptyFunction = {charFragVM.setGnosisDisplay("")},
+                        modifier = Modifier
+                            .weight(0.5f),
+                        label = stringResource(R.string.gnosisLabel)
+                    )
+                }
+
+                Spacer(Modifier.height(15.dp))
+
+                //display character's size category
+                InfoRow(
+                    stringResource(R.string.sizeCat),
+                    charFragVM.sizeInput.collectAsState().value
                 )
 
-                Spacer(Modifier.weight(0.01f))
+                //initialize character's movement value
+                val moveString =
+                    if(charFragVM.getCharMovement() == 0)
+                        stringResource(charFragVM.movementDisplay.collectAsState().value)
+                    else
+                        stringResource(charFragVM.movementDisplay.collectAsState().value, charFragVM.getCharMovement())
 
-                //create input for a character's gnosis
-                NumberInput(
-                    inputText = charFragVM.gnosisDisplay.collectAsState().value,
-                    inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
-                    emptyFunction = {charFragVM.setGnosisDisplay("")},
-                    modifier = Modifier
-                        .weight(0.5f),
-                    label = stringResource(R.string.gnosisLabel)
+                //display character's movement value
+                InfoRow(
+                    stringResource(R.string.movement),
+                    moveString
+                )
+
+                //retrieve current weight display string
+                val weightDisplay =
+                    if(charFragVM.getCharWeight() != 0)
+                        stringResource(charFragVM.weightIndex.collectAsState().value, charFragVM.getCharWeight())
+                    else
+                        stringResource(charFragVM.weightIndex.collectAsState().value)
+
+                //display character's weight index
+                InfoRow(
+                    stringResource(R.string.weightIndex),
+                    weightDisplay
                 )
             }
-        }
-
-        item{Spacer(Modifier.height(15.dp))}
-
-        //display character's size category
-        item{
-            InfoRow(
-                stringResource(R.string.sizeCat),
-                charFragVM.sizeInput.collectAsState().value
-            )
-        }
-
-        item{
-            //initialize character's movement value
-            val moveString =
-                if(charFragVM.getCharMovement() == 0)
-                    stringResource(charFragVM.movementDisplay.collectAsState().value)
-                else
-                    stringResource(charFragVM.movementDisplay.collectAsState().value, charFragVM.getCharMovement())
-
-            //display character's movement value
-            InfoRow(
-                stringResource(R.string.movement),
-                moveString
-            )
-        }
-
-        item{
-            //retrieve current weight display string
-            val weightDisplay =
-                if(charFragVM.getCharWeight() != 0)
-                    stringResource(charFragVM.weightIndex.collectAsState().value, charFragVM.getCharWeight())
-                else
-                    stringResource(charFragVM.weightIndex.collectAsState().value)
-
-            //display character's weight index
-            InfoRow(
-                stringResource(R.string.weightIndex),
-                weightDisplay
-            )
         }
     }
 }
@@ -311,7 +307,7 @@ private fun DropdownObject(
             value = options[item.output.collectAsState().value],
             onValueChange = {},
             modifier = Modifier
-                .clickable {item.openToggle()}
+                .clickable { item.openToggle() }
                 .onGloballyPositioned { coordinates ->
                     item.setSize(coordinates.size.toSize())
                 },
@@ -392,7 +388,7 @@ private fun PrimaryRow(
             emptyFunction = {primeItem.setBonusInput("")},
             modifier = Modifier
                 .weight(0.2f),
-            color = charFragVM.bonusColor.collectAsState().value
+            isError = !charFragVM.bonusValid.collectAsState().value,
         )
 
         //other bonus display

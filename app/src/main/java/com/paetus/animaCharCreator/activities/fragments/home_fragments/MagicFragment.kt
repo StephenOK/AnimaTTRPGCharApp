@@ -2,7 +2,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.R
@@ -52,7 +51,6 @@ fun MagicFragment(
     LazyColumn(
         Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -60,217 +58,227 @@ fun MagicFragment(
                 end = 30.dp
             )
     ){
-        //header for zeon point maximums
         item{
-            Text(
-                text = stringResource(R.string.zeonPointLabel),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        item{Spacer(Modifier.height(5.dp))}
-
-        //zeon point table header
-        item {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-            ){
+            GeneralCard{
+                //header for zeon point maximums
                 Text(
-                    text = stringResource(R.string.baseLabel),
+                    text = stringResource(R.string.zeonPointLabel),
                     modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.boughtLabel),
-                    modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
                 )
 
-                Spacer(Modifier.weight(0.1f))
+                Spacer(Modifier.height(5.dp))
 
-                Text(
-                    text = stringResource(R.string.classLabel),
-                    modifier = Modifier
-                        .weight(0.15f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+                //zeon point table header
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                ){
+                    Text(
+                        text = stringResource(R.string.baseLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.boughtLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
 
-        //zeon point maximum row
-        item {
-            //initialize zeon point DP cost string
-            val dpString = stringResource(R.string.dpLabel, magFragVM.getBoughtZeonDP())
+                    Spacer(Modifier.weight(0.1f))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                //display base maximum Zeon
-                Text(
-                    text = magFragVM.getBaseZeon().toString(),
-                    modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
-                )
-
-                //Zeon point purchase input
-                NumberInput(
-                    inputText = magFragVM.boughtZeonString.collectAsState().value,
-                    inputFunction = {
-                        if(magFragVM.isGifted() || it.contains('\n'))
-                            magFragVM.setBoughtZeonString(it.toInt())
-                    },
-                    emptyFunction = {magFragVM.setBoughtZeonString("")},
-                    modifier = Modifier
-                        .onFocusChanged {
-                            //display Gift not taken message
-                            if(it.isFocused && !magFragVM.isGifted())
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.needGiftMessage),
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                            //change DP display to appropriate value
-                            if (it.isFocused)
-                                magFragVM.setBoughtZeonDP(dpString)
-                            else
-                                magFragVM.setBoughtZeonDP("")
-                        }
-                        .weight(0.25f),
-                    label = magFragVM.boughtZeonDP.collectAsState().value,
-                    postRun = {homePageVM.updateExpenditures()}
-                )
-
-                //display multiplier for zeon point purchases
-                Text(
-                    text = stringResource(R.string.zeonPointMultiplier),
-                    modifier = Modifier
-                        .weight(0.1f),
-                    textAlign = TextAlign.Center
-                )
-
-                //display zeon points from class levels
-                Text(
-                    text = magFragVM.getClassZeon().toString(),
-                    modifier = Modifier
-                        .weight(0.15f),
-                    textAlign = TextAlign.Center
-                )
-
-                //display final total
-                Text(
-                    text = magFragVM.maxZeonString.collectAsState().value,
-                    modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-
-        //display zeon recovery
-        item{
-            InfoRow(
-                stringResource(R.string.zeonRecoveryLabel),
-                magFragVM.zeonRecoveryString.collectAsState().value
-            )
-        }
-
-        //display zeon accumulation and magic projection tables
-        items(magFragVM.allPurchaseData){
-            ZeonPurchaseItem(it, magFragVM, homePageVM)
-        }
-
-        item{
-            Spacer(Modifier.height(10.dp))
-        }
-
-        //projection imbalance section
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                //title for section
-                Text(
-                    text = stringResource(R.string.imbalanceLabel),
-                    modifier = Modifier
-                        .weight(0.21f)
-                )
-
-                Spacer(Modifier.weight(0.01f))
-
-                //input to change imbalance
-                NumberInput(
-                    inputText = magFragVM.projectionImbalance.collectAsState().value,
-                    inputFunction = {
-                        //if imbalance is a legal input
-                        if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains('\n'))
-                            magFragVM.setProjectionImbalance(it.toInt())
-                    },
-                    emptyFunction = {
-                        magFragVM.setProjectionImbalance("")
-                    },
-                    modifier = Modifier
-                        .onFocusChanged {
-                            if(it.isFocused && !magFragVM.isGifted())
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.needGiftMessage),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                        }
-                        .weight(0.22f)
-                )
-
-                Spacer(Modifier.weight(0.01f))
-
-                Button(
-                    //switch imbalance preference
-                    onClick = {
-                        magFragVM.setImbalanceIsAttack(!magFragVM.imbalanceIsAttack.value)
-                    },
-                    modifier = Modifier
-                        .weight(0.3f)
-                ) {
-                    //display current imbalance preference
-                    Text(text = stringResource(magFragVM.imbalanceTypeString.collectAsState().value))
+                    Text(
+                        text = stringResource(R.string.classLabel),
+                        modifier = Modifier
+                            .weight(0.15f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
                 }
 
-                Spacer(Modifier.weight(0.01f))
+                //initialize zeon point DP cost string
+                val dpString = stringResource(R.string.dpLabel, magFragVM.getBoughtZeonDP())
 
-                //display imbalanced projection values
-                Column(
-                    Modifier
-                        .weight(0.24f),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                //zeon point maximum row
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    //display base maximum Zeon
+                    Text(
+                        text = magFragVM.getBaseZeon().toString(),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    //Zeon point purchase input
+                    NumberInput(
+                        inputText = magFragVM.boughtZeonString.collectAsState().value,
+                        inputFunction = {
+                            if(magFragVM.isGifted() || it.contains('\n'))
+                                magFragVM.setBoughtZeonString(it.toInt())
+                        },
+                        emptyFunction = {magFragVM.setBoughtZeonString("")},
+                        modifier = Modifier
+                            .onFocusChanged {
+                                //display Gift not taken message
+                                if(it.isFocused && !magFragVM.isGifted())
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.needGiftMessage),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+
+                                //change DP display to appropriate value
+                                if (it.isFocused)
+                                    magFragVM.setBoughtZeonDP(dpString)
+                                else
+                                    magFragVM.setBoughtZeonDP("")
+                            }
+                            .weight(0.25f),
+                        label = magFragVM.boughtZeonDP.collectAsState().value,
+                        postRun = {homePageVM.updateExpenditures()}
+                    )
+
+                    //display multiplier for zeon point purchases
+                    Text(
+                        text = stringResource(R.string.zeonPointMultiplier),
+                        modifier = Modifier
+                            .weight(0.1f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    //display zeon points from class levels
+                    Text(
+                        text = magFragVM.getClassZeon().toString(),
+                        modifier = Modifier
+                            .weight(0.15f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    //display final total
+                    Text(
+                        text = magFragVM.maxZeonString.collectAsState().value,
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+        item{Spacer(Modifier.height(10.dp))}
+
+        item{
+            GeneralCard{
+                ZeonPurchaseItem(magFragVM.allPurchaseData[0], magFragVM, homePageVM)
+
+                //display zeon recovery
+                InfoRow(
+                    stringResource(R.string.zeonRecoveryLabel),
+                    magFragVM.zeonRecoveryString.collectAsState().value
+                )
+
+                //display innate magic
+                InfoRow(
+                    stringResource(R.string.innateMagic),
+                    magFragVM.innateMagic.collectAsState().value
+                )
+            }
+        }
+
+        item{Spacer(Modifier.height(10.dp))}
+
+        //display zeon accumulation and magic projection tables
+        item{
+            GeneralCard {
+                ZeonPurchaseItem(magFragVM.allPurchaseData[1], magFragVM, homePageVM)
+
+                Spacer(Modifier.height(10.dp))
+
+                //projection imbalance section
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    //title for section
                     Text(
-                        text = stringResource(
-                            R.string.offenseHeader,
-                            magFragVM.offenseImbalance.collectAsState().value
-                        )
+                        text = stringResource(R.string.imbalanceLabel),
+                        modifier = Modifier
+                            .weight(0.21f)
                     )
 
-                    Text(
-                        text = stringResource(
-                            R.string.defenseHeader,
-                            magFragVM.defenseImbalance.collectAsState().value
-                        )
+                    Spacer(Modifier.weight(0.01f))
+
+                    //input to change imbalance
+                    NumberInput(
+                        inputText = magFragVM.projectionImbalance.collectAsState().value,
+                        inputFunction = {
+                            //if imbalance is a legal input
+                            if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains('\n'))
+                                magFragVM.setProjectionImbalance(it.toInt())
+                        },
+                        emptyFunction = {
+                            magFragVM.setProjectionImbalance("")
+                        },
+                        modifier = Modifier
+                            .onFocusChanged {
+                                if (it.isFocused && !magFragVM.isGifted())
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.needGiftMessage),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                            }
+                            .weight(0.22f)
                     )
+
+                    Spacer(Modifier.weight(0.01f))
+
+                    Button(
+                        //switch imbalance preference
+                        onClick = {
+                            magFragVM.setImbalanceIsAttack(!magFragVM.imbalanceIsAttack.value)
+                        },
+                        modifier = Modifier
+                            .weight(0.3f)
+                    ) {
+                        //display current imbalance preference
+                        Text(text = stringResource(magFragVM.imbalanceTypeString.collectAsState().value))
+                    }
+
+                    Spacer(Modifier.weight(0.01f))
+
+                    //display imbalanced projection values
+                    Column(
+                        Modifier
+                            .weight(0.24f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = stringResource(
+                                R.string.offenseHeader,
+                                magFragVM.offenseImbalance.collectAsState().value
+                            )
+                        )
+
+                        Text(
+                            text = stringResource(
+                                R.string.defenseHeader,
+                                magFragVM.defenseImbalance.collectAsState().value
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -279,17 +287,17 @@ fun MagicFragment(
 
         //display magic levels available and magic levels spent
         item{
-            InfoRow(
-                stringResource(R.string.magicLevelLabel),
-                magFragVM.getMagicLevelMax(),
-            )
-        }
+            GeneralCard{
+                InfoRow(
+                    stringResource(R.string.magicLevelLabel),
+                    magFragVM.getMagicLevelMax(),
+                )
 
-        item{
-            InfoRow(
-                stringResource(R.string.magicLevelSpentLabel),
-                magFragVM.magicLevelSpent.collectAsState().value
-            )
+                InfoRow(
+                    stringResource(R.string.magicLevelSpentLabel),
+                    magFragVM.magicLevelSpent.collectAsState().value
+                )
+            }
         }
 
         //display each book investment row and spell displays
@@ -302,35 +310,37 @@ fun MagicFragment(
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //header for held spells section
         item{
-            Text(
-                text = stringResource(R.string.spellsTakenLabel),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        item{Spacer(Modifier.height(10.dp))}
-
-        //display all currently taken spells
-        items(magFragVM.heldSpells){
-            //display free spell exchange if it's a free spell
-            if(it is FreeSpell)
-                FreeSpellExchange(
-                    magFragVM,
-                    it
+            GeneralCard{
+                //header for held spells section
+                Text(
+                    text = stringResource(R.string.spellsTakenLabel),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
                 )
-            else
-                SpellRow(
-                    magFragVM,
-                    it,
-                    false
-                ) {}
 
-            Row{Spacer(Modifier.height(3.dp))}
+                Spacer(Modifier.height(10.dp))
+
+                //display all currently taken spells
+                magFragVM.heldSpells.forEach{
+                    //display free spell exchange if it's a free spell
+                    if(it is FreeSpell)
+                        FreeSpellExchange(
+                            magFragVM,
+                            it
+                        )
+                    else
+                        SpellRow(
+                            magFragVM,
+                            it,
+                            false
+                        ) {}
+
+                    Row{Spacer(Modifier.height(3.dp))}
+                }
+            }
         }
     }
 
@@ -445,7 +455,7 @@ private fun ZeonPurchaseItem(
                     .weight(0.3f),
                 label = tableItem.dpDisplay.collectAsState().value,
                 postRun = {homePageVM.updateExpenditures()},
-                color = tableItem.textColor.collectAsState().value
+                isError = !tableItem.textValid.collectAsState().value
             )
 
             //display final total
@@ -456,13 +466,6 @@ private fun ZeonPurchaseItem(
                 textAlign = TextAlign.Center
             )
         }
-
-        //display character's innate magic slots for the zeon accumulation item
-        if(tableItem.nameRef == R.string.zeonAccumulationLabel)
-            InfoRow(
-                stringResource(R.string.innateMagic),
-                magFragVM.innateMagic.collectAsState().value
-            )
     }
 }
 
@@ -544,7 +547,7 @@ private fun SpellBookInvestment(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column {
+            GeneralCard {
                 //initialize free spell level indicator
                 var freeSpellLevel = 0
 
@@ -609,7 +612,11 @@ private fun SpellRow(
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center,
-            color = magFragVM.getCastableColor(displayItem.level)
+            color =
+                if(!magFragVM.getCastable(displayItem.level))
+                    MaterialTheme.colorScheme.secondary
+                else
+                    MaterialTheme.colorScheme.onError
         )
 
         //create display button
@@ -661,7 +668,11 @@ private fun FreeSpellRow(
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center,
-            color = magFragVM.getCastableColor(lvlVal)
+            color =
+                if(!magFragVM.getCastable(lvlVal))
+                    MaterialTheme.colorScheme.secondary
+                else
+                    MaterialTheme.colorScheme.onError
         )
 
         Spacer(Modifier.weight(0.25f))

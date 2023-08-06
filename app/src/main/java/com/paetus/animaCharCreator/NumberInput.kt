@@ -2,12 +2,12 @@ package com.paetus.animaCharCreator
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
  * @param modifier optional design properties of the input object
  * @param label optional label for the input field
  * @param postRun optional function to run after reading user input
- * @param color optional color the text is
+ * @param isError optional notifier for input error
  * @param alignment optional alignment for the input text
  * @param readOnly optional state of the text input
  */
@@ -38,7 +38,7 @@ fun NumberInput(
     modifier: Modifier = Modifier,
     label: String = "",
     postRun: () -> Unit = {},
-    color: Color = Color.Black,
+    isError: Boolean = false,
     alignment: TextAlign = TextAlign.Center,
     readOnly: Boolean = false
 ){
@@ -80,14 +80,18 @@ fun NumberInput(
 
         //set text color
         textStyle = LocalTextStyle.current.copy(
-            color = color,
+            color =
+                if(!isError) MaterialTheme.colorScheme.onBackground
+                else MaterialTheme.colorScheme.error,
             textAlign = alignment
         ),
+
+        isError = isError,
 
         //set readonly status
         readOnly = readOnly,
 
         //set object label
-        label = {Text(text = label)}
+        label = {Text(text = label)},
     )
 }

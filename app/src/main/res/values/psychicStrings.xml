@@ -19,6 +19,7 @@
     </string-array>
 
     <string name = "potentialBonusLabel">+%1d Potential</string>
+    <string name = "psyPointInput">%1d PP</string>
 
     <string-array name = "difficultyTable">
         <item>Routine (20)</item>

@@ -2,16 +2,13 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -19,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.R
@@ -55,7 +53,6 @@ fun KiFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -64,100 +61,105 @@ fun KiFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        //header for ki point and accumulation table
-        item {
-            Row {
-                Spacer(modifier = Modifier.weight(0.13f))
+        item{
+            GeneralCard{
+                //header for ki point and accumulation table
+                Row {
+                    Spacer(modifier = Modifier.weight(0.13f))
 
-                //ki point items
-                Text(
-                    text = stringResource(R.string.statKiLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.buyKiLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.totalKiLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
+                    //ki point items
+                    Text(
+                        text = stringResource(R.string.statKiLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.buyKiLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.totalKiLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //ki accumulation items
-                Text(
-                    text = stringResource(R.string.statAccLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.buyAccLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.totalAccLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+                    //ki accumulation items
+                    Text(
+                        text = stringResource(R.string.statAccLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.buyAccLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.totalAccLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-        //display a ki row for each characteristic
-        items(kiFragVM.allRowData) {kiRowInput ->
-            KiFromStatRow(
-                kiRowInput,
-                kiFragVM,
-                homePageVM
-            )
-        }
+                //display a ki row for each characteristic
+                kiFragVM.allRowData.forEach{
+                    KiFromStatRow(
+                        it,
+                        kiFragVM,
+                        homePageVM
+                    )
+                }
 
-        item {
-            //display both overall totals
-            Row {
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
+                //display both overall totals
+                Row {
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //display total ki points
-                Spacer(Modifier.weight(0.26f))
-                Text(
-                    text = kiFragVM.kiPointTotal.collectAsState().value,
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
+                    //display total ki points
+                    Spacer(Modifier.weight(0.26f))
+                    Text(
+                        text = kiFragVM.kiPointTotal.collectAsState().value,
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //display total accumulation
-                Spacer(Modifier.weight(0.26f))
-                Text(
-                    text = kiFragVM.kiAccTotal.collectAsState().value,
-                    modifier = Modifier
-                        .weight(0.13f),
-                    textAlign = TextAlign.Center
-                )
+                    //display total accumulation
+                    Spacer(Modifier.weight(0.26f))
+                    Text(
+                        text = kiFragVM.kiAccTotal.collectAsState().value,
+                        modifier = Modifier
+                            .weight(0.13f),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //display maximum MK to spent
-        item{InfoRow(stringResource(R.string.maxMKLabel), kiFragVM.getMartialMax())}
-        item{Spacer(Modifier.height(10.dp))}
+        item{
+            GeneralCard{
+                //display maximum MK to spend
+                InfoRow(stringResource(R.string.maxMKLabel), kiFragVM.getMartialMax())
+                Spacer(Modifier.height(10.dp))
 
-        //display remaining MK to spend
-        item{InfoRow(stringResource(R.string.remainingMKLabel), kiFragVM.remainingMK.collectAsState().value)}
+                //display remaining MK to spend
+                InfoRow(stringResource(R.string.remainingMKLabel), kiFragVM.remainingMK.collectAsState().value)
+            }
+        }
+
         item{Spacer(Modifier.height(10.dp))}
 
         //button to display ki abilities
@@ -174,7 +176,7 @@ fun KiFragment(
         //ki ability display
         item {
             AnimatedVisibility(visible = kiFragVM.kiListOpen.collectAsState().value) {
-                Column {
+                GeneralCard {
                     kiFragVM.getAllKiAbilities().forEach {
                         KiAbilityRow(
                             kiFragVM,
@@ -207,11 +209,7 @@ fun KiFragment(
         //technique display
         item {
             AnimatedVisibility(visible = kiFragVM.techListOpen.collectAsState().value) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                GeneralCard{
                     //display each prebuilt technique
                     kiFragVM.getAllPrebuilts().forEach {
                         TechniqueRow(kiFragVM, it)

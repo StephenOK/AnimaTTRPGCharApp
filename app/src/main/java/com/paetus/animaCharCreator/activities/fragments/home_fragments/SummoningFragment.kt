@@ -1,23 +1,21 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -38,7 +36,6 @@ fun SummoningFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -46,40 +43,42 @@ fun SummoningFragment(
                 end = 30.dp
             )
     ){
-        //display table header
         item{
-            Row(Modifier.fillMaxWidth()){
-                Spacer(Modifier.weight(0.25f))
-                Text(
-                    text = stringResource(R.string.baseLabel),
-                    modifier = Modifier
-                        .weight(0.15f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.classLabel),
-                    modifier = Modifier
-                        .weight(0.15f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.boughtLabel),
-                    modifier = Modifier
-                        .weight(0.25f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+            GeneralCard{
+                //display table header
+                Row(Modifier.fillMaxWidth()){
+                    Spacer(Modifier.weight(0.25f))
+                    Text(
+                        text = stringResource(R.string.baseLabel),
+                        modifier = Modifier
+                            .weight(0.15f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.classLabel),
+                        modifier = Modifier
+                            .weight(0.15f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.boughtLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-        //display table data
-        items(summoningVM.allRows){
-            SummoningAbilityRow(it, homePageVM)
+                //display table data
+                summoningVM.allRows.forEach{
+                    SummoningAbilityRow(it, homePageVM)
+                }
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -280,18 +279,13 @@ class MagicFragmentViewModel(
     fun setSelectedFreeSpell(input: FreeSpell?){_selectedFreeSpell.update{input}}
 
     /**
-     * Gets a color based on whether the character can cast the indicated spell.
+     * Gets whether a spell of the given level is castable by the character.
      *
      * @param input spell to check the castability of
      */
-    fun getCastableColor(input: Int): Color{
-        //return red if character cannot cast it
-        return if((input in 81..90 && charInstance.gnosis.value < 25) ||
-            (input > 90 && charInstance.gnosis.value < 40))
-            Color.Red
-
-        //return black if castable
-        else Color.Black
+    fun getCastable(input: Int): Boolean{
+        return (input in 81..90 && charInstance.gnosis.value < 25) ||
+            (input > 90 && charInstance.gnosis.value < 40)
     }
 
     /**
@@ -473,7 +467,7 @@ class MagicFragmentViewModel(
                 _innateMagic.update{magic.innateMagic.value.toString()}
             }
         },
-        {Color.Black}
+        {true}
     ) {it.update{magic.zeonAccTotal.value.toString()}}
 
     //create item to manage zeon projection
@@ -487,12 +481,7 @@ class MagicFragmentViewModel(
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
         },
-        {
-            if(magic.getValidProjection())
-                Color.Black
-            else
-                Color.Red
-        }
+        {magic.getValidProjection()}
     ){it.update{magic.magProjTotal.value.toString()}}
 
     //gather purchase data created
@@ -600,7 +589,7 @@ class MagicFragmentViewModel(
      * @param totalInput initial total value for this item
      * @param dpGetter retrieves the DP needed for this item
      * @param buyItem function to run on a change in the purchase amount
-     * @param changeColor function to run to determine the text color
+     * @param getValid function to run to determine the text color
      * @param updateTotal function to run on the change of the total output
      */
     class ZeonPurchaseItemData(
@@ -610,7 +599,7 @@ class MagicFragmentViewModel(
         totalInput: () -> Int,
         val dpGetter: () -> Int,
         val buyItem: (Int) -> Unit,
-        val changeColor: () -> Color,
+        val getValid: () -> Boolean,
         val updateTotal: (MutableStateFlow<String>) -> Unit
     ){
         //initialize bought amount input
@@ -618,8 +607,8 @@ class MagicFragmentViewModel(
         val boughtString = _boughtString.asStateFlow()
 
         //initialize the color of the displayed text
-        private val _textColor = MutableStateFlow(changeColor())
-        val textColor = _textColor.asStateFlow()
+        private val _textValid = MutableStateFlow(getValid())
+        val textValid = _textValid.asStateFlow()
 
         private val _dpDisplay = MutableStateFlow("")
         val dpDisplay = _dpDisplay.asStateFlow()
@@ -635,15 +624,10 @@ class MagicFragmentViewModel(
          */
         fun setBoughtString(input: Int){
             buyItem(input)
-            setNewColor()
+            _textValid.update{getValid()}
             setBoughtString(input.toString())
             updateTotal(_totalString)
         }
-
-        /**
-         * Sets the color of this item's text to the indicated value.
-         */
-        fun setNewColor(){_textColor.update{changeColor()}}
 
         /**
          * Sets the DP display to the indicated value.

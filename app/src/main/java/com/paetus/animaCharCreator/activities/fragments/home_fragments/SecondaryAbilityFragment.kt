@@ -2,7 +2,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
@@ -21,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
@@ -41,7 +40,6 @@ fun SecondaryAbilityFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -53,7 +51,7 @@ fun SecondaryAbilityFragment(
         //open freelancer class bonus options if available
         item{
             if(secondaryFragVM.freelancerOptionsOpen.collectAsState().value){
-                Column {
+                GeneralCard {
                     //section label
                     Text(text = stringResource(R.string.freelancerPrompt))
 
@@ -168,7 +166,7 @@ private fun MakeTableDisplay(
         modifier = Modifier
             .fillMaxWidth()
     ){
-        Column {
+        GeneralCard {
             //make the header of this section
             RowHead()
 

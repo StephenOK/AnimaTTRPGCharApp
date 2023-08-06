@@ -1,23 +1,21 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.InfoRow
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.NumberInput
@@ -43,7 +41,6 @@ fun CombatFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -51,208 +48,210 @@ fun CombatFragment(
                 end = 30.dp
             )
     ){
-        //create header row for life points table
-        item {
-            Row {
-                Spacer(modifier = Modifier.weight(0.2f))
+        item{
+            GeneralCard{
+                //create header row for life points table
+                Row {
+                    Spacer(modifier = Modifier.weight(0.2f))
 
-                Text(
-                    text = stringResource(R.string.baseLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    Text(
+                        text = stringResource(R.string.baseLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                Text(
-                    text = stringResource(R.string.classLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    Text(
+                        text = stringResource(R.string.classLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                Text(
-                    text = stringResource(R.string.multLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    Text(
+                        text = stringResource(R.string.multLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-        //character life point row
-        item {
-            //initialize dp value string
-            val lifeMultDP = stringResource(R.string.dpLabel, combatFragVM.getLifeDP())
+                //initialize dp value string
+                val lifeMultDP = stringResource(R.string.dpLabel, combatFragVM.getLifeDP())
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                //row label
-                Text(
-                    text = stringResource(R.string.lifePointLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                //character life point row
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    //row label
+                    Text(
+                        text = stringResource(R.string.lifePointLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //display life points from base and class values
-                Text(
-                    text = combatFragVM.getBaseLife(),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = combatFragVM.getClassLife(),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //display life points from base and class values
+                    Text(
+                        text = combatFragVM.getBaseLife(),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = combatFragVM.getClassLife(),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //create input for life point multiples
-                NumberInput(
-                    inputText = combatFragVM.lifeMults.collectAsState().value,
-                    inputFunction = {
-                        combatFragVM.setLifeMults(it.toInt())
-                        homePageVM.updateExpenditures()
-                    },
-                    emptyFunction = {combatFragVM.setLifeMults("")},
-                    modifier = Modifier
-                        .onFocusChanged {
-                            if (it.isFocused)
-                                combatFragVM.setLifeDPLabel(lifeMultDP)
-                            else
-                                combatFragVM.setLifeDPLabel("")
-                        }
-                        .weight(0.2f),
-                    label = combatFragVM.lifeDPLabel.collectAsState().value
-                )
+                    //create input for life point multiples
+                    NumberInput(
+                        inputText = combatFragVM.lifeMults.collectAsState().value,
+                        inputFunction = {
+                            combatFragVM.setLifeMults(it.toInt())
+                            homePageVM.updateExpenditures()
+                        },
+                        emptyFunction = {combatFragVM.setLifeMults("")},
+                        modifier = Modifier
+                            .onFocusChanged {
+                                if (it.isFocused)
+                                    combatFragVM.setLifeDPLabel(lifeMultDP)
+                                else
+                                    combatFragVM.setLifeDPLabel("")
+                            }
+                            .weight(0.2f),
+                        label = combatFragVM.lifeDPLabel.collectAsState().value
+                    )
 
-                //display life point total
-                Text(
-                    text = combatFragVM.lifeTotal.collectAsState().value,
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //display life point total
+                    Text(
+                        text = combatFragVM.lifeTotal.collectAsState().value,
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
 
         item{Spacer(Modifier.height(10.dp))}
 
-        //create table header for combat items
-        item {
-            Row {
-                Spacer(modifier = Modifier.weight(0.2f))
-                Text(
-                    text = stringResource(R.string.pointsLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.modLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.classLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+        item{
+            GeneralCard{
+                //create table header for combat items
+                Row {
+                    Spacer(modifier = Modifier.weight(0.2f))
+                    Text(
+                        text = stringResource(R.string.pointsLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.modLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.classLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-        //create table row for each combat item
-        items(combatFragVM.allCombatItems){
-            CombatItemRow(combatFragVM, it, homePageVM)
+                //create table row for each combat item
+                combatFragVM.allCombatItems.forEach{
+                    CombatItemRow(combatFragVM, it, homePageVM)
+                }
+            }
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //resistances table
-        item {
-            //table header row
-            Row {
-                //column buffer
-                Spacer(modifier = Modifier.weight(0.2f))
+        item{
+            //resistances table
+            GeneralCard {
+                //table header row
+                Row {
+                    //column buffer
+                    Spacer(modifier = Modifier.weight(0.2f))
 
-                //presence header
-                Text(
-                    text = stringResource(R.string.presenceLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //presence header
+                    Text(
+                        text = stringResource(R.string.presenceLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //modifier header
-                Text(
-                    text = stringResource(R.string.modLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //modifier header
+                    Text(
+                        text = stringResource(R.string.modLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //special header
-                Text(
-                    text = stringResource(R.string.specialLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //special header
+                    Text(
+                        text = stringResource(R.string.specialLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
 
-                //total header
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    modifier = Modifier
-                        .weight(0.2f),
-                    textAlign = TextAlign.Center
-                )
+                    //total header
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        modifier = Modifier
+                            .weight(0.2f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                //create a row for each of the character's resistances
+                combatFragVM.resistanceList.forEach{
+                    ResistanceRow(combatFragVM, it)
+                }
             }
-        }
-
-        //create a row for each of the character's resistances
-        items(combatFragVM.resistanceList){resistanceItem ->
-            ResistanceRow(combatFragVM, resistanceItem)
         }
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //create displays for the character's initiative, fatigue, and regeneration
         item{
-            InfoRow(
-                stringResource(R.string.totalInitiative),
-                combatFragVM.getInitiativeTotal()
-            )
-        }
+            GeneralCard{
+                //create displays for the character's initiative, fatigue, and regeneration
+                InfoRow(
+                    stringResource(R.string.totalInitiative),
+                    combatFragVM.getInitiativeTotal()
+                )
 
-        item{
-            InfoRow(
-                stringResource(R.string.fatigueLabel),
-                combatFragVM.getFatigue()
-            )
-        }
+                InfoRow(
+                    stringResource(R.string.fatigueLabel),
+                    combatFragVM.getFatigue()
+                )
 
-        item{
-            InfoRow(
-                stringResource(R.string.regenLabel),
-                combatFragVM.getRegen()
-            )
+                InfoRow(
+                    stringResource(R.string.regenLabel),
+                    combatFragVM.getRegen()
+                )
+            }
         }
     }
 }
@@ -297,10 +296,7 @@ private fun CombatItemRow(
                 }
                 .weight(0.2f),
             label = combatItem.labelDisplay.collectAsState().value,
-            color =
-                if(combatItem.label != R.string.wearLabel)
-                    combatFragVM.pointColor.collectAsState().value
-                else Color.Black
+            isError = combatItem.label != R.string.wearLabel && !combatFragVM.pointValid.collectAsState().value
         )
 
         //display remaining stat values

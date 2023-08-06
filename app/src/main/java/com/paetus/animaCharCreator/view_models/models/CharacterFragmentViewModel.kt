@@ -81,8 +81,8 @@ class CharacterFragmentViewModel(
     val weightIndex = _weightIndex.asStateFlow()
 
     //initialize level bonus string color
-    private val _bonusColor = MutableStateFlow(Color.Black)
-    val bonusColor = _bonusColor.asStateFlow()
+    private val _bonusValid = MutableStateFlow(charInstance.primaryList.validLevelBonuses())
+    val bonusValid = _bonusValid.asStateFlow()
 
     /**
      * Sets the character's name to the user's input.
@@ -247,17 +247,9 @@ class CharacterFragmentViewModel(
     fun getCharWeight(): Int{return charInstance.weightIndex.value}
 
     /**
-     * Sets the text color based on the applied level bonuses to the character.
+     * Updates the validation flag for the characteristic bonus.
      */
-    fun setBonusColor(){
-        //set text to black if valid
-        if(charInstance.primaryList.validLevelBonuses())
-            _bonusColor.update{Color.Black}
-
-        //set text to red if invalid
-        else
-            _bonusColor.update{Color.Red}
-    }
+    fun setBonusColor(){_bonusValid.update{charInstance.primaryList.validLevelBonuses()}}
 
     //set race dropdown data
     val raceDropdown = DropdownData(

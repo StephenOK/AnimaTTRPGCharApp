@@ -3,18 +3,16 @@ package com.paetus.animaCharCreator.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -32,14 +30,16 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.paetus.animaCharCreator.theme.AppTheme
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
@@ -85,7 +85,16 @@ class HomeActivity : AppCompatActivity() {
         if(isNew)
             attemptSave(filename, charInstance)
 
-        setContent{HomeContents(charInstance, filename) }
+        //create viewModels for the home page and home alert items
+        val homePageVM: HomePageViewModel by viewModels{
+            CustomFactory(HomePageViewModel::class.java, charInstance, baseContext)
+        }
+
+        setContent{
+            AppTheme(homePageVM.isLightMode.collectAsState().value == Configuration.UI_MODE_NIGHT_YES){
+                HomeContents(homePageVM, charInstance, filename)
+            }
+        }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -97,6 +106,7 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun HomeContents(
+        homePageVM: HomePageViewModel,
         charInstance: BaseCharacter,
         filename: String
     ) {
@@ -111,11 +121,6 @@ class HomeActivity : AppCompatActivity() {
         val navController = rememberNavController()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-        //create viewModels for the home page and home alert items
-        val homePageVM: HomePageViewModel by viewModels{
-            CustomFactory(HomePageViewModel::class.java, charInstance, context)
-        }
 
         //create viewModels for each individual fragment
         val charFragVM: CharacterFragmentViewModel by viewModels{
@@ -303,6 +308,7 @@ class HomeActivity : AppCompatActivity() {
                 Text(
                     text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
                 )
+
             },
 
             //icon to open the navigation drawer
@@ -316,8 +322,25 @@ class HomeActivity : AppCompatActivity() {
                     })
                 {
                     Icon(
-                        imageVector = Icons.Filled.Menu,
+                        painter = painterResource(R.drawable.baseline_menu_24),
                         contentDescription = stringResource(R.string.openLabel)
+                    )
+                }
+            },
+
+            actions = {
+                IconButton(
+                    onClick = {
+                        homePageVM.toggleLightMode()
+                    }
+                ){
+                    Icon(
+                        painter =
+                            if(homePageVM.isLightMode.collectAsState().value == Configuration.UI_MODE_NIGHT_NO)
+                                painterResource(R.drawable.baseline_dark_mode_24)
+                            else
+                                painterResource(R.drawable.baseline_light_mode_24),
+                        contentDescription = null
                     )
                 }
             }
@@ -394,9 +417,7 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun AppFooter(homePageVM: HomePageViewModel) {
-        Column (
-            modifier = Modifier.background(Color.White)
-        ){
+        Column{
             //row for table header
             Row(
                 horizontalArrangement = Arrangement.Center,

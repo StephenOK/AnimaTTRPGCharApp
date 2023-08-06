@@ -2,7 +2,6 @@ package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
@@ -25,22 +24,23 @@ class PsychicFragmentViewModel(
     private val psychic: Psychic,
     private val charClass: MutableState<CharClass>,
     dexMod: Int,
-    val context: Context
+    private val context: Context
 ): ViewModel() {
     //initialize character's free psychic point text
     private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints().toString())
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
     //initialize color of free point text
-    private val _freePointColor = MutableStateFlow(
-        if(psychic.getFreePsyPoints() >= 0) Color.Black
-        else Color.Red
-    )
-    val freePointColor = _freePointColor.asStateFlow()
+    private val _freePointValid = MutableStateFlow(psychic.getFreePsyPoints() >= 0)
+    val freePointValid = _freePointValid.asStateFlow()
 
     //initialize character's taken number of innate slots
     private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.value.toString())
     val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
+
+    //initialize character's innate slot label
+    private val _innateSlotLabel = MutableStateFlow("")
+    val innateSlotLabel = _innateSlotLabel.asStateFlow()
 
     //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
@@ -59,12 +59,9 @@ class PsychicFragmentViewModel(
      */
     fun updateFreePsyPoints(){
         _freePsyPoints.update{psychic.getFreePsyPoints().toString()}
-        _freePointColor.update{
-            //set to normal color for valid input
-            if(psychic.getFreePsyPoints() >= 0) Color.Black
-            //notify user of illegal input
-            else Color.Red
-        }
+
+        //set to normal color for valid input
+        _freePointValid.update{psychic.getFreePsyPoints() >= 0}
     }
 
     /**
@@ -84,6 +81,13 @@ class PsychicFragmentViewModel(
      * @param input amount of slots to display
      */
     fun setInnateSlotDisplay(input: String){_innateSlotDisplay.update{input}}
+
+    /**
+     * Sets the label for the innate slot input.
+     *
+     * @param input new label to set
+     */
+    fun setInnateSlotLabel(input: String){_innateSlotLabel.update{input}}
 
     /**
      * Opens and closes the detail alert as needed.
@@ -113,8 +117,9 @@ class PsychicFragmentViewModel(
         {psychic.psyPotentialBase.value},
         {psychic.pointsInPotential.value},
         {psychic.psyPotentialTotal.value},
-        null,
-        {Color.Black},
+        {R.string.psyPointInput},
+        {1},
+        {true},
     ){input, item ->
         psychic.setPointPotential(input)
         item.update{psychic.psyPotentialTotal.value.toString()}
@@ -127,8 +132,9 @@ class PsychicFragmentViewModel(
         {psychic.innatePsyPoints.value},
         {psychic.boughtPsyPoints.value},
         {psychic.totalPsychicPoints.value},
+        {R.string.dpLabel},
         {charClass.value.psyPointGrowth},
-        {Color.Black}
+        {true}
     ){input, item ->
         psychic.buyPsyPoints(input)
         item.update{psychic.totalPsychicPoints.value.toString()}
@@ -141,13 +147,9 @@ class PsychicFragmentViewModel(
         {dexMod},
         {psychic.psyProjectionBought.value},
         {psychic.psyProjectionTotal.value},
+        {R.string.dpLabel},
         {charClass.value.psyProjGrowth},
-        {
-            if(psychic.getValidProjection())
-                Color.Black
-            else
-                Color.Red
-        }
+        {psychic.getValidProjection()}
     ){input, item ->
         psychic.buyPsyProjection(input)
         item.update{psychic.psyProjectionTotal.value.toString()}
@@ -247,8 +249,9 @@ class PsychicFragmentViewModel(
      * @param baseString base score of the item
      * @param boughtVal initial amount purchased by the user
      * @param totalVal initial total for this stat
-     * @param dpGetter function to run to determine the DP needed for this item
-     * @param changeColor function to run to check to legitimacy of the inputted value
+     * @param getResource gets the string resource associated with the item
+     * @param getValue function to run to determine the DP needed for this item
+     * @param getValid function to run to check to legitimacy of the inputted value
      * @param totalUpdate function to run on update of this item's value
      */
     class PsychicPurchaseItemData(
@@ -256,8 +259,9 @@ class PsychicFragmentViewModel(
         val baseString: () -> Int,
         val boughtVal: () -> Int,
         val totalVal: () -> Int,
-        val dpGetter: (() -> Int)?,
-        val changeColor: () -> Color,
+        val getResource: () -> Int,
+        val getValue: () -> Int,
+        val getValid: () -> Boolean,
         val totalUpdate: (Int, MutableStateFlow<String>) -> Unit
     ){
         //initialize purchase input for this item
@@ -265,8 +269,8 @@ class PsychicFragmentViewModel(
         val purchaseAmount = _purchaseAmount.asStateFlow()
 
         //initialize text's color
-        private val _textColor = MutableStateFlow(changeColor())
-        val textColor = _textColor.asStateFlow()
+        private val _inputValid = MutableStateFlow(getValid())
+        val inputValid = _inputValid.asStateFlow()
 
         private val _dpDisplay = MutableStateFlow("")
         val dpDisplay = _dpDisplay.asStateFlow()
@@ -296,7 +300,7 @@ class PsychicFragmentViewModel(
         /**
          * Sets the color of the displayed input text.
          */
-        fun setTextColor(){_textColor.update{changeColor()}}
+        fun setTextColor(){_inputValid.update{getValid()}}
 
         /**
          * Sets the displayed DP string.

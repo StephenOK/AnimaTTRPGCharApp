@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
@@ -38,8 +37,8 @@ class CombatFragViewModel(
     val lifeDPLabel = _lifeDPLabel.asStateFlow()
 
     //initialize text color for the combat items
-    private val _pointColor = MutableStateFlow(Color.Black)
-    val pointColor = _pointColor.asStateFlow()
+    private val _pointValid = MutableStateFlow(true)
+    val pointValid = _pointValid.asStateFlow()
 
     /**
      * Changes the number of life multiples the character has obtained.
@@ -78,7 +77,7 @@ class CombatFragViewModel(
      *
      * @param input color to set
      */
-    private fun setPointColor(input: Color){_pointColor.update{input}}
+    private fun setPointColor(input: Boolean){_pointValid.update{input}}
 
     /**
      * Retrieves the character's presence to display.
@@ -163,31 +162,27 @@ class CombatFragViewModel(
         combat,
         R.string.attackLabel,
         combat.attack,
-        pointColor.value,
         {charClass.value.atkGrowth}
-    ) { setPointColor(it) }
+    ){setPointColor(it)}
 
     private val block = CombatItemData(
         combat,
         R.string.blockLabel,
         combat.block,
-        pointColor.value,
         {charClass.value.blockGrowth}
-    ) { setPointColor(it) }
+    ){setPointColor(it)}
 
     private val dodge = CombatItemData(
         combat,
         R.string.dodgeLabel,
         combat.dodge,
-        pointColor.value,
         {charClass.value.dodgeGrowth}
-    ) { setPointColor(it) }
+    ){setPointColor(it)}
 
     private val wearArmor = CombatItemData(
         combat,
         R.string.wearLabel,
         combat.wearArmor,
-        Color.Black,
         {charClass.value.armorGrowth}
     ) {}
 
@@ -213,17 +208,15 @@ class CombatFragViewModel(
      * @param combat section of the character to work on
      * @param label name of the item in question
      * @param item data regarding this individual item
-     * @param color color the string will be depending on the stat qualification
      * @param growthGetter function to run to get the stat's associated DP amount
-     * @param setPointColor changes the point color in the combat fragment's view model
+     * @param setPointValid changes the point color in the combat fragment's view model
      */
     class CombatItemData(
         private val combat: CombatAbilities,
         val label: Int,
         val item: CombatItem,
-        val color: Color,
         val growthGetter: () -> Int,
-        val setPointColor: (Color) -> Unit
+        val setPointValid: (Boolean) -> Unit
     ){
         //initialize user's input value into this ability
         private val _pointsIn = MutableStateFlow(item.inputVal.value.toString())
@@ -247,13 +240,8 @@ class CombatFragViewModel(
             item.setInputVal(input)
             setPointsIn(input.toString())
 
-            //display valid purchase values as black text
-            if(combat.validAttackDodgeBlock())
-                setPointColor(Color.Black)
-
-            //display invalid purchase values as red text
-            else
-                setPointColor(Color.Red)
+            //update valid state of user's input
+            setPointValid(combat.validAttackDodgeBlock())
 
             //update item total display
             setTotalVal()

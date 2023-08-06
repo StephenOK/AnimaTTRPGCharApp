@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 import android.widget.Toast
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +22,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -33,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.activities.fragments.dialogs.AdvantageCostPick
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -59,7 +58,6 @@ fun AdvantageFragment(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -92,24 +90,33 @@ fun AdvantageFragment(
 
             item { Spacer(Modifier.height(20.dp)) }
 
-            //display held advantages title
-            item { Text(text = stringResource(R.string.heldAdvantageLabel)) }
+            item{
+                GeneralCard{
+                    //display held advantages title
+                    Text(text = stringResource(R.string.heldAdvantageLabel))
 
-            //display all of the character's taken advantages and disadvantages
-            items(advantageFragVM.takenAdvantages) {
-                HeldAdvantageDisplay(
-                    advantageFragVM,
-                    it,
-                    homePageVM
-                )
+                    //display all of the character's taken advantages and disadvantages
+                    advantageFragVM.takenAdvantages.forEach{
+                        HeldAdvantageDisplay(
+                            advantageFragVM,
+                            it,
+                            homePageVM
+                        )
+                    }
+                }
             }
 
             item { Spacer(Modifier.height(20.dp)) }
 
-            //display all advantages acquired from their race
-            item { Text(text = stringResource(R.string.racialAdvantageLabel)) }
-            items(advantageFragVM.getRacialAdvantages()) {
-                AdvantageRow(it, advantageFragVM, null, {}, null)
+            item{
+                GeneralCard{
+                    //display all advantages acquired from their race
+                    Text(text = stringResource(R.string.racialAdvantageLabel))
+
+                    advantageFragVM.getRacialAdvantages().forEach{
+                        AdvantageRow(it, advantageFragVM, null, {}, null)
+                    }
+                }
             }
         }
 
@@ -216,7 +223,7 @@ private fun AdvantageDisplay(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column {
+            GeneralCard {
                 advantageList.items.forEach {
                     //display advantage as an obtainable item
                     AdvantageRow(

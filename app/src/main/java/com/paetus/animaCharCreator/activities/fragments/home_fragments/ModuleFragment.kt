@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -44,7 +43,6 @@ fun ModuleFragment(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Color.White)
             .fillMaxWidth()
             .padding(
                 top = 15.dp,
@@ -53,29 +51,35 @@ fun ModuleFragment(
                 end = 30.dp
             )
     ){
-        //display currently selected primary weapon
         item{
-            Text(
-                text = stringResource(
-                    R.string.primaryWeaponLabel,
-                    stringResource(modFragVM.primaryWeapon.collectAsState().value.name)
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
+            GeneralCard{
+                //display currently selected primary weapon
+                Text(
+                    text = stringResource(
+                        R.string.primaryWeaponLabel,
+                        stringResource(modFragVM.primaryWeapon.collectAsState().value.name)
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
         //display the unarmed weapon row
-        item {
-            WeaponRow(
-                modFragVM,
-                modFragVM.getUnarmed(),
-                homePageVM
-            )
+        item{
+            GeneralCard{
+                WeaponRow(
+                    modFragVM,
+                    modFragVM.getUnarmed(),
+                    homePageVM
+                )
+            }
         }
+
+        item{Spacer(Modifier.height(10.dp))}
 
         //display each weapon list button
         items(modFragVM.allWeapons){weaponButton ->
@@ -135,9 +139,7 @@ private fun WeaponListButton(
     AnimatedVisibility(
         visible = weaponData.listOpen.collectAsState().value,
     ){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        GeneralCard{
             //display whole class module if one is available
             if(weaponData.wholeClass) {
                 ArchetypeRow(
@@ -249,9 +251,7 @@ private fun ArchetypeButton(
     //revealable list for the archetypes
     AnimatedVisibility(visible = modFragVM.archetypeOpen.collectAsState().value){
         //show all archetypes available
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        GeneralCard{
             modFragVM.allArchetypeData.forEach{
                 ArchetypeRow(
                     it,
@@ -350,9 +350,7 @@ private fun MartialButton(
 
     //revealable list of martial arts
     AnimatedVisibility(visible = modFragVM.martialOpen.collectAsState().value){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        GeneralCard{
             //display number of marital arts character can take
             Text(
                 text = stringResource(
@@ -451,9 +449,7 @@ private fun StyleButton(
 
     //revealable list of weapon styles
     AnimatedVisibility(visible = modFragVM.styleOpen.collectAsState().value) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        GeneralCard{
             modFragVM.getAllStyles().forEach{
                 StyleRow(
                     modFragVM,
@@ -526,7 +522,7 @@ fun ModulePreview(){
     val charInstance = BaseCharacter()
 
     val moduleFragVM = ModuleFragmentViewModel(charInstance.weaponProficiencies, LocalContext.current)
-    //moduleFragVM.allWeapons[7].toggleListOpen()
+    moduleFragVM.allWeapons[5].toggleListOpen()
     moduleFragVM.toggleArchetypeOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

@@ -1,8 +1,6 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,12 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.GeneralCard
 import com.paetus.animaCharCreator.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
@@ -48,7 +46,6 @@ fun EquipmentFragment(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
@@ -57,20 +54,23 @@ fun EquipmentFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        //create inputs for each maximum coin expenditure
-        items(equipFragVM.allQuantityMaximums){MaximumDisplay(it)}
+        item{
+            GeneralCard {
+                //create inputs for each maximum coin expenditure
+                equipFragVM.allQuantityMaximums.forEach{MaximumDisplay(it)}
 
-        //display bonus wealth if any taken
-        if(equipFragVM.getBonusWealth() > 0){
-            item{Spacer(Modifier.height(10.dp))}
-            item{
-                Text(
-                    text =
-                    stringResource(
-                        R.string.bonusWealthLabel,
-                        stringResource(R.string.goldLabel, equipFragVM.getBonusWealth())
+                //display bonus wealth if any taken
+                if(equipFragVM.getBonusWealth() > 0){
+                    Spacer(Modifier.height(10.dp))
+
+                    Text(
+                        text =
+                        stringResource(
+                            R.string.bonusWealthLabel,
+                            stringResource(R.string.goldLabel, equipFragVM.getBonusWealth())
+                        )
                     )
-                )
+                }
             }
         }
 
@@ -78,33 +78,35 @@ fun EquipmentFragment(
 
         //display all coin spent
         item{
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-            ){
-                //gold spent
-                SpentDisplay(
-                    CoinType.Gold,
-                    equipFragVM.getCoinSpent(CoinType.Gold),
-                    Modifier
-                        .weight(0.2f)
-                )
+            GeneralCard {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                ) {
+                    //gold spent
+                    SpentDisplay(
+                        CoinType.Gold,
+                        equipFragVM.getCoinSpent(CoinType.Gold),
+                        Modifier
+                            .weight(0.2f)
+                    )
 
-                //silver spent
-                SpentDisplay(
-                    CoinType.Silver,
-                    equipFragVM.getCoinSpent(CoinType.Silver),
-                    Modifier
-                        .weight(0.2f)
-                )
+                    //silver spent
+                    SpentDisplay(
+                        CoinType.Silver,
+                        equipFragVM.getCoinSpent(CoinType.Silver),
+                        Modifier
+                            .weight(0.2f)
+                    )
 
-                //copper spent
-                SpentDisplay(
-                    CoinType.Copper,
-                    equipFragVM.getCoinSpent(CoinType.Copper),
-                    Modifier
-                        .weight(0.2f)
-                )
+                    //copper spent
+                    SpentDisplay(
+                        CoinType.Copper,
+                        equipFragVM.getCoinSpent(CoinType.Copper),
+                        Modifier
+                            .weight(0.2f)
+                    )
+                }
             }
         }
 
@@ -117,17 +119,19 @@ fun EquipmentFragment(
 
         item{Spacer(Modifier.height(20.dp))}
 
-        //current inventory label
         item{
-            Text(
-                text = stringResource(R.string.inventoryHeader),
-                textAlign = TextAlign.Center
-            )
-        }
+            GeneralCard{
+                //current inventory label
+                Text(
+                    text = stringResource(R.string.inventoryHeader),
+                    textAlign = TextAlign.Center
+                )
 
-        //display current inventory
-        items(equipFragVM.boughtGoods){
-            HeldItemRow(equipFragVM, it)
+                //display current inventory
+                equipFragVM.boughtGoods.forEach{
+                    HeldItemRow(equipFragVM, it)
+                }
+            }
         }
     }
 
@@ -195,7 +199,7 @@ fun CategoryButton(
 
     //list of items in this category that can be purchased
     AnimatedVisibility(visible = item.catOpen.collectAsState().value) {
-        Column{
+        GeneralCard{
             //create a row for each item
             item.reference.itemsAvailable.forEach{
                 EquipmentRow(equipFragVM, it, item.reference)
@@ -342,14 +346,7 @@ fun EquipmentPreview(){
     val charInstance = BaseCharacter()
     val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
 
-    charInstance.advantageRecord.acquireAdvantage(
-        charInstance.advantageRecord.commonAdvantages.startingWealth,
-        null,
-        2,
-        null
-    )
-
-    //equipFragVM.allCategoryData[8].toggleCatOpen()
+    equipFragVM.allCategoryData[8].toggleCatOpen()
 
     EquipmentFragment(equipFragVM)
 }

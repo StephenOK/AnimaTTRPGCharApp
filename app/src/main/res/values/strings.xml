@@ -107,6 +107,11 @@
     <string name = "inhuman">Inhuman</string>
     <string name = "zenData">Zen</string>
 
+    <string name = "settingsLabel">Settings</string>
+
+    <string name = "lightMode">Light Mode</string>
+    <string name = "darkMode">Dark Mode</string>
+
     <string name = "exitTitle">Save before exiting?</string>
 
     <string name = "errorText">Error</string>

@@ -108,7 +108,7 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
         //if natural bonus is currently off
         if(!target.bonusApplied.value){
             //if characteristic is invested in and there are bonuses available
-            if(countNatBonuses() < charInstance.lvl.value && target.pointsApplied .value> 0)
+            if(countNatBonuses() < charInstance.lvl.value && target.pointsApplied.value > 0)
                 target.setBonusApplied(true)
         }
 

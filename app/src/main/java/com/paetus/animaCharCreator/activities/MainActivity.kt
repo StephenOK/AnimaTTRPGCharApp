@@ -9,10 +9,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,10 +35,17 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.perf.ktx.performance
+import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.MainPageViewModel
+import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
 
 /**
  * Startup activity for the app.
@@ -42,6 +54,22 @@ import com.paetus.animaCharCreator.view_models.models.MainPageViewModel
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(this.fileList().contains("settings")){
+            val settingsFile = File(this.filesDir, "settings")
+            val settingInputStream = FileInputStream(settingsFile)
+            val settingInputReader = InputStreamReader(settingInputStream, StandardCharsets.UTF_8)
+            val settingsReader = BufferedReader(settingInputReader)
+
+            val currVersion = settingsReader.readLine().toInt()
+
+            AppCompatDelegate.setDefaultNightMode(settingsReader.readLine().toInt())
+
+            settingInputStream.close()
+        }
+        else{
+            writeSettings(this)
+        }
 
         setContent {
             AppTheme{
@@ -55,7 +83,7 @@ class MainActivity : AppCompatActivity() {
      * Composable contents of the app's main page.
      */
     @Composable
-    private fun MainContents(){
+    fun MainContents() {
         //prevent user from flipping app
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
@@ -78,11 +106,13 @@ class MainActivity : AppCompatActivity() {
             Text(
                 text = stringResource(R.string.mainTitle),
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 text = stringResource(R.string.mainSubtitle),
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(Modifier.height(30.dp))
@@ -99,19 +129,22 @@ class MainActivity : AppCompatActivity() {
 
             Spacer(Modifier.height(50.dp))
 
-            //button to open analytics sharing options
             Button(
-                onClick = { mainVM.toggleDataShareOpen() },
+                onClick = {mainVM.toggleOptionsOpen()},
                 modifier = Modifier
                     .width(200.dp)
-            ) {
-                Text(text = stringResource(R.string.sharingTitle))
+            ){
+                Text(text = stringResource(R.string.settingsLabel))
             }
         }
 
         //display user's selected action alert
         if (mainVM.actionOpen.collectAsState().value)
             MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
+
+        //display settings open state
+        if(mainVM.optionsOpen.collectAsState().value)
+            OptionsAlert(mainVM)
 
         //display share analytics selection option
         if (mainVM.dataShareOpen.collectAsState().value)
@@ -203,6 +236,95 @@ class MainActivity : AppCompatActivity() {
                     mainVM.toggleActionOpen()
                 }){
                     Text(text = stringResource(R.string.cancelLabel))
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun OptionsAlert(
+        mainVM: MainPageViewModel
+    ){
+        AlertDialog(
+            onDismissRequest = {mainVM.toggleOptionsOpen()},
+            title = {Text(text = stringResource(R.string.settingsLabel))},
+            text = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                                } else {
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                                }
+                            },
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Icon(
+                            painter =
+                                if(isSystemInDarkTheme())
+                                    painterResource(R.drawable.baseline_toggle_off_24)
+                                else
+                                    painterResource(R.drawable.baseline_toggle_on_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .weight(0.25f)
+                        )
+                        Text(
+                            text =
+                                if(isSystemInDarkTheme())
+                                    stringResource(R.string.darkMode)
+                                else
+                                    stringResource(R.string.lightMode),
+                            modifier = Modifier
+                                .weight(0.5f),
+                            fontSize = 20.sp
+                        )
+
+                        Spacer(Modifier.weight(0.25f))
+                    }
+
+                    Spacer(Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                mainVM.toggleDataShareOpen()
+                            },
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Spacer(Modifier.weight(0.25f))
+                        Text(
+                            text = stringResource(R.string.sharingTitle),
+                            modifier = Modifier
+                                .weight(0.25f),
+                            fontSize = 20.sp
+                        )
+
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_arrow_forward_ios_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .weight(0.25f)
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        writeSettings(this)
+                        mainVM.toggleOptionsOpen()
+                    }
+                ) {
+                    Text(text = stringResource(R.string.closeLabel))
                 }
             }
         )
@@ -318,4 +440,40 @@ class MainActivity : AppCompatActivity() {
             }
         )
     }
+}
+
+fun writeSettings(home: Activity){
+    val saveSettings = home.openFileOutput("settings", Context.MODE_PRIVATE)
+
+    val settingsDefault = ByteArrayOutputStream()
+
+    settingsDefault.write(
+        """${BuildConfig.VERSION_CODE}""".toByteArray(StandardCharsets.UTF_8),
+        0,
+        """${BuildConfig.VERSION_CODE}""".toByteArray(StandardCharsets.UTF_8).size
+    )
+
+    settingsDefault.write(
+        "\n".toByteArray(StandardCharsets.UTF_8),
+        0,
+        "\n".toByteArray(StandardCharsets.UTF_8).size
+    )
+
+    settingsDefault.write(
+        """${AppCompatDelegate.getDefaultNightMode()}""".toByteArray(StandardCharsets.UTF_8),
+        0,
+        """${AppCompatDelegate.getDefaultNightMode()}""".toByteArray(StandardCharsets.UTF_8).size
+    )
+
+    settingsDefault.write(
+        "\n".toByteArray(StandardCharsets.UTF_8),
+        0,
+        "\n".toByteArray(StandardCharsets.UTF_8).size
+    )
+
+    settingsDefault.close()
+
+    saveSettings.write(settingsDefault.toByteArray())
+
+    saveSettings.close()
 }

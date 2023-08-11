@@ -616,7 +616,7 @@ private fun SpellRow(
                 if(!magFragVM.getCastable(displayItem.level))
                     MaterialTheme.colorScheme.secondary
                 else
-                    MaterialTheme.colorScheme.onError
+                    MaterialTheme.colorScheme.error
         )
 
         //create display button
@@ -672,7 +672,7 @@ private fun FreeSpellRow(
                 if(!magFragVM.getCastable(lvlVal))
                     MaterialTheme.colorScheme.secondary
                 else
-                    MaterialTheme.colorScheme.onError
+                    MaterialTheme.colorScheme.error
         )
 
         Spacer(Modifier.weight(0.25f))

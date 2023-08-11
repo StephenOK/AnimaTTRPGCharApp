@@ -26,10 +26,6 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     private val _exitOpen = MutableStateFlow(false)
     val exitOpen = _exitOpen.asStateFlow()
 
-    //initialize light mode state
-    private val _isLightMode = MutableStateFlow(Configuration.UI_MODE_NIGHT_YES)
-    val isLightMode = _isLightMode.asStateFlow()
-
     /**
      * Changes the current page to the indicated one.
      *
@@ -42,13 +38,6 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
      */
     fun toggleExitAlert() {
         _exitOpen.update{!exitOpen.value}
-    }
-
-    fun toggleLightMode(){
-        if(isLightMode.value == Configuration.UI_MODE_NIGHT_NO)
-            _isLightMode.update{Configuration.UI_MODE_NIGHT_YES}
-        else
-            _isLightMode.update{Configuration.UI_MODE_NIGHT_NO}
     }
 
     //initialize bottom bar maximum values

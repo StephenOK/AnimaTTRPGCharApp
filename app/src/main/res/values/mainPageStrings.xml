@@ -9,7 +9,7 @@
     <string name = "loadCharacterHeader">Load Character:</string>
     <string name = "deleteCharacterHeader">Choose Characters to Delete:</string>
     <string name = "sharingHeader">Share your crash and performance data?</string>
-    <string name = "defaultShareNotice">Sharing is turned off by default. Any changes made apply on restart.</string>
+    <string name = "defaultShareNotice">Sharing is turned off by default. Any changes made are applied on restart.</string>
 
     <string name = "newButtonConfirm">Create</string>
     <string name = "loadButtonConfirm">Load</string>

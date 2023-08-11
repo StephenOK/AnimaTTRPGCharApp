@@ -3,13 +3,14 @@ package com.paetus.animaCharCreator.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,7 +35,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setContent{
-            AppTheme(homePageVM.isLightMode.collectAsState().value == Configuration.UI_MODE_NIGHT_YES){
+            AppTheme{
                 HomeContents(homePageVM, charInstance, filename)
             }
         }
@@ -308,7 +308,6 @@ class HomeActivity : AppCompatActivity() {
                 Text(
                     text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
                 )
-
             },
 
             //icon to open the navigation drawer
@@ -331,12 +330,19 @@ class HomeActivity : AppCompatActivity() {
             actions = {
                 IconButton(
                     onClick = {
-                        homePageVM.toggleLightMode()
+                        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        }
+                        else{
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        }
+
+                        writeSettings(this@HomeActivity)
                     }
                 ){
                     Icon(
                         painter =
-                            if(homePageVM.isLightMode.collectAsState().value == Configuration.UI_MODE_NIGHT_NO)
+                            if(!isSystemInDarkTheme())
                                 painterResource(R.drawable.baseline_dark_mode_24)
                             else
                                 painterResource(R.drawable.baseline_light_mode_24),

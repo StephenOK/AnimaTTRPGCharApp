@@ -36,6 +36,9 @@ class MainPageViewModel: ViewModel() {
     private val _dataShareOpen = MutableStateFlow(false)
     val dataShareOpen = _dataShareOpen.asStateFlow()
 
+    private val _optionsOpen = MutableStateFlow(false)
+    val optionsOpen = _optionsOpen.asStateFlow()
+
     //initialize the selected sharing state
     private val _shareSelection = MutableStateFlow<Boolean?>(null)
     val shareSelection = _shareSelection.asStateFlow()
@@ -55,6 +58,8 @@ class MainPageViewModel: ViewModel() {
      * @param input value to set the boolean to
      */
     fun setShareSelection(input: Boolean){_shareSelection.update{input}}
+
+    fun toggleOptionsOpen(){_optionsOpen.update{!optionsOpen.value}}
 
     /**
      * Opens and closes the failed load alert.

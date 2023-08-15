@@ -1,7 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base
 
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
+import java.io.ByteArrayOutputStream
 
 open class TechniqueBase(
     var level: Int,
@@ -220,5 +220,5 @@ open class TechniqueBase(
                 listCheck(compareTo.givenAbilities)
     }
 
-    open fun write(charInstance: BaseCharacter){}
+    open fun write(byteArray: ByteArrayOutputStream){}
 }

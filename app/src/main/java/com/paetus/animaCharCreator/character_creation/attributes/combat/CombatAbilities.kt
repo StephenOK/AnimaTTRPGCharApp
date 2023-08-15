@@ -2,7 +2,9 @@ package com.paetus.animaCharCreator.character_creation.attributes.combat
 
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Section of the character that holds combat data, such as life points and attack.
@@ -217,13 +219,13 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     /**
      * Write the data for the combat section.
      */
-    fun writeCombat(){
+    fun writeCombat(byteArray: ByteArrayOutputStream) {
         //write life multiple data
-        charInstance.addNewData(lifeMultsTaken.value)
+        writeDataTo(byteArray, lifeMultsTaken.value)
 
         //write data on attack, defenses, and wear armor
         allAbilities.forEach{
-            it.writeItem()
+            it.writeItem(byteArray)
         }
     }
 }

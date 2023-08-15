@@ -1,9 +1,9 @@
 package com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponType
+import com.paetus.animaCharCreator.enumerations.AttackType
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponAbility
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import java.io.Serializable
 

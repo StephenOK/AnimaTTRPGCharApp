@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Size
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -1200,16 +1200,20 @@ class CustomTechniqueViewModel(
         val buildItems = mutableListOf<BuildItem>()
 
         init{
+            var index = 0
+
             //add a build item for each valid index input for this effect
             listOf(0, 1, 2, 3, 5, 6).forEach {
-                if(input.buildAdditions[it] != null)
+                if(input.buildAdditions[index] != null)
                     buildItems +=
                         BuildItem(
                             customTechVM,
                             input,
                             context.resources.getStringArray(R.array.primaryCharArray)[it],
-                            it
+                            index
                         )
+
+                index++
             }
         }
     }

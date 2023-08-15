@@ -2,7 +2,10 @@ package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.enumerations.Archetype
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Record of classes available to the character.
@@ -695,11 +698,11 @@ class ClassInstances(private val charInstance: BaseCharacter){
     /**
      * Writes the data in this section to file.
      */
-    fun writeClassData(){
-        charInstance.addNewData(magPaladin.value)
+    fun writeClassData(byteArray: ByteArrayOutputStream) {
+        writeDataTo(byteArray, magPaladin.value)
 
         freelancerSelection.forEach{
-            charInstance.addNewData(it)
+            writeDataTo(byteArray, it)
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,11 +24,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.paetus.animaCharCreator.GeneralCard
-import com.paetus.animaCharCreator.InfoRow
-import com.paetus.animaCharCreator.NumberInput
-import com.paetus.animaCharCreator.TextInput
+import com.paetus.animaCharCreator.composables.GeneralCard
+import com.paetus.animaCharCreator.composables.InfoRow
+import com.paetus.animaCharCreator.composables.NumberInput
+import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
+import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 
@@ -39,6 +43,7 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
  * @param maxNumVM viewModel that manages the bottom bar display
  */
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
@@ -110,13 +115,19 @@ fun CharacterPageFragment(
                                     .weight(0.1f)
                             )
                             //display current selection
-                            Text(
-                                text = stringResource(charFragVM.genderString.collectAsState().value),
+                            AnimatedContent(
+                                targetState = stringResource(charFragVM.genderString.collectAsState().value),
                                 modifier = Modifier
                                     .clickable { charFragVM.toggleGender() }
                                     .weight(0.5f),
-                                textAlign = TextAlign.Center
-                            )
+                                transitionSpec = textScrollUp,
+                                label = "genderDisplay"
+                            ){
+                                Text(
+                                    text = it,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         }
                     }
 
@@ -247,36 +258,46 @@ fun CharacterPageFragment(
                 Spacer(Modifier.height(15.dp))
 
                 //display character's size category
-                InfoRow(
-                    stringResource(R.string.sizeCat),
-                    charFragVM.sizeInput.collectAsState().value
-                )
-
-                //initialize character's movement value
-                val moveString =
-                    if(charFragVM.getCharMovement() == 0)
-                        stringResource(charFragVM.movementDisplay.collectAsState().value)
-                    else
-                        stringResource(charFragVM.movementDisplay.collectAsState().value, charFragVM.getCharMovement())
+                AnimatedContent(
+                    targetState = charFragVM.sizeInput.collectAsState().value,
+                    transitionSpec = numberScroll,
+                    label = "sizeDisplay"
+                ){
+                    InfoRow(
+                        stringResource(R.string.sizeCat),
+                        it.toString()
+                    )
+                }
 
                 //display character's movement value
-                InfoRow(
-                    stringResource(R.string.movement),
-                    moveString
-                )
-
-                //retrieve current weight display string
-                val weightDisplay =
-                    if(charFragVM.getCharWeight() != 0)
-                        stringResource(charFragVM.weightIndex.collectAsState().value, charFragVM.getCharWeight())
-                    else
-                        stringResource(charFragVM.weightIndex.collectAsState().value)
+                AnimatedContent(
+                    targetState = charFragVM.getCharMovement(),
+                    transitionSpec = numberScroll,
+                    label = "movementDisplay"
+                ){
+                    InfoRow(
+                        stringResource(R.string.movement),
+                        if(it == 0)
+                            stringResource(charFragVM.movementDisplay.collectAsState().value)
+                        else
+                            stringResource(charFragVM.movementDisplay.collectAsState().value, it)
+                    )
+                }
 
                 //display character's weight index
-                InfoRow(
-                    stringResource(R.string.weightIndex),
-                    weightDisplay
-                )
+                AnimatedContent(
+                    targetState = charFragVM.getCharWeight(),
+                    transitionSpec = numberScroll,
+                    label = "weightIndexDisplay"
+                ) {
+                    InfoRow(
+                        stringResource(R.string.weightIndex),
+                        if(charFragVM.getCharWeight() == 0)
+                            stringResource(charFragVM.weightIndex.collectAsState().value)
+                        else
+                            stringResource(charFragVM.weightIndex.collectAsState().value, it)
+                    )
+                }
             }
         }
     }
@@ -351,6 +372,7 @@ private fun DropdownObject(
  * @param charFragVM viewModel that manages this fragment
  * @param primeItem primary characteristic data to display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PrimaryRow(
     charFragVM: CharacterFragmentViewModel,
@@ -392,20 +414,32 @@ private fun PrimaryRow(
         )
 
         //other bonus display
-        Text(
-            text = primeItem.bonus.collectAsState().value,
+        AnimatedContent(
+            targetState = primeItem.bonus.collectAsState().value,
             modifier = Modifier
                 .weight(0.2f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.primaryCharArray)[primeItem.name]}Bonus"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
 
         //mod display
-        Text(
-            text = primeItem.modTotal.collectAsState().value,
+        AnimatedContent(
+            targetState = primeItem.modTotal.collectAsState().value,
             modifier = Modifier
                 .weight(0.2f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.primaryCharArray)[primeItem.name]}Mod"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 
     Spacer(Modifier.height(5.dp))

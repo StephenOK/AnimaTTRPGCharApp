@@ -5,7 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances.*
+import com.paetus.animaCharCreator.enumerations.CoinType
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Class that manages the character's purchased items and maximum coin value.
@@ -304,20 +307,20 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Writes data from this character to file.
      */
-    fun writeInventory(){
+    fun writeInventory(byteArray: ByteArrayOutputStream) {
         //write data on maximum coin values
-        charInstance.addNewData(maxGold.value)
-        charInstance.addNewData(maxSilver.value)
-        charInstance.addNewData(maxCopper.value)
+        writeDataTo(byteArray, maxGold.value)
+        writeDataTo(byteArray, maxSilver.value)
+        writeDataTo(byteArray, maxCopper.value)
 
         //add size of equipment data
-        charInstance.addNewData(boughtGoods.size)
+        writeDataTo(byteArray, boughtGoods.size)
 
         //write each item's name, quality, and quantity
         boughtGoods.forEach{
-            charInstance.addNewData(it.key.saveName)
-            charInstance.addNewData(it.key.currentQuality)
-            charInstance.addNewData(it.value)
+            writeDataTo(byteArray, it.key.saveName)
+            writeDataTo(byteArray, it.key.currentQuality)
+            writeDataTo(byteArray, it.value)
         }
     }
 }

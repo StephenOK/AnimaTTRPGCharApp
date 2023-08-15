@@ -2,7 +2,9 @@ package com.paetus.animaCharCreator.character_creation.attributes.summoning
 
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Object that manages one of the summoning abilities.
@@ -89,7 +91,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
     /**
      * Write the points bought in this item to file.
      */
-    fun writeAbility(){
-        charInstance.addNewData(buyVal.value)
+    fun writeAbility(byteArray: ByteArrayOutputStream) {
+        writeDataTo(byteArray, buyVal.value)
     }
 }

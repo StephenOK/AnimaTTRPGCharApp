@@ -3,13 +3,15 @@ package com.paetus.animaCharCreator.character_creation.attributes.modules
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponType
+import com.paetus.animaCharCreator.enumerations.AttackType
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponAbility
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances.*
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Class that operates on the character's various proficiencies.
@@ -439,32 +441,32 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
     /**
      * Saves the data found in this category.
      */
-    fun writeProficiencies(){
+    fun writeProficiencies(byteArray: ByteArrayOutputStream) {
         //save primary weapon data
-        charInstance.addNewData(primaryWeapon.value.saveName)
+        writeDataTo(byteArray, primaryWeapon.value.saveName)
 
         //record all individual weapon modules
-        charInstance.addNewData(individualModules.size.toString())
+        writeDataTo(byteArray, individualModules.size.toString())
         individualModules.forEach{
-            charInstance.addNewData(it.saveName)
+            writeDataTo(byteArray, it.saveName)
         }
 
         //record all archetype modules
-        charInstance.addNewData(takenModules.size)
+        writeDataTo(byteArray, takenModules.size)
         allArchetypes.forEach{
-            if(takenModules.contains(it.value)) charInstance.addNewData(it.key)
+            if(takenModules.contains(it.value)) writeDataTo(byteArray, it.key)
         }
 
         //record all style modules
-        charInstance.addNewData(styleMods.size)
+        writeDataTo(byteArray, styleMods.size)
         styleMods.forEach{
-            charInstance.addNewData(it.saveName)
+            writeDataTo(byteArray, it.saveName)
         }
 
         //record all martial arts taken
-        charInstance.addNewData(takenMartialList.size)
+        writeDataTo(byteArray, takenMartialList.size)
         takenMartialList.forEach{
-            charInstance.addNewData(it.saveName)
+            writeDataTo(byteArray, it.saveName)
         }
     }
 

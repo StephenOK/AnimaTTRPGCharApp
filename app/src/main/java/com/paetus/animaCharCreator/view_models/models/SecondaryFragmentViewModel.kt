@@ -310,5 +310,6 @@ class SecondaryFragmentViewModel(
     fun refreshPage(){
         _freelancerOptionsOpen.update{charInstance.ownClass.value == charInstance.classes.freelancer}
         allCharacteristics.forEach{it.setClassPoints()}
+        allCharacteristics.forEach{it.updateTotal()}
     }
 }

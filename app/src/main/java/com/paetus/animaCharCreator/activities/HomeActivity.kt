@@ -10,6 +10,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,9 +43,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.paetus.animaCharCreator.theme.AppTheme
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.ScreenPage
+import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
@@ -91,9 +94,9 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setContent{
-            AppTheme{
+            //AppTheme{
                 HomeContents(homePageVM, charInstance, filename)
-            }
+            //}
         }
     }
 
@@ -327,29 +330,29 @@ class HomeActivity : AppCompatActivity() {
                 }
             },
 
-            actions = {
-                IconButton(
-                    onClick = {
-                        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        }
-                        else{
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        }
-
-                        writeSettings(this@HomeActivity)
-                    }
-                ){
-                    Icon(
-                        painter =
-                            if(!isSystemInDarkTheme())
-                                painterResource(R.drawable.baseline_dark_mode_24)
-                            else
-                                painterResource(R.drawable.baseline_light_mode_24),
-                        contentDescription = null
-                    )
-                }
-            }
+            //actions = {
+            //    IconButton(
+            //        onClick = {
+            //            if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            //            }
+            //            else{
+            //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            //            }
+//
+            //            writeSettings(this@HomeActivity)
+            //        }
+            //    ){
+            //        Icon(
+            //            painter =
+            //                if(!isSystemInDarkTheme())
+            //                    painterResource(R.drawable.baseline_dark_mode_24)
+            //                else
+            //                    painterResource(R.drawable.baseline_light_mode_24),
+            //            contentDescription = null
+            //        )
+            //    }
+            //}
         )
     }
 
@@ -469,6 +472,7 @@ class HomeActivity : AppCompatActivity() {
      *
      * @param item bottom bar row data that is to be displayed in this row
      */
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
     private fun BottomBarRow(
         item: HomePageViewModel.BottomBarRowData
@@ -485,31 +489,60 @@ class HomeActivity : AppCompatActivity() {
             )
 
             //display maximum value
-            Text(
-                text = item.maxVal.collectAsState().value,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(0.2f))
+            AnimatedContent(
+                targetState = item.maxVal.collectAsState().value,
+                modifier = Modifier
+                    .weight(0.2f),
+                transitionSpec = numberScroll,
+                label = "${stringResource(item.nameRef)}Max"
+            ) {
+                Text(
+                    text = "$it",
+                    textAlign = TextAlign.Center
+                )
+            }
 
             //display combat value
-            Text(
-                text = item.combatVal.collectAsState().value,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(0.2f)
-            )
+            AnimatedContent(
+                targetState = item.combatVal.collectAsState().value,
+                modifier = Modifier
+                    .weight(0.2f),
+                transitionSpec = numberScroll,
+                label = "${stringResource(item.nameRef)}Combat"
+            ){
+                Text(
+                    text = "$it",
+                    textAlign = TextAlign.Center
+                )
+            }
 
             //display magic value
-            Text(
-                text = item.magVal.collectAsState().value,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(0.2f)
-            )
+            AnimatedContent(
+                targetState = item.magVal.collectAsState().value,
+                modifier = Modifier
+                    .weight(0.2f),
+                transitionSpec = numberScroll,
+                label = "${stringResource(item.nameRef)}Magic"
+            ) {
+                Text(
+                    text = "$it",
+                    textAlign = TextAlign.Center
+                )
+            }
 
             //display psychic value
-            Text(
-                text = item.psyVal.collectAsState().value,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(0.2f)
-            )
+            AnimatedContent(
+                targetState = item.psyVal.collectAsState().value,
+                modifier = Modifier
+                    .weight(0.2f),
+                transitionSpec = numberScroll,
+                label = "${stringResource(item.nameRef)}Psychic"
+            ) {
+                Text(
+                    text = "$it",
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 

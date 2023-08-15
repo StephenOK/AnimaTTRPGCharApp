@@ -16,6 +16,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summo
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
 import java.nio.charset.StandardCharsets
 import kotlin.Throws
@@ -35,7 +36,7 @@ class BaseCharacter {
     val isMale = mutableStateOf(true)
 
     //character's rule settings
-    val rules = RuleRecord(this@BaseCharacter)
+    val rules = RuleRecord()
 
     //list of secondary abilities
     val primaryList = PrimaryList(this@BaseCharacter)
@@ -547,8 +548,6 @@ class BaseCharacter {
         updateTotalSpent()
     }
 
-    private lateinit var byteArray: ByteArrayOutputStream
-
     /**
      * Retrieve byte information for the character.
      */
@@ -556,61 +555,61 @@ class BaseCharacter {
     val bytes: ByteArray
         get() {
             //initialize byte stream
-            byteArray = ByteArrayOutputStream()
+            val byteArray = ByteArrayOutputStream()
 
-            addNewData(BuildConfig.VERSION_CODE)
+            writeDataTo(byteArray, BuildConfig.VERSION_CODE)
 
-            rules.writeRules()
+            rules.writeRules(byteArray)
 
             //add name data
-            addNewData(charName.value)
+            writeDataTo(byteArray, charName.value)
 
             //add experience point data
-            addNewData(experiencePoints.value)
+            writeDataTo(byteArray, experiencePoints.value)
 
             //add gender data
-            addNewData(isMale.value)
+            writeDataTo(byteArray, isMale.value)
 
             //add class, race, and level data
-            addNewData(ownClass.value.saveName)
-            addNewData(races.getNameOfList(ownRace.value))
-            addNewData(lvl.value)
+            writeDataTo(byteArray, ownClass.value.saveName)
+            writeDataTo(byteArray, races.getNameOfList(ownRace.value))
+            writeDataTo(byteArray, lvl.value)
 
             //write paladin's chosen level boon
-            classes.writeClassData()
+            classes.writeClassData(byteArray)
 
             //write primary characteristic data
-            primaryList.writePrimaries()
+            primaryList.writePrimaries(byteArray)
 
             //write combat item data
-            combat.writeCombat()
+            combat.writeCombat(byteArray)
 
             //write appearance data
-            addNewData(appearance.value)
+            writeDataTo(byteArray, appearance.value)
 
             //write secondary characteristic data
-            secondaryList.writeList()
+            secondaryList.writeList(byteArray)
 
             //write module data
-            weaponProficiencies.writeProficiencies()
+            weaponProficiencies.writeProficiencies(byteArray)
 
             //write ki ability data
-            ki.writeKiAttributes()
+            ki.writeKiAttributes(byteArray)
 
             //write magic data
-            magic.writeMagic()
+            magic.writeMagic(byteArray)
 
             //write summoning ability data
-            summoning.writeSummoning()
+            summoning.writeSummoning(byteArray)
 
             //write advantage data
-            advantageRecord.writeAdvantages()
+            advantageRecord.writeAdvantages(byteArray)
 
             //write psychic data
-            psychic.writePsychic()
+            psychic.writePsychic(byteArray)
 
             //write inventory data
-            inventory.writeInventory()
+            inventory.writeInventory(byteArray)
 
             //end writing data
             byteArray.close()
@@ -618,29 +617,4 @@ class BaseCharacter {
             //convert stream data to byte array
             return byteArray.toByteArray()
         }
-
-    /**
-     * Adds new Int data to the output stream.
-     *
-     * @param toAdd integer data to add to the byte array
-     */
-    fun addNewData(toAdd: Any?) {
-        byteArray.write(
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8),
-            0,
-            """$toAdd""".toByteArray(StandardCharsets.UTF_8).size
-        )
-
-        writeEndLine()
-    }
-
-    /**
-     * Writes a new line character to separate data from other data.
-     */
-    fun writeEndLine(){
-        byteArray.write(
-            "\n".toByteArray(StandardCharsets.UTF_8),
-            0,
-            "\n".toByteArray(StandardCharsets.UTF_8).size)
-    }
 }

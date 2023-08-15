@@ -22,7 +22,7 @@ class AdvantageFragmentViewModel(
     private val advantageRecord: AdvantageRecord
 ): ViewModel() {
     //initialize creation point display state flow
-    private val _creationPoints = MutableStateFlow((3 - advantageRecord.creationPointSpent.value).toString())
+    private val _creationPoints = MutableStateFlow(3 - advantageRecord.creationPointSpent.value)
     val creationPoints = _creationPoints.asStateFlow()
 
     //initialize open state flow of the advantage cost dialog
@@ -220,7 +220,7 @@ class AdvantageFragmentViewModel(
         takenAdvantages.addAll(advantageRecord.takenAdvantages)
 
         //update the creation points spent by the user
-        _creationPoints.update{(3 - advantageRecord.creationPointSpent.value).toString()}
+        _creationPoints.update{3 - advantageRecord.creationPointSpent.value}
     }
 
     /**

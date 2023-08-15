@@ -1,9 +1,10 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
+import com.paetus.animaCharCreator.writeDataTo
+import java.io.ByteArrayOutputStream
 import java.util.Collections
 
 /**
@@ -182,25 +183,25 @@ class Technique(
     /**
      * Writes technique data to the save file
      */
-    override fun write(charInstance: BaseCharacter){
+    override fun write(byteArray: ByteArrayOutputStream){
         //write technique's name
-        charInstance.addNewData(name)
+        writeDataTo(byteArray, name)
 
         //write technique's description
-        charInstance.addNewData(description)
+        writeDataTo(byteArray, description)
 
         //write technique's level
-        charInstance.addNewData(level)
+        writeDataTo(byteArray, level)
 
         //write maintenance array
-        maintArray.forEach{charInstance.addNewData(it)}
+        maintArray.forEach{writeDataTo(byteArray, it)}
 
         //write number of effects
-        charInstance.addNewData(givenAbilities.size)
+        writeDataTo(byteArray, givenAbilities.size)
 
         //write data for each effect
         givenAbilities.forEach{
-            it.write(charInstance)
+            it.write(byteArray)
         }
     }
 }

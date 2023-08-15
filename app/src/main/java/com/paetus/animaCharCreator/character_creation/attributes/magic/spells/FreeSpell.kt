@@ -1,6 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 
 /**
  * A spell with no associated element.

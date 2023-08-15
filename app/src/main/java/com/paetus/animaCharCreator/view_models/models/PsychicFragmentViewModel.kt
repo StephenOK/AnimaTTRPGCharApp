@@ -393,6 +393,10 @@ class PsychicFragmentViewModel(
         private val _powerInvestedIn = MutableStateFlow(psychic.masteredPowers.contains(item))
         val powerInvestedIn = _powerInvestedIn.asStateFlow()
 
+        //initialize displayed psychic point cost label
+        private val _pointLabel = MutableStateFlow("")
+        val pointLabel = _pointLabel.asStateFlow()
+
         //initialize psychic point investment in this power
         private val _pointInvestment = MutableStateFlow(
             if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item].toString()
@@ -433,6 +437,13 @@ class PsychicFragmentViewModel(
             //update character's psychic points
             psyFragVM.updateFreePsyPoints()
         }
+
+        /**
+         * Sets the displayed psychic point cost to the inputted value.
+         *
+         * @param input new string to display
+         */
+        fun setPointLabel(input: String){_pointLabel.update{input}}
 
         /**
          * Sets the number of points invested in enhancing this power.

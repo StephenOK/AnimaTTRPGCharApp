@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 
+import com.paetus.animaCharCreator.enumerations.Archetype
+
 /**
  * Object class that holds values related to a character's class
  *

@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.DetailButton
+import com.paetus.animaCharCreator.composables.DetailButton
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.view_models.models.MagicFragmentViewModel

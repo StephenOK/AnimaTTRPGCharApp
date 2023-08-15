@@ -1,8 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.equipment.CoinType
-import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Availability
+import com.paetus.animaCharCreator.enumerations.CoinType
+import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier

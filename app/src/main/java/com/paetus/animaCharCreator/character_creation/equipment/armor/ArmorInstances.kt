@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.equipment.armor
 
+import com.paetus.animaCharCreator.enumerations.ArmorLocation
+
 /**
  * Record of all armors available for the character to acquire.
  */

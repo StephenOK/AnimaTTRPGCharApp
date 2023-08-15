@@ -1,10 +1,8 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import android.content.res.Configuration
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.ScreenPage
+import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -99,19 +97,19 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
         psyInput: Int
     ){
         //initialize maximum display
-        private val _maxVal = MutableStateFlow(maxInput.toString())
+        private val _maxVal = MutableStateFlow(maxInput)
         val maxVal = _maxVal.asStateFlow()
 
         //initialize combat display
-        private val _combatVal = MutableStateFlow(combatInput.toString())
+        private val _combatVal = MutableStateFlow(combatInput)
         val combatVal = _combatVal.asStateFlow()
 
         //initialize magic display
-        private val _magVal = MutableStateFlow(magInput.toString())
+        private val _magVal = MutableStateFlow(magInput)
         val magVal = _magVal.asStateFlow()
 
         //initialize psychic display
-        private val _psyVal = MutableStateFlow(psyInput.toString())
+        private val _psyVal = MutableStateFlow(psyInput)
         val psyVal = _psyVal.asStateFlow()
 
         /**
@@ -123,10 +121,10 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
          * @param psy psychic value column input
          */
         fun updateItems(max: Int, combat: Int, mag: Int, psy: Int){
-            _maxVal.update{max.toString()}
-            _combatVal.update{combat.toString()}
-            _magVal.update{mag.toString()}
-            _psyVal.update{psy.toString()}
+            _maxVal.update{max}
+            _combatVal.update{combat}
+            _magVal.update{mag}
+            _psyVal.update{psy}
         }
     }
 }

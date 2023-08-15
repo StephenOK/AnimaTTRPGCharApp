@@ -2,7 +2,9 @@ package com.paetus.animaCharCreator.character_creation.attributes.primary_abilit
 
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import kotlin.math.ceil
 
 /**
@@ -121,8 +123,8 @@ class PrimaryCharacteristic(
     /**
      * Save the characteristic's data to file.
      */
-    fun write(){
-        charInstance.addNewData(inputValue.value)
-        charInstance.addNewData(levelBonus.value)
+    fun write(byteArray: ByteArrayOutputStream) {
+        writeDataTo(byteArray, inputValue.value)
+        writeDataTo(byteArray, levelBonus.value)
     }
 }

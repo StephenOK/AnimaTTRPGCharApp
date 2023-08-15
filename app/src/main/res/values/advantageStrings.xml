@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "creationPointLabel">Creation Points:</string>
+    <string name = "creationPointLabel">Creation Points: %1d</string>
 
     <string name = "commonAdv">Common Advantages</string>
     <string name = "commonDisadv">Common Disadvantages</string>

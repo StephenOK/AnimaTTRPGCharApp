@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.equipment.general_goods
 
-import com.paetus.animaCharCreator.character_creation.equipment.CoinType
+import com.paetus.animaCharCreator.enumerations.Availability
+import com.paetus.animaCharCreator.enumerations.CoinType
 
 /**
  * Item representing a piece of equipment a character may purchase.

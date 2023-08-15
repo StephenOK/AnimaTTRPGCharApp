@@ -1,7 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect
 
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.writeDataTo
+import java.io.ByteArrayOutputStream
 
 class TechniqueEffect(
     val data: TechniqueTableData,
@@ -50,13 +51,13 @@ class TechniqueEffect(
                 compareTo.elements == elements
     }
 
-    fun write(charInstance: BaseCharacter){
-        data.write(charInstance)
+    fun write(byteArray: ByteArrayOutputStream){
+        data.write(byteArray)
 
-        kiBuild.forEach{charInstance.addNewData(it)}
-        kiBuild.forEach{charInstance.addNewData(it)}
+        kiBuild.forEach{ writeDataTo(byteArray, it) }
+        kiBuild.forEach{writeDataTo(byteArray, it)}
 
-        charInstance.addNewData(elements.size)
-        elements.forEach{charInstance.addNewData(it.name)}
+        writeDataTo(byteArray, elements.size)
+        elements.forEach{writeDataTo(byteArray, it.name)}
     }
 }

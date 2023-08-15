@@ -4,11 +4,13 @@ import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.*
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import kotlin.math.ceil
 
 /**
@@ -453,7 +455,8 @@ class Magic(private val charInstance: BaseCharacter){
             Element.Fire -> listOf(Element.Water, Element.Necromancy)
             Element.Essence -> listOf(Element.Illusion, Element.Necromancy)
             Element.Illusion -> listOf(Element.Essence, Element.Necromancy)
-            Element.Necromancy -> listOf(Element.Light, Element.Dark, Element.Creation,
+            Element.Necromancy -> listOf(
+                Element.Light, Element.Dark, Element.Creation,
                 Element.Destruction, Element.Air, Element.Earth, Element.Water, Element.Fire,
                 Element.Essence, Element.Illusion)
             else -> listOf()
@@ -657,7 +660,7 @@ class Magic(private val charInstance: BaseCharacter){
      * @param find free spell to identify element of
      * @return element associated with the inputted free spell
      */
-    fun findFreeSpellElement(find: FreeSpell): Element{
+    fun findFreeSpellElement(find: FreeSpell): Element {
         //search through each list if it contains this spell
         lightBookFreeSpells.forEach{
             if(it == find) return Element.Light
@@ -1116,68 +1119,68 @@ class Magic(private val charInstance: BaseCharacter){
     /**
      * Write the data to file.
      */
-    fun writeMagic(){
+    fun writeMagic(byteArray: ByteArrayOutputStream) {
         //write bought zeon points
-        charInstance.addNewData(boughtZeon.value)
+        writeDataTo(byteArray, boughtZeon.value)
 
         //write zeon accumulation multiple
-        charInstance.addNewData(zeonAccMult.value)
+        writeDataTo(byteArray, zeonAccMult.value)
 
         //write magic projection bought
-        charInstance.addNewData(boughtMagProjection.value)
+        writeDataTo(byteArray, boughtMagProjection.value)
 
         //write projection imbalance
-        charInstance.addNewData(magProjImbalance.value)
+        writeDataTo(byteArray, magProjImbalance.value)
 
         //write imbalance bias
-        charInstance.addNewData(imbalanceIsAttack.value.toString())
+        writeDataTo(byteArray, imbalanceIsAttack.value.toString())
 
         //save primary elements and list size to file
-        charInstance.addNewData(primaryElementList.size)
+        writeDataTo(byteArray, primaryElementList.size)
         primaryElementList.forEach{
-            charInstance.addNewData(it.name)
+            writeDataTo(byteArray, it.name)
         }
 
         //write all book levels to file
-        charInstance.addNewData(pointsInLightBook.value)
-        charInstance.addNewData(pointsInDarkBook.value)
-        charInstance.addNewData(pointsInCreateBook.value)
-        charInstance.addNewData(pointsInDestructBook.value)
-        charInstance.addNewData(pointsInAirBook.value)
-        charInstance.addNewData(pointsInEarthBook.value)
-        charInstance.addNewData(pointsInWaterBook.value)
-        charInstance.addNewData(pointsInFireBook.value)
-        charInstance.addNewData(pointsInEssenceBook.value)
-        charInstance.addNewData(pointsInIllusionBook.value)
-        charInstance.addNewData(pointsInNecroBook.value)
+        writeDataTo(byteArray, pointsInLightBook.value)
+        writeDataTo(byteArray, pointsInDarkBook.value)
+        writeDataTo(byteArray, pointsInCreateBook.value)
+        writeDataTo(byteArray, pointsInDestructBook.value)
+        writeDataTo(byteArray, pointsInAirBook.value)
+        writeDataTo(byteArray, pointsInEarthBook.value)
+        writeDataTo(byteArray, pointsInWaterBook.value)
+        writeDataTo(byteArray, pointsInFireBook.value)
+        writeDataTo(byteArray, pointsInEssenceBook.value)
+        writeDataTo(byteArray, pointsInIllusionBook.value)
+        writeDataTo(byteArray, pointsInNecroBook.value)
 
         //write all individually bought spells to file
-        charInstance.addNewData(individualSpells.size)
+        writeDataTo(byteArray, individualSpells.size)
         individualSpells.forEach{
             if(it is FreeSpell){
-                charInstance.addNewData(true)
-                charInstance.addNewData(it.level)
-                charInstance.addNewData(findFreeSpellElement(it).name)
+                writeDataTo(byteArray, true)
+                writeDataTo(byteArray, it.level)
+                writeDataTo(byteArray, findFreeSpellElement(it).name)
             }
             else {
-                charInstance.addNewData(false)
-                charInstance.addNewData(it.inBook.name)
-                charInstance.addNewData(it.level)
+                writeDataTo(byteArray, false)
+                writeDataTo(byteArray, it.inBook.name)
+                writeDataTo(byteArray, it.level)
             }
         }
 
         //save data on free spell investment
-        saveElementFreeSpells(lightBookFreeSpells)
-        saveElementFreeSpells(darkBookFreeSpells)
-        saveElementFreeSpells(creationBookFreeSpells)
-        saveElementFreeSpells(destructionBookFreeSpells)
-        saveElementFreeSpells(airBookFreeSpells)
-        saveElementFreeSpells(earthBookFreeSpells)
-        saveElementFreeSpells(waterBookFreeSpells)
-        saveElementFreeSpells(fireBookFreeSpells)
-        saveElementFreeSpells(essenceBookFreeSpells)
-        saveElementFreeSpells(illusionBookFreeSpells)
-        saveElementFreeSpells(necromancyBookFreeSpells)
+        saveElementFreeSpells(byteArray, lightBookFreeSpells)
+        saveElementFreeSpells(byteArray, darkBookFreeSpells)
+        saveElementFreeSpells(byteArray, creationBookFreeSpells)
+        saveElementFreeSpells(byteArray, destructionBookFreeSpells)
+        saveElementFreeSpells(byteArray, airBookFreeSpells)
+        saveElementFreeSpells(byteArray, earthBookFreeSpells)
+        saveElementFreeSpells(byteArray, waterBookFreeSpells)
+        saveElementFreeSpells(byteArray, fireBookFreeSpells)
+        saveElementFreeSpells(byteArray, essenceBookFreeSpells)
+        saveElementFreeSpells(byteArray, illusionBookFreeSpells)
+        saveElementFreeSpells(byteArray, necromancyBookFreeSpells)
     }
 
     /**
@@ -1234,14 +1237,17 @@ class Magic(private val charInstance: BaseCharacter){
      *
      * @param saveItem list of free spells to write to file
      */
-    private fun saveElementFreeSpells(saveItem: MutableList<FreeSpell>){
+    private fun saveElementFreeSpells(
+        byteArray: ByteArrayOutputStream,
+        saveItem: MutableList<FreeSpell>
+    ){
         //save the number of spells in the list
-        charInstance.addNewData(saveItem.size)
+        writeDataTo(byteArray, saveItem.size)
 
         //write each spell's level and name
         saveItem.forEach{
-            charInstance.addNewData(it.level)
-            charInstance.addNewData(it.saveName)
+            writeDataTo(byteArray, it.level)
+            writeDataTo(byteArray, it.saveName)
         }
     }
 }

@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.paetus.animaCharCreator.InfoRow
-import com.paetus.animaCharCreator.NumberInput
+import com.paetus.animaCharCreator.composables.InfoRow
+import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.equipment.CoinType
+import com.paetus.animaCharCreator.enumerations.CoinType
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 
 /**

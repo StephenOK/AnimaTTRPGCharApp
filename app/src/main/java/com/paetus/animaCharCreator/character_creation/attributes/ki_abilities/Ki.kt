@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
@@ -14,7 +14,9 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.te
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Component that manages a character's ki points and accumulation.
@@ -678,28 +680,28 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation
      */
-    fun writeKiAttributes() {
+    fun writeKiAttributes(byteArray: ByteArrayOutputStream) {
         //write data from KiStats
         allKiStats.forEach{
-            charInstance.addNewData(it.boughtKiPoints.value)
-            charInstance.addNewData(it.boughtAccumulation.value)
+            writeDataTo(byteArray, it.boughtKiPoints.value)
+            writeDataTo(byteArray, it.boughtAccumulation.value)
         }
 
         //write number of ki abilities taken and specific abilities taken
-        charInstance.addNewData(takenAbilities.size)
+        writeDataTo(byteArray, takenAbilities.size)
         takenAbilities.forEach{
-            charInstance.addNewData(it.saveTag)
+            writeDataTo(byteArray, it.saveTag)
         }
 
         //write number of techniques taken and data on each technique
-        charInstance.addNewData(prebuiltTechniques.size)
+        writeDataTo(byteArray, prebuiltTechniques.size)
         prebuiltTechniques.forEach{
-            it.write(charInstance)
+            it.write(byteArray)
         }
 
-        charInstance.addNewData(customTechniques.size)
+        writeDataTo(byteArray, customTechniques.size)
         customTechniques.forEach{
-            it.write(charInstance)
+            it.write(byteArray)
         }
     }
 }

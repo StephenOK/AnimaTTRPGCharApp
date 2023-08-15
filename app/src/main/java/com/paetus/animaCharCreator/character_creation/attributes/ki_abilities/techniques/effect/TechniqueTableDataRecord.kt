@@ -1,7 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.writeDataTo
+import java.io.ByteArrayOutputStream
 
 /**
  * Record of data for technique effects.
@@ -594,64 +595,64 @@ data class TechniqueTableData(
                 input.level == level
     }
 
-    fun write(charInstance: BaseCharacter){
-        charInstance.addNewData(name)
+    fun write(byteArray: ByteArrayOutputStream){
+        writeDataTo(byteArray, name)
 
         if(name == 14){
             when(effectRef){
                 R.string.physReduction -> {
-                    charInstance.addNewData(0)
-                    charInstance.addNewData(mkCost - 10)
+                    writeDataTo(byteArray, 0)
+                    writeDataTo(byteArray, mkCost - 10)
                 }
                 R.string.blindnessData ->{
-                    charInstance.addNewData(1)
-                    charInstance.addNewData(mkCost - 15)
+                    writeDataTo(byteArray, 1)
+                    writeDataTo(byteArray, mkCost - 15)
                 }
                 R.string.charReduction ->{
-                    charInstance.addNewData(2)
-                    charInstance.addNewData(mkCost - 10)
+                    writeDataTo(byteArray, 2)
+                    writeDataTo(byteArray, mkCost - 10)
                 }
                 R.string.partParalyze ->{
-                    charInstance.addNewData(3)
-                    charInstance.addNewData(mkCost - 10)
+                    writeDataTo(byteArray, 3)
+                    writeDataTo(byteArray, mkCost - 10)
                 }
                 R.string.damage ->{
-                    charInstance.addNewData(4)
-                    charInstance.addNewData(mkCost - 10)
+                    writeDataTo(byteArray, 4)
+                    writeDataTo(byteArray, mkCost - 10)
                 }
                 R.string.unconscious ->{
-                    charInstance.addNewData(5)
-                    charInstance.addNewData(mkCost - 15)
+                    writeDataTo(byteArray, 5)
+                    writeDataTo(byteArray, mkCost - 15)
                 }
                 R.string.coma ->{
-                    charInstance.addNewData(6)
-                    charInstance.addNewData(mkCost - 30)
+                    writeDataTo(byteArray, 6)
+                    writeDataTo(byteArray, mkCost - 30)
                 }
                 R.string.totalParalyze ->{
-                    charInstance.addNewData(7)
-                    charInstance.addNewData(mkCost - 20)
+                    writeDataTo(byteArray, 7)
+                    writeDataTo(byteArray, mkCost - 20)
                 }
                 R.string.lifeDrain ->{
-                    charInstance.addNewData(8)
-                    charInstance.addNewData(mkCost - 15)
+                    writeDataTo(byteArray, 8)
+                    writeDataTo(byteArray, mkCost - 15)
                 }
                 R.string.controlData ->{
-                    charInstance.addNewData(9)
-                    charInstance.addNewData(mkCost - 40)
+                    writeDataTo(byteArray, 9)
+                    writeDataTo(byteArray, mkCost - 40)
                 }
                 R.string.death ->{
-                    charInstance.addNewData(10)
-                    charInstance.addNewData(mkCost - 50)
+                    writeDataTo(byteArray, 10)
+                    writeDataTo(byteArray, mkCost - 50)
                 }
                 else -> {}
             }
 
-            charInstance.addNewData(primaryCost)
+            writeDataTo(byteArray, primaryCost)
         }
         else {
-            charInstance.addNewData(primaryCost)
-            charInstance.addNewData(secondaryCost)
-            charInstance.addNewData(mkCost)
+            writeDataTo(byteArray, primaryCost)
+            writeDataTo(byteArray, secondaryCost)
+            writeDataTo(byteArray, mkCost)
         }
     }
 }

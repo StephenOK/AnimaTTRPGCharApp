@@ -1,9 +1,11 @@
 package com.paetus.animaCharCreator.character_creation
 
 import androidx.compose.runtime.mutableStateOf
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
-class RuleRecord(val charInstance: BaseCharacter) {
+class RuleRecord() {
     //initialize if base or core exxet is used
     val isCoreExxet = mutableStateOf(false)
 
@@ -51,10 +53,10 @@ class RuleRecord(val charInstance: BaseCharacter) {
     /**
      * Writes this section's data to the character's file.
      */
-    fun writeRules(){
-        charInstance.addNewData(isCoreExxet.value)
-        charInstance.addNewData(hasDominus.value)
-        charInstance.addNewData(hasArcana.value)
-        charInstance.addNewData(hasPromethium.value)
+    fun writeRules(byteArray: ByteArrayOutputStream) {
+        writeDataTo(byteArray, isCoreExxet.value)
+        writeDataTo(byteArray, hasDominus.value)
+        writeDataTo(byteArray, hasArcana.value)
+        writeDataTo(byteArray, hasPromethium.value)
     }
 }

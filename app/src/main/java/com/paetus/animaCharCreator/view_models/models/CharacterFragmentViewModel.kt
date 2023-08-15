@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -50,7 +49,7 @@ class CharacterFragmentViewModel(
     val magPaladin = _magPaladin.asStateFlow()
 
     //initialize the character's size category display
-    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value.toString())
+    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value)
     val sizeInput = _sizeInput.asStateFlow()
 
     //initialize the character's appearance input string
@@ -152,7 +151,7 @@ class CharacterFragmentViewModel(
     /**
      * Sets the size category display to the character's value.
      */
-    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value.toString()}}
+    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value}}
 
     /**
      * Attempts to change the character's appearance to the inputted value.
@@ -432,11 +431,11 @@ class CharacterFragmentViewModel(
         val bonusInput = _bonusInput.asStateFlow()
 
         //initialize other bonus display
-        private val _bonus = MutableStateFlow(primaryStat.bonus.value.toString())
+        private val _bonus = MutableStateFlow(primaryStat.bonus.value)
         val bonus = _bonus.asStateFlow()
 
         //initialize final output mod display
-        private val _modTotal = MutableStateFlow(primaryStat.outputMod.value.toString())
+        private val _modTotal = MutableStateFlow(primaryStat.outputMod.value)
         val modTotal = _modTotal.asStateFlow()
 
         /**
@@ -494,8 +493,8 @@ class CharacterFragmentViewModel(
          * Update the bonus and total displays of this string item.
          */
         fun setOutput() {
-            _bonus.update{primaryStat.bonus.value.toString()}
-            _modTotal.update{primaryStat.outputMod.value.toString()}
+            _bonus.update{primaryStat.bonus.value}
+            _modTotal.update{primaryStat.outputMod.value}
         }
 
         /**

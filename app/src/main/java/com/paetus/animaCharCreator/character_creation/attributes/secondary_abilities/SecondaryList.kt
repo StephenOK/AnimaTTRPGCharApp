@@ -6,6 +6,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.class_objects.C
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
 import kotlin.Throws
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 /**
@@ -258,8 +259,8 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
     /**
      * Save characteristic values to file.
      */
-    fun writeList() {
-        fullList.forEach{it.write() }
+    fun writeList(byteArray: ByteArrayOutputStream) {
+        fullList.forEach{it.write(byteArray) }
     }
 
     /**

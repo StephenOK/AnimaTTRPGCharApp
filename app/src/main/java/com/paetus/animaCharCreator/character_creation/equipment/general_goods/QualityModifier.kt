@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.equipment.general_goods
 
+import com.paetus.animaCharCreator.enumerations.Availability
+
 /**
  * Item that alter's the value of a piece of general equipment.
  *

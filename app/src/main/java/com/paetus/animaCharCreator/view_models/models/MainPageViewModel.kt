@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.TextInput
+import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.activities.HomeActivity
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import kotlinx.coroutines.flow.MutableStateFlow

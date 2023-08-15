@@ -2,7 +2,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
 
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 
 /**

@@ -2,6 +2,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.summoning
 
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Section containing stats involving a character's summoning ability.
@@ -41,7 +42,7 @@ class Summoning(private val charInstance: BaseCharacter){
     /**
      * Writes pertinent data from this section to file.
      */
-    fun writeSummoning(){
-        allSummoning.forEach{it.writeAbility()}
+    fun writeSummoning(byteArray: ByteArrayOutputStream) {
+        allSummoning.forEach{it.writeAbility(byteArray) }
     }
 }

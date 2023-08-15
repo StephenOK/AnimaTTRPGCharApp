@@ -21,13 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import com.paetus.animaCharCreator.InfoRow
+import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.NumberInput
+import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
-import com.paetus.animaCharCreator.TextInput
+import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel

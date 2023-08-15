@@ -1,8 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes
 
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.AttackType
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponAbility
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.WeaponType
+import com.paetus.animaCharCreator.enumerations.AttackType
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponAbility
+import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 
 /**
  * Special type of weapon that utilizes ranged combat.

@@ -3,7 +3,9 @@ package com.paetus.animaCharCreator.character_creation.attributes.psychic
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.disciplines.*
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Fragment that holds the data on the character's psychic abilities.
@@ -461,26 +463,26 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Write data in this section to the character's file.
      */
-    fun writePsychic(){
+    fun writePsychic(byteArray: ByteArrayOutputStream) {
         //write psychic point and projection data
-        charInstance.addNewData(boughtPsyPoints.value)
-        charInstance.addNewData(pointsInPotential.value)
-        charInstance.addNewData(psyProjectionBought.value)
+        writeDataTo(byteArray, boughtPsyPoints.value)
+        writeDataTo(byteArray, pointsInPotential.value)
+        writeDataTo(byteArray, psyProjectionBought.value)
 
         //add discipline data
-        charInstance.addNewData(disciplineInvestment.size)
+        writeDataTo(byteArray, disciplineInvestment.size)
         disciplineInvestment.forEach{
-            charInstance.addNewData(it.saveName)
+            writeDataTo(byteArray, it.saveName)
         }
 
         //add mastered power data
-        charInstance.addNewData(masteredPowers.size)
+        writeDataTo(byteArray, masteredPowers.size)
         masteredPowers.forEach{
-            charInstance.addNewData(it.key.saveName)
-            charInstance.addNewData(it.value)
+            writeDataTo(byteArray, it.key.saveName)
+            writeDataTo(byteArray, it.value)
         }
 
         //add innate slot count
-        charInstance.addNewData(innateSlotCount.value)
+        writeDataTo(byteArray, innateSlotCount.value)
     }
 }

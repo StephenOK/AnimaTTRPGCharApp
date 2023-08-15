@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paetus.animaCharCreator.DetailButton
-import com.paetus.animaCharCreator.GeneralCard
+import com.paetus.animaCharCreator.composables.DetailButton
+import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter

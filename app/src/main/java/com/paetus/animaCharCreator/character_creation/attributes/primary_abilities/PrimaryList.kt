@@ -2,6 +2,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.primary_abilit
 
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Record of all of a character's primary characteristic.
@@ -137,7 +138,7 @@ class PrimaryList(private val charInstance: BaseCharacter){
     /**
      * Save all primary characteristic data to file.
      */
-    fun writePrimaries(){
-        allPrimaries.forEach{it.write()}
+    fun writePrimaries(byteArray: ByteArrayOutputStream) {
+        allPrimaries.forEach{it.write(byteArray) }
     }
 }

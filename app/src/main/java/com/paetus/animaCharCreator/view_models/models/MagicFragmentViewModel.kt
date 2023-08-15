@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.character_creation.Element
+import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
@@ -239,7 +239,7 @@ class MagicFragmentViewModel(
      * @param input free spell to check
      * @return element associated with this spell
      */
-    fun getFreeElement(input: FreeSpell): Element{return magic.findFreeSpellElement(input)}
+    fun getFreeElement(input: FreeSpell): Element {return magic.findFreeSpellElement(input)}
 
     /**
      * Adds a primary element checkbox to the master list.

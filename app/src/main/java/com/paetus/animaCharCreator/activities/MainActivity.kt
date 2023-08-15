@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
@@ -40,6 +41,7 @@ import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.MainPageViewModel
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -72,9 +74,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            AppTheme{
+            //AppTheme{
                 MainContents()
-            }
+            //}
         }
     }
 
@@ -252,44 +254,42 @@ class MainActivity : AppCompatActivity() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                                } else {
-                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                                }
-                            },
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Icon(
-                            painter =
-                                if(isSystemInDarkTheme())
-                                    painterResource(R.drawable.baseline_toggle_off_24)
-                                else
-                                    painterResource(R.drawable.baseline_toggle_on_24),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .weight(0.25f)
-                        )
-                        Text(
-                            text =
-                                if(isSystemInDarkTheme())
-                                    stringResource(R.string.darkMode)
-                                else
-                                    stringResource(R.string.lightMode),
-                            modifier = Modifier
-                                .weight(0.5f),
-                            fontSize = 20.sp
-                        )
+                    //Row(
+                        //modifier = Modifier
+                            //.fillMaxWidth(),
+                        //horizontalArrangement = Arrangement.Center,
+                        //verticalAlignment = Alignment.CenterVertically
+                    //){
+                        //Switch(
+                            //checked = !isSystemInDarkTheme(),
+                            //onCheckedChange = {
+                                //if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                                //}
+                                //else {
+                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                                //}
 
-                        Spacer(Modifier.weight(0.25f))
-                    }
+                                //writeSettings(this@MainActivity)
+                            //},
+                            //modifier = Modifier
+                                //.weight(0.25f)
+                        //)
+                        //Text(
+                            //text =
+                                //if(isSystemInDarkTheme())
+                                    //stringResource(R.string.darkMode)
+                                //else
+                                    //stringResource(R.string.lightMode),
+                            //modifier = Modifier
+                                //.weight(0.5f),
+                            //fontSize = 20.sp
+                        //)
 
-                    Spacer(Modifier.height(10.dp))
+                        //Spacer(Modifier.weight(0.25f))
+                    //}
+
+                    //Spacer(Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier
@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity() {
                         Text(
                             text = stringResource(R.string.sharingTitle),
                             modifier = Modifier
-                                .weight(0.25f),
+                                .weight(0.5f),
                             fontSize = 20.sp
                         )
 
@@ -447,29 +447,8 @@ fun writeSettings(home: Activity){
 
     val settingsDefault = ByteArrayOutputStream()
 
-    settingsDefault.write(
-        """${BuildConfig.VERSION_CODE}""".toByteArray(StandardCharsets.UTF_8),
-        0,
-        """${BuildConfig.VERSION_CODE}""".toByteArray(StandardCharsets.UTF_8).size
-    )
-
-    settingsDefault.write(
-        "\n".toByteArray(StandardCharsets.UTF_8),
-        0,
-        "\n".toByteArray(StandardCharsets.UTF_8).size
-    )
-
-    settingsDefault.write(
-        """${AppCompatDelegate.getDefaultNightMode()}""".toByteArray(StandardCharsets.UTF_8),
-        0,
-        """${AppCompatDelegate.getDefaultNightMode()}""".toByteArray(StandardCharsets.UTF_8).size
-    )
-
-    settingsDefault.write(
-        "\n".toByteArray(StandardCharsets.UTF_8),
-        0,
-        "\n".toByteArray(StandardCharsets.UTF_8).size
-    )
+    writeDataTo(settingsDefault, BuildConfig.VERSION_CODE)
+    writeDataTo(settingsDefault, AppCompatDelegate.getDefaultNightMode())
 
     settingsDefault.close()
 

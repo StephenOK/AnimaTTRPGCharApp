@@ -7,8 +7,10 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.MagicAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.PsychicAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.Archetype
+import com.paetus.animaCharCreator.enumerations.Archetype
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Section that holds data on the advantages and disadvantages chosen for the character.
@@ -387,20 +389,22 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     /**
      * Write advantage data to file.
      */
-    fun writeAdvantages(){
+    fun writeAdvantages(byteArray: ByteArrayOutputStream) {
         //record number of taken advantages
-        charInstance.addNewData(takenAdvantages.size)
+        writeDataTo(byteArray, takenAdvantages.size)
 
         //write advantage data
         takenAdvantages.forEach{
-            charInstance.addNewData(it.saveTag)
-            charInstance.addNewData(it.picked)
-            charInstance.addNewData(it.pickedCost)
+            writeDataTo(byteArray, it.saveTag)
+            writeDataTo(byteArray, it.picked)
+            writeDataTo(byteArray, it.pickedCost)
 
-            if(it.multPicked == null) charInstance.addNewData(null)
+            if(it.multPicked == null) writeDataTo(byteArray, null)
             else{
-                charInstance.addNewData(it.multPicked.size)
-                it.multPicked.forEach{charInstance.addNewData(it)}
+                writeDataTo(byteArray, it.multPicked.size)
+                it.multPicked.forEach{multItem ->
+                    writeDataTo(byteArray, multItem)
+                }
             }
         }
     }

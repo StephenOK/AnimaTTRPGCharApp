@@ -1,8 +1,12 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,12 +34,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paetus.animaCharCreator.DetailButton
-import com.paetus.animaCharCreator.GeneralCard
+import com.paetus.animaCharCreator.composables.DetailButton
+import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.activities.fragments.dialogs.AdvantageCostPick
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 
@@ -47,6 +52,7 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
  * @param advantageFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AdvantageFragment(
     advantageFragVM: AdvantageFragmentViewModel,
@@ -67,12 +73,17 @@ fun AdvantageFragment(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //display creation points remaining
-        Text(
-            text = stringResource(R.string.creationPointLabel) +
-                    " ${advantageFragVM.creationPoints.collectAsState().value}",
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Bold
-        )
+        AnimatedContent(
+            targetState = advantageFragVM.creationPoints.collectAsState().value,
+            transitionSpec = numberScroll,
+            label = "pointsRemainingDisplay"
+        ){
+            Text(
+                text = stringResource(R.string.creationPointLabel, it),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         LazyColumn(
             modifier = Modifier

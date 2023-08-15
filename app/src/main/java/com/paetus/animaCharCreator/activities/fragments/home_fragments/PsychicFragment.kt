@@ -19,10 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.paetus.animaCharCreator.DetailButton
-import com.paetus.animaCharCreator.GeneralCard
-import com.paetus.animaCharCreator.InfoRow
-import com.paetus.animaCharCreator.NumberInput
+import com.paetus.animaCharCreator.composables.DetailButton
+import com.paetus.animaCharCreator.composables.GeneralCard
+import com.paetus.animaCharCreator.composables.InfoRow
+import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -304,6 +304,9 @@ private fun PsyPowerRow(
     //initialize current context
     val context = LocalContext.current
 
+    //construct psychic point cost string
+    val pointString = stringResource(R.string.psyPointInput, 1)
+
     //construct potential bonus displayed for this power
     val potentialString =
         if(power.bonusGained.collectAsState().value != null)
@@ -348,7 +351,13 @@ private fun PsyPowerRow(
             inputText = power.pointInvestment.collectAsState().value,
             inputFunction = {power.setPointInvestment(it.toInt())},
             emptyFunction = {power.setPointInvestment("")},
-            modifier = Modifier.weight(0.18f)
+            modifier = Modifier
+                .weight(0.18f)
+                .onFocusChanged {
+                    if(it.isFocused) power.setPointLabel(pointString)
+                    else power.setPointLabel("")
+                },
+            label = power.pointLabel.collectAsState().value
         )
 
         //display enhancement value

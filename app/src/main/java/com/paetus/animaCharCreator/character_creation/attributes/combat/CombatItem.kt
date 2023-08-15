@@ -2,7 +2,9 @@ package com.paetus.animaCharCreator.character_creation.attributes.combat
 
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 
 /**
  * Item that holds data in regards to a character's combat ability.
@@ -116,7 +118,7 @@ class CombatItem(
     /**
      * Writes the user's inputted value to a file.
      */
-    fun writeItem(){
-        charInstance.addNewData(inputVal.value)
+    fun writeItem(byteArray: ByteArrayOutputStream) {
+        writeDataTo(byteArray, inputVal.value)
     }
 }

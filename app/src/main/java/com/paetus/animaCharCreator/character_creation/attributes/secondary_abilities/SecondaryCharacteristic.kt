@@ -1,8 +1,10 @@
 package com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities
 
 import androidx.compose.runtime.mutableStateOf
+import com.paetus.animaCharCreator.writeDataTo
 import kotlin.Throws
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 /**
@@ -187,9 +189,9 @@ class SecondaryCharacteristic(private val parent: SecondaryList){
     /**
      * Write characteristic data to the file output stream
      */
-    fun write() {
+    fun write(byteArray: ByteArrayOutputStream) {
         //record characteristic's applied points and natural bonus state
-        parent.charInstance.addNewData(pointsApplied.value)
-        parent.charInstance.addNewData(bonusApplied.value.toString())
+        writeDataTo(byteArray, pointsApplied.value)
+        writeDataTo(byteArray, bonusApplied.value.toString())
     }
 }

@@ -15,10 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.paetus.animaCharCreator.DetailButton
-import com.paetus.animaCharCreator.GeneralCard
-import com.paetus.animaCharCreator.InfoRow
-import com.paetus.animaCharCreator.NumberInput
+import com.paetus.animaCharCreator.composables.DetailButton
+import com.paetus.animaCharCreator.composables.GeneralCard
+import com.paetus.animaCharCreator.composables.InfoRow
+import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomTechnique
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert

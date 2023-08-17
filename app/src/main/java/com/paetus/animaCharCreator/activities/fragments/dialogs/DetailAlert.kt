@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,6 +47,7 @@ import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.theme.detailLightColors
 import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
 
 /**
@@ -61,55 +63,67 @@ fun DetailAlert(
     item: Any,
     closeFunc: () -> Unit
 ) {
-    DialogFrame(
-        //display dialog header
-        title,
-        {
-            LazyColumn{
-                item{
-                    //display the item's detail composable
-                    when(item){
-                        //advantage or disadvantage
-                        is Advantage -> AdvantageDetails(item)
+    MaterialTheme(colorScheme = detailLightColors){
+        DialogFrame(
+            //display dialog header
+            title,
+            {
+                LazyColumn {
+                    item {
+                        //display the item's detail composable
+                        when (item) {
+                            //advantage or disadvantage
+                            is Advantage -> AdvantageDetails(item)
 
-                        //weapon
-                        is Weapon -> WeaponContents(item)
+                            //weapon
+                            is Weapon -> WeaponContents(item)
 
-                        //archetype
-                        is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
+                            //archetype
+                            is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
 
-                        //style module
-                        is StyleModule -> {Text(text = stringResource(item.description))}
+                            //style module
+                            is StyleModule -> {
+                                Text(text = stringResource(item.description))
+                            }
 
-                        //martial art
-                        is MartialArt -> MartialContents(item)
+                            //martial art
+                            is MartialArt -> MartialContents(item)
 
-                        //ki ability
-                        is KiAbility -> KiContents(item)
+                            //ki ability
+                            is KiAbility -> KiContents(item)
 
-                        //dominion technique
-                        is TechniqueBase -> TechContents(item)
+                            //dominion technique
+                            is TechniqueBase -> TechContents(item)
 
-                        //magical spell
-                        is Spell -> SpellDetails(item)
+                            //magical spell
+                            is Spell -> SpellDetails(item)
 
-                        //psychic power
-                        is PsychicPower -> PowerDetails(item)
+                            //psychic power
+                            is PsychicPower -> PowerDetails(item)
 
-                        //inventory item
-                        is GeneralEquipment -> EquipmentDetails(item)
+                            //inventory item
+                            is GeneralEquipment -> EquipmentDetails(item)
 
-                        //failed item input
-                        else -> Text(text = stringResource(R.string.detailFailure))
+                            //failed item input
+                            else -> Text(text = stringResource(R.string.detailFailure))
+                        }
                     }
                 }
-            }
 
-            //run close function on back press
-            BackHandler{closeFunc()}
-        },
-        {TextButton(onClick = {closeFunc()}){ Text(text = stringResource(R.string.closeLabel))}}
-    )
+                //run close function on back press
+                BackHandler { closeFunc() }
+            },
+            {
+                TextButton(onClick = {closeFunc()}
+                ){
+                    Text(
+                        text = stringResource(R.string.closeLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        )
+    }
 }
 
 /**

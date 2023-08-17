@@ -22,6 +22,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -33,20 +35,25 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.paetus.animaCharCreator.theme.AppTheme
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.numberScroll
+import com.paetus.animaCharCreator.theme.headerLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
@@ -94,9 +101,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setContent{
-            //AppTheme{
-                HomeContents(homePageVM, charInstance, filename)
-            //}
+            HomeContents(homePageVM, charInstance, filename)
         }
     }
 
@@ -181,7 +186,11 @@ class HomeActivity : AppCompatActivity() {
         ){
             //scaffold for the home page
             Scaffold(
-                topBar = {AppHeader(homePageVM, drawerState, scope)},
+                topBar = {
+                    MaterialTheme(colorScheme = headerLightColors) {
+                        AppHeader(homePageVM, drawerState, scope)
+                    }
+                },
                 bottomBar = {AppFooter(homePageVM) }
             ) {
 
@@ -298,7 +307,7 @@ class HomeActivity : AppCompatActivity() {
      * @param drawerState state manager of the drawer state
      * @param scope coroutine for this item
      */
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
     @Composable
     private fun AppHeader(
         homePageVM: HomePageViewModel,
@@ -308,6 +317,18 @@ class HomeActivity : AppCompatActivity() {
         TopAppBar(
             //update title with any page change
             title = {
+                Text(
+                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    style = LocalTextStyle.current.copy(
+                        drawStyle = Stroke(
+                            miter = 10f,
+                            width = 5f,
+                            join = StrokeJoin.Round
+                        )
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
                 Text(
                     text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
                 )
@@ -328,7 +349,7 @@ class HomeActivity : AppCompatActivity() {
                         contentDescription = stringResource(R.string.openLabel)
                     )
                 }
-            },
+            }
 
             //actions = {
             //    IconButton(
@@ -626,6 +647,18 @@ class HomeActivity : AppCompatActivity() {
                 baseContext.resources.getString(R.string.fileError),
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    @Preview
+    @Composable
+    fun PreviewHeader(){
+        MaterialTheme(colorScheme = headerLightColors) {
+            AppHeader(
+                HomePageViewModel(BaseCharacter()),
+                rememberDrawerState(DrawerValue.Closed),
+                rememberCoroutineScope()
+            )
         }
     }
 }

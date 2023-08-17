@@ -18,6 +18,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paetus.animaCharCreator.theme.AppTheme
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -74,9 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            //AppTheme{
-                MainContents()
-            //}
+            MainContents()
         }
     }
 
@@ -255,40 +254,40 @@ class MainActivity : AppCompatActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     //Row(
-                        //modifier = Modifier
-                            //.fillMaxWidth(),
-                        //horizontalArrangement = Arrangement.Center,
-                        //verticalAlignment = Alignment.CenterVertically
+                    //    modifier = Modifier
+                    //        .fillMaxWidth(),
+                    //    horizontalArrangement = Arrangement.Center,
+                    //    verticalAlignment = Alignment.CenterVertically
                     //){
-                        //Switch(
-                            //checked = !isSystemInDarkTheme(),
-                            //onCheckedChange = {
-                                //if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                                //}
-                                //else {
-                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                                //}
-
-                                //writeSettings(this@MainActivity)
-                            //},
-                            //modifier = Modifier
-                                //.weight(0.25f)
-                        //)
-                        //Text(
-                            //text =
-                                //if(isSystemInDarkTheme())
-                                    //stringResource(R.string.darkMode)
-                                //else
-                                    //stringResource(R.string.lightMode),
-                            //modifier = Modifier
-                                //.weight(0.5f),
-                            //fontSize = 20.sp
-                        //)
-
-                        //Spacer(Modifier.weight(0.25f))
+                    //    Switch(
+                    //        checked = !isSystemInDarkTheme(),
+                    //        onCheckedChange = {
+                    //            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                    //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    //            }
+                    //            else {
+                    //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    //            }
+//
+                    //            writeSettings(this@MainActivity)
+                    //        },
+                    //        modifier = Modifier
+                    //            .weight(0.25f)
+                    //    )
+                    //    Text(
+                    //        text =
+                    //            if(isSystemInDarkTheme())
+                    //                stringResource(R.string.darkMode)
+                    //            else
+                    //                stringResource(R.string.lightMode),
+                    //        modifier = Modifier
+                    //            .weight(0.5f),
+                    //        fontSize = 20.sp
+                    //    )
+//
+                    //    Spacer(Modifier.weight(0.25f))
                     //}
-
+//
                     //Spacer(Modifier.height(10.dp))
 
                     Row(

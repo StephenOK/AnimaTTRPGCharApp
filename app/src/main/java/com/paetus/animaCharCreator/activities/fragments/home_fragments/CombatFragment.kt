@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +22,7 @@ import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 
@@ -33,6 +36,7 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
  * @param combatFragVM viewModel utilized in this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CombatFragment(
     combatFragVM: CombatFragViewModel,
@@ -132,12 +136,18 @@ fun CombatFragment(
                     )
 
                     //display life point total
-                    Text(
-                        text = combatFragVM.lifeTotal.collectAsState().value,
+                    AnimatedContent(
+                        targetState = combatFragVM.lifeTotal.collectAsState().value,
                         modifier = Modifier
                             .weight(0.2f),
-                        textAlign = TextAlign.Center
-                    )
+                        transitionSpec = numberScroll,
+                        label = "lifePointTotal"
+                    ) {
+                        Text(
+                            text = "$it",
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -238,19 +248,31 @@ fun CombatFragment(
             GeneralCard{
                 //create displays for the character's initiative, fatigue, and regeneration
                 InfoRow(
-                    stringResource(R.string.totalInitiative),
-                    combatFragVM.getInitiativeTotal()
-                )
+                    label = stringResource(R.string.totalInitiative)
+                ){it, _ ->
+                    Text(
+                        text = combatFragVM.getInitiativeTotal(),
+                        modifier = it
+                    )
+                }
 
                 InfoRow(
-                    stringResource(R.string.fatigueLabel),
-                    combatFragVM.getFatigue()
-                )
+                    label = stringResource(R.string.fatigueLabel)
+                ){it, _ ->
+                    Text(
+                        text = combatFragVM.getFatigue(),
+                        modifier = it
+                    )
+                }
 
                 InfoRow(
-                    stringResource(R.string.regenLabel),
-                    combatFragVM.getRegen()
-                )
+                    label = stringResource(R.string.regenLabel)
+                ){it, _ ->
+                    Text(
+                        text = combatFragVM.getRegen(),
+                        modifier = it
+                    )
+                }
             }
         }
     }
@@ -263,6 +285,7 @@ fun CombatFragment(
  * @param combatItem character's combat stat to display
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun CombatItemRow(
     combatFragVM: CombatFragViewModel,
@@ -310,11 +333,19 @@ private fun CombatItemRow(
             modifier = Modifier.weight(0.2f),
             textAlign = TextAlign.Center
         )
-        Text(
-            text = combatItem.totalVal.collectAsState().value,
-            modifier = Modifier.weight(0.2f),
-            textAlign = TextAlign.Center
-        )
+
+        AnimatedContent(
+            targetState = combatItem.totalVal.collectAsState().value,
+            modifier = Modifier
+                .weight(0.2f),
+            transitionSpec = numberScroll,
+            label = "${stringResource(combatItem.label)}Total"
+        ){
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

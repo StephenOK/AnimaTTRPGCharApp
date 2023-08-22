@@ -1,7 +1,9 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import androidx.compose.animation.AnimatedContent
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,6 +24,8 @@ import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
+import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 
@@ -229,6 +233,7 @@ private fun RowHead(){
  * @param item characteristic item to display for this row
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MakeRow(
     item: SecondaryFragmentViewModel.SecondaryItem,
@@ -281,12 +286,18 @@ private fun MakeRow(
         )
 
         //display associated class bonus value
-        Text(
-            text = item.classPoints.collectAsState().value,
+        AnimatedContent(
+            targetState = item.classPoints.collectAsState().value,
             modifier = Modifier
                 .weight(0.125f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}ClassPoints"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
 
         //checkbox to apply natural bonus
         Checkbox(
@@ -300,19 +311,31 @@ private fun MakeRow(
         )
 
         //display for the natural bonus value
-        Text(
-            text = stringResource(item.checkedText.collectAsState().value),
+        AnimatedContent(
+            targetState = stringResource(item.checkedText.collectAsState().value),
             modifier = Modifier
-                .weight(0.1f)
-        )
+                .weight(0.1f),
+            transitionSpec = textScrollUp,
+            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}BonusText"
+        ) {
+            Text(
+                text = it,
+            )
+        }
 
         //display for characteristic's total value
-        Text(
-            text = item.totalOutput.collectAsState().value,
+        AnimatedContent(
+            targetState = item.totalOutput.collectAsState().value,
             modifier = Modifier
                 .weight(0.125f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}Total"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

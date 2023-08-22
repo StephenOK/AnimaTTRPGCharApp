@@ -1,7 +1,9 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +29,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.MagicFragmentViewModel
 
@@ -40,6 +43,7 @@ import com.paetus.animaCharCreator.view_models.models.MagicFragmentViewModel
  * @param magFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
@@ -131,12 +135,14 @@ fun MagicFragment(
                         modifier = Modifier
                             .onFocusChanged {
                                 //display Gift not taken message
-                                if(it.isFocused && !magFragVM.isGifted())
-                                    Toast.makeText(
-                                        context,
-                                        context.getString(R.string.needGiftMessage),
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                if (it.isFocused && !magFragVM.isGifted())
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            context.getString(R.string.needGiftMessage),
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
 
                                 //change DP display to appropriate value
                                 if (it.isFocused)
@@ -184,15 +190,35 @@ fun MagicFragment(
 
                 //display zeon recovery
                 InfoRow(
-                    stringResource(R.string.zeonRecoveryLabel),
-                    magFragVM.zeonRecoveryString.collectAsState().value
-                )
+                    label = stringResource(R.string.zeonRecoveryLabel)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = magFragVM.zeonRecoveryString.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "zeonRecovery"
+                    ){
+                        Text(
+                            text = "$it"
+                        )
+                    }
+                }
 
                 //display innate magic
                 InfoRow(
-                    stringResource(R.string.innateMagic),
-                    magFragVM.innateMagic.collectAsState().value
-                )
+                    label = stringResource(R.string.innateMagic)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = magFragVM.innateMagic.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "innateMagic"
+                    ){
+                        Text(
+                            text = "$it"
+                        )
+                    }
+                }
             }
         }
 
@@ -234,11 +260,13 @@ fun MagicFragment(
                         modifier = Modifier
                             .onFocusChanged {
                                 if (it.isFocused && !magFragVM.isGifted())
-                                    Toast.makeText(
-                                        context,
-                                        context.getString(R.string.needGiftMessage),
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            context.getString(R.string.needGiftMessage),
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
                             }
                             .weight(0.22f)
                     )
@@ -265,19 +293,37 @@ fun MagicFragment(
                             .weight(0.24f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = stringResource(
-                                R.string.offenseHeader,
-                                magFragVM.offenseImbalance.collectAsState().value
+                        Row {
+                            Text(
+                                text = "${stringResource(R.string.offenseLabel)}:"
                             )
-                        )
 
-                        Text(
-                            text = stringResource(
-                                R.string.defenseHeader,
-                                magFragVM.defenseImbalance.collectAsState().value
+                            AnimatedContent(
+                                targetState = magFragVM.offenseImbalance.collectAsState().value,
+                                transitionSpec = numberScroll,
+                                label = "offenseImbalance"
+                            ){
+                                Text(
+                                    text = "$it"
+                                )
+                            }
+                        }
+
+                        Row {
+                            Text(
+                                text = "${stringResource(R.string.defenseLabel)}:"
                             )
-                        )
+
+                            AnimatedContent(
+                                targetState = magFragVM.defenseImbalance.collectAsState().value,
+                                transitionSpec = numberScroll,
+                                label = "defenseImbalance"
+                            ){
+                                Text(
+                                    text = "$it"
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -289,14 +335,28 @@ fun MagicFragment(
         item{
             GeneralCard{
                 InfoRow(
-                    stringResource(R.string.magicLevelLabel),
-                    magFragVM.getMagicLevelMax(),
-                )
+                    label = stringResource(R.string.magicLevelLabel)
+                ){it, _ ->
+                    Text(
+                        text = magFragVM.getMagicLevelMax(),
+                        modifier = it
+                    )
+                }
 
                 InfoRow(
-                    stringResource(R.string.magicLevelSpentLabel),
-                    magFragVM.magicLevelSpent.collectAsState().value
-                )
+                    label = stringResource(R.string.magicLevelSpentLabel)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = magFragVM.magicLevelSpent.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "magLevelSpent"
+                    ){
+                        Text(
+                            text = "$it"
+                        )
+                    }
+                }
             }
         }
 
@@ -439,15 +499,17 @@ private fun ZeonPurchaseItem(
                 modifier = Modifier
                     .onFocusChanged {
                         //display warning for not having The Gift
-                        if(it.isFocused && !magFragVM.isGifted())
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.needGiftMessage),
-                                Toast.LENGTH_LONG
-                            ).show()
+                        if (it.isFocused && !magFragVM.isGifted())
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.needGiftMessage),
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
 
                         //update DP display
-                        if(it.isFocused)
+                        if (it.isFocused)
                             tableItem.setDPDisplay(dpString)
                         else
                             tableItem.setDPDisplay("")
@@ -513,12 +575,14 @@ private fun SpellBookInvestment(
                 emptyFunction = {spellData.setElementInvestment("")},
                 modifier = Modifier
                     .onFocusChanged {
-                        if(it.isFocused && !magFragVM.isGifted())
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.needGiftMessage),
-                                Toast.LENGTH_LONG
-                            ).show()
+                        if (it.isFocused && !magFragVM.isGifted())
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.needGiftMessage),
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
                     }
                     .weight(0.24f),
             )

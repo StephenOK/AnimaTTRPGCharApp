@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.paetus.animaCharCreator.theme.detailLightColors
 
 /**
  * Frame to build other dialog objects onto.
@@ -27,50 +27,52 @@ fun DialogFrame(
     mainContent: @Composable () -> Unit,
     buttonContent: @Composable () -> Unit
 ){
-    AlertDialog(
-        onDismissRequest = {},
-        content = {
-            Surface {
-                Box(
-                    Modifier
-                        .size(600.dp, 600.dp)
-                ) {
-                    //title level
-                    Row(
+    MaterialTheme(colorScheme = detailLightColors) {
+        AlertDialog(
+            onDismissRequest = {},
+            content = {
+                Surface {
+                    Box(
                         Modifier
-                            .align(Alignment.TopCenter)
-                            .height(50.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .size(600.dp, 600.dp)
                     ) {
-                        Text(
-                            text = dialogTitle,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                        //title level
+                        Row(
+                            Modifier
+                                .align(Alignment.TopCenter)
+                                .height(50.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = dialogTitle,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
 
-                    //main body
-                    Row(
-                        Modifier
-                            .align(Alignment.Center)
-                            .height(500.dp)
-                            .fillMaxWidth(0.85f)
-                    ) {
-                        mainContent()
-                    }
+                        //main body
+                        Row(
+                            Modifier
+                                .align(Alignment.Center)
+                                .height(500.dp)
+                                .fillMaxWidth(0.85f)
+                        ) {
+                            mainContent()
+                        }
 
-                    //bottom buttons
-                    Row(
-                        Modifier
-                            .align(Alignment.BottomCenter)
-                            .height(50.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        buttonContent()
+                        //bottom buttons
+                        Row(
+                            Modifier
+                                .align(Alignment.BottomCenter)
+                                .height(50.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            buttonContent()
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }

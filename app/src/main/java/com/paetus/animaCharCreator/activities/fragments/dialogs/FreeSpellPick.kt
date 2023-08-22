@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -72,12 +74,20 @@ fun FreeSpellPick(
         },
         {
             //confirmation button adds spell to character
-            TextButton(onClick = {magFragVM.addFreeSpell()})
-            {Text(text = stringResource(R.string.confirmLabel))}
+            TextButton(onClick = {magFragVM.addFreeSpell()}
+            ){
+                Text(
+                    text = stringResource(R.string.confirmLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
 
             //back button closes dialog
             TextButton(onClick = {magFragVM.toggleFreeExchangeOpen() }) {
-                Text(text = stringResource(R.string.backLabel))
+                Text(
+                    text = stringResource(R.string.backLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     )
@@ -102,7 +112,10 @@ private fun PickFreeRow(
             selected = displayItem == magFragVM.selectedFreeSpell.collectAsState().value,
             onClick = {magFragVM.setSelectedFreeSpell(displayItem)},
             modifier = Modifier
-                .weight(0.1f)
+                .weight(0.1f),
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = MaterialTheme.colorScheme.onSurface
+            )
         )
         //spell's name
         Text(

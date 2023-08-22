@@ -1,6 +1,9 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +36,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.CoinType
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 
 /**
@@ -79,9 +84,19 @@ fun EquipmentFragment(
         //display all coin spent
         item{
             GeneralCard {
+                Row{
+                    Text(
+                        text = stringResource(R.string.spentLabel),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(Modifier.height(5.dp))
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
+                        .fillMaxWidth(0.9f)
                 ) {
                     //gold spent
                     SpentDisplay(
@@ -279,17 +294,40 @@ fun EquipmentRow(
  * @param value amount of coin spent
  * @param modifier code to alter the form of the item
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SpentDisplay(
     type: CoinType,
     value: Int,
     modifier: Modifier
 ){
-    Text(
-        text = stringResource(R.string.spentAmount, type.name, value),
+    Row(
         modifier = modifier,
-        textAlign = TextAlign.Center
-    )
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.spentAmount, type.name),
+            modifier = Modifier
+                .weight(0.6f),
+            textAlign = TextAlign.Center,
+            maxLines = 1
+        )
+
+        Spacer(Modifier.weight(0.1f))
+
+        AnimatedContent(
+            targetState = value,
+            modifier = Modifier
+                .weight(0.3f),
+            transitionSpec = numberScroll,
+            label = "${type.name}Spent"
+        ){
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Left
+            )
+        }
+    }
 }
 
 /**
@@ -298,6 +336,7 @@ fun SpentDisplay(
  * @param equipFragVM viewModel that manages this fragment
  * @param input piece of purchased equipment
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HeldItemRow(
     equipFragVM: EquipmentFragmentViewModel,
@@ -331,12 +370,18 @@ fun HeldItemRow(
         )
 
         //display number of the held item
-        Text(
-            text = equipFragVM.getQuantity(input).toString(),
+        AnimatedContent(
+            targetState = equipFragVM.getQuantity(input)!!,
             modifier = Modifier
                 .weight(0.25f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = titleString + "Amount"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

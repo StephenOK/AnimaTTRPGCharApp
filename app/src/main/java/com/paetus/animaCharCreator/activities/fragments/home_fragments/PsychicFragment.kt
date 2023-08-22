@@ -1,7 +1,11 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +30,7 @@ import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.PsychicFragmentViewModel
 
@@ -37,6 +42,7 @@ import com.paetus.animaCharCreator.view_models.models.PsychicFragmentViewModel
  * @param psyFragVM viewModel that is to be run on this page
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
@@ -128,14 +134,25 @@ fun PsychicFragment(
         item{
             GeneralCard {
                 InfoRow(
-                    stringResource(R.string.freePsyPointLabel),
-                    psyFragVM.freePsyPoints.collectAsState().value,
-                    color =
+                    label = stringResource(R.string.freePsyPointLabel),
+                    textColor =
                         if (psyFragVM.freePointValid.collectAsState().value)
                             MaterialTheme.colorScheme.secondary
                         else
                             MaterialTheme.colorScheme.onError
-                )
+                ){modifier, color ->
+                    AnimatedContent(
+                        targetState = psyFragVM.freePsyPoints.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "freePsyPoints"
+                    ){
+                        Text(
+                            text = "$it",
+                            color = color
+                        )
+                    }
+                }
             }
         }
 
@@ -164,6 +181,7 @@ fun PsychicFragment(
  * @param tableData information regarding this individual table
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
@@ -209,12 +227,18 @@ private fun PsychicPurchaseTable(
         )
 
         //display value's final total
-        Text(
-            text = tableData.totalAmount.collectAsState().value,
+        AnimatedContent(
+            targetState = tableData.totalAmount.collectAsState().value,
             modifier = Modifier
                 .weight(0.25f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringResource(tableData.title)}Total"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -296,6 +320,7 @@ private fun DisciplineDisplay(
  * @param power the displayed object
  * @param psyFragVM viewModel that manages this page
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PsyPowerRow(
     power: PsychicFragmentViewModel.PowerItemData,
@@ -306,15 +331,6 @@ private fun PsyPowerRow(
 
     //construct psychic point cost string
     val pointString = stringResource(R.string.psyPointInput, 1)
-
-    //construct potential bonus displayed for this power
-    val potentialString =
-        if(power.bonusGained.collectAsState().value != null)
-            stringResource(
-                R.string.potentialBonusLabel,
-                power.bonusGained.collectAsState().value!! * 10
-            )
-        else ""
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -354,19 +370,53 @@ private fun PsyPowerRow(
             modifier = Modifier
                 .weight(0.18f)
                 .onFocusChanged {
-                    if(it.isFocused) power.setPointLabel(pointString)
+                    if (it.isFocused) power.setPointLabel(pointString)
                     else power.setPointLabel("")
                 },
             label = power.pointLabel.collectAsState().value
         )
 
+        if(!power.powerInvestedIn.collectAsState().value)
+            Spacer(Modifier.weight(0.17f))
+
         //display enhancement value
-        Text(
-            text = potentialString,
+        AnimatedVisibility(
+            visible = power.powerInvestedIn.collectAsState().value,
             modifier = Modifier
                 .weight(0.17f),
-            textAlign = TextAlign.Center
-        )
+            enter = scaleIn(),
+            exit = scaleOut()
+        ){
+            Column{
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    AnimatedContent(
+                        targetState = power.bonusGained.collectAsState().value,
+                        transitionSpec = numberScroll,
+                        label = "${stringArrayResource(R.array.powerNames)[power.item.name]}PointPotential"
+                    ) { value ->
+                        Text(
+                            text = stringResource(R.string.addNumber, value * 10),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text = stringResource(R.string.potentialBonusLabel),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
 
         //power's detail button
         DetailButton(

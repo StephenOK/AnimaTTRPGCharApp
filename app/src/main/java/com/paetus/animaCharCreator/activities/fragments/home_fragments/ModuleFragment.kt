@@ -1,6 +1,8 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +25,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArt
 import com.paetus.animaCharCreator.character_creation.attributes.modules.StyleModule
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
 
@@ -35,6 +38,7 @@ import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
  * @param modFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ModuleFragment(
     modFragVM: ModuleFragmentViewModel,
@@ -53,20 +57,34 @@ fun ModuleFragment(
     ){
         item{
             GeneralCard{
-                //display currently selected primary weapon
                 Text(
-                    text = stringResource(
-                        R.string.primaryWeaponLabel,
-                        stringResource(modFragVM.primaryWeapon.collectAsState().value.name)
-                    ),
+                    text = stringResource(R.string.primaryWeaponLabel),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
+
+                //display currently selected primary weapon
+                AnimatedContent(
+                    targetState = stringResource(modFragVM.primaryWeapon.collectAsState().value.name),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    transitionSpec = textScrollUp,
+                    label = "primaryWeapon"
+                ) {
+                    Text(
+                        text = it,
+                        textAlign = TextAlign.Center,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
+
+        item{Spacer(Modifier.height(5.dp))}
 
         //display the unarmed weapon row
         item{

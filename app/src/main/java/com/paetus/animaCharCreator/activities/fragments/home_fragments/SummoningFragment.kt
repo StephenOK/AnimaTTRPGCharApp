@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +21,7 @@ import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.SummoningFragmentViewModel
 
@@ -89,6 +92,7 @@ fun SummoningFragment(
  * @param inputData table data to display to the user
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SummoningAbilityRow(
     inputData: SummoningFragmentViewModel.SummonItemData,
@@ -129,7 +133,7 @@ private fun SummoningAbilityRow(
             emptyFunction = {inputData.setBoughtVal("")},
             modifier = Modifier
                 .onFocusChanged {
-                    if(it.isFocused)
+                    if (it.isFocused)
                         inputData.setDPLabel(dpDisplay)
                     else
                         inputData.setDPLabel("")
@@ -140,12 +144,18 @@ private fun SummoningAbilityRow(
         )
 
         //display final total
-        Text(
-            text = inputData.total.collectAsState().value,
+        AnimatedContent(
+            targetState = inputData.total.collectAsState().value,
             modifier = Modifier
                 .weight(0.2f),
-            textAlign = TextAlign.Center
-        )
+            transitionSpec = numberScroll,
+            label = "${stringResource(inputData.nameRef)}Total"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

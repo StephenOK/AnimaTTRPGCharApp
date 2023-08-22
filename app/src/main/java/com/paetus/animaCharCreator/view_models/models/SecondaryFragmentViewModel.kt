@@ -200,7 +200,7 @@ class SecondaryFragmentViewModel(
         val pointInput = _pointInput.asStateFlow()
 
         //initialize display for class points in this characteristic
-        private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.value.toString())
+        private val _classPoints = MutableStateFlow(secondaryItem.classPointTotal.value)
         val classPoints = _classPoints.asStateFlow()
 
         //initialize DP display
@@ -208,7 +208,7 @@ class SecondaryFragmentViewModel(
         val dpDisplay = _dpDisplay.asStateFlow()
 
         //initialize the total score in this characteristic
-        private val _totalOutput = MutableStateFlow(secondaryItem.total.value.toString())
+        private val _totalOutput = MutableStateFlow(secondaryItem.total.value)
         val totalOutput = _totalOutput.asStateFlow()
 
         /**
@@ -262,7 +262,7 @@ class SecondaryFragmentViewModel(
          * Refreshes the class point display for the characteristic.
          */
         fun setClassPoints(){
-            _classPoints.update{secondaryItem.classPointTotal.value.toString()}
+            _classPoints.update{secondaryItem.classPointTotal.value}
             updateTotal()
         }
 
@@ -276,7 +276,7 @@ class SecondaryFragmentViewModel(
         /**
          * Updates the total value to the appropriate amount.
          */
-        fun updateTotal(){_totalOutput.update{secondaryItem.total.value.toString()}}
+        fun updateTotal(){_totalOutput.update{secondaryItem.total.value}}
 
         /**
          * Retrieves the name of the characteristic.

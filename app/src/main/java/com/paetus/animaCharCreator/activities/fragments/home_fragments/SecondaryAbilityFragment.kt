@@ -45,13 +45,13 @@ fun SecondaryAbilityFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item{Spacer(Modifier.height(15.dp))}
+
         //open freelancer class bonus options if available
         item{
             if(secondaryFragVM.freelancerOptionsOpen.collectAsState().value){
@@ -75,6 +75,8 @@ fun SecondaryAbilityFragment(
         items(secondaryFragVM.allFields){
             MakeTableDisplay(it, homePageVM)
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 }
 

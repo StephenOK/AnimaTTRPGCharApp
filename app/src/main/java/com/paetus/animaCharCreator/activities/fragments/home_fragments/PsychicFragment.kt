@@ -4,8 +4,6 @@ import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +28,7 @@ import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.composables.PopInItem
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.PsychicFragmentViewModel
@@ -52,13 +51,13 @@ fun PsychicFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //construct item header
@@ -165,6 +164,8 @@ fun PsychicFragment(
                 psyFragVM
             )
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //display psychic power details when requested
@@ -376,16 +377,9 @@ private fun PsyPowerRow(
             label = power.pointLabel.collectAsState().value
         )
 
-        if(!power.powerInvestedIn.collectAsState().value)
-            Spacer(Modifier.weight(0.17f))
-
-        //display enhancement value
-        AnimatedVisibility(
+        PopInItem(
             visible = power.powerInvestedIn.collectAsState().value,
-            modifier = Modifier
-                .weight(0.17f),
-            enter = scaleIn(),
-            exit = scaleOut()
+            modifier = Modifier.weight(0.17f)
         ){
             Column{
                 Row(

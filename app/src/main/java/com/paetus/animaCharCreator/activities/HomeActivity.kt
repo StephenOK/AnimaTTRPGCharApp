@@ -9,10 +9,8 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,6 +26,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -41,7 +40,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -54,6 +52,7 @@ import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.theme.headerLightColors
+import com.paetus.animaCharCreator.theme.homeLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
@@ -101,7 +100,9 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setContent{
-            HomeContents(homePageVM, charInstance, filename)
+            MaterialTheme(colorScheme = homeLightColors){
+                HomeContents(homePageVM, charInstance, filename)
+            }
         }
     }
 
@@ -191,7 +192,11 @@ class HomeActivity : AppCompatActivity() {
                         AppHeader(homePageVM, drawerState, scope)
                     }
                 },
-                bottomBar = {AppFooter(homePageVM) }
+                bottomBar = {
+                    MaterialTheme(colorScheme = headerLightColors){
+                        AppFooter(homePageVM)
+                    }
+                }
             ) {
 
                 //set navigation host in scaffold
@@ -447,44 +452,46 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun AppFooter(homePageVM: HomePageViewModel) {
-        Column{
-            //row for table header
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(Modifier.weight(0.2f))
-                //total column
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //combat column
-                Text(
-                    text = stringResource(R.string.combatLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //magic column
-                Text(
-                    text = stringResource(R.string.magicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //psychic column
-                Text(
-                    text = stringResource(R.string.psychicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
+        Surface {
+            Column {
+                //row for table header
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(Modifier.weight(0.2f))
+                    //total column
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //combat column
+                    Text(
+                        text = stringResource(R.string.combatLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //magic column
+                    Text(
+                        text = stringResource(R.string.magicLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //psychic column
+                    Text(
+                        text = stringResource(R.string.psychicLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                }
+
+                //create row for maximum values
+                BottomBarRow(homePageVM.maximums)
+
+                //create row for spent values
+                BottomBarRow(homePageVM.expenditures)
             }
-
-            //create row for maximum values
-            BottomBarRow(homePageVM.maximums)
-
-            //create row for spent values
-            BottomBarRow(homePageVM.expenditures)
         }
     }
 

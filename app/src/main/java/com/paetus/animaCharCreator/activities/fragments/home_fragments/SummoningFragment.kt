@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -40,12 +41,12 @@ fun SummoningFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             )
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //display table header
@@ -83,6 +84,8 @@ fun SummoningFragment(
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 }
 

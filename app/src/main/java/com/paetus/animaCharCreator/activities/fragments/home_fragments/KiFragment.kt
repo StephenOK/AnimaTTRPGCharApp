@@ -58,13 +58,13 @@ fun KiFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //header for ki point and accumulation table
@@ -268,6 +268,8 @@ fun KiFragment(
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //dialog for custom technique creation

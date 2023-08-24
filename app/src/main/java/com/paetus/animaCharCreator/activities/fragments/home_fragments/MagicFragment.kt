@@ -29,6 +29,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.composables.PopInItem
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.MagicFragmentViewModel
@@ -56,12 +57,12 @@ fun MagicFragment(
         Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             )
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //header for zeon point maximums
@@ -402,6 +403,8 @@ fun MagicFragment(
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //show free spell dialog if displayed
@@ -660,15 +663,18 @@ private fun SpellRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //make purchase button if buyable row
-        if(buyable && magFragVM.spellIsRemovable(displayItem))
+        PopInItem(
+            visible = buyable && magFragVM.spellIsRemovable(displayItem),
+            modifier = Modifier
+                .weight(0.35f)
+        ){
             BuySingleSpellButton(
                 magFragVM,
                 displayItem,
                 Modifier.weight(0.35f),
                 updateList
             )
-        else
-            Spacer(Modifier.weight(0.35f))
+        }
 
         //display spell name
         Text(
@@ -714,7 +720,11 @@ private fun FreeSpellRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //button to buy free spell individually
-        if(magFragVM.freeSpellIsRemovable(lvlVal, eleVal)){
+        PopInItem(
+            visible = magFragVM.freeSpellIsRemovable(lvlVal, eleVal),
+            modifier = Modifier
+                .weight(0.35f)
+        ) {
             BuySingleFreeSpellButton(
                 magFragVM,
                 lvlVal,
@@ -723,8 +733,6 @@ private fun FreeSpellRow(
                 updateList
             )
         }
-        else
-            Spacer(Modifier.weight(0.35f))
 
         //display free spell values
         Text(

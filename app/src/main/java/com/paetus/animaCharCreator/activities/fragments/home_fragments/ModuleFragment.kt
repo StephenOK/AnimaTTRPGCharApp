@@ -49,12 +49,12 @@ fun ModuleFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             )
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 Text(
@@ -120,6 +120,8 @@ fun ModuleFragment(
 
         //display style options
         item{StyleButton(modFragVM, homePageVM)}
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //show the requested item's details

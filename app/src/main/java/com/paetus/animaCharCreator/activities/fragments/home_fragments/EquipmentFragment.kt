@@ -52,13 +52,13 @@ fun EquipmentFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard {
                 //create inputs for each maximum coin expenditure
@@ -148,6 +148,8 @@ fun EquipmentFragment(
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //display purchase options alert if currently visible

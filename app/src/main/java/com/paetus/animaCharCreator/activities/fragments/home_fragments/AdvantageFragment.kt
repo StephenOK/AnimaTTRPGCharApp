@@ -64,13 +64,13 @@ fun AdvantageFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(Modifier.height(15.dp))
+
         //display creation points remaining
         InfoRow(
             label = stringResource(R.string.creationPointLabel)
@@ -135,6 +135,7 @@ fun AdvantageFragment(
             }
         }
 
+        Spacer(Modifier.height(15.dp))
 
         //display advantage choices if available
         if(advantageFragVM.advantageCostOn.collectAsState().value) {

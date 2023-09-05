@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -329,13 +330,16 @@ class HomeActivity : AppCompatActivity() {
                             miter = 10f,
                             width = 5f,
                             join = StrokeJoin.Round
-                        )
+                        ),
+                        fontWeight = FontWeight.Bold
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Text(
-                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
+                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
                 )
             },
 

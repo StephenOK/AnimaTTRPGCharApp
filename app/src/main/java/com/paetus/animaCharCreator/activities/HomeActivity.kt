@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +46,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,6 +56,8 @@ import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.numberScroll
+import com.paetus.animaCharCreator.theme.detailLightColors
+import com.paetus.animaCharCreator.theme.drawerLightColors
 import com.paetus.animaCharCreator.theme.headerLightColors
 import com.paetus.animaCharCreator.theme.homeLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
@@ -176,14 +182,16 @@ class HomeActivity : AppCompatActivity() {
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
-                AppDrawer(
-                    homePageVM,
-                    filename,
-                    charInstance,
-                    drawerState,
-                    scope,
-                    navController
-                )
+                MaterialTheme(colorScheme = drawerLightColors) {
+                    AppDrawer(
+                        homePageVM,
+                        filename,
+                        charInstance,
+                        drawerState,
+                        scope,
+                        navController
+                    )
+                }
             }
         ){
             //scaffold for the home page
@@ -299,7 +307,9 @@ class HomeActivity : AppCompatActivity() {
 
                 //show exit alert if user opens it
                 if (homePageVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+                    MaterialTheme(colorScheme = detailLightColors) {
+                        ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+                    }
             }
         }
 
@@ -405,7 +415,7 @@ class HomeActivity : AppCompatActivity() {
         scope: CoroutineScope,
         navController: NavHostController
     ){
-        ModalDrawerSheet {
+        ModalDrawerSheet{
             LazyColumn {
                 //for each page enumeration present
                 items(enumValues<ScreenPage>()){
@@ -420,8 +430,19 @@ class HomeActivity : AppCompatActivity() {
                             navController.navigate(it.name) {
                                 popUpTo(0)
                             }
-                        }
+                        },
+                        colors = NavigationDrawerItemDefaults.colors(
+                            selectedContainerColor = MaterialTheme.colorScheme.onSurface,
+                            selectedTextColor = MaterialTheme.colorScheme.surfaceTint
+                        ),
+                        shape = RectangleShape
                     )
+                }
+
+                item{
+                    Spacer(Modifier.height(10.dp))
+                    Divider()
+                    Spacer(Modifier.height(10.dp))
                 }
 
                 item {
@@ -594,7 +615,11 @@ class HomeActivity : AppCompatActivity() {
         AlertDialog(
             //only close alert on dismissal
             onDismissRequest = {closeDialog()},
-            title = {Text(text = stringResource(R.string.exitTitle))},
+            title = {
+                Text(
+                    text = stringResource(R.string.exitTitle)
+                )
+            },
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(
@@ -603,7 +628,10 @@ class HomeActivity : AppCompatActivity() {
                         finish()
                     }
                 ){
-                    Text(text = stringResource(R.string.saveLabel))
+                    Text(
+                        text = stringResource(R.string.saveLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }},
             dismissButton = {
                 //leave page without saving
@@ -611,7 +639,10 @@ class HomeActivity : AppCompatActivity() {
                     onClick = {
                         finish()
                     }){
-                    Text(text = stringResource(R.string.exitLabel))
+                    Text(
+                        text = stringResource(R.string.exitLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )

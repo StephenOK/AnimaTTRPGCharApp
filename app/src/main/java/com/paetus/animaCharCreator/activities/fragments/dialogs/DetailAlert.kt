@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,6 +47,7 @@ import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.theme.psyTableLightColors
 import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
 
 /**
@@ -65,10 +67,10 @@ fun DetailAlert(
         //display dialog header
         title,
         {
-            LazyColumn{
-                item{
+            LazyColumn {
+                item {
                     //display the item's detail composable
-                    when(item){
+                    when (item) {
                         //advantage or disadvantage
                         is Advantage -> AdvantageDetails(item)
 
@@ -79,7 +81,9 @@ fun DetailAlert(
                         is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(item.items)
 
                         //style module
-                        is StyleModule -> {Text(text = stringResource(item.description))}
+                        is StyleModule -> {
+                            Text(text = stringResource(item.description))
+                        }
 
                         //martial art
                         is MartialArt -> MartialContents(item)
@@ -106,9 +110,18 @@ fun DetailAlert(
             }
 
             //run close function on back press
-            BackHandler{closeFunc()}
+            BackHandler { closeFunc() }
         },
-        {TextButton(onClick = {closeFunc()}){ Text(text = stringResource(R.string.closeLabel))}}
+        {
+            TextButton(
+                onClick = {closeFunc()}
+            ){
+                Text(
+                    text = stringResource(R.string.closeLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     )
 }
 
@@ -222,53 +235,150 @@ private fun WeaponContents(input: Weapon) {
     Column {
         //display either damage or own strength value
         if(input.damage != null)
-            InfoRow(stringResource(R.string.damageLabel), input.damage.toString())
+            InfoRow(
+                label = stringResource(R.string.damageLabel)
+            ){it, _ ->
+                Text(
+                    text = "${input.damage}",
+                    modifier = it
+                )
+            }
         else if (input.ownStrength != null)
-            InfoRow(stringResource(R.string.strengthLabel), input.ownStrength.toString())
+            InfoRow(
+                label = stringResource(R.string.strengthLabel)
+            ){it, _ ->
+                Text(
+                    text = "${input.ownStrength}",
+                    modifier = it
+                )
+            }
 
         //display weapon's speed
-        InfoRow(stringResource(R.string.speedLabel), input.speed.toString())
+        InfoRow(
+            label = stringResource(R.string.speedLabel)
+        ){it, _ ->
+            Text(
+                text = "${input.speed}",
+                modifier = it
+            )
+        }
 
         //display one-handed strength if available
         if(input.oneHandStr != null)
-            InfoRow(stringResource(R.string.oneHandedLabel), input.oneHandStr.toString())
+            InfoRow(
+                label = stringResource(R.string.oneHandedLabel)
+            ){it, _ ->
+                Text(
+                    text = "${input.oneHandStr}",
+                    modifier = it
+                )
+            }
 
         //display two-handed strength if available
         if(input.twoHandStr != null)
-            InfoRow(stringResource(R.string.twoHandedLabel), input.twoHandStr.toString())
+            InfoRow(
+                label = stringResource(R.string.twoHandedLabel)
+            ){it, _ ->
+                Text(
+                    text = "${input.twoHandStr}",
+                    modifier = it
+                )
+            }
 
         //display primary attack type
         if(input.primaryType != null)
-            InfoRow(stringResource(R.string.damageTypeLabel), stringResource(AttackType.toAddress(input.primaryType)))
+            InfoRow(
+                label = stringResource(R.string.damageTypeLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(AttackType.toAddress(input.primaryType)),
+                    modifier = it
+                )
+            }
 
         //display secondary attack type
         if(input.secondaryType != null)
-            InfoRow(stringResource(R.string.secondaryTypeLabel), stringResource(AttackType.toAddress(input.secondaryType)))
+            InfoRow(
+                label = stringResource(R.string.secondaryTypeLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(AttackType.toAddress(input.secondaryType)),
+                    modifier = it
+                )
+            }
 
         //display weapon category
         if(input is MixedWeapon)
             InfoRow(
-                stringResource(R.string.weaponTypeLabel),
-                stringResource(WeaponType.toAddress(input.mixedType[0])) + "/" +
-                        stringResource(WeaponType.toAddress(input.mixedType[1]))
-            )
+                label = stringResource(R.string.weaponTypeLabel)
+            ){it, _ ->
+                Text(
+                    text = "${stringResource(WeaponType.toAddress(input.mixedType[0]))}/${stringResource(WeaponType.toAddress(input.mixedType[1]))}",
+                    modifier = it
+                )
+            }
         else
-            InfoRow(stringResource(R.string.weaponTypeLabel), stringResource(WeaponType.toAddress(input.type)))
+            InfoRow(
+                label = stringResource(R.string.weaponTypeLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(WeaponType.toAddress(input.type)),
+                    modifier = it
+                )
+            }
 
         //display weapon's fortitude, breakage, and presence
-        InfoRow(stringResource(R.string.fortitudeLabel), input.fortitude.toString())
+        InfoRow(
+            label = stringResource(R.string.fortitudeLabel)
+        ){it, _ ->
+            Text(
+                text = "${input.fortitude}",
+                modifier = it
+            )
+        }
+
         if(input.breakage != null)
-            InfoRow(stringResource(R.string.breakageLabel), input.breakage.toString())
-        InfoRow(stringResource(R.string.presenceLabel) + ": ", input.presence.toString())
+            InfoRow(
+                label = stringResource(R.string.breakageLabel)
+            ){it, _ ->
+                Text(
+                    text = "${input.breakage}",
+                    modifier = it
+                )
+            }
+
+        InfoRow(
+            label = stringResource(R.string.presenceLabel) + ": "
+        ){it, _ ->
+            Text(
+                text = "${input.presence}",
+                modifier = it
+            )
+        }
 
         //display weapon's rate of fire, reload rate, and range
         if(input is ProjectileWeapon) {
-            if (input.type == WeaponType.Throwing)
-                InfoRow(stringResource(R.string.fireRateLabel), input.reloadOrRate.toString())
-            else
-                InfoRow(stringResource(R.string.reloadLabel), input.reloadOrRate.toString())
+                InfoRow(
+                    label =
+                        if(input.type == WeaponType.Throwing) stringResource(R.string.fireRateLabel)
+                        else stringResource(R.string.reloadLabel)
+
+                ){it, _ ->
+                    Text(
+                        text = "${input.reloadOrRate}",
+                        modifier = it
+                    )
+                }
+
             if (input.range != null)
-                InfoRow(stringResource(R.string.rangeLabel), input.range.toString() + "m")
+                InfoRow(
+                    label = stringResource(R.string.rangeLabel)
+                ){it, _ ->
+                    Text(
+                        text = stringResource(R.string.distanceLabelM, input.range),
+                        modifier = it
+                    )
+                }
         }
 
         //initialize ability output and loop counter
@@ -293,7 +403,14 @@ private fun WeaponContents(input: Weapon) {
             }
 
             //show ability string
-            InfoRow(stringResource(R.string.abilityLabel), abilityString)
+            InfoRow(
+                label = stringResource(R.string.abilityLabel)
+            ){it, _ ->
+                Text(
+                    text = abilityString,
+                    modifier = it
+                )
+            }
         }
 
         Spacer(Modifier.height(10.dp))
@@ -331,7 +448,14 @@ private fun ArchetypeContents(detailList: List<Weapon>){
 private fun MartialContents(item: MartialArt){
     Column{
         //show art's prerequisites and description
-        InfoRow(stringResource(R.string.prereqLabel), stringResource(item.prereqList))
+        InfoRow(
+            label = stringResource(R.string.prereqLabel)
+        ){it, _ ->
+            Text(
+                text = stringResource(item.prereqList),
+                modifier = it
+            )
+        }
         Spacer(Modifier.height(10.dp))
         Text(text = "\t${stringResource(item.description)}")
     }
@@ -353,7 +477,14 @@ private fun KiContents(ability: KiAbility) {
                 ""
 
         //display ability's prerequisites
-        InfoRow(stringResource(R.string.prereqLabel), preString)
+        InfoRow(
+            label = stringResource(R.string.prereqLabel)
+        ){it, _ ->
+            Text(
+                text = preString,
+                modifier = it
+            )
+        }
         Spacer(Modifier.height(10.dp))
 
         //display ability's effect
@@ -401,7 +532,14 @@ fun TechContents(technique: TechniqueBase) {
         //display each required build needed
         listOf(Pair(0, 0), Pair(1, 1), Pair(2, 2), Pair(3, 3), Pair(5, 4), Pair(6, 5)).forEach{(primary, ki) ->
             if(kiBuilds[ki] > 0)
-                InfoRow(stringArrayResource(R.array.primaryCharArray)[primary], kiBuilds[ki].toString())
+                InfoRow(
+                    label = stringArrayResource(R.array.primaryCharArray)[primary]
+                ){it, _ ->
+                    Text(
+                        text = "${kiBuilds[ki]}",
+                        modifier = it
+                    )
+                }
         }
 
         //if this technique is maintainable
@@ -431,7 +569,14 @@ fun TechContents(technique: TechniqueBase) {
         Spacer(Modifier.height(5.dp))
 
         //display total accumulation
-        InfoRow(stringResource(R.string.totalAccumulation), technique.accTotal().toString())
+        InfoRow(
+            label = stringResource(R.string.totalAccumulation)
+        ){it, _ ->
+            Text(
+                text = "${technique.accTotal()}",
+                modifier = it
+            )
+        }
 
         Spacer(Modifier.height(10.dp))
 
@@ -479,38 +624,102 @@ fun SpellDetails(spell: Spell){
         forbiddenList = stringResource(R.string.noneLabel)
 
     Column{
-        InfoRow(stringResource(R.string.actionLabel), action)
-        InfoRow(stringResource(R.string.elementLabel), stringResource(Element.toAddress(spell.inBook)))
-        InfoRow(stringResource(R.string.levelText), spell.level.toString())
-        InfoRow(stringResource(R.string.zeonCostLabel), spell.zCost.toString())
+        InfoRow(
+            label = stringResource(R.string.actionLabel)
+        ){it, _ ->
+            Text(
+                text = action,
+                modifier = it
+            )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.elementLabel)
+        ){it, _ ->
+            Text(
+                text = stringResource(Element.toAddress(spell.inBook)),
+                modifier = it
+            )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.levelText)
+        ){it, _ ->
+            Text(
+                text = spell.level.toString(),
+                modifier = it
+            )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.zeonCostLabel)
+        ){it, _ ->
+            Text(
+                text = spell.zCost.toString(),
+                modifier = it
+            )
+        }
+
         Spacer(Modifier.height(10.dp))
 
         Row{Text(text = "\t${stringResource(spell.effect)}")}
         Spacer(Modifier.height(10.dp))
 
-        InfoRow(stringResource(R.string.addedEffectLabel), stringResource(spell.addedEffect))
         InfoRow(
-            stringResource(R.string.maxZeonLabel),
-            stringResource(
-                R.string.intelligenceMultiplier,
-                spell.zMax
+            label = stringResource(R.string.addedEffectLabel)
+        ){it, _ ->
+            Text(
+                text = stringResource(spell.addedEffect),
+                modifier = it
             )
-        )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.maxZeonLabel),
+        ){it, _ ->
+            Text(
+                text = stringResource(R.string.intelligenceMultiplier, spell.zMax),
+                modifier = it
+            )
+        }
+
         if(spell.maintenance != null)
             InfoRow(
-                stringResource(R.string.maintenanceLabel),
-                stringResource(
-                    R.string.maintenanceAmount,
-                    spell.maintenance
-                ) + daily
-            )
+                label = stringResource(R.string.maintenanceLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(R.string.maintenanceAmount, spell.maintenance) + daily,
+                    modifier = it
+                )
+            }
         else
-            InfoRow(stringResource(R.string.maintenanceLabel), stringResource(R.string.noneLabel))
+            InfoRow(
+                label = stringResource(R.string.maintenanceLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(R.string.noneLabel),
+                    modifier = it
+                )
+            }
 
-        InfoRow(stringResource(R.string.typeLabel), spellType)
+        InfoRow(
+            label = stringResource(R.string.typeLabel)
+        ){it, _ ->
+            Text(
+                text = spellType,
+                modifier = it
+            )
+        }
 
         if(spell is FreeSpell)
-            InfoRow(stringResource(R.string.forbiddenLabel), forbiddenList)
+            InfoRow(
+                label = stringResource(R.string.forbiddenLabel)
+            ){it, _ ->
+                Text(
+                    text = forbiddenList,
+                    modifier = it
+                )
+            }
     }
 }
 
@@ -528,16 +737,42 @@ fun PowerDetails(power: PsychicPower){
 
     Column{
         //display power values
-        InfoRow(stringResource(R.string.levelText), " $itemLevel")
-        InfoRow(stringResource(R.string.actionLabel), " $isActive")
-        InfoRow(stringResource(R.string.maintenanceLabel), " $isMaintained")
+        InfoRow(
+            label = stringResource(R.string.levelText)
+        ){it, _ ->
+            Text(
+                text = itemLevel,
+                modifier = it
+            )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.actionLabel)
+        ){it, _ ->
+            Text(
+                text = isActive,
+                modifier = it
+            )
+        }
+
+        InfoRow(
+            label = stringResource(R.string.maintenanceLabel)
+        ){it, _ ->
+            Text(
+                text = isMaintained,
+                modifier = it
+            )
+        }
+
         Spacer(Modifier.height(10.dp))
 
         Row{Text(text = "\t${stringResource(power.description)}")}
         Spacer(Modifier.height(10.dp))
 
         //display power's Effects Table
-        MakePowerTable(power)
+        MaterialTheme(colorScheme = psyTableLightColors){
+            MakePowerTable(power)
+        }
     }
 }
 
@@ -553,11 +788,20 @@ private fun MakePowerTable(power: PsychicPower){
 
     //for each indicated fatigued level
     while(index < power.stringBaseCount[0]){
+        val backColor =
+            if(index%2 == 0) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.secondary
+
         //display the difficulty level with the fatigue gained from it
         InfoRow(
-            stringArrayResource(R.array.difficultyTable)[index],
-            stringResource(R.string.fatigueBase, power.stringInput[index] as Int)
-        )
+            label = stringArrayResource(R.array.difficultyTable)[index],
+            backColor = backColor
+        ){it, _ ->
+            Text(
+                text = stringResource(R.string.fatigueBase, power.stringInput[index] as Int),
+                modifier = it
+            )
+        }
 
         //increment to next index
         index++
@@ -593,11 +837,21 @@ private fun MakePowerTable(power: PsychicPower){
                 else -> stringResource(it, stringResource((newIn as () -> Int)()))
             }
 
+            val backColor =
+                if(index%2 == 0) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.secondary
+
             //display table effect
             InfoRow(
-                stringArrayResource(R.array.difficultyTable)[index],
-                display
-            )
+                label = stringArrayResource(R.array.difficultyTable)[index],
+                backColor = backColor,
+                textColor = MaterialTheme.colorScheme.onPrimary
+            ){modifier, _ ->
+                Text(
+                    text = display,
+                    modifier = modifier
+                )
+            }
 
             //increment index
             index++
@@ -622,15 +876,36 @@ fun EquipmentDetails(item: GeneralEquipment){
 
     Column{
         //display item's cost
-        InfoRow(stringResource(R.string.basePriceLabel), priceString)
+        InfoRow(
+            label = stringResource(R.string.basePriceLabel)
+        ){it, _ ->
+            Text(
+                text = priceString,
+                modifier = it
+            )
+        }
 
         //display item's weight, if any given
         if(item.weight != null)
-            InfoRow(stringResource(R.string.weightLabel), item.weight.toString() + " kg")
+            InfoRow(
+                label = stringResource(R.string.weightLabel)
+            ){it, _ ->
+                Text(
+                    text = stringResource(R.string.weightLabelKG, item.weight),
+                    modifier = it
+                )
+            }
 
 
         //display item's availability
-        InfoRow(stringResource(R.string.availabilityLabel), stringResource(Availability.toAddress(item.availability)))
+        InfoRow(
+            label = stringResource(R.string.availabilityLabel)
+        ){it, _ ->
+            Text(
+                text = stringResource(Availability.toAddress(item.availability)),
+                modifier = it
+            )
+        }
     }
 }
 

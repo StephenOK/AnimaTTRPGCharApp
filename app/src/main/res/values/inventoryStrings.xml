@@ -28,7 +28,8 @@
     <string name = "silverLabel">%.2f SC</string>
     <string name = "copperLabel">%.2f CC</string>
 
-    <string name = "spentAmount">%s: %1d</string>
+    <string name = "spentLabel">Spent Amounts</string>
+    <string name = "spentAmount">%s:</string>
 
     <string name = "inventoryHeader">Inventory</string>
 

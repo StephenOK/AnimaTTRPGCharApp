@@ -29,15 +29,15 @@ class KiFragmentViewModel(
     private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
-    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value.toString())
+    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value)
     val remainingMK = _remainingMK.asStateFlow()
 
     //initialize ki accumulation total display
-    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.value.toString())
+    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.value)
     val kiAccTotal = _kiAccTotal.asStateFlow()
 
     //initialize ki point total display
-    private val _kiPointTotal = MutableStateFlow(ki.totalKi.value.toString())
+    private val _kiPointTotal = MutableStateFlow(ki.totalKi.value)
     val kiPointTotal = _kiPointTotal.asStateFlow()
 
     //initialize open state of technique list
@@ -73,17 +73,17 @@ class KiFragmentViewModel(
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
      */
-    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.value.toString()}}
+    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.value}}
 
     /**
      * Sets the ki accumulation total display to the character's recorded value.
      */
-    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.value.toString()}}
+    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.value}}
 
     /**
      * Sets the ki point total display to the character's recorded value.
      */
-    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.value.toString()}}
+    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.value}}
 
     /**
      * Changes the technique list's open state.
@@ -356,11 +356,11 @@ class KiFragmentViewModel(
         val accDPLabel = _accDPLabel.asStateFlow()
 
         //initialize characteristic ki point total
-        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value.toString())
+        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value)
         val pointTotalString = _pointTotalString.asStateFlow()
 
         //initialize characteristic ki accumulation total
-        private val _accTotalString = MutableStateFlow(item.totalAccumulation.value.toString())
+        private val _accTotalString = MutableStateFlow(item.totalAccumulation.value)
         val accTotalString = _accTotalString.asStateFlow()
 
         /**
@@ -371,7 +371,7 @@ class KiFragmentViewModel(
         fun setPointInputString(input: Int){
             item.setBoughtKiPoints(input)
             setPointInputString(input.toString())
-            _pointTotalString.update{item.totalKiPoints.value.toString()}
+            _pointTotalString.update{item.totalKiPoints.value}
             setTotalPoints()
         }
 
@@ -397,7 +397,7 @@ class KiFragmentViewModel(
         fun setAccInputString(input: Int){
             item.setBoughtAccumulation(input)
             setAccInputString(input.toString())
-            _accTotalString.update{item.totalAccumulation.value.toString()}
+            _accTotalString.update{item.totalAccumulation.value}
             setTotalAcc()
         }
 

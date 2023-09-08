@@ -10,20 +10,25 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Switch
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paetus.animaCharCreator.theme.AppTheme
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -39,6 +43,8 @@ import com.google.firebase.perf.ktx.performance
 import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.theme.detailLightColors
+import com.paetus.animaCharCreator.theme.mainLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.MainPageViewModel
 import com.paetus.animaCharCreator.writeDataTo
@@ -74,9 +80,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            //AppTheme{
+            MaterialTheme(colorScheme = mainLightColors){
                 MainContents()
-            //}
+            }
         }
     }
 
@@ -103,14 +109,53 @@ class MainActivity : AppCompatActivity() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.background)
         ) {
             //display app title
-            Text(
-                text = stringResource(R.string.mainTitle),
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+            val textPaintStroke = Paint().asFrameworkPaint().apply{
+                isAntiAlias = true
+                style = android.graphics.Paint.Style.STROKE
+                textSize = 60.sp.value
+                textAlign = android.graphics.Paint.Align.CENTER
+                color = MaterialTheme.colorScheme.onBackground.toArgb()
+                strokeWidth = 5f
+                strokeMiter = 10f
+                strokeJoin = android.graphics.Paint.Join.ROUND
+                isFakeBoldText = true
+            }
+
+            val textPaint = Paint().asFrameworkPaint().apply{
+                isAntiAlias = true
+                style = android.graphics.Paint.Style.FILL
+                textSize = 60.sp.value
+                textAlign = android.graphics.Paint.Align.CENTER
+                color = MaterialTheme.colorScheme.primary.toArgb()
+                isFakeBoldText = true
+            }
+
+            val display = stringResource(R.string.mainTitle)
+
+            Canvas(
+                modifier = Modifier,
+                onDraw = {
+                    drawIntoCanvas {
+                        it.nativeCanvas.drawText(
+                            display,
+                            0f,
+                            0f,
+                            textPaintStroke
+                        )
+
+                        it.nativeCanvas.drawText(
+                            display,
+                            0f,
+                            0f,
+                            textPaint
+                        )
+                    }
+                }
             )
+
             Text(
                 text = stringResource(R.string.mainSubtitle),
                 fontSize = 20.sp,
@@ -140,21 +185,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //display user's selected action alert
-        if (mainVM.actionOpen.collectAsState().value)
-            MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
+        MaterialTheme(colorScheme = detailLightColors) {
+            //display user's selected action alert
+            if (mainVM.actionOpen.collectAsState().value)
+                MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
 
-        //display settings open state
-        if(mainVM.optionsOpen.collectAsState().value)
-            OptionsAlert(mainVM)
+            //display settings open state
+            if (mainVM.optionsOpen.collectAsState().value)
+                OptionsAlert(mainVM)
 
-        //display share analytics selection option
-        if (mainVM.dataShareOpen.collectAsState().value)
-            ShareAlert(mainVM, context)
+            //display share analytics selection option
+            if (mainVM.dataShareOpen.collectAsState().value)
+                ShareAlert(mainVM, context)
 
-        //dialog to notify user of failed character load
-        if(mainVM.failedLoadOpen.collectAsState().value)
-            FailedLoadAlert(mainVM)
+            //dialog to notify user of failed character load
+            if (mainVM.failedLoadOpen.collectAsState().value)
+                FailedLoadAlert(mainVM)
+        }
     }
 
     /**
@@ -207,7 +254,8 @@ class MainActivity : AppCompatActivity() {
                     text = stringResource(item.headerRef),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             text = {item.MakeDisplay()},
@@ -228,7 +276,10 @@ class MainActivity : AppCompatActivity() {
                     //close the dialog
                     mainVM.toggleActionOpen()
                 }) {
-                    Text(text = stringResource(item.buttonName))
+                    Text(
+                        text = stringResource(item.buttonName),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             },
             dismissButton = {
@@ -237,7 +288,10 @@ class MainActivity : AppCompatActivity() {
                     item.setCharacterName("")
                     mainVM.toggleActionOpen()
                 }){
-                    Text(text = stringResource(R.string.cancelLabel))
+                    Text(
+                        text = stringResource(R.string.cancelLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )
@@ -249,46 +303,51 @@ class MainActivity : AppCompatActivity() {
     ){
         AlertDialog(
             onDismissRequest = {mainVM.toggleOptionsOpen()},
-            title = {Text(text = stringResource(R.string.settingsLabel))},
+            title = {
+                Text(
+                    text = stringResource(R.string.settingsLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
             text = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     //Row(
-                        //modifier = Modifier
-                            //.fillMaxWidth(),
-                        //horizontalArrangement = Arrangement.Center,
-                        //verticalAlignment = Alignment.CenterVertically
+                    //    modifier = Modifier
+                    //        .fillMaxWidth(),
+                    //    horizontalArrangement = Arrangement.Center,
+                    //    verticalAlignment = Alignment.CenterVertically
                     //){
-                        //Switch(
-                            //checked = !isSystemInDarkTheme(),
-                            //onCheckedChange = {
-                                //if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                                //}
-                                //else {
-                                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                                //}
-
-                                //writeSettings(this@MainActivity)
-                            //},
-                            //modifier = Modifier
-                                //.weight(0.25f)
-                        //)
-                        //Text(
-                            //text =
-                                //if(isSystemInDarkTheme())
-                                    //stringResource(R.string.darkMode)
-                                //else
-                                    //stringResource(R.string.lightMode),
-                            //modifier = Modifier
-                                //.weight(0.5f),
-                            //fontSize = 20.sp
-                        //)
-
-                        //Spacer(Modifier.weight(0.25f))
+                    //    Switch(
+                    //        checked = !isSystemInDarkTheme(),
+                    //        onCheckedChange = {
+                    //            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                    //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    //            }
+                    //            else {
+                    //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    //            }
+//
+                    //            writeSettings(this@MainActivity)
+                    //        },
+                    //        modifier = Modifier
+                    //            .weight(0.25f)
+                    //    )
+                    //    Text(
+                    //        text =
+                    //            if(isSystemInDarkTheme())
+                    //                stringResource(R.string.darkMode)
+                    //            else
+                    //                stringResource(R.string.lightMode),
+                    //        modifier = Modifier
+                    //            .weight(0.5f),
+                    //        fontSize = 20.sp
+                    //    )
+//
+                    //    Spacer(Modifier.weight(0.25f))
                     //}
-
+//
                     //Spacer(Modifier.height(10.dp))
 
                     Row(
@@ -305,7 +364,8 @@ class MainActivity : AppCompatActivity() {
                             text = stringResource(R.string.sharingTitle),
                             modifier = Modifier
                                 .weight(0.5f),
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Icon(
@@ -324,7 +384,10 @@ class MainActivity : AppCompatActivity() {
                         mainVM.toggleOptionsOpen()
                     }
                 ) {
-                    Text(text = stringResource(R.string.closeLabel))
+                    Text(
+                        text = stringResource(R.string.closeLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )
@@ -345,7 +408,10 @@ class MainActivity : AppCompatActivity() {
             onDismissRequest = {mainVM.toggleDataShareOpen()},
             title = {
                 //prompt for user sharing
-                Text(text = stringResource(R.string.sharingHeader))
+                Text(
+                    text = stringResource(R.string.sharingHeader),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             },
             text = {
                 Column {
@@ -357,9 +423,15 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == true,
-                            onClick = { mainVM.setShareSelection(true) }
+                            onClick = { mainVM.setShareSelection(true) },
+                            colors = RadioButtonDefaults.colors(
+                                unselectedColor = MaterialTheme.colorScheme.onSurface
+                            )
                         )
-                        Text(text = stringResource(R.string.sendData))
+                        Text(
+                            text = stringResource(R.string.sendData),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
 
                     //user wishes to deactivate sharing
@@ -370,9 +442,15 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == false,
-                            onClick = { mainVM.setShareSelection(false) }
+                            onClick = { mainVM.setShareSelection(false) },
+                            colors = RadioButtonDefaults.colors(
+                                unselectedColor = MaterialTheme.colorScheme.onSurface
+                            )
                         )
-                        Text(text = stringResource(R.string.notSendData))
+                        Text(
+                            text = stringResource(R.string.notSendData),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
 
                     //notes about sharing
@@ -408,7 +486,12 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
                     }
-                ) {Text(text = stringResource(R.string.confirmLabel))}
+                ) {
+                    Text(
+                        text = stringResource(R.string.confirmLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             },
 
             //close dialog button
@@ -416,7 +499,10 @@ class MainActivity : AppCompatActivity() {
                 TextButton(
                     onClick = { mainVM.toggleDataShareOpen() }
                 ) {
-                    Text(text = stringResource(R.string.cancelLabel))
+                    Text(
+                        text = stringResource(R.string.cancelLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )
@@ -435,7 +521,10 @@ class MainActivity : AppCompatActivity() {
             text = {Text(text = stringResource(R.string.failedLoadText))},
             confirmButton = {
                 TextButton(onClick = {mainVM.toggleFailedLoadOpen()}) {
-                    Text(text = stringResource(R.string.closeLabel))
+                    Text(
+                        text = stringResource(R.string.closeLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )

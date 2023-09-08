@@ -69,7 +69,7 @@ class SummoningFragmentViewModel(
         val dpLabel = _dpLabel.asStateFlow()
 
         //initialize total display
-        private val _total = MutableStateFlow(item.abilityTotal.value.toString())
+        private val _total = MutableStateFlow(item.abilityTotal.value)
         val total = _total.asStateFlow()
 
         /**
@@ -79,7 +79,7 @@ class SummoningFragmentViewModel(
          */
         fun setBoughtVal(input: Int){
             item.setBuyVal(input)
-            _total.update{item.abilityTotal.value.toString()}
+            _total.update{item.abilityTotal.value}
             setBoughtVal(input.toString())
         }
 

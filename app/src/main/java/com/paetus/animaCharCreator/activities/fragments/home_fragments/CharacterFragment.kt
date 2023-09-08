@@ -56,13 +56,13 @@ fun CharacterPageFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //name input
@@ -258,48 +258,62 @@ fun CharacterPageFragment(
                 Spacer(Modifier.height(15.dp))
 
                 //display character's size category
-                AnimatedContent(
-                    targetState = charFragVM.sizeInput.collectAsState().value,
-                    transitionSpec = numberScroll,
-                    label = "sizeDisplay"
-                ){
-                    InfoRow(
-                        stringResource(R.string.sizeCat),
-                        it.toString()
-                    )
+                InfoRow(
+                    stringResource(R.string.sizeCat)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = charFragVM.sizeInput.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "sizeDisplay"
+                    ){
+                        Text(
+                            text = "$it"
+                        )
+                    }
                 }
 
                 //display character's movement value
-                AnimatedContent(
-                    targetState = charFragVM.getCharMovement(),
-                    transitionSpec = numberScroll,
-                    label = "movementDisplay"
-                ){
-                    InfoRow(
-                        stringResource(R.string.movement),
-                        if(it == 0)
-                            stringResource(charFragVM.movementDisplay.collectAsState().value)
-                        else
-                            stringResource(charFragVM.movementDisplay.collectAsState().value, it)
-                    )
+                InfoRow(
+                    label = stringResource(R.string.movement)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = charFragVM.getCharMovement(),
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "movementDisplay"
+                    ) {
+                        Text(
+                            text =
+                            if(it == 0) stringResource(charFragVM.movementDisplay.collectAsState().value)
+                            else stringResource(charFragVM.movementDisplay.collectAsState().value, it)
+                        )
+                    }
                 }
 
                 //display character's weight index
-                AnimatedContent(
-                    targetState = charFragVM.getCharWeight(),
-                    transitionSpec = numberScroll,
-                    label = "weightIndexDisplay"
-                ) {
-                    InfoRow(
-                        stringResource(R.string.weightIndex),
-                        if(charFragVM.getCharWeight() == 0)
-                            stringResource(charFragVM.weightIndex.collectAsState().value)
-                        else
-                            stringResource(charFragVM.weightIndex.collectAsState().value, it)
-                    )
+                InfoRow(
+                    label = stringResource(R.string.weightIndex)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = charFragVM.getCharWeight(),
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "weightIndexDisplay"
+                    ){
+                        Text(
+                            text =
+                                if(charFragVM.getCharWeight() == 0)
+                                    stringResource(charFragVM.weightIndex.collectAsState().value)
+                                else
+                                    stringResource(charFragVM.weightIndex.collectAsState().value, it)
+                        )
+                    }
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 }
 

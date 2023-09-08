@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,6 +44,7 @@ fun AdvantageCostPick(
     //initialize page tracker
     val currentPage = advantageFragVM.adjustingPage.collectAsState().value
 
+
     DialogFrame(
         stringResource(R.string.advantageSelectPrompt),
         {
@@ -49,16 +52,16 @@ fun AdvantageCostPick(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 when (currentPage) {
                     //page for type options
                     1 -> {
                         //for each available option
                         context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).forEach {
-                            if(advantageFragVM.adjustedAdvantage.value!!.name != R.string.halfTreeAttuned)
-                                item{OptionRow(advantageFragVM, it)}
+                            if (advantageFragVM.adjustedAdvantage.value!!.name != R.string.halfTreeAttuned)
+                                item { OptionRow(advantageFragVM, it) }
                             else
-                                item{HalfTreeOptions(advantageFragVM, it)}
+                                item { HalfTreeOptions(advantageFragVM, it) }
                         }
                     }
 
@@ -66,7 +69,7 @@ fun AdvantageCostPick(
                     2 -> {
                         //for each cost available
                         advantageFragVM.adjustedAdvantage.value!!.cost.forEach {
-                            item{CostRow(advantageFragVM, it)}
+                            item { CostRow(advantageFragVM, it) }
                         }
                     }
                 }
@@ -80,7 +83,7 @@ fun AdvantageCostPick(
             //back options for the cost selection
             BackHandler(currentPage == 2) {
                 //return to first page if multiples options
-                if(advantageFragVM.adjustedAdvantage.value!!.options != null)
+                if (advantageFragVM.adjustedAdvantage.value!!.options != null)
                     advantageFragVM.setAdjustingPage(1)
                 //close dialog if no additional options available
                 else closeDialog(null)
@@ -88,20 +91,24 @@ fun AdvantageCostPick(
         },
         {
             //button to go back if option is available
-            if(advantageFragVM.adjustingPage.collectAsState().value == 2 &&
-                    advantageFragVM.adjustedAdvantage.collectAsState().value!!.options != null)
+            if (advantageFragVM.adjustingPage.collectAsState().value == 2 &&
+                advantageFragVM.adjustedAdvantage.collectAsState().value!!.options != null
+            )
                 TextButton(onClick = {
                     advantageFragVM.setAdjustingPage(1)
                 }) {
-                    Text(text = stringResource(R.string.backLabel))
+                    Text(
+                        text = stringResource(R.string.backLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
 
             //button for user's item selection
             TextButton(onClick = {
-                when(advantageFragVM.adjustingPage.value){
+                when (advantageFragVM.adjustingPage.value) {
                     1 -> {
                         //go to cost page if cost must be chosen
-                        if(advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
+                        if (advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
                             advantageFragVM.setAdjustingPage(2)
                         //attempt to apply advantage to character
                         else
@@ -113,12 +120,18 @@ fun AdvantageCostPick(
                         closeDialog(advantageFragVM.acquireAdvantage())
                 }
             }) {
-                Text(text = stringResource(R.string.selectLabel))
+                Text(
+                    text = stringResource(R.string.selectLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
 
             //close selection dialog
-            TextButton(onClick = {closeDialog(null)}) {
-                Text(text = stringResource(R.string.cancelLabel))
+            TextButton(onClick = { closeDialog(null) }) {
+                Text(
+                    text = stringResource(R.string.cancelLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     )
@@ -153,7 +166,10 @@ private fun OptionRow(
             selected = advantageFragVM.optionPicked.collectAsState().value == stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name),
             onClick = {advantageFragVM.setOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))},
             modifier = Modifier
-                .weight(0.1f)
+                .weight(0.1f),
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = MaterialTheme.colorScheme.onSurface
+            )
         )
 
         //display name of option
@@ -201,7 +217,10 @@ private fun HalfTreeOptions(
         //create radio button for this option
         RadioButton(
             selected = advantageFragVM.halfAttunedOptions.collectAsState().value.contains(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name)),
-            onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))}
+            onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))},
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = MaterialTheme.colorScheme.onSurface
+            )
         )
 
         //display option text
@@ -240,7 +259,10 @@ private fun CostRow(
             selected = advantageFragVM.costPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.cost.indexOf(item),
             onClick = {advantageFragVM.setCostPicked(advantageFragVM.adjustedAdvantage.value!!.cost.indexOf(item))},
             modifier = Modifier
-                .weight(0.1f)
+                .weight(0.1f),
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = MaterialTheme.colorScheme.onSurface
+            )
         )
 
         //display the cost value

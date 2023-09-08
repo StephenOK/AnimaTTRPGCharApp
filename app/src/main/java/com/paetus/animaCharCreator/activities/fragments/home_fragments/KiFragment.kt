@@ -1,7 +1,9 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -28,6 +30,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.ab
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
@@ -42,6 +45,7 @@ import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
  * @param homePageVM viewModel that manages the bottom bar display
  */
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
@@ -54,36 +58,36 @@ fun KiFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        item{Spacer(Modifier.height(15.dp))}
+
         item{
             GeneralCard{
                 //header for ki point and accumulation table
                 Row {
-                    Spacer(modifier = Modifier.weight(0.13f))
+                    Spacer(modifier = Modifier.weight(0.1f))
 
                     //ki point items
                     Text(
                         text = stringResource(R.string.statKiLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.1f),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(R.string.buyKiLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.2f),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(R.string.totalKiLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.1f),
                         textAlign = TextAlign.Center
                     )
 
@@ -91,19 +95,19 @@ fun KiFragment(
                     Text(
                         text = stringResource(R.string.statAccLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.1f),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(R.string.buyAccLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.2f),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(R.string.totalAccLabel),
                         modifier = Modifier
-                            .weight(0.13f),
+                            .weight(0.1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -128,21 +132,35 @@ fun KiFragment(
 
                     //display total ki points
                     Spacer(Modifier.weight(0.26f))
-                    Text(
-                        text = kiFragVM.kiPointTotal.collectAsState().value,
+
+                    AnimatedContent(
+                        targetState = kiFragVM.kiPointTotal.collectAsState().value,
                         modifier = Modifier
                             .weight(0.13f),
-                        textAlign = TextAlign.Center
-                    )
+                        transitionSpec = numberScroll,
+                        label = "kiPointTotal"
+                    ) {
+                        Text(
+                            text = "$it",
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
                     //display total accumulation
                     Spacer(Modifier.weight(0.26f))
-                    Text(
-                        text = kiFragVM.kiAccTotal.collectAsState().value,
+
+                    AnimatedContent(
+                        targetState = kiFragVM.kiAccTotal.collectAsState().value,
                         modifier = Modifier
                             .weight(0.13f),
-                        textAlign = TextAlign.Center
-                    )
+                        transitionSpec = numberScroll,
+                        label = "kiAccTotal"
+                    ) {
+                        Text(
+                            text = "$it",
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -152,11 +170,32 @@ fun KiFragment(
         item{
             GeneralCard{
                 //display maximum MK to spend
-                InfoRow(stringResource(R.string.maxMKLabel), kiFragVM.getMartialMax())
+                InfoRow(
+                    label = stringResource(R.string.maxMKLabel)
+                ){it, _ ->
+                    Text(
+                        text = kiFragVM.getMartialMax(),
+                        modifier = it
+                    )
+                }
+
                 Spacer(Modifier.height(10.dp))
 
                 //display remaining MK to spend
-                InfoRow(stringResource(R.string.remainingMKLabel), kiFragVM.remainingMK.collectAsState().value)
+                InfoRow(
+                    label = stringResource(R.string.remainingMKLabel)
+                ){modifier, _ ->
+                    AnimatedContent(
+                        targetState = kiFragVM.remainingMK.collectAsState().value,
+                        modifier = modifier,
+                        transitionSpec = numberScroll,
+                        label = "mkRemaining"
+                    ) {
+                        Text(
+                            text = "$it"
+                        )
+                    }
+                }
             }
         }
 
@@ -229,6 +268,8 @@ fun KiFragment(
                 }
             }
         }
+
+        item{Spacer(Modifier.height(15.dp))}
     }
 
     //dialog for custom technique creation
@@ -250,6 +291,7 @@ fun KiFragment(
  * @param kiFragVM viewModel that manages this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun KiFromStatRow(
     kiRowData: KiFragmentViewModel.KiRowData,
@@ -267,7 +309,7 @@ private fun KiFromStatRow(
         Text(
             text = stringArrayResource(R.array.primaryCharArray)[kiRowData.title],
             modifier = Modifier
-                .weight(0.13f),
+                .weight(0.1f),
             textAlign = TextAlign.Center
         )
 
@@ -275,7 +317,7 @@ private fun KiFromStatRow(
         Text(
             text = kiRowData.item.baseKiPoints.value.toString(),
             modifier = Modifier
-                .weight(0.13f),
+                .weight(0.1f),
             textAlign = TextAlign.Center
         )
 
@@ -294,23 +336,29 @@ private fun KiFromStatRow(
                     else
                         kiRowData.setPointDPLabel("")
                 }
-                .weight(0.13f),
+                .weight(0.2f),
             label = kiRowData.pointDPLabel.collectAsState().value
         )
 
         //display for ki points from this stat
-        Text(
-            text = kiRowData.pointTotalString.collectAsState().value,
+        AnimatedContent(
+            targetState = kiRowData.pointTotalString.collectAsState().value,
             modifier = Modifier
-                .weight(0.13f),
-            textAlign = TextAlign.Center
-        )
+                .weight(0.1f),
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.primaryCharArray)[kiRowData.title]}KiPoints"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
 
         //get stat's inherit accumulation
         Text(
             text = kiRowData.item.baseAccumulation.value.toString(),
             modifier = Modifier
-                .weight(0.13f),
+                .weight(0.1f),
             textAlign = TextAlign.Center
         )
 
@@ -329,17 +377,23 @@ private fun KiFromStatRow(
                     else
                         kiRowData.setAccDPLabel("")
                 }
-                .weight(0.13f),
+                .weight(0.2f),
             label = kiRowData.accDPLabel.collectAsState().value
         )
 
         //display for ki accumulation from this stat
-        Text(
-            text = kiRowData.accTotalString.collectAsState().value,
+        AnimatedContent(
+            targetState = kiRowData.accTotalString.collectAsState().value,
             modifier = Modifier
-                .weight(0.13f),
-            textAlign = TextAlign.Center
-        )
+                .weight(0.1f),
+            transitionSpec = numberScroll,
+            label = "${stringArrayResource(R.array.primaryCharArray)[kiRowData.title]}KiAcc"
+        ) {
+            Text(
+                text = "$it",
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

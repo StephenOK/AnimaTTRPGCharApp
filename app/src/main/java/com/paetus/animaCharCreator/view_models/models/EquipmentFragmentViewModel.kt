@@ -54,15 +54,15 @@ class EquipmentFragmentViewModel(
     val currentQuality = _currentQuality.asStateFlow()
 
     //initialize gold cost display
-    private val _totalGoldPurchase = MutableStateFlow("0")
+    private val _totalGoldPurchase = MutableStateFlow(0)
     val totalGoldPurchase = _totalGoldPurchase.asStateFlow()
 
     //initialize silver cost display
-    private val _totalSilverPurchase = MutableStateFlow("0")
+    private val _totalSilverPurchase = MutableStateFlow(0)
     val totalSilverPurchase = _totalSilverPurchase.asStateFlow()
 
     //initialize copper cost display
-    private val _totalCopperPurchase = MutableStateFlow("0")
+    private val _totalCopperPurchase = MutableStateFlow(0)
     val totalCopperPurchase = _totalCopperPurchase.asStateFlow()
 
     //initialize state list for character's inventory
@@ -174,7 +174,7 @@ class EquipmentFragmentViewModel(
                 (input % 1.0) * 100, true, false)
 
         //update gold display
-        _totalGoldPurchase.update{input.toInt().toString()}
+        _totalGoldPurchase.update{input.toInt()}
     }
 
     /**
@@ -199,7 +199,7 @@ class EquipmentFragmentViewModel(
         val silvFinal = input - reduction
 
         //update silver display
-        _totalSilverPurchase.update{silvFinal.toInt().toString()}
+        _totalSilverPurchase.update{silvFinal.toInt()}
 
         //update copper display if any decimal places in current result
         if(setCopper) setTotalCopperPurchase((silvFinal % 1.0) * 10, false)
@@ -226,7 +226,7 @@ class EquipmentFragmentViewModel(
         }
 
         //update copper purchase display
-        _totalCopperPurchase.update{(input - reduction).toInt().toString()}
+        _totalCopperPurchase.update{(input - reduction).toInt()}
 
         //if necessary, update the silver amount displayed
         if(setSilver)

@@ -30,7 +30,7 @@ class CombatFragViewModel(
     val lifeMults = _lifeMults.asStateFlow()
 
     //initialize maximum life point display
-    private val _lifeTotal = MutableStateFlow(combat.lifeMax.value.toString())
+    private val _lifeTotal = MutableStateFlow(combat.lifeMax.value)
     val lifeTotal = _lifeTotal.asStateFlow()
 
     private val _lifeDPLabel = MutableStateFlow("")
@@ -48,7 +48,7 @@ class CombatFragViewModel(
     fun setLifeMults(input: Int){
         combat.takeLifeMult(input)
         setLifeMults(input.toString())
-        setLifeTotal(combat.lifeMax.value.toString())
+        setLifeTotal(combat.lifeMax.value)
     }
 
     /**
@@ -63,7 +63,7 @@ class CombatFragViewModel(
      *
      * @param input new string to display
      */
-    private fun setLifeTotal(input: String){_lifeTotal.update{input}}
+    private fun setLifeTotal(input: Int){_lifeTotal.update{input}}
 
     /**
      * Changes the display of the life mult DP cost.
@@ -223,7 +223,7 @@ class CombatFragViewModel(
         val pointsIn = _pointsIn.asStateFlow()
 
         //initialize final display for this stat
-        private val _totalVal = MutableStateFlow(item.total.value.toString())
+        private val _totalVal = MutableStateFlow(item.total.value)
         val totalVal = _totalVal.asStateFlow()
 
         //initialize the DP display for this stat
@@ -257,7 +257,7 @@ class CombatFragViewModel(
         /**
          * Sets the displayed total to the appropriate value.
          */
-        fun setTotalVal() {_totalVal.update{item.total.value.toString()}}
+        fun setTotalVal() {_totalVal.update{item.total.value}}
 
         /**
          * Sets the DP label to the inputted value.
@@ -272,7 +272,7 @@ class CombatFragViewModel(
      */
     fun refreshPage(){
         setLifeMults(combat.lifeMultsTaken.value.toString())
-        setLifeTotal(combat.lifeMax.value.toString())
+        setLifeTotal(combat.lifeMax.value)
         allCombatItems.forEach{
             it.setPointsIn(it.item.inputVal.value.toString())
             it.setTotalVal()

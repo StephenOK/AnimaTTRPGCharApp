@@ -1,6 +1,8 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,6 +27,7 @@ import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.CoinType
+import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 
 /**
@@ -30,6 +35,7 @@ import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
  *
  * @param equipFragVM viewModel that manages this object's data
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EquipmentItemPurchase(
     equipFragVM: EquipmentFragmentViewModel
@@ -65,13 +71,16 @@ fun EquipmentItemPurchase(
                                 selected = it == equipFragVM.currentQuality.collectAsState().value,
                                 onClick = {equipFragVM.setCurrentQuality(it)},
                                 modifier = Modifier
-                                    .weight(0.1f)
+                                    .weight(0.1f),
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
+                                )
                             )
                             Text(
                                 text = stringResource(it.qualityType),
                                 modifier = Modifier
                                     .weight(0.2f)
-                                    .clickable{equipFragVM.setCurrentQuality(it)}
+                                    .clickable { equipFragVM.setCurrentQuality(it) }
                             )
                         }
                     }
@@ -82,23 +91,53 @@ fun EquipmentItemPurchase(
                 //display total purchase cost
                 item{
                     InfoRow(
-                        CoinType.Gold.name,
-                        equipFragVM.totalGoldPurchase.collectAsState().value
-                    )
+                        label = CoinType.Gold.name
+                    ){modifier, _ ->
+                        AnimatedContent(
+                            targetState = equipFragVM.totalGoldPurchase.collectAsState().value,
+                            modifier = modifier,
+                            transitionSpec = numberScroll,
+                            label = "dialogGoldSpent"
+                        ) {
+                            Text(
+                                text = "$it"
+                            )
+                        }
+                    }
                 }
 
                 item{
                     InfoRow(
-                        CoinType.Silver.name,
-                        equipFragVM.totalSilverPurchase.collectAsState().value
-                    )
+                        label = CoinType.Silver.name
+                    ){modifier, _ ->
+                        AnimatedContent(
+                            targetState = equipFragVM.totalSilverPurchase.collectAsState().value,
+                            modifier = modifier,
+                            transitionSpec = numberScroll,
+                            label = "dialogSilverSpent"
+                        ) {
+                            Text(
+                                text = "$it"
+                            )
+                        }
+                    }
                 }
 
                 item{
                     InfoRow(
-                        CoinType.Copper.name,
-                        equipFragVM.totalCopperPurchase.collectAsState().value
-                    )
+                        label = CoinType.Copper.name
+                    ){modifier, _ ->
+                        AnimatedContent(
+                            targetState = equipFragVM.totalCopperPurchase.collectAsState().value,
+                            modifier = modifier,
+                            transitionSpec = numberScroll,
+                            label = "dialogCopperSpent"
+                        ) {
+                            Text(
+                                text = "$it"
+                            )
+                        }
+                    }
                 }
             }
 
@@ -108,12 +147,18 @@ fun EquipmentItemPurchase(
         {
             //button to confirm purchase
             TextButton(onClick = {equipFragVM.purchaseItems()}) {
-                Text(text = stringResource(R.string.confirmLabel))
+                Text(
+                    text = stringResource(R.string.confirmLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
 
             //button to cancel purchase
             TextButton(onClick = {equipFragVM.toggleItemPurchaseOpen()}) {
-                Text(text = stringResource(R.string.cancelLabel))
+                Text(
+                    text = stringResource(R.string.cancelLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     )

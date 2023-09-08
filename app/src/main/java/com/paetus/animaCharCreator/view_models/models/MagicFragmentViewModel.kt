@@ -44,11 +44,11 @@ class MagicFragmentViewModel(
     val maxZeonString = _maxZeonString.asStateFlow()
 
     //initialize the character's zeon recovery string
-    private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.value.toString())
+    private val _zeonRecoverString = MutableStateFlow(magic.magicRecoveryTotal.value)
     val zeonRecoveryString = _zeonRecoverString.asStateFlow()
 
     //initialize the character's innate magic display
-    private val _innateMagic = MutableStateFlow(magic.innateMagic.value.toString())
+    private val _innateMagic = MutableStateFlow(magic.innateMagic.value)
     val innateMagic = _innateMagic.asStateFlow()
 
     //initialize the character's magic projection imbalance input
@@ -67,13 +67,13 @@ class MagicFragmentViewModel(
     val imbalanceTypeString = _imbalanceTypeString.asStateFlow()
 
     //initialize the displays for the character's offensive and defensive magic projections
-    private val _offenseImbalance = MutableStateFlow("")
+    private val _offenseImbalance = MutableStateFlow(0)
     val offenseImbalance = _offenseImbalance.asStateFlow()
-    private val _defenseImbalance = MutableStateFlow("")
+    private val _defenseImbalance = MutableStateFlow(0)
     val defenseImbalance = _defenseImbalance.asStateFlow()
 
     //initialize the display for the character's magic levels spent
-    private val _magicLevelSpent = MutableStateFlow(magic.magicLevelSpent.value.toString())
+    private val _magicLevelSpent = MutableStateFlow(magic.magicLevelSpent.value)
     val magicLevelSpent = _magicLevelSpent.asStateFlow()
 
     //initialize open state of the free spell exchange dialog
@@ -164,7 +164,7 @@ class MagicFragmentViewModel(
     /**
      * Sets the spent magic level display to the character's held value.
      */
-    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.value.toString()}}
+    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.value}}
 
     /**
      * Change the character's magic imbalance display.
@@ -188,8 +188,8 @@ class MagicFragmentViewModel(
      * Updates the offense and defense projections.
      */
     private fun refreshImbalance(input: Boolean){
-        _offenseImbalance.update{determineImbalanceValue(input).toString()}
-        _defenseImbalance.update{determineImbalanceValue(!input).toString()}
+        _offenseImbalance.update{determineImbalanceValue(input)}
+        _defenseImbalance.update{determineImbalanceValue(!input)}
     }
 
     /**
@@ -463,8 +463,8 @@ class MagicFragmentViewModel(
         {
             if(it >= 1){
                 magic.buyZeonAcc(it)
-                _zeonRecoverString.update{magic.magicRecoveryTotal.value.toString()}
-                _innateMagic.update{magic.innateMagic.value.toString()}
+                _zeonRecoverString.update{magic.magicRecoveryTotal.value}
+                _innateMagic.update{magic.innateMagic.value}
             }
         },
         {true}

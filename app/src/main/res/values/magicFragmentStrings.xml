@@ -12,8 +12,6 @@
 
     <string name = "offenseLabel">Offense</string>
     <string name = "defenseLabel">Defense</string>
-    <string name = "offenseHeader">Offense: %s</string>
-    <string name = "defenseHeader">Defense: %s</string>
 
     <string name = "magicLevelLabel">Magic Levels: </string>
     <string name = "magicLevelSpentLabel">Magic Levels Spent: </string>

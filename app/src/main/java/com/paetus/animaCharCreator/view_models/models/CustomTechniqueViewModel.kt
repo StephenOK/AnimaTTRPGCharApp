@@ -47,6 +47,10 @@ class CustomTechniqueViewModel(
     private val _customPageNum = MutableStateFlow(1)
     val customPageNum = _customPageNum.asStateFlow()
 
+    //initialize custom technique's level indicator
+    private val _customTechLevel = MutableStateFlow(1)
+    val customTechLevel = _customTechLevel.asStateFlow()
+
     //initialize minimum and maximum costs of the custom technique
     private val _costMinimum = MutableStateFlow(20)
     val costMinimum = _costMinimum.asStateFlow()
@@ -179,7 +183,8 @@ class CustomTechniqueViewModel(
      */
     fun setTechniqueLevel(input: Int){
         //set the technique's level
-        customTechnique.level = input
+        _customTechLevel.update{input}
+        customTechnique.level = customTechLevel.value
 
         //update the minimum and maximum values as needed
         when(input){
@@ -1084,13 +1089,6 @@ class CustomTechniqueViewModel(
     fun getCustomTechnique(): Technique {return customTechnique}
 
     /**
-     * Retrieves the current level of the custom technique.
-     *
-     * @return technique's level value
-     */
-    fun getTechniqueLevel(): Int{return customTechnique.level}
-
-    /**
      * Retrieves the total cost of the custom technique.
      *
      * @return technique's cost value
@@ -1267,13 +1265,13 @@ class CustomTechniqueViewModel(
         val index: Int
     ){
         //initialize display string
-        private val _totalDisplay = MutableStateFlow("")
+        private val _totalDisplay = MutableStateFlow(0)
         val totalDisplay = _totalDisplay.asStateFlow()
 
         /**
          * Sets the value of the display for the total build.
          */
-        fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index).toString()}}
+        fun setTotalDisplay(){_totalDisplay.update{customTechVM.gatherIndex(index)}}
     }
 
     /**

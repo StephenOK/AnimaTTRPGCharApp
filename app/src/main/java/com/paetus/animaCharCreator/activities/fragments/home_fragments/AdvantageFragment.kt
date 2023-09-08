@@ -5,8 +5,6 @@ import androidx.compose.animation.AnimatedContent
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +38,7 @@ import com.paetus.animaCharCreator.activities.fragments.dialogs.AdvantageCostPic
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
@@ -65,24 +64,29 @@ fun AdvantageFragment(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
                 start = 30.dp,
                 end = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(Modifier.height(15.dp))
+
         //display creation points remaining
-        AnimatedContent(
-            targetState = advantageFragVM.creationPoints.collectAsState().value,
-            transitionSpec = numberScroll,
-            label = "pointsRemainingDisplay"
-        ){
-            Text(
-                text = stringResource(R.string.creationPointLabel, it),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
+        InfoRow(
+            label = stringResource(R.string.creationPointLabel)
+        ) {modifier, _ ->
+            AnimatedContent(
+                targetState = advantageFragVM.creationPoints.collectAsState().value,
+                modifier = modifier,
+                transitionSpec = numberScroll,
+                label = "pointsRemainingDisplay"
+            ) {
+                Text(
+                    text = "$it",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
         LazyColumn(
@@ -131,6 +135,7 @@ fun AdvantageFragment(
             }
         }
 
+        Spacer(Modifier.height(15.dp))
 
         //display advantage choices if available
         if(advantageFragVM.advantageCostOn.collectAsState().value) {

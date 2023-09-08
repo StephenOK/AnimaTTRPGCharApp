@@ -9,23 +9,26 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -33,20 +36,30 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.paetus.animaCharCreator.theme.AppTheme
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.numberScroll
+import com.paetus.animaCharCreator.theme.detailLightColors
+import com.paetus.animaCharCreator.theme.drawerLightColors
+import com.paetus.animaCharCreator.theme.headerLightColors
+import com.paetus.animaCharCreator.theme.homeLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
@@ -94,9 +107,9 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setContent{
-            //AppTheme{
+            MaterialTheme(colorScheme = homeLightColors){
                 HomeContents(homePageVM, charInstance, filename)
-            //}
+            }
         }
     }
 
@@ -169,20 +182,30 @@ class HomeActivity : AppCompatActivity() {
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
-                AppDrawer(
-                    homePageVM,
-                    filename,
-                    charInstance,
-                    drawerState,
-                    scope,
-                    navController
-                )
+                MaterialTheme(colorScheme = drawerLightColors) {
+                    AppDrawer(
+                        homePageVM,
+                        filename,
+                        charInstance,
+                        drawerState,
+                        scope,
+                        navController
+                    )
+                }
             }
         ){
             //scaffold for the home page
             Scaffold(
-                topBar = {AppHeader(homePageVM, drawerState, scope)},
-                bottomBar = {AppFooter(homePageVM) }
+                topBar = {
+                    MaterialTheme(colorScheme = headerLightColors) {
+                        AppHeader(homePageVM, drawerState, scope)
+                    }
+                },
+                bottomBar = {
+                    MaterialTheme(colorScheme = headerLightColors){
+                        AppFooter(homePageVM)
+                    }
+                }
             ) {
 
                 //set navigation host in scaffold
@@ -284,7 +307,9 @@ class HomeActivity : AppCompatActivity() {
 
                 //show exit alert if user opens it
                 if (homePageVM.exitOpen.collectAsState().value)
-                    ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+                    MaterialTheme(colorScheme = detailLightColors) {
+                        ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+                    }
             }
         }
 
@@ -298,7 +323,7 @@ class HomeActivity : AppCompatActivity() {
      * @param drawerState state manager of the drawer state
      * @param scope coroutine for this item
      */
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
     @Composable
     private fun AppHeader(
         homePageVM: HomePageViewModel,
@@ -309,7 +334,22 @@ class HomeActivity : AppCompatActivity() {
             //update title with any page change
             title = {
                 Text(
-                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value))
+                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    style = LocalTextStyle.current.copy(
+                        drawStyle = Stroke(
+                            miter = 10f,
+                            width = 5f,
+                            join = StrokeJoin.Round
+                        ),
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
                 )
             },
 
@@ -328,7 +368,7 @@ class HomeActivity : AppCompatActivity() {
                         contentDescription = stringResource(R.string.openLabel)
                     )
                 }
-            },
+            }
 
             //actions = {
             //    IconButton(
@@ -375,7 +415,7 @@ class HomeActivity : AppCompatActivity() {
         scope: CoroutineScope,
         navController: NavHostController
     ){
-        ModalDrawerSheet {
+        ModalDrawerSheet{
             LazyColumn {
                 //for each page enumeration present
                 items(enumValues<ScreenPage>()){
@@ -390,8 +430,19 @@ class HomeActivity : AppCompatActivity() {
                             navController.navigate(it.name) {
                                 popUpTo(0)
                             }
-                        }
+                        },
+                        colors = NavigationDrawerItemDefaults.colors(
+                            selectedContainerColor = MaterialTheme.colorScheme.onSurface,
+                            selectedTextColor = MaterialTheme.colorScheme.surfaceTint
+                        ),
+                        shape = RectangleShape
                     )
+                }
+
+                item{
+                    Spacer(Modifier.height(10.dp))
+                    Divider()
+                    Spacer(Modifier.height(10.dp))
                 }
 
                 item {
@@ -426,44 +477,46 @@ class HomeActivity : AppCompatActivity() {
      */
     @Composable
     private fun AppFooter(homePageVM: HomePageViewModel) {
-        Column{
-            //row for table header
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(Modifier.weight(0.2f))
-                //total column
-                Text(
-                    text = stringResource(R.string.totalLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //combat column
-                Text(
-                    text = stringResource(R.string.combatLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //magic column
-                Text(
-                    text = stringResource(R.string.magicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
-                //psychic column
-                Text(
-                    text = stringResource(R.string.psychicLabel),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(0.2f)
-                )
+        Surface {
+            Column {
+                //row for table header
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(Modifier.weight(0.2f))
+                    //total column
+                    Text(
+                        text = stringResource(R.string.totalLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //combat column
+                    Text(
+                        text = stringResource(R.string.combatLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //magic column
+                    Text(
+                        text = stringResource(R.string.magicLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                    //psychic column
+                    Text(
+                        text = stringResource(R.string.psychicLabel),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(0.2f)
+                    )
+                }
+
+                //create row for maximum values
+                BottomBarRow(homePageVM.maximums)
+
+                //create row for spent values
+                BottomBarRow(homePageVM.expenditures)
             }
-
-            //create row for maximum values
-            BottomBarRow(homePageVM.maximums)
-
-            //create row for spent values
-            BottomBarRow(homePageVM.expenditures)
         }
     }
 
@@ -562,7 +615,11 @@ class HomeActivity : AppCompatActivity() {
         AlertDialog(
             //only close alert on dismissal
             onDismissRequest = {closeDialog()},
-            title = {Text(text = stringResource(R.string.exitTitle))},
+            title = {
+                Text(
+                    text = stringResource(R.string.exitTitle)
+                )
+            },
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(
@@ -571,7 +628,10 @@ class HomeActivity : AppCompatActivity() {
                         finish()
                     }
                 ){
-                    Text(text = stringResource(R.string.saveLabel))
+                    Text(
+                        text = stringResource(R.string.saveLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }},
             dismissButton = {
                 //leave page without saving
@@ -579,7 +639,10 @@ class HomeActivity : AppCompatActivity() {
                     onClick = {
                         finish()
                     }){
-                    Text(text = stringResource(R.string.exitLabel))
+                    Text(
+                        text = stringResource(R.string.exitLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )
@@ -626,6 +689,18 @@ class HomeActivity : AppCompatActivity() {
                 baseContext.resources.getString(R.string.fileError),
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    @Preview
+    @Composable
+    fun PreviewHeader(){
+        MaterialTheme(colorScheme = headerLightColors) {
+            AppHeader(
+                HomePageViewModel(BaseCharacter()),
+                rememberDrawerState(DrawerValue.Closed),
+                rememberCoroutineScope()
+            )
         }
     }
 }

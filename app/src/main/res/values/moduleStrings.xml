@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "primaryWeaponLabel">Current Primary Weapon:\n%s</string>
+    <string name = "primaryWeaponLabel">Current Primary Weapon:</string>
     <string name = "maxMartialLabel">Max Martial Arts: %1d</string>
 
     <string name = "archetypeLabel">Archetype Modules</string>

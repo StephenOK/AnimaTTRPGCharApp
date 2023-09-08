@@ -27,7 +27,7 @@ class PsychicFragmentViewModel(
     private val context: Context
 ): ViewModel() {
     //initialize character's free psychic point text
-    private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints().toString())
+    private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints())
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
     //initialize color of free point text
@@ -58,7 +58,7 @@ class PsychicFragmentViewModel(
      * Updates the free psychic points display to reflect the value held in the character.
      */
     fun updateFreePsyPoints(){
-        _freePsyPoints.update{psychic.getFreePsyPoints().toString()}
+        _freePsyPoints.update{psychic.getFreePsyPoints()}
 
         //set to normal color for valid input
         _freePointValid.update{psychic.getFreePsyPoints() >= 0}
@@ -122,7 +122,7 @@ class PsychicFragmentViewModel(
         {true},
     ){input, item ->
         psychic.setPointPotential(input)
-        item.update{psychic.psyPotentialTotal.value.toString()}
+        item.update{psychic.psyPotentialTotal.value}
         updateFreePsyPoints()
     }
 
@@ -137,7 +137,7 @@ class PsychicFragmentViewModel(
         {true}
     ){input, item ->
         psychic.buyPsyPoints(input)
-        item.update{psychic.totalPsychicPoints.value.toString()}
+        item.update{psychic.totalPsychicPoints.value}
         updateFreePsyPoints()
     }
 
@@ -152,7 +152,7 @@ class PsychicFragmentViewModel(
         {psychic.getValidProjection()}
     ){input, item ->
         psychic.buyPsyProjection(input)
-        item.update{psychic.psyProjectionTotal.value.toString()}
+        item.update{psychic.psyProjectionTotal.value}
     }
 
     //gather purchase items into a list
@@ -262,7 +262,7 @@ class PsychicFragmentViewModel(
         val getResource: () -> Int,
         val getValue: () -> Int,
         val getValid: () -> Boolean,
-        val totalUpdate: (Int, MutableStateFlow<String>) -> Unit
+        val totalUpdate: (Int, MutableStateFlow<Int>) -> Unit
     ){
         //initialize purchase input for this item
         private val _purchaseAmount = MutableStateFlow(boughtVal().toString())
@@ -276,7 +276,7 @@ class PsychicFragmentViewModel(
         val dpDisplay = _dpDisplay.asStateFlow()
 
         //initialize total display for this item
-        private val _totalAmount = MutableStateFlow(totalVal().toString())
+        private val _totalAmount = MutableStateFlow(totalVal())
         val totalAmount = _totalAmount.asStateFlow()
 
         /**
@@ -407,7 +407,7 @@ class PsychicFragmentViewModel(
         //initialize display for bonus potential gained
         private val _bonusGained = MutableStateFlow(
             if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item]!!
-            else null
+            else 0
         )
         val bonusGained = _bonusGained.asStateFlow()
 
@@ -479,7 +479,7 @@ class PsychicFragmentViewModel(
                 if(psychic.masteredPowers.contains(item))
                     psychic.masteredPowers[item]!!
                 //display nothing if power isn't mastered
-                else null
+                else 0
             }
         }
     }

@@ -26,5 +26,3 @@ val textScrollUp: AnimatedContentScope<String>.() -> ContentTransform = {
     slideInVertically{height -> height} + fadeIn() with
             slideOutVertically{height -> -height} + fadeOut()
 }
-
-//@OptIn(ExperimentalAnimationApi::class)

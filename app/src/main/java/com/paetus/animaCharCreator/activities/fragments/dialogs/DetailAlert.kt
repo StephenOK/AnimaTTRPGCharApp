@@ -891,7 +891,7 @@ fun EquipmentDetails(item: GeneralEquipment){
                 label = stringResource(R.string.weightLabel)
             ){it, _ ->
                 Text(
-                    text = stringResource(R.string.weightLabelKG, item.weight),
+                    text = stringResource(R.string.weightDoubleKG, item.weight),
                     modifier = it
                 )
             }

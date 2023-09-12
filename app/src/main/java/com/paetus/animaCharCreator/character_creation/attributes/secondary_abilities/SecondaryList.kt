@@ -89,13 +89,13 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
     fun intToField(input: Int): List<SecondaryCharacteristic>{
         return when(input){
             0 -> listOf(acrobatics, athletics, climb, jump, ride, swim)
-            1 -> listOf(art, dance, forging, music, sleightHand)
+            1 -> listOf(intimidate, leadership, persuasion, style)
             2 -> listOf(notice, search, track)
-            3 -> listOf(intimidate, leadership, persuasion, style)
-            4 -> listOf(disguise, hide, lockPick, poisons, theft, stealth, trapLore)
-            5 -> listOf(animals, appraise, herbalLore, history, memorize, magicAppraise, medic,
+            3 -> listOf(animals, appraise, herbalLore, history, memorize, magicAppraise, medic,
                 navigate, occult, sciences)
-            6 -> listOf(composure, strengthFeat, resistPain)
+            4 -> listOf(composure, strengthFeat, resistPain)
+            5 -> listOf(disguise, hide, lockPick, poisons, theft, stealth, trapLore)
+            6 -> listOf(art, dance, forging, music, sleightHand)
             else -> listOf()
         }
     }
@@ -142,12 +142,12 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
     fun classUpdate(newClass: CharClass) {
         //update field growth rates
         updateGrowth(0, newClass.athGrowth)
-        updateGrowth(1, newClass.creatGrowth)
+        updateGrowth(1, newClass.socGrowth)
         updateGrowth(2, newClass.percGrowth)
-        updateGrowth(3, newClass.socGrowth)
-        updateGrowth(4, newClass.subterGrowth)
-        updateGrowth(5, newClass.intellGrowth)
-        updateGrowth(6, newClass.vigGrowth)
+        updateGrowth(3, newClass.intellGrowth)
+        updateGrowth(4, newClass.vigGrowth)
+        updateGrowth(5, newClass.subterGrowth)
+        updateGrowth(6, newClass.creatGrowth)
 
         //update all characteristic totals and expenditures
         fullList.forEach{

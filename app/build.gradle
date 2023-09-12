@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.paetus.animaCharCreator"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 19
-        versionName "1.0.5"
+        versionName "1.0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -39,8 +39,13 @@ android {
     }
 
     composeOptions{
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
+
+    kotlinOptions{
+        jvmTarget = '17'
+    }
+
     namespace 'com.paetus.animaCharCreator'
 }
 

@@ -67,6 +67,7 @@
 
     <string name = "dpLabel">%1d DP</string>
     <string name = "weightLabelKG">%1d kg</string>
+    <string name = "weightDoubleKG">%.2f kg</string>
     <string name = "weightLabelTons">%1d tons</string>
     <string name = "distanceLabelM">%1d m</string>
     <string name = "distanceLabelKM">%1d km</string>

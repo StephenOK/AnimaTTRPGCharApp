@@ -39,7 +39,7 @@ class SecondaryFragmentViewModel(
     private val creative = SecondaryFieldData(
         secondaryList,
         6,
-        secondaryList.intToField(1)
+        secondaryList.intToField(6)
     )
 
     private val perceptive = SecondaryFieldData(
@@ -51,29 +51,29 @@ class SecondaryFragmentViewModel(
     private val social = SecondaryFieldData(
         secondaryList,
         1,
-        secondaryList.intToField(3)
+        secondaryList.intToField(1)
     )
 
     private val subterfuge = SecondaryFieldData(
         secondaryList,
         5,
-        secondaryList.intToField(4)
+        secondaryList.intToField(5)
     )
 
     private val intellectual = SecondaryFieldData(
         secondaryList,
         3,
-        secondaryList.intToField(5)
+        secondaryList.intToField(3)
     )
 
     private val vigor = SecondaryFieldData(
         secondaryList,
         4,
-        secondaryList.intToField(6)
+        secondaryList.intToField(4)
     )
 
     //gather all field data
-    val allFields = listOf(athletics, creative, perceptive, social, subterfuge, intellectual, vigor)
+    val allFields = listOf(athletics, social, perceptive, intellectual, vigor, subterfuge, creative)
 
     //get all individual characteristic items
     val allCharacteristics = athletics.fieldCharacteristics + social.fieldCharacteristics +

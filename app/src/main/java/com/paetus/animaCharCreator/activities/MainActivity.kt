@@ -79,6 +79,16 @@ class MainActivity : AppCompatActivity() {
             writeSettings(this)
         }
 
+        if(!this.fileList().contains("customSecondaries")){
+            val saveSecChar = openFileOutput("customSecondaries", MODE_PRIVATE)
+
+            val secCharOutputStream = ByteArrayOutputStream()
+            secCharOutputStream.close()
+
+            saveSecChar.write(secCharOutputStream.toByteArray())
+            saveSecChar.close()
+        }
+
         setContent {
             MaterialTheme(colorScheme = mainLightColors){
                 MainContents()

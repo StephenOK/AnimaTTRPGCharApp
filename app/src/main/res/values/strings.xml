@@ -15,6 +15,8 @@
 
     <string name="emptyItem"/>
 
+    <string name = "primeCharLabel">Characteristic</string>
+
     <string-array name = "primaryCharArray">
         <item>STR</item>
         <item>DEX</item>
@@ -41,6 +43,7 @@
     <string name = "nextLabel">Next</string>
     <string name = "returnLabel">Return</string>
     <string name = "confirmLabel">Confirm</string>
+    <string name = "createLabel">Create</string>
     <string name = "backLabel">Back</string>
     <string name = "cancelLabel">Cancel</string>
     <string name = "deleteLabel">Delete</string>

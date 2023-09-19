@@ -14,7 +14,7 @@ import java.io.IOException
  * @param parent full list that holds this object
  */
 
-class SecondaryCharacteristic(private val parent: SecondaryList){
+open class SecondaryCharacteristic(private val parent: SecondaryList){
     //initialize points from the associated modifier
     val modVal = mutableStateOf(0)
 

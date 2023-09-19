@@ -2,21 +2,15 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +23,7 @@ import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.composables.OutlinedDropdown
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
@@ -43,7 +38,6 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
  * @param maxNumVM viewModel that manages the bottom bar display
  */
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
@@ -78,7 +72,22 @@ fun CharacterPageFragment(
 
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {
-                    DropdownObject(it, maxNumVM)
+                    OutlinedDropdown(
+                        it.options,
+                        it.output.collectAsState().value,
+                        it.isOpen.collectAsState().value,
+                        it.nameRef,
+                        it.icon.collectAsState().value,
+                        it.size.collectAsState().value,
+                        {coordinates ->
+                            it.setSize(coordinates.size.toSize())
+                        },
+                        {input ->
+                            it.setOutput(input)
+                            maxNumVM.updateMaximums()
+                            maxNumVM.updateExpenditures()
+                        }
+                    ){it.openToggle()}
                 }
 
                 //experience point input
@@ -318,75 +327,11 @@ fun CharacterPageFragment(
 }
 
 /**
- * Creates a dropdown object for user inputs.
- *
- * @param item data held for this dropdown object
- * @param maxNumVM viewModel that manages the bottom bar display
- */
-@Composable
-private fun DropdownObject(
-    item: CharacterFragmentViewModel.DropdownData,
-    maxNumVM: HomePageViewModel
-){
-    //initialize list for dropdown
-    val options = stringArrayResource(item.options)
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(0.8f),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        //object to hold the dropdown menu
-        OutlinedTextField(
-            value = options[item.output.collectAsState().value],
-            onValueChange = {},
-            modifier = Modifier
-                .clickable { item.openToggle() }
-                .onGloballyPositioned { coordinates ->
-                    item.setSize(coordinates.size.toSize())
-                },
-            label = {Text(text = stringResource(item.nameRef))},
-            readOnly = true,
-            trailingIcon = {
-                Icon(
-                    item.icon.collectAsState().value,
-                    "contentDescription",
-                    modifier = Modifier
-                        .clickable{item.openToggle()})
-            }
-        )
-
-        //dropdown object
-        DropdownMenu(
-            expanded = item.isOpen.collectAsState().value,
-            onDismissRequest = {item.openToggle()},
-            modifier = Modifier
-                .width(with(LocalDensity.current){ item.size.value.width.toDp()})
-        ) {
-            //create an object for each option in the inputted list
-            options.forEach { stringIn ->
-                DropdownMenuItem(
-                    text = {Text(text = stringIn)},
-                    onClick = {
-                        //set the new item to show
-                        item.setOutput(options.indexOf(stringIn))
-                        maxNumVM.updateMaximums()
-                        maxNumVM.updateExpenditures()
-                    }
-                )
-            }
-        }
-    }
-}
-
-/**
  * Create a row for the primary characteristics table.
  *
  * @param charFragVM viewModel that manages this fragment
  * @param primeItem primary characteristic data to display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PrimaryRow(
     charFragVM: CharacterFragmentViewModel,

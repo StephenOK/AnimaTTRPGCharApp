@@ -13,7 +13,7 @@ android {
         applicationId "com.paetus.animaCharCreator"
         minSdk 21
         targetSdk 34
-        versionCode 19
+        versionCode 21
         versionName "1.0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -84,7 +84,7 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:32.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.4.1'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.4.3'
     implementation 'com.google.firebase:firebase-perf-ktx:20.4.1'
 
     testImplementation 'junit:junit:4.13.2'

@@ -797,11 +797,16 @@ class Magic(private val charInstance: BaseCharacter){
         //if removing free spell
         else{
             //remove the appropriate spell from the list
+            var removeSpell: Spell? = null
+
             individualSpells.forEach{
                 if(it is FreeSpell && it.level == levelInput && findFreeSpellElement(it) == elementInput){
-                    individualSpells.remove(it)
+                    removeSpell = it
                 }
             }
+
+            if(removeSpell != null)
+                individualSpells.remove(removeSpell)
 
             //remove the item from the element free spell list
             getElementFreeSpells(elementInput).remove(spellItem)

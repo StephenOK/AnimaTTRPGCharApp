@@ -21,11 +21,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomSecondaryDialog
 import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
+import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 
@@ -39,7 +41,8 @@ import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 @Composable
 fun SecondaryAbilityFragment(
     secondaryFragVM: SecondaryFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    filename: String
 ) {
     LazyColumn(
         modifier = Modifier
@@ -77,7 +80,18 @@ fun SecondaryAbilityFragment(
         }
 
         item{Spacer(Modifier.height(15.dp))}
+
+        item{
+            Button(
+                onClick = {secondaryFragVM.toggleCustomOpen()}
+            ){
+                Text(text = stringResource(R.string.customCharacteristicButton))
+            }
+        }
     }
+
+    if(secondaryFragVM.customIsOpen.collectAsState().value)
+        CustomSecondaryDialog(CustomSecondaryViewModel(secondaryFragVM), filename)
 }
 
 /**
@@ -350,5 +364,9 @@ fun SecondaryPreview(){
 
     secondaryFragVM.allFields[2].toggleOpen()
 
-    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM)
+    SecondaryAbilityFragment(
+        secondaryFragVM = secondaryFragVM,
+        homePageVM = homePageVM,
+        filename = "filename"
+    )
 }

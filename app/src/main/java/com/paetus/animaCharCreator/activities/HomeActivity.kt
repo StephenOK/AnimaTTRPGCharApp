@@ -238,7 +238,8 @@ class HomeActivity : AppCompatActivity() {
                         secondaryFragVM.refreshPage()
                         SecondaryAbilityFragment(
                             secondaryFragVM,
-                            homePageVM
+                            homePageVM,
+                            filename
                         )
                     }
 

@@ -29,6 +29,11 @@ class SecondaryFragmentViewModel(
     private val _freelancerOptionsOpen = MutableStateFlow(charInstance.ownClass.value == charInstance.classes.freelancer)
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
+    private val _customIsOpen = MutableStateFlow(false)
+    val customIsOpen = _customIsOpen.asStateFlow()
+
+    fun toggleCustomOpen(){_customIsOpen.update{!customIsOpen.value}}
+
     //initialize each secondary characteristic field data
     private val athletics = SecondaryFieldData(
         secondaryList,

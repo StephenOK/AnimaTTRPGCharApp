@@ -124,7 +124,11 @@ class MainPageViewModel: ViewModel() {
             toNextPage.putExtra("isNew", false)
 
             try{
-                BaseCharacter(File(context.filesDir, name))
+                BaseCharacter(
+                    name,
+                    File(context.filesDir, name),
+                    File(context.filesDir, "customSecondaries")
+                )
 
                 //move to next intention
                 startActivity(context, toNextPage, null)

@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.TextField
+import androidx.compose.material.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -14,7 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.composables.OutlinedDropdown
+import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.ByteArrayOutputStream
@@ -22,6 +24,7 @@ import java.io.ByteArrayOutputStream
 @Composable
 fun CustomSecondaryDialog(
     customSecondVM: CustomSecondaryViewModel,
+    secondaryList: SecondaryList,
     filename: String
 ){
     val context = LocalContext.current
@@ -32,8 +35,8 @@ fun CustomSecondaryDialog(
             LazyColumn{
                 //characteristic name input
                 item{
-                    TextField(
-                        value = customSecondVM.charName.collectAsState().value,
+                    TextInput(
+                        display = customSecondVM.charName.collectAsState().value,
                         onValueChange = {customSecondVM.setCustomName(it)}
                     )
                 }
@@ -59,7 +62,18 @@ fun CustomSecondaryDialog(
 
                 //make characteristic public
                 item{
-                    
+                    Row{
+                        Checkbox(
+                            checked = customSecondVM.secondaryIsPublic.collectAsState().value,
+                            onCheckedChange = {
+                                customSecondVM.setSecondaryPublic(it)
+                            }
+                        )
+
+                        Text(
+                            text = stringResource(R.string.publicPrompt)
+                        )
+                    }
                 }
             }
         },
@@ -83,6 +97,12 @@ fun CustomSecondaryDialog(
 
                             saveSecChar.write(secCharData.toByteArray())
                             saveSecChar.close()
+
+                            secondaryList.addCustomSecondary(customSecondVM.customSecondary)
+                            customSecondVM.secondarySource.addCharToField(
+                                customSecondVM.customSecondary,
+                                customSecondVM.customSecondary.fieldIndex.value
+                            )
 
                             customSecondVM.secondarySource.toggleCustomOpen()
                         }

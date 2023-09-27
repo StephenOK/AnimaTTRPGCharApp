@@ -91,11 +91,20 @@ class HomeActivity : AppCompatActivity() {
         val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
 
+        val customSecondaryFile = File(this.filesDir, "customSecondaries")
+
         //create character object
         val charInstance = if(isNew)
-            BaseCharacter()
+            BaseCharacter(
+                filename,
+                customSecondaryFile
+            )
         else
-            BaseCharacter(File(this.filesDir, filename))
+            BaseCharacter(
+                filename,
+                File(this.filesDir, filename),
+                customSecondaryFile
+            )
 
         //create file on new character creation
         if(isNew)

@@ -296,7 +296,7 @@ class BaseCharacter {
         psychic.setInnatePsy()
 
         //recalculate character's secondary ability values
-        secondaryList.fullList.forEach{it.classTotalRefresh()}
+        secondaryList.getAllSecondaries().forEach{it.classTotalRefresh()}
     }
 
     /**
@@ -455,11 +455,22 @@ class BaseCharacter {
         }
     }
 
+    constructor(){
+        createDefaultChar()
+    }
 
     /**
      * Default constructor for new character.
      */
-    constructor() {
+    constructor(
+        filename: String,
+        secondaryFile: File
+    ) {
+        secondaryList.applySecondaryChars(secondaryFile, filename)
+        createDefaultChar()
+    }
+
+    fun createDefaultChar(){
         //set default values for class, race, and level
         setOwnClass(classes.freelancer)
         setOwnRace(listOf())
@@ -479,11 +490,17 @@ class BaseCharacter {
     /**
      * Constructor for character with file association.
      *
-     * @param fileInput file to load the character data from
+     * @param charFile file to load the character data from
      */
-    constructor(fileInput: File?) {
+    constructor(
+        filename: String,
+        charFile: File,
+        secondaryFile: File
+    ) {
+        secondaryList.applySecondaryChars(secondaryFile, filename)
+
         //initialize file input reader
-        val restoreChar = FileInputStream(fileInput)
+        val restoreChar = FileInputStream(charFile)
         val readChar = InputStreamReader(restoreChar, StandardCharsets.UTF_8)
         val fileReader = BufferedReader(readChar)
 
@@ -518,7 +535,7 @@ class BaseCharacter {
         setAppearance(fileReader.readLine().toInt())
 
         //load character's secondary abilities
-        secondaryList.loadList(fileReader)
+        secondaryList.loadList(fileReader, version)
 
         //load character's modules
         weaponProficiencies.loadProficiencies(fileReader)

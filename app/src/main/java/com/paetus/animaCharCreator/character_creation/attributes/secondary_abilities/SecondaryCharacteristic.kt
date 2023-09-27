@@ -189,9 +189,9 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     /**
      * Write characteristic data to the file output stream
      */
-    fun write(byteArray: ByteArrayOutputStream) {
+    open fun write(byteArray: ByteArrayOutputStream) {
         //record characteristic's applied points and natural bonus state
         writeDataTo(byteArray, pointsApplied.value)
-        writeDataTo(byteArray, bonusApplied.value.toString())
+        writeDataTo(byteArray, bonusApplied.value)
     }
 }

@@ -41,6 +41,9 @@ class MainPageViewModel: ViewModel() {
     private val _optionsOpen = MutableStateFlow(false)
     val optionsOpen = _optionsOpen.asStateFlow()
 
+    private val _editSecondaries = MutableStateFlow(false)
+    val editSecondaries = _editSecondaries.asStateFlow()
+
     //initialize the selected sharing state
     private val _shareSelection = MutableStateFlow<Boolean?>(null)
     val shareSelection = _shareSelection.asStateFlow()
@@ -53,6 +56,8 @@ class MainPageViewModel: ViewModel() {
      * Opens and closes the data sharing alert.
      */
     fun toggleDataShareOpen(){_dataShareOpen.update{!dataShareOpen.value}}
+
+    fun toggleEditSecondaries(){_editSecondaries.update{!editSecondaries.value}}
 
     /**
      * Sets the sharing selection to the inputted value.

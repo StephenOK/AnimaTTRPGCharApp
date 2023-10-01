@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
+import com.paetus.animaCharCreator.view_models.models.EditSecondaryViewModel
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
@@ -36,6 +37,10 @@ class CustomFactory(
                 //creating main page viewModel
                 MainPageViewModel::class.java ->{
                     return MainPageViewModel() as T
+                }
+
+                EditSecondaryViewModel::class.java ->{
+                    return EditSecondaryViewModel(context) as T
                 }
 
                 //creating home page viewModel

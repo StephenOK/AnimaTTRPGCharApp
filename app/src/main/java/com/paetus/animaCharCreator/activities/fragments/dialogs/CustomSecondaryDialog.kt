@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
-import android.content.Context.MODE_APPEND
 import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +19,8 @@ import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun CustomSecondaryDialog(
@@ -82,29 +83,48 @@ fun CustomSecondaryDialog(
                 TextButton(
                     onClick = {
                         if(customSecondVM.customSecondary.name.value != "") {
-                            val saveSecChar = context.openFileOutput("customSecondaries", MODE_APPEND)
+                            val secondaryFilename = "${context.filesDir}/CustomSecondaryDIR/${customSecondVM.customSecondary.name.value}"
+                            val prevFile = File(secondaryFilename)
 
-                            val secCharData = ByteArrayOutputStream()
-                            writeDataTo(secCharData, customSecondVM.customSecondary.isPublic.value)
-                            writeDataTo(secCharData, filename)
-                            writeDataTo(secCharData, customSecondVM.charName.value)
-                            writeDataTo(secCharData, customSecondVM.customSecondary.fieldIndex.value)
-                            writeDataTo(
-                                secCharData,
-                                customSecondVM.customSecondary.primaryCharIndex.value
-                            )
-                            secCharData.close()
+                            if(!prevFile.exists()) {
+                                val saveSecChar = FileOutputStream(prevFile)
 
-                            saveSecChar.write(secCharData.toByteArray())
-                            saveSecChar.close()
+                                val secCharData = ByteArrayOutputStream()
+                                writeDataTo(
+                                    secCharData,
+                                    customSecondVM.customSecondary.isPublic.value
+                                )
+                                writeDataTo(secCharData, filename)
+                                writeDataTo(secCharData, customSecondVM.charName.value)
+                                writeDataTo(
+                                    secCharData,
+                                    customSecondVM.customSecondary.fieldIndex.value
+                                )
+                                writeDataTo(
+                                    secCharData,
+                                    customSecondVM.customSecondary.primaryCharIndex.value
+                                )
+                                secCharData.close()
 
-                            secondaryList.addCustomSecondary(customSecondVM.customSecondary)
-                            customSecondVM.secondarySource.addCharToField(
-                                customSecondVM.customSecondary,
-                                customSecondVM.customSecondary.fieldIndex.value
-                            )
+                                saveSecChar.write(secCharData.toByteArray())
+                                saveSecChar.close()
 
-                            customSecondVM.secondarySource.toggleCustomOpen()
+                                secondaryList.addCustomSecondary(customSecondVM.customSecondary)
+                                customSecondVM.secondarySource.addCharToField(
+                                    customSecondVM.customSecondary,
+                                    customSecondVM.customSecondary.fieldIndex.value
+                                )
+
+                                customSecondVM.secondarySource.toggleCustomOpen()
+                            }
+
+                            else{
+                                Toast.makeText(
+                                    context,
+                                    R.string.duplicateCustomSecondary,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                         else{
                             Toast.makeText(

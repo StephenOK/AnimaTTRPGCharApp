@@ -83,15 +83,10 @@ class MainActivity : AppCompatActivity() {
             writeSettings(this)
         }
 
-        if(!this.fileList().contains("customSecondaries")){
-            val saveSecChar = openFileOutput("customSecondaries", MODE_PRIVATE)
+        val customSecondDIR = File("$filesDir/CustomSecondaryDIR")
 
-            val secCharOutputStream = ByteArrayOutputStream()
-            secCharOutputStream.close()
-
-            saveSecChar.write(secCharOutputStream.toByteArray())
-            saveSecChar.close()
-        }
+        if(!customSecondDIR.isDirectory)
+            customSecondDIR.mkdir()
 
         setContent {
             MaterialTheme(colorScheme = mainLightColors){

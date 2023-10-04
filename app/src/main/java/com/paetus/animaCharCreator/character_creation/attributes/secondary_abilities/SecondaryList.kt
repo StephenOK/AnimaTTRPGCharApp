@@ -344,31 +344,33 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
     }
 
     fun applySecondaryChars(input: File, filename: String){
-        val customInput = FileInputStream(input)
-        val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
-        val fileReader = BufferedReader(readCustom)
+        input.walk().forEach{
+            if(it != input) {
+                val customInput = FileInputStream(it)
+                val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
+                val fileReader = BufferedReader(readCustom)
 
-        while(fileReader.ready()){
-            val valid = fileReader.readLine().toBoolean()
-            val fileCheck = fileReader.readLine()
-            val name = fileReader.readLine()
-            val field = fileReader.readLine().toInt()
-            val primary = fileReader.readLine().toInt()
+                val valid = fileReader.readLine().toBoolean()
+                val fileCheck = fileReader.readLine()
+                val name = fileReader.readLine()
+                val field = fileReader.readLine().toInt()
+                val primary = fileReader.readLine().toInt()
 
-            if(valid || fileCheck == filename){
-                val newTech = CustomCharacteristic(
-                    this,
-                    name,
-                    valid,
-                    field,
-                    primary
-                )
+                if (valid || fileCheck == filename) {
+                    val newTech = CustomCharacteristic(
+                        this,
+                        name,
+                        valid,
+                        field,
+                        primary
+                    )
 
-                addCustomSecondary(newTech)
+                    addCustomSecondary(newTech)
+                }
+
+                customInput.close()
             }
         }
-
-        customInput.close()
     }
 
     fun addCustomSecondary(

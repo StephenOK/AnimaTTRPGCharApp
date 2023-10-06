@@ -8,11 +8,14 @@ class CustomCharacteristic(
     parent: SecondaryList
 ): SecondaryCharacteristic(parent) {
     val name = mutableStateOf("")
+    val filename = mutableStateOf("")
     val isPublic = mutableStateOf(false)
     val fieldIndex = mutableStateOf(0)
     val primaryCharIndex = mutableStateOf(0)
 
     fun setName(input: String){name.value = input}
+
+    fun setFilename(input: String){filename.value = input}
 
     fun setPublic(input: Boolean){isPublic.value = input}
 
@@ -28,11 +31,13 @@ class CustomCharacteristic(
     constructor(
         parent: SecondaryList,
         name: String,
+        filename: String,
         isPublic: Boolean,
         field: Int,
         primary: Int
     ) : this(parent) {
         setName(name)
+        setFilename(filename)
         setPublic(isPublic)
         setFieldIndex(field)
         setPrimaryCharIndex(primary)

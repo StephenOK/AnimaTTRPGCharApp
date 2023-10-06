@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -46,6 +49,7 @@ import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DialogFrame
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.composables.OutlinedDropdown
 import com.paetus.animaCharCreator.theme.detailLightColors
 import com.paetus.animaCharCreator.theme.mainLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
@@ -377,7 +381,7 @@ class MainActivity : AppCompatActivity() {
                                 mainVM.toggleEditSecondaries()
                             },
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = CenterVertically
                     ){
                         Spacer(Modifier.weight(0.25f))
                         Text(
@@ -403,7 +407,7 @@ class MainActivity : AppCompatActivity() {
                                 mainVM.toggleDataShareOpen()
                             },
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = CenterVertically
                     ){
                         Spacer(Modifier.weight(0.25f))
                         Text(
@@ -453,8 +457,8 @@ class MainActivity : AppCompatActivity() {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable{
-                                        if(!it.editOpen.value)
+                                    .clickable {
+                                        if (!it.editOpen.value)
                                             editSecondaryVM.closeAll()
 
                                         it.toggleOpen()
@@ -469,19 +473,49 @@ class MainActivity : AppCompatActivity() {
                             AnimatedVisibility(
                                 visible = it.editOpen.collectAsState().value
                             ){
-                                Row {
-                                    //button to delete characteristic
-                                    TextButton(
-                                        onClick = {
-                                            editSecondaryVM.toggleDeleteConfirm()
+                                Column {
+                                    Row(
+                                        verticalAlignment = CenterVertically
+                                    ) {
+                                        //button to delete characteristic
+                                        TextButton(
+                                            onClick = {
+                                                editSecondaryVM.toggleDeleteConfirm()
+                                            }
+                                        ) {
+                                            Text(text = stringResource(R.string.deleteLabel))
                                         }
-                                    ){
-                                        Text(text = stringResource(R.string.deleteLabel))
+
+                                        //input to change public setting for characteristic
+                                        Checkbox(
+                                            checked = it.isPrivate.collectAsState().value,
+                                            onCheckedChange = { _ -> it.togglePrivate() }
+                                        )
+
+                                        Text(
+                                            text = stringResource(R.string.publicLabel)
+                                        )
                                     }
 
-                                    //button to change public setting for characteristic
-                                    //item to change characteristic's field
-                                    //item to change characteristic's primary stat
+                                    it.allDropdowns.forEach { item ->
+                                        Row {
+                                            OutlinedDropdown(
+                                                optionsRef = item.optionsRef,
+                                                index = item.index.collectAsState().value,
+                                                openState = item.isOpen.collectAsState().value,
+                                                labelRef = item.labelRef,
+                                                icon = item.icon.collectAsState().value,
+                                                size = item.size.collectAsState().value,
+                                                sizeSetter = { coordinates ->
+                                                    item.setSize(coordinates.size.toSize())
+                                                },
+                                                itemSelection = { index ->
+                                                    item.setIndex(index)
+                                                },
+                                                openFunc = { item.openToggle() }
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -491,9 +525,20 @@ class MainActivity : AppCompatActivity() {
             buttonContent = {
                 Row {
                     TextButton(
+                        onClick = {
+                            editSecondaryVM.customList.forEach{
+                                editSecondaryVM.overwriteItem(it.item)
+                            }
+                            mainVM.toggleEditSecondaries()
+                        }
+                    ){
+                        Text(text = stringResource(R.string.saveLabel))
+                    }
+
+                    TextButton(
                         onClick = {mainVM.toggleEditSecondaries()}
                     ){
-                        Text(text = stringResource(R.string.closeLabel))
+                        Text(text = stringResource(R.string.cancelLabel))
                     }
                 }
             }
@@ -507,6 +552,8 @@ class MainActivity : AppCompatActivity() {
     fun DeleteSecondaryConfirmation(
         editSecondaryVM: EditSecondaryViewModel
     ){
+        val context = LocalContext.current
+
         AlertDialog(
             onDismissRequest = {},
             title = {
@@ -520,7 +567,9 @@ class MainActivity : AppCompatActivity() {
             confirmButton = {
                 TextButton(
                     onClick = {
-                        
+                        File("${context.filesDir}/CustomSecondaryDIR/${editSecondaryVM.deletingItem.value}").delete()
+                        editSecondaryVM.refreshCustomList()
+                        editSecondaryVM.toggleDeleteConfirm()
                     }
                 ){
                     Text(text = stringResource(R.string.confirmLabel))
@@ -562,7 +611,7 @@ class MainActivity : AppCompatActivity() {
                     Row(
                         modifier = Modifier
                             .clickable { mainVM.setShareSelection(true) },
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = CenterVertically
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == true,
@@ -581,7 +630,7 @@ class MainActivity : AppCompatActivity() {
                     Row(
                         modifier = Modifier
                             .clickable { mainVM.setShareSelection(false) },
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = CenterVertically
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == false,

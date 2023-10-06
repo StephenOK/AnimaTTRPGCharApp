@@ -30,6 +30,8 @@ fun CustomSecondaryDialog(
 ){
     val context = LocalContext.current
 
+    customSecondVM.customSecondary.setFilename(filename)
+
     DialogFrame(
         dialogTitle = stringResource(R.string.customCharacteristicTitle),
         mainContent = {

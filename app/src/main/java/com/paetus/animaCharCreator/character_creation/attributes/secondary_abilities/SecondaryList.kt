@@ -309,12 +309,19 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
         if(writeVersion >= 22) {
             for (count in 0 until fileReader!!.readLine().toInt()) {
                 val customName = fileReader.readLine()
+                var found = false
 
                 getAllCustoms().forEach {
                     if (it.name.value == customName) {
                         it.load(fileReader)
+                        found = true
                         return@forEach
                     }
+                }
+
+                if(!found){
+                    fileReader.readLine()
+                    fileReader.readLine()
                 }
             }
         }
@@ -360,6 +367,7 @@ class SecondaryList(val charInstance: BaseCharacter, val primaryList: PrimaryLis
                     val newTech = CustomCharacteristic(
                         this,
                         name,
+                        filename,
                         valid,
                         field,
                         primary

@@ -118,5 +118,6 @@
 
     <string name = "exitTitle">Save before exiting?</string>
 
+    <string name = "publicLabel">Public</string>
     <string name = "errorText">Error</string>
 </resources>

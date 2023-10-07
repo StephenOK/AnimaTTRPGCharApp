@@ -84,16 +84,15 @@ class MainPageViewModel: ViewModel() {
             val fileList = context.fileList()
 
             //initialize file name and counter
-            val fileBase = "AnimaChar$name"
             var fileNum = 0
 
             //construct initial file name
-            var filename = fileBase
+            var filename = name
 
             //change file name until it is unique
             while(fileList.contains(filename)) {
                 fileNum++
-                filename = "$fileBase($fileNum)"
+                filename = "$name($fileNum)"
             }
 
             //initialize next intent
@@ -131,7 +130,7 @@ class MainPageViewModel: ViewModel() {
             try{
                 BaseCharacter(
                     name,
-                    File(context.filesDir, name),
+                    File("${context.filesDir}/AnimaChars", name),
                     File(context.filesDir, "customSecondaries")
                 )
 
@@ -144,29 +143,29 @@ class MainPageViewModel: ViewModel() {
             }
         }
     ){characterName, setCharacterName ->
-        //get current file list and sort alphabetically
-        val fileList = LocalContext.current.fileList()
-        fileList.sort()
+        val context = LocalContext.current
 
         LazyColumn{
-            fileList.forEach{
+            val dir = File("${context.filesDir}/AnimaChars")
+
+            dir.walk().forEach{
                 //check if file is a character file
-                if(it.contains("AnimaChar")) {
+                if(it != dir && it.isFile) {
                     item {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .selectable(
-                                    selected = characterName.collectAsState().value == it,
-                                    onClick = { setCharacterName(it) }
+                                    selected = characterName.collectAsState().value == it.name,
+                                    onClick = {setCharacterName(it.name)}
                                 ),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start
                         ) {
                             //display selected item
                             RadioButton(
-                                selected = (it == characterName.collectAsState().value),
-                                onClick = {setCharacterName(it)},
+                                selected = (it.name == characterName.collectAsState().value),
+                                onClick = {setCharacterName(it.name)},
                                 colors = RadioButtonDefaults.colors(
                                     unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
@@ -174,7 +173,7 @@ class MainPageViewModel: ViewModel() {
 
                             //display file name with relevant information
                             Text(
-                                text = it.drop(9),
+                                text = it.name,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         }

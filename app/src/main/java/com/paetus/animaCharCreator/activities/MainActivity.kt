@@ -26,7 +26,6 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -88,7 +87,23 @@ class MainActivity : AppCompatActivity() {
             writeSettings(this)
         }
 
+        val charFileDIR = File("$filesDir/AnimaChars")
         val customSecondDIR = File("$filesDir/CustomSecondaryDIR")
+
+        if(!charFileDIR.isDirectory){
+            charFileDIR.mkdir()
+
+            fileList().forEach{
+                if(it != "AnimaChars" && it.contains("AnimaChar")){
+                    val newName = it.drop(9)
+                    val original = File("$filesDir/$it")
+                    original.copyTo(
+                        File("$filesDir/AnimaChars/$newName")
+                    )
+                    original.delete()
+                }
+            }
+        }
 
         if(!customSecondDIR.isDirectory)
             customSecondDIR.mkdir()

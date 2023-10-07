@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -76,6 +75,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
 
 /**
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
         else
             BaseCharacter(
                 filename,
-                File(this.filesDir, filename),
+                File("${this.filesDir}/AnimaChars", filename),
                 customSecondaryFile
             )
 
@@ -670,7 +670,7 @@ class HomeActivity : AppCompatActivity() {
     ){
         try{
             //create file writer
-            val saveStream = openFileOutput(filename, Context.MODE_PRIVATE)
+            val saveStream = FileOutputStream(File("${this.filesDir}/AnimaChars", filename))
 
             //get and write character's bytes
             val charData = charInstance.bytes

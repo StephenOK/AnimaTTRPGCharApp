@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 import androidx.compose.animation.AnimatedContent
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,11 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomSecondaryDialog
 import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
+import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 
@@ -39,7 +41,8 @@ import com.paetus.animaCharCreator.view_models.models.SecondaryFragmentViewModel
 @Composable
 fun SecondaryAbilityFragment(
     secondaryFragVM: SecondaryFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    filename: String
 ) {
     LazyColumn(
         modifier = Modifier
@@ -77,7 +80,22 @@ fun SecondaryAbilityFragment(
         }
 
         item{Spacer(Modifier.height(15.dp))}
+
+        item{
+            Button(
+                onClick = {secondaryFragVM.toggleCustomOpen()}
+            ){
+                Text(text = stringResource(R.string.customCharacteristicButton))
+            }
+        }
     }
+
+    if(secondaryFragVM.customIsOpen.collectAsState().value)
+        CustomSecondaryDialog(
+            CustomSecondaryViewModel(secondaryFragVM),
+            secondaryFragVM.charInstance.secondaryList,
+            filename
+        )
 }
 
 /**
@@ -235,12 +253,16 @@ private fun RowHead(){
  * @param item characteristic item to display for this row
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MakeRow(
     item: SecondaryFragmentViewModel.SecondaryItem,
     homePageVM: HomePageViewModel
 ){
+    val itemName = if(item.secondaryItem is CustomCharacteristic)
+        item.getCustomName()
+    else
+        stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]
+
     Row{Spacer(Modifier.height(5.dp))}
     Row(
         modifier = Modifier
@@ -250,7 +272,7 @@ private fun MakeRow(
     ){
         //characteristic label
         Text(
-            text = stringArrayResource(R.array.secondaryCharacteristics)[item.getName()],
+            text = itemName,
             textAlign = TextAlign.Start
         )
     }
@@ -293,7 +315,7 @@ private fun MakeRow(
             modifier = Modifier
                 .weight(0.125f),
             transitionSpec = numberScroll,
-            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}ClassPoints"
+            label = "${itemName}ClassPoints"
         ) {
             Text(
                 text = "$it",
@@ -318,7 +340,7 @@ private fun MakeRow(
             modifier = Modifier
                 .weight(0.1f),
             transitionSpec = textScrollUp,
-            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}BonusText"
+            label = "${itemName}BonusText"
         ) {
             Text(
                 text = it,
@@ -331,7 +353,7 @@ private fun MakeRow(
             modifier = Modifier
                 .weight(0.125f),
             transitionSpec = numberScroll,
-            label = "${stringArrayResource(R.array.secondaryCharacteristics)[item.getName()]}Total"
+            label = "${itemName}Total"
         ) {
             Text(
                 text = "$it",
@@ -350,5 +372,9 @@ fun SecondaryPreview(){
 
     secondaryFragVM.allFields[2].toggleOpen()
 
-    SecondaryAbilityFragment(secondaryFragVM = secondaryFragVM, homePageVM = homePageVM)
+    SecondaryAbilityFragment(
+        secondaryFragVM = secondaryFragVM,
+        homePageVM = homePageVM,
+        filename = "filename"
+    )
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,11 @@ class SecondaryFragmentViewModel(
     //initialize open state of the freelancer bonus options
     private val _freelancerOptionsOpen = MutableStateFlow(charInstance.ownClass.value == charInstance.classes.freelancer)
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
+
+    private val _customIsOpen = MutableStateFlow(false)
+    val customIsOpen = _customIsOpen.asStateFlow()
+
+    fun toggleCustomOpen(){_customIsOpen.update{!customIsOpen.value}}
 
     //initialize each secondary characteristic field data
     private val athletics = SecondaryFieldData(
@@ -84,6 +90,13 @@ class SecondaryFragmentViewModel(
     val firstSelection = FreelancerSelection(charInstance.classes, 0, allCharacteristics)
     val secondSelection = FreelancerSelection(charInstance.classes, 1, allCharacteristics)
     val thirdSelection = FreelancerSelection(charInstance.classes, 2, allCharacteristics)
+
+    fun addCharToField(
+        item: CustomCharacteristic,
+        field: Int
+    ){
+        allFields[field].addFieldChar(item)
+    }
 
     /**
      * Class for a freelancer's secondary characteristic selection.
@@ -169,6 +182,10 @@ class SecondaryFragmentViewModel(
         //initialize data for each of the field's characteristics
         val fieldCharacteristics = mutableListOf<SecondaryItem>()
 
+        fun addFieldChar(item: CustomCharacteristic){
+            fieldCharacteristics.add(SecondaryItem(item, secondaryList))
+        }
+
         init{
             //create data objects for each field characteristic
             fieldItems.forEach{
@@ -184,7 +201,7 @@ class SecondaryFragmentViewModel(
      * @param secondaryList characteristic's associated field
      */
     class SecondaryItem(
-        private val secondaryItem: SecondaryCharacteristic,
+        val secondaryItem: SecondaryCharacteristic,
         private val secondaryList: SecondaryList
     ){
         //initialize the characteristic's natural bonus check
@@ -283,7 +300,11 @@ class SecondaryFragmentViewModel(
          *
          * @return characteristic's name
          */
-        fun getName(): Int{return secondaryList.fullList.indexOf(secondaryItem)}
+        fun getName(): Int{
+            return secondaryList.fullList.indexOf(secondaryItem)
+        }
+
+        fun getCustomName(): String{return (secondaryItem as CustomCharacteristic).name.value}
 
         /**
          * Retrieves the modifier value of the characteristic.

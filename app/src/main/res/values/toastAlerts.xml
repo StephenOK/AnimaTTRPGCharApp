@@ -64,4 +64,7 @@
     <string name = "magicTiesRestriction">Magic Ties prevents getting Free Spells!</string>
 
     <string name = "needDisciplineMessage">You lack the Advantage to access the %s Discipline!</string>
+
+    <string name = "nameCustomSecondary">Please name your Secondary Ability!</string>
+    <string name = "duplicateCustomSecondary">There already exists a custom Secondary Ability with that name!</string>
 </resources>

@@ -45,7 +45,6 @@ import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
  * @param homePageVM viewModel that manages the bottom bar display
  */
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,

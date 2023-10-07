@@ -563,7 +563,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         freelancerSelection.forEach{
             //update characteristic's class value if a selection was made
             if(it != 0)
-                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(10)
+                charInstance.secondaryList.getAllSecondaries()[it - 1].setClassPointsPerLevel(10)
         }
     }
 
@@ -574,7 +574,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         //update characteristic's class value if a selection was made
         freelancerSelection.forEach{
             if(it != 0)
-                charInstance.secondaryList.fullList[it - 1].setClassPointsPerLevel(0)
+                charInstance.secondaryList.getAllSecondaries()[it - 1].setClassPointsPerLevel(0)
         }
     }
 
@@ -596,7 +596,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         if(input == 0) {
             //remove previous bonus if one taken
             if(prevIndex >= 0)
-                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+                charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
 
             //set new input
             freelancerSelection[index] = 0
@@ -613,13 +613,13 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //remove previous bonus if one taken
             if(prevIndex >= 0)
-                charInstance.secondaryList.fullList[prevIndex].setClassPointsPerLevel(0)
+                charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
 
             //set new input
             freelancerSelection[index] = input
 
             //add new bonus
-            charInstance.secondaryList.fullList[input - 1].setClassPointsPerLevel(10)
+            charInstance.secondaryList.getAllSecondaries()[input - 1].setClassPointsPerLevel(10)
         }
 
         //return changed value

@@ -63,6 +63,7 @@ class PrimaryList(private val charInstance: BaseCharacter){
         charInstance.combat.diseaseRes.setMod(mod)
         charInstance.combat.venomRes.setMod(mod)
         charInstance.combat.physicalRes.setMod(mod)
+        charInstance.secondaryList.updateCON()
         charInstance.ki.conKi.primaryUpdate(total)
     }
 

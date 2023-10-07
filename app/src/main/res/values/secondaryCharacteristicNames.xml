@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name = "fieldLabel">Field</string>
+
     <string-array name = "secondaryFields">
         <item>Athleticism</item>
         <item>Social</item>
@@ -63,4 +65,9 @@
     <string name = "natTaken">+ 5</string>
 
     <string name = "freelancerPrompt">Select Freelancer\'s Bonuses: </string>
+
+    <string name = "customCharacteristicButton">Add Characteristic</string>
+
+    <string name = "customCharacteristicTitle">Create Custom Secondary Characteristic</string>
+    <string name = "publicPrompt">Make Public for Other Characters</string>
 </resources>

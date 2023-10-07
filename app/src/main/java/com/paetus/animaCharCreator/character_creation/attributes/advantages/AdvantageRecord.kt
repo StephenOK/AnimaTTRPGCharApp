@@ -158,7 +158,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
             //forbid reduction of growth stat to below zero
             commonAdvantages.subjectAptitude -> {
-                if(charInstance.secondaryList.fullList[taken!!].devPerPoint.value - toAdd.cost[takenCost] <= 0)
+                if(charInstance.secondaryList.getAllSecondaries()[taken!!].devPerPoint.value - toAdd.cost[takenCost] <= 0)
                     return R.string.costReductionRestriction
             }
 

@@ -213,11 +213,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(1, 2),
         0,
         {input, cost ->
-            charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost)
+            charInstance.secondaryList.getAllSecondaries()[input!!].setDevelopmentDeduction(cost)
             charInstance.updateTotalSpent()
         }
     ) { input, cost ->
-        charInstance.secondaryList.fullList[input!!].setDevelopmentDeduction(cost * -1)
+        charInstance.secondaryList.getAllSecondaries()[input!!].setDevelopmentDeduction(cost * -1)
         charInstance.updateTotalSpent()
     }
 
@@ -349,11 +349,11 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         0,
         {_, _ ->
             charInstance.secondaryList.allTradesTaken.value = true
-            charInstance.secondaryList.fullList.forEach{it.refreshTotal()}
+            charInstance.secondaryList.getAllSecondaries().forEach{it.refreshTotal()}
         }
     ) { _, _ ->
         charInstance.secondaryList.allTradesTaken.value = false
-        charInstance.secondaryList.fullList.forEach { it.refreshTotal() }
+        charInstance.secondaryList.getAllSecondaries().forEach{it.refreshTotal()}
     }
 
     val naturalArmor = Advantage(
@@ -668,7 +668,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
         listOf(1, 2, 3),
         0,
         {input, cost ->
-            val characteristic = charInstance.secondaryList.fullList[input!!]
+            val characteristic = charInstance.secondaryList.getAllSecondaries()[input!!]
 
             when(cost){
                 1 -> characteristic.setSpecialPerLevel(10)
@@ -677,7 +677,7 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
             }
         }
     ) { input, cost ->
-        val characteristic = charInstance.secondaryList.fullList[input!!]
+        val characteristic = charInstance.secondaryList.getAllSecondaries()[input!!]
 
         when (cost) {
             1 -> characteristic.setSpecialPerLevel(-10)

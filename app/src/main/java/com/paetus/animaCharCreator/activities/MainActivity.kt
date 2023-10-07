@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Paint
@@ -122,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -334,7 +335,7 @@ class MainActivity : AppCompatActivity() {
             },
             text = {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = CenterHorizontally
                 ){
                     //Row(
                     //    modifier = Modifier
@@ -451,7 +452,11 @@ class MainActivity : AppCompatActivity() {
         DialogFrame(
             dialogTitle = stringResource(R.string.editSecondariesTitle),
             mainContent = {
-                LazyColumn{
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center
+                ){
                     editSecondaryVM.customList.forEach{
                         item{
                             Row(
@@ -462,59 +467,74 @@ class MainActivity : AppCompatActivity() {
                                             editSecondaryVM.closeAll()
 
                                         it.toggleOpen()
-                                    }
+                                    },
+                                horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
                                     text = it.item.name.value,
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
                         }
                         item{
                             AnimatedVisibility(
-                                visible = it.editOpen.collectAsState().value
+                                visible = it.editOpen.collectAsState().value,
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ){
-                                Column {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    horizontalAlignment = CenterHorizontally
+                                ){
                                     Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth(0.8f),
                                         verticalAlignment = CenterVertically
                                     ) {
+                                        //input to change public setting for characteristic
+                                        Checkbox(
+                                            checked = it.isPrivate.collectAsState().value,
+                                            onCheckedChange = {_ -> it.togglePrivate()},
+                                            modifier = Modifier
+                                                .weight(0.1f)
+                                        )
+
+                                        Text(
+                                            text = stringResource(R.string.publicLabel),
+                                            modifier = Modifier
+                                                .weight(0.4f),
+                                            textAlign = TextAlign.Center
+                                        )
+
                                         //button to delete characteristic
                                         TextButton(
                                             onClick = {
                                                 editSecondaryVM.toggleDeleteConfirm()
-                                            }
+                                            },
+                                            modifier = Modifier
+                                                .weight(0.5f)
                                         ) {
                                             Text(text = stringResource(R.string.deleteLabel))
                                         }
-
-                                        //input to change public setting for characteristic
-                                        Checkbox(
-                                            checked = it.isPrivate.collectAsState().value,
-                                            onCheckedChange = { _ -> it.togglePrivate() }
-                                        )
-
-                                        Text(
-                                            text = stringResource(R.string.publicLabel)
-                                        )
                                     }
 
                                     it.allDropdowns.forEach { item ->
-                                        Row {
-                                            OutlinedDropdown(
-                                                optionsRef = item.optionsRef,
-                                                index = item.index.collectAsState().value,
-                                                openState = item.isOpen.collectAsState().value,
-                                                labelRef = item.labelRef,
-                                                icon = item.icon.collectAsState().value,
-                                                size = item.size.collectAsState().value,
-                                                sizeSetter = { coordinates ->
-                                                    item.setSize(coordinates.size.toSize())
-                                                },
-                                                itemSelection = { index ->
-                                                    item.setIndex(index)
-                                                },
-                                                openFunc = { item.openToggle() }
-                                            )
-                                        }
+                                        OutlinedDropdown(
+                                            optionsRef = item.optionsRef,
+                                            index = item.index.collectAsState().value,
+                                            openState = item.isOpen.collectAsState().value,
+                                            labelRef = item.labelRef,
+                                            icon = item.icon.collectAsState().value,
+                                            size = item.size.collectAsState().value,
+                                            sizeSetter = { coordinates ->
+                                                item.setSize(coordinates.size.toSize())
+                                            },
+                                            itemSelection = { index ->
+                                                item.setIndex(index)
+                                            },
+                                            openFunc = { item.openToggle() }
+                                        )
                                     }
                                 }
                             }
@@ -532,13 +552,19 @@ class MainActivity : AppCompatActivity() {
                             mainVM.toggleEditSecondaries()
                         }
                     ){
-                        Text(text = stringResource(R.string.saveLabel))
+                        Text(
+                            text = stringResource(R.string.saveLabel),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
 
                     TextButton(
                         onClick = {mainVM.toggleEditSecondaries()}
                     ){
-                        Text(text = stringResource(R.string.cancelLabel))
+                        Text(
+                            text = stringResource(R.string.cancelLabel),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
@@ -572,14 +598,20 @@ class MainActivity : AppCompatActivity() {
                         editSecondaryVM.toggleDeleteConfirm()
                     }
                 ){
-                    Text(text = stringResource(R.string.confirmLabel))
+                    Text(
+                        text = stringResource(R.string.confirmLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = {editSecondaryVM.toggleDeleteConfirm()}
                 ){
-                    Text(text = stringResource(R.string.cancelLabel))
+                    Text(
+                        text = stringResource(R.string.cancelLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         )

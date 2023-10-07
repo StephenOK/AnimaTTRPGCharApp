@@ -2,15 +2,21 @@ package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
@@ -35,7 +41,9 @@ fun CustomSecondaryDialog(
     DialogFrame(
         dialogTitle = stringResource(R.string.customCharacteristicTitle),
         mainContent = {
-            LazyColumn{
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
                 //characteristic name input
                 item{
                     TextInput(
@@ -43,6 +51,8 @@ fun CustomSecondaryDialog(
                         onValueChange = {customSecondVM.setCustomName(it)}
                     )
                 }
+
+                item{Spacer(Modifier.height(10.dp))}
 
                 //field and characteristic selection
                 items(customSecondVM.allDropdowns){
@@ -62,6 +72,8 @@ fun CustomSecondaryDialog(
                         openFunc = {it.openToggle()}
                     )
                 }
+
+                item{Spacer(Modifier.height(10.dp))}
 
                 //make characteristic public
                 item{
@@ -137,7 +149,10 @@ fun CustomSecondaryDialog(
                         }
                     }
                 ) {
-                    Text(text = stringResource(R.string.createLabel))
+                    Text(
+                        text = stringResource(R.string.createLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
 
                 TextButton(
@@ -145,7 +160,10 @@ fun CustomSecondaryDialog(
                         customSecondVM.secondarySource.toggleCustomOpen()
                     }
                 ){
-                    Text(text = stringResource(R.string.cancelLabel))
+                    Text(
+                        text = stringResource(R.string.cancelLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }

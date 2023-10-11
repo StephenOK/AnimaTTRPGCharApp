@@ -193,28 +193,27 @@ class MainPageViewModel: ViewModel() {
             context.deleteFile(name)
         }
     ){characterName, setCharacterName ->
-        //get files and sort alphabetically
-        val fileList = LocalContext.current.fileList()
-        fileList.sort()
+        val context = LocalContext.current
+        val homeDir = File("${context.filesDir}/AnimaChars")
 
         LazyColumn{
-            fileList.forEach{
+            homeDir.walk().forEach{
                 //if the file is a character file
-                if(it.contains("AnimaChar")){
+                if(it != homeDir){
                     item{
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .selectable(
-                                    selected = characterName.collectAsState().value == it,
-                                    onClick = { setCharacterName(it) }
+                                    selected = characterName.collectAsState().value == it.name,
+                                    onClick = { setCharacterName(it.name) }
                                 ),
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             //display selection button
                             RadioButton(
-                                selected = characterName.collectAsState().value == it,
-                                onClick = {setCharacterName(it)},
+                                selected = characterName.collectAsState().value == it.name,
+                                onClick = {setCharacterName(it.name)},
                                 colors = RadioButtonDefaults.colors(
                                     unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
@@ -222,7 +221,7 @@ class MainPageViewModel: ViewModel() {
 
                             //display the relevant file name
                             Text(
-                                text = it.drop(9),
+                                text = it.name,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         }

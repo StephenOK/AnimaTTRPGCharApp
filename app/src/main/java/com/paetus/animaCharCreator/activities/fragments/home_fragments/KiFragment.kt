@@ -230,7 +230,7 @@ fun KiFragment(
             Button(
                 onClick = {
                     //check that character can take a dominion technique
-                    if (!kiFragVM.toggleTechListOpen())
+                    if (!kiFragVM.checkIfToggle())
                         Toast.makeText(
                             context,
                             context.getString(R.string.kiControlRequired),
@@ -512,7 +512,7 @@ fun KiPreview(){
     val charInstance = BaseCharacter()
 
     val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass, LocalContext.current)
-    kiFragVM.toggleTechListOpen()
+    kiFragVM.checkIfToggle()
 
     val homePageVM = HomePageViewModel(charInstance)
 

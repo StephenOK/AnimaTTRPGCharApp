@@ -54,8 +54,8 @@ class TechniqueEffect(
     fun write(byteArray: ByteArrayOutputStream){
         data.write(byteArray)
 
-        kiBuild.forEach{ writeDataTo(byteArray, it) }
         kiBuild.forEach{writeDataTo(byteArray, it)}
+        buildAdditions.forEach{writeDataTo(byteArray, it)}
 
         writeDataTo(byteArray, elements.size)
         elements.forEach{writeDataTo(byteArray, it.name)}

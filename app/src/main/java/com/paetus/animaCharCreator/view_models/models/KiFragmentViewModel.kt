@@ -90,16 +90,18 @@ class KiFragmentViewModel(
      *
      * @return if open state is openable given the character's current abilities
      */
-    fun toggleTechListOpen(): Boolean{
+    fun checkIfToggle(): Boolean{
         //return true if character has ki control ability
         if(ki.takenAbilities.contains(ki.kiRecord.kiControl)) {
-            _techListOpen.update{!techListOpen.value}
+            toggleTechOpen()
             return true
         }
 
         //otherwise return false
         return false
     }
+
+    fun toggleTechOpen(){_techListOpen.update{!techListOpen.value}}
 
     /**
      * Changes the ki ability list's open state.
@@ -180,7 +182,7 @@ class KiFragmentViewModel(
 
         //close the technique list if it is open and the character no longer has ki control
         if(techListOpen.value && !allKiAbilities[ki.kiRecord.kiControl]!!.value)
-            toggleTechListOpen()
+            toggleTechOpen()
     }
 
     /**

@@ -275,7 +275,8 @@ class HomeActivity : AppCompatActivity() {
                         kiFragVM.refreshPage()
                         KiFragment(
                             kiFragVM,
-                            homePageVM
+                            homePageVM,
+                            filename
                         )
                     }
 

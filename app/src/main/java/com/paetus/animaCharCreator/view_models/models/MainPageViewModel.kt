@@ -190,7 +190,7 @@ class MainPageViewModel: ViewModel() {
         R.string.noCharSelected,
         {context, name ->
             //delete the selected file
-            context.deleteFile(name)
+            File("${context.filesDir}/AnimaChars/$name").delete()
         }
     ){characterName, setCharacterName ->
         val context = LocalContext.current

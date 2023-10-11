@@ -22,13 +22,13 @@ import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomTechnique
+import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomTechniqueDialog
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.activities.fragments.dialogs.TechContents
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
@@ -48,7 +48,8 @@ import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
 @Composable
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    filename: String
 ) {
     //get fragment's context
     val context = LocalContext.current
@@ -273,7 +274,11 @@ fun KiFragment(
 
     //dialog for custom technique creation
     if(kiFragVM.customTechOpen.collectAsState().value)
-        CustomTechnique(kiFragVM, CustomTechniqueViewModel(context, kiFragVM)){TechContents(it)}
+        CustomTechniqueDialog(
+            filename,
+            kiFragVM,
+            CustomTechniqueViewModel(context, kiFragVM)
+        ){TechContents(it)}
 
     //dialog for an item's details
     if(kiFragVM.detailAlertOpen.collectAsState().value)
@@ -459,7 +464,7 @@ private fun TechniqueRow(
 ) {
     val techName =
         if(toShow is PrebuiltTech) stringResource(toShow.name)
-        else (toShow as Technique).name
+        else (toShow as CustomTechnique).name
 
     Row(
         modifier = Modifier
@@ -516,5 +521,5 @@ fun KiPreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    KiFragment(kiFragVM, homePageVM)
+    KiFragment(kiFragVM, homePageVM, "")
 }

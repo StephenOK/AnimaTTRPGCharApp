@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         val charFileDIR = File("$filesDir/AnimaChars")
         val customSecondDIR = File("$filesDir/CustomSecondaryDIR")
+        val customTechDIR = File("$filesDir/CustomTechDIR")
 
         if(!charFileDIR.isDirectory){
             charFileDIR.mkdir()
@@ -107,6 +108,10 @@ class MainActivity : AppCompatActivity() {
 
         if(!customSecondDIR.isDirectory)
             customSecondDIR.mkdir()
+
+        if(!customTechDIR.isDirectory){
+            customTechDIR.mkdir()
+        }
 
         setContent {
             MaterialTheme(colorScheme = mainLightColors){

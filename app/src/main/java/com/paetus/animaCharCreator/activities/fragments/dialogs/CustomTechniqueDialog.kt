@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.activities.fragments.dialogs
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,7 +31,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.te
 import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.theme.getCheckboxColors
@@ -40,6 +39,9 @@ import com.paetus.animaCharCreator.theme.getRowColor
 import com.paetus.animaCharCreator.theme.techEffectLightColors
 import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Dialog that gives the user a sequence of pages to develop their own custom dominion technique.
@@ -50,15 +52,17 @@ import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
  * @param customTechVM viewModel initialized for this dialog
  * @param techContents detail function to pass to this object
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun CustomTechnique(
+fun CustomTechniqueDialog(
+    filename: String,
     kiFragVM: KiFragmentViewModel,
     customTechVM: CustomTechniqueViewModel,
-    techContents: @Composable (Technique) -> Unit
+    techContents: @Composable (CustomTechnique) -> Unit
 ) {
     //get current context
     val context = LocalContext.current
+
+    customTechVM.getCustomTechnique().setFileOrigin(filename)
 
     DialogFrame(
         stringResource(R.string.customTechHeader),
@@ -445,6 +449,21 @@ fun CustomTechnique(
                         }
 
                         techContents(customTechVM.getCustomTechnique())
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Checkbox(
+                                checked = customTechVM.isPublic.collectAsState().value,
+                                onCheckedChange = {customTechVM.toggleTechniquePublic()}
+                            )
+
+                            Text(
+                                text = stringResource(R.string.publicPrompt)
+                            )
+                        }
                     }
                 }
 
@@ -607,6 +626,29 @@ fun CustomTechnique(
                     //add technique to character and close dialog
                     8 -> {
                         kiFragVM.addTechnique(customTechVM.getCustomTechnique())
+
+                        val fileBase = "${context.filesDir}/CustomTechDIR/${customTechVM.techniqueName.value}"
+                        var outFile = File(fileBase)
+
+                        if(outFile.exists()){
+                            var count = 1
+
+                            while(File("$fileBase($count)").exists())
+                                count++
+
+                            outFile = File("$fileBase($count)")
+                        }
+
+                        val writer = FileOutputStream(outFile)
+                        val byteWriter = ByteArrayOutputStream()
+
+                        customTechVM.getCustomTechnique().write(byteWriter)
+
+                        byteWriter.close()
+
+                        writer.write(byteWriter.toByteArray())
+                        writer.close()
+
                         customTechVM.closeDialog()
                     }
 
@@ -1213,5 +1255,5 @@ fun CustomTechniquePreview(){
     customTechVM.setCustomPageNum(1)
     customTechVM.setTechniqueIndex(5)
 
-    CustomTechnique(kiFragVM, customTechVM){TechContents(it)}
+    CustomTechniqueDialog("", kiFragVM, customTechVM){TechContents(it)}
 }

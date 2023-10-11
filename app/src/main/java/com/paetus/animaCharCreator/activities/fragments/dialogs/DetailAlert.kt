@@ -30,7 +30,7 @@ import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
@@ -506,7 +506,7 @@ fun TechContents(technique: TechniqueBase) {
         //retrieve technique's description
         val desc =
             if(technique is PrebuiltTech) stringResource(technique.description)
-            else (technique as Technique).description
+            else (technique as CustomTechnique).description
 
         //display all of the technique's abilities
         technique.givenAbilities.forEach {

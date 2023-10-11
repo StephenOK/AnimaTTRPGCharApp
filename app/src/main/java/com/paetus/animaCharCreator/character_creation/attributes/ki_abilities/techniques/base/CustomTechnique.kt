@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base
 
+import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
@@ -16,13 +17,19 @@ import java.util.Collections
  * @param maintArray array of maintenance points for the technique
  * @param givenAbilities effects the technique utilizes
  */
-class Technique(
+class CustomTechnique(
     var name: String,
     var description: String,
     level: Int,
     maintArray: MutableList<Int>,
     givenAbilities: MutableList<TechniqueEffect>
 ): TechniqueBase(level, maintArray, givenAbilities){
+    val isPublic = mutableStateOf(true)
+    val fileOrigin = mutableStateOf("")
+
+    fun togglePublic(){isPublic.value = !isPublic.value}
+    fun setFileOrigin(input: String){fileOrigin.value = input}
+
     /**
      * Checks that a given technique effect can be added to the technique
      *
@@ -186,6 +193,10 @@ class Technique(
     override fun write(byteArray: ByteArrayOutputStream){
         //write technique's name
         writeDataTo(byteArray, name)
+
+        writeDataTo(byteArray, isPublic.value)
+
+        writeDataTo(byteArray, fileOrigin.value)
 
         //write technique's description
         writeDataTo(byteArray, description)

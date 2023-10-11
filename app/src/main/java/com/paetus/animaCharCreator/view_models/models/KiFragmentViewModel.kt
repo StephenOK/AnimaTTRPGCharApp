@@ -9,7 +9,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.KiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -136,7 +136,7 @@ class KiFragmentViewModel(
     fun setDetailItem(input: TechniqueBase){
         _detailName.update{
             if(input is PrebuiltTech) context.getString(input.name)
-            else (input as Technique).name
+            else (input as CustomTechnique).name
         }
         _detailItem.update{input}
     }
@@ -216,7 +216,7 @@ class KiFragmentViewModel(
      *
      * @param item technique to add
      */
-    fun addTechnique(item: Technique){
+    fun addTechnique(item: CustomTechnique){
         ki.attemptTechAddition(item)
         allTechniques += Pair(item, mutableStateOf(true))
     }
@@ -270,7 +270,7 @@ class KiFragmentViewModel(
      *
      * @return list of character's custom techniques
      */
-    fun getCustomTechniques(): List<Technique>{return ki.customTechniques}
+    fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques}
 
     fun getLevelCount(level: Int): Int{return ki.getLevelCount(level)}
 

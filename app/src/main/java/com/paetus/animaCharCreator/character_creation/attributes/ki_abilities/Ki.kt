@@ -8,7 +8,7 @@ import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
@@ -69,7 +69,7 @@ class Ki(private val charInstance: BaseCharacter){
     val prebuiltTechniques = mutableListOf<PrebuiltTech>()
 
     //initialize character's custom techniques
-    val customTechniques = mutableListOf<Technique>()
+    val customTechniques = mutableListOf<CustomTechnique>()
 
     //compile all of the character's techniques
     val takenTechniques = (prebuiltTechniques + customTechniques).toMutableList()
@@ -257,7 +257,7 @@ class Ki(private val charInstance: BaseCharacter){
 
     fun addTechnique(input: TechniqueBase){
         if(input is PrebuiltTech) prebuiltTechniques += input
-        else customTechniques += input as Technique
+        else customTechniques += input as CustomTechnique
 
         updateFullList()
     }
@@ -279,7 +279,7 @@ class Ki(private val charInstance: BaseCharacter){
     fun removeTechnique(input: TechniqueBase){
         //remove technique from the appropriate list
         if(input is PrebuiltTech) prebuiltTechniques -= input
-        else customTechniques -= input as Technique
+        else customTechniques -= input as CustomTechnique
 
         //remove any potential invalid techniques after this one's removal
         removeExtra()
@@ -298,7 +298,7 @@ class Ki(private val charInstance: BaseCharacter){
 
         removeList.forEach{
             if(it is PrebuiltTech) prebuiltTechniques -= it
-            else customTechniques -= it as Technique
+            else customTechniques -= it as CustomTechnique
         }
 
         removeList.clear()
@@ -309,7 +309,7 @@ class Ki(private val charInstance: BaseCharacter){
 
         removeList.forEach{
             if(it is PrebuiltTech) prebuiltTechniques -= it
-            else customTechniques -= it as Technique
+            else customTechniques -= it as CustomTechnique
         }
     }
 
@@ -410,7 +410,7 @@ class Ki(private val charInstance: BaseCharacter){
             }
 
             //create full technique to add
-            val newTech = Technique(techName, techDesc, techLvl, techMaint, techEffects)
+            val newTech = CustomTechnique(techName, techDesc, techLvl, techMaint, techEffects)
 
             val equivalent = techEquivalent(newTech)
 

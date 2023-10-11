@@ -10,7 +10,7 @@ import androidx.compose.ui.geometry.Size
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.enumerations.Element
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.Technique
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +28,7 @@ class CustomTechniqueViewModel(
     private val kiFragVM: KiFragmentViewModel
 ) {
     //initialize the newly created technique
-    private val customTechnique = Technique(
+    private val customTechnique = CustomTechnique(
         "",
         "",
         1,
@@ -154,6 +154,9 @@ class CustomTechniqueViewModel(
     //initialize the description of the technique
     private val _techniqueDesc = MutableStateFlow(customTechnique.description)
     val techniqueDesc = _techniqueDesc.asStateFlow()
+
+    private val _isPublic = MutableStateFlow(customTechnique.isPublic.value)
+    val isPublic = _isPublic.asStateFlow()
 
     /**
      * Sets the page number of the custom technique.
@@ -1081,12 +1084,17 @@ class CustomTechniqueViewModel(
         customTechnique.description = input
     }
 
+    fun toggleTechniquePublic(){
+        _isPublic.update{!isPublic.value}
+        customTechnique.togglePublic()
+    }
+
     /**
      * Retrieves the custom technique being made here.
      *
      * @return the whole technique being worked on.
      */
-    fun getCustomTechnique(): Technique {return customTechnique}
+    fun getCustomTechnique(): CustomTechnique {return customTechnique}
 
     /**
      * Retrieves the total cost of the custom technique.
@@ -1283,7 +1291,7 @@ class CustomTechniqueViewModel(
      */
     class MaintInput(
         val name: String,
-        private val customTechnique: Technique,
+        private val customTechnique: CustomTechnique,
         val index: Int
     ){
         //initialize input display

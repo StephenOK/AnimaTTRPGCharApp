@@ -469,7 +469,7 @@ fun CustomTechniqueDialog(
 
                 //close dialog on invalid input
                 else -> {
-                    customTechVM.closeDialog()
+                    customTechVM.toggleCustomTechOpen()
                 }
             }
 
@@ -477,7 +477,7 @@ fun CustomTechniqueDialog(
             BackHandler {
                 when (customTechVM.customPageNum.value) {
                     //close dialog on first page
-                    1 -> kiFragVM.toggleCustomTechOpen()
+                    1 -> customTechVM.toggleCustomTechOpen()
 
                     //go to appropriate page from accumulation distribution
                     5 -> customTechVM.setCustomPageNum(3)
@@ -489,7 +489,7 @@ fun CustomTechniqueDialog(
         },
         {
             //button to terminate process
-            TextButton(onClick = { customTechVM.closeDialog() }) {
+            TextButton(onClick = { customTechVM.toggleCustomTechOpen() }) {
                 Text(
                     text = stringResource(R.string.cancelLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -649,7 +649,7 @@ fun CustomTechniqueDialog(
                         writer.write(byteWriter.toByteArray())
                         writer.close()
 
-                        customTechVM.closeDialog()
+                        customTechVM.toggleCustomTechOpen()
                     }
 
                     else -> {}
@@ -1251,7 +1251,7 @@ fun CustomTechniquePreview(){
 
     val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass, LocalContext.current)
 
-    val customTechVM = CustomTechniqueViewModel(LocalContext.current, kiFragVM)
+    val customTechVM = CustomTechniqueViewModel(charInstance.ki, LocalContext.current)
     customTechVM.setCustomPageNum(1)
     customTechVM.setTechniqueIndex(5)
 

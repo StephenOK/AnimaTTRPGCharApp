@@ -49,6 +49,7 @@ import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
 fun KiFragment(
     kiFragVM: KiFragmentViewModel,
     homePageVM: HomePageViewModel,
+    customTechVM: CustomTechniqueViewModel,
     filename: String
 ) {
     //get fragment's context
@@ -256,7 +257,7 @@ fun KiFragment(
 
                     //button for custom technique creation
                     Button(
-                        onClick = {kiFragVM.toggleCustomTechOpen()}
+                        onClick = {customTechVM.toggleCustomTechOpen()}
                     ) {
                         Text(text = stringResource(R.string.addTechniques))
                     }
@@ -273,11 +274,11 @@ fun KiFragment(
     }
 
     //dialog for custom technique creation
-    if(kiFragVM.customTechOpen.collectAsState().value)
+    if(customTechVM.customTechOpen.collectAsState().value)
         CustomTechniqueDialog(
             filename,
             kiFragVM,
-            CustomTechniqueViewModel(context, kiFragVM)
+            customTechVM
         ){TechContents(it)}
 
     //dialog for an item's details
@@ -464,7 +465,7 @@ private fun TechniqueRow(
 ) {
     val techName =
         if(toShow is PrebuiltTech) stringResource(toShow.name)
-        else (toShow as CustomTechnique).name
+        else (toShow as CustomTechnique).name.value
 
     Row(
         modifier = Modifier
@@ -493,7 +494,7 @@ private fun TechniqueRow(
             textAlign = TextAlign.Center
         )
         Text(
-            text = toShow.level.toString(),
+            text = toShow.level.intValue.toString(),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
@@ -520,6 +521,7 @@ fun KiPreview(){
     kiFragVM.checkIfToggle()
 
     val homePageVM = HomePageViewModel(charInstance)
+    val customTechVM = CustomTechniqueViewModel(charInstance.ki, LocalContext.current)
 
-    KiFragment(kiFragVM, homePageVM, "")
+    KiFragment(kiFragVM, homePageVM, customTechVM, "")
 }

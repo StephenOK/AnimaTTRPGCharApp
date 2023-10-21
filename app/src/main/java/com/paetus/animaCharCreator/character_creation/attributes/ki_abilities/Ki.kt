@@ -246,7 +246,7 @@ class Ki(private val charInstance: BaseCharacter){
      */
     fun attemptTechAddition(input: TechniqueBase): Boolean{
         if(martialKnowledgeRemaining.value - input.mkCost() >= 0){
-            if(input.level == 1 || getLevelCount(input.level - 1) >= 2) {
+            if(input.level.intValue == 1 || getLevelCount(input.level.intValue - 1) >= 2) {
                 addTechnique(input)
                 return true
             }
@@ -265,7 +265,7 @@ class Ki(private val charInstance: BaseCharacter){
     fun getLevelCount(level: Int): Int{
         var output = 0
         takenTechniques.forEach{
-            if(it.level == level) output++
+            if(it.level.intValue == level) output++
         }
 
         return output
@@ -294,7 +294,7 @@ class Ki(private val charInstance: BaseCharacter){
 
         //remove second level techniques if not enough first level techniques
         if(getLevelCount(1) < 2)
-            takenTechniques.forEach{if(it.level == 2) removeList += it}
+            takenTechniques.forEach{if(it.level.intValue == 2) removeList += it}
 
         removeList.forEach{
             if(it is PrebuiltTech) prebuiltTechniques -= it
@@ -305,7 +305,7 @@ class Ki(private val charInstance: BaseCharacter){
 
         //remove third level techniques if not enough second level techniques
         if(getLevelCount(2) < 2)
-            takenTechniques.forEach{if(it.level == 3) removeList += it}
+            takenTechniques.forEach{if(it.level.intValue == 3) removeList += it}
 
         removeList.forEach{
             if(it is PrebuiltTech) prebuiltTechniques -= it

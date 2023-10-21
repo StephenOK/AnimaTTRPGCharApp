@@ -63,6 +63,7 @@ import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
+import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
@@ -172,6 +173,10 @@ class HomeActivity : AppCompatActivity() {
             CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
         }
 
+        val customTechVM: CustomTechniqueViewModel by viewModels{
+            CustomFactory(CustomTechniqueViewModel::class.java, charInstance, context)
+        }
+
         val magFragVM: MagicFragmentViewModel by viewModels{
             CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
         }
@@ -276,6 +281,7 @@ class HomeActivity : AppCompatActivity() {
                         KiFragment(
                             kiFragVM,
                             homePageVM,
+                            customTechVM,
                             filename
                         )
                     }

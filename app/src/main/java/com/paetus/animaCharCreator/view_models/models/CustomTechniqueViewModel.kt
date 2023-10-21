@@ -7,7 +7,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Size
+import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
@@ -24,24 +26,22 @@ import kotlinx.coroutines.flow.update
  * @param kiFragVM ki fragment view model that is operating at the same time as this object
  */
 class CustomTechniqueViewModel(
-    val context: Context,
-    private val kiFragVM: KiFragmentViewModel
-) {
+    private val ki: Ki,
+    val context: Context
+): ViewModel(){
     //initialize the newly created technique
-    private val customTechnique = CustomTechnique(
-        "",
-        "",
-        1,
-        mutableListOf(0, 0, 0, 0, 0, 0),
-        mutableListOf()
-    )
+    private val customTechnique = CustomTechnique()
+
+    //initialize open state of custom technique dialog
+    private val _customTechOpen = MutableStateFlow(false)
+    val customTechOpen = _customTechOpen.asStateFlow()
 
     //create element lists for the relevant effects
     private val elementAttackList = listOf(Element.Fire, Element.Water, Element.Air, Element.Earth)
     private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
     //data table of technique effects
-    private val techniqueDatabase = kiFragVM.getTechData()
+    private val techniqueDatabase = ki.techniqueDatabase
 
     //initialize the page tracker of the custom technique
     private val _customPageNum = MutableStateFlow(1)
@@ -148,15 +148,24 @@ class CustomTechniqueViewModel(
     val maintenanceSelection = _maintenanceSelection.asStateFlow()
 
     //initialize the name of the technique
-    private val _techniqueName = MutableStateFlow(customTechnique.name)
+    private val _techniqueName = MutableStateFlow(customTechnique.name.value)
     val techniqueName = _techniqueName.asStateFlow()
 
     //initialize the description of the technique
-    private val _techniqueDesc = MutableStateFlow(customTechnique.description)
+    private val _techniqueDesc = MutableStateFlow(customTechnique.description.value)
     val techniqueDesc = _techniqueDesc.asStateFlow()
 
     private val _isPublic = MutableStateFlow(customTechnique.isPublic.value)
     val isPublic = _isPublic.asStateFlow()
+
+    /**
+     * Changes the custom technique dialog's open state.
+     */
+    fun toggleCustomTechOpen() {
+        _customTechOpen.update{!customTechOpen.value}
+        if(!customTechOpen.value)
+            resetDialog()
+    }
 
     /**
      * Sets the page number of the custom technique.
@@ -187,7 +196,7 @@ class CustomTechniqueViewModel(
     fun setTechniqueLevel(input: Int){
         //set the technique's level
         _customTechLevel.update{input}
-        customTechnique.level = customTechLevel.value
+        customTechnique.setLevel(input)
 
         //update the minimum and maximum values as needed
         when(input){
@@ -223,10 +232,10 @@ class CustomTechniqueViewModel(
      * @return true if this level of technique is valid
      */
     fun minTechsMet(): Boolean{
-        when(customTechnique.level){
+        when(customTechnique.level.intValue){
             1 -> return true
-            2 -> return kiFragVM.getLevelCount(1) >= 2
-            3 -> return kiFragVM.getLevelCount(2) >= 2
+            2 -> return ki.getLevelCount(1) >= 2
+            3 -> return ki.getLevelCount(2) >= 2
         }
 
         return false
@@ -748,7 +757,7 @@ class CustomTechniqueViewModel(
         addedTechniques.forEach{
             //attempt to add the effect
             val newInput =
-                customTechnique.validEffectAddition(it, kiFragVM.getMartialRemaining() - additionCost)
+                customTechnique.validEffectAddition(it, ki.martialKnowledgeRemaining.value - additionCost)
 
             //add cost if no error
             if(newInput == null){
@@ -922,7 +931,7 @@ class CustomTechniqueViewModel(
      * @return error message if any failure occurs
      */
     fun validCheckInput(effectInput: TechniqueTableData): Int?{
-        return customTechnique.validEffectAddition(dataToEffect(effectInput), kiFragVM.getMartialRemaining())
+        return customTechnique.validEffectAddition(dataToEffect(effectInput), ki.martialKnowledgeRemaining.value)
     }
 
     /**
@@ -1071,7 +1080,7 @@ class CustomTechniqueViewModel(
      */
     fun setTechniqueName(input: String){
         _techniqueName.update{input}
-        customTechnique.name = input
+        customTechnique.name.value = input
     }
 
     /**
@@ -1081,7 +1090,7 @@ class CustomTechniqueViewModel(
      */
     fun setTechniqueDesc(input: String){
         _techniqueDesc.update{input}
-        customTechnique.description = input
+        customTechnique.description.value = input
     }
 
     fun toggleTechniquePublic(){
@@ -1135,10 +1144,18 @@ class CustomTechniqueViewModel(
      */
     fun getMaintenanceTotal(): Int{return customTechnique.maintTotal()}
 
-    /**
-     * Closes the custom technique dialog.
-     */
-    fun closeDialog(){kiFragVM.toggleCustomTechOpen()}
+    fun resetDialog(){
+        setCustomPageNum(1)
+        customTechnique.name.value = ""
+        _techniqueName.update{""}
+        customTechnique.isPublic.value = true
+        customTechnique.description.value = ""
+        _techniqueDesc.update{""}
+        customTechnique.level.intValue = 1
+        for(index in 0..5)
+            customTechnique.maintArray[index] = 0
+        customTechnique.givenAbilities.clear()
+    }
 
     //initialize build total displays for ki builds
     private val strAccTotal = AccTotalString(this, 0)

@@ -11,7 +11,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.ab
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -47,10 +46,6 @@ class KiFragmentViewModel(
     //initialize open state of ki ability list
     private val _kiListOpen = MutableStateFlow(false)
     val kiListOpen = _kiListOpen.asStateFlow()
-
-    //initialize open state of custom technique dialog
-    private val _customTechOpen = MutableStateFlow(false)
-    val customTechOpen = _customTechOpen.asStateFlow()
 
     //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
@@ -109,11 +104,6 @@ class KiFragmentViewModel(
     fun toggleKiListOpen() {_kiListOpen.update{!kiListOpen.value}}
 
     /**
-     * Changes the custom technique dialog's open state.
-     */
-    fun toggleCustomTechOpen() {_customTechOpen.update{!customTechOpen.value}}
-
-    /**
      * Changes the detail alert's open state.
      */
     fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
@@ -136,7 +126,7 @@ class KiFragmentViewModel(
     fun setDetailItem(input: TechniqueBase){
         _detailName.update{
             if(input is PrebuiltTech) context.getString(input.name)
-            else (input as CustomTechnique).name
+            else (input as CustomTechnique).name.value
         }
         _detailItem.update{input}
     }
@@ -217,8 +207,16 @@ class KiFragmentViewModel(
      * @param item technique to add
      */
     fun addTechnique(item: CustomTechnique){
-        ki.attemptTechAddition(item)
-        allTechniques += Pair(item, mutableStateOf(true))
+        val copy = CustomTechnique(
+            item.name.value,
+            item.description.value,
+            item.level.intValue,
+            item.maintArray,
+            item.givenAbilities
+        )
+
+        ki.attemptTechAddition(copy)
+        allTechniques += Pair(copy, mutableStateOf(true))
     }
 
     /**
@@ -263,16 +261,12 @@ class KiFragmentViewModel(
      */
     fun getAllPrebuilts(): List<TechniqueBase>{return ki.allPrebuilts}
 
-    fun getTechData(): TechniqueTableDataRecord{return ki.techniqueDatabase}
-
     /**
      * Retrieves the list of custom techniques the character currently has.
      *
      * @return list of character's custom techniques
      */
     fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques}
-
-    fun getLevelCount(level: Int): Int{return ki.getLevelCount(level)}
 
     /**
      * Updates the checkboxes for techniques taken.

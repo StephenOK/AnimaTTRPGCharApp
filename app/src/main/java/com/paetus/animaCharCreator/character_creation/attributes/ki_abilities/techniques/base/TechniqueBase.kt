@@ -1,13 +1,16 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base
 
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import java.io.ByteArrayOutputStream
 
-open class TechniqueBase(
-    var level: Int,
-    val maintArray: MutableList<Int>,
-    val givenAbilities: MutableList<TechniqueEffect>
-){
+open class TechniqueBase(){
+    val level = mutableIntStateOf(1)
+    val maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+    val givenAbilities = mutableListOf<TechniqueEffect>()
+
+    fun setLevel(input: Int){level.intValue = input}
+
     /**
      * Determines the total cost of the technique.
      *
@@ -24,7 +27,7 @@ open class TechniqueBase(
 
         //add points based on level if technique is maintained
         if(isMaintained()){
-            total += when(level) {
+            total += when(level.intValue) {
                 2 -> 20
                 3 -> 30
                 else -> 10
@@ -215,10 +218,23 @@ open class TechniqueBase(
      * @return true if technique matches
      */
     fun equivalentTo(compareTo: TechniqueBase): Boolean{
-        return compareTo.level == level &&
+        return compareTo.level.intValue == level.intValue &&
                 compareTo.maintArray == maintArray &&
                 listCheck(compareTo.givenAbilities)
     }
 
     open fun write(byteArray: ByteArrayOutputStream){}
+
+    constructor(
+        level: Int,
+        maintArray: MutableList<Int>,
+        givenAbilities: MutableList<TechniqueEffect>
+    ) : this() {
+        setLevel(level)
+
+        for(index in 0..5)
+            this.maintArray[index] = maintArray[index]
+
+        this.givenAbilities.addAll(givenAbilities)
+    }
 }

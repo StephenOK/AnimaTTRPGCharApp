@@ -464,9 +464,12 @@ class BaseCharacter {
      */
     constructor(
         filename: String,
-        secondaryFile: File
+        secondaryFile: File,
+        techFile: File
     ) {
         secondaryList.applySecondaryChars(secondaryFile, filename)
+        ki.applyCustomTechs(techFile, filename)
+
         createDefaultChar()
     }
 
@@ -495,9 +498,11 @@ class BaseCharacter {
     constructor(
         filename: String,
         charFile: File,
-        secondaryFile: File
+        secondaryFile: File,
+        techFile: File
     ) {
         secondaryList.applySecondaryChars(secondaryFile, filename)
+        ki.applyCustomTechs(techFile, filename)
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)
@@ -541,7 +546,7 @@ class BaseCharacter {
         weaponProficiencies.loadProficiencies(fileReader)
 
         //load character's ki abilities
-        ki.loadKiAttributes(fileReader, version)
+        ki.loadKiAttributes(fileReader, version, filename)
 
         //load character's magic abilities
         magic.loadMagic(fileReader)

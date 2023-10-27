@@ -63,6 +63,7 @@ import com.paetus.animaCharCreator.view_models.CustomFactory
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
+import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 import com.paetus.animaCharCreator.view_models.models.KiFragmentViewModel
@@ -92,18 +93,21 @@ class HomeActivity : AppCompatActivity() {
         val filename = intent.getStringExtra("filename")!!
 
         val customSecondaryFile = File(this.filesDir, "CustomSecondaryDIR")
+        val customTechFile = File(this.filesDir, "CustomTechDIR")
 
         //create character object
         val charInstance = if(isNew)
             BaseCharacter(
                 filename,
-                customSecondaryFile
+                customSecondaryFile,
+                customTechFile
             )
         else
             BaseCharacter(
                 filename,
                 File("${this.filesDir}/AnimaChars", filename),
-                customSecondaryFile
+                customSecondaryFile,
+                customTechFile
             )
 
         //create file on new character creation
@@ -170,6 +174,10 @@ class HomeActivity : AppCompatActivity() {
 
         val kiFragVM: KiFragmentViewModel by viewModels{
             CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
+        }
+
+        val customTechVM: CustomTechniqueViewModel by viewModels{
+            CustomFactory(CustomTechniqueViewModel::class.java, charInstance, context)
         }
 
         val magFragVM: MagicFragmentViewModel by viewModels{
@@ -276,6 +284,7 @@ class HomeActivity : AppCompatActivity() {
                         KiFragment(
                             kiFragVM,
                             homePageVM,
+                            customTechVM,
                             filename
                         )
                     }

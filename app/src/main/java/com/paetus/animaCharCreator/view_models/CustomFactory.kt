@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
+import com.paetus.animaCharCreator.view_models.models.CustomTechniqueViewModel
 import com.paetus.animaCharCreator.view_models.models.EditSecondaryViewModel
 import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
@@ -95,6 +96,13 @@ class CustomFactory(
                     return KiFragmentViewModel(
                         charInstance.ki,
                         charInstance.ownClass,
+                        context
+                    ) as T
+                }
+
+                CustomTechniqueViewModel::class.java ->{
+                    return CustomTechniqueViewModel(
+                        charInstance.ki,
                         context
                     ) as T
                 }

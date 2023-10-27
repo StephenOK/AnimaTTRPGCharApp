@@ -506,7 +506,7 @@ fun TechContents(technique: TechniqueBase) {
         //retrieve technique's description
         val desc =
             if(technique is PrebuiltTech) stringResource(technique.description)
-            else (technique as CustomTechnique).description
+            else (technique as CustomTechnique).description.value
 
         //display all of the technique's abilities
         technique.givenAbilities.forEach {

@@ -17,15 +17,11 @@ import java.util.Collections
  * @param maintArray array of maintenance points for the technique
  * @param givenAbilities effects the technique utilizes
  */
-class CustomTechnique(
-    var name: String,
-    var description: String,
-    level: Int,
-    maintArray: MutableList<Int>,
-    givenAbilities: MutableList<TechniqueEffect>
-): TechniqueBase(level, maintArray, givenAbilities){
+class CustomTechnique(): TechniqueBase(){
+    val name = mutableStateOf("")
     val isPublic = mutableStateOf(true)
     val fileOrigin = mutableStateOf("")
+    val description = mutableStateOf("")
 
     fun togglePublic(){isPublic.value = !isPublic.value}
     fun setFileOrigin(input: String){fileOrigin.value = input}
@@ -71,11 +67,11 @@ class CustomTechnique(
             return R.string.bindingRestriction
 
         //reject if incompatible level
-        if(input.data.level > level)
+        if(input.data.level > level.intValue)
             return R.string.techLevelRestriction
 
         //determine maximum MK for the technique
-        val max = when(level){
+        val max = when(level.intValue){
             1 -> 50
             2 -> 100
             3 -> 200
@@ -192,17 +188,17 @@ class CustomTechnique(
      */
     override fun write(byteArray: ByteArrayOutputStream){
         //write technique's name
-        writeDataTo(byteArray, name)
+        writeDataTo(byteArray, name.value)
 
         writeDataTo(byteArray, isPublic.value)
 
         writeDataTo(byteArray, fileOrigin.value)
 
         //write technique's description
-        writeDataTo(byteArray, description)
+        writeDataTo(byteArray, description.value)
 
         //write technique's level
-        writeDataTo(byteArray, level)
+        writeDataTo(byteArray, level.intValue)
 
         //write maintenance array
         maintArray.forEach{writeDataTo(byteArray, it)}
@@ -214,5 +210,24 @@ class CustomTechnique(
         givenAbilities.forEach{
             it.write(byteArray)
         }
+    }
+
+    constructor(
+        name: String,
+        isPublic: Boolean,
+        fileOrigin: String,
+        description: String,
+        level: Int,
+        maintArray: MutableList<Int>,
+        givenAbilities: MutableList<TechniqueEffect>
+    ) : this() {
+        this.name.value = name
+        this.isPublic.value = isPublic
+        this.fileOrigin.value = fileOrigin
+        this.description.value = description
+        this.level.intValue = level
+        for(index in 0..5)
+            this.maintArray[index] = maintArray[index]
+        this.givenAbilities.addAll(givenAbilities)
     }
 }

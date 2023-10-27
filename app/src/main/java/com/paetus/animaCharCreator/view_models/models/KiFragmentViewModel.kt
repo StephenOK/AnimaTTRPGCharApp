@@ -11,7 +11,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.ab
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +28,7 @@ class KiFragmentViewModel(
     private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
-    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.value)
+    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.intValue)
     val remainingMK = _remainingMK.asStateFlow()
 
     //initialize ki accumulation total display
@@ -47,10 +46,6 @@ class KiFragmentViewModel(
     //initialize open state of ki ability list
     private val _kiListOpen = MutableStateFlow(false)
     val kiListOpen = _kiListOpen.asStateFlow()
-
-    //initialize open state of custom technique dialog
-    private val _customTechOpen = MutableStateFlow(false)
-    val customTechOpen = _customTechOpen.asStateFlow()
 
     //initialize open state of the detail alert
     private val _detailAlertOpen = MutableStateFlow(false)
@@ -73,7 +68,7 @@ class KiFragmentViewModel(
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
      */
-    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.value}}
+    private fun setRemainingMK(){_remainingMK.update{ki.martialKnowledgeRemaining.intValue}}
 
     /**
      * Sets the ki accumulation total display to the character's recorded value.
@@ -109,11 +104,6 @@ class KiFragmentViewModel(
     fun toggleKiListOpen() {_kiListOpen.update{!kiListOpen.value}}
 
     /**
-     * Changes the custom technique dialog's open state.
-     */
-    fun toggleCustomTechOpen() {_customTechOpen.update{!customTechOpen.value}}
-
-    /**
      * Changes the detail alert's open state.
      */
     fun toggleDetailAlertOn(){_detailAlertOpen.update{!detailAlertOpen.value}}
@@ -136,7 +126,7 @@ class KiFragmentViewModel(
     fun setDetailItem(input: TechniqueBase){
         _detailName.update{
             if(input is PrebuiltTech) context.getString(input.name)
-            else (input as CustomTechnique).name
+            else (input as CustomTechnique).name.value
         }
         _detailItem.update{input}
     }
@@ -197,6 +187,8 @@ class KiFragmentViewModel(
             //attempt to add to the character and reflect that change
             if (ki.attemptTechAddition(item))
                 allTechniques[item]!!.value = true
+
+            updateTechTaken()
         }
 
         //if attempting a removal
@@ -217,8 +209,18 @@ class KiFragmentViewModel(
      * @param item technique to add
      */
     fun addTechnique(item: CustomTechnique){
-        ki.attemptTechAddition(item)
-        allTechniques += Pair(item, mutableStateOf(true))
+        val copy = CustomTechnique(
+            item.name.value,
+            item.isPublic.value,
+            item.fileOrigin.value,
+            item.description.value,
+            item.level.intValue,
+            item.maintArray,
+            item.givenAbilities
+        )
+
+        ki.attemptTechAddition(copy)
+        allTechniques += Pair(copy, mutableStateOf(true))
     }
 
     /**
@@ -226,14 +228,14 @@ class KiFragmentViewModel(
      *
      * @return numeric value of remaining martial knowledge
      */
-    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining.value}
+    fun getMartialRemaining(): Int{return ki.martialKnowledgeRemaining.intValue}
 
     /**
      * Retrieves the maximum martial knowledge the character can spend.
      *
      * @return string of the maximum martial knowledge capacity
      */
-    fun getMartialMax(): String{return ki.martialKnowledgeMax.value.toString()}
+    fun getMartialMax(): String{return ki.martialKnowledgeMax.intValue.toString()}
 
     /**
      * Retrieves the DP cost of ki points for this character.
@@ -263,16 +265,12 @@ class KiFragmentViewModel(
      */
     fun getAllPrebuilts(): List<TechniqueBase>{return ki.allPrebuilts}
 
-    fun getTechData(): TechniqueTableDataRecord{return ki.techniqueDatabase}
-
     /**
      * Retrieves the list of custom techniques the character currently has.
      *
      * @return list of character's custom techniques
      */
-    fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques}
-
-    fun getLevelCount(level: Int): Int{return ki.getLevelCount(level)}
+    fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques.keys.toList()}
 
     /**
      * Updates the checkboxes for techniques taken.
@@ -425,6 +423,7 @@ class KiFragmentViewModel(
         ki.kiRecord.allKiAbilities.forEach{
             allKiAbilities += Pair(it, mutableStateOf(ki.takenAbilities.contains(it)))
         }
+        updateKiTaken()
 
         //get each technique and designate a checkbox to it
         ki.allPrebuilts.forEach{
@@ -432,8 +431,11 @@ class KiFragmentViewModel(
         }
 
         ki.customTechniques.forEach{
-            allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
+            allTechniques += Pair(it.key, mutableStateOf(it.value.value))
         }
+
+        updateTechTaken()
+        setRemainingMK()
     }
 
     /**
@@ -444,7 +446,6 @@ class KiFragmentViewModel(
         allRowData.forEach{
             it.refreshItem()
         }
-
         setRemainingMK()
     }
 }

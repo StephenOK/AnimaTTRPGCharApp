@@ -93,18 +93,21 @@ class HomeActivity : AppCompatActivity() {
         val filename = intent.getStringExtra("filename")!!
 
         val customSecondaryFile = File(this.filesDir, "CustomSecondaryDIR")
+        val customTechFile = File(this.filesDir, "CustomTechDIR")
 
         //create character object
         val charInstance = if(isNew)
             BaseCharacter(
                 filename,
-                customSecondaryFile
+                customSecondaryFile,
+                customTechFile
             )
         else
             BaseCharacter(
                 filename,
                 File("${this.filesDir}/AnimaChars", filename),
-                customSecondaryFile
+                customSecondaryFile,
+                customTechFile
             )
 
         //create file on new character creation

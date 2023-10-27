@@ -111,6 +111,17 @@ class MainActivity : AppCompatActivity() {
 
         if(!customTechDIR.isDirectory){
             customTechDIR.mkdir()
+
+            charFileDIR.walk().forEach{
+                if(it != charFileDIR){
+                    BaseCharacter(
+                        it.name,
+                        it,
+                        customSecondDIR,
+                        customTechDIR
+                    ).ki.saveOutCustoms(customTechDIR)
+                }
+            }
         }
 
         setContent {

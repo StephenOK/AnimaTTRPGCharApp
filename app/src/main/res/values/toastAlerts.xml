@@ -59,6 +59,8 @@
     <string name = "techLevelRestriction">Cannot take an effect of that level!</string>
     <string name = "techCostRestriction">Maximum technique cost exceeded!</string>
     <string name = "techMKRestriction">Technique would exceed character\'s limit!</string>
+    <string name = "emptyTechName">You must name your Technique!</string>
+    <string name = "duplicateTechName">There is already a custom technique with that name!</string>
 
     <string name = "needGiftMessage">You need The Gift in order to change this!</string>
     <string name = "magicTiesRestriction">Magic Ties prevents getting Free Spells!</string>

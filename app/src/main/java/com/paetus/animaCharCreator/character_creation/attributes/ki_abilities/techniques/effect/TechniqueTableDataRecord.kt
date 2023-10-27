@@ -603,51 +603,60 @@ data class TechniqueTableData(
                 R.string.physReduction -> {
                     writeDataTo(byteArray, 0)
                     writeDataTo(byteArray, mkCost - 10)
+                    writeDataTo(byteArray, primaryCost - 2)
                 }
                 R.string.blindnessData ->{
                     writeDataTo(byteArray, 1)
                     writeDataTo(byteArray, mkCost - 15)
+                    writeDataTo(byteArray, primaryCost - 5)
                 }
                 R.string.charReduction ->{
                     writeDataTo(byteArray, 2)
                     writeDataTo(byteArray, mkCost - 10)
+                    writeDataTo(byteArray, primaryCost - 2)
                 }
                 R.string.partParalyze ->{
                     writeDataTo(byteArray, 3)
                     writeDataTo(byteArray, mkCost - 10)
+                    writeDataTo(byteArray, primaryCost - 6)
                 }
                 R.string.damage ->{
                     writeDataTo(byteArray, 4)
                     writeDataTo(byteArray, mkCost - 10)
+                    writeDataTo(byteArray, primaryCost - 5)
                 }
                 R.string.unconscious ->{
                     writeDataTo(byteArray, 5)
                     writeDataTo(byteArray, mkCost - 15)
+                    writeDataTo(byteArray, primaryCost - 8)
                 }
                 R.string.coma ->{
                     writeDataTo(byteArray, 6)
                     writeDataTo(byteArray, mkCost - 30)
+                    writeDataTo(byteArray, primaryCost - 10)
                 }
                 R.string.totalParalyze ->{
                     writeDataTo(byteArray, 7)
                     writeDataTo(byteArray, mkCost - 20)
+                    writeDataTo(byteArray, primaryCost - 8)
                 }
                 R.string.lifeDrain ->{
                     writeDataTo(byteArray, 8)
                     writeDataTo(byteArray, mkCost - 15)
+                    writeDataTo(byteArray, primaryCost - 8)
                 }
                 R.string.controlData ->{
                     writeDataTo(byteArray, 9)
                     writeDataTo(byteArray, mkCost - 40)
+                    writeDataTo(byteArray, primaryCost - 10)
                 }
                 R.string.death ->{
                     writeDataTo(byteArray, 10)
                     writeDataTo(byteArray, mkCost - 50)
+                    writeDataTo(byteArray, primaryCost - 12)
                 }
                 else -> {}
             }
-
-            writeDataTo(byteArray, primaryCost)
         }
         else {
             writeDataTo(byteArray, primaryCost)

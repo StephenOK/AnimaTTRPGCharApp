@@ -214,12 +214,16 @@ class CustomTechnique(): TechniqueBase(){
 
     constructor(
         name: String,
+        isPublic: Boolean,
+        fileOrigin: String,
         description: String,
         level: Int,
         maintArray: MutableList<Int>,
         givenAbilities: MutableList<TechniqueEffect>
     ) : this() {
         this.name.value = name
+        this.isPublic.value = isPublic
+        this.fileOrigin.value = fileOrigin
         this.description.value = description
         this.level.intValue = level
         for(index in 0..5)

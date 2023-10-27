@@ -618,9 +618,23 @@ fun CustomTechniqueDialog(
 
                     //go to next page if technique is named
                     7 -> {
-                        if (customTechVM.techniqueName.value != "") customTechVM.setCustomPageNum(
-                            8
-                        )
+                        if (customTechVM.techniqueName.value != "" &&
+                            !File("${context.filesDir}/CustomTechDIR", customTechVM.techniqueName.value).exists())
+                            customTechVM.setCustomPageNum(8)
+                        else if(customTechVM.techniqueName.value != ""){
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.emptyTechName),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        else{
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.duplicateTechName),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
 
                     //add technique to character and close dialog

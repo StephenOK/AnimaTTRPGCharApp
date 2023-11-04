@@ -252,7 +252,7 @@ fun KiFragment(
                 GeneralCard{
                     //display each prebuilt technique
                     kiFragVM.getAllPrebuilts().forEach {
-                        TechniqueRow(kiFragVM, it)
+                        TechniqueRow(kiFragVM, it.key, it.value)
                     }
 
                     //button for custom technique creation
@@ -264,7 +264,7 @@ fun KiFragment(
 
                     //display custom techniques
                     kiFragVM.getCustomTechniques().forEach {
-                        TechniqueRow(kiFragVM, it)
+                        TechniqueRow(kiFragVM, it.key, it.value)
                     }
                 }
             }
@@ -461,7 +461,8 @@ private fun KiAbilityRow(
 @Composable
 private fun TechniqueRow(
     kiFragVM: KiFragmentViewModel,
-    toShow: TechniqueBase
+    toShow: TechniqueBase,
+    showState: MutableState<Boolean>
 ) {
     val techName =
         if(toShow is PrebuiltTech) stringResource(toShow.name)
@@ -474,7 +475,7 @@ private fun TechniqueRow(
     ){
         //checkbox to apply or remove technique to the character
         Checkbox(
-            checked = kiFragVM.allTechniques[toShow]!!.value,
+            checked = showState.value,
             onCheckedChange ={kiFragVM.attemptTechniqueChange(toShow, it)},
             modifier = Modifier
                 .weight(0.1f)

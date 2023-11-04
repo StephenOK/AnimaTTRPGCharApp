@@ -32,11 +32,11 @@ class KiFragmentViewModel(
     val remainingMK = _remainingMK.asStateFlow()
 
     //initialize ki accumulation total display
-    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.value)
+    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.intValue)
     val kiAccTotal = _kiAccTotal.asStateFlow()
 
     //initialize ki point total display
-    private val _kiPointTotal = MutableStateFlow(ki.totalKi.value)
+    private val _kiPointTotal = MutableStateFlow(ki.totalKi.intValue)
     val kiPointTotal = _kiPointTotal.asStateFlow()
 
     //initialize open state of technique list
@@ -62,9 +62,6 @@ class KiFragmentViewModel(
     //initialize map of all ki ability checkboxes
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
 
-    //initialize map of all technique checkboxes
-    val allTechniques = mutableMapOf<TechniqueBase, MutableState<Boolean>>()
-
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
      */
@@ -73,12 +70,12 @@ class KiFragmentViewModel(
     /**
      * Sets the ki accumulation total display to the character's recorded value.
      */
-    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.value}}
+    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.intValue}}
 
     /**
      * Sets the ki point total display to the character's recorded value.
      */
-    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.value}}
+    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.intValue}}
 
     /**
      * Changes the technique list's open state.
@@ -165,11 +162,6 @@ class KiFragmentViewModel(
             it.value.value = ki.takenAbilities.contains(it.key)
         }
 
-        //update techniques taken in case of Ki Control removal
-        allTechniques.forEach{
-            it.value.value = ki.takenTechniques.contains(it.key)
-        }
-
         //close the technique list if it is open and the character no longer has ki control
         if(techListOpen.value && !allKiAbilities[ki.kiRecord.kiControl]!!.value)
             toggleTechOpen()
@@ -185,18 +177,13 @@ class KiFragmentViewModel(
         //if attempting an addition
         if(input){
             //attempt to add to the character and reflect that change
-            if (ki.attemptTechAddition(item))
-                allTechniques[item]!!.value = true
-
-            updateTechTaken()
+            ki.attemptTechAddition(item)
         }
 
         //if attempting a removal
         else{
             //remove the item and indicate the change
             ki.removeTechnique(item)
-            allTechniques[item]!!.value = false
-            updateTechTaken()
         }
 
         //update the martial knowledge display
@@ -220,7 +207,6 @@ class KiFragmentViewModel(
         )
 
         ki.attemptTechAddition(copy)
-        allTechniques += Pair(copy, mutableStateOf(true))
     }
 
     /**
@@ -263,23 +249,14 @@ class KiFragmentViewModel(
      *
      * @return list of character's techniques
      */
-    fun getAllPrebuilts(): List<TechniqueBase>{return ki.allPrebuilts}
+    fun getAllPrebuilts(): Map<PrebuiltTech, MutableState<Boolean>>{return ki.allPrebuilts}
 
     /**
      * Retrieves the list of custom techniques the character currently has.
      *
      * @return list of character's custom techniques
      */
-    fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques.keys.toList()}
-
-    /**
-     * Updates the checkboxes for techniques taken.
-     */
-    private fun updateTechTaken(){
-        allTechniques.forEach{
-            it.value.value = ki.takenTechniques.contains(it.key)
-        }
-    }
+    fun getCustomTechniques(): Map<CustomTechnique, MutableState<Boolean>>{return ki.customTechniques}
 
     //initialize all ki items for each relevant primary characteristic
     private val kiSTR = KiRowData(
@@ -424,17 +401,6 @@ class KiFragmentViewModel(
             allKiAbilities += Pair(it, mutableStateOf(ki.takenAbilities.contains(it)))
         }
         updateKiTaken()
-
-        //get each technique and designate a checkbox to it
-        ki.allPrebuilts.forEach{
-            allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
-        }
-
-        ki.customTechniques.forEach{
-            allTechniques += Pair(it.key, mutableStateOf(it.value.value))
-        }
-
-        updateTechTaken()
         setRemainingMK()
     }
 

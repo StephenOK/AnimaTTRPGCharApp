@@ -203,13 +203,26 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
             magicAdvantages.halfTreeAttuned ->
                 if (multTaken!!.size != 5) return R.string.incompleteHalfTree
 
-            //prevent either of these disadvantages from being taken with the other one
-            magicAdvantages.slowMagicRecovery ->
-                if(this.getAdvantage("magicBlockage") != null)
-                    return R.string.magicBlockageRestriction
-            magicAdvantages.magicBlockage ->
+            magicAdvantages.superiorMagicRecovery -> {
                 if(this.getAdvantage("slowMagRecover") != null)
                     return R.string.magicRecoveryRestriction
+                else if(this.getAdvantage("magicBlockage") != null)
+                    return R.string.magicBlockageRestriction
+            }
+
+            //prevent either of these disadvantages from being taken with the other one
+            magicAdvantages.slowMagicRecovery -> {
+                if (this.getAdvantage("magicBlockage") != null)
+                    return R.string.magicBlockageRestriction
+                else if(this.getAdvantage("superiorMagRecovery") != null)
+                    return R.string.superiorMagRecoveryRestriction
+            }
+            magicAdvantages.magicBlockage -> {
+                if (this.getAdvantage("slowMagRecover") != null)
+                    return R.string.magicRecoveryRestriction
+                else if(this.getAdvantage("superiorMagRecovery") != null)
+                    return R.string.superiorMagRecoveryRestriction
+            }
         }
 
         //check if able to take multiple times

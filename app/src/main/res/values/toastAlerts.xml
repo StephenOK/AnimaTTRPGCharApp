@@ -40,6 +40,7 @@
     <string name = "classRestriction">Disadvantage forbidden to your class!</string>
     <string name = "appearanceRestriction">Minimum appearance of 7 required!</string>
 
+    <string name = "superiorMagRecoveryRestriction">Cannot take this with Superior Magic Recovery!</string>
     <string name = "magicBlockageRestriction">Cannot take this with Magic Blockage!</string>
     <string name = "magicRecoveryRestriction">Cannot take this with Slow Recovery of Magic!</string>
 

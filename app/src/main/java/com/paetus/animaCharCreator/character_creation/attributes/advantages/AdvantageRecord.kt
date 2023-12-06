@@ -154,14 +154,14 @@ class AdvantageRecord(
             commonAdvantages.characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
-                    0 -> if(charInstance.primaryList.str.total.value + 1 > 11) return R.string.strengthIncreaseRestriction
-                    1 -> if(charInstance.primaryList.dex.total.value + 1 > 11) return R.string.dexterityIncreaseRestriction
-                    2 -> if(charInstance.primaryList.agi.total.value + 1 > 11) return R.string.agilityIncreaseRestriction
-                    3 -> if(charInstance.primaryList.con.total.value + 1 > 11) return R.string.constitutionIncreaseRestriction
-                    4 -> if(charInstance.primaryList.int.total.value + 1 > 13) return R.string.intelligenceIncreaseRestriction
-                    5 -> if(charInstance.primaryList.pow.total.value + 1 > 13) return R.string.powerIncreaseRestriction
-                    6 -> if(charInstance.primaryList.wp.total.value + 1 > 13) return R.string.willpowerIncreaseRestriction
-                    7 -> if(charInstance.primaryList.per.total.value + 1 > 13) return R.string.perceptionIncreaseRestriction
+                    0 -> if(charInstance.primaryList.str.total.intValue + 1 > 11) return R.string.strengthIncreaseRestriction
+                    1 -> if(charInstance.primaryList.dex.total.intValue + 1 > 11) return R.string.dexterityIncreaseRestriction
+                    2 -> if(charInstance.primaryList.agi.total.intValue + 1 > 11) return R.string.agilityIncreaseRestriction
+                    3 -> if(charInstance.primaryList.con.total.intValue + 1 > 11) return R.string.constitutionIncreaseRestriction
+                    4 -> if(charInstance.primaryList.int.total.intValue + 1 > 13) return R.string.intelligenceIncreaseRestriction
+                    5 -> if(charInstance.primaryList.pow.total.intValue + 1 > 13) return R.string.powerIncreaseRestriction
+                    6 -> if(charInstance.primaryList.wp.total.intValue + 1 > 13) return R.string.willpowerIncreaseRestriction
+                    7 -> if(charInstance.primaryList.per.total.intValue + 1 > 13) return R.string.perceptionIncreaseRestriction
                     else -> return R.string.failedInput
                 }
             }
@@ -174,7 +174,7 @@ class AdvantageRecord(
                     else charInstance.secondaryList.getAllCustoms()[taken - 38]
 
                 //check that stat does not fall to or below zero
-                if(secondary.devPerPoint.value - advantageBase.cost[takenCost] <= 0)
+                if(secondary.devPerPoint.intValue - advantageBase.cost[takenCost] <= 0)
                     return R.string.costReductionRestriction
             }
 

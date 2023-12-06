@@ -443,9 +443,9 @@ class CommonAdvantages(
         onTake = {_, cost ->
             //update fatigue points as desired
             when(cost){
-                1 -> charInstance.combat.specFatigue.value += 3
-                2 -> charInstance.combat.specFatigue.value += 6
-                3 -> charInstance.combat.specFatigue.value += 9
+                1 -> charInstance.combat.specFatigue.intValue += 3
+                2 -> charInstance.combat.specFatigue.intValue += 6
+                3 -> charInstance.combat.specFatigue.intValue += 9
             }
 
             charInstance.combat.updateFatigue()
@@ -453,9 +453,9 @@ class CommonAdvantages(
         onRemove = {_, cost ->
             //remove bonus to fatigue points
             when (cost) {
-                1 -> charInstance.combat.specFatigue.value -= 3
-                2 -> charInstance.combat.specFatigue.value -= 6
-                3 -> charInstance.combat.specFatigue.value -= 9
+                1 -> charInstance.combat.specFatigue.intValue -= 3
+                2 -> charInstance.combat.specFatigue.intValue -= 6
+                3 -> charInstance.combat.specFatigue.intValue -= 9
             }
 
             charInstance.combat.updateFatigue()
@@ -523,9 +523,9 @@ class CommonAdvantages(
         onTake = {_, cost ->
             //set regeneration bonus value
             when(cost){
-                1 -> charInstance.combat.specRegen.value += 2
-                2 -> charInstance.combat.specRegen.value += 4
-                3 -> charInstance.combat.specRegen.value += 6
+                1 -> charInstance.combat.specRegen.intValue += 2
+                2 -> charInstance.combat.specRegen.intValue += 4
+                3 -> charInstance.combat.specRegen.intValue += 6
             }
 
             charInstance.combat.updateRegeneration()
@@ -533,9 +533,9 @@ class CommonAdvantages(
         onRemove = {_, cost ->
             //remove regeneration bonus
             when (cost) {
-                1 -> charInstance.combat.specRegen.value -= 2
-                2 -> charInstance.combat.specRegen.value -= 4
-                3 -> charInstance.combat.specRegen.value -= 6
+                1 -> charInstance.combat.specRegen.intValue -= 2
+                2 -> charInstance.combat.specRegen.intValue -= 4
+                3 -> charInstance.combat.specRegen.intValue -= 6
             }
 
             charInstance.combat.updateRegeneration()
@@ -1185,12 +1185,12 @@ class CommonAdvantages(
         pickedCost = 0,
         onTake = {_, _ ->
             //apply fatigue penalty
-            charInstance.combat.specFatigue.value -= 1
+            charInstance.combat.specFatigue.intValue -= 1
             charInstance.combat.updateFatigue()
         },
         onRemove = {_, _ ->
             //remove fatigue penalty
-            charInstance.combat.specFatigue.value += 1
+            charInstance.combat.specFatigue.intValue += 1
             charInstance.combat.updateFatigue()
         }
     )
@@ -1263,12 +1263,12 @@ class CommonAdvantages(
         pickedCost = 0,
         onTake = {_, _ ->
             //apply regeneration penalty
-            charInstance.combat.specRegen.value -= 1
+            charInstance.combat.specRegen.intValue -= 1
             charInstance.combat.updateRegeneration()
         },
         onRemove = {_, _ ->
             //remove regeneration penalty
-            charInstance.combat.specRegen.value += 1
+            charInstance.combat.specRegen.intValue += 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -1304,8 +1304,8 @@ class CommonAdvantages(
         onTake = {_, cost ->
             //apply desired initiative penalty
             when(cost){
-                -1 -> charInstance.combat.specInitiative.value -= 30
-                -2 -> charInstance.combat.specInitiative.value -= 60
+                -1 -> charInstance.combat.specInitiative.intValue -= 30
+                -2 -> charInstance.combat.specInitiative.intValue -= 60
             }
 
             charInstance.combat.updateInitiative()
@@ -1313,8 +1313,8 @@ class CommonAdvantages(
         onRemove = {_, cost ->
             //remove desired initiative penalty
             when (cost) {
-                -1 -> charInstance.combat.specInitiative.value += 30
-                -2 -> charInstance.combat.specInitiative.value += 60
+                -1 -> charInstance.combat.specInitiative.intValue += 30
+                -2 -> charInstance.combat.specInitiative.intValue += 60
             }
 
             charInstance.combat.updateInitiative()

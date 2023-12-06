@@ -313,7 +313,7 @@ class BaseCharacter {
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.value * ownClass.value.lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * ownClass.value.lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -345,7 +345,7 @@ class BaseCharacter {
      * Updates the character's total size category.
      */
     fun updateSize(){
-        sizeCategory.intValue = primaryList.str.total.value + primaryList.con.total.value + sizeSpecial.intValue
+        sizeCategory.intValue = primaryList.str.total.intValue + primaryList.con.total.intValue + sizeSpecial.intValue
     }
 
     /**

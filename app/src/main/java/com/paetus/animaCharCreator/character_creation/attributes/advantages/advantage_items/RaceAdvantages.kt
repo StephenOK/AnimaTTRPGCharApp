@@ -72,12 +72,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         description = R.string.sylvainHealingDesc,
         onTake = {_, _ ->
             //apply sylvain's regeneration bonus
-            charInstance.combat.specRegen.value += 1
+            charInstance.combat.specRegen.intValue += 1
             charInstance.combat.updateRegeneration()
         },
         onRemove = {_, _ ->
             //remove sylvain's regeneration bonus
-            charInstance.combat.specRegen.value -= 1
+            charInstance.combat.specRegen.intValue -= 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -121,12 +121,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         description = R.string.standFatigueDesc,
         onTake = {_, _ ->
             //grant racial fatigue bonus
-            charInstance.combat.specFatigue.value += 1
+            charInstance.combat.specFatigue.intValue += 1
             charInstance.combat.updateFatigue()
         },
         onRemove = {_, _ ->
             //remove racial fatigue bonus
-            charInstance.combat.specFatigue.value -= 1
+            charInstance.combat.specFatigue.intValue -= 1
             charInstance.combat.updateFatigue()
         }
     )
@@ -394,12 +394,12 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         description = R.string.dukRegenDesc,
         onTake = {_, _ ->
             //increase the character's regeneration
-            charInstance.combat.specRegen.value += 1
+            charInstance.combat.specRegen.intValue += 1
             charInstance.combat.updateRegeneration()
         },
         onRemove = {_, _ ->
             //remove the character's regeneration bonus
-            charInstance.combat.specRegen.value -= 1
+            charInstance.combat.specRegen.intValue -= 1
             charInstance.combat.updateRegeneration()
         }
     )
@@ -430,7 +430,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         description = R.string.devoteFireDesc,
         onTake = {_, _ ->
             //if the character has any psychic points to work with
-            if(charInstance.psychic.totalPsychicPoints.value > 0) {
+            if(charInstance.psychic.totalPsychicPoints.intValue > 0) {
                 //if character currently has no free psychic points
                 if (charInstance.psychic.getFreePsyPoints() == 0) {
                     //remove the most recently acquired power, if available

@@ -141,13 +141,13 @@ fun CustomSecondaryDialog(
                                 //write characteristic's associated field
                                 writeDataTo(
                                     writer = secCharData,
-                                    input = customSecondVM.customSecondary.fieldIndex.value
+                                    input = customSecondVM.customSecondary.fieldIndex.intValue
                                 )
 
                                 //write characteristic's primary stat
                                 writeDataTo(
                                     writer = secCharData,
-                                    input = customSecondVM.customSecondary.primaryCharIndex.value
+                                    input = customSecondVM.customSecondary.primaryCharIndex.intValue
                                 )
 
                                 secCharData.close()
@@ -162,7 +162,7 @@ fun CustomSecondaryDialog(
                                 //apply new characteristic to fragment
                                 customSecondVM.secondarySource.addCharToField(
                                     characteristic = customSecondVM.customSecondary,
-                                    field = customSecondVM.customSecondary.fieldIndex.value
+                                    field = customSecondVM.customSecondary.fieldIndex.intValue
                                 )
 
                                 customSecondVM.secondarySource.toggleCustomOpen()

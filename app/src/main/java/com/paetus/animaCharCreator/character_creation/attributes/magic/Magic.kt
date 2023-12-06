@@ -135,10 +135,10 @@ class Magic(private val charInstance: BaseCharacter){
     fun setBaseZeon() {
         //determine the base Zeon
         baseZeon.intValue =
-            if(charInstance.primaryList.pow.total.value == 1)
+            if(charInstance.primaryList.pow.total.intValue == 1)
                 5
             else
-                20 + (10 * charInstance.primaryList.pow.total.value) + charInstance.primaryList.pow.outputMod.value
+                20 + (10 * charInstance.primaryList.pow.total.intValue) + charInstance.primaryList.pow.outputMod.intValue
 
         //recalculate the character's maximum Zeon
         calcMaxZeon()
@@ -189,7 +189,7 @@ class Magic(private val charInstance: BaseCharacter){
      */
     fun setBaseZeonAcc() {
         //determine the base accumulation
-        baseZeonAcc.intValue = when(charInstance.primaryList.pow.total.value){
+        baseZeonAcc.intValue = when(charInstance.primaryList.pow.total.intValue){
             in 5..7 -> 5
             in 8 .. 11 -> 10
             in 12..14 -> 15
@@ -275,7 +275,7 @@ class Magic(private val charInstance: BaseCharacter){
      * Recalculate the character's Magic Projection stat.
      */
     fun calcMagProj(){
-        magProjTotal.intValue = charInstance.primaryList.dex.outputMod.value + boughtMagProjection.intValue
+        magProjTotal.intValue = charInstance.primaryList.dex.outputMod.intValue + boughtMagProjection.intValue
     }
 
     /**
@@ -291,12 +291,12 @@ class Magic(private val charInstance: BaseCharacter){
      * Determine the character's Magic Level based on their intelligence.
      */
     fun setMagicLevelMax(){
-        magicLevelMax.intValue = when(charInstance.primaryList.int.total.value) {
-            in 6..10 -> (charInstance.primaryList.int.total.value - 5) * 10
+        magicLevelMax.intValue = when(charInstance.primaryList.int.total.intValue) {
+            in 6..10 -> (charInstance.primaryList.int.total.intValue - 5) * 10
             11 -> 75
             12 -> 100
             13 -> 150
-            in 14..20 -> (charInstance.primaryList.int.total.value - 12)* 100
+            in 14..20 -> (charInstance.primaryList.int.total.intValue - 12)* 100
             else -> 0
         }
     }

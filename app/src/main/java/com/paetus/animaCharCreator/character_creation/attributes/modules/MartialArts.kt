@@ -24,7 +24,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.capoeiraDesc,
         prereqList = R.string.capoeiraPrereqs,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.dance.total.value >= 40}
+        qualification = {charInstance.secondaryList.dance.total.intValue >= 40}
     )
 
     private val taiChi = MartialArt(
@@ -61,9 +61,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.kungFuPrereqs,
         mkBonus = 10,
         qualification = {
-            charInstance.secondaryList.acrobatics.total .value>= 40 &&
-                    charInstance.secondaryList.sleightHand.total.value >= 40 &&
-                    charInstance.secondaryList.style.total.value >= 20
+            charInstance.secondaryList.acrobatics.total .intValue >= 40 &&
+                    charInstance.secondaryList.sleightHand.total.intValue >= 40 &&
+                    charInstance.secondaryList.style.total.intValue >= 20
         }
     )
 
@@ -82,7 +82,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.aikidoDesc,
         prereqList = R.string.aikidoPrereqs,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.sleightHand.total.value >= 40}
+        qualification = {charInstance.secondaryList.sleightHand.total.intValue >= 40}
     )
 
     private val muayThai = MartialArt(
@@ -91,7 +91,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.muayThaiDesc,
         prereqList = R.string.feats40Prereq,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.strengthFeat.total.value >= 40}
+        qualification = {charInstance.secondaryList.strengthFeat.total.intValue >= 40}
     )
 
     private val grappling = MartialArt(
@@ -100,7 +100,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.grapplingDesc,
         prereqList = R.string.feats40Prereq,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.strengthFeat.total.value >= 40}
+        qualification = {charInstance.secondaryList.strengthFeat.total.intValue >= 40}
     )
 
     private val melkaiah = MartialArt(

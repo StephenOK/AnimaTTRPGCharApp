@@ -128,7 +128,7 @@ private fun SummoningAbilityRow(
 
         //display modifier point value
         Text(
-            text = summonData.summonAbility.modVal.value.toString(),
+            text = summonData.summonAbility.modVal.intValue.toString(),
             modifier = Modifier
                 .weight(0.15f),
             textAlign = TextAlign.Center
@@ -136,7 +136,7 @@ private fun SummoningAbilityRow(
 
         //display class point value
         Text(
-            text = summonData.summonAbility.levelTotal.value.toString(),
+            text = summonData.summonAbility.levelTotal.intValue.toString(),
             modifier = Modifier
                 .weight(0.15f),
             textAlign = TextAlign.Center

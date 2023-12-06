@@ -74,10 +74,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Update the base number of life points based on the character's constitution.
      */
     fun updateLifeBase(){
-        lifeBase.intValue = if(charInstance.primaryList.con.total.value == 1)
+        lifeBase.intValue = if(charInstance.primaryList.con.total.intValue == 1)
             5
         else
-            20 + (charInstance.primaryList.con.total.value * 10) + charInstance.primaryList.con.outputMod.value
+            20 + (charInstance.primaryList.con.total.intValue * 10) + charInstance.primaryList.con.outputMod.intValue
     }
 
     /**
@@ -111,7 +111,7 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     fun updateLifePoints(){
         lifeMax.intValue =
             lifeBase.intValue +
-                    (lifeMultsTaken.intValue * charInstance.primaryList.con.total.value) +
+                    (lifeMultsTaken.intValue * charInstance.primaryList.con.total.intValue) +
                     lifeClassTotal.intValue
     }
 
@@ -157,15 +157,15 @@ class CombatAbilities(private val charInstance: BaseCharacter){
 
         //add together class level value, dexterity, agility, and special input
         totalInitiative.intValue =
-            classInitiative + charInstance.primaryList.dex.outputMod.value +
-                    charInstance.primaryList.agi.outputMod.value + specInitiative.intValue
+            classInitiative + charInstance.primaryList.dex.outputMod.intValue +
+                    charInstance.primaryList.agi.outputMod.intValue + specInitiative.intValue
     }
 
     /**
      * Function that updates the character's total fatigue.
      */
     fun updateFatigue(){
-        fatigue.intValue = charInstance.primaryList.con.total.value + specFatigue.intValue
+        fatigue.intValue = charInstance.primaryList.con.total.intValue + specFatigue.intValue
     }
 
     /**
@@ -173,10 +173,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun getBaseRegen(){
         //get value based on the character's constitution
-        baseRegen.intValue = when(charInstance.primaryList.con.total.value){
+        baseRegen.intValue = when(charInstance.primaryList.con.total.intValue){
             in 3..7 -> 1
             in 8..9 -> 2
-            in 10..18 -> charInstance.primaryList.con.total.value - 7
+            in 10..18 -> charInstance.primaryList.con.total.intValue - 7
             in 19..20 -> 12
             else -> 0
         }

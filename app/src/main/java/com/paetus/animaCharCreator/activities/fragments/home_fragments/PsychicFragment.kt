@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,7 +40,6 @@ import com.paetus.animaCharCreator.view_models.models.PsychicFragmentViewModel
  * @param psyFragVM viewModel that is to be run on this page
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PsychicFragment(
     psyFragVM: PsychicFragmentViewModel,
@@ -56,29 +54,33 @@ fun PsychicFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
 
         item{
             GeneralCard{
                 //construct item header
                 Row(verticalAlignment = Alignment.CenterVertically){
-                    Spacer(Modifier.weight(0.25f))
+                    Spacer(modifier = Modifier.weight(0.25f))
+
+                    //header for item's base value
                     Text(
-                        text = stringResource(R.string.baseLabel),
+                        text = stringResource(id = R.string.baseLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
                     )
 
+                    //header for item's purchased amount
                     Text(
-                        text = stringResource(R.string.boughtLabel),
+                        text = stringResource(id = R.string.boughtLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
                     )
 
+                    //header for item's total value
                     Text(
-                        text = stringResource(R.string.totalLabel),
+                        text = stringResource(id = R.string.totalLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
@@ -86,17 +88,20 @@ fun PsychicFragment(
                 }
 
                 //display psychic potential, point, and projection inputs
-                psyFragVM.buyItems.forEach{
-                    PsychicPurchaseTable(it, homePageVM)
+                psyFragVM.buyItems.forEach{psyItem ->
+                    PsychicPurchaseTable(
+                        tableData = psyItem,
+                        homePageVM = homePageVM
+                    )
                 }
             }
         }
 
-        item{Spacer(Modifier.height(10.dp))}
+        item{Spacer(modifier = Modifier.height(10.dp))}
 
         //implement innate slot purchase input
         item{
-            val innateLabel = stringResource(R.string.psyPointInput, 2)
+            val innateLabel = stringResource(id = R.string.psyPointInput, 2)
 
             GeneralCard {
                 Row(
@@ -104,22 +109,25 @@ fun PsychicFragment(
                         .fillMaxWidth(0.6f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    //head for innate slot purchase
                     Text(
-                        text = stringResource(R.string.innateSlotLabel),
+                        text = stringResource(id = R.string.innateSlotLabel),
                         modifier = Modifier
                             .weight(0.4f)
                     )
+
+                    //purchase input
                     NumberInput(
                         inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
-                        inputFunction = { psyFragVM.setInnateSlotDisplay(it.toInt()) },
-                        emptyFunction = { psyFragVM.setInnateSlotDisplay("") },
+                        inputFunction = {psyFragVM.setInnateSlotDisplay(slotBuy = it.toInt())},
+                        emptyFunction = {psyFragVM.setInnateSlotDisplay(display = "")},
                         modifier = Modifier
                             .weight(0.2f)
                             .onFocusChanged {
                                 if (it.isFocused)
-                                    psyFragVM.setInnateSlotLabel(innateLabel)
+                                    psyFragVM.setInnateSlotLabel(dpLabel = innateLabel)
                                 else
-                                    psyFragVM.setInnateSlotLabel("")
+                                    psyFragVM.setInnateSlotLabel(dpLabel = "")
                             },
                         label = psyFragVM.innateSlotLabel.collectAsState().value
                     )
@@ -127,13 +135,13 @@ fun PsychicFragment(
             }
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         //display currently free psychic points
         item{
             GeneralCard {
                 InfoRow(
-                    label = stringResource(R.string.freePsyPointLabel),
+                    label = stringResource(id = R.string.freePsyPointLabel),
                     textColor =
                         if (psyFragVM.freePointValid.collectAsState().value)
                             MaterialTheme.colorScheme.secondary
@@ -155,24 +163,24 @@ fun PsychicFragment(
             }
         }
 
-        item{Spacer(Modifier.height(10.dp))}
+        item{Spacer(modifier = Modifier.height(10.dp))}
 
         //display discipline info
-        items(psyFragVM.allDisciplines){
+        items(psyFragVM.allDisciplines){discipline ->
             DisciplineDisplay(
-                it,
-                psyFragVM
+                discipline = discipline,
+                psyFragVM = psyFragVM
             )
         }
 
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
     }
 
     //display psychic power details when requested
     if(psyFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
-            psyFragVM.detailTitle.collectAsState().value,
-            psyFragVM.detailItem.collectAsState().value!!
+            title = psyFragVM.detailTitle.collectAsState().value,
+            item = psyFragVM.detailItem.collectAsState().value!!
         ){psyFragVM.toggleDetailAlertOpen()}
 }
 
@@ -182,21 +190,20 @@ fun PsychicFragment(
  * @param tableData information regarding this individual table
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PsychicPurchaseTable(
     tableData: PsychicFragmentViewModel.PsychicPurchaseItemData,
     homePageVM: HomePageViewModel
 ){
     //get DP cost of table item if one available
-    val dpString = stringResource(tableData.getResource(), tableData.getValue())
+    val dpString = stringResource(id = tableData.getResource(), tableData.getValue())
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
         //display title of this section
         Text(
-            text = stringResource(tableData.title),
+            text = stringResource(id = tableData.title),
             modifier = Modifier
                 .weight(0.25f)
         )
@@ -212,14 +219,14 @@ private fun PsychicPurchaseTable(
         //input for user purchased value
         NumberInput(
             inputText = tableData.purchaseAmount.collectAsState().value,
-            inputFunction = {tableData.setPurchaseAmount(it.toInt())},
-            emptyFunction = {tableData.setPurchaseAmount("")},
+            inputFunction = {tableData.setPurchaseAmount(buyVal = it.toInt())},
+            emptyFunction = {tableData.setPurchaseAmount(display = "")},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)
-                        tableData.setDPDisplay(dpString)
+                        tableData.setDPDisplay(dpDisplay = dpString)
                     else
-                        tableData.setDPDisplay("")
+                        tableData.setDPDisplay(dpDisplay = "")
                 }
                 .weight(0.25f),
             label = tableData.dpDisplay.collectAsState().value,
@@ -233,7 +240,7 @@ private fun PsychicPurchaseTable(
             modifier = Modifier
                 .weight(0.25f),
             transitionSpec = numberScroll,
-            label = "${stringResource(tableData.title)}Total"
+            label = "${stringResource(id = tableData.title)}Total"
         ) {
             Text(
                 text = "$it",
@@ -268,28 +275,28 @@ private fun DisciplineDisplay(
                 .fillMaxWidth(0.7f)
         ) {
             //create a checkbox for any discipline that isn't Matrix Powers
-            if(discipline.name != 8) {
+            if(discipline.nameRef != 8) {
                 Checkbox(
                     checked = discipline.investedIn.collectAsState().value,
                     onCheckedChange = {
-                        if(!psyFragVM.isLegalDiscipline(discipline.item))
+                        if(!psyFragVM.isLegalDiscipline(discipline = discipline.discipline))
                             Toast.makeText(
                                 context,
                                 context.getString(
                                     R.string.needDisciplineMessage,
-                                    context.resources.getStringArray(R.array.disciplineNames)[discipline.name]
+                                    context.resources.getStringArray(R.array.disciplineNames)[discipline.nameRef]
                                 ),
                                 Toast.LENGTH_LONG
                             ).show()
                         else
-                            discipline.setInvestedIn(it)
+                            discipline.setInvestedIn(investIn = it)
                     },
                     modifier = Modifier
                         .weight(0.1f)
                 )
             }
             else
-                Spacer(Modifier.weight(0.1f))
+                Spacer(modifier = Modifier.weight(0.1f))
 
             //button to display Psychic Powers
             Button(
@@ -297,17 +304,17 @@ private fun DisciplineDisplay(
                 modifier = Modifier
                     .weight(0.5f)
             ) {
-                Text(text = stringArrayResource(R.array.disciplineNames)[discipline.name])
+                Text(text = stringArrayResource(id = R.array.disciplineNames)[discipline.nameRef])
             }
         }
 
         //display for discipline's Psychic Powers
         AnimatedVisibility(visible = discipline.isOpen.collectAsState().value) {
             GeneralCard{
-                discipline.powerList.forEach {
+                discipline.powerList.forEach {power ->
                     PsyPowerRow(
-                        it,
-                        psyFragVM
+                        power = power,
+                        psyFragVM = psyFragVM
                     )
                 }
             }
@@ -321,7 +328,6 @@ private fun DisciplineDisplay(
  * @param power the displayed object
  * @param psyFragVM viewModel that manages this page
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun PsyPowerRow(
     power: PsychicFragmentViewModel.PowerItemData,
@@ -331,7 +337,7 @@ private fun PsyPowerRow(
     val context = LocalContext.current
 
     //construct psychic point cost string
-    val pointString = stringResource(R.string.psyPointInput, 1)
+    val pointString = stringResource(id = R.string.psyPointInput, 1)
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -340,17 +346,17 @@ private fun PsyPowerRow(
         Checkbox(
             checked = power.powerInvestedIn.collectAsState().value,
             onCheckedChange = {
-                if(!psyFragVM.isLegalDiscipline(power.home.item))
+                if(!psyFragVM.isLegalDiscipline(power.discipline.discipline))
                     Toast.makeText(
                         context,
                         context.getString(
                             R.string.needDisciplineMessage,
-                            context.resources.getStringArray(R.array.disciplineNames)[power.home.name]
+                            context.resources.getStringArray(R.array.disciplineNames)[power.discipline.nameRef]
                         ),
                         Toast.LENGTH_LONG
                     ).show()
                 else
-                    power.setPowerInvestedIn(it)
+                    power.setPowerInvestedIn(isTaking = it)
             },
             modifier = Modifier
                 .weight(0.1f)
@@ -358,7 +364,7 @@ private fun PsyPowerRow(
 
         //display power name
         Text(
-            text = stringArrayResource(R.array.powerNames)[power.item.name],
+            text = stringArrayResource(id = R.array.powerNames)[power.psyPower.name],
             modifier = Modifier
                 .weight(0.3f)
         )
@@ -366,20 +372,22 @@ private fun PsyPowerRow(
         //input for psychic point enhancement
         NumberInput(
             inputText = power.pointInvestment.collectAsState().value,
-            inputFunction = {power.setPointInvestment(it.toInt())},
-            emptyFunction = {power.setPointInvestment("")},
+            inputFunction = {power.setPointInvestment(ppInvest = it.toInt())},
+            emptyFunction = {power.setPointInvestment(display = "")},
             modifier = Modifier
                 .weight(0.18f)
                 .onFocusChanged {
-                    if (it.isFocused) power.setPointLabel(pointString)
-                    else power.setPointLabel("")
+                    if (it.isFocused) power.setPointLabel(display = pointString)
+                    else power.setPointLabel(display = "")
                 },
             label = power.pointLabel.collectAsState().value
         )
 
+        //display the bonus from psychic point enhancement
         PopInItem(
             visible = power.powerInvestedIn.collectAsState().value,
-            modifier = Modifier.weight(0.17f)
+            modifier = Modifier
+                .weight(0.17f)
         ){
             Column{
                 Row(
@@ -390,10 +398,10 @@ private fun PsyPowerRow(
                     AnimatedContent(
                         targetState = power.bonusGained.collectAsState().value,
                         transitionSpec = numberScroll,
-                        label = "${stringArrayResource(R.array.powerNames)[power.item.name]}PointPotential"
+                        label = "${stringArrayResource(id = R.array.powerNames)[power.psyPower.name]}PointPotential"
                     ) { value ->
                         Text(
-                            text = stringResource(R.string.addNumber, value * 10),
+                            text = stringResource(id = R.string.addNumber, value * 10),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -405,7 +413,7 @@ private fun PsyPowerRow(
                     horizontalArrangement = Arrangement.Center
                 ){
                     Text(
-                        text = stringResource(R.string.potentialBonusLabel),
+                        text = stringResource(id = R.string.potentialBonusLabel),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -415,7 +423,7 @@ private fun PsyPowerRow(
         //power's detail button
         DetailButton(
             onClick = {
-                psyFragVM.setDetailItem(power.item)
+                psyFragVM.setDetailItem(power = power.psyPower)
                 psyFragVM.toggleDetailAlertOpen()
             },
             modifier = Modifier

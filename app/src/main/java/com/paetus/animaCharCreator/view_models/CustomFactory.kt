@@ -25,6 +25,7 @@ import com.paetus.animaCharCreator.view_models.models.SummoningFragmentViewModel
  *
  * @param viewModel type of viewModel that is to be created
  * @param charInstance character object to use in creation
+ * @param context local context to pass to a view model object
  */
 class CustomFactory(
     private val viewModel: Class<*>,
@@ -40,105 +41,108 @@ class CustomFactory(
                     return MainPageViewModel() as T
                 }
 
+                //creating secondary characteristic editing viewModel
                 EditSecondaryViewModel::class.java ->{
-                    return EditSecondaryViewModel(context) as T
+                    return EditSecondaryViewModel(
+                        context = context
+                    ) as T
                 }
 
                 //creating home page viewModel
                 HomePageViewModel::class.java ->{
                     return HomePageViewModel(
-                        charInstance
+                        charInstance = charInstance
                     ) as T
                 }
 
                 //creating character page viewModel
                 CharacterFragmentViewModel::class.java ->{
                     return CharacterFragmentViewModel(
-                        charInstance
+                        charInstance = charInstance
                     ) as T
                 }
 
                 //creating combat viewModel
                 CombatFragViewModel::class.java ->{
                     return CombatFragViewModel(
-                        charInstance.combat,
-                        charInstance.primaryList,
-                        charInstance.ownClass
+                        combat = charInstance.combat,
+                        primaryList = charInstance.primaryList,
+                        charClass = charInstance.ownClass
                     ) as T
                 }
 
                 //creating secondary characteristic viewModel
                 SecondaryFragmentViewModel::class.java ->{
                     return SecondaryFragmentViewModel(
-                        charInstance,
-                        charInstance.secondaryList
+                        charInstance = charInstance,
+                        secondaryList = charInstance.secondaryList
                     ) as T
                 }
 
                 //creating advantage viewModel
                 AdvantageFragmentViewModel::class.java -> {
                     return AdvantageFragmentViewModel(
-                        charInstance,
-                        charInstance.advantageRecord
+                        charInstance = charInstance,
+                        advantageRecord = charInstance.advantageRecord
                     ) as T
                 }
 
                 //creating module viewModel
                 ModuleFragmentViewModel::class.java -> {
                     return ModuleFragmentViewModel(
-                        charInstance.weaponProficiencies,
-                        context
+                        weaponProficiencies = charInstance.weaponProficiencies,
+                        context = context
                     ) as T
                 }
 
                 //creating ki viewModel
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
-                        charInstance.ki,
-                        charInstance.ownClass,
-                        context
+                        ki = charInstance.ki,
+                        charClass = charInstance.ownClass,
+                        context = context
                     ) as T
                 }
 
                 CustomTechniqueViewModel::class.java ->{
                     return CustomTechniqueViewModel(
-                        charInstance.ki,
-                        context
+                        ki = charInstance.ki,
+                        context = context
                     ) as T
                 }
 
                 //creating magic viewModel
                 MagicFragmentViewModel::class.java ->{
                     return MagicFragmentViewModel(
-                        charInstance.magic,
-                        charInstance,
-                        charInstance.ownClass,
-                        context
+                        magic = charInstance.magic,
+                        charInstance = charInstance,
+                        charClass = charInstance.ownClass,
+                        context = context
                     ) as T
                 }
 
                 //creating summoning viewModel
                 SummoningFragmentViewModel::class.java ->{
                     return SummoningFragmentViewModel(
-                        charInstance.summoning,
-                        charInstance.ownClass
+                        summoning = charInstance.summoning,
+                        charClass = charInstance.ownClass
                     ) as T
                 }
 
                 //creating psychic viewModel
                 PsychicFragmentViewModel::class.java ->{
                     return PsychicFragmentViewModel(
-                        charInstance.psychic,
-                        charInstance.ownClass,
-                        charInstance.primaryList.dex.outputMod.value,
-                        context
+                        psychic = charInstance.psychic,
+                        charClass = charInstance.ownClass,
+                        dexMod = charInstance.primaryList.dex.outputMod.intValue,
+                        context = context
                     ) as T
                 }
 
                 //creating equipment viewModel
                 EquipmentFragmentViewModel::class.java ->{
                     return EquipmentFragmentViewModel(
-                        charInstance.inventory
+                        inventory = charInstance.inventory
                     ) as T
                 }
             }

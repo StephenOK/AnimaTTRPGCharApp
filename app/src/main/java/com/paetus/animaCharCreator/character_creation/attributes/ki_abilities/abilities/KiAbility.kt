@@ -5,14 +5,14 @@ package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.a
  *
  * @param saveTag value to write to the save file
  * @param name name of the ability
- * @param prerequisites ki ability needed before this one can be acquired
+ * @param prerequisite ki ability needed before this one can be acquired
  * @param mkCost martial knowledge needed to acquire this ki ability
  * @param description details of the ki ability's effect
  */
 data class KiAbility(
     val saveTag: String,
     val name: Int,
-    val prerequisites: KiAbility?,
+    val prerequisite: KiAbility?,
     val mkCost: Int,
     val description: Int
 )

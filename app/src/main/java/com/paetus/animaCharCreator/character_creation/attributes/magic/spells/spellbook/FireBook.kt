@@ -1,432 +1,432 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the fire element.
  */
 class FireBook{
     private val createFire = Spell(
-        R.string.createFire,
-        Element.Fire,
-        true,
-        2,
-        30,
-        R.string.createFireDesc,
-        R.string.createFireEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createFire,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.createFireDesc,
+        addedEffect = R.string.createFireEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val putOutFire = Spell(
-        R.string.snuffFire,
-        Element.Fire,
-        true,
-        6,
-        30,
-        R.string.snuffFireDesc,
-        R.string.snuffFireEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.snuffFire,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 6,
+        zCost = 30,
+        effect = R.string.snuffFireDesc,
+        addedEffect = R.string.snuffFireEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val fireImmunity = Spell(
-        R.string.fireImmune,
-        Element.Fire,
-        true,
-        10,
-        50,
-        R.string.fireImmuneDesc,
-        R.string.fireImmuneEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.fireImmune,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 10,
+        zCost = 50,
+        effect = R.string.fireImmuneDesc,
+        addedEffect = R.string.fireImmuneEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val detectHeat = Spell(
-        R.string.heatDetect,
-        Element.Fire,
-        true,
-        12,
-        60,
-        R.string.heatDetectDesc,
-        R.string.heatDetectEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.heatDetect,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 12,
+        zCost = 60,
+        effect = R.string.heatDetectDesc,
+        addedEffect = R.string.heatDetectEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val fireBall = Spell(
-        R.string.fireball,
-        Element.Fire,
-        true,
-        16,
-        50,
-        R.string.fireballDesc,
-        R.string.fireballEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.fireball,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 16,
+        zCost = 50,
+        effect = R.string.fireballDesc,
+        addedEffect = R.string.fireballEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val controlFire = Spell(
-        R.string.controlFire,
-        Element.Fire,
-        true,
-        20,
-        50,
-        R.string.controlFireDesc,
-        R.string.controlFireEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.controlFire,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 20,
+        zCost = 50,
+        effect = R.string.controlFireDesc,
+        addedEffect = R.string.controlFireEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val fireBarrier = Spell(
-        R.string.fireBarrier,
-        Element.Fire,
-        true,
-        22,
-        50,
-        R.string.fireBarrierDesc,
-        R.string.fireBarrierEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Automatic, SpellType.Defense)
+        name = R.string.fireBarrier,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 22,
+        zCost = 50,
+        effect = R.string.fireBarrierDesc,
+        addedEffect = R.string.fireBarrierEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic, SpellType.Defense)
     )
 
     private val igneousWeapon = Spell(
-        R.string.igneousWeapon,
-        Element.Fire,
-        true,
-        26,
-        50,
-        R.string.igneousWeaponDesc,
-        R.string.igneousWeaponEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.igneousWeapon,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 26,
+        zCost = 50,
+        effect = R.string.igneousWeaponDesc,
+        addedEffect = R.string.igneousWeaponEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val heatWave = Spell(
-        R.string.heatWave,
-        Element.Fire,
-        true,
-        30,
-        60,
-        R.string.heatWaveDesc,
-        R.string.heatWaveEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.heatWave,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 30,
+        zCost = 60,
+        effect = R.string.heatWaveDesc,
+        addedEffect = R.string.heatWaveEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val readAshes = Spell(
-        R.string.readAsh,
-        Element.Fire,
-        true,
-        32,
-        60,
-        R.string.readAshDesc,
-        R.string.readAshEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.readAsh,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 32,
+        zCost = 60,
+        effect = R.string.readAshDesc,
+        addedEffect = R.string.readAshEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val raiseTemperature = Spell(
-        R.string.raiseTemp,
-        Element.Fire,
-        true,
-        36,
-        60,
-        R.string.raiseTempDesc,
-        R.string.raiseTempEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.raiseTemp,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 36,
+        zCost = 60,
+        effect = R.string.raiseTempDesc,
+        addedEffect = R.string.raiseTempEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val fireMine = Spell(
-        R.string.fireMine,
-        Element.Fire,
-        true,
-        40,
-        80,
-        R.string.fireMineDesc,
-        R.string.fireMineEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.fireMine,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.fireMineDesc,
+        addedEffect = R.string.fireMineEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val increaseCritical = Spell(
-        R.string.increaseCrit,
-        Element.Fire,
-        false,
-        42,
-        60,
-        R.string.increaseCritDesc,
-        R.string.increaseCritEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.increaseCrit,
+        inBook = Element.Fire,
+        isActive = false,
+        level = 42,
+        zCost = 60,
+        effect = R.string.increaseCritDesc,
+        addedEffect = R.string.increaseCritEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val dry = Spell(
-        R.string.dry,
-        Element.Fire,
-        true,
-        46,
-        80,
-        R.string.dryDesc,
-        R.string.dryEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.dry,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 46,
+        zCost = 80,
+        effect = R.string.dryDesc,
+        addedEffect = R.string.dryEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val melt = Spell(
-        R.string.melt,
-        Element.Fire,
-        true,
-        50,
-        80,
-        R.string.meltDesc,
-        R.string.meltEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.melt,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 50,
+        zCost = 80,
+        effect = R.string.meltDesc,
+        addedEffect = R.string.meltEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val fireBody = Spell(
-        R.string.fireBody,
-        Element.Fire,
-        true,
-        52,
-        100,
-        R.string.fireBodyDesc,
-        R.string.fireBodyEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.fireBody,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.fireBodyDesc,
+        addedEffect = R.string.fireBodyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val vitalSacrifice = Spell(
-        R.string.vitalSac,
-        Element.Fire,
-        true,
-        56,
-        120,
-        R.string.vitalSacDesc,
-        R.string.vitalSacEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.vitalSac,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 56,
+        zCost = 120,
+        effect = R.string.vitalSacDesc,
+        addedEffect = R.string.vitalSacEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val incinerate = Spell(
-        R.string.incinerate,
-        Element.Fire,
-        true,
-        60,
-        100,
-        R.string.incinerateDesc,
-        R.string.incinerateEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.incinerate,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 60,
+        zCost = 100,
+        effect = R.string.incinerateDesc,
+        addedEffect = R.string.incinerateEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val consumeEssence = Spell(
-        R.string.consumeEssence,
-        Element.Fire,
-        true,
-        62,
-        120,
-        R.string.consumeEssenceDesc,
-        R.string.consumeEssenceEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.consumeEssence,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 62,
+        zCost = 120,
+        effect = R.string.consumeEssenceDesc,
+        addedEffect = R.string.consumeEssenceEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val powerSacrifice = Spell(
-        R.string.powerSac,
-        Element.Fire,
-        true,
-        66,
-        120,
-        R.string.powerSacDesc,
-        R.string.powerSacEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.powerSac,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 66,
+        zCost = 120,
+        effect = R.string.powerSacDesc,
+        addedEffect = R.string.powerSacEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val directCritical = Spell(
-        R.string.directCrit,
-        Element.Fire,
-        true,
-        70,
-        100,
-        R.string.directCritDesc,
-        R.string.directCritEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.directCrit,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 70,
+        zCost = 100,
+        effect = R.string.directCritDesc,
+        addedEffect = R.string.directCritEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val magicCapacities = Spell(
-        R.string.magicCapacities,
-        Element.Fire,
-        true,
-        72,
-        120,
-        R.string.magicCapacitiesDesc,
-        R.string.magicCapacitiesEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.magicCapacities,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 72,
+        zCost = 120,
+        effect = R.string.magicCapacitiesDesc,
+        addedEffect = R.string.magicCapacitiesEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val fireStorm = Spell(
-        R.string.fireStorm,
-        Element.Fire,
-        true,
-        76,
-        150,
-        R.string.fireStormDesc,
-        R.string.fireStormEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.fireStorm,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 76,
+        zCost = 150,
+        effect = R.string.fireStormDesc,
+        addedEffect = R.string.fireStormEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val lifeForMagic = Spell(
-        R.string.lifeMagic,
-        Element.Fire,
-        true,
-        80,
-        120,
-        R.string.lifeMagicDesc,
-        R.string.lifeMagicEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.lifeMagic,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 80,
+        zCost = 120,
+        effect = R.string.lifeMagicDesc,
+        addedEffect = R.string.lifeMagicEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val createIfreet = Spell(
-        R.string.createIfreet,
-        Element.Fire,
-        true,
-        82,
-        250,
-        R.string.createIfreetDesc,
-        R.string.createIfreetEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createIfreet,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.createIfreetDesc,
+        addedEffect = R.string.createIfreetEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val pyre = Spell(
-        R.string.pyre,
-        Element.Fire,
-        true,
-        86,
-        250,
-        R.string.pyreDesc,
-        R.string.pyreEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.pyre,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 86,
+        zCost = 250,
+        effect = R.string.pyreDesc,
+        addedEffect = R.string.pyreEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val devastation = Spell(
-        R.string.devastation,
-        Element.Fire,
-        true,
-        90,
-        200,
-        R.string.devastationDesc,
-        R.string.devastationEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.devastation,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 90,
+        zCost = 200,
+        effect = R.string.devastationDesc,
+        addedEffect = R.string.devastationEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val sacrificingOthers = Spell(
-        R.string.sacOthers,
-        Element.Fire,
-        true,
-        92,
-        250,
-        R.string.sacOthersDesc,
-        R.string.sacOthersEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.sacOthers,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 92,
+        zCost = 250,
+        effect = R.string.sacOthersDesc,
+        addedEffect = R.string.sacOthersEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val lordOfFire = Spell(
-        R.string.fireLord,
-        Element.Fire,
-        true,
-        96,
-        300,
-        R.string.fireLordDesc,
-        R.string.fireLordEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.fireLord,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 96,
+        zCost = 300,
+        effect = R.string.fireLordDesc,
+        addedEffect = R.string.fireLordEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val armageddon = Spell(
-        R.string.armageddon,
-        Element.Fire,
-        true,
-        100,
-        450,
-        R.string.armageddonDesc,
-        R.string.armageddonEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.armageddon,
+        inBook = Element.Fire,
+        isActive = true,
+        level = 100,
+        zCost = 450,
+        effect = R.string.armageddonDesc,
+        addedEffect = R.string.armageddonEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     val fullBook = listOf(

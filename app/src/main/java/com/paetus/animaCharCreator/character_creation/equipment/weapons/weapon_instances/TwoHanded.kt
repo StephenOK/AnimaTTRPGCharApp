@@ -12,51 +12,63 @@ import java.io.Serializable
  */
 class TwoHanded: Serializable {
     val twoHandSword = Weapon(
-        "twoHandSword",
-        R.string.twoHandSword,
-        90,
-        -60,
-        10, 8,
-        AttackType.Cut, AttackType.Impact, WeaponType.TwoHanded,
-        18, 6, 30,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.twoHandSwordDesc
+        saveName = "twoHandSword",
+        name = R.string.twoHandSword,
+        damage = 90,
+        speed = -60,
+        oneHandStr = 10,
+        twoHandStr = 8,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        type = WeaponType.TwoHanded,
+        fortitude = 18,
+        breakage = 6,
+        presence = 30,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.twoHandSwordDesc
     )
 
-    val nodachi = Weapon(
-        "nodachi",
-        R.string.nodachi,
-        80,
-        -35,
-        10, 8,
-        AttackType.Cut, null, WeaponType.TwoHanded,
-        14, 4, 40,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.nodachiDesc
+    private val nodachi = Weapon(
+        saveName = "nodachi",
+        name = R.string.nodachi,
+        damage = 80,
+        speed = -35,
+        oneHandStr = 10, twoHandStr = 8,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.TwoHanded,
+        fortitude = 14, breakage = 4, presence = 40,
+        ability = listOf(WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.nodachiDesc
     )
 
-    val swordBreaker = Weapon(
-        "swordBreaker",
-        R.string.swordBreaker,
-        50,
-        -20,
-        10, 8,
-        AttackType.Impact, AttackType.Cut, WeaponType.TwoHanded,
-        16, 8, 25,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.swordBreakerDesc
+    private val swordBreaker = Weapon(
+        saveName = "swordBreaker",
+        name = R.string.swordBreaker,
+        damage = 50,
+        speed = -20,
+        oneHandStr = 10,
+        twoHandStr = 8,
+        primaryType = AttackType.Impact,
+        secondaryType = AttackType.Cut,
+        type = WeaponType.TwoHanded,
+        fortitude = 16,
+        breakage = 8,
+        presence = 25,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.swordBreakerDesc
     )
 
     val chair = Weapon(
-        "chair",
-        R.string.chair,
-        25,
-        -20,
-        5, null,
-        AttackType.Impact, null, WeaponType.TwoHanded,
-        9, 0, 20,
-        listOf(WeaponAbility.TwoHanded), null,
-        R.string.emptyItem
+        saveName = "chair",
+        name = R.string.chair,
+        damage = 25,
+        speed = -20,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.TwoHanded,
+        fortitude = 9, breakage = 0, presence = 20,
+        ability = listOf(WeaponAbility.TwoHanded), ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val twoHanded = listOf(chair, nodachi, swordBreaker, twoHandSword)

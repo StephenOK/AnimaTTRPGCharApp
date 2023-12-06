@@ -7,17 +7,17 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 /**
  * Record of all of the available pyrokinetic powers.
  */
-class Pyrokinesis: Discipline("pyrokinesis"){
-    val createFire = PsychicPower(
-        "createFire",
-        29,
-        1,
-        true,
-        true,
-        R.string.createFirePowerDesc,
-        listOf(R.string.intensities),
-        listOf(1, 10),
-        listOf(
+class Pyrokinesis: Discipline(saveName = "pyrokinesis"){
+    private val createFire = PsychicPower(
+        saveName = "createFire",
+        name = 29,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.createFirePowerDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(1, 10),
+        stringInput = listOf(
             1,
             1,
             3,
@@ -31,16 +31,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val extinguishFire = PsychicPower(
-        "extinguishFire",
-        30,
-        1,
-        true,
-        false,
-        R.string.extinguishFireDesc,
-        listOf(R.string.physResReduceIntense),
-        listOf(1, 10),
-        listOf(
+    private val extinguishFire = PsychicPower(
+        saveName = "extinguishFire",
+        name = 30,
+        level = 1,
+        isActive = true,
+        maintained = false,
+        description = R.string.extinguishFireDesc,
+        stringBaseList = listOf(R.string.physResReduceIntense),
+        stringBaseCount = listOf(1, 10),
+        stringInput = listOf(
             2,
             Pair(80, 1),
             Pair(100, 3),
@@ -54,16 +54,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val controlFire = PsychicPower(
-        "controlFire",
-        31,
-        1,
-        true,
-        true,
-        R.string.controlFireDesc,
-        listOf(R.string.physResIntensities),
-        listOf(2, 10),
-        listOf(
+    private val controlFire = PsychicPower(
+        saveName = "controlFire",
+        name = 31,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.controlFireDesc,
+        stringBaseList = listOf(R.string.physResIntensities),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             2, 1,
             Pair(80, 4),
             Pair(100, 6),
@@ -76,16 +76,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val immolate = PsychicPower(
-        "immolate",
-        32,
-        1,
-        true,
-        false,
-        R.string.immolateDesc,
-        listOf(R.string.baseDamageArea),
-        listOf(3, 10),
-        listOf(
+    private val immolate = PsychicPower(
+        saveName = "immolate",
+        name = 32,
+        level = 1,
+        isActive = true,
+        maintained = false,
+        description = R.string.immolateDesc,
+        stringBaseList = listOf(R.string.baseDamageArea),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             4, 2, 1,
             Pair(60, 5),
             Pair(80, 10),
@@ -97,16 +97,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val igneousMaintenance = PsychicPower(
-        "igneousMaint",
-        33,
-        2,
-        true,
-        true,
-        R.string.igneousMaintDesc,
-        listOf(R.string.intensities),
-        listOf(3, 10),
-        listOf(
+    private val igneousMaintenance = PsychicPower(
+        saveName = "igneousMaint",
+        name = 33,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.igneousMaintDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             4, 2, 1,
             5,
             10,
@@ -118,16 +118,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val fireImmunity = PsychicPower(
-        "fireImmunity",
-        34,
-        2,
-        false,
-        true,
-        R.string.fireImmuneDesc,
-        listOf(R.string.intensities),
-        listOf(3, 10),
-        listOf(
+    private val fireImmunity = PsychicPower(
+        saveName = "fireImmunity",
+        name = 34,
+        level = 2,
+        isActive = false,
+        maintained = true,
+        description = R.string.fireImmuneDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             4, 2, 1,
             5,
             10,
@@ -139,16 +139,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val igneousBarrier = PsychicPower(
-        "igneousBarrier",
-        35,
-        2,
-        true,
-        true,
-        R.string.igneousBarrierDesc,
-        listOf(R.string.baseDamageLine),
-        listOf(4, 10),
-        listOf(
+    private val igneousBarrier = PsychicPower(
+        saveName = "igneousBarrier",
+        name = 35,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.igneousBarrierDesc,
+        stringBaseList = listOf(R.string.baseDamageLine),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             6, 4, 2, 1,
             Pair(60, 5),
             Pair(80, 10),
@@ -159,16 +159,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val raiseTemperature = PsychicPower(
-        "raiseTemp",
-        36,
-        2,
-        true,
-        true,
-        R.string.raiseTempPowerDesc,
-        listOf(R.string.tempIncreaseKilometer),
-        listOf(4, 10),
-        listOf(
+    private val raiseTemperature = PsychicPower(
+        saveName = "raiseTemp",
+        name = 36,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.raiseTempPowerDesc,
+        stringBaseList = listOf(R.string.tempIncreaseKilometer),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             6, 4, 2, 1,
             Pair(5, 1),
             Pair(10, 5),
@@ -179,16 +179,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val consume = PsychicPower(
-        "consume",
-        37,
-        3,
-        true,
-        false,
-        R.string.consumeDesc,
-        listOf(R.string.physResAutoDamage),
-        listOf(5, 10),
-        listOf(
+    private val consume = PsychicPower(
+        saveName = "consume",
+        name = 37,
+        level = 3,
+        isActive = true,
+        maintained = false,
+        description = R.string.consumeDesc,
+        stringBaseList = listOf(R.string.physResAutoDamage),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             Pair(120, 80),
             Pair(140, 120),
@@ -198,16 +198,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val nova = PsychicPower(
-        "nova",
-        38,
-        3,
-        true,
-        true,
-        R.string.novaDesc,
-        listOf(R.string.lifePointInput),
-        listOf(3, 10),
-        listOf(
+    private val nova = PsychicPower(
+        saveName = "nova",
+        name = 38,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.novaDesc,
+        stringBaseList = listOf(R.string.lifePointInput),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             16, 12, 8,
             10,
             20,
@@ -219,16 +219,16 @@ class Pyrokinesis: Discipline("pyrokinesis"){
         )
     )
 
-    val majorFire = PsychicPower(
-        "majorFire",
-        39,
-        3,
-        true,
-        true,
-        R.string.majorFireDesc,
-        listOf(R.string.intensities),
-        listOf(6, 10),
-        listOf(
+    private val majorFire = PsychicPower(
+        saveName = "majorFire",
+        name = 39,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.majorFireDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(6, 10),
+        stringInput = listOf(
             20, 16, 12, 8, 6, 4,
             30,
             40,
@@ -238,18 +238,20 @@ class Pyrokinesis: Discipline("pyrokinesis"){
     )
 
     init{
-        allPowers.addAll(listOf(
-            createFire,
-            extinguishFire,
-            controlFire,
-            immolate,
-            igneousMaintenance,
-            fireImmunity,
-            igneousBarrier,
-            raiseTemperature,
-            consume,
-            nova,
-            majorFire
-        ))
+        allPowers.addAll(
+            elements = listOf(
+                createFire,
+                extinguishFire,
+                controlFire,
+                immolate,
+                igneousMaintenance,
+                fireImmunity,
+                igneousBarrier,
+                raiseTemperature,
+                consume,
+                nova,
+                majorFire
+            )
+        )
     }
 }

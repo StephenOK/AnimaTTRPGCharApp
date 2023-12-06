@@ -10,186 +10,221 @@ import java.io.Serializable
  * List of projectile weapons the character may take.
  */
 class Projectiles: Serializable {
-    val arquebus = ProjectileWeapon(
-        "arquebus",
-        R.string.arquebus,
-        null,
-        -20,
-        6, null,
-        null, null, WeaponType.Projectile,
-        9, -3, 20,
-        4, 80,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 11,
-        R.string.arquebusDesc
+    private val arquebus = ProjectileWeapon(
+        saveName = "arquebus",
+        name = R.string.arquebus,
+        damage = null,
+        speed = -20,
+        oneHandStr = 6,
+        twoHandStr = null,
+        primaryType = null,
+        secondaryType = null,
+        type = WeaponType.Projectile,
+        fortitude = 9,
+        breakage = -3,
+        presence = 20,
+        reloadOrRate = 4,
+        range = 80,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        ownStrength = 11,
+        description = R.string.arquebusDesc
     )
 
     val blowgun = ProjectileWeapon(
-        "blowgun",
-        R.string.blowgun,
-        null,
-        -10,
-        4, null,
-        null, null, WeaponType.Projectile,
-        3, -3, 15,
-        1, 50,
-        null, null,
-        R.string.blowgunDesc
+        saveName = "blowgun",
+        name = R.string.blowgun,
+        damage = null,
+        speed = -10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 3, breakage = -3, presence = 15,
+        reloadOrRate = 1, range = 50,
+        ability = null, ownStrength = null,
+        description = R.string.blowgunDesc
     )
 
-    val compositeBow = ProjectileWeapon(
-        "compositeBow",
-        R.string.compositeBow,
-        null,
-        -30,
-        7, null,
-        null, null, WeaponType.Projectile,
-        8, -2, 25,
-        1, 90,
-        listOf(WeaponAbility.TwoHanded), null,
-        R.string.compositeBowDesc
+    private val compositeBow = ProjectileWeapon(
+        saveName = "compositeBow",
+        name = R.string.compositeBow,
+        damage = null,
+        speed = -30,
+        oneHandStr = 7, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 8, breakage = -2, presence = 25,
+        reloadOrRate = 1, range = 90,
+        ability = listOf(WeaponAbility.TwoHanded), ownStrength = null,
+        description = R.string.compositeBowDesc
     )
 
     val crossbow = ProjectileWeapon(
-        "crossbow",
-        R.string.crossbow,
-        null,
-        0,
-        8, 4,
-        null, null, WeaponType.Projectile,
-        8, -2, 20,
-        2, 60,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
-        R.string.crossbowDesc
+        saveName = "crossbow",
+        name = R.string.crossbow,
+        damage = null,
+        speed = 0,
+        oneHandStr = 8,
+        twoHandStr = 4,
+        primaryType = null,
+        secondaryType = null,
+        type = WeaponType.Projectile,
+        fortitude = 8,
+        breakage = -2,
+        presence = 20,
+        reloadOrRate = 2,
+        range = 60,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        ownStrength = 8,
+        description = R.string.crossbowDesc
     )
 
-    val repeatingCrossbow = ProjectileWeapon(
-        "repeatCrossbow",
-        R.string.repeatCrossbow,
-        null,
-        0,
-        8, 5,
-        null, null, WeaponType.Projectile,
-        6, -2, 20,
-        3, 60,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 8,
-        R.string.repeatCrossbowDesc
+    private val repeatingCrossbow = ProjectileWeapon(
+        saveName = "repeatCrossbow",
+        name = R.string.repeatCrossbow,
+        damage = null,
+        speed = 0,
+        oneHandStr = 8,
+        twoHandStr = 5,
+        primaryType = null,
+        secondaryType = null,
+        type = WeaponType.Projectile,
+        fortitude = 6,
+        breakage = -2,
+        presence = 20,
+        reloadOrRate = 3,
+        range = 60,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        ownStrength = 8,
+        description = R.string.repeatCrossbowDesc
     )
 
-    val heavyCrossbow = ProjectileWeapon(
-        "heavyCrossbow",
-        R.string.heavyCrossbow,
-        null,
-        -20,
-        10, 7,
-        null, null, WeaponType.Projectile,
-        8, -1, 20,
-        2, 80,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special), 10,
-        R.string.heavyCrossbowDesc
+    private val heavyCrossbow = ProjectileWeapon(
+        saveName = "heavyCrossbow",
+        name = R.string.heavyCrossbow,
+        damage = null,
+        speed = -20,
+        oneHandStr = 10,
+        twoHandStr = 7,
+        primaryType = null,
+        secondaryType = null,
+        type = WeaponType.Projectile,
+        fortitude = 8,
+        breakage = -1,
+        presence = 20,
+        reloadOrRate = 2,
+        range = 80,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.OneOrTwoHanded, WeaponAbility.Special),
+        ownStrength = 10,
+        description = R.string.heavyCrossbowDesc
     )
 
     val miniCrossbow = ProjectileWeapon(
-        "miniCrossbow",
-        R.string.miniCrossbow,
-        null,
-        10,
-        3, null,
-        null, null, WeaponType.Projectile,
-        5, -4, 15,
-        2, 30,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 5,
-        R.string.miniCrossbowDesc
+        saveName = "miniCrossbow",
+        name = R.string.miniCrossbow,
+        damage = null,
+        speed = 10,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 5, breakage = -4, presence = 15,
+        reloadOrRate = 2, range = 30,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), ownStrength = 5,
+        description = R.string.miniCrossbowDesc
     )
 
     val shortBow = ProjectileWeapon(
-        "shortBow",
-        R.string.shortBow,
-        null,
-        -10,
-        4, null,
-        null, null, WeaponType.Projectile,
-        7, -3, 15,
-        1, 40,
-        listOf(WeaponAbility.TwoHanded), null,
-        R.string.shortBowDesc
+        saveName = "shortBow",
+        name = R.string.shortBow,
+        damage = null,
+        speed = -10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 7, breakage = -3, presence = 15,
+        reloadOrRate = 1, range = 40,
+        ability = listOf(WeaponAbility.TwoHanded), ownStrength = null,
+        description = R.string.shortBowDesc
     )
 
     val longBow = ProjectileWeapon(
-        "longbow",
-        R.string.longbow,
-        null,
-        -30,
-        7, null,
-        null, null, WeaponType.Projectile,
-        8, -2, 20,
-        1, 60,
-        listOf(WeaponAbility.TwoHanded), null,
-        R.string.longbowDesc
+        saveName = "longbow",
+        name = R.string.longbow,
+        damage = null,
+        speed = -30,
+        oneHandStr = 7, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 8, breakage = -2, presence = 20,
+        reloadOrRate = 1, range = 60,
+        ability = listOf(WeaponAbility.TwoHanded), ownStrength = null,
+        description = R.string.longbowDesc
     )
 
-    val matchlock = ProjectileWeapon(
-        "matchlock",
-        R.string.matchlock,
-        null,
-        0,
-        4, null,
-        null, null, WeaponType.Projectile,
-        8, -3, 20,
-        4, 50,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special), 9,
-        R.string.matchlockDesc
+    private val matchlock = ProjectileWeapon(
+        saveName = "matchlock",
+        name = R.string.matchlock,
+        damage = null,
+        speed = 0,
+        oneHandStr = 4,
+        twoHandStr = null,
+        primaryType = null,
+        secondaryType = null,
+        type = WeaponType.Projectile,
+        fortitude = 8,
+        breakage = -3,
+        presence = 20,
+        reloadOrRate = 4,
+        range = 50,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Complex, WeaponAbility.Special),
+        ownStrength = 9,
+        description = R.string.matchlockDesc
     )
 
-    val sling = ProjectileWeapon(
-        "sling",
-        R.string.sling,
-        null,
-        -40,
-        4, null,
-        null, null, WeaponType.Projectile,
-        3, -6, 10,
-        1, 50,
-        null, null,
-        R.string.slingDesc
+    private val sling = ProjectileWeapon(
+        saveName = "sling",
+        name = R.string.sling,
+        damage = null,
+        speed = -40,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 3, breakage = -6, presence = 10,
+        reloadOrRate = 1, range = 50,
+        ability = null, ownStrength = null,
+        description = R.string.slingDesc
     )
 
-    val lightBallista = ProjectileWeapon(
-        "lightBallista",
-        R.string.lightBallista,
-        null,
-        -80,
-        null, null,
-        null, null, WeaponType.Projectile,
-        18, null, 25,
-        10, 150,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 12,
-        R.string.lightBallistaDesc
+    private val lightBallista = ProjectileWeapon(
+        saveName = "lightBallista",
+        name = R.string.lightBallista,
+        damage = null,
+        speed = -80,
+        oneHandStr = null, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 18, breakage = null, presence = 25,
+        reloadOrRate = 10, range = 150,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), ownStrength = 12,
+        description = R.string.lightBallistaDesc
     )
 
-    val heavyBallista = ProjectileWeapon(
-        "heavyBallista",
-        R.string.heavyBallista,
-        null,
-        -100,
-        null, null,
-        null, null, WeaponType.Projectile,
-        20, null, 30,
-        12, 200,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 13,
-        R.string.heavyBallistaDesc
+    private val heavyBallista = ProjectileWeapon(
+        saveName = "heavyBallista",
+        name = R.string.heavyBallista,
+        damage = null,
+        speed = -100,
+        oneHandStr = null, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 20, breakage = null, presence = 30,
+        reloadOrRate = 12, range = 200,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), ownStrength = 13,
+        description = R.string.heavyBallistaDesc
     )
 
-    val cannon = ProjectileWeapon(
-        "cannon",
-        R.string.cannon,
-        null,
-        -100,
-        null, null,
-        null, null, WeaponType.Projectile,
-        24, null, 30,
-        12, 250,
-        listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), 14,
-        R.string.cannonDesc
+    private val cannon = ProjectileWeapon(
+        saveName = "cannon",
+        name = R.string.cannon,
+        damage = null,
+        speed = -100,
+        oneHandStr = null, twoHandStr = null,
+        primaryType = null, secondaryType = null, type = WeaponType.Projectile,
+        fortitude = 24, breakage = null, presence = 30,
+        reloadOrRate = 12, range = 250,
+        ability = listOf(WeaponAbility.OwnStrength, WeaponAbility.Special), ownStrength = 14,
+        description = R.string.cannonDesc
     )
 
     val projectiles = listOf(arquebus, blowgun, compositeBow, crossbow, repeatingCrossbow,

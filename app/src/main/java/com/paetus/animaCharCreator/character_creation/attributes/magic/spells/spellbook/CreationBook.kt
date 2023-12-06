@@ -1,571 +1,571 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the creation element.
  */
 class CreationBook{
     private val minorCreation = Spell(
-        R.string.minorCreation,
-        Element.Creation,
-        true,
-        2,
-        30,
-        R.string.minorCreationDesc,
-        R.string.minorCreationEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.minorCreation,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.minorCreationDesc,
+        addedEffect = R.string.minorCreationEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val reconstruct = Spell(
-        R.string.reconstruct,
-        Element.Creation,
-        true,
-        6,
-        40,
-        R.string.reconstructDesc,
-        R.string.reconstructEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.reconstruct,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 6,
+        zCost = 40,
+        effect = R.string.reconstructDesc,
+        addedEffect = R.string.reconstructEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createEnergy = Spell(
-        R.string.createEnergy,
-        Element.Creation,
-        true,
-        8,
-        40,
-        R.string.createEnergyDesc,
-        R.string.createEnergyEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.createEnergy,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 8,
+        zCost = 40,
+        effect = R.string.createEnergyDesc,
+        addedEffect = R.string.createEnergyEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val regeneration = Spell(
-        R.string.regeneration,
-        Element.Creation,
-        true,
-        10,
-        60,
-        R.string.regenerationDesc,
-        R.string.regenerationEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.regeneration,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 10,
+        zCost = 60,
+        effect = R.string.regenerationDesc,
+        addedEffect = R.string.regenerationEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val inorganicModification = Spell(
-        R.string.inorgMod,
-        Element.Creation,
-        true,
-        12,
-        60,
-        R.string.inorgModDesc,
-        R.string.inorgModEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.inorgMod,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 12,
+        zCost = 60,
+        effect = R.string.inorgModDesc,
+        addedEffect = R.string.inorgModEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val increaseResistances = Spell(
-        R.string.resIncrease,
-        Element.Creation,
-        true,
-        16,
-        80,
-        R.string.resIncreaseDesc,
-        R.string.resIncreaseEff,
-        10,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.resIncrease,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 16,
+        zCost = 80,
+        effect = R.string.resIncreaseDesc,
+        addedEffect = R.string.resIncreaseEff,
+        zMax = 10,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val royalShield = Spell(
-        R.string.royalShield,
-        Element.Creation,
-        false,
-        18,
-        40,
-        R.string.royalShieldDesc,
-        R.string.royalShieldEff,
-        30,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.royalShield,
+        inBook = Element.Creation,
+        isActive = false,
+        level = 18,
+        zCost = 40,
+        effect = R.string.royalShieldDesc,
+        addedEffect = R.string.royalShieldEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val heal = Spell(
-        R.string.heal,
-        Element.Creation,
-        true,
-        20,
-        80,
-        R.string.healDesc,
-        R.string.healEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.heal,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 20,
+        zCost = 80,
+        effect = R.string.healDesc,
+        addedEffect = R.string.healEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val damageBarrier = Spell(
-        R.string.damageBarrier,
-        Element.Creation,
-        true,
-        22,
-        60,
-        R.string.damageBarrierDesc,
-        R.string.damageBarrierEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.damageBarrier,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 22,
+        zCost = 60,
+        effect = R.string.damageBarrierDesc,
+        addedEffect = R.string.damageBarrierEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val homunculus = Spell(
-        R.string.homunculus,
-        Element.Creation,
-        true,
-        26,
-        60,
-        R.string.homunculusDesc,
-        R.string.homunculusEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.homunculus,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 26,
+        zCost = 60,
+        effect = R.string.homunculusDesc,
+        addedEffect = R.string.homunculusEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val minorChange = Spell(
-        R.string.minorChange,
-        Element.Creation,
-        true,
-        28,
-        60,
-        R.string.minorChangeDesc,
-        R.string.minorChangeEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.minorChange,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 28,
+        zCost = 60,
+        effect = R.string.minorChangeDesc,
+        addedEffect = R.string.minorChangeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val imitate = Spell(
-        R.string.imitate,
-        Element.Creation,
-        true,
-        30,
-        100,
-        R.string.imitateDesc,
-        R.string.imitateEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.imitate,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 30,
+        zCost = 100,
+        effect = R.string.imitateDesc,
+        addedEffect = R.string.imitateEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val immunity = Spell(
-        R.string.immunity,
-        Element.Creation,
-        true,
-        32,
-        80,
-        R.string.immunityDesc,
-        R.string.immunityEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.immunity,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 32,
+        zCost = 80,
+        effect = R.string.immunityDesc,
+        addedEffect = R.string.immunityEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val reduceDamage = Spell(
-        R.string.reduceDamage,
-        Element.Creation,
-        false,
-        36,
-        80,
-        R.string.reduceDamageDesc,
-        R.string.reduceDamageEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.reduceDamage,
+        inBook = Element.Creation,
+        isActive = false,
+        level = 36,
+        zCost = 80,
+        effect = R.string.reduceDamageDesc,
+        addedEffect = R.string.reduceDamageEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val physicalControl = Spell(
-        R.string.controlPhys,
-        Element.Creation,
-        true,
-        38,
-        120,
-        R.string.controlPhysDesc,
-        R.string.controlPhysEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.controlPhys,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 38,
+        zCost = 120,
+        effect = R.string.controlPhysDesc,
+        addedEffect = R.string.controlPhysEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val raiseAbilities = Spell(
-        R.string.raiseAbilities,
-        Element.Creation,
-        true,
-        40,
-        80,
-        R.string.raiseAbilitiesDesc,
-        R.string.raiseAbilitiesEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.raiseAbilities,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.raiseAbilitiesDesc,
+        addedEffect = R.string.raiseAbilitiesEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val fuse = Spell(
-        R.string.fuse,
-        Element.Creation,
-        true,
-        42,
-        140,
-        R.string.fuseDesc,
-        R.string.fuseEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.fuse,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 42,
+        zCost = 140,
+        effect = R.string.fuseDesc,
+        addedEffect = R.string.fuseEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createMemories = Spell(
-        R.string.createMem,
-        Element.Creation,
-        true,
-        46,
-        140,
-        R.string.createMemDesc,
-        R.string.createMemEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.createMem,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 46,
+        zCost = 140,
+        effect = R.string.createMemDesc,
+        addedEffect = R.string.createMemEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val recover = Spell(
-        R.string.recover,
-        Element.Creation,
-        true,
-        48,
-        150,
-        R.string.recoverDesc,
-        R.string.recoverEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.recover,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 48,
+        zCost = 150,
+        effect = R.string.recoverDesc,
+        addedEffect = R.string.recoverEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val acquirePowers = Spell(
-        R.string.acquirePowers,
-        Element.Creation,
-        true,
-        50,
-        100,
-        R.string.acquirePowersDesc,
-        R.string.acquirePowersEff,
-        20,
-        5,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.acquirePowers,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 50,
+        zCost = 100,
+        effect = R.string.acquirePowersDesc,
+        addedEffect = R.string.acquirePowersEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createMonstrosity = Spell(
-        R.string.createMonster,
-        Element.Creation,
-        true,
-        52,
-        80,
-        R.string.createMonsterDesc,
-        R.string.createMonsterEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.createMonster,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 52,
+        zCost = 80,
+        effect = R.string.createMonsterDesc,
+        addedEffect = R.string.createMonsterEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val protectiveAura = Spell(
-        R.string.protectAura,
-        Element.Creation,
-        false,
-        56,
-        120,
-        R.string.protectAuraDesc,
-        R.string.protectAuraEff,
-        30,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.protectAura,
+        inBook = Element.Creation,
+        isActive = false,
+        level = 56,
+        zCost = 120,
+        effect = R.string.protectAuraDesc,
+        addedEffect = R.string.protectAuraEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val spiritualStandstill = Spell(
-        R.string.spiritStandstill,
-        Element.Creation,
-        true,
-        58,
-        150,
-        R.string.spiritStandstillDesc,
-        R.string.spiritStandstillEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.spiritStandstill,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 58,
+        zCost = 150,
+        effect = R.string.spiritStandstillDesc,
+        addedEffect = R.string.spiritStandstillEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val perfectShield = Spell(
-        R.string.perfShield,
-        Element.Creation,
-        true,
-        60,
-        150,
-        R.string.perfShieldDesc,
-        R.string.perfShieldEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Defense)
+        name = R.string.perfShield,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 60,
+        zCost = 150,
+        effect = R.string.perfShieldDesc,
+        addedEffect = R.string.perfShieldEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Defense)
     )
 
     private val vitality = Spell(
-        R.string.vitality,
-        Element.Creation,
-        true,
-        62,
-        150,
-        R.string.vitalityDesc, R.string.vitalityEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.vitality,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 62,
+        zCost = 150,
+        effect = R.string.vitalityDesc,
+        addedEffect = R.string.vitalityEff, zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val completeCreation = Spell(
-        R.string.completeCreation,
-        Element.Creation,
-        true,
-        66,
-        150,
-        R.string.completeCreationDesc,
-        R.string.completeCreationEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.completeCreation,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 66,
+        zCost = 150,
+        effect = R.string.completeCreationDesc,
+        addedEffect = R.string.completeCreationEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val reinforceMagic = Spell(
-        R.string.magReinforce,
-        Element.Creation,
-        false,
-        68,
-        100,
-        R.string.magReinforceDesc,
-        R.string.magReinforceEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.magReinforce,
+        inBook = Element.Creation,
+        isActive = false,
+        level = 68,
+        zCost = 100,
+        effect = R.string.magReinforceDesc,
+        addedEffect = R.string.magReinforceEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val transmute = Spell(
-        R.string.transmute,
-        Element.Creation,
-        true,
-        70,
-        250,
-        R.string.transmuteDesc,
-        R.string.transmuteEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.transmute,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 70,
+        zCost = 250,
+        effect = R.string.transmuteDesc,
+        addedEffect = R.string.transmuteEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val metamorphism = Spell(
-        R.string.metamorph,
-        Element.Creation,
-        true,
-        72,
-        150,
-        R.string.metamorphDesc,
-        R.string.metamorphEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.metamorph,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 72,
+        zCost = 150,
+        effect = R.string.metamorphDesc,
+        addedEffect = R.string.metamorphEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val recreate = Spell(
-        R.string.recreate,
-        Element.Creation,
-        true,
-        76,
-        300,
-        R.string.recreateDesc,
-        R.string.recreateEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.recreate,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 76,
+        zCost = 300,
+        effect = R.string.recreateDesc,
+        addedEffect = R.string.recreateEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createBeing = Spell(
-        R.string.createBeing,
-        Element.Creation,
-        true,
-        78,
-        250,
-        R.string.createBeingDesc,
-        R.string.createBeingEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createBeing,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 78,
+        zCost = 250,
+        effect = R.string.createBeingDesc,
+        addedEffect = R.string.createBeingEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val chimera = Spell(
-        R.string.chimera,
-        Element.Creation,
-        true,
-        80,
-        250,
-        R.string.chimeraDesc,
-        R.string.chimeraEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.chimera,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 80,
+        zCost = 250,
+        effect = R.string.chimeraDesc,
+        addedEffect = R.string.chimeraEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val safetyZone = Spell(
-        R.string.safeZone,
-        Element.Creation,
-        true,
-        82,
-        350,
-        R.string.safeZoneDesc,
-        R.string.safeZoneEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.safeZone,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 82,
+        zCost = 350,
+        effect = R.string.safeZoneDesc,
+        addedEffect = R.string.safeZoneEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val maintainMagic = Spell(
-        R.string.magMaintain,
-        Element.Creation,
-        true,
-        86,
-        250,
-        R.string.magMaintainDesc,
-        R.string.magMaintainEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.magMaintain,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 86,
+        zCost = 250,
+        effect = R.string.magMaintainDesc,
+        addedEffect = R.string.magMaintainEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val provideSoul = Spell(
-        R.string.provideSoul,
-        Element.Creation,
-        true,
-        88,
-        500,
-        R.string.provideSoulDesc,
-        R.string.provideSoulEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.provideSoul,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 88,
+        zCost = 500,
+        effect = R.string.provideSoulDesc,
+        addedEffect = R.string.provideSoulEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val greaterCreation = Spell(
-        R.string.greatCreation,
-        Element.Creation,
-        true,
-        90,
-        400,
-        R.string.greatCreationDesc,
-        R.string.greatCreationEff,
-        40,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.greatCreation,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 90,
+        zCost = 400,
+        effect = R.string.greatCreationDesc,
+        addedEffect = R.string.greatCreationEff,
+        zMax = 40,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val eternalMagic = Spell(
-        R.string.magEternal,
-        Element.Creation,
-        true,
-        92,
-        600,
-        R.string.magEternalDesc,
-        R.string.magEternalEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.magEternal,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 92,
+        zCost = 600,
+        effect = R.string.magEternalDesc,
+        addedEffect = R.string.magEternalEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val barrierSpell = Spell(
-        R.string.barrier,
-        Element.Creation,
-        true,
-        96,
-        800,
-        R.string.barrierDesc,
-        R.string.barrierEff,
-        50,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.barrier,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 96,
+        zCost = 800,
+        effect = R.string.barrierDesc,
+        addedEffect = R.string.barrierEff,
+        zMax = 50,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val giftOfLife = Spell(
-        R.string.lifeGift,
-        Element.Creation,
-        true,
-        98,
-        800,
-        R.string.lifeGiftDesc,
-        R.string.lifeGiftEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.lifeGift,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 98,
+        zCost = 800,
+        effect = R.string.lifeGiftDesc,
+        addedEffect = R.string.lifeGiftEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createSpell = Spell(
-        R.string.createSpell,
-        Element.Creation,
-        true,
-        100,
-        1000,
-        R.string.createSpellDesc,
-        R.string.createSpellEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.createSpell,
+        inBook = Element.Creation,
+        isActive = true,
+        level = 100,
+        zCost = 1000,
+        effect = R.string.createSpellDesc,
+        addedEffect = R.string.createSpellEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     val fullBook = listOf(

@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation
 
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
@@ -19,7 +21,6 @@ import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
 import java.nio.charset.StandardCharsets
-import kotlin.Throws
 
 /**
  * Character being built by the user
@@ -27,148 +28,112 @@ import kotlin.Throws
  */
 class BaseCharacter {
     //character's name
-    val charName = mutableStateOf("")
+    val charName = mutableStateOf(value = "")
 
     //character's current experience point amount
-    val experiencePoints = mutableStateOf(0)
+    val experiencePoints = mutableIntStateOf(value = 0)
 
     //character's gender (default male)
-    val isMale = mutableStateOf(true)
+    val isMale = mutableStateOf(value = true)
 
     //character's rule settings
     val rules = RuleRecord()
 
     //list of secondary abilities
-    val primaryList = PrimaryList(this@BaseCharacter)
-    val combat = CombatAbilities(this@BaseCharacter)
-    val secondaryList = SecondaryList(this@BaseCharacter, primaryList)
-    val weaponProficiencies = WeaponProficiencies(this@BaseCharacter)
-    val ki = Ki(this@BaseCharacter)
-    val magic = Magic(this@BaseCharacter)
-    val summoning = Summoning(this@BaseCharacter)
-    val psychic = Psychic(this@BaseCharacter)
-    val advantageRecord = AdvantageRecord(this@BaseCharacter)
-    val inventory = Inventory(this@BaseCharacter)
+    val primaryList = PrimaryList(charInstance = this)
+    val combat = CombatAbilities(charInstance = this)
+    val secondaryList = SecondaryList(charInstance = this, primaryList = primaryList)
+    val weaponProficiencies = WeaponProficiencies(charInstance = this)
+    val ki = Ki(charInstance = this)
+    val magic = Magic(charInstance = this)
+    val summoning = Summoning(charInstance = this)
+    val psychic = Psychic(charInstance = this)
+    val advantageRecord = AdvantageRecord(charInstance = this)
+    val inventory = Inventory(charInstance = this)
 
     //list of all classes available
-    val classes = ClassInstances(this@BaseCharacter)
+    val classes = ClassInstances(charInstance = this)
 
     //list of all race advantages
-    val races = RaceAdvantages(this@BaseCharacter)
+    val races = RaceAdvantages(charInstance = this)
 
     //set default class to one with empty onTake and onRemove functions
-    val ownClass = mutableStateOf(classes.mentalist)
+    val ownClass = mutableStateOf(value = classes.mentalist)
 
     //initialize character's race
-    val ownRace = mutableStateOf<List<RacialAdvantage>>(listOf())
+    val ownRace = mutableStateOf<List<RacialAdvantage>>(value = listOf())
 
     //character's level
-    val lvl = mutableStateOf(0)
+    val lvl = mutableIntStateOf(value = 0)
 
     //character development points
-    val devPT = mutableStateOf(0)
-    val spentTotal = mutableStateOf(0)
+    val devPT = mutableIntStateOf(value = 0)
+    val spentTotal = mutableIntStateOf(value = 0)
 
     //maximum point allotments to combat, magic, and psychic abilities
-    val maxCombatDP = mutableStateOf(0)
-    private val percCombatDP = mutableStateOf(0.0)
-    val ptInCombat = mutableStateOf(0)
+    val maxCombatDP = mutableIntStateOf(value = 0)
+    private val percCombatDP = mutableDoubleStateOf(value = 0.0)
+    val ptInCombat = mutableIntStateOf(value = 0)
 
-    val maxMagDP = mutableStateOf(0)
-    private val percMagDP = mutableStateOf(0.0)
-    val ptInMag = mutableStateOf(0)
+    val maxMagDP = mutableIntStateOf(value = 0)
+    private val percMagDP = mutableDoubleStateOf(value = 0.0)
+    val ptInMag = mutableIntStateOf(value = 0)
 
-    val maxPsyDP = mutableStateOf(0)
-    private val percPsyDP = mutableStateOf(0.0)
-    val ptInPsy = mutableStateOf(0)
+    val maxPsyDP = mutableIntStateOf(value = 0)
+    private val percPsyDP = mutableDoubleStateOf(value = 0.0)
+    val ptInPsy = mutableIntStateOf(value = 0)
 
     //character size items
-    val sizeSpecial = mutableStateOf(0)
-    val sizeCategory = mutableStateOf(0)
+    val sizeSpecial = mutableIntStateOf(value = 0)
+    val sizeCategory = mutableIntStateOf(value = 0)
 
     //character's appearance
-    val appearance = mutableStateOf(5)
+    val appearance = mutableIntStateOf(value = 5)
 
     //character's movement value
-    val movement = mutableStateOf(1)
+    val movement = mutableIntStateOf(value = 1)
 
     //character's weight index
-    val weightIndex = mutableStateOf(1)
+    val weightIndex = mutableIntStateOf(value = 1)
 
     //character's gnosis value
-    val gnosis = mutableStateOf(0)
+    val gnosis = mutableIntStateOf(value = 0)
 
     /**
      * Changes the character's gender depending on the input
      *
-     * @param input true if male, false if female
+     * @param gender true if male, false if female
      */
-    fun setGender(input: Boolean){
+    fun setGender(gender: Boolean){
         //remove previous buff if character is a duk'zarist
         if(ownRace.value == races.dukzaristAdvantages){
-            if(isMale.value) combat.physicalRes.setSpecial(-5)
-            else combat.magicRes.setSpecial(-5)
+            if(isMale.value) combat.physicalRes.setSpecial(specChange = -5)
+            else combat.magicRes.setSpecial(specChange = -5)
         }
 
         //set desired input
-        isMale.value = input
+        isMale.value = gender
 
         //apply gendered buff if character is a duk'zarist
         if(ownRace.value == races.dukzaristAdvantages){
-            if(isMale.value) combat.physicalRes.setSpecial(5)
-            else combat.magicRes.setSpecial(5)
+            if(isMale.value) combat.physicalRes.setSpecial(specChange = 5)
+            else combat.magicRes.setSpecial(specChange = 5)
         }
     }
 
     /**
      * Setter for class with class input.
+     *
+     * @param newClass new class to set for this character
      */
-    @JvmName("setOwnClass1")
-    fun setOwnClass(input: CharClass){
+    private fun setOwnClass(newClass: CharClass){
         //undo current class buffs
         ownClass.value.onRemove()
 
         //change class and apply new buffs
-        ownClass.value = input
+        ownClass.value = newClass
         ownClass.value.onTake()
 
-        updateClassInputs()
-    }
-
-    fun setOwnClass(input: String){
-        //undo current class buffs
-        ownClass.value.onRemove()
-
-        //find new class and apply new buffs
-        classes.allClasses.forEach{
-            if(it.saveName == input){
-                ownClass.value = it
-                ownClass.value.onTake()
-                return@forEach
-            }
-        }
-
-        updateClassInputs()
-    }
-
-    /**
-     * Setter for class with Integer input.
-     */
-    fun setOwnClass(classInt: Int){
-        //undo current class buffs
-        ownClass.value.onRemove()
-
-        //changes class and apply new buffs
-        ownClass.value = classes.allClasses[classInt]
-        ownClass.value.onTake()
-
-        updateClassInputs()
-    }
-
-    /**
-     * Updates class values when the character's class changes.
-     */
-    fun updateClassInputs(){
         //update class life points
         combat.updateClassLife()
 
@@ -176,13 +141,13 @@ class BaseCharacter {
         combat.updateInitiative()
 
         //update character's maximum point values
-        percCombatDP.value = ownClass.value.combatMax
-        percMagDP.value = ownClass.value.magMax
-        percPsyDP.value = ownClass.value.psyMax
+        percCombatDP.doubleValue = ownClass.value.combatMax
+        percMagDP.doubleValue = ownClass.value.magMax
+        percPsyDP.doubleValue = ownClass.value.psyMax
         dpAllotmentCalc()
 
         //update secondary bonuses
-        secondaryList.classUpdate(ownClass.value)
+        secondaryList.classUpdate(newClass = ownClass.value)
 
         //update character's martial knowledge
         ki.updateMK()
@@ -195,76 +160,87 @@ class BaseCharacter {
     }
 
     /**
-     * Setter for race with RaceName input.
+     * Setter for class with a string input.
+     *
+     * @param classString string to be converted into a class the character will take
      */
-    @JvmName("setOwnRace1")
-    fun setOwnRace(raceIn: List<RacialAdvantage>) {
+    private fun setOwnClass(classString: String){
+        //search through all class objects
+        classes.allClasses.forEach{charClass ->
+            //apply class if match found
+            if(charClass.saveName == classString){
+                setOwnClass(charClass)
+                return@forEach
+            }
+        }
+    }
+
+    /**
+     * Setter for class with Integer input.
+     *
+     * @param classInt number that references the class the character will take
+     */
+    fun setOwnClass(classInt: Int){
+        //apply the class indicated by the number
+        setOwnClass(classes.allClasses[classInt])
+    }
+
+    /**
+     * Sets the character's race to the inputted item.
+     *
+     * @param raceIn new race to set the character to
+     */
+    private fun setOwnRace(raceIn: List<RacialAdvantage>) {
         //remove previous race buffs
-        removeRaceAdvantages()
+        ownRace.value.forEach{advantage ->
+            //if the advantage has an onRemove effect, run it
+            if(advantage.onRemove != null)
+                advantage.onRemove!!(advantage.picked, advantage.cost[advantage.pickedCost])
+        }
 
         //apply new race and buffs
         ownRace.value = raceIn
-        applyRaceAdvantages()
+
+        ownRace.value.forEach{advantage ->
+            //if the advantage has an onTake effect, run it
+            if(advantage.onTake != null)
+                advantage.onTake!!(advantage.picked, advantage.cost[advantage.pickedCost])
+        }
     }
 
     /**
-     * Setter for race with String input.
+     * Sets the character's race to the one indicated by the inputted string.
+     *
+     * @param raceName string to convert to the applied race
      */
-    fun setOwnRace(raceName: String) {
-        //remove previous race buffs
-        removeRaceAdvantages()
-
-        //apply new race and buffs
-        ownRace.value = races.getFromString(raceName)
-        applyRaceAdvantages()
+    private fun setOwnRace(raceName: String) {
+        //set the character's race to the indicated item
+        setOwnRace(races.getFromString(raceName))
     }
 
     /**
-     * Setter for race with Integer input.
+     * Sets the character's race to the value indicated by the inputted integer.
+     *
+     * @param raceNum index of the desired race to apply
      */
     fun setOwnRace(raceNum: Int){
-        //remove previous race buffs
-        removeRaceAdvantages()
-
-        //apply new race and buffs
-        ownRace.value = races.allAdvantageLists[raceNum]
-        applyRaceAdvantages()
-    }
-
-    /**
-     * Apply the advantages of the character's current race.
-     */
-    fun applyRaceAdvantages(){
-        ownRace.value.forEach{
-            //if the advantage has an onTake effect, run it
-            if(it.onTake != null)
-                it.onTake!!(it.picked, it.cost[it.pickedCost])
-        }
-    }
-
-    /**
-     * Remove the advantages of the character's current race.
-     */
-    fun removeRaceAdvantages(){
-        ownRace.value.forEach{
-            //if the advantage has an onRemove effect, run it
-            if(it.onRemove != null)
-                it.onRemove!!(it.picked, it.cost[it.pickedCost])
-        }
+        //apply the indicated race to the character
+        setOwnRace(races.allAdvantageLists[raceNum])
     }
 
     /**
      * Updates the character's level and any associated values.
+     *
+     * @param levNum value to set the character's level to
      */
-    @JvmName("setLvl1")
     fun setLvl(levNum: Int) {
         //set new level number
-        lvl.value = levNum
+        lvl.intValue = levNum
 
         //determine development point count
-        devPT.value =
-            if(lvl.value == 0) 400
-            else 500 + lvl.value * 100
+        devPT.intValue =
+            if(lvl.intValue == 0) 400
+            else 500 + lvl.intValue * 100
 
         //refactor the character's presence
         combat.updatePresence()
@@ -276,8 +252,8 @@ class BaseCharacter {
         combat.updateClassLife()
 
         //recalculate the other combat abilities
-        combat.allAbilities.forEach{
-            it.updateClassTotal()
+        combat.allAbilities.forEach{combatItem ->
+            combatItem.updateClassTotal()
         }
 
         //recalculate initiative
@@ -290,22 +266,26 @@ class BaseCharacter {
         magic.updateZeonFromClass()
 
         //recalculate summoning abilities
-        summoning.allSummoning.forEach{it.updateLevelTotal()}
+        summoning.allSummoning.forEach{summonItem ->
+            summonItem.updateLevelTotal()
+        }
 
         //recalculate psychic points available
         psychic.setInnatePsy()
 
         //recalculate character's secondary ability values
-        secondaryList.getAllSecondaries().forEach{it.classTotalRefresh()}
+        secondaryList.getAllSecondaries().forEach{secondaryItem ->
+            secondaryItem.classTotalRefresh()
+        }
     }
 
     /**
      * Calculates percentage allotments for each category.
      */
     private fun dpAllotmentCalc() {
-        maxCombatDP.value = (devPT.value * percCombatDP.value).toInt()
-        maxMagDP.value = (devPT.value * percMagDP.value).toInt()
-        maxPsyDP.value = (devPT.value * percPsyDP.value).toInt()
+        maxCombatDP.intValue = (devPT.intValue * percCombatDP.doubleValue).toInt()
+        maxMagDP.intValue = (devPT.intValue * percMagDP.doubleValue).toInt()
+        maxPsyDP.intValue = (devPT.intValue * percPsyDP.doubleValue).toInt()
     }
 
     /**
@@ -315,60 +295,46 @@ class BaseCharacter {
         //make sure martial arts taken are still legal
         weaponProficiencies.doubleCheck()
 
-        //update the individual expenditure values
-        updateCombatSpent()
-        updateMagicSpent()
-        updatePsychicSpent()
+        //update the points spent in the combat section
+        ptInCombat.intValue =
+            combat.calculateSpent() +
+                    weaponProficiencies.calculateSpent() +
+                    ki.calculateSpent()
+
+        //update the points spent in the magic section
+        ptInMag.intValue =
+            magic.calculateSpent() +
+                    summoning.calculateSpent() +
+                    weaponProficiencies.calcPointsInMag()
+
+        //update the points spent in the psychic section
+        ptInPsy.intValue =
+            psychic.calculateSpent() +
+                    weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.value = combat.lifeMultsTaken.value * ownClass.value.lifePointMultiple +
-                secondaryList.calculateSpent() + ptInCombat.value + ptInMag.value + ptInPsy.value
-    }
-
-    /**
-     * Updates the total development points spent in combat abilities.
-     * Get by calculating the values spent in the combat, module, and ki sections.
-     */
-    private fun updateCombatSpent(){
-        ptInCombat.value =
-            combat.calculateSpent() +
-            weaponProficiencies.calculateSpent() +
-            ki.calculateSpent()
-    }
-
-    /**
-     * Updates the total development points spent in magic abilities.
-     * Get by calculating the values spent in the magic and summoning sections.
-     */
-    private fun updateMagicSpent(){
-        ptInMag.value = magic.calculateSpent() + summoning.calculateSpent() + weaponProficiencies.calcPointsInMag()
-    }
-
-    /**
-     * Updates the total development points spent in psychic abilities.
-     */
-    private fun updatePsychicSpent(){
-        ptInPsy.value = psychic.calculateSpent() + weaponProficiencies.calcPointsInPsy()
+        spentTotal.intValue = combat.lifeMultsTaken.value * ownClass.value.lifePointMultiple +
+                secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
     /**
      * Changes the character's size category special based on the inputted value.
      *
-     * @param input index of the change to run
+     * @param sizeInput index of the change to run
      */
-    fun changeSize(input: Int){
+    fun changeSize(sizeInput: Int){
         //run the indicated change to the size special value
-        when(input){
-            0 -> sizeSpecial.value -= 5
-            1 -> sizeSpecial.value -= 4
-            2 -> sizeSpecial.value -= 3
-            3 -> sizeSpecial.value -= 2
-            4 -> sizeSpecial.value -= 1
-            5 -> sizeSpecial.value += 1
-            6 -> sizeSpecial.value += 2
-            7 -> sizeSpecial.value += 3
-            8 -> sizeSpecial.value += 4
-            9 -> sizeSpecial.value += 5
+        when(sizeInput){
+            0 -> sizeSpecial.intValue -= 5
+            1 -> sizeSpecial.intValue -= 4
+            2 -> sizeSpecial.intValue -= 3
+            3 -> sizeSpecial.intValue -= 2
+            4 -> sizeSpecial.intValue -= 1
+            5 -> sizeSpecial.intValue += 1
+            6 -> sizeSpecial.intValue += 2
+            7 -> sizeSpecial.intValue += 3
+            8 -> sizeSpecial.intValue += 4
+            9 -> sizeSpecial.intValue += 5
         }
 
         //update the character's total size
@@ -379,33 +345,31 @@ class BaseCharacter {
      * Updates the character's total size category.
      */
     fun updateSize(){
-        sizeCategory.value = primaryList.str.total.value + primaryList.con.total.value + sizeSpecial.value
+        sizeCategory.intValue = primaryList.str.total.value + primaryList.con.total.value + sizeSpecial.intValue
     }
 
     /**
      * Sets the character's appearance to the inputted item, if able.
      *
-     * @param input appearance value to potentially apply
+     * @param newAppearance value to attempt to set the character's appearance to
      */
-    @JvmName("setAppearance1")
-    fun setAppearance(input: Int){
+    fun setAppearance(newAppearance: Int){
         //set appearance to 2 if character has unattractive disadvantage
-        if(advantageRecord.getAdvantage("unattractive") != null)
-            appearance.value = 2
+        if(advantageRecord.getAdvantage(advantageString = "unattractive") != null)
+            appearance.intValue = 2
 
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace.value != races.danjayniAdvantages || input in 3..7)
-            appearance.value = input
+        else if(ownRace.value != races.danjayniAdvantages || newAppearance in 3..7)
+            appearance.intValue = newAppearance
     }
 
     /**
      * Sets the character's movement distance depending on the inputted value.
      *
-     * @param input total agility score the character possesses
+     * @param moveValue total agility score the character possesses
      */
-    @JvmName("setMovement1")
-    fun setMovement(input: Int){
-        movement.value = when(input){
+    fun setMovement(moveValue: Int){
+        movement.intValue = when(moveValue){
             1 -> 1
             2 -> 4
             3 -> 8
@@ -429,9 +393,13 @@ class BaseCharacter {
         }
     }
 
-    @JvmName("setWeightIndex1")
-    fun setWeightIndex(input: Int){
-        weightIndex.value = when(input){
+    /**
+     * Sets the weight index for the character.
+     *
+     * @param weightValue total strength score the character possesses
+     */
+    fun setWeightIndex(weightValue: Int){
+        weightIndex.intValue = when(weightValue){
             1 -> 1
             2 -> 10
             3 -> 20
@@ -461,107 +429,123 @@ class BaseCharacter {
 
     /**
      * Default constructor for new character.
+     *
+     * @param filename file associated with this character
+     * @param secondaryFile directory for custom secondary characteristics
+     * @param techFile directory for custom dominion techniques
      */
     constructor(
         filename: String,
         secondaryFile: File,
         techFile: File
     ) {
-        secondaryList.applySecondaryChars(secondaryFile, filename)
-        ki.applyCustomTechs(techFile, filename)
+        //retrieve custom secondaries for this character
+        secondaryList.applySecondaryChars(input = secondaryFile, filename = filename)
 
+        //retrieve custom techniques for this character
+        ki.applyCustomTechs(customTechDir = techFile, filename = filename)
+
+        //construct the BaseCharacter object
         createDefaultChar()
     }
 
-    fun createDefaultChar(){
+    private fun createDefaultChar(){
         //set default values for class, race, and level
-        setOwnClass(classes.freelancer)
-        setOwnRace(listOf())
-        setLvl(0)
+        setOwnClass(newClass = classes.freelancer)
+        setOwnRace(raceIn = listOf())
+        setLvl(levNum = 0)
 
         //set default values for primary characteristics
-        primaryList.str.setInput(5)
-        primaryList.dex.setInput(5)
-        primaryList.agi.setInput(5)
-        primaryList.con.setInput(5)
-        primaryList.int.setInput(5)
-        primaryList.pow.setInput(5)
-        primaryList.wp.setInput(5)
-        primaryList.per.setInput(5)
+        primaryList.str.setInput(baseIn = 5)
+        primaryList.dex.setInput(baseIn = 5)
+        primaryList.agi.setInput(baseIn = 5)
+        primaryList.con.setInput(baseIn = 5)
+        primaryList.int.setInput(baseIn = 5)
+        primaryList.pow.setInput(baseIn = 5)
+        primaryList.wp.setInput(baseIn = 5)
+        primaryList.per.setInput(baseIn = 5)
     }
 
     /**
      * Constructor for character with file association.
      *
      * @param charFile file to load the character data from
+     * @param secondaryFile directory for the custom secondary items
+     * @param techFile directory for the custom technique items
      */
     constructor(
-        filename: String,
         charFile: File,
         secondaryFile: File,
         techFile: File
     ) {
-        secondaryList.applySecondaryChars(secondaryFile, filename)
-        ki.applyCustomTechs(techFile, filename)
+
+        secondaryList.applySecondaryChars(input = secondaryFile, filename = charFile.name)
+        ki.applyCustomTechs(customTechDir = techFile, filename = charFile.name)
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)
         val readChar = InputStreamReader(restoreChar, StandardCharsets.UTF_8)
         val fileReader = BufferedReader(readChar)
 
+        //get the version of the app for this save file
         val version = fileReader.readLine().toInt()
 
-        rules.loadRules(fileReader)
+        //get the rules applied to this character
+        rules.loadRules(fileReader = fileReader)
 
         //get the character's name
         charName.value = fileReader.readLine()
 
         //get the character's experience point amount
-        experiencePoints.value = fileReader.readLine().toInt()
+        experiencePoints.intValue = fileReader.readLine().toInt()
 
         //get the character's gender
-        setGender(fileReader.readLine().toBoolean())
+        setGender(gender = fileReader.readLine().toBoolean())
 
         //get the character's class, race, and level
-        setOwnClass(fileReader.readLine())
-        setOwnRace(fileReader.readLine())
-        setLvl(fileReader.readLine().toInt())
+        setOwnClass(classString = fileReader.readLine())
+        setOwnRace(raceName = fileReader.readLine())
+        setLvl(levNum = fileReader.readLine().toInt())
 
         //load paladin's chosen level boon
-        classes.loadClassData(fileReader)
+        classes.loadClassData(fileReader = fileReader)
 
         //load character's primary abilities
-        primaryList.loadPrimaries(fileReader)
+        primaryList.loadPrimaries(fileReader = fileReader)
 
         //load character's combat abilities
-        combat.loadCombat(fileReader)
+        combat.loadCombat(fileReader = fileReader)
 
         //load character's appearance
-        setAppearance(fileReader.readLine().toInt())
+        setAppearance(newAppearance = fileReader.readLine().toInt())
 
         //load character's secondary abilities
-        secondaryList.loadList(fileReader, version)
+        secondaryList.loadList(fileReader = fileReader, writeVersion = version)
 
-        //load character's modules
-        weaponProficiencies.loadProficiencies(fileReader)
+        //load character's combat modules
+        weaponProficiencies.loadProficiencies(fileReader = fileReader)
 
         //load character's ki abilities
-        ki.loadKiAttributes(fileReader, version, filename)
+        ki.loadKiAttributes(
+            fileReader = fileReader,
+            writeVersion = version,
+            filename = charFile.name
+        )
 
         //load character's magic abilities
-        magic.loadMagic(fileReader)
+        magic.loadMagic(fileReader = fileReader)
 
         //load character's summoning abilities
-        summoning.loadSummoning(fileReader)
+        summoning.loadSummoning(fileReader = fileReader)
 
         //load character's advantage record
-        advantageRecord.loadAdvantages(fileReader, version)
+        advantageRecord.loadAdvantages(fileReader = fileReader, version = version)
 
         //load character's psychic abilities
-        psychic.loadPsychic(fileReader)
+        psychic.loadPsychic(fileReader = fileReader)
 
         //load character's inventory
-        inventory.loadInventory(fileReader)
+        inventory.loadInventory(fileReader = fileReader)
 
         //end file reading
         restoreChar.close()
@@ -573,65 +557,66 @@ class BaseCharacter {
     /**
      * Retrieve byte information for the character.
      */
-    @get:Throws(IOException::class)
     val bytes: ByteArray
         get() {
             //initialize byte stream
             val byteArray = ByteArrayOutputStream()
 
-            writeDataTo(byteArray, BuildConfig.VERSION_CODE)
+            //add the app version
+            writeDataTo(writer = byteArray, input = BuildConfig.VERSION_CODE)
 
-            rules.writeRules(byteArray)
+            //add the rules settings
+            rules.writeRules(byteArray = byteArray)
 
             //add name data
-            writeDataTo(byteArray, charName.value)
+            writeDataTo(writer = byteArray, input = charName.value)
 
             //add experience point data
-            writeDataTo(byteArray, experiencePoints.value)
+            writeDataTo(writer = byteArray, input = experiencePoints.intValue)
 
             //add gender data
-            writeDataTo(byteArray, isMale.value)
+            writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(byteArray, ownClass.value.saveName)
-            writeDataTo(byteArray, races.getNameOfList(ownRace.value))
-            writeDataTo(byteArray, lvl.value)
+            writeDataTo(writer = byteArray, input = ownClass.value.saveName)
+            writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
+            writeDataTo(writer = byteArray, input = lvl.intValue)
 
             //write paladin's chosen level boon
-            classes.writeClassData(byteArray)
+            classes.writeClassData(byteArray = byteArray)
 
             //write primary characteristic data
-            primaryList.writePrimaries(byteArray)
+            primaryList.writePrimaries(byteArray = byteArray)
 
             //write combat item data
-            combat.writeCombat(byteArray)
+            combat.writeCombat(byteArray = byteArray)
 
             //write appearance data
-            writeDataTo(byteArray, appearance.value)
+            writeDataTo(writer = byteArray, input = appearance.intValue)
 
             //write secondary characteristic data
-            secondaryList.writeList(byteArray)
+            secondaryList.writeList(byteArray = byteArray)
 
             //write module data
-            weaponProficiencies.writeProficiencies(byteArray)
+            weaponProficiencies.writeProficiencies(byteArray = byteArray)
 
             //write ki ability data
-            ki.writeKiAttributes(byteArray)
+            ki.writeKiAttributes(byteArray = byteArray)
 
             //write magic data
-            magic.writeMagic(byteArray)
+            magic.writeMagic(byteArray = byteArray)
 
             //write summoning ability data
-            summoning.writeSummoning(byteArray)
+            summoning.writeSummoning(byteArray = byteArray)
 
             //write advantage data
-            advantageRecord.writeAdvantages(byteArray)
+            advantageRecord.writeAdvantages(byteArray = byteArray)
 
             //write psychic data
-            psychic.writePsychic(byteArray)
+            psychic.writePsychic(byteArray = byteArray)
 
             //write inventory data
-            inventory.writeInventory(byteArray)
+            inventory.writeInventory(byteArray = byteArray)
 
             //end writing data
             byteArray.close()

@@ -1,4 +1,4 @@
-package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
+package com.paetus.animaCharCreator.enumerations
 
 import com.paetus.animaCharCreator.R
 
@@ -14,8 +14,13 @@ enum class SpellType {
     Detection;
 
     companion object{
-        fun toAddress(input: SpellType): Int{
-            return when(input){
+        /**
+         * Converts a SpellType enumeration to its corresponding string address.
+         *
+         * @param spellType spell type to convert to a string
+         */
+        fun toAddress(spellType: SpellType): Int{
+            return when(spellType){
                 Attack -> R.string.spellAttack
                 Defense -> R.string.spellDefense
                 Spiritual -> R.string.spellSpiritual

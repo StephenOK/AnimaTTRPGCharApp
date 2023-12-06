@@ -6,165 +6,165 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class FoodAndDrink: GeneralCategory(null) {
-    val beer = GeneralEquipment(
-        "Beer",
-        R.string.beer,
-        1.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+class FoodAndDrink: GeneralCategory(qualityInput = null) {
+    private val beer = GeneralEquipment(
+        saveName = "Beer",
+        name = R.string.beer,
+        baseCost = 1.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodBeer = GeneralEquipment(
-        "Good Beer",
-        R.string.goodBeer,
-        3.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val goodBeer = GeneralEquipment(
+        saveName = "Good Beer",
+        name = R.string.goodBeer,
+        baseCost = 3.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val wine = GeneralEquipment(
-        "Wine",
-        R.string.wine,
-        2.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val wine = GeneralEquipment(
+        saveName = "Wine",
+        name = R.string.wine,
+        baseCost = 2.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodWine = GeneralEquipment(
-        "Good Wine",
-        R.string.goodWine,
-        5.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val goodWine = GeneralEquipment(
+        saveName = "Good Wine",
+        name = R.string.goodWine,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val excellentWine = GeneralEquipment(
-        "Excellent Wine",
-        R.string.excellentWine,
-        3.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val excellentWine = GeneralEquipment(
+        saveName = "Excellent Wine",
+        name = R.string.excellentWine,
+        baseCost = 3.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val milk = GeneralEquipment(
-        "Milk",
-        R.string.milk,
-        1.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val milk = GeneralEquipment(
+        saveName = "Milk",
+        name = R.string.milk,
+        baseCost = 1.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val juice = GeneralEquipment(
-        "Juice",
-        R.string.juice,
-        5.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val juice = GeneralEquipment(
+        saveName = "Juice",
+        name = R.string.juice,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val exoticDrinks = GeneralEquipment(
-        "Exotic Drinks",
-        R.string.exoticDrink,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val exoticDrinks = GeneralEquipment(
+        saveName = "Exotic Drinks",
+        name = R.string.exoticDrink,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val mediocreFood = GeneralEquipment(
-        "Mediocre Food",
-        R.string.mediocreFood,
-        4.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val mediocreFood = GeneralEquipment(
+        saveName = "Mediocre Food",
+        name = R.string.mediocreFood,
+        baseCost = 4.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val normalFood = GeneralEquipment(
-        "Normal Food",
-        R.string.normalFood,
-        6.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val normalFood = GeneralEquipment(
+        saveName = "Normal Food",
+        name = R.string.normalFood,
+        baseCost = 6.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodFood = GeneralEquipment(
-        "Good Food",
-        R.string.goodFood,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val goodFood = GeneralEquipment(
+        saveName = "Good Food",
+        name = R.string.goodFood,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val fineFood = GeneralEquipment(
-        "Fine Food",
-        R.string.fineFood,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val fineFood = GeneralEquipment(
+        saveName = "Fine Food",
+        name = R.string.fineFood,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val mediocreRations = GeneralEquipment(
-        "Field Rations (Mediocre)",
-        R.string.medRation,
-        2.0,
-        CoinType.Copper,
-        5.0,
-        Availability.Common,
-        null
+    private val mediocreRations = GeneralEquipment(
+        saveName = "Field Rations (Mediocre)",
+        name = R.string.medRation,
+        baseCost = 2.0,
+        coinType = CoinType.Copper,
+        weight = 5.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val decentRations = GeneralEquipment(
-        "Field Rations (Decent)",
-        R.string.decentRation,
-        5.0,
-        CoinType.Copper,
-        7.0,
-        Availability.Common,
-        null
+    private val decentRations = GeneralEquipment(
+        saveName = "Field Rations (Decent)",
+        name = R.string.decentRation,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = 7.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodRations = GeneralEquipment(
-        "Field Rations (Good)",
-        R.string.goodRation,
-        5.0,
-        CoinType.Silver,
-        10.0,
-        Availability.Common,
-        null
+    private val goodRations = GeneralEquipment(
+        saveName = "Field Rations (Good)",
+        name = R.string.goodRation,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = 10.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val excellentRations = GeneralEquipment(
-        "Field Rations (Excellent)",
-        R.string.excellentRation,
-        30.0,
-        CoinType.Silver,
-        10.0,
-        Availability.Uncommon,
-        null
+    private val excellentRations = GeneralEquipment(
+        saveName = "Field Rations (Excellent)",
+        name = R.string.excellentRation,
+        baseCost = 30.0,
+        coinType = CoinType.Silver,
+        weight = 10.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
     init{

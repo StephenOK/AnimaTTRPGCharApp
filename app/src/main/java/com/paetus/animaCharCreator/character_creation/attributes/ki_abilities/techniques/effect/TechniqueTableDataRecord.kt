@@ -11,464 +11,3422 @@ import java.io.ByteArrayOutputStream
 
 class TechniqueTableDataRecord {
     val table1 = listOf(
-        TechniqueTableData(1, R.string.addNumber, 10, 2, 4, 5, 1, 1),
-        TechniqueTableData(1, R.string.addNumber, 25, 3, 5, 5, 2, 1),
-        TechniqueTableData(1, R.string.addNumber, 40, 4, 6, 10, 3, 1),
-        TechniqueTableData(1, R.string.addNumber, 50, 5, 8, 15, 4, 1),
-        TechniqueTableData(1, R.string.addNumber, 75, 8, 11, 20, 6, 1),
-        TechniqueTableData(1, R.string.addNumber, 90, 12, 15, 25, 8, 1),
-        TechniqueTableData(1, R.string.addNumber, 100, 14, 18, 30, 10, 1),
-        TechniqueTableData(1, R.string.addNumber, 125, 18, 22, 35, 12, 2),
-        TechniqueTableData(1, R.string.addNumber, 150, 22, 26, 40, 14, 2),
-        TechniqueTableData(1, R.string.addNumber, 175, 26, 32, 45, 16, 3),
-        TechniqueTableData(1, R.string.addNumber, 200, 30, 36, 50, 18, 3)
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 10,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 14,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 16,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 1,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 30,
+            secondaryCost = 36,
+            mkCost = 50,
+            maintCost = 18,
+            level = 3
+        )
     )
 
     val table2 = listOf(
-        TechniqueTableData(2, R.string.addNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(2, R.string.addNumber, 25, 2, 4, 5, 2, 1),
-        TechniqueTableData(2, R.string.addNumber, 40, 3, 5, 10, 3, 1),
-        TechniqueTableData(2, R.string.addNumber, 50, 4, 6, 10, 4, 1),
-        TechniqueTableData(2, R.string.addNumber, 75, 6, 9, 15, 6, 1),
-        TechniqueTableData(2, R.string.addNumber, 90, 9, 12, 20, 8, 1),
-        TechniqueTableData(2, R.string.addNumber, 100, 12, 15, 25, 10, 1),
-        TechniqueTableData(2, R.string.addNumber, 125, 14, 18, 30, 12, 2),
-        TechniqueTableData(2, R.string.addNumber, 150, 18, 22, 35, 14, 2),
-        TechniqueTableData(2, R.string.addNumber, 175, 22, 26, 40, 16, 3),
-        TechniqueTableData(2, R.string.addNumber, 200, 26, 32, 45, 18, 3)
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 15,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 9,
+            secondaryCost = 12,
+            mkCost = 20,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 10,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 14,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 16,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 2,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 18,
+            level = 3
+        )
     )
 
     val table3 = listOf(
-        TechniqueTableData(3, R.string.addNumber, 10, 2, 4, 5, 1, 1),
-        TechniqueTableData(3, R.string.addNumber, 25, 3, 5, 5, 1, 1),
-        TechniqueTableData(3, R.string.addNumber, 40, 4, 6, 10, 2, 1),
-        TechniqueTableData(3, R.string.addNumber, 50, 5, 8, 15, 3, 1),
-        TechniqueTableData(3, R.string.addNumber, 75, 8, 11, 20, 4, 1),
-        TechniqueTableData(3, R.string.addNumber, 90, 12, 15, 25, 5, 1),
-        TechniqueTableData(3, R.string.addNumber, 100, 14, 18, 30, 8, 1),
-        TechniqueTableData(3, R.string.addNumber, 125, 18, 22, 35, 10, 2),
-        TechniqueTableData(3, R.string.addNumber, 150, 22, 26, 40, 12, 2),
-        TechniqueTableData(3, R.string.addNumber, 175, 26, 32, 45, 14, 3),
-        TechniqueTableData(3, R.string.addNumber, 200, 30, 36, 50, 16, 3)
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 14,
+            level = 3
+        ),
+        
+        TechniqueTableData(
+            name = 3,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 30,
+            secondaryCost = 36,
+            mkCost = 50,
+            maintCost = 16,
+            level = 3
+        )
     )
 
     val table4 = listOf(
-        TechniqueTableData(4, R.string.addNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(4, R.string.addNumber, 25, 2, 4, 5, 1, 1),
-        TechniqueTableData(4, R.string.addNumber, 40, 3, 5, 10, 1, 1),
-        TechniqueTableData(4, R.string.addNumber, 50, 4, 6, 10, 2, 1),
-        TechniqueTableData(4, R.string.addNumber, 75, 6, 9, 15, 3, 1),
-        TechniqueTableData(4, R.string.addNumber, 90, 8, 11, 20, 4, 1),
-        TechniqueTableData(4, R.string.addNumber, 100, 10, 13, 25, 6, 1),
-        TechniqueTableData(4, R.string.addNumber, 125, 12, 15, 30, 8, 2),
-        TechniqueTableData(4, R.string.addNumber, 150, 16, 20, 35, 10, 2),
-        TechniqueTableData(4, R.string.addNumber, 175, 20, 24, 40, 12, 3),
-        TechniqueTableData(4, R.string.addNumber, 200, 24, 29, 45, 14, 3)
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 25,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 16,
+            secondaryCost = 20,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 20,
+            secondaryCost = 24,
+            mkCost = 40,
+            maintCost = 12,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 4,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 24,
+            secondaryCost = 29,
+            mkCost = 45,
+            maintCost = 14,
+            level = 3
+        )
     )
 
     val table5 = listOf(
-        TechniqueTableData(5, R.string.addNumber, 10, 2, 4, 5, 1, 1),
-        TechniqueTableData(5, R.string.addNumber, 25, 3, 5, 5, 1, 1),
-        TechniqueTableData(5, R.string.addNumber, 40, 4, 6, 10, 2, 1),
-        TechniqueTableData(5, R.string.addNumber, 50, 5, 8, 15, 3, 1),
-        TechniqueTableData(5, R.string.addNumber, 75, 8, 11, 20, 4, 1),
-        TechniqueTableData(5, R.string.addNumber, 90, 12, 15, 25, 5, 1),
-        TechniqueTableData(5, R.string.addNumber, 100, 14, 18, 30, 8, 1),
-        TechniqueTableData(5, R.string.addNumber, 125, 18, 22, 35, 10, 2),
-        TechniqueTableData(5, R.string.addNumber, 150, 22, 26, 40, 12, 2),
-        TechniqueTableData(5, R.string.addNumber, 175, 26, 32, 45, 14, 3),
-        TechniqueTableData(5, R.string.addNumber, 200, 30, 36, 50, 16, 3)
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 14,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 5,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 30,
+            secondaryCost = 36,
+            mkCost = 50,
+            maintCost = 16,
+            level = 3
+        )
     )
 
     val table6 = listOf(
-        TechniqueTableData(6, R.string.addNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(6, R.string.addNumber, 25, 2, 4, 5, 1, 1),
-        TechniqueTableData(6, R.string.addNumber, 40, 3, 5, 10, 1, 1),
-        TechniqueTableData(6, R.string.addNumber, 50, 4, 6, 10, 2, 1),
-        TechniqueTableData(6, R.string.addNumber, 75, 6, 9, 15, 3, 1),
-        TechniqueTableData(6, R.string.addNumber, 90, 8, 11, 20, 4, 1),
-        TechniqueTableData(6, R.string.addNumber, 100, 10, 13, 25, 6, 1),
-        TechniqueTableData(6, R.string.addNumber, 125, 12, 15, 30, 8, 2),
-        TechniqueTableData(6, R.string.addNumber, 150, 16, 20, 35, 10, 2),
-        TechniqueTableData(6, R.string.addNumber, 175, 20, 24, 40, 12, 3),
-        TechniqueTableData(6, R.string.addNumber, 200, 24, 29, 45, 14, 3)
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 25,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 16,
+            secondaryCost = 20,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 20,
+            secondaryCost = 24,
+            mkCost = 40,
+            maintCost = 12,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 6,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 24,
+            secondaryCost = 29,
+            mkCost = 45,
+            maintCost = 14,
+            level = 3
+        )
     )
 
     val table7 = listOf(
-        TechniqueTableData(7, R.string.multNumber, 2, 10, 15, 25, 4, 1),
-        TechniqueTableData(7, R.string.multNumber, 3, 15, 20, 40, 8, 2),
-        TechniqueTableData(7, R.string.multNumber, 4, 20, 30, 80, 12, 3)
+        TechniqueTableData(
+            name = 7,
+            effectRef = R.string.multNumber,
+            effectVal = 2,
+            primaryCost = 10,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 7,
+            effectRef = R.string.multNumber,
+            effectVal = 3,
+            primaryCost = 15,
+            secondaryCost = 20,
+            mkCost = 40,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 7,
+            effectRef = R.string.multNumber,
+            effectVal = 4,
+            primaryCost = 20,
+            secondaryCost = 30,
+            mkCost = 80,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table8 = listOf(
-        TechniqueTableData(8, R.string.addNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(8, R.string.addNumber, 25, 2, 4, 5, 1, 1),
-        TechniqueTableData(8, R.string.addNumber, 40, 3, 5, 10, 1, 1),
-        TechniqueTableData(8, R.string.addNumber, 50, 4, 6, 15, 2, 1),
-        TechniqueTableData(8, R.string.addNumber, 75, 6, 9, 20, 3, 1),
-        TechniqueTableData(8, R.string.addNumber, 90, 8, 11, 25, 4, 1),
-        TechniqueTableData(8, R.string.addNumber, 100, 10, 13, 30, 5, 1),
-        TechniqueTableData(8, R.string.addNumber, 125, 14, 18, 35, 6, 2),
-        TechniqueTableData(8, R.string.addNumber, 150, 16, 20, 40, 8, 2),
-        TechniqueTableData(8, R.string.addNumber, 175, 18, 22, 45, 10, 3),
-        TechniqueTableData(8, R.string.addNumber, 200, 20, 24, 50, 12, 3)
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 35,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 16,
+            secondaryCost = 20,
+            mkCost = 40,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 45,
+            maintCost = 10,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 20,
+            secondaryCost = 24,
+            mkCost = 50,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table8a = listOf(
-        TechniqueTableData(8, R.string.vitalSacData, null, 4, 4, 15, 3, 1),
-        TechniqueTableData(8, R.string.doubleVitalSac, null, 10, 10, 50, 4, 1),
-        TechniqueTableData(8, R.string.healthSac, null, 2, 2, 10, 2, 1),
-        TechniqueTableData(8, R.string.charSac, null, 2, 2, 10, 2, 1)
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.vitalSacData,
+            effectVal = null,
+            primaryCost = 4,
+            secondaryCost = 4,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.doubleVitalSac,
+            effectVal = null,
+            primaryCost = 10,
+            secondaryCost = 10,
+            mkCost = 50,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.healthSac,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 8,
+            effectRef = R.string.charSac,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        )
     )
 
     val table9 = listOf(
-        TechniqueTableData(9, R.string.addNumber, 1, 6, 9, 20, 3, 1),
-        TechniqueTableData(9, R.string.addNumber, 2, 12, 15, 30, 6, 1),
-        TechniqueTableData(9, R.string.addNumber, 3, 18, 22, 40, 9, 1),
-        TechniqueTableData(9, R.string.addNumber, 4, 24, 29, 50, 12, 2),
-        TechniqueTableData(9, R.string.addNumber, 5, 30, 36, 60, 15, 3)
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addNumber,
+            effectVal = 1,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addNumber,
+            effectVal = 2,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addNumber,
+            effectVal = 3,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 40,
+            maintCost = 9,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addNumber,
+            effectVal = 4,
+            primaryCost = 24,
+            secondaryCost = 29,
+            mkCost = 50,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addNumber,
+            effectVal = 5,
+            primaryCost = 30,
+            secondaryCost = 36,
+            mkCost = 60,
+            maintCost = 15,
+            level = 3
+        )
     )
 
     val table9a = listOf(
-        TechniqueTableData(9, R.string.continuousAttack, null, 10, 10, 30, 5, 1)
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.continuousAttack,
+            effectVal = null,
+            primaryCost = 10,
+            secondaryCost = 10,
+            mkCost = 30,
+            maintCost = 5,
+            level = 1
+        )
     )
 
     val table9b = listOf(
-        TechniqueTableData(9, R.string.addFatigueBonus, null, 8, 8, 30, 2, 1)
+        TechniqueTableData(
+            name = 9,
+            effectRef = R.string.addFatigueBonus,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 30,
+            maintCost = 2,
+            level = 1
+        )
     )
 
     val table10 = listOf(
-        TechniqueTableData(10, R.string.addNumber, 1, 3, 5, 5, 1, 1),
-        TechniqueTableData(10, R.string.addNumber, 2, 6, 9, 10, 2, 1),
-        TechniqueTableData(10, R.string.addNumber, 3, 9, 12, 15, 3, 1),
-        TechniqueTableData(10, R.string.addNumber, 4, 12, 15, 20, 4, 1),
-        TechniqueTableData(10, R.string.addNumber, 5, 15, 19, 30, 6, 1),
-        TechniqueTableData(10, R.string.addNumber, 6, 18, 22, 40, 8, 2),
-        TechniqueTableData(10, R.string.addNumber, 8, 22, 26, 50, 10, 2),
-        TechniqueTableData(10, R.string.addNumber, 10, 26, 32, 60, 12, 3)
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 1,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 2,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 3,
+            primaryCost = 9,
+            secondaryCost = 12,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 4,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 5,
+            primaryCost = 15,
+            secondaryCost = 19,
+            mkCost = 30,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 6,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 40,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 8,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 50,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 60,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table10a = listOf(
-        TechniqueTableData(10, R.string.continuousAttack, null, 10, 10, 30, 5, 1)
+        TechniqueTableData(
+            name = 10,
+            effectRef = R.string.continuousAttack,
+            effectVal = null,
+            primaryCost = 10,
+            secondaryCost = 10,
+            mkCost = 30,
+            maintCost = 5,
+            level = 1
+        )
     )
 
     val table11 = listOf(
-        TechniqueTableData(11, R.string.addNumber, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(11, R.string.addNumber, 2, 2, 4, 5, 2, 1),
-        TechniqueTableData(11, R.string.addNumber, 3, 3, 5, 10, 3, 1),
-        TechniqueTableData(11, R.string.addNumber, 4, 4, 6, 15, 4, 1),
-        TechniqueTableData(11, R.string.addNumber, 6, 5, 8, 20, 6, 1),
-        TechniqueTableData(11, R.string.addNumber, 8, 6, 9, 25, 8, 1),
-        TechniqueTableData(11, R.string.addNumber, 10, 7, 10, 30, 10, 2),
-        TechniqueTableData(11, R.string.unlimited, null, 8, 11, 35, 12, 3)
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 2,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 3,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 4,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 6,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 20,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 8,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 25,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 7,
+            secondaryCost = 10,
+            mkCost = 30,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.unlimited,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 35,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table11a = listOf(
-        TechniqueTableData(11, R.string.addFatigueBonus, null, 6, 6, 20, 2, 1)
+        TechniqueTableData(
+            name = 11,
+            effectRef = R.string.addFatigueBonus,
+            effectVal = null,
+            primaryCost = 6,
+            secondaryCost = 6,
+            mkCost = 20,
+            maintCost = 2,
+            level = 1
+        )
     )
 
     val table12 = listOf(
-        TechniqueTableData(12, R.string.addNumber, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(12, R.string.addNumber, 2, 2, 4, 5, 2, 1),
-        TechniqueTableData(12, R.string.addNumber, 3, 3, 5, 10, 3, 1),
-        TechniqueTableData(12, R.string.addNumber, 4, 4, 6, 15, 4, 1),
-        TechniqueTableData(12, R.string.addNumber, 5, 5, 8, 20, 6, 1),
-        TechniqueTableData(12, R.string.addNumber, 6, 6, 9, 25, 8, 1),
-        TechniqueTableData(12, R.string.addNumber, 8, 7, 10, 30, 10, 2),
-        TechniqueTableData(12, R.string.addNumber, 10, 8, 11, 35, 12, 3)
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 2,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 3,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 4,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 5,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 20,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 6,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 25,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 8,
+            primaryCost = 7,
+            secondaryCost = 10,
+            mkCost = 30,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 35,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table12a = listOf(
-        TechniqueTableData(12, R.string.addFatigueBonus, null, 6, 6, 20, 1, 1)
+        TechniqueTableData(
+            name = 12,
+            effectRef = R.string.addFatigueBonus,
+            effectVal = null,
+            primaryCost = 6,
+            secondaryCost = 6,
+            mkCost = 20,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table13 = listOf(
-        TechniqueTableData(13, R.string.addNumber, 25, 1, 2, 5, 1, 1),
-        TechniqueTableData(13, R.string.addNumber, 50, 2, 4, 10, 1, 1),
-        TechniqueTableData(13, R.string.addNumber, 75, 4, 6, 15, 2, 1),
-        TechniqueTableData(13, R.string.addNumber, 100, 6, 9, 20, 3, 1),
-        TechniqueTableData(13, R.string.addNumber, 125, 8, 11, 25, 4, 2),
-        TechniqueTableData(13, R.string.addNumber, 150, 10, 13, 30, 5, 2),
-        TechniqueTableData(13, R.string.addNumber, 175, 12, 15, 35, 6, 3),
-        TechniqueTableData(13, R.string.addNumber, 200, 14, 18, 40, 7, 3)
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 4,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 35,
+            maintCost = 6,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 13,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 40,
+            maintCost = 7,
+            level = 3
+        )
     )
 
     val table14 = listOf(
-        TechniqueTableData(14, R.string.justNum, 40, 1, 2, 5, 1, 1),
-        TechniqueTableData(14, R.string.justNum, 60, 2, 4, 5, 1, 1),
-        TechniqueTableData(14, R.string.justNum, 80, 3, 5, 10, 2, 1),
-        TechniqueTableData(14, R.string.justNum, 100, 5, 8, 15, 3, 1),
-        TechniqueTableData(14, R.string.justNum, 120, 6, 9, 20, 4, 1),
-        TechniqueTableData(14, R.string.justNum, 140, 8, 11, 20, 5, 2),
-        TechniqueTableData(14, R.string.justNum, 180, 10, 13, 30, 6, 2),
-        TechniqueTableData(14, R.string.justNum, 200, 14, 18, 50, 8, 3),
-        TechniqueTableData(14, R.string.justNum, 240, 18, 22, 80, 10, 3)
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 40,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 60,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 80,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 100,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 120,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 140,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 180,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 200,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 50,
+            maintCost = 8,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.justNum,
+            effectVal = 240,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 80,
+            maintCost = 10,
+            level = 3
+        )
     )
 
     val table14a = listOf(
-        TechniqueTableData(14, R.string.physReduction, null, 2, 2, 10, 0, 1),
-        TechniqueTableData(14, R.string.blindnessData, null, 5, 5, 15, 0, 1),
-        TechniqueTableData(14, R.string.charReduction, null, 2, 2, 10, 0, 1),
-        TechniqueTableData(14, R.string.partParalyze, null, 6, 6, 10, 0, 1),
-        TechniqueTableData(14, R.string.damage, null, 5, 5, 10, 0, 1),
-        TechniqueTableData(14, R.string.unconscious, null, 8, 8, 15, 0, 1),
-        TechniqueTableData(14, R.string.coma, null, 10, 10, 30, 0, 2),
-        TechniqueTableData(14, R.string.totalParalyze, null, 8, 8, 20, 0, 2),
-        TechniqueTableData(14, R.string.lifeDrain, null, 8, 8, 15, 0, 2),
-        TechniqueTableData(14, R.string.controlData, null, 10, 10, 40, 0, 3),
-        TechniqueTableData(14, R.string.death, null, 12, 12, 50, 0, 3)
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.physReduction,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.blindnessData,
+            effectVal = null,
+            primaryCost = 5,
+            secondaryCost = 5,
+            mkCost = 15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.charReduction,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.partParalyze,
+            effectVal = null,
+            primaryCost = 6,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.damage,
+            effectVal = null,
+            primaryCost = 5,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.unconscious,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.coma,
+            effectVal = null,
+            primaryCost = 10,
+            secondaryCost = 10,
+            mkCost = 30,
+            maintCost = 0,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.totalParalyze,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 20,
+            maintCost = 0,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.lifeDrain,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 0,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.controlData,
+            effectVal = null,
+            primaryCost = 10,
+            secondaryCost = 10,
+            mkCost = 40,
+            maintCost = 0,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 14,
+            effectRef = R.string.death,
+            effectVal = null,
+            primaryCost = 12,
+            secondaryCost = 12,
+            mkCost = 50,
+            maintCost = 0,
+            level = 3
+        )
     )
 
     val table15 = listOf(
-        TechniqueTableData(15, R.string.subtractNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(15, R.string.subtractNumber, 25, 2, 4, 5, 1, 1),
-        TechniqueTableData(15, R.string.subtractNumber, 50, 3, 5, 10, 2, 1),
-        TechniqueTableData(15, R.string.subtractNumber, 75, 4, 6, 10, 2, 2),
-        TechniqueTableData(15, R.string.subtractNumber, 100, 6, 9, 15, 3, 2),
-        TechniqueTableData(15, R.string.subtractNumber, 120, 8, 11, 20, 3, 3)
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 25,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 50,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 75,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 100,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 15,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 15,
+            effectRef = R.string.subtractNumber,
+            effectVal = 120,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 3,
+            level = 3
+        )
     )
 
     val table16 = listOf(
-        TechniqueTableData(16, R.string.justNum, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(16, R.string.justNum, 2, 2, 4, 5, 1, 1),
-        TechniqueTableData(16, R.string.justNum, 3, 4, 6, 10, 2, 1),
-        TechniqueTableData(16, R.string.justNum, 4, 6, 9, 15, 2, 1),
-        TechniqueTableData(16, R.string.justNum, 5, 8, 11, 20, 3, 2),
-        TechniqueTableData(16, R.string.justNum, 6, 10, 13, 25, 3, 2),
-        TechniqueTableData(16, R.string.justNum, 7, 12, 15, 30, 4, 2),
-        TechniqueTableData(16, R.string.justNum, 8, 14, 18, 40, 5, 3)
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 2,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 3,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 4,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 15,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 5,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 6,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 25,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 7,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 4,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 16,
+            effectRef = R.string.justNum,
+            effectVal = 8,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 40,
+            maintCost = 5,
+            level = 3
+        )
     )
 
     val table17 = listOf(
-        TechniqueTableData(17, R.string.subtractAT, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(17, R.string.subtractAT, 2, 2, 4, 5, 1, 1),
-        TechniqueTableData(17, R.string.subtractAT, 3, 3, 5, 10, 2, 1),
-        TechniqueTableData(17, R.string.subtractAT, 4, 4, 6, 10, 2, 1),
-        TechniqueTableData(17, R.string.subtractAT, 5, 5, 8, 15, 3, 2),
-        TechniqueTableData(17, R.string.subtractAT, 6, 6, 9, 20, 3, 2),
-        TechniqueTableData(17, R.string.subtractAT, 7, 8, 11, 25, 4, 2),
-        TechniqueTableData(17, R.string.subtractAT, 8, 10, 13, 30, 5, 3)
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 2,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 3,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 4,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 5,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 6,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 7,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 4,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 17,
+            effectRef = R.string.subtractAT,
+            effectVal = 8,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 5,
+            level = 3
+        )
     )
 
     val table18 = listOf(
-        TechniqueTableData(18, R.string.addNumber, 5, 1, 2, 5, 1, 1),
-        TechniqueTableData(18, R.string.addNumber, 10, 2, 4, 10, 1, 1),
-        TechniqueTableData(18, R.string.addNumber, 15, 4, 6, 15, 2, 1),
-        TechniqueTableData(18, R.string.addNumber, 20, 6, 9, 20, 3, 1),
-        TechniqueTableData(18, R.string.addNumber, 25, 8, 11, 25, 4, 2),
-        TechniqueTableData(18, R.string.addNumber, 30, 12, 15, 30, 5, 2),
-        TechniqueTableData(18, R.string.addNumber, 35, 13, 18, 35, 6, 2),
-        TechniqueTableData(18, R.string.addNumber, 40, 18, 22, 40, 8, 3)
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 5,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 15,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 20,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 4,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 30,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 35,
+            primaryCost = 13,
+            secondaryCost = 18,
+            mkCost = 35,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 18,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 40,
+            maintCost = 8,
+            level = 3
+        )
     )
 
     val table19 = listOf(
-        TechniqueTableData(19, R.string.addNumber, 10, 1, 2, 5, 1, 1),
-        TechniqueTableData(19, R.string.addNumber, 15, 2, 4, 5, 1, 1),
-        TechniqueTableData(19, R.string.addNumber, 20, 3, 5, 10, 2, 1),
-        TechniqueTableData(19, R.string.addNumber, 25, 4, 6, 10, 2, 1),
-        TechniqueTableData(19, R.string.addNumber, 30, 5, 8, 15, 3, 2),
-        TechniqueTableData(19, R.string.addNumber, 35, 6, 9, 20, 3, 2),
-        TechniqueTableData(19, R.string.addNumber, 40, 7, 10, 25, 4, 3)
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 15,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 20,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 30,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 35,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 19,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 7,
+            secondaryCost = 10,
+            mkCost = 25,
+            maintCost = 4,
+            level = 3
+        )
     )
 
     val table20 = listOf(
-        TechniqueTableData(20, R.string.distanceLabelM, 5, 1, 2, 5, 1, 1),
-        TechniqueTableData(20, R.string.distanceLabelM, 10, 2, 4, 10, 1, 1),
-        TechniqueTableData(20, R.string.distanceLabelM, 20, 3, 5, 10, 2, 1),
-        TechniqueTableData(20, R.string.distanceLabelM, 50, 4, 6, 15, 3, 1),
-        TechniqueTableData(20, R.string.distanceLabelM, 100, 5, 8, 20, 4, 1),
-        TechniqueTableData(20, R.string.distanceLabelM, 250, 6, 9, 25, 5, 2),
-        TechniqueTableData(20, R.string.distanceLabelM, 500, 8, 11, 30, 6, 2),
-        TechniqueTableData(20, R.string.distanceLabelKM, 1, 10, 13, 35, 8, 2),
-        TechniqueTableData(20, R.string.distanceLabelKM, 5, 14, 18, 40, 10, 3),
-        TechniqueTableData(20, R.string.distanceLabelKM, 10, 18, 22, 45, 12, 3),
-        TechniqueTableData(20, R.string.distanceLabelKM, 100, 22, 26, 50, 14, 3)
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 5,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 20,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 100,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 250,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 25,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 500,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 30,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 1,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 35,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 5,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 40,
+            maintCost = 10,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 10,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 45,
+            maintCost = 12,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 20,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 100,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 50,
+            maintCost = 14,
+            level = 3
+        )
     )
 
     val table21 = listOf(
-        TechniqueTableData(21, R.string.distanceLabelM, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(21, R.string.distanceLabelM, 5, 2, 4, 10, 1, 1),
-        TechniqueTableData(21, R.string.distanceLabelM, 10, 3, 5, 15, 2, 1),
-        TechniqueTableData(21, R.string.distanceLabelM, 25, 4, 6, 20, 3, 1),
-        TechniqueTableData(21, R.string.distanceLabelM, 50, 6, 9, 25, 4, 2),
-        TechniqueTableData(21, R.string.distanceLabelM, 100, 8, 11, 30, 5, 2),
-        TechniqueTableData(21, R.string.distanceLabelM, 500, 10, 13, 40, 6, 2),
-        TechniqueTableData(21, R.string.distanceLabelKM, 1, 12, 15, 50, 8, 3),
-        TechniqueTableData(21, R.string.distanceLabelKM, 5, 16, 20, 60, 10, 3)
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 5,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 10,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 15,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 25,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 20,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 50,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 25,
+            maintCost = 4,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 100,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 30,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 500,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 40,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 1,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 50,
+            maintCost = 8,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 5,
+            primaryCost = 16,
+            secondaryCost = 20,
+            mkCost = 60,
+            maintCost = 10,
+            level = 3
+        )
     )
 
     val table21a = listOf(
-        TechniqueTableData(21, R.string.targetChoice, null, 2, 2, 10, 1, 1)
+        TechniqueTableData(
+            name = 21,
+            effectRef = R.string.targetChoice,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table22 = listOf(
-        TechniqueTableData(22, R.string.distanceLabelM, 10, 2, 4, 5, 1, 1),
-        TechniqueTableData(22, R.string.distanceLabelM, 20, 3, 5, 10, 2, 1),
-        TechniqueTableData(22, R.string.distanceLabelM, 50, 4, 6, 10, 3, 1),
-        TechniqueTableData(22, R.string.distanceLabelM, 100, 5, 8, 15, 4, 1),
-        TechniqueTableData(22, R.string.distanceLabelM, 250, 6, 9, 20, 5, 1),
-        TechniqueTableData(22, R.string.distanceLabelM, 500, 8, 11, 25, 6, 2),
-        TechniqueTableData(22, R.string.distanceLabelKM, 1, 10, 13, 30, 7, 2),
-        TechniqueTableData(22, R.string.distanceLabelKM, 5, 14, 18, 35, 8, 2),
-        TechniqueTableData(22, R.string.distanceLabelKM, 10, 18, 22, 40, 10, 3),
-        TechniqueTableData(22, R.string.distanceLabelKM, 100, 22, 26, 50, 12, 3)
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 20,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 50,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 100,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 250,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelM,
+            effectVal = 500,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 1,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 7,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 5,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 35,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 10,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 40,
+            maintCost = 10,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 22,
+            effectRef = R.string.distanceLabelKM,
+            effectVal = 100,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 50,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table23 = listOf(
-        TechniqueTableData(23, R.string.addNumber, 10, 2, 4, 5, 1, 1),
-        TechniqueTableData(23, R.string.addNumber, 25, 3, 5, 5, 2, 1),
-        TechniqueTableData(23, R.string.addNumber, 40, 4, 6, 10, 3, 1),
-        TechniqueTableData(23, R.string.addNumber, 50, 5, 8, 15, 4, 1),
-        TechniqueTableData(23, R.string.addNumber, 75, 8, 11, 20, 6, 1),
-        TechniqueTableData(23, R.string.addNumber, 90, 12, 15, 25, 8, 1),
-        TechniqueTableData(23, R.string.addNumber, 100, 14, 18, 30, 10, 1),
-        TechniqueTableData(23, R.string.addNumber, 125, 18, 22, 35, 12, 2),
-        TechniqueTableData(23, R.string.addNumber, 150, 22, 26, 40, 14, 2),
-        TechniqueTableData(23, R.string.addNumber, 175, 26, 32, 45, 16, 3),
-        TechniqueTableData(23, R.string.addNumber, 200, 30, 36, 50, 18, 3)
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 25,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 40,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 50,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 75,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 6,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 90,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 8,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 100,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 10,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 125,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 12,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 150,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 14,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 175,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 16,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.addNumber,
+            effectVal = 200,
+            primaryCost = 30,
+            secondaryCost = 36,
+            mkCost = 50,
+            maintCost = 18,
+            level = 3
+        )
     )
 
     val table23a = listOf(
-        TechniqueTableData(23, R.string.autoCrit, null, 8, 8, 30, 4, 1)
+        TechniqueTableData(
+            name = 23,
+            effectRef = R.string.autoCrit,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 30,
+            maintCost = 4,
+            level = 1
+        )
     )
 
     val table24 = listOf(
-        TechniqueTableData(24, R.string.addNumber, 0, 2, 4, 5, 1, 1),
-        TechniqueTableData(24, R.string.addNumber, 5, 4, 6, 5, 1, 1),
-        TechniqueTableData(24, R.string.addNumber, 10, 6, 9, 10, 2, 1),
-        TechniqueTableData(24, R.string.addNumber, 15, 8, 11, 15, 3, 2),
-        TechniqueTableData(24, R.string.addNumber, 20, 10, 13, 20, 4, 3)
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.addNumber,
+            effectVal = 0,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.addNumber,
+            effectVal = 5,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.addNumber,
+            effectVal = 10,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.addNumber,
+            effectVal = 15,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 15,
+            maintCost = 3,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.addNumber,
+            effectVal = 20,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 20,
+            maintCost = 4,
+            level = 3
+        )
     )
 
     val table24a = listOf(
-        TechniqueTableData(24, R.string.projectileWeapon, null, 2, 2, 10, 1, 1)
+        TechniqueTableData(
+            name = 24,
+            effectRef = R.string.projectileWeapon,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table25 = listOf(
-        TechniqueTableData(25, R.string.justNum, 4, 2, 4, 5, 1, 1),
-        TechniqueTableData(25, R.string.justNum, 6, 3, 5, 10, 2, 1),
-        TechniqueTableData(25, R.string.justNum, 8, 4, 6, 10, 3, 1),
-        TechniqueTableData(25, R.string.justNum, 10, 5, 8, 15, 4, 1),
-        TechniqueTableData(25, R.string.justNum, 12, 6, 9, 20, 5, 1),
-        TechniqueTableData(25, R.string.justNum, 14, 8, 11, 25, 6, 2),
-        TechniqueTableData(25, R.string.justNum, 16, 10, 13, 30, 7, 2),
-        TechniqueTableData(25, R.string.justNum, 18, 14, 18, 35, 8, 3),
-        TechniqueTableData(25, R.string.justNum, 20, 18, 22, 40, 10, 3)
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 4,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 6,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 8,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 10,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 12,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 14,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 16,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 7,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 18,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 35,
+            maintCost = 8,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 25,
+            effectRef = R.string.justNum,
+            effectVal = 20,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 40,
+            maintCost = 10,
+            level = 3
+        )
     )
 
     val table26 = listOf(
-        TechniqueTableData(26, R.string.justNum, 4, 1, 2, 5, 1, 1),
-        TechniqueTableData(26, R.string.justNum, 6, 2, 4, 5, 2, 1),
-        TechniqueTableData(26, R.string.justNum, 8, 3, 5, 10, 3, 1),
-        TechniqueTableData(26, R.string.justNum, 10, 4, 6, 10, 4, 1),
-        TechniqueTableData(26, R.string.justNum, 12, 5, 8, 15, 5, 1),
-        TechniqueTableData(26, R.string.justNum, 14, 6, 9, 20, 6, 2),
-        TechniqueTableData(26, R.string.justNum, 16, 8, 11, 25, 7, 2),
-        TechniqueTableData(26, R.string.justNum, 18, 10, 13, 30, 8, 3),
-        TechniqueTableData(26, R.string.justNum, 20, 12, 15, 35, 10, 3)
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 4,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 6,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 8,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 10,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 12,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 14,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 20,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 16,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 25,
+            maintCost = 7,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 18,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 30,
+            maintCost = 8,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 26,
+            effectRef = R.string.justNum,
+            effectVal = 20,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 35,
+            maintCost = 10,
+            level = 3
+        )
     )
 
     val table27 = listOf(
-        TechniqueTableData(27, R.string.justNum, 100, 2, 4, 5, 1, 1),
-        TechniqueTableData(27, R.string.justNum, 200, 3, 5, 5, 1, 1),
-        TechniqueTableData(27, R.string.justNum, 300, 4, 6, 10, 2, 1),
-        TechniqueTableData(27, R.string.justNum, 400, 5, 8, 15, 3, 1),
-        TechniqueTableData(27, R.string.justNum, 500, 8, 11, 20, 4, 1),
-        TechniqueTableData(27, R.string.justNum, 800, 12, 15, 25, 5, 2),
-        TechniqueTableData(27, R.string.justNum, 1000, 14, 18, 30, 8, 2),
-        TechniqueTableData(27, R.string.justNum, 1250, 18, 22, 35, 10, 2),
-        TechniqueTableData(27, R.string.justNum, 1500, 22, 26, 40, 12, 3),
-        TechniqueTableData(27, R.string.justNum, 2000, 26, 32, 45, 14, 3)
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 100,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 200,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 300,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 400,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 500,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 800,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 5,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 1000,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 1250,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 1500,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 12,
+            level = 3
+        ),
+
+        TechniqueTableData(
+            name = 27,
+            effectRef = R.string.justNum,
+            effectVal = 2000,
+            primaryCost = 26,
+            secondaryCost = 32,
+            mkCost = 45,
+            maintCost = 14,
+            level = 3
+        )
     )
 
     val table28 = listOf(
-        TechniqueTableData(28, R.string.intangibility, null, 3, 5, 10, 2, 1)
+        TechniqueTableData(
+            name = 28,
+            effectRef = R.string.intangibility,
+            effectVal = null,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        )
     )
 
     val table29 = listOf(
-        TechniqueTableData(29, R.string.justNum, 1, 1, 2, 5, 1, 1),
-        TechniqueTableData(29, R.string.justNum, 2, 2, 4, 5, 2, 1),
-        TechniqueTableData(29, R.string.justNum, 4, 4, 6, 10, 3, 1),
-        TechniqueTableData(29, R.string.justNum, 6, 6, 9, 10, 4, 1),
-        TechniqueTableData(29, R.string.justNum, 10, 8, 11, 15, 6, 2),
-        TechniqueTableData(29, R.string.justNum, 15, 10, 13, 20, 8, 2),
-        TechniqueTableData(29, R.string.justNum, 20, 12, 15, 25, 10, 2),
-        TechniqueTableData(29, R.string.justNum, 25, 14, 18, 30, 12, 3)
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 1,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 2,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 4,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 6,
+            primaryCost = 6,
+            secondaryCost = 9,
+            mkCost = 10,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 10,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 15,
+            maintCost = 6,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 15,
+            primaryCost = 10,
+            secondaryCost = 13,
+            mkCost = 20,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 20,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.justNum,
+            effectVal = 25,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table29a = listOf(
-        TechniqueTableData(29, R.string.moderate, null, 1, 1, 5, 0, 1),
-        TechniqueTableData(29, R.string.difficult, null, 2, 2, 10, 0, 1),
-        TechniqueTableData(29, R.string.veryDifficult, null, 3, 3, 10, 0, 1),
-        TechniqueTableData(29, R.string.absurd, null, 4, 4, 15, 0, 1),
-        TechniqueTableData(29, R.string.almostImpossible, null, 5, 5, 15, 0, 1),
-        TechniqueTableData(29, R.string.impossible, null, 6, 6, 20, 0, 2),
-        TechniqueTableData(29, R.string.inhuman, null, 7, 7, 25, 0, 2),
-        TechniqueTableData(29, R.string.zenData, null, 8, 8, 30, 0, 3)
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.moderate,
+            effectVal = null,
+            primaryCost = 1,
+            secondaryCost = 1,
+            mkCost = 5,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.difficult,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.veryDifficult,
+            effectVal = null,
+            primaryCost = 3,
+            secondaryCost = 3,
+            mkCost = 10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.absurd,
+            effectVal = null,
+            primaryCost = 4,
+            secondaryCost = 4,
+            mkCost = 15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.almostImpossible,
+            effectVal = null,
+            primaryCost = 5,
+            secondaryCost = 5,
+            mkCost = 15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.impossible,
+            effectVal = null,
+            primaryCost = 6,
+            secondaryCost = 6,
+            mkCost = 20,
+            maintCost = 0,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.inhuman,
+            effectVal = null,
+            primaryCost = 7,
+            secondaryCost = 7,
+            mkCost = 25,
+            maintCost = 0,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 29,
+            effectRef = R.string.zenData,
+            effectVal = null,
+            primaryCost = 8,
+            secondaryCost = 8,
+            mkCost = 30,
+            maintCost = 0,
+            level = 3
+        )
     )
 
     val table30 = listOf(
-        TechniqueTableData(30, R.string.attackMirror, null, 12, 15, 30, 8, 2)
+        TechniqueTableData(
+            name = 30,
+            effectRef = R.string.attackMirror,
+            effectVal = null,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 30,
+            maintCost = 8,
+            level = 2
+        )
     )
 
     val table30a = listOf(
-        TechniqueTableData(30, R.string.targetChoice, null, 2, 2, 10, 2, 1)
+        TechniqueTableData(
+            name = 30,
+            effectRef = R.string.targetChoice,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 2,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        )
     )
 
     val table30b = listOf(
-        TechniqueTableData(30, R.string.mirrorEsoteric, null, 4, 4, 20, 1, 1)
+        TechniqueTableData(
+            name = 30,
+            effectRef = R.string.mirrorEsoteric,
+            effectVal = null,
+            primaryCost = 4,
+            secondaryCost = 4,
+            mkCost = 20,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table31 = listOf(
-        TechniqueTableData(31, R.string.energyData, null, 1, 2, 5, 1, 1)
+        TechniqueTableData(
+            name = 31,
+            effectRef = R.string.energyData,
+            effectVal = null,
+            primaryCost = 1,
+            secondaryCost = 2,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table32 = listOf(
-        TechniqueTableData(32, R.string.elementalData, null, 2, 4, 5, 1, 1)
+        TechniqueTableData(
+            name = 32,
+            effectRef = R.string.elementalData,
+            effectVal = null,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table33 = listOf(
-        TechniqueTableData(33, R.string.energyData, null, 5, 8, 10, 1, 1)
+        TechniqueTableData(
+            name = 33,
+            effectRef = R.string.energyData,
+            effectVal = null,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 10,
+            maintCost = 1,
+            level = 1
+        )
     )
 
     val table34 = listOf(
-        TechniqueTableData(34, R.string.justNum, 100, 2, 4, 5, 1, 1),
-        TechniqueTableData(34, R.string.justNum, 200, 3, 5, 5, 1, 1),
-        TechniqueTableData(34, R.string.justNum, 300, 4, 6, 10, 2, 1),
-        TechniqueTableData(34, R.string.justNum, 400, 5, 8, 15, 3, 1),
-        TechniqueTableData(34, R.string.justNum, 600, 8, 11, 20, 4, 1),
-        TechniqueTableData(34, R.string.justNum, 800, 12, 15, 25, 5, 1),
-        TechniqueTableData(34, R.string.justNum, 1000, 14, 18, 30, 8, 2),
-        TechniqueTableData(34, R.string.justNum, 1200, 18, 22, 35, 10, 2),
-        TechniqueTableData(34, R.string.justNum, 1400, 22, 26, 40, 12, 3)
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 100,
+            primaryCost = 2,
+            secondaryCost = 4,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 200,
+            primaryCost = 3,
+            secondaryCost = 5,
+            mkCost = 5,
+            maintCost = 1,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 300,
+            primaryCost = 4,
+            secondaryCost = 6,
+            mkCost = 10,
+            maintCost = 2,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 400,
+            primaryCost = 5,
+            secondaryCost = 8,
+            mkCost = 15,
+            maintCost = 3,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 600,
+            primaryCost = 8,
+            secondaryCost = 11,
+            mkCost = 20,
+            maintCost = 4,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 800,
+            primaryCost = 12,
+            secondaryCost = 15,
+            mkCost = 25,
+            maintCost = 5,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 1000,
+            primaryCost = 14,
+            secondaryCost = 18,
+            mkCost = 30,
+            maintCost = 8,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 1200,
+            primaryCost = 18,
+            secondaryCost = 22,
+            mkCost = 35,
+            maintCost = 10,
+            level = 2
+        ),
+
+        TechniqueTableData(
+            name = 34,
+            effectRef = R.string.justNum,
+            effectVal = 1400,
+            primaryCost = 22,
+            secondaryCost = 26,
+            mkCost = 40,
+            maintCost = 12,
+            level = 3
+        )
     )
 
     val table35 = listOf(
-        TechniqueTableData(35, R.string.singleElement, null, 0, 0, -15, 0, 1),
-        TechniqueTableData(35, R.string.twoElement, null, 0, 0, -10, 0, 1)
+        TechniqueTableData(
+            name = 35,
+            effectRef = R.string.singleElement,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 35,
+            effectRef = R.string.twoElement,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -10,
+            maintCost = 0,
+            level = 1
+        )
     )
 
     val table36 = listOf(
-        TechniqueTableData(36, R.string.noDamage, null, 0, 0, -20, 0, 1),
-        TechniqueTableData(36, R.string.halfDamage, null, 0, 0, -10, 0, 1)
+        TechniqueTableData(
+            name = 36,
+            effectRef = R.string.noDamage,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -20,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 36,
+            effectRef = R.string.halfDamage,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -10,
+            maintCost = 0,
+            level = 1
+        )
     )
 
     val table37 = listOf(
-        TechniqueTableData(37, R.string.singleIntensity, null, 0, 0, -15, 0, 1),
-        TechniqueTableData(37, R.string.majorIntensity, null, 0, 0, -10, 0, 1),
-        TechniqueTableData(37, R.string.determinedCondition, null, 0, 0, -5, 0, 1)
+        TechniqueTableData(
+            name = 37,
+            effectRef = R.string.singleIntensity,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -15,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 37,
+            effectRef = R.string.majorIntensity,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -10,
+            maintCost = 0,
+            level = 1
+        ),
+
+        TechniqueTableData(
+            name = 37,
+            effectRef = R.string.determinedCondition,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -5,
+            maintCost = 0,
+            level = 1
+        )
     )
 
     val table38 = listOf(
-        TechniqueTableData(38, R.string.predetermination, null, 0, 0, -20, 0, 2)
+        TechniqueTableData(
+            name = 38,
+            effectRef = R.string.predetermination,
+            effectVal = null,
+            primaryCost = 0,
+            secondaryCost = 0,
+            mkCost = -20,
+            maintCost = 0,
+            level = 2
+        )
     )
 
+    /**
+     * Finds the technique table based on the inputted parameters.
+     *
+     * @param name name reference for the data
+     * @param primary primary cost of the data item
+     * @param secondary secondary cost of the data item
+     * @param mkCost martial knowledge of the data item
+     * @return the desired table data with the given parameters
+     */
     fun findData(
         name: Int,
         primary: Int,
         secondary: Int,
         mkCost: Int
     ): TechniqueTableData{
+        //retrieve the desired table based on the name and two costs
         val searchTable = when(name){
             1 -> table1
             2 -> table2
@@ -518,15 +3476,21 @@ class TechniqueTableDataRecord {
             else -> null
         }
 
+        //initialize the output as single intensity requirement
         var output: TechniqueTableData = table37[0]
 
-        searchTable!!.forEach{
-            if(it.primaryCost == primary &&
-                    it.secondaryCost == secondary &&
-                    it.mkCost == mkCost)
-                output = it
+        //search the desired table for the desired item
+        searchTable!!.forEach{tableData ->
+            //get data when match found
+            if(tableData.primaryCost == primary &&
+                    tableData.secondaryCost == secondary &&
+                    tableData.mkCost == mkCost) {
+                output = tableData
+                return@forEach
+            }
         }
 
+        //construct determined condition cost if required
         if(name == 37)
             output = TechniqueTableData(
                 name,
@@ -539,27 +3503,45 @@ class TechniqueTableDataRecord {
                 output.level
             )
 
+        //return the desired data table
         return output
     }
 
-    fun stateEffect(index: Int, costRemain: Int, primary: Int): TechniqueTableData?{
-        val base = table14a[index]
+    /**
+     * Construct a data table for a state technique effect.
+     *
+     * @param stateRef reference to the effect type of this technique
+     * @param costRemain
+     * @param primary
+     * @return the table data for the state effect
+     */
+    fun stateEffect(
+        stateRef: Int,
+        costRemain: Int,
+        primary: Int
+    ): TechniqueTableData?{
+        //retrieve the state data for this effect
+        val base = table14a[stateRef]
 
-        table14.forEach{
-            if(it.mkCost == costRemain && it.primaryCost == primary){
+        //for each available resistance data
+        table14.forEach{resTableData ->
+            //find a match for the martial knowledge and primary cost
+            if(resTableData.mkCost == costRemain && resTableData.primaryCost == primary){
+                //return the merged effect data
                 return TechniqueTableData(
-                    14,
-                    base.effectRef,
-                    it.effectVal,
-                    base.primaryCost + it.primaryCost,
-                    base.secondaryCost + it.secondaryCost,
-                    base.mkCost + it.mkCost,
-                    it.maintCost,
-                    if(base.level >= it.level) base.level else it.level
+                    name = 14,
+                    effectRef = base.effectRef,
+                    effectVal = resTableData.effectVal,
+                    primaryCost = base.primaryCost + resTableData.primaryCost,
+                    secondaryCost = base.secondaryCost + resTableData.secondaryCost,
+                    mkCost = base.mkCost + resTableData.mkCost,
+                    maintCost = resTableData.maintCost,
+                    level = if(base.level >= resTableData.level) base.level else resTableData.level
                 )
             }
         }
 
+        //return no effect found
         return null
     }
 }
@@ -584,84 +3566,102 @@ data class TechniqueTableData(
     val maintCost: Int,
     val level: Int
 ){
-    fun isEquivalent(input: TechniqueTableData): Boolean{
-        return input.name == name &&
-                input.effectRef == effectRef &&
-                input.effectVal == effectVal &&
-                input.primaryCost == primaryCost &&
-                input.secondaryCost == secondaryCost &&
-                input.mkCost == mkCost &&
-                input.maintCost == maintCost &&
-                input.level == level
+    /**
+     * Determines if the inputted data table matches this one.
+     *
+     * @param dataTable the data table to compare to this one
+     * @return true if contents match exactly
+     */
+    fun isEquivalent(
+        dataTable: TechniqueTableData
+    ): Boolean{
+        return dataTable.name == name &&
+                dataTable.effectRef == effectRef &&
+                dataTable.effectVal == effectVal &&
+                dataTable.primaryCost == primaryCost &&
+                dataTable.secondaryCost == secondaryCost &&
+                dataTable.mkCost == mkCost &&
+                dataTable.maintCost == maintCost &&
+                dataTable.level == level
     }
 
+    /**
+     * Writes data about this table to file.
+     *
+     * @param byteArray output stream to write to
+     */
     fun write(byteArray: ByteArrayOutputStream){
-        writeDataTo(byteArray, name)
+        //write name reference for this table
+        writeDataTo(writer = byteArray, input = name)
 
+        //if state table
         if(name == 14){
+            //write specific data for each state effect
             when(effectRef){
                 R.string.physReduction -> {
-                    writeDataTo(byteArray, 0)
-                    writeDataTo(byteArray, mkCost - 10)
-                    writeDataTo(byteArray, primaryCost - 2)
+                    writeDataTo(writer = byteArray, input = 0)
+                    writeDataTo(writer = byteArray, input = mkCost - 10)
+                    writeDataTo(writer = byteArray, input = primaryCost - 2)
                 }
                 R.string.blindnessData ->{
-                    writeDataTo(byteArray, 1)
-                    writeDataTo(byteArray, mkCost - 15)
-                    writeDataTo(byteArray, primaryCost - 5)
+                    writeDataTo(writer = byteArray, input = 1)
+                    writeDataTo(writer = byteArray, input = mkCost - 15)
+                    writeDataTo(writer = byteArray, input = primaryCost - 5)
                 }
                 R.string.charReduction ->{
-                    writeDataTo(byteArray, 2)
-                    writeDataTo(byteArray, mkCost - 10)
-                    writeDataTo(byteArray, primaryCost - 2)
+                    writeDataTo(writer = byteArray, input = 2)
+                    writeDataTo(writer = byteArray, input = mkCost - 10)
+                    writeDataTo(writer = byteArray, input = primaryCost - 2)
                 }
                 R.string.partParalyze ->{
-                    writeDataTo(byteArray, 3)
-                    writeDataTo(byteArray, mkCost - 10)
-                    writeDataTo(byteArray, primaryCost - 6)
+                    writeDataTo(writer = byteArray, input = 3)
+                    writeDataTo(writer = byteArray, input = mkCost - 10)
+                    writeDataTo(writer = byteArray, input = primaryCost - 6)
                 }
                 R.string.damage ->{
-                    writeDataTo(byteArray, 4)
-                    writeDataTo(byteArray, mkCost - 10)
-                    writeDataTo(byteArray, primaryCost - 5)
+                    writeDataTo(writer = byteArray, input = 4)
+                    writeDataTo(writer = byteArray, input = mkCost - 10)
+                    writeDataTo(writer = byteArray, input = primaryCost - 5)
                 }
                 R.string.unconscious ->{
-                    writeDataTo(byteArray, 5)
-                    writeDataTo(byteArray, mkCost - 15)
-                    writeDataTo(byteArray, primaryCost - 8)
+                    writeDataTo(writer = byteArray, input = 5)
+                    writeDataTo(writer = byteArray, input = mkCost - 15)
+                    writeDataTo(writer = byteArray, input = primaryCost - 8)
                 }
                 R.string.coma ->{
-                    writeDataTo(byteArray, 6)
-                    writeDataTo(byteArray, mkCost - 30)
-                    writeDataTo(byteArray, primaryCost - 10)
+                    writeDataTo(writer = byteArray, input = 6)
+                    writeDataTo(writer = byteArray, input = mkCost - 30)
+                    writeDataTo(writer = byteArray, input = primaryCost - 10)
                 }
                 R.string.totalParalyze ->{
-                    writeDataTo(byteArray, 7)
-                    writeDataTo(byteArray, mkCost - 20)
-                    writeDataTo(byteArray, primaryCost - 8)
+                    writeDataTo(writer = byteArray, input = 7)
+                    writeDataTo(writer = byteArray, input = mkCost - 20)
+                    writeDataTo(writer = byteArray, input = primaryCost - 8)
                 }
                 R.string.lifeDrain ->{
-                    writeDataTo(byteArray, 8)
-                    writeDataTo(byteArray, mkCost - 15)
-                    writeDataTo(byteArray, primaryCost - 8)
+                    writeDataTo(writer = byteArray, input = 8)
+                    writeDataTo(writer = byteArray, input = mkCost - 15)
+                    writeDataTo(writer = byteArray, input = primaryCost - 8)
                 }
                 R.string.controlData ->{
-                    writeDataTo(byteArray, 9)
-                    writeDataTo(byteArray, mkCost - 40)
-                    writeDataTo(byteArray, primaryCost - 10)
+                    writeDataTo(writer = byteArray, input = 9)
+                    writeDataTo(writer = byteArray, input = mkCost - 40)
+                    writeDataTo(writer = byteArray, input = primaryCost - 10)
                 }
                 R.string.death ->{
-                    writeDataTo(byteArray, 10)
-                    writeDataTo(byteArray, mkCost - 50)
-                    writeDataTo(byteArray, primaryCost - 12)
+                    writeDataTo(writer = byteArray, input = 10)
+                    writeDataTo(writer = byteArray, input = mkCost - 50)
+                    writeDataTo(writer = byteArray, input = primaryCost - 12)
                 }
                 else -> {}
             }
         }
+
+        //otherwise, write primary, secondary, and martial knowledge costs
         else {
-            writeDataTo(byteArray, primaryCost)
-            writeDataTo(byteArray, secondaryCost)
-            writeDataTo(byteArray, mkCost)
+            writeDataTo(writer = byteArray, input = primaryCost)
+            writeDataTo(writer = byteArray, input = secondaryCost)
+            writeDataTo(writer = byteArray, input = mkCost)
         }
     }
 }

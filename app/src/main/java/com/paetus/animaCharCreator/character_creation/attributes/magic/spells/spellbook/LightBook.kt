@@ -1,572 +1,572 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the light element.
  */
 class LightBook{
     private val createLight = Spell(
-        R.string.createLight,
-        Element.Light,
-        true,
-        2,
-        20,
-        R.string.createLightDesc,
-        R.string.createLightEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createLight,
+        inBook = Element.Light,
+        isActive = true,
+        level = 2,
+        zCost = 20,
+        effect = R.string.createLightDesc,
+        addedEffect = R.string.createLightEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val induceCalm = Spell(
-        R.string.calmInduce,
-        Element.Light,
-        true,
-        6,
-        40,
-        R.string.calmInduceDesc,
-        R.string.calmInduceEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.calmInduce,
+        inBook = Element.Light,
+        isActive = true,
+        level = 6,
+        zCost = 40,
+        effect = R.string.calmInduceDesc,
+        addedEffect = R.string.calmInduceEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val blindingFlash = Spell(
-        R.string.blindFlash,
-        Element.Light,
-        true,
-        8,
-        50,
-        R.string.blindFlashDesc,
-        R.string.blindFlashEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.blindFlash,
+        inBook = Element.Light,
+        isActive = true,
+        level = 8,
+        zCost = 50,
+        effect = R.string.blindFlashDesc,
+        addedEffect = R.string.blindFlashEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val lightShield = Spell(
-        R.string.lightShield,
-        Element.Light,
-        false,
-        10,
-        50,
-        R.string.lightShieldDesc,
-        R.string.lightShieldEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.lightShield,
+        inBook = Element.Light,
+        isActive = false,
+        level = 10,
+        zCost = 50,
+        effect = R.string.lightShieldDesc,
+        addedEffect = R.string.lightShieldEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val perceiveSpell = Spell(
-        R.string.perceive,
-        Element.Light,
-        true,
-        12,
-        50,
-        R.string.perceiveDesc,
-        R.string.perceiveEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.perceive,
+        inBook = Element.Light,
+        isActive = true,
+        level = 12,
+        zCost = 50,
+        effect = R.string.perceiveDesc,
+        addedEffect = R.string.perceiveEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val lightArmor = Spell(
-        R.string.lightArmor,
-        Element.Light,
-        true,
-        16,
-        60,
-        R.string.lightArmorDesc,
-        R.string.lightArmorEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.lightArmor,
+        inBook = Element.Light,
+        isActive = true,
+        level = 16,
+        zCost = 60,
+        effect = R.string.lightArmorDesc,
+        addedEffect = R.string.lightArmorEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val banishShadows = Spell(
-        R.string.banShadows,
-        Element.Light,
-        true,
-        18,
-        60,
-        R.string.banShadowsDesc,
-        R.string.banShadowsEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.banShadows,
+        inBook = Element.Light,
+        isActive = true,
+        level = 18,
+        zCost = 60,
+        effect = R.string.banShadowsDesc,
+        addedEffect = R.string.banShadowsEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val detectNegativeEmotions = Spell(
-        R.string.findNegEmote,
-        Element.Light,
-        true,
-        20,
-        50,
-        R.string.findNegEmoteDesc,
-        R.string.findNegEmoteEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.findNegEmote,
+        inBook = Element.Light,
+        isActive = true,
+        level = 20,
+        zCost = 50,
+        effect = R.string.findNegEmoteDesc,
+        addedEffect = R.string.findNegEmoteEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val lightBeam = Spell(
-        R.string.lightBeam,
-        Element.Light,
-        true,
-        22,
-        50,
-        R.string.lightBeamDesc,
-        R.string.lightBeamEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.lightBeam,
+        inBook = Element.Light,
+        isActive = true,
+        level = 22,
+        zCost = 50,
+        effect = R.string.lightBeamDesc,
+        addedEffect = R.string.lightBeamEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val hologram = Spell(
-        R.string.hologram,
-        Element.Light,
-        true,
-        26,
-        40,
-        R.string.hologramDesc,
-        R.string.hologramEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.hologram,
+        inBook = Element.Light,
+        isActive = true,
+        level = 26,
+        zCost = 40,
+        effect = R.string.hologramDesc,
+        addedEffect = R.string.hologramEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val lightBond = Spell(
-        R.string.lightBond,
-        Element.Light,
-        true,
-        28,
-        60,
-        R.string.lightBondDesc,
-        R.string.lightBondEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.lightBond,
+        inBook = Element.Light,
+        isActive = true,
+        level = 28,
+        zCost = 60,
+        effect = R.string.lightBondDesc,
+        addedEffect = R.string.lightBondEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val controlLight = Spell(
-        R.string.lightControl,
-        Element.Light,
-        true,
-        30,
-        50,
-        R.string.lightControlDesc,
-        R.string.lightControlEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.lightControl,
+        inBook = Element.Light,
+        isActive = true,
+        level = 30,
+        zCost = 50,
+        effect = R.string.lightControlDesc,
+        addedEffect = R.string.lightControlEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val detectLife = Spell(
-        R.string.detectLife,
-        Element.Light,
-        true,
-        32,
-        60,
-        R.string.detectLifeDesc,
-        R.string.detectLifeEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.detectLife,
+        inBook = Element.Light,
+        isActive = true,
+        level = 32,
+        zCost = 60,
+        effect = R.string.detectLifeDesc,
+        addedEffect = R.string.detectLifeEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val lightSpy = Spell(
-        R.string.lightSpy,
-        Element.Light,
-        true,
-        36,
-        100,
-        R.string.lightSpyDesc,
-        R.string.lightSpyEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.lightSpy,
+        inBook = Element.Light,
+        isActive = true,
+        level = 36,
+        zCost = 100,
+        effect = R.string.lightSpyDesc,
+        addedEffect = R.string.lightSpyEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val ecstasy = Spell(
-        R.string.ecstasy,
-        Element.Light,
-        true,
-        38,
-        60,
-        R.string.ecstasyDesc,
-        R.string.ecstasyEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.ecstasy,
+        inBook = Element.Light,
+        isActive = true,
+        level = 38,
+        zCost = 60,
+        effect = R.string.ecstasyDesc,
+        addedEffect = R.string.ecstasyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val banishNegativeEmotions = Spell(
-        R.string.banNegEmote,
-        Element.Light,
-        true,
-        40,
-        80,
-        R.string.banNegEmoteDesc,
-        R.string.banNegEmoteEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.banNegEmote,
+        inBook = Element.Light,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.banNegEmoteDesc,
+        addedEffect = R.string.banNegEmoteEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val healingLight = Spell(
-        R.string.healingLight,
-        Element.Light,
-        true,
-        42,
-        80,
-        R.string.healingLightDesc,
-        R.string.healingLightEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.healingLight,
+        inBook = Element.Light,
+        isActive = true,
+        level = 42,
+        zCost = 80,
+        effect = R.string.healingLightDesc,
+        addedEffect = R.string.healingLightEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val seekingSphere = Spell(
-        R.string.seekSphere,
-        Element.Light,
-        true,
-        46,
-        120,
-        R.string.seekSphereDesc,
-        R.string.seekSphereEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.seekSphere,
+        inBook = Element.Light,
+        isActive = true,
+        level = 46,
+        zCost = 120,
+        effect = R.string.seekSphereDesc,
+        addedEffect = R.string.seekSphereEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val detectionZone = Spell(
-        R.string.detectZone,
-        Element.Light,
-        true,
-        48,
-        140,
-        R.string.detectZoneDesc,
-        R.string.detectZoneEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Detection)
+        name = R.string.detectZone,
+        inBook = Element.Light,
+        isActive = true,
+        level = 48,
+        zCost = 140,
+        effect = R.string.detectZoneDesc,
+        addedEffect = R.string.detectZoneEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Detection)
     )
 
     private val enterDreams = Spell(
-        R.string.enterDreams,
-        Element.Light,
-        true,
-        50,
-        120,
-        R.string.enterDreamsDesc,
-        R.string.enterDreamsEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.enterDreams,
+        inBook = Element.Light,
+        isActive = true,
+        level = 50,
+        zCost = 120,
+        effect = R.string.enterDreamsDesc,
+        addedEffect = R.string.enterDreamsEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val lightForm = Spell(
-        R.string.lightForm,
-        Element.Light,
-        true,
-        52,
-        100,
-        R.string.lightFormDesc,
-        R.string.lightFormEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.lightForm,
+        inBook = Element.Light,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.lightFormDesc,
+        addedEffect = R.string.lightFormEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val blessingSpell = Spell(
-        R.string.blessing,
-        Element.Light,
-        true,
-        56,
-        100,
-        R.string.blessingDesc,
-        R.string.blessingEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.blessing,
+        inBook = Element.Light,
+        isActive = true,
+        level = 56,
+        zCost = 100,
+        effect = R.string.blessingDesc,
+        addedEffect = R.string.blessingEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val createGoodFeelings = Spell(
-        R.string.goodFeelings,
-        Element.Light,
-        true,
-        58,
-        100,
-        R.string.goodFeelingsDesc,
-        R.string.goodFeelingsEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.goodFeelings,
+        inBook = Element.Light,
+        isActive = true,
+        level = 58,
+        zCost = 100,
+        effect = R.string.goodFeelingsDesc,
+        addedEffect = R.string.goodFeelingsEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val seeTruth = Spell(
-        R.string.seeTruth,
-        Element.Light,
-        true,
-        60,
-        100,
-        R.string.seeTruthDesc,
-        R.string.seeTruthEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.seeTruth,
+        inBook = Element.Light,
+        isActive = true,
+        level = 60,
+        zCost = 100,
+        effect = R.string.seeTruthDesc,
+        addedEffect = R.string.seeTruthEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val shieldFromNegative = Spell(
-        R.string.shieldNegative,
-        Element.Light,
-        true,
-        62,
-        140,
-        R.string.shieldNegativeDesc,
-        R.string.shieldNegativeEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.shieldNegative,
+        inBook = Element.Light,
+        isActive = true,
+        level = 62,
+        zCost = 140,
+        effect = R.string.shieldNegativeDesc,
+        addedEffect = R.string.shieldNegativeEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val findSpell = Spell(
-        R.string.find,
-        Element.Light,
-        true,
-        66,
-        160,
-        R.string.findDesc,
-        R.string.findEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.find,
+        inBook = Element.Light,
+        isActive = true,
+        level = 66,
+        zCost = 160,
+        effect = R.string.findDesc,
+        addedEffect = R.string.findEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val restoreSpell = Spell(
-        R.string.restore,
-        Element.Light,
-        true,
-        68,
-        160,
-        R.string.restoreDesc,
-        R.string.restoreEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.restore,
+        inBook = Element.Light,
+        isActive = true,
+        level = 68,
+        zCost = 160,
+        effect = R.string.restoreDesc,
+        addedEffect = R.string.restoreEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val hypnoticDisplay = Spell(
-        R.string.hypnoDisplay,
-        Element.Light,
-        true,
-        70,
-        140,
-        R.string.hypnoDisplayDesc,
-        R.string.hypnoDisplayEff,
-        20,
-        50,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.hypnoDisplay,
+        inBook = Element.Light,
+        isActive = true,
+        level = 70,
+        zCost = 140,
+        effect = R.string.hypnoDisplayDesc,
+        addedEffect = R.string.hypnoDisplayEff,
+        zMax = 20,
+        maintenance = 50,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val catastrophicLight = Spell(
-        R.string.catastrophicLight,
-        Element.Light,
-        true,
-        72,
-        120,
-        R.string.catastrophicLightDesc,
-        R.string.catastrophicLightEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.catastrophicLight,
+        inBook = Element.Light,
+        isActive = true,
+        level = 72,
+        zCost = 120,
+        effect = R.string.catastrophicLightDesc,
+        addedEffect = R.string.catastrophicLightEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val luminousMaterial = Spell(
-        R.string.lumMat,
-        Element.Light,
-        true,
-        76,
-        150,
-        R.string.lumMatDesc,
-        R.string.lumMatEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.lumMat,
+        inBook = Element.Light,
+        isActive = true,
+        level = 76,
+        zCost = 150,
+        effect = R.string.lumMatDesc,
+        addedEffect = R.string.lumMatEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val lightTravel = Spell(
-        R.string.lightTravel,
-        Element.Light,
-        true,
-        78,
-        250,
-        R.string.lightTravelDesc,
-        R.string.lightTravelEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.lightTravel,
+        inBook = Element.Light,
+        isActive = true,
+        level = 78,
+        zCost = 250,
+        effect = R.string.lightTravelDesc,
+        addedEffect = R.string.lightTravelEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val dreamLordship = Spell(
-        R.string.dreamLord,
-        Element.Light,
-        true,
-        80,
-        300,
-        R.string.dreamLordDesc,
-        R.string.dreamLordEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.dreamLord,
+        inBook = Element.Light,
+        isActive = true,
+        level = 80,
+        zCost = 300,
+        effect = R.string.dreamLordDesc,
+        addedEffect = R.string.dreamLordEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val createLightBeing = Spell(
-        R.string.lightBeing,
-        Element.Light,
-        true,
-        82,
-        250,
-        R.string.lightBeingDesc,
-        R.string.lightBeingEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.lightBeing,
+        inBook = Element.Light,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.lightBeingDesc,
+        addedEffect = R.string.lightBeingEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val reflectingPrism = Spell(
-        R.string.reflectPrism,
-        Element.Light,
-        false,
-        86,
-        160,
-        R.string.reflectPrismDesc,
-        R.string.reflectPrismEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Defense)
+        name = R.string.reflectPrism,
+        inBook = Element.Light,
+        isActive = false,
+        level = 86,
+        zCost = 160,
+        effect = R.string.reflectPrismDesc,
+        addedEffect = R.string.reflectPrismEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Defense)
     )
 
     private val omniscienceRadius = Spell(
-        R.string.omniscience,
-        Element.Light,
-        true,
-        88,
-        200,
-        R.string.omniscienceDesc,
-        R.string.omniscienceEff,
-        20,
-        5,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.omniscience,
+        inBook = Element.Light,
+        isActive = true,
+        level = 88,
+        zCost = 200,
+        effect = R.string.omniscienceDesc,
+        addedEffect = R.string.omniscienceEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val predict = Spell(
-        R.string.predict,
-        Element.Light,
-        true,
-        90,
-        200,
-        R.string.predictDesc,
-        R.string.predictEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.predict,
+        inBook = Element.Light,
+        isActive = true,
+        level = 90,
+        zCost = 200,
+        effect = R.string.predictDesc,
+        addedEffect = R.string.predictEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val lightPrison = Spell(
-        R.string.lightPrison,
-        Element.Light,
-        true,
-        92,
-        200,
-        R.string.lightPrisonDesc,
-        R.string.lightPrisonEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.lightPrison,
+        inBook = Element.Light,
+        isActive = true,
+        level = 92,
+        zCost = 200,
+        effect = R.string.lightPrisonDesc,
+        addedEffect = R.string.lightPrisonEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val oneWithLight = Spell(
-        R.string.oneLight,
-        Element.Light,
-        true,
-        96,
-        100,
-        R.string.oneLightDesc,
-        R.string.oneLightEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.oneLight,
+        inBook = Element.Light,
+        isActive = true,
+        level = 96,
+        zCost = 100,
+        effect = R.string.oneLightDesc,
+        addedEffect = R.string.oneLightEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val ascension = Spell(
-        R.string.ascension,
-        Element.Light,
-        true,
-        98,
-        300,
-        R.string.ascensionDesc,
-        R.string.ascensionEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.ascension,
+        inBook = Element.Light,
+        isActive = true,
+        level = 98,
+        zCost = 300,
+        effect = R.string.ascensionDesc,
+        addedEffect = R.string.ascensionEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val lightHolocaust = Spell(
-        R.string.holoLight,
-        Element.Light,
-        true,
-        100,
-        600,
-        R.string.holoLightDesc,
-        R.string.holoLightEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Attack, SpellType.Spiritual)
+        name = R.string.holoLight,
+        inBook = Element.Light,
+        isActive = true,
+        level = 100,
+        zCost = 600,
+        effect = R.string.holoLightDesc,
+        addedEffect = R.string.holoLightEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack, SpellType.Spiritual)
     )
 
     val fullBook = listOf(

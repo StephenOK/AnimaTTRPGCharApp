@@ -24,18 +24,25 @@ enum class Element {
         /**
          * Converts a string to the associated element.
          *
-         * @param input string to check against the listed elements.
+         * @param elementName string to check against the listed elements
+         * @return element matching with this name
          */
-        fun fromString(input: String): Element {
-            Element.values().forEach{
-                if(it.name == input) return it
+        fun fromString(elementName: String): Element {
+            entries.forEach{element ->
+                if(element.name == elementName) return element
             }
 
             return Free
         }
 
-        fun toAddress(input: Element): Int{
-            return when(input){
+        /**
+         * Converts a element to its associated string address.
+         *
+         * @param element enumeration object to convert
+         * @return address that references this item
+         */
+        fun toAddress(element: Element): Int{
+            return when(element){
                 Light -> R.string.elementLight
                 Dark -> R.string.elementDark
                 Creation -> R.string.elementCreation

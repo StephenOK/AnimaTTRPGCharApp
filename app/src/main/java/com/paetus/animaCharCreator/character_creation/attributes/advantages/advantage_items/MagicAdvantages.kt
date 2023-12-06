@@ -2,8 +2,8 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
 
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.enumerations.Element
 
 /**
  * List of magical advantages and disadvantages a character may take.
@@ -12,22 +12,22 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  */
 class MagicAdvantages(private val charInstance: BaseCharacter){
     val elementalCompatibility = Advantage(
-        "elementalCompatibility",
-        R.string.elementCompatibility,
-        R.string.elementCompDesc,
-        R.string.elementCompEff,
-        null,
-        null,
-        R.array.elementList,
-        0,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+        saveTag = "elementalCompatibility",
+        name = R.string.elementCompatibility,
+        description = R.string.elementCompDesc,
+        effect = R.string.elementCompEff,
+        restriction = null,
+        special = null,
+        options = R.array.elementList,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val naturalPath = Advantage(
+    private val naturalPath = Advantage(
         "pathKnowledge",
         R.string.pathKnowledge,
         R.string.natPathDesc,
@@ -40,6 +40,7 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         listOf(1),
         0,
         {input, _ ->
+            //add the desired element as a natural path bonus
             when(input){
                 0 -> charInstance.magic.naturalPaths.add(Element.Light)
                 1 -> charInstance.magic.naturalPaths.add(Element.Dark)
@@ -56,7 +57,8 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
 
             charInstance.magic.updateSpellList()
         }
-    ) { input, _ ->
+    ) {input, _ ->
+        //remove the indicated natural path bonus
         when (input) {
             0 -> charInstance.magic.naturalPaths.remove(Element.Light)
             1 -> charInstance.magic.naturalPaths.remove(Element.Dark)
@@ -74,124 +76,127 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         charInstance.magic.updateSpellList()
     }
 
-    val contestedSpellMastery = Advantage(
-        "contestedMastery",
-        R.string.contestedMastery,
-        R.string.contestMasterDesc,
-        R.string.contestMasterEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val contestedSpellMastery = Advantage(
+        saveTag = "contestedMastery",
+        name = R.string.contestedMastery,
+        description = R.string.contestMasterDesc,
+        effect = R.string.contestMasterEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val magicDevelopmentAptitude = Advantage(
-        "magDevAptitude",
-        R.string.magDevAptitude,
-        R.string.magDevAptDesc,
-        R.string.magDevAptEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val magicDevelopmentAptitude = Advantage(
+        saveTag = "magDevAptitude",
+        name = R.string.magDevAptitude,
+        description = R.string.magDevAptDesc,
+        effect = R.string.magDevAptEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val halfTreeAttuned = Advantage(
-        "halfTreeAttuned",
-        R.string.halfTreeAttuned,
-        R.string.halfTreeDesc,
-        R.string.halfTreeEff,
-        R.string.halfTreeRestriction,
-        null,
-        R.array.elementList,
-        0,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+        saveTag = "halfTreeAttuned",
+        name = R.string.halfTreeAttuned,
+        description = R.string.halfTreeDesc,
+        effect = R.string.halfTreeEff,
+        restriction = R.string.halfTreeRestriction,
+        special = null,
+        options = R.array.elementList,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val improvedInnateMagic = Advantage(
-        "improvedInnate",
-        R.string.improvedInnate,
-        R.string.innateDesc,
-        R.string.innateEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
+    private val improvedInnateMagic = Advantage(
+        saveTag = "improvedInnate",
+        name = R.string.improvedInnate,
+        description = R.string.innateDesc,
+        effect = R.string.innateEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val unspokenCasting = Advantage(
-        "silentCast",
-        R.string.silentCast,
-        R.string.unspokenDesc,
-        R.string.unspokenEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val unspokenCasting = Advantage(
+        saveTag = "silentCast",
+        name = R.string.silentCast,
+        description = R.string.unspokenDesc,
+        effect = R.string.unspokenEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val gesturelessCasting = Advantage(
-        "gesturelessCast",
-        R.string.gesturelessCast,
-        R.string.gesturelessDesc,
-        R.string.gesturelessEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val gesturelessCasting = Advantage(
+        saveTag = "gesturelessCast",
+        name = R.string.gesturelessCast,
+        description = R.string.gesturelessDesc,
+        effect = R.string.gesturelessEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val superiorMagicRecovery = Advantage(
-        "superiorMagRecovery",
-        R.string.superiorMagRecovery,
-        R.string.superRecoverDesc,
-        R.string.superRecoverEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
+        saveTag = "superiorMagRecovery",
+        name = R.string.superiorMagRecovery,
+        description = R.string.superRecoverDesc,
+        effect = R.string.superRecoverEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //apply the desired zeon recovery bonus
             when(cost){
                 1 -> charInstance.magic.changeRecoveryMult(2.0)
                 2 -> charInstance.magic.changeRecoveryMult(3.0)
                 3 -> charInstance.magic.changeRecoveryMult(4.0)
             }
+        },
+        onRemove = {_, _ ->
+            //reset to basic zeon recovery bonus
+            charInstance.magic.changeRecoveryMult(1.0)
         }
-    ) { _, _ ->
-        charInstance.magic.changeRecoveryMult(1.0)
-    }
+    )
 
     val advantages = listOf(
         naturalPath, elementalCompatibility, halfTreeAttuned, unspokenCasting, gesturelessCasting,
@@ -202,141 +207,148 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
 
 
 
-    val oralRequirement = Advantage(
-        "oralRequire",
-        R.string.oralRequire,
-        R.string.requireOralDesc,
-        R.string.requireOralEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val oralRequirement = Advantage(
+        saveTag = "oralRequire",
+        name = R.string.oralRequire,
+        description = R.string.requireOralDesc,
+        effect = R.string.requireOralEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val requireGestures = Advantage(
-        "requireGestures",
-        R.string.gestureRequire,
-        R.string.requireGestureDesc,
-        R.string.requireGestureEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val requireGestures = Advantage(
+        saveTag = "requireGestures",
+        name = R.string.gestureRequire,
+        description = R.string.requireGestureDesc,
+        effect = R.string.requireGestureEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val magicalExhaustion = Advantage(
-        "magicExhaustion",
-        R.string.magicExhaustion,
-        R.string.magExhaustDesc,
-        R.string.magExhaustEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val magicalExhaustion = Advantage(
+        saveTag = "magicExhaustion",
+        name = R.string.magicExhaustion,
+        description = R.string.magExhaustDesc,
+        effect = R.string.magExhaustEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val shamanism = Advantage(
-        "shamanism",
-        R.string.shamanism,
-        R.string.shamanDesc,
-        R.string.shamanEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-2),
-        0,
-        null,
-        null
+    private val shamanism = Advantage(
+        saveTag = "shamanism",
+        name = R.string.shamanism,
+        description = R.string.shamanDesc,
+        effect = R.string.shamanEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val magicalTies = Advantage(
-        "magicalTies",
-        R.string.magicTies,
-        R.string.magTiesDesc,
-        R.string.magTiesEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ ->
+    private val magicalTies = Advantage(
+        saveTag = "magicalTies",
+        name = R.string.magicTies,
+        description = R.string.magTiesDesc,
+        effect = R.string.magTiesEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
             charInstance.magic.setMagicTies(true)
+        },
+        onRemove = {_, _ ->
+            charInstance.magic.setMagicTies(false)
         }
-    ) { _, _ ->
-        charInstance.magic.setMagicTies(false)
-    }
+    )
 
     val slowMagicRecovery = Advantage(
-        "slowMagRecover",
-        R.string.slowMagRecover,
-        R.string.slowMagRecDesc,
-        R.string.slowMagRecEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ ->
+        saveTag = "slowMagRecover",
+        name = R.string.slowMagRecover,
+        description = R.string.slowMagRecDesc,
+        effect = R.string.slowMagRecEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply zeon recovery penalty
             charInstance.magic.changeRecoveryMult(0.5)
+        },
+        onRemove = {_, _ ->
+            //remove zeon recovery penalty
+            charInstance.magic.changeRecoveryMult(1.0)
         }
-    ) { _, _ ->
-        charInstance.magic.changeRecoveryMult(1.0)
-    }
+    )
 
     val magicBlockage = Advantage(
-        "magicBlockage",
-        R.string.magicBlockage,
-        R.string.magBlockDesc,
-        R.string.magBlockEff,
-        R.string.magicBlockageRestriction,
-        null,
-        null,
-        null,
-        null,
-        listOf(-2),
-        0,
-        {_, _ ->
+        saveTag = "magicBlockage",
+        name = R.string.magicBlockage,
+        description = R.string.magBlockDesc,
+        effect = R.string.magBlockEff,
+        restriction = R.string.magicBlockageRestriction,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-2),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //remove any ability to recover zeon
             charInstance.magic.changeRecoveryMult(0.0)
+        },
+        onRemove = {_, _ ->
+            //reacquire zeon recovery ability
+            charInstance.magic.changeRecoveryMult(1.0)
         }
-    ) { _, _ ->
-        charInstance.magic.changeRecoveryMult(1.0)
-    }
+    )
 
-    val actionRequirement = Advantage(
-        "actionRequire",
-        R.string.actionRequire,
-        R.string.requireActionDesc,
-        R.string.requireActionEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val actionRequirement = Advantage(
+        saveTag = "actionRequire",
+        name = R.string.actionRequire,
+        description = R.string.requireActionDesc,
+        effect = R.string.requireActionEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val disadvantages = listOf(

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "shirtLocationName">Shirt</string>
+    <string name = "fullPlateName">Full Plate</string>
+    <string name = "breastplateName">Breastplate</string>
+    <string name = "completeName">Complete</string>
+    <string name = "headName">Head</string>
+</resources>

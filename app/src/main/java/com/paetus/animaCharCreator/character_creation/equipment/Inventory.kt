@@ -1,7 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.equipment
 
 import android.os.Build
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances.*
@@ -51,75 +52,70 @@ class Inventory(val charInstance: BaseCharacter) {
     )
 
     //initialize maximum coin expenditures
-    val maxGold = mutableStateOf(0)
-    val maxSilver = mutableStateOf(0)
-    val maxCopper = mutableStateOf(0)
+    val maxGold = mutableIntStateOf(value = 0)
+    val maxSilver = mutableIntStateOf(value = 0)
+    val maxCopper = mutableIntStateOf(value = 0)
 
     //initialize starting wealth bonus
-    val wealthBonus = mutableStateOf(0)
+    val wealthBonus = mutableIntStateOf(value = 0)
 
     //initialize bought items
     val boughtGoods = mutableMapOf<GeneralEquipment, Int>()
 
     //initialize spent coin values
-    val goldSpent = mutableStateOf(0.0)
-    val silverSpent = mutableStateOf(0.0)
-    val copperSpent = mutableStateOf(0.0)
+    val goldSpent = mutableDoubleStateOf(value = 0.0)
+    val silverSpent = mutableDoubleStateOf(value = 0.0)
+    val copperSpent = mutableDoubleStateOf(value = 0.0)
 
     /**
      * Setter for the character's maximum gold limit.
      *
-     * @param input value to set the maximum to
+     * @param maxVal value to set the maximum to
      */
-    @JvmName("setMaxGold1")
-    fun setMaxGold(input: Int){maxGold.value = input}
+    fun setMaxGold(maxVal: Int){maxGold.intValue = maxVal}
 
     /**
      * Setter for the character's maximum silver limit.
      *
-     * @param input value to set the maximum to
+     * @param maxVal value to set the maximum to
      */
-    @JvmName("setMaxSilver1")
-    fun setMaxSilver(input: Int){maxSilver.value = input}
+    fun setMaxSilver(maxVal: Int){maxSilver.intValue = maxVal}
 
     /**
      * Setter for the character's maximum copper limit.
      *
-     * @param input value to set the maximum to
+     * @param maxVal value to set the maximum to
      */
-    @JvmName("setMaxCopper1")
-    fun setMaxCopper(input: Int){maxCopper.value = input}
+    fun setMaxCopper(maxVal: Int){maxCopper.intValue = maxVal}
 
     /**
      * Setter for the character's bonus wealth from the advantage Starting Wealth.
      *
-     * @param input value to set the bonus to
+     * @param bonusWealth value to set the bonus to
      */
-    @JvmName("setWealthBonus1")
-    fun setWealthBonus(input: Int){wealthBonus.value = input}
+    fun setWealthBonus(bonusWealth: Int){wealthBonus.intValue = bonusWealth}
 
     /**
      * Function to run when the user purchases an amount of items for their character.
      *
-     * @param item piece of equipment to acquire
+     * @param equipment piece of equipment to acquire
      * @param quantity amount of the given item to purchase
      */
-    fun buyItem(item: GeneralEquipment, quantity: Int){
+    fun buyItem(
+        equipment: GeneralEquipment,
+        quantity: Int
+    ){
         //initialize found item flag
         var foundItem = false
 
         //determine if the character already has a copy of this item
-        boughtGoods.forEach{
+        boughtGoods.forEach{(heldItem, heldAmount) ->
             //match found based on name and quality
-            if(item.saveName == it.key.saveName && item.currentQuality == it.key.currentQuality){
+            if(equipment.saveName == heldItem.saveName && equipment.currentQuality == heldItem.currentQuality){
                 //replace input with the new value
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    boughtGoods.replace(it.key, it.value + quantity)
-                }
-                else{
-                    val newVal = it.value + quantity
-                    boughtGoods[it.key] = newVal
-                }
+                val newVal = heldAmount + quantity
+                boughtGoods[heldItem] = newVal
+
 
                 //set flag to true
                 foundItem = true
@@ -131,7 +127,7 @@ class Inventory(val charInstance: BaseCharacter) {
 
         //add new item if no previous instance found
         if(!foundItem)
-            boughtGoods += Pair(item, quantity)
+            boughtGoods += Pair(equipment, quantity)
 
         //recalculate character's spent money
         countSpent()
@@ -140,28 +136,28 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Removes a single instance of the given piece of equipment.
      *
-     * @param item piece of equipment to remove from the character
+     * @param equipment piece of equipment to remove from the character
      */
-    fun removeItem(item: GeneralEquipment){
+    fun removeItem(equipment: GeneralEquipment){
         //initialize equipment removed
         var checkedItem: GeneralEquipment? = null
 
         //find the equipment item in the character's inventory
-        boughtGoods.forEach{
+        boughtGoods.forEach{(heldItem, heldAmount) ->
             //find the item based on its name and quality
-            if(item.saveName == it.key.saveName && item.currentQuality == it.key.currentQuality){
+            if(equipment.saveName == heldItem.saveName && equipment.currentQuality == heldItem.currentQuality){
                 //remove one of the indicated items
-                val newVal = it.value - 1
+                val newVal = heldAmount - 1
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    boughtGoods.replace(it.key, newVal)
+                    boughtGoods.replace(heldItem, newVal)
                 }
                 else{
-                    boughtGoods[it.key] = newVal
+                    boughtGoods[heldItem] = newVal
                 }
 
                 //set removed item key
-                checkedItem = it.key
+                checkedItem = heldItem
 
                 //terminate loop
                 return@forEach
@@ -179,18 +175,18 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Determines the amount of money spent by the character on equipment.
      */
-    fun countSpent(){
+    private fun countSpent(){
         //reset spent values
-        copperSpent.value = 0.0
-        silverSpent.value = 0.0
-        goldSpent.value = 0.0
+        copperSpent.doubleValue = 0.0
+        silverSpent.doubleValue = 0.0
+        goldSpent.doubleValue = 0.0
 
         //add all item costs to the appropriate amounts spent
-        boughtGoods.forEach{
-            when(it.key.coinType){
-                CoinType.Copper -> copperSpent.value += it.key.baseCost * it.value
-                CoinType.Silver -> silverSpent.value += it.key.baseCost * it.value
-                CoinType.Gold -> goldSpent.value += it.key.baseCost * it.value
+        boughtGoods.forEach{(equipment, quantity) ->
+            when(equipment.coinType){
+                CoinType.Copper -> copperSpent.doubleValue += equipment.baseCost * quantity
+                CoinType.Silver -> silverSpent.doubleValue += equipment.baseCost * quantity
+                CoinType.Gold -> goldSpent.doubleValue += equipment.baseCost * quantity
             }
         }
 
@@ -201,11 +197,11 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Fixes the gold counter to display a valid value.
      */
-    fun goldFix(){
+    private fun goldFix(){
         //convert decimal gold to silver
-        if(goldSpent.value % 1.0 != 0.0){
-            silverSpent.value += (goldSpent.value % 1.0) * 100
-            goldSpent.value -= goldSpent.value % 1.0
+        if(goldSpent.doubleValue % 1.0 != 0.0){
+            silverSpent.doubleValue += (goldSpent.doubleValue % 1.0) * 100
+            goldSpent.doubleValue -= goldSpent.doubleValue % 1.0
         }
 
         //fix the silver amount
@@ -215,23 +211,23 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Fixes the silver counter to display a valid value.
      */
-    fun silverFix(){
+    private fun silverFix(){
         //correct any negative silver value by converting gold to silver
-        while(silverSpent.value < 0){
-            silverSpent.value += 100
-            goldSpent.value -= 1
+        while(silverSpent.doubleValue < 0){
+            silverSpent.doubleValue += 100
+            goldSpent.doubleValue -= 1
         }
 
         //convert sufficient silver amounts to gold
-        while(silverSpent.value >= 100){
-            silverSpent.value -= 100
-            goldSpent.value += 1
+        while(silverSpent.doubleValue >= 100){
+            silverSpent.doubleValue -= 100
+            goldSpent.doubleValue += 1
         }
 
         //convert decimal silver to copper
-        if(silverSpent.value % 1.0 != 0.0){
-            copperSpent.value += (silverSpent.value % 1.0) * 10
-            silverSpent.value -= silverSpent.value % 1.0
+        if(silverSpent.doubleValue % 1.0 != 0.0){
+            copperSpent.doubleValue += (silverSpent.doubleValue % 1.0) * 10
+            silverSpent.doubleValue -= silverSpent.doubleValue % 1.0
         }
 
         //fix the copper amount
@@ -241,22 +237,22 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Fixes the copper counter to display a valid value
      */
-    fun copperFix(){
+    private fun copperFix(){
         //correct any negative copper value by converting silver to copper
-        while(copperSpent.value < 0){
-            copperSpent.value += 10
-            silverSpent.value -= 1
+        while(copperSpent.doubleValue < 0){
+            copperSpent.doubleValue += 10
+            silverSpent.doubleValue -= 1
             silverFix()
         }
 
         //convert sufficient copper amounts to silver
-        while(copperSpent.value >= 10){
-            copperSpent.value -= 10
-            silverSpent.value += 1
+        while(copperSpent.doubleValue >= 10){
+            copperSpent.doubleValue -= 10
+            silverSpent.doubleValue += 1
         }
 
         //fix silver if changes here caused needed changes
-        if(silverSpent.value > 100)
+        if(silverSpent.doubleValue > 100)
             silverFix()
     }
 
@@ -267,11 +263,14 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param quality quality of the equipment, if available
      * @return found piece of equipment or null flag
      */
-    fun findItem(name: String, quality: Int?): GeneralEquipment?{
+    private fun findItem(
+        name: String,
+        quality: Int?
+    ): GeneralEquipment?{
         //search through each category
-        allCategories.forEach{
+        allCategories.forEach{category ->
             //search category for equipment
-            val item = it.findEquipment(name, quality)
+            val item = category.findEquipment(equipName = name, quality = quality)
 
             //return found item
             if(item != null) return item
@@ -288,39 +287,41 @@ class Inventory(val charInstance: BaseCharacter) {
      */
     fun loadInventory(fileReader: BufferedReader){
         //retrieve maximum coin values
-        setMaxGold(fileReader.readLine().toInt())
-        setMaxSilver(fileReader.readLine().toInt())
-        setMaxCopper(fileReader.readLine().toInt())
+        setMaxGold(maxVal = fileReader.readLine().toInt())
+        setMaxSilver(maxVal = fileReader.readLine().toInt())
+        setMaxCopper(maxVal = fileReader.readLine().toInt())
 
         //restore previous equipment
         for(loop in 0 until fileReader.readLine().toInt()){
             buyItem(
-                findItem(
-                    fileReader.readLine(),
-                    fileReader.readLine().toIntOrNull()
+                equipment = findItem(
+                    name = fileReader.readLine(),
+                    quality = fileReader.readLine().toIntOrNull()
                 )!!,
-                fileReader.readLine().toInt()
+                quantity = fileReader.readLine().toInt()
             )
         }
     }
 
     /**
      * Writes data from this character to file.
+     *
+     * @param byteArray output stream for this section's data
      */
     fun writeInventory(byteArray: ByteArrayOutputStream) {
         //write data on maximum coin values
-        writeDataTo(byteArray, maxGold.value)
-        writeDataTo(byteArray, maxSilver.value)
-        writeDataTo(byteArray, maxCopper.value)
+        writeDataTo(writer = byteArray, input = maxGold.intValue)
+        writeDataTo(writer = byteArray, input = maxSilver.intValue)
+        writeDataTo(writer = byteArray, input = maxCopper.intValue)
 
         //add size of equipment data
-        writeDataTo(byteArray, boughtGoods.size)
+        writeDataTo(writer = byteArray, input = boughtGoods.size)
 
         //write each item's name, quality, and quantity
-        boughtGoods.forEach{
-            writeDataTo(byteArray, it.key.saveName)
-            writeDataTo(byteArray, it.key.currentQuality)
-            writeDataTo(byteArray, it.value)
+        boughtGoods.forEach{(equipment, quantity) ->
+            writeDataTo(writer = byteArray, input = equipment.saveName)
+            writeDataTo(writer = byteArray, input = equipment.currentQuality)
+            writeDataTo(writer = byteArray, input = quantity)
         }
     }
 }

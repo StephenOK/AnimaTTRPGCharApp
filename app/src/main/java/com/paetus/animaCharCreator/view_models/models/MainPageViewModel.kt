@@ -35,21 +35,23 @@ import java.io.File
  */
 class MainPageViewModel: ViewModel() {
     //initialize open state of the data sharing alert
-    private val _dataShareOpen = MutableStateFlow(false)
+    private val _dataShareOpen = MutableStateFlow(value = false)
     val dataShareOpen = _dataShareOpen.asStateFlow()
 
-    private val _optionsOpen = MutableStateFlow(false)
+    //initialize open state of the options menu
+    private val _optionsOpen = MutableStateFlow(value = false)
     val optionsOpen = _optionsOpen.asStateFlow()
 
-    private val _editSecondaries = MutableStateFlow(false)
+    //initialize open state of the edit secondaries menu
+    private val _editSecondaries = MutableStateFlow(value = false)
     val editSecondaries = _editSecondaries.asStateFlow()
 
     //initialize the selected sharing state
-    private val _shareSelection = MutableStateFlow<Boolean?>(null)
+    private val _shareSelection = MutableStateFlow<Boolean?>(value = null)
     val shareSelection = _shareSelection.asStateFlow()
 
     //initialize failed load alert
-    private val _failedLoadOpen = MutableStateFlow(false)
+    private val _failedLoadOpen = MutableStateFlow(value = false)
     val failedLoadOpen = _failedLoadOpen.asStateFlow()
 
     /**
@@ -57,15 +59,21 @@ class MainPageViewModel: ViewModel() {
      */
     fun toggleDataShareOpen(){_dataShareOpen.update{!dataShareOpen.value}}
 
+    /**
+     * Opens and closes the custom secondary editing page.
+     */
     fun toggleEditSecondaries(){_editSecondaries.update{!editSecondaries.value}}
 
     /**
      * Sets the sharing selection to the inputted value.
      *
-     * @param input value to set the boolean to
+     * @param toShare value to set the boolean to
      */
-    fun setShareSelection(input: Boolean){_shareSelection.update{input}}
+    fun setShareSelection(toShare: Boolean){_shareSelection.update{toShare}}
 
+    /**
+     * Opens and closes the options alert.
+     */
     fun toggleOptionsOpen(){_optionsOpen.update{!optionsOpen.value}}
 
     /**
@@ -75,11 +83,11 @@ class MainPageViewModel: ViewModel() {
 
     //initialize new character alert item
     private val newChar = AlertData(
-        R.string.newCharacterTitle,
-        R.string.newCharacterHeader,
-        R.string.newButtonConfirm,
-        R.string.emptyNewChar,
-        {context, name ->
+        titleRef = R.string.newCharacterTitle,
+        headerRef = R.string.newCharacterHeader,
+        buttonName = R.string.newButtonConfirm,
+        failedText = R.string.emptyNewChar,
+        clickAct = {context, name ->
             //get all current files
             val fileList = context.fileList()
 
@@ -90,7 +98,7 @@ class MainPageViewModel: ViewModel() {
             var filename = name
 
             //change file name until it is unique
-            while(fileList.contains(filename)) {
+            while(fileList.contains(element = filename)) {
                 fileNum++
                 filename = "$name($fileNum)"
             }
@@ -104,22 +112,23 @@ class MainPageViewModel: ViewModel() {
 
             //move to new intention
             startActivity(context, toNextPage, null)
+        },
+        display = {characterName, setCharacterName ->
+            //display character name input
+            TextInput(
+                display = characterName.collectAsState().value,
+                onValueChange = {setCharacterName(it)}
+            )
         }
-    ){characterName, setCharacterName ->
-        //display character name input
-        TextInput(
-            display = characterName.collectAsState().value,
-            onValueChange = {setCharacterName(it)}
-        )
-    }
+    )
 
     //initialize load character alert item
     private val loadChar = AlertData(
-        R.string.loadCharacterTitle,
-        R.string.loadCharacterHeader,
-        R.string.loadButtonConfirm,
-        R.string.noCharSelected,
-        {context, name ->
+        titleRef = R.string.loadCharacterTitle,
+        headerRef = R.string.loadCharacterHeader,
+        buttonName = R.string.loadButtonConfirm,
+        failedText = R.string.noCharSelected,
+        clickAct = {context, name ->
             //initialize next intent
             val toNextPage = Intent(context, HomeActivity::class.java)
 
@@ -128,127 +137,135 @@ class MainPageViewModel: ViewModel() {
             toNextPage.putExtra("isNew", false)
 
             try{
+                //test for successful character building
                 BaseCharacter(
-                    name,
-                    File("${context.filesDir}/AnimaChars", name),
-                    File(context.filesDir, "customSecondaries")
+                    filename = name,
+                    secondaryFile = File("${context.filesDir}/AnimaChars", name),
+                    techFile = File(context.filesDir, "customSecondaries")
                 )
 
                 //move to next intention
                 startActivity(context, toNextPage, null)
-            }
-            catch(e: Exception){
+            } catch(e: Exception){
+                //send failure to firebase
                 Firebase.crashlytics.recordException(e)
+
+                //notify user of failed build
                 toggleFailedLoadOpen()
             }
-        }
-    ){characterName, setCharacterName ->
-        val context = LocalContext.current
+        },
+        display = {characterName, setCharacterName ->
+            //initialize current context
+            val context = LocalContext.current
 
-        LazyColumn{
-            val dir = File("${context.filesDir}/AnimaChars")
+            LazyColumn{
+                //get character directory
+                val dir = File("${context.filesDir}/AnimaChars")
 
-            dir.walk().forEach{
-                //check if file is a character file
-                if(it != dir && it.isFile) {
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .selectable(
-                                    selected = characterName.collectAsState().value == it.name,
-                                    onClick = {setCharacterName(it.name)}
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            //display selected item
-                            RadioButton(
-                                selected = (it.name == characterName.collectAsState().value),
-                                onClick = {setCharacterName(it.name)},
-                                colors = RadioButtonDefaults.colors(
-                                    unselectedColor = MaterialTheme.colorScheme.onSurface
+                //search through the character file directory
+                dir.walk().forEach{charFile ->
+                    //check if file is a character file
+                    if(charFile != dir && charFile.isFile) {
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .selectable(
+                                        selected = characterName.collectAsState().value == charFile.name,
+                                        onClick = {setCharacterName(charFile.name)}
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                //display selected item
+                                RadioButton(
+                                    selected = (charFile.name == characterName.collectAsState().value),
+                                    onClick = {setCharacterName(charFile.name)},
+                                    colors = RadioButtonDefaults.colors(
+                                        unselectedColor = MaterialTheme.colorScheme.onSurface
+                                    )
                                 )
-                            )
 
-                            //display file name with relevant information
-                            Text(
-                                text = it.name,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                                //display file name with relevant information
+                                Text(
+                                    text = charFile.name,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
+    )
 
     private val deleteChar = AlertData(
-        R.string.deleteCharacterTitle,
-        R.string.deleteCharacterHeader,
-        R.string.deleteLabel,
-        R.string.noCharSelected,
-        {context, name ->
+        titleRef = R.string.deleteCharacterTitle,
+        headerRef = R.string.deleteCharacterHeader,
+        buttonName = R.string.deleteLabel,
+        failedText = R.string.noCharSelected,
+        clickAct = {context, name ->
             //delete the selected file
             File("${context.filesDir}/AnimaChars/$name").delete()
-        }
-    ){characterName, setCharacterName ->
-        val context = LocalContext.current
-        val homeDir = File("${context.filesDir}/AnimaChars")
+        },
+        display = {characterName, setCharacterName ->
+            val context = LocalContext.current
+            val homeDir = File("${context.filesDir}/AnimaChars")
 
-        LazyColumn{
-            homeDir.walk().forEach{
-                //if the file is a character file
-                if(it != homeDir){
-                    item{
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .selectable(
-                                    selected = characterName.collectAsState().value == it.name,
-                                    onClick = { setCharacterName(it.name) }
-                                ),
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            //display selection button
-                            RadioButton(
-                                selected = characterName.collectAsState().value == it.name,
-                                onClick = {setCharacterName(it.name)},
-                                colors = RadioButtonDefaults.colors(
-                                    unselectedColor = MaterialTheme.colorScheme.onSurface
+            LazyColumn{
+                homeDir.walk().forEach{ file ->
+                    //if the file is a character file
+                    if(file != homeDir){
+                        item{
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .selectable(
+                                        selected = characterName.collectAsState().value == file.name,
+                                        onClick = {setCharacterName(file.name)}
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                //display selection button
+                                RadioButton(
+                                    selected = characterName.collectAsState().value == file.name,
+                                    onClick = {setCharacterName(file.name)},
+                                    colors = RadioButtonDefaults.colors(
+                                        unselectedColor = MaterialTheme.colorScheme.onSurface
+                                    )
                                 )
-                            )
 
-                            //display the relevant file name
-                            Text(
-                                text = it.name,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                                //display the relevant file name
+                                Text(
+                                    text = file.name,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
+    )
 
     //gather all button data
     val allButtons = listOf(newChar, loadChar, deleteChar)
 
     //initialize currently selected alert option
-    private val _currentAlert = MutableStateFlow(newChar)
+    private val _currentAlert = MutableStateFlow(value = newChar)
     val currentAlert = _currentAlert.asStateFlow()
 
     //initialize action dialog's open state
-    private val _actionOpen = MutableStateFlow(false)
+    private val _actionOpen = MutableStateFlow(value = false)
     val actionOpen = _actionOpen.asStateFlow()
 
     /**
      * Sets the current action the user is taking.
      *
-     * @param input action the user is taking
+     * @param alert action the user is taking
      */
-    fun setCurrentAlert(input: AlertData){
-        _currentAlert.update{input}
+    fun setCurrentAlert(alert: AlertData){
+        _currentAlert.update{alert}
         toggleActionOpen()
     }
 
@@ -276,19 +293,22 @@ class MainPageViewModel: ViewModel() {
         val display: @Composable (StateFlow<String>, (String) -> Unit) -> Unit
     ){
         //initialize the name input for this dialog
-        private val _characterName = MutableStateFlow("")
+        private val _characterName = MutableStateFlow(value = "")
         val characterName = _characterName.asStateFlow()
 
         /**
          * Changes the name input to the desired value.
          *
-         * @param input value to set
+         * @param charName value to set
          */
-        fun setCharacterName(input: String){_characterName.update{input}}
+        fun setCharacterName(charName: String){_characterName.update{charName}}
 
+        /**
+         * Composes the alert to display when active.
+         */
         @Composable
         fun MakeDisplay(){
-            display(_characterName) {setCharacterName(it)}
+            display(_characterName) {setCharacterName(charName = it)}
         }
     }
 }

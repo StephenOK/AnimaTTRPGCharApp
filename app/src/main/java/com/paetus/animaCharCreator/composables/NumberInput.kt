@@ -65,7 +65,7 @@ fun NumberInput(
                     emptyFunction()
 
                 //close keyboard if 'enter' ever input
-                else if (it.contains('\n'))
+                else if (it.contains(char = '\n'))
                     keyboardActive?.hide()
 
                 //no changes for any other kind of input
@@ -81,6 +81,7 @@ fun NumberInput(
         //set text color
         textStyle = LocalTextStyle.current.copy(
             color =
+                //determine if error color needs to be used
                 if(!isError) MaterialTheme.colorScheme.onBackground
                 else MaterialTheme.colorScheme.error,
             textAlign = alignment

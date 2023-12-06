@@ -66,12 +66,15 @@ import java.nio.charset.StandardCharsets
 /**
  * Startup activity for the app.
  * Gives the option to load, delete, or create a new character.
+ * Gives options for other app settings.
  */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //if a settings file has been created
         if(this.fileList().contains("settings")){
+            //get the settings file and its reader
             val settingsFile = File(this.filesDir, "settings")
             val settingInputStream = FileInputStream(settingsFile)
             val settingInputReader = InputStreamReader(settingInputStream, StandardCharsets.UTF_8)
@@ -79,51 +82,69 @@ class MainActivity : AppCompatActivity() {
 
             val currVersion = settingsReader.readLine().toInt()
 
+            //set night mode
             AppCompatDelegate.setDefaultNightMode(settingsReader.readLine().toInt())
 
             settingInputStream.close()
         }
         else{
+            //create settings file if it doesn't exist
             writeSettings(this)
         }
 
+        //find character files
         val charFileDIR = File("$filesDir/AnimaChars")
+
+        //find custom data files
         val customSecondDIR = File("$filesDir/CustomSecondaryDIR")
         val customTechDIR = File("$filesDir/CustomTechDIR")
 
+        //if character file directory doesn't exist
         if(!charFileDIR.isDirectory){
+            //instantiate is as directory
             charFileDIR.mkdir()
 
-            fileList().forEach{
-                if(it != "AnimaChars" && it.contains("AnimaChar")){
-                    val newName = it.drop(9)
-                    val original = File("$filesDir/$it")
+            //for each outside character file
+            fileList().forEach{filename ->
+                if(filename != "AnimaChars" && filename.contains("AnimaChar")){
+                    //retrieve name without flag prefix
+                    val newName = filename.drop(9)
+
+                    //copy file data to its new location
+                    val original = File("$filesDir/$filename")
                     original.copyTo(
                         File("$filesDir/AnimaChars/$newName")
                     )
+
+                    //remove outside file
                     original.delete()
                 }
             }
         }
 
+        //create custom secondaries directory if it doesn't exist
         if(!customSecondDIR.isDirectory)
             customSecondDIR.mkdir()
 
+        //if custom technique directory doesn't exist
         if(!customTechDIR.isDirectory){
+            //create the directory
             customTechDIR.mkdir()
 
-            charFileDIR.walk().forEach{
-                if(it != charFileDIR){
+            //for each character file
+            charFileDIR.walk().forEach{charFile ->
+                //write its custom techniques to this directory
+                if(charFile != charFileDIR){
                     BaseCharacter(
-                        it.name,
-                        it,
-                        customSecondDIR,
-                        customTechDIR
-                    ).ki.saveOutCustoms(customTechDIR)
+                        charFile = charFile,
+                        secondaryFile = customSecondDIR,
+                        techFile = customTechDIR
+                    ).ki.saveOutCustoms(directory = customTechDIR)
                 }
             }
         }
 
+        //draw main page contents
         setContent {
             MaterialTheme(colorScheme = mainLightColors){
                 MainContents()
@@ -146,11 +167,20 @@ class MainActivity : AppCompatActivity() {
 
         //start up main page's viewModel
         val mainVM: MainPageViewModel by viewModels {
-            CustomFactory(MainPageViewModel::class.java, dummyCharacter, context)
+            CustomFactory(
+                viewModel = MainPageViewModel::class.java,
+                charInstance = dummyCharacter,
+                context = context
+            )
         }
 
+        //create viewModel for editing secondary characteristics
         val editSecondaryVM: EditSecondaryViewModel by viewModels{
-            CustomFactory(EditSecondaryViewModel::class.java, dummyCharacter, context)
+            CustomFactory(
+                viewModel = EditSecondaryViewModel::class.java,
+                charInstance = dummyCharacter,
+                context = context
+            )
         }
 
         Column(
@@ -161,7 +191,7 @@ class MainActivity : AppCompatActivity() {
                 .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            //display app title
+            //create title border format
             val textPaintStroke = Paint().asFrameworkPaint().apply{
                 isAntiAlias = true
                 style = android.graphics.Paint.Style.STROKE
@@ -174,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                 isFakeBoldText = true
             }
 
+            //create title fill format
             val textPaint = Paint().asFrameworkPaint().apply{
                 isAntiAlias = true
                 style = android.graphics.Paint.Style.FILL
@@ -183,8 +214,10 @@ class MainActivity : AppCompatActivity() {
                 isFakeBoldText = true
             }
 
-            val display = stringResource(R.string.mainTitle)
+            //retrieve app title
+            val display = stringResource(id = R.string.mainTitle)
 
+            //display app title
             Canvas(
                 modifier = Modifier,
                 onDraw = {
@@ -206,79 +239,95 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
+            //display subtitle
             Text(
-                text = stringResource(R.string.mainSubtitle),
+                text = stringResource(id = R.string.mainSubtitle),
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            Spacer(Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-            //display user's options
-            mainVM.allButtons.forEach {
-                MainButton(mainVM, it)
+            //display user's file actions
+            mainVM.allButtons.forEach{fileButton ->
+                MainButton(
+                    alertData = fileButton,
+                    mainVM = mainVM
+                )
             }
 
             //button to close app
-            TextButton(onClick = { context.finish() }) {
-                Text(text = stringResource(R.string.exitLabel))
+            TextButton(onClick = {context.finish()}) {
+                Text(text = stringResource(id = R.string.exitLabel))
             }
 
-            Spacer(Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
+            //display additional options
             Button(
                 onClick = {mainVM.toggleOptionsOpen()},
                 modifier = Modifier
                     .width(200.dp)
             ){
-                Text(text = stringResource(R.string.settingsLabel))
+                Text(text = stringResource(id = R.string.settingsLabel))
             }
         }
 
         MaterialTheme(colorScheme = detailLightColors) {
             //display user's selected action alert
             if (mainVM.actionOpen.collectAsState().value)
-                MakeAlert(mainVM, mainVM.currentAlert.collectAsState().value)
+                MakeAlert(
+                    alertData = mainVM.currentAlert.collectAsState().value,
+                    mainVM = mainVM
+                )
 
             //display settings open state
             if (mainVM.optionsOpen.collectAsState().value)
-                OptionsAlert(mainVM, editSecondaryVM)
+                OptionsAlert(
+                    editSecondaryVM = editSecondaryVM,
+                    mainVM = mainVM
+                )
 
             //display custom secondaries editing
             if(mainVM.editSecondaries.collectAsState().value)
-                SecondariesAlert(mainVM, editSecondaryVM)
+                SecondariesAlert(
+                    mainVM = mainVM,
+                    editSecondaryVM = editSecondaryVM
+                )
 
             //display share analytics selection option
             if (mainVM.dataShareOpen.collectAsState().value)
-                ShareAlert(mainVM, context)
+                ShareAlert(
+                    mainVM = mainVM
+                )
 
             //dialog to notify user of failed character load
             if (mainVM.failedLoadOpen.collectAsState().value)
-                FailedLoadAlert(mainVM)
+                FailedLoadAlert(mainVM = mainVM)
         }
     }
 
     /**
      * Create a button for the main page.
      *
+     * @param alertData holds the data to be used in this specific button's action
      * @param mainVM viewModel of the current page
-     * @param item holds the data to be used in this specific button's action
      */
     @Composable
     private fun MainButton(
-        mainVM: MainPageViewModel,
-        item: MainPageViewModel.AlertData
+        alertData: MainPageViewModel.AlertData,
+        mainVM: MainPageViewModel
     ){
         Row {
             Button(
                 onClick = {
                     //set selected action
-                    mainVM.setCurrentAlert(item)
+                    mainVM.setCurrentAlert(alert = alertData)
                 },
                 modifier = Modifier
                     .width(200.dp)
             ){
-                Text(text = stringResource(item.titleRef))
+                Text(text = stringResource(id = alertData.titleRef))
             }
         }
     }
@@ -286,64 +335,67 @@ class MainActivity : AppCompatActivity() {
     /**
      * Creates an alert for the user to interact with.
      *
+     * @param alertData data package to use in this alert
      * @param mainVM viewModel of the current page
-     * @param item data package to use in this alert
      */
     @Composable
     fun MakeAlert(
-        mainVM: MainPageViewModel,
-        item: MainPageViewModel.AlertData
+        alertData: MainPageViewModel.AlertData,
+        mainVM: MainPageViewModel
     ){
+        //get local context
         val context = LocalContext.current
 
         AlertDialog(
             onDismissRequest = {
                 //clear name and toggle open status
-                item.setCharacterName("")
+                alertData.setCharacterName(charName = "")
                 mainVM.toggleActionOpen()
             },
             //get and display item's title
             title = {
                 Text(
-                    text = stringResource(item.headerRef),
+                    text = stringResource(id = alertData.headerRef),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
-            text = {item.MakeDisplay()},
+            text = {alertData.MakeDisplay()},
             confirmButton = {
                 TextButton(onClick = {
                     //terminate process if no selection made
-                    if(item.characterName.value == "")
+                    if(alertData.characterName.value == "")
                         Toast.makeText(
                             this@MainActivity,
-                            context.getString(item.failedText),
+                            context.getString(alertData.failedText),
                             Toast.LENGTH_SHORT
                         ).show()
 
                     //run action on user's indicated character
                     else
-                        item.clickAct(context, item.characterName.value)
+                        alertData.clickAct(context, alertData.characterName.value)
 
                     //close the dialog
                     mainVM.toggleActionOpen()
                 }) {
                     Text(
-                        text = stringResource(item.buttonName),
+                        text = stringResource(id = alertData.buttonName),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    //clear name and toggle open status
-                    item.setCharacterName("")
-                    mainVM.toggleActionOpen()
-                }){
+                TextButton(
+                    onClick = {
+                        //clear name and toggle open status
+                        alertData.setCharacterName("")
+                        mainVM.toggleActionOpen()
+                    }
+                ){
                     Text(
-                        text = stringResource(R.string.cancelLabel),
+                        text = stringResource(id = R.string.cancelLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -351,16 +403,23 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Display additional options to the user on request.
+     *
+     * @param editSecondaryVM viewModel for secondary characteristic editing
+     * @param mainVM viewModel for this activity
+     */
     @Composable
     private fun OptionsAlert(
-        mainVM: MainPageViewModel,
-        editSecondaryVM: EditSecondaryViewModel
+        editSecondaryVM: EditSecondaryViewModel,
+        mainVM: MainPageViewModel
     ){
         AlertDialog(
+            //hide alert on dismissal
             onDismissRequest = {mainVM.toggleOptionsOpen()},
             title = {
                 Text(
-                    text = stringResource(R.string.settingsLabel),
+                    text = stringResource(id = R.string.settingsLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -405,19 +464,25 @@ class MainActivity : AppCompatActivity() {
 //
                     //Spacer(Modifier.height(10.dp))
 
+                    //display option to edit secondary characteristics
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
+                                //refresh secondary characteristic items
                                 editSecondaryVM.refreshCustomList()
+
+                                //open editing window
                                 mainVM.toggleEditSecondaries()
                             },
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = CenterVertically
                     ){
-                        Spacer(Modifier.weight(0.25f))
+                        Spacer(modifier = Modifier.weight(0.25f))
+
+                        //prompt for secondary characteristic editing option
                         Text(
-                            text = stringResource(R.string.editSecondariesTitle),
+                            text = stringResource(id = R.string.editSecondariesTitle),
                             modifier = Modifier
                                 .weight(0.5f),
                             fontSize = 20.sp,
@@ -432,6 +497,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
 
+                    //display option for setting analytics sharing
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -441,9 +507,11 @@ class MainActivity : AppCompatActivity() {
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = CenterVertically
                     ){
-                        Spacer(Modifier.weight(0.25f))
+                        Spacer(modifier = Modifier.weight(0.25f))
+
+                        //prompt for analytics settings editing
                         Text(
-                            text = stringResource(R.string.sharingTitle),
+                            text = stringResource(id = R.string.sharingTitle),
                             modifier = Modifier
                                 .weight(0.5f),
                             fontSize = 20.sp,
@@ -462,12 +530,13 @@ class MainActivity : AppCompatActivity() {
             confirmButton = {
                 TextButton(
                     onClick = {
+                        //save settings and close alert
                         writeSettings(this)
                         mainVM.toggleOptionsOpen()
                     }
                 ) {
                     Text(
-                        text = stringResource(R.string.closeLabel),
+                        text = stringResource(id = R.string.closeLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -475,41 +544,53 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Displays a window for editing secondary characteristics.
+     *
+     * @param mainVM viewModel for this activity
+     * @param editSecondaryVM viewModel for this alert
+     */
     @Composable
     private fun SecondariesAlert(
         mainVM: MainPageViewModel,
         editSecondaryVM: EditSecondaryViewModel
     ) {
         DialogFrame(
-            dialogTitle = stringResource(R.string.editSecondariesTitle),
+            dialogTitle = stringResource(id = R.string.editSecondariesTitle),
             mainContent = {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.Center
                 ){
-                    editSecondaryVM.customList.forEach{
+                    //for each custom secondary file present
+                    editSecondaryVM.customList.forEach{editPanel ->
+                        //display the characteristic's name
                         item{
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        if (!it.editOpen.value)
+                                        //make this the only open item
+                                        if (!editPanel.editOpen.value)
                                             editSecondaryVM.closeAll()
 
-                                        it.toggleOpen()
+                                        //toggle secondary's open state
+                                        editPanel.toggleOpen()
                                     },
                                 horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
-                                    text = it.item.name.value,
+                                    text = editPanel.customChar.name.value,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
                         }
+
+                        //display editable values
                         item{
                             AnimatedVisibility(
-                                visible = it.editOpen.collectAsState().value,
+                                visible = editPanel.editOpen.collectAsState().value,
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ){
@@ -525,14 +606,14 @@ class MainActivity : AppCompatActivity() {
                                     ) {
                                         //input to change public setting for characteristic
                                         Checkbox(
-                                            checked = it.isPrivate.collectAsState().value,
-                                            onCheckedChange = {_ -> it.togglePrivate()},
+                                            checked = editPanel.isPrivate.collectAsState().value,
+                                            onCheckedChange = {_ -> editPanel.togglePrivate()},
                                             modifier = Modifier
                                                 .weight(0.1f)
                                         )
 
                                         Text(
-                                            text = stringResource(R.string.publicLabel),
+                                            text = stringResource(id = R.string.publicLabel),
                                             modifier = Modifier
                                                 .weight(0.4f),
                                             textAlign = TextAlign.Center
@@ -546,11 +627,12 @@ class MainActivity : AppCompatActivity() {
                                             modifier = Modifier
                                                 .weight(0.5f)
                                         ) {
-                                            Text(text = stringResource(R.string.deleteLabel))
+                                            Text(text = stringResource(id = R.string.deleteLabel))
                                         }
                                     }
 
-                                    it.allDropdowns.forEach { item ->
+                                    //input to change secondary's field and primary base and
+                                    editPanel.allDropdowns.forEach {item ->
                                         OutlinedDropdown(
                                             optionsRef = item.optionsRef,
                                             index = item.index.collectAsState().value,
@@ -575,25 +657,30 @@ class MainActivity : AppCompatActivity() {
             },
             buttonContent = {
                 Row {
+                    //button to save changes
                     TextButton(
                         onClick = {
-                            editSecondaryVM.customList.forEach{
-                                editSecondaryVM.overwriteItem(it.item)
+                            //rewrite characteristic data
+                            editSecondaryVM.customList.forEach{panel ->
+                                editSecondaryVM.overwriteItem(customChar = panel.customChar)
                             }
+
+                            //close editing page
                             mainVM.toggleEditSecondaries()
                         }
                     ){
                         Text(
-                            text = stringResource(R.string.saveLabel),
+                            text = stringResource(id = R.string.saveLabel),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
+                    //button to cancel changes
                     TextButton(
                         onClick = {mainVM.toggleEditSecondaries()}
                     ){
                         Text(
-                            text = stringResource(R.string.cancelLabel),
+                            text = stringResource(id = R.string.cancelLabel),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -601,10 +688,16 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
+        //display confirmation of deletion alert
         if(editSecondaryVM.deleteConfirmOpen.collectAsState().value)
             DeleteSecondaryConfirmation(editSecondaryVM = editSecondaryVM)
     }
 
+    /**
+     * Displays an alert that the user can use to confirm a secondary characteristic's deletion.
+     *
+     * @param editSecondaryVM viewModel for the secondary characteristics editing page
+     */
     @Composable
     fun DeleteSecondaryConfirmation(
         editSecondaryVM: EditSecondaryViewModel
@@ -613,34 +706,44 @@ class MainActivity : AppCompatActivity() {
 
         AlertDialog(
             onDismissRequest = {},
+
+            //prompt for user confirmation
             title = {
                 Text(
                     text = stringResource(
-                        R.string.deleteSecondaryPrompt,
+                        id = R.string.deleteSecondaryPrompt,
                         editSecondaryVM.deletingItem.collectAsState().value
                     )
                 )
             },
+
+            //on deletion confirmation
             confirmButton = {
                 TextButton(
                     onClick = {
+                        //get custom secondary's file
                         File("${context.filesDir}/CustomSecondaryDIR/${editSecondaryVM.deletingItem.value}").delete()
+
+                        //refresh viewModel items and close confirmation screen
                         editSecondaryVM.refreshCustomList()
                         editSecondaryVM.toggleDeleteConfirm()
                     }
                 ){
                     Text(
-                        text = stringResource(R.string.confirmLabel),
+                        text = stringResource(id = R.string.confirmLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
+
+            //on deletion cancellation
             dismissButton = {
                 TextButton(
+                    //close deletion alert
                     onClick = {editSecondaryVM.toggleDeleteConfirm()}
                 ){
                     Text(
-                        text = stringResource(R.string.cancelLabel),
+                        text = stringResource(id = R.string.cancelLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -652,19 +755,20 @@ class MainActivity : AppCompatActivity() {
      * Composes an Alert Dialog for the user to select their sharing settings.
      *
      * @param mainVM viewModel that manages this page
-     * @param context page context
      */
     @Composable
     private fun ShareAlert(
-        mainVM: MainPageViewModel,
-        context: Context
+        mainVM: MainPageViewModel
     ) {
+        //initialize local context
+        val context = LocalContext.current
+
         AlertDialog(
             onDismissRequest = {mainVM.toggleDataShareOpen()},
             title = {
                 //prompt for user sharing
                 Text(
-                    text = stringResource(R.string.sharingHeader),
+                    text = stringResource(id = R.string.sharingHeader),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -673,18 +777,18 @@ class MainActivity : AppCompatActivity() {
                     //user wishes to activate sharing
                     Row(
                         modifier = Modifier
-                            .clickable { mainVM.setShareSelection(true) },
+                            .clickable {mainVM.setShareSelection(true)},
                         verticalAlignment = CenterVertically
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == true,
-                            onClick = { mainVM.setShareSelection(true) },
+                            onClick = {mainVM.setShareSelection(toShare = true)},
                             colors = RadioButtonDefaults.colors(
                                 unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
                         Text(
-                            text = stringResource(R.string.sendData),
+                            text = stringResource(id = R.string.sendData),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -697,21 +801,21 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         RadioButton(
                             selected = mainVM.shareSelection.collectAsState().value == false,
-                            onClick = { mainVM.setShareSelection(false) },
+                            onClick = {mainVM.setShareSelection(toShare = false)},
                             colors = RadioButtonDefaults.colors(
                                 unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
                         Text(
-                            text = stringResource(R.string.notSendData),
+                            text = stringResource(id = R.string.notSendData),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
-                    //notes about sharing
+                    //display notes about sharing
                     Row {
                         Text(
-                            text = stringResource(R.string.defaultShareNotice),
+                            text = stringResource(id = R.string.defaultShareNotice),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -743,7 +847,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 ) {
                     Text(
-                        text = stringResource(R.string.confirmLabel),
+                        text = stringResource(id = R.string.confirmLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -752,10 +856,10 @@ class MainActivity : AppCompatActivity() {
             //close dialog button
             dismissButton = {
                 TextButton(
-                    onClick = { mainVM.toggleDataShareOpen() }
+                    onClick = {mainVM.toggleDataShareOpen()}
                 ) {
                     Text(
-                        text = stringResource(R.string.cancelLabel),
+                        text = stringResource(id = R.string.cancelLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -765,6 +869,8 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Compose an alert that notifies the user of a failed character load.
+     *
+     * @param mainVM viewModel for the main page
      */
     @Composable
     private fun FailedLoadAlert(
@@ -772,12 +878,12 @@ class MainActivity : AppCompatActivity() {
     ) {
         AlertDialog(
             onDismissRequest = {mainVM.toggleFailedLoadOpen()},
-            title = {Text(text = stringResource(R.string.failedLoadTitle))},
-            text = {Text(text = stringResource(R.string.failedLoadText))},
+            title = {Text(text = stringResource(id = R.string.failedLoadTitle))},
+            text = {Text(text = stringResource(id = R.string.failedLoadText))},
             confirmButton = {
                 TextButton(onClick = {mainVM.toggleFailedLoadOpen()}) {
                     Text(
-                        text = stringResource(R.string.closeLabel),
+                        text = stringResource(id = R.string.closeLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -786,17 +892,28 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Writes the app settings to its own file.
+ *
+ * @param home activity writing the settings from
+ */
 fun writeSettings(home: Activity){
+    //open file output to the settings file
     val saveSettings = home.openFileOutput("settings", Context.MODE_PRIVATE)
 
+    //initialize byte array output stream
     val settingsDefault = ByteArrayOutputStream()
 
+    //write the current version and the current default night mode
     writeDataTo(settingsDefault, BuildConfig.VERSION_CODE)
     writeDataTo(settingsDefault, AppCompatDelegate.getDefaultNightMode())
 
+    //close byte output stream
     settingsDefault.close()
 
+    //write byte array to file
     saveSettings.write(settingsDefault.toByteArray())
 
+    //close file writer
     saveSettings.close()
 }

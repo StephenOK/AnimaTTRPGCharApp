@@ -2,7 +2,6 @@ package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,14 +34,13 @@ import com.paetus.animaCharCreator.view_models.models.EquipmentFragmentViewModel
  *
  * @param equipFragVM viewModel that manages this object's data
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EquipmentItemPurchase(
     equipFragVM: EquipmentFragmentViewModel
 ){
     DialogFrame(
-        stringResource(R.string.purchaseDialogHeader),
-        {
+        dialogTitle = stringResource(id = R.string.purchaseDialogHeader),
+        mainContent = {
             LazyColumn (
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -52,8 +50,8 @@ fun EquipmentItemPurchase(
                 item {
                     NumberInput(
                         inputText = equipFragVM.purchasedNumber.collectAsState().value,
-                        inputFunction = { equipFragVM.setPurchasedNumber(it.toInt()) },
-                        emptyFunction = { equipFragVM.setPurchasedNumber("") },
+                        inputFunction = {equipFragVM.setPurchasedNumber(quantity = it.toInt())},
+                        emptyFunction = {equipFragVM.setPurchasedNumber(display = "")},
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                     )
@@ -61,15 +59,15 @@ fun EquipmentItemPurchase(
 
                 //quality options of the item bought, if available
                 if(equipFragVM.currentQuality.value != null) {
-                    items(equipFragVM.purchasingCategory.value!!.qualityInput!!){
+                    items(equipFragVM.purchasingCategory.value!!.qualityInput!!){quality ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(0.6f),
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             RadioButton(
-                                selected = it == equipFragVM.currentQuality.collectAsState().value,
-                                onClick = {equipFragVM.setCurrentQuality(it)},
+                                selected = quality == equipFragVM.currentQuality.collectAsState().value,
+                                onClick = {equipFragVM.setCurrentQuality(quality = quality)},
                                 modifier = Modifier
                                     .weight(0.1f),
                                 colors = RadioButtonDefaults.colors(
@@ -77,18 +75,18 @@ fun EquipmentItemPurchase(
                                 )
                             )
                             Text(
-                                text = stringResource(it.qualityType),
+                                text = stringResource(id = quality.qualityType),
                                 modifier = Modifier
                                     .weight(0.2f)
-                                    .clickable { equipFragVM.setCurrentQuality(it) }
+                                    .clickable {equipFragVM.setCurrentQuality(quality = quality)}
                             )
                         }
                     }
                 }
 
-                item{Spacer(Modifier.height(10.dp))}
+                item{Spacer(modifier = Modifier.height(10.dp))}
 
-                //display total purchase cost
+                //gold cost of purchase
                 item{
                     InfoRow(
                         label = CoinType.Gold.name
@@ -99,13 +97,12 @@ fun EquipmentItemPurchase(
                             transitionSpec = numberScroll,
                             label = "dialogGoldSpent"
                         ) {
-                            Text(
-                                text = "$it"
-                            )
+                            Text(text = "$it")
                         }
                     }
                 }
 
+                //silver cost of purchase
                 item{
                     InfoRow(
                         label = CoinType.Silver.name
@@ -116,13 +113,12 @@ fun EquipmentItemPurchase(
                             transitionSpec = numberScroll,
                             label = "dialogSilverSpent"
                         ) {
-                            Text(
-                                text = "$it"
-                            )
+                            Text(text = "$it")
                         }
                     }
                 }
 
+                //copper cost of purchase
                 item{
                     InfoRow(
                         label = CoinType.Copper.name
@@ -133,9 +129,7 @@ fun EquipmentItemPurchase(
                             transitionSpec = numberScroll,
                             label = "dialogCopperSpent"
                         ) {
-                            Text(
-                                text = "$it"
-                            )
+                            Text(text = "$it")
                         }
                     }
                 }
@@ -144,19 +138,23 @@ fun EquipmentItemPurchase(
             //close dialog on back press
             BackHandler{equipFragVM.toggleItemPurchaseOpen()}
         },
-        {
+        buttonContent = {
             //button to confirm purchase
-            TextButton(onClick = {equipFragVM.purchaseItems()}) {
+            TextButton(
+                onClick = {equipFragVM.purchaseItems()}
+            ){
                 Text(
-                    text = stringResource(R.string.confirmLabel),
+                    text = stringResource(id = R.string.confirmLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             //button to cancel purchase
-            TextButton(onClick = {equipFragVM.toggleItemPurchaseOpen()}) {
+            TextButton(
+                onClick = {equipFragVM.toggleItemPurchaseOpen()}
+            ){
                 Text(
-                    text = stringResource(R.string.cancelLabel),
+                    text = stringResource(id = R.string.cancelLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

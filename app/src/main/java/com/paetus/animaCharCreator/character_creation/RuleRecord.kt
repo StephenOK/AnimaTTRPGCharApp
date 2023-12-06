@@ -5,18 +5,21 @@ import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 
-class RuleRecord() {
+/**
+ * Defines the rule sets that the created character will adhere to.
+ */
+class RuleRecord {
     //initialize if base or core exxet is used
-    val isCoreExxet = mutableStateOf(false)
+    private val isCoreExxet = mutableStateOf(value = false)
 
     //initialize use of dominus exxet
-    val hasDominus = mutableStateOf(false)
+    private val hasDominus = mutableStateOf(value = false)
 
     //initialize use of arcana exxet
-    val hasArcana = mutableStateOf(false)
+    private val hasArcana = mutableStateOf(value = false)
 
     //initialize use of promethium exxet
-    val hasPromethium = mutableStateOf(false)
+    private val hasPromethium = mutableStateOf(value = false)
 
     /**
      * Toggles between using the base rules or the core exxet.
@@ -54,9 +57,9 @@ class RuleRecord() {
      * Writes this section's data to the character's file.
      */
     fun writeRules(byteArray: ByteArrayOutputStream) {
-        writeDataTo(byteArray, isCoreExxet.value)
-        writeDataTo(byteArray, hasDominus.value)
-        writeDataTo(byteArray, hasArcana.value)
-        writeDataTo(byteArray, hasPromethium.value)
+        writeDataTo(writer = byteArray, input = isCoreExxet.value)
+        writeDataTo(writer = byteArray, input = hasDominus.value)
+        writeDataTo(writer = byteArray, input = hasArcana.value)
+        writeDataTo(writer = byteArray, input = hasPromethium.value)
     }
 }

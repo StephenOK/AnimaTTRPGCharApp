@@ -1,11 +1,10 @@
 package com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities
 
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.writeDataTo
-import kotlin.Throws
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 /**
  * Object for a single secondary characteristic.
@@ -16,59 +15,57 @@ import java.io.IOException
 
 open class SecondaryCharacteristic(private val parent: SecondaryList){
     //initialize points from the associated modifier
-    val modVal = mutableStateOf(0)
+    val modVal = mutableIntStateOf(value = 0)
 
     //initialize points applied by the user
-    val pointsApplied = mutableStateOf(0)
+    val pointsApplied = mutableIntStateOf(0)
 
     //initialize development cost
-    val devPerPoint = mutableStateOf(0)
+    val devPerPoint = mutableIntStateOf(value = 0)
 
     //initialize reduction in cost due to advantages
-    val developmentDeduction = mutableStateOf(0)
+    val developmentDeduction = mutableIntStateOf(value = 0)
 
     //initialize points per level from class
-    val classPointsPerLevel = mutableStateOf(0)
-    val classPointTotal = mutableStateOf(0)
+    private val classPointsPerLevel = mutableIntStateOf(value = 0)
+    val classPointTotal = mutableIntStateOf(value = 0)
 
     //initialize bonus points in this characteristic
-    val special = mutableStateOf(0)
+    val special = mutableIntStateOf(value = 0)
 
     //initialize bonus points per level in this characteristic
-    val specialPerLevel = mutableStateOf(0)
+    private val specialPerLevel = mutableIntStateOf(value = 0)
 
     //initialize natural bonus application
-    val bonusApplied = mutableStateOf(false)
+    val bonusApplied = mutableStateOf(value = false)
 
     //initialize development points spent in this characteristic
-    val pointsIn = mutableStateOf(0)
+    val pointsIn = mutableIntStateOf(value = 0)
 
     //initialize final total
-    val total = mutableStateOf(0)
+    val total = mutableIntStateOf(value = 0)
 
     /**
      * Setter for characteristic's modifier.
      *
-     * @param value amount to set the mod to
+     * @param modValue amount to set the mod to
      */
-    @JvmName("setModVal1")
-    fun setModVal(value: Int) {
-        modVal.value = value
+    fun setModVal(modValue: Int) {
+        modVal.intValue = modValue
         refreshTotal()
     }
 
     /**
      * Setter for points applied by user.
      *
-     * @param points amount to set the points applied to
+     * @param pointInput amount to set the points applied to
      */
-    @JvmName("setPointsApplied1")
-    fun setPointsApplied(points: Int) {
-        pointsApplied.value = points
+    fun setPointsApplied(pointInput: Int) {
+        pointsApplied.intValue = pointInput
 
         //remove natural bonus if no points applied to this stat
-        if(points == 0 && bonusApplied.value)
-            setBonusApplied(false)
+        if(pointInput == 0 && bonusApplied.value)
+            setNatBonus(natBonus = false)
 
         updateDevSpent()
         refreshTotal()
@@ -77,33 +74,30 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     /**
      * Set the number of development points spent per bought point in this characteristic.
      *
-     * @param perPoints value to set the development point multiplier to
+     * @param dpCost value to set the development point multiplier to
      */
-    @JvmName("setDevPerPoint1")
-    fun setDevPerPoint(perPoints:Int){
-        devPerPoint.value = perPoints
+    fun setDevCost(dpCost: Int){
+        devPerPoint.intValue = dpCost
         updateDevSpent()
     }
 
     /**
      * Change any deduction to the development point cost by the indicated amount.
      *
-     * @param perPoints amount to change the deduction by
+     * @param dpDeduction amount to change the deduction by
      */
-    @JvmName("setDevelopmentDeduction1")
-    fun setDevelopmentDeduction(perPoints: Int){
-        developmentDeduction.value += perPoints
+    fun setDevelopmentDeduction(dpDeduction: Int){
+        developmentDeduction.intValue += dpDeduction
         updateDevSpent()
     }
 
     /**
      * Setter for class points.
      *
-     * @param points amount to set the points per level to
+     * @param classBonus amount to set the points per level to
      */
-    @JvmName("setClassPointsPerLevel1")
-    fun setClassPointsPerLevel(points: Int) {
-        classPointsPerLevel.value = points
+    fun setClassPointsPerLevel(classBonus: Int) {
+        classPointsPerLevel.intValue = classBonus
         classTotalRefresh()
     }
 
@@ -111,9 +105,9 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      * Updates the number of points gained from levels for this characteristic.
      */
     fun classTotalRefresh(){
-        classPointTotal.value =
-            if(parent.charInstance.lvl.value != 0) classPointsPerLevel.value * parent.charInstance.lvl.value
-            else classPointsPerLevel.value/2
+        classPointTotal.intValue =
+            if(parent.charInstance.lvl.intValue != 0) classPointsPerLevel.intValue * parent.charInstance.lvl.intValue
+            else classPointsPerLevel.intValue/2
 
         refreshTotal()
     }
@@ -121,33 +115,30 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     /**
      * Setter for special points.
      *
-     * @param points amount to change the special bonus to this characteristic by
+     * @param specBonus amount to change the special bonus to this characteristic by
      */
-    @JvmName("setSpecial1")
-    fun setSpecial(points: Int) {
-        special.value += points
+    fun setSpecial(specBonus: Int) {
+        special.intValue += specBonus
         refreshTotal()
     }
 
     /**
      * Change the characteristic's bonus by the indicated amount.
      *
-     * @param points amount to change the bonus by
+     * @param lvlBonus amount to change the bonus by
      */
-    @JvmName("setSpecialPerLevel1")
-    fun setSpecialPerLevel(points: Int){
-        specialPerLevel.value += points
+    fun setSpecialPerLevel(lvlBonus: Int){
+        specialPerLevel.intValue += lvlBonus
         refreshTotal()
     }
 
     /**
      * Setter for natural bonus.
      *
-     * @param bonus true if applying a natural bonus to the characteristic
+     * @param natBonus true if applying a natural bonus to the characteristic
      */
-    @JvmName("setBonusApplied1")
-    fun setBonusApplied(bonus: Boolean) {
-        bonusApplied.value = bonus
+    fun setNatBonus(natBonus: Boolean) {
+        bonusApplied.value = natBonus
         refreshTotal()
     }
 
@@ -155,9 +146,9 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      * Get actual development points spent per point applied to this characteristic.
      */
     fun updateDevSpent(){
-        pointsIn.value =
-            if(devPerPoint.value > developmentDeduction.value) pointsApplied.value * (devPerPoint.value - developmentDeduction.value)
-            else pointsApplied.value
+        pointsIn.intValue =
+            if(devPerPoint.intValue > developmentDeduction.intValue) pointsApplied.intValue * (devPerPoint.intValue - developmentDeduction.intValue)
+            else pointsApplied.intValue
 
         parent.charInstance.updateTotalSpent()
     }
@@ -166,12 +157,17 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      * Recalculates the total value after any other setter is called.
      */
     fun refreshTotal() {
-        total.value = modVal.value + pointsApplied.value + special.value +
-                ((classPointsPerLevel.value + specialPerLevel.value) * parent.charInstance.lvl.value)
-        if(parent.allTradesTaken.value) total.value += 10
-        else if (pointsApplied.value == 0) total.value -= 30
+        //add all invested and level points for this section
+        total.intValue = modVal.intValue + pointsApplied.intValue + special.intValue +
+                ((classPointsPerLevel.intValue + specialPerLevel.intValue) * parent.charInstance.lvl.intValue)
 
-        if (bonusApplied.value) total.value += 5
+        //add points for jack of all trades advantage
+        if(parent.allTradesTaken.value) total.intValue += 10
+        //remove points for no points and missing that advantage
+        else if (pointsApplied.intValue == 0) total.intValue -= 30
+
+        //add natural bonus points
+        if (bonusApplied.value) total.intValue += 5
     }
 
     /**
@@ -179,19 +175,20 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      *
      * @param fileReader file to read the data from
      */
-    @Throws(IOException::class)
     fun load(fileReader: BufferedReader) {
         //retrieve characteristic's applied points and natural bonus state
-        setPointsApplied(fileReader.readLine().toInt())
-        setBonusApplied(fileReader.readLine().toBoolean())
+        setPointsApplied(pointInput = fileReader.readLine().toInt())
+        setNatBonus(natBonus = fileReader.readLine().toBoolean())
     }
 
     /**
      * Write characteristic data to the file output stream
+     *
+     * @param byteArray output stream for this item's data
      */
     open fun write(byteArray: ByteArrayOutputStream) {
         //record characteristic's applied points and natural bonus state
-        writeDataTo(byteArray, pointsApplied.value)
-        writeDataTo(byteArray, bonusApplied.value)
+        writeDataTo(writer = byteArray, input = pointsApplied.intValue)
+        writeDataTo(writer = byteArray, input = bonusApplied.value)
     }
 }

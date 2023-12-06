@@ -51,19 +51,19 @@ fun FreeSpellPick(
     }
 
     DialogFrame(
-        stringResource(R.string.freeSpellDialogHeader),
-        {
+        dialogTitle = stringResource(id = R.string.freeSpellDialogHeader),
+        mainContent = {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
             ){
                 //create selection item for each available spell
-                items(freeList){
+                items(freeList){spell ->
                     //determine that spell is legal for the book and not already taken
-                    if(!it.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getSpellHeld(it)){
+                    if(!spell.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getSpellHeld(spell)){
                         PickFreeRow(
-                            magFragVM,
-                            it
+                            spell = spell,
+                            magFragVM = magFragVM
                         )
                     }
                 }
@@ -72,20 +72,23 @@ fun FreeSpellPick(
             //close dialog on back button press
             BackHandler{magFragVM.toggleFreeExchangeOpen()}
         },
-        {
+        buttonContent = {
             //confirmation button adds spell to character
-            TextButton(onClick = {magFragVM.addFreeSpell()}
+            TextButton(
+                onClick = {magFragVM.addFreeSpell()}
             ){
                 Text(
-                    text = stringResource(R.string.confirmLabel),
+                    text = stringResource(id = R.string.confirmLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             //back button closes dialog
-            TextButton(onClick = {magFragVM.toggleFreeExchangeOpen() }) {
+            TextButton(
+                onClick = {magFragVM.toggleFreeExchangeOpen()}
+            ){
                 Text(
-                    text = stringResource(R.string.backLabel),
+                    text = stringResource(id = R.string.backLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -96,21 +99,21 @@ fun FreeSpellPick(
 /**
  * Creates a row with a free spell for the user to select for their character.
  *
+ * @param spell spell associated with this row
  * @param magFragVM source of currently selected spell
- * @param displayItem spell associated with this row
  */
 @Composable
 private fun PickFreeRow(
-    magFragVM: MagicFragmentViewModel,
-    displayItem: FreeSpell
+    spell: FreeSpell,
+    magFragVM: MagicFragmentViewModel
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
         //radio button to denote user's selection
         RadioButton(
-            selected = displayItem == magFragVM.selectedFreeSpell.collectAsState().value,
-            onClick = {magFragVM.setSelectedFreeSpell(displayItem)},
+            selected = spell == magFragVM.selectedFreeSpell.collectAsState().value,
+            onClick = {magFragVM.setSelectedFreeSpell(freeSpell = spell)},
             modifier = Modifier
                 .weight(0.1f),
             colors = RadioButtonDefaults.colors(
@@ -119,17 +122,17 @@ private fun PickFreeRow(
         )
         //spell's name
         Text(
-            text = stringResource(displayItem.name),
+            text = stringResource(id = spell.name),
             modifier = Modifier
                 .weight(0.65f)
-                .clickable{magFragVM.setSelectedFreeSpell(displayItem)},
+                .clickable{magFragVM.setSelectedFreeSpell(freeSpell = spell)},
             textAlign = TextAlign.Center
         )
 
         //button to show the spell's details
         DetailButton(
             onClick = {
-                magFragVM.setDetailItem(displayItem)
+                magFragVM.setDetailItem(spell = spell)
                 magFragVM.toggleDetailAlertOpen()
             },
             modifier = Modifier

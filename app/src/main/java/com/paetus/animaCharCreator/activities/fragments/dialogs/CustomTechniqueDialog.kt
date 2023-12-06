@@ -48,6 +48,7 @@ import java.io.FileOutputStream
  * Applies the created technique to the character after creation is complete.
  * Takes the appropriate checks to confirm a valid technique as it is being built.
  *
+ * @param filename name of the character associated with the technique
  * @param kiFragVM ki fragment viewModel passed down from the ki page
  * @param customTechVM viewModel initialized for this dialog
  * @param techContents detail function to pass to this object
@@ -65,8 +66,8 @@ fun CustomTechniqueDialog(
     customTechVM.getCustomTechnique().setFileOrigin(filename)
 
     DialogFrame(
-        stringResource(R.string.customTechHeader),
-        {
+        dialogTitle = stringResource(id = R.string.customTechHeader),
+        mainContent = {
             when (customTechVM.customPageNum.collectAsState().value) {
                 //page for determining technique level
                 1 -> {
@@ -77,7 +78,7 @@ fun CustomTechniqueDialog(
                     ) {
                         //prompt for technique's level
                         Text(
-                            text = stringResource(R.string.firstPageTitle),
+                            text = stringResource(id = R.string.firstPageTitle),
                             modifier = Modifier
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center
@@ -86,14 +87,14 @@ fun CustomTechniqueDialog(
                         //display each level option
                         for (level in 1..3)
                             TechLevelSelection(
-                                level,
-                                customTechVM
+                                level = level,
+                                customTechVM = customTechVM
                             )
 
 
                         //display technique cost minimums and maximums
                         InfoRow(
-                            label = stringResource(R.string.mkRange)
+                            label = stringResource(id = R.string.mkRange)
                         ){modifier, _ ->
                             Row(
                                 modifier = modifier
@@ -105,9 +106,7 @@ fun CustomTechniqueDialog(
                                     transitionSpec = numberScroll,
                                     label = "costMinimum"
                                 ) {
-                                    Text(
-                                        text = "$it"
-                                    )
+                                    Text(text = "$it")
                                 }
 
                                 Text(
@@ -135,31 +134,31 @@ fun CustomTechniqueDialog(
                 //page for determining primary effect
                 2 -> {
                     //define added technique as primary
-                    customTechVM.setPickingPrimary(true)
+                    customTechVM.setPickingPrimary(isPrimary = true)
 
                     //set dropdown's default index
-                    customTechVM.setTechniqueIndex(0)
+                    customTechVM.setTechniqueIndex(dropdownIndex = 0)
 
                     Column {
                         //prompt for ability selection
-                        Text(text = stringResource(R.string.secondPageTitle))
+                        Text(text = stringResource(id = R.string.secondPageTitle))
 
                         //create dropdown and displayed table
-                        TechniqueAbilityDropdown(customTechVM)
+                        TechniqueAbilityDropdown(customTechVM = customTechVM)
                     }
                 }
 
                 //page for determining secondary effects
                 3 -> {
                     //reset dropdown index
-                    customTechVM.setTechniqueIndex(0)
+                    customTechVM.setTechniqueIndex(dropdownIndex = 0)
 
                     Column {
                         //prompt for ability addition
-                        Text(text = stringResource(R.string.thirdPageTitle))
+                        Text(text = stringResource(id = R.string.thirdPageTitle))
 
                         //create dropdown and displayed table
-                        TechniqueAbilityDropdown(customTechVM)
+                        TechniqueAbilityDropdown(customTechVM = customTechVM)
                     }
                 }
 
@@ -173,18 +172,18 @@ fun CustomTechniqueDialog(
                             .fillMaxWidth()
                     ) {
                         //display each taken effect with their deletable checkboxes
-                        customTechVM.deletionChecklist.forEach {
-                            item { EditEffectRow(it) }
-                            item { Spacer(Modifier.height(5.dp)) }
+                        customTechVM.deletionChecklist.forEach {effectEntry ->
+                            item {EditEffectRow(effectPair = effectEntry)}
+                            item {Spacer(modifier = Modifier.height(5.dp))}
                         }
 
-                        item { Spacer(Modifier.height(5.dp)) }
+                        item {Spacer(modifier = Modifier.height(5.dp))}
 
                         //display total current MK cost
                         item {
                             Text(
                                 text = stringResource(
-                                    R.string.mkLabel,
+                                    id = R.string.mkLabel,
                                     customTechVM.getTechniqueCost()
                                 ),
                                 modifier = Modifier
@@ -198,7 +197,9 @@ fun CustomTechniqueDialog(
                 //page for redistributing ki accumulations
                 5 -> {
                     //set initial accumulation total values
-                    customTechVM.allAccs.forEach { it.setTotalDisplay() }
+                    customTechVM.allAccs.forEach{accDisplay ->
+                        accDisplay.setTotalDisplay()
+                    }
                     customTechVM.initializeBuildList()
 
                     Column {
@@ -207,7 +208,7 @@ fun CustomTechniqueDialog(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                text = stringResource(R.string.fifthPageTitle),
+                                text = stringResource(id = R.string.fifthPageTitle),
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 textAlign = TextAlign.Center,
@@ -220,9 +221,9 @@ fun CustomTechniqueDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
-                            listOf(0, 1, 2, 3, 5, 6).forEach {
+                            listOf(0, 1, 2, 3, 5, 6).forEach {index ->
                                 Text(
-                                    text = stringArrayResource(R.array.primaryCharArray)[it],
+                                    text = stringArrayResource(R.array.primaryCharArray)[index],
                                     modifier = Modifier
                                         .weight(0.13f),
                                     textAlign = TextAlign.Center
@@ -237,7 +238,7 @@ fun CustomTechniqueDialog(
                                 .padding(
                                     bottom = 5.dp
                                 )
-                        ) {
+                        ){
                             customTechVM.allAccs.forEach {accTotalItem ->
                                 AnimatedContent(
                                     targetState = accTotalItem.totalDisplay.collectAsState().value,
@@ -256,20 +257,20 @@ fun CustomTechniqueDialog(
 
                         LazyColumn {
                             //for each taken effect
-                            customTechVM.editBuildList.forEach {
-                                item { Divider() }
+                            customTechVM.editBuildList.forEach {effectAccBuild ->
+                                item {Divider()}
 
                                 //display the effect's name
                                 item {
                                     Text(
                                         text = (stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(
                                             R.array.techniqueDisadvantages
-                                        ))[it.input.data.name] +
-                                                if (it.input.data.effectVal != null) stringResource(
-                                                    it.input.data.effectRef,
-                                                    it.input.data.effectVal
+                                        ))[effectAccBuild.input.data.name] +
+                                                if (effectAccBuild.input.data.effectVal != null) stringResource(
+                                                    id = effectAccBuild.input.data.effectRef,
+                                                    effectAccBuild.input.data.effectVal
                                                 )
-                                                else stringResource(it.input.data.effectRef),
+                                                else stringResource(id = effectAccBuild.input.data.effectRef),
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(
@@ -282,9 +283,9 @@ fun CustomTechniqueDialog(
                                 }
 
                                 //create an input for the stat's accumulation input
-                                it.buildItems.forEach {
+                                effectAccBuild.buildItems.forEach {accInput ->
                                     item {
-                                        EditBuildRow(it)
+                                        EditBuildRow(buildItem = accInput)
                                     }
                                 }
                             }
@@ -304,7 +305,7 @@ fun CustomTechniqueDialog(
                                     .fillMaxWidth()
                             ) {
                                 Text(
-                                    text = stringResource(R.string.sixthPageTitle),
+                                    text = stringResource(id = R.string.sixthPageTitle),
                                     modifier = Modifier
                                         .fillMaxWidth(),
                                     textAlign = TextAlign.Center
@@ -321,7 +322,7 @@ fun CustomTechniqueDialog(
                             ) {
                                 RadioButton(
                                     selected = customTechVM.maintenanceSelection.collectAsState().value,
-                                    onClick = { customTechVM.setMaintenanceSelection(true) },
+                                    onClick = {customTechVM.setMaintenanceSelection(isMaintained = true)},
                                     modifier = Modifier
                                         .weight(0.1f),
                                     colors = RadioButtonDefaults.colors(
@@ -329,10 +330,10 @@ fun CustomTechniqueDialog(
                                     )
                                 )
                                 Text(
-                                    text = stringResource(R.string.yesLabel),
+                                    text = stringResource(id = R.string.yesLabel),
                                     modifier = Modifier
                                         .weight(0.2f)
-                                        .clickable { customTechVM.setMaintenanceSelection(true) },
+                                        .clickable {customTechVM.setMaintenanceSelection(isMaintained = true)},
                                     textAlign = TextAlign.Center
                                 )
                             }
@@ -347,7 +348,7 @@ fun CustomTechniqueDialog(
                             ) {
                                 RadioButton(
                                     selected = !customTechVM.maintenanceSelection.collectAsState().value,
-                                    onClick = { customTechVM.setMaintenanceSelection(false) },
+                                    onClick = {customTechVM.setMaintenanceSelection(isMaintained = false)},
                                     modifier = Modifier
                                         .weight(0.1f),
                                     colors = RadioButtonDefaults.colors(
@@ -355,23 +356,23 @@ fun CustomTechniqueDialog(
                                     )
                                 )
                                 Text(
-                                    text = stringResource(R.string.noLabel),
+                                    text = stringResource(id = R.string.noLabel),
                                     modifier = Modifier
                                         .weight(0.2f)
-                                        .clickable { customTechVM.setMaintenanceSelection(false) },
+                                        .clickable {customTechVM.setMaintenanceSelection(isMaintained = false)},
                                     textAlign = TextAlign.Center
                                 )
                             }
                         }
 
-                        item { Spacer(Modifier.height(10.dp)) }
+                        item {Spacer(modifier = Modifier.height(10.dp))}
 
                         //if user makes technique maintainable
                         item {
                             if (customTechVM.maintenanceSelection.collectAsState().value) {
                                 //display required maintenance distribution
                                 InfoRow(
-                                    label = stringResource(R.string.totalMaintCost)
+                                    label = stringResource(id = R.string.totalMaintCost)
                                 ){it, _ ->
                                     Text(
                                         text = "${customTechVM.getMaintenanceTotal()}",
@@ -379,15 +380,17 @@ fun CustomTechniqueDialog(
                                     )
                                 }
 
-                                Spacer(Modifier.height(5.dp))
+                                Spacer(modifier = Modifier.height(5.dp))
 
                                 //make an input for each available stat
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     for (index in 0..5)
-                                        if (customTechVM.techHasAccIn(index))
-                                            MaintenanceInput(customTechVM.allMaintInputs[index])
+                                        if (customTechVM.techHasAccIn(primaryIndex = index))
+                                            MaintenanceInput(
+                                                maintInput = customTechVM.allMaintInputs[index]
+                                            )
                                 }
                             }
                         }
@@ -406,11 +409,11 @@ fun CustomTechniqueDialog(
                             TextInput(
                                 display = customTechVM.techniqueName.collectAsState().value,
                                 onValueChange = {
-                                    customTechVM.setTechniqueName(it)
+                                    customTechVM.setTechniqueName(newName = it)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                label = stringResource(R.string.nameText)
+                                label = stringResource(id = R.string.nameText)
                             )
                         }
 
@@ -422,11 +425,11 @@ fun CustomTechniqueDialog(
                             TextField(
                                 value = customTechVM.techniqueDesc.collectAsState().value,
                                 onValueChange = {
-                                    customTechVM.setTechniqueDesc(it)
+                                    customTechVM.setTechniqueDesc(newDesc = it)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                label = { Text(text = stringResource(R.string.descriptionLabel)) }
+                                label = {Text(text = stringResource(id = R.string.descriptionLabel))}
                             )
                         }
                     }
@@ -450,6 +453,7 @@ fun CustomTechniqueDialog(
 
                         techContents(customTechVM.getCustomTechnique())
 
+                        //allow technique to be public to other characters
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -461,7 +465,7 @@ fun CustomTechniqueDialog(
                             )
 
                             Text(
-                                text = stringResource(R.string.publicPrompt)
+                                text = stringResource(id = R.string.publicPrompt)
                             )
                         }
                     }
@@ -480,18 +484,18 @@ fun CustomTechniqueDialog(
                     1 -> customTechVM.toggleCustomTechOpen()
 
                     //go to appropriate page from accumulation distribution
-                    5 -> customTechVM.setCustomPageNum(3)
+                    5 -> customTechVM.setCustomPageNum(pageNum = 3)
 
                     //go to previous page on any other page value
-                    else -> customTechVM.setCustomPageNum(customTechVM.customPageNum.value - 1)
+                    else -> customTechVM.setCustomPageNum(pageNum = customTechVM.customPageNum.value - 1)
                 }
             }
         },
-        {
+        buttonContent = {
             //button to terminate process
-            TextButton(onClick = { customTechVM.toggleCustomTechOpen() }) {
+            TextButton(onClick = {customTechVM.toggleCustomTechOpen()}) {
                 Text(
-                    text = stringResource(R.string.cancelLabel),
+                    text = stringResource(id = R.string.cancelLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -499,10 +503,10 @@ fun CustomTechniqueDialog(
             //if on edit page, button to delete selected items
             if (customTechVM.customPageNum.collectAsState().value == 4) {
                 TextButton(
-                    onClick = { customTechVM.deleteEffects() }
+                    onClick = {customTechVM.deleteEffects()}
                 ) {
                     Text(
-                        text = stringResource(R.string.deleteLabel),
+                        text = stringResource(id = R.string.deleteLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -511,10 +515,10 @@ fun CustomTechniqueDialog(
             //if on secondary page
             if (customTechVM.customPageNum.collectAsState().value == 3) {
                 //option to edit taken effects
-                TextButton(onClick = { customTechVM.setCustomPageNum(4) })
+                TextButton(onClick = {customTechVM.setCustomPageNum(4)})
                 {
                     Text(
-                        text = stringResource(R.string.editLabel),
+                        text = stringResource(id = R.string.editLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -522,8 +526,10 @@ fun CustomTechniqueDialog(
                 //option to add selected effect
                 TextButton(
                     onClick = {
+                        //attempt to add technique
                         val attempt = customTechVM.attemptTechAddition()
 
+                        //notify reason of failure
                         if (attempt != null)
                             Toast.makeText(
                                 context,
@@ -534,7 +540,7 @@ fun CustomTechniqueDialog(
                 )
                 {
                     Text(
-                        text = stringResource(R.string.addLabel),
+                        text = stringResource(id = R.string.addLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -544,16 +550,18 @@ fun CustomTechniqueDialog(
             if (customTechVM.customPageNum.collectAsState().value != 1 &&
                 customTechVM.customPageNum.collectAsState().value != 4
             ) {
-                TextButton(onClick = {
-                    //go back to third page if on fifth page
-                    if (customTechVM.customPageNum.value == 5)
-                        customTechVM.setCustomPageNum(3)
-                    //go back to previous page if on any other page
-                    else
-                        customTechVM.setCustomPageNum(customTechVM.customPageNum.value - 1)
-                }) {
+                TextButton(
+                    onClick = {
+                        //go back to third page if on fifth page
+                        if (customTechVM.customPageNum.value == 5)
+                            customTechVM.setCustomPageNum(pageNum = 3)
+                        //go back to previous page if on any other page
+                        else
+                            customTechVM.setCustomPageNum(pageNum = customTechVM.customPageNum.value - 1)
+                    }
+                ){
                     Text(
-                        text = stringResource(R.string.backLabel),
+                        text = stringResource(id = R.string.backLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -566,9 +574,9 @@ fun CustomTechniqueDialog(
                         //if character can take technique of this level
                         if (customTechVM.costMinMet(kiFragVM.getMartialRemaining()) &&
                             customTechVM.minTechsMet()
-                        ) {
+                        ){
                             //proceed to next page
-                            customTechVM.setCustomPageNum(2)
+                            customTechVM.setCustomPageNum(pageNum = 2)
                         }
                     }
 
@@ -583,44 +591,46 @@ fun CustomTechniqueDialog(
 
                         //proceed to next page if any ability was added
                         else if (customTechVM.getSelectionPrice() != 0) {
-                            customTechVM.getSelectedEffects().forEach {
-                                it.elements = customTechVM.getSelectedElement(it)
-                                customTechVM.getTechniqueEffects().add(it)
+                            customTechVM.getSelectedEffects().forEach {effect ->
+                                effect.elements = customTechVM.getSelectedElement(effect = effect)
+                                customTechVM.getTechniqueEffects().add(element = effect)
                             }
 
-                            customTechVM.setPickingPrimary(false)
-                            customTechVM.setCustomPageNum(3)
+                            customTechVM.setPickingPrimary(isPrimary = false)
+                            customTechVM.setCustomPageNum(pageNum = 3)
                         }
                     }
 
                     3 -> {
                         //go to next page if minimum costs are met
                         if (customTechVM.costMinMet(customTechVM.getTechniqueCost()))
-                            customTechVM.setCustomPageNum(5)
+                            customTechVM.setCustomPageNum(pageNum = 5)
                     }
 
                     //return to secondary additions page
                     4 -> {
-                        customTechVM.setCustomPageNum(3)
+                        customTechVM.setCustomPageNum(pageNum = 3)
                     }
 
                     //go to next page if builds are valid
                     5 -> {
                         if (customTechVM.getCheckBuilds())
-                            customTechVM.setCustomPageNum(6)
+                            customTechVM.setCustomPageNum(pageNum = 6)
                     }
 
                     //go to next page if maintenance inputs are valid
                     6 -> {
                         if (customTechVM.getMaintenanceCheck())
-                            customTechVM.setCustomPageNum(7)
+                            customTechVM.setCustomPageNum(pageNum = 7)
                     }
 
                     //go to next page if technique is named
                     7 -> {
                         if (customTechVM.techniqueName.value != "" &&
                             !File("${context.filesDir}/CustomTechDIR", customTechVM.techniqueName.value).exists())
-                            customTechVM.setCustomPageNum(8)
+                            customTechVM.setCustomPageNum(pageNum = 8)
+
+                        //notify user of missing name
                         else if(customTechVM.techniqueName.value != ""){
                             Toast.makeText(
                                 context,
@@ -628,6 +638,8 @@ fun CustomTechniqueDialog(
                                 Toast.LENGTH_LONG
                             ).show()
                         }
+
+                        //notify user of name already taken
                         else{
                             Toast.makeText(
                                 context,
@@ -637,25 +649,20 @@ fun CustomTechniqueDialog(
                         }
                     }
 
-                    //add technique to character and close dialog
+                    //complete technique creation
                     8 -> {
-                        kiFragVM.addTechnique(customTechVM.getCustomTechnique())
+                        //add technique to the character
+                        kiFragVM.addTechnique(customTech = customTechVM.getCustomTechnique())
 
+                        //construct new file
                         val fileBase = "${context.filesDir}/CustomTechDIR/${customTechVM.techniqueName.value}"
-                        var outFile = File(fileBase)
+                        val outFile = File(fileBase)
 
-                        if(outFile.exists()){
-                            var count = 1
-
-                            while(File("$fileBase($count)").exists())
-                                count++
-
-                            outFile = File("$fileBase($count)")
-                        }
-
+                        //open file writer
                         val writer = FileOutputStream(outFile)
                         val byteWriter = ByteArrayOutputStream()
 
+                        //write data to file
                         customTechVM.getCustomTechnique().write(byteWriter)
 
                         byteWriter.close()
@@ -663,18 +670,20 @@ fun CustomTechniqueDialog(
                         writer.write(byteWriter.toByteArray())
                         writer.close()
 
+                        //close dialog
                         customTechVM.toggleCustomTechOpen()
                     }
 
+                    //default empty catch
                     else -> {}
                 }
             }) {
                 Text(
                     //set next button text depending on the active page
                     text = when (customTechVM.customPageNum.collectAsState().value) {
-                        4 -> stringResource(R.string.returnLabel)
-                        8 -> stringResource(R.string.confirmLabel)
-                        else -> stringResource(R.string.nextLabel)
+                        4 -> stringResource(id = R.string.returnLabel)
+                        8 -> stringResource(id = R.string.createLabel)
+                        else -> stringResource(id = R.string.nextLabel)
                     },
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -715,7 +724,7 @@ private fun TechLevelSelection(
             text = level.toString(),
             modifier = Modifier
                 .weight(0.1f)
-                .clickable { customTechVM.setTechniqueLevel(level) },
+                .clickable {customTechVM.setTechniqueLevel(level = level)},
             textAlign = TextAlign.Center
         )
     }
@@ -736,14 +745,15 @@ private fun TechniqueAbilityDropdown(
             value = customTechVM.dropdownTitle.collectAsState().value,
             onValueChange = {},
             modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    customTechVM.setSize(coordinates.size.toSize())
+                .onGloballyPositioned {coordinates ->
+                    customTechVM.setSize(newSize = coordinates.size.toSize())
                 },
             trailingIcon = {
                 Icon(
-                    customTechVM.dropdownIcon.collectAsState().value,
-                    "contentDescription",
-                    modifier = Modifier.clickable {customTechVM.toggleDropdownOpen() })
+                    imageVector = customTechVM.dropdownIcon.collectAsState().value,
+                    contentDescription = "contentDescription",
+                    modifier = Modifier.clickable{customTechVM.toggleDropdownOpen()}
+                )
             },
             readOnly = true
         )
@@ -751,15 +761,16 @@ private fun TechniqueAbilityDropdown(
         //effect options list
         DropdownMenu(
             expanded = customTechVM.dropdownOpen.collectAsState().value,
-            onDismissRequest = {customTechVM.toggleDropdownOpen() },
+            onDismissRequest = {customTechVM.toggleDropdownOpen()},
             modifier = Modifier
                 .width(with(LocalDensity.current) {customTechVM.size.value.width.toDp()})
         ) {
-            customTechVM.listSource.collectAsState().value.forEach {
+            customTechVM.listSource.collectAsState().value.forEach {effectName ->
                 DropdownMenuItem(
-                    text = {Text(text = it)},
+                    text = {Text(text = effectName)},
                     onClick = {
-                        customTechVM.setTechniqueIndex(customTechVM.listSource.value.indexOf(it))
+                        //set effect chart to this item's value
+                        customTechVM.setTechniqueIndex(dropdownIndex = customTechVM.listSource.value.indexOf(effectName))
 
                         //close the dropdown list
                         customTechVM.toggleDropdownOpen()
@@ -770,85 +781,86 @@ private fun TechniqueAbilityDropdown(
 
         //display elements for any technique with these exceptions
         if(!listOf(0, 32, 35, 36, 37, 38).contains(customTechVM.techniqueIndex.collectAsState().value)){
-            Spacer(Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = getElementString(customTechVM.elementList.collectAsState().value),
+                text = getElementString(elementList = customTechVM.elementList.collectAsState().value),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center
+            )
         }
 
-        Spacer(Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         MaterialTheme(colorScheme = techEffectLightColors) {
             LazyColumn {
                 //display header if one given
                 if (customTechVM.header.value != null)
-                    item { TechniqueTableHeader(customTechVM.header.collectAsState().value!!) }
+                    item {TechniqueTableHeader(description = customTechVM.header.collectAsState().value!!)}
 
                 //display effect table if one given
                 if (customTechVM.useTable.value != null) {
-                    items(customTechVM.useTable.value!!) {
-                        val index = customTechVM.useTable.collectAsState().value!!.indexOf(it)
+                    items(customTechVM.useTable.value!!) {data ->
+                        val index = customTechVM.useTable.collectAsState().value!!.indexOf(element = data)
 
                         TechniqueTableRow(
-                            customTechVM,
-                            it,
-                            customTechVM.mainChecklist,
-                            getRowColor(index),
-                            getCheckboxColors(index)
+                            input = data,
+                            holdingList = customTechVM.mainChecklist,
+                            backColor = getRowColor(index = index),
+                            checkColor = getCheckboxColors(index = index),
+                            customTechVM = customTechVM
                         )
                     }
                 }
 
                 //display optional effect table if one given
                 if (customTechVM.optTable1.value != null) {
-                    item { Spacer(Modifier.height(5.dp)) }
-                    item { Text(text = customTechVM.optHeader1.collectAsState().value!!) }
+                    item {Spacer(modifier = Modifier.height(5.dp))}
+                    item {Text(text = customTechVM.optHeader1.collectAsState().value!!)}
 
-                    items(customTechVM.optTable1.value!!) {
-                        val index = customTechVM.optTable1.collectAsState().value!!.indexOf(it)
+                    items(customTechVM.optTable1.value!!) {data ->
+                        val index = customTechVM.optTable1.collectAsState().value!!.indexOf(element = data)
 
                         TechniqueTableRow(
-                            customTechVM,
-                            it,
-                            customTechVM.opt1Checklist,
-                            getRowColor(index),
-                            getCheckboxColors(index)
+                            input = data,
+                            holdingList = customTechVM.opt1Checklist,
+                            backColor = getRowColor(index = index),
+                            checkColor = getCheckboxColors(index = index),
+                            customTechVM = customTechVM
                         )
                     }
                 }
 
                 //display second optional effect table if one given
                 if (customTechVM.optTable2.value != null) {
-                    item { Spacer(Modifier.height(5.dp)) }
-                    item { Text(text = customTechVM.optHeader2.collectAsState().value!!) }
+                    item {Spacer(modifier = Modifier.height(5.dp))}
+                    item {Text(text = customTechVM.optHeader2.collectAsState().value!!)}
 
-                    items(customTechVM.optTable2.value!!) {
-                        val index = customTechVM.optTable2.collectAsState().value!!.indexOf(it)
+                    items(customTechVM.optTable2.value!!) {data ->
+                        val index = customTechVM.optTable2.collectAsState().value!!.indexOf(element = data)
 
                         TechniqueTableRow(
-                            customTechVM,
-                            it,
-                            customTechVM.opt2Checklist,
-                            getRowColor(index),
-                            getCheckboxColors(index)
+                            input = data,
+                            holdingList = customTechVM.opt2Checklist,
+                            backColor = getRowColor(index),
+                            checkColor = getCheckboxColors(index),
+                            customTechVM = customTechVM
                         )
                     }
                 }
 
                 //display element table if one given
                 if (customTechVM.optElement.value != null) {
-                    item { Text(text = customTechVM.optHeader1.collectAsState().value!!) }
-                    items(customTechVM.optElement.value!!) {
-                        val index = customTechVM.optElement.collectAsState().value!!.indexOf(it)
+                    item {Text(text = customTechVM.optHeader1.collectAsState().value!!)}
+                    items(customTechVM.optElement.value!!) {element ->
+                        val index = customTechVM.optElement.collectAsState().value!!.indexOf(element = element)
 
                         ElementalRow(
-                            customTechVM,
-                            it,
-                            getRowColor(index),
-                            getCheckboxColors(index)
+                            elementType = element,
+                            backColor = getRowColor(index),
+                            checkColor = getCheckboxColors(index),
+                            customTechVM = customTechVM
                         )
                     }
                 }
@@ -859,16 +871,19 @@ private fun TechniqueAbilityDropdown(
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            //prompt for condition's cost
                             Text(
-                                text = stringResource(R.string.predeterminedPrompt),
+                                text = stringResource(id = R.string.predeterminedPrompt),
                                 modifier = Modifier
                                     .weight(0.6f),
                                 textAlign = TextAlign.Center
                             )
+
+                            //input for condition's cost
                             NumberInput(
                                 inputText = customTechVM.predeterminedCost.collectAsState().value,
-                                inputFunction = { customTechVM.setPredeterminedCost(it.toInt()) },
-                                emptyFunction = { customTechVM.setPredeterminedCost("") },
+                                inputFunction = {customTechVM.setPredeterminedCost(cost = it.toInt())},
+                                emptyFunction = {customTechVM.setPredeterminedCost("")},
                                 modifier = Modifier
                                     .weight(0.4f)
                             )
@@ -896,7 +911,7 @@ private fun TechniqueTableHeader(
     )
     {
         //space for effect degree
-        Spacer(Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.1f))
 
         //display individual value description
         Text(
@@ -908,31 +923,31 @@ private fun TechniqueTableHeader(
 
         //labels for primary and secondary costs, MK cost, maintenance cost, and effect level
         Text(
-            text = stringResource(R.string.primaryHeader),
+            text = stringResource(id = R.string.primaryHeader),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(R.string.secondaryHeader),
+            text = stringResource(id = R.string.secondaryHeader),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(R.string.knowledgeCostHeader),
+            text = stringResource(id = R.string.knowledgeCostHeader),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(R.string.maintenanceHeader),
+            text = stringResource(id = R.string.maintenanceHeader),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(R.string.levelHeader),
+            text = stringResource(id = R.string.levelHeader),
             modifier = Modifier
                 .weight(0.1f),
             textAlign = TextAlign.Center
@@ -943,24 +958,26 @@ private fun TechniqueTableHeader(
 /**
  * Displays a single row for the effect table.
  *
- * @param customTechVM viewModel for the custom technique dialog
  * @param input specific technique data to display
  * @param holdingList specific list this data is found in
+ * @param backColor background color for this row
+ * @param checkColor colors for the row's checkbox
+ * @param customTechVM viewModel for the custom technique dialog
  */
 @Composable
 private fun TechniqueTableRow(
-    customTechVM: CustomTechniqueViewModel,
     input: TechniqueTableData,
     holdingList: MutableMap<TechniqueTableData, MutableState<Boolean>>,
     backColor: Color,
-    checkColor: CheckboxColors
+    checkColor: CheckboxColors,
+    customTechVM: CustomTechniqueViewModel
 ){
     //get context for toast displays
     val context = LocalContext.current
 
     Row(
         modifier = Modifier
-            .background(backColor),
+            .background(color = backColor),
         verticalAlignment = Alignment.CenterVertically
     ){
         //display checkbox
@@ -973,11 +990,11 @@ private fun TechniqueTableRow(
                 //if user attempts to add effect
                 if(it) {
                     //determine if effect is a valid addition
-                    val textOut = customTechVM.validCheckInput(input)
+                    val textOut = customTechVM.validCheckInput(effectInput = input)
 
                     //indicate viable addition
                     if(textOut == null) {
-                        customTechVM.clearInputList(holdingList)
+                        customTechVM.clearInputList(selections = holdingList)
                         holdingList[input]!!.value = true
                     }
                     //display reason for invalid addition
@@ -1000,8 +1017,8 @@ private fun TechniqueTableRow(
         //display effect value, costs, and level
         Text(
             text =
-                if(input.effectVal != null) stringResource(input.effectRef, input.effectVal)
-                else stringResource(input.effectRef),
+                if(input.effectVal != null) stringResource(id = input.effectRef, input.effectVal)
+                else stringResource(id = input.effectRef),
             modifier = Modifier.weight(0.4f),
             textAlign = TextAlign.Center
         )
@@ -1036,15 +1053,17 @@ private fun TechniqueTableRow(
 /**
  * Displays a table row for adding element effects.
  *
- * @param customTechVM viewModel for the custom technique dialog
  * @param elementType element to display in this row
+ * @param backColor background color of this row
+ * @param checkColor colors for this row's checkbox
+ * @param customTechVM viewModel for the custom technique dialog
  */
 @Composable
 private fun ElementalRow(
-    customTechVM: CustomTechniqueViewModel,
     elementType: Element,
     backColor: Color,
-    checkColor: CheckboxColors
+    checkColor: CheckboxColors,
+    customTechVM: CustomTechniqueViewModel
 ){
     //get context of dialog
     val context = LocalContext.current
@@ -1052,7 +1071,7 @@ private fun ElementalRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(backColor),
+            .background(color = backColor),
         verticalAlignment = Alignment.CenterVertically
     ){
         //elemental selection checkbox
@@ -1068,7 +1087,7 @@ private fun ElementalRow(
                     //for elemental binding of two elements
                     if(selection.data.effectRef == R.string.twoElement)
                         //change checkbox if input is valid
-                        customTechVM.elementChecklist[elementType]!!.value = it && customTechVM.getSelectedElement(selection).size < 2
+                        customTechVM.elementChecklist[elementType]!!.value = it && customTechVM.getSelectedElement(effect = selection).size < 2
 
 
                     //any other selection
@@ -1079,7 +1098,7 @@ private fun ElementalRow(
                             customTechVM.clearElementChecks()
                         }
 
-                        //apply user's desired state
+                        //apply user's desired element
                         customTechVM.elementChecklist[elementType]!!.value = it
                     }
                 }
@@ -1128,8 +1147,8 @@ private fun EditEffectRow(
         //display effect
         Text(
             text = (stringArrayResource(R.array.techniqueAbilities) + stringArrayResource(R.array.techniqueDisadvantages))[effectPair.key.data.name] + " " +
-                if(effectPair.key.data.effectVal != null) stringResource(effectPair.key.data.effectRef, effectPair.key.data.effectVal!!)
-                else stringResource(effectPair.key.data.effectRef),
+                if(effectPair.key.data.effectVal != null) stringResource(id = effectPair.key.data.effectRef, effectPair.key.data.effectVal!!)
+                else stringResource(id = effectPair.key.data.effectRef),
             modifier = Modifier
                 .weight(0.9f),
             fontWeight = FontWeight.Bold
@@ -1138,10 +1157,10 @@ private fun EditEffectRow(
 
     //display effect's cost
     Row {
-        Spacer(Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.1f))
 
         Text(
-            text = stringResource(R.string.costLabel) + " ${effectPair.key.data.mkCost}",
+            text = stringResource(id = R.string.costLabel) + " ${effectPair.key.data.mkCost}",
             modifier = Modifier
                 .weight(0.9f)
         )
@@ -1149,10 +1168,10 @@ private fun EditEffectRow(
 
     //display effect's elements
     Row{
-        Spacer(Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.1f))
 
         Text(
-            text = getElementString(effectPair.key.elements),
+            text = getElementString(elementList = effectPair.key.elements),
             modifier = Modifier.weight(0.9f)
         )
     }
@@ -1162,11 +1181,11 @@ private fun EditEffectRow(
  * Row that displays an effect's ki build needed for the indicated characteristic and allows the
  * user to alter that value
  *
- * @param item display data for the specific item
+ * @param buildItem display data for the specific item
  */
 @Composable
 private fun EditBuildRow(
-    item: CustomTechniqueViewModel.BuildItem
+    buildItem: CustomTechniqueViewModel.BuildItem
 ){
     Row(
         modifier = Modifier
@@ -1178,7 +1197,7 @@ private fun EditBuildRow(
     ){
         //display characteristic name
         Text(
-            text = "${item.indexName}: ",
+            text = "${buildItem.indexName}: ",
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center
@@ -1186,15 +1205,15 @@ private fun EditBuildRow(
 
         //create numerical input for the user
         NumberInput(
-            inputText = item.display.collectAsState().value,
-            inputFunction = {item.setDisplay(it.toInt())},
-            emptyFunction = {item.setDisplay("")},
+            inputText = buildItem.display.collectAsState().value,
+            inputFunction = {buildItem.setDisplay(kiValue = it.toInt())},
+            emptyFunction = {buildItem.setDisplay(display = "")},
             modifier = Modifier.weight(0.3f)
         )
 
         //display characteristic's additional cost
         Text(
-            text = "+${item.home.buildAdditions[item.index]}",
+            text = "+${buildItem.home.buildAdditions[buildItem.index]}",
             modifier = Modifier
                 .weight(0.3f),
             textAlign = TextAlign.Center
@@ -1227,8 +1246,8 @@ private fun MaintenanceInput(
         //maintenance input
         NumberInput(
             inputText = maintInput.displayValue.collectAsState().value,
-            inputFunction = {maintInput.setDisplayValue(it.toInt())},
-            emptyFunction = {maintInput.setDisplayValue("")},
+            inputFunction = {maintInput.setDisplayValue(maintValue = it.toInt())},
+            emptyFunction = {maintInput.setDisplayValue(display = "")},
             modifier = Modifier.weight(0.5f)
         )
     }
@@ -1248,13 +1267,13 @@ private fun getElementString(
     var elementString = ""
 
     //add each element's name to the string
-    elementList.forEach{
+    elementList.forEach{element ->
         if(elementString.isNotEmpty()) elementString += ", "
-        elementString += it.name
+        elementString += element.name
     }
 
     //return element output
-    return if (elementString.isNotEmpty()) stringResource(R.string.elementLabel) + " $elementString"
+    return if (elementString.isNotEmpty()) stringResource(id = R.string.elementLabel) + " $elementString"
         else elementString
 }
 

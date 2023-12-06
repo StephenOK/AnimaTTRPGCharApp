@@ -9,7 +9,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
  * @param effect further details of the advantage's effects, if available
  * @param restriction details on the requirements needed for this advantage
  * @param special additional details on taking this advantage
- * @param options items this advantage can be applied to
+ * @param options effects this item may apply when chosen
  * @param picked index of options taken in this instance
  * @param cost list of optional prices for acquisition
  * @param pickedCost cost taken for this particular advantage

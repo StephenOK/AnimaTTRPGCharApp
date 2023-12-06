@@ -6,665 +6,665 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class Miscellaneous: GeneralCategory(null) {
-    val oil = GeneralEquipment(
-        "Oil",
-        R.string.oil,
-        5.0,
-        CoinType.Copper,
-        1.0,
-        Availability.Common,
-        null
+class Miscellaneous: GeneralCategory(qualityInput = null) {
+    private val oil = GeneralEquipment(
+        saveName = "Oil",
+        name = R.string.oil,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val torch = GeneralEquipment(
-        "Torch",
-        R.string.torch,
-        2.0,
-        CoinType.Copper,
-        1.0,
-        Availability.Common,
-        null
+    private val torch = GeneralEquipment(
+        saveName = "Torch",
+        name = R.string.torch,
+        baseCost = 2.0,
+        coinType = CoinType.Copper,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallChest = GeneralEquipment(
-        "Small Chest",
-        R.string.smallChest,
-        15.0,
-        CoinType.Silver,
-        2.0,
-        Availability.Common,
-        null
+    private val smallChest = GeneralEquipment(
+        saveName = "Small Chest",
+        name = R.string.smallChest,
+        baseCost = 15.0,
+        coinType = CoinType.Silver,
+        weight = 2.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeChest = GeneralEquipment(
-        "Large Chest",
-        R.string.largeChest,
-        25.0,
-        CoinType.Silver,
-        10.0,
-        Availability.Common,
-        null
+    private val largeChest = GeneralEquipment(
+        saveName = "Large Chest",
+        name = R.string.largeChest,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = 10.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val harpoon = GeneralEquipment(
-        "Harpoon",
-        R.string.generalHarpoon,
-        50.0,
-        CoinType.Silver,
-        3.0,
-        Availability.Common,
-        null
+    private val harpoon = GeneralEquipment(
+        saveName = "Harpoon",
+        name = R.string.generalHarpoon,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = 3.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val barrel = GeneralEquipment(
-        "Barrel",
-        R.string.barrel,
-        10.0,
-        CoinType.Silver,
-        2.0,
-        Availability.Common,
-        null
+    private val barrel = GeneralEquipment(
+        saveName = "Barrel",
+        name = R.string.barrel,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = 2.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val cane = GeneralEquipment(
-        "Cane",
-        R.string.cane,
-        2.0,
-        CoinType.Copper,
-        3.0,
-        Availability.Common,
-        null
+    private val cane = GeneralEquipment(
+        saveName = "Cane",
+        name = R.string.cane,
+        baseCost = 2.0,
+        coinType = CoinType.Copper,
+        weight = 3.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallBag = GeneralEquipment(
-        "Small Bag",
-        R.string.smallBag,
-        2.0,
-        CoinType.Silver,
-        0.25,
-        Availability.Common,
-        null
+    private val smallBag = GeneralEquipment(
+        saveName = "Small Bag",
+        name = R.string.smallBag,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = 0.25,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeBag = GeneralEquipment(
-        "Large Bag",
-        R.string.largeBag,
-        5.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val largeBag = GeneralEquipment(
+        saveName = "Large Bag",
+        name = R.string.largeBag,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallBottle = GeneralEquipment(
-        "Small Glass Bottle",
-        R.string.smallBottle,
-        20.0,
-        CoinType.Gold,
-        1.0,
-        Availability.Uncommon,
-        null
+    private val smallBottle = GeneralEquipment(
+        saveName = "Small Glass Bottle",
+        name = R.string.smallBottle,
+        baseCost = 20.0,
+        coinType = CoinType.Gold,
+        weight = 1.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val largeBottle = GeneralEquipment(
-        "Large Glass Bottle",
-        R.string.largeBottle,
-        50.0,
-        CoinType.Gold,
-        3.0,
-        Availability.Uncommon,
-        null
+    private val largeBottle = GeneralEquipment(
+        saveName = "Large Glass Bottle",
+        name = R.string.largeBottle,
+        baseCost = 50.0,
+        coinType = CoinType.Gold,
+        weight = 3.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val lightChain = GeneralEquipment(
-        "Light Chain (1 meter)",
-        R.string.lightChain,
-        1.0,
-        CoinType.Gold,
-        1.0,
-        Availability.Common,
-        null
+    private val lightChain = GeneralEquipment(
+        saveName = "Light Chain (1 meter)",
+        name = R.string.lightChain,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val heavyChain = GeneralEquipment(
-        "Heavy Chain (1 meter)",
-        R.string.heavyChain,
-        2.0,
-        CoinType.Gold,
-        3.0,
-        Availability.Common,
-        null
+    private val heavyChain = GeneralEquipment(
+        saveName = "Heavy Chain (1 meter)",
+        name = R.string.heavyChain,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = 3.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val quiver = GeneralEquipment(
-        "Quiver of Arrows",
-        R.string.quiver,
-        20.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val quiver = GeneralEquipment(
+        saveName = "Quiver of Arrows",
+        name = R.string.quiver,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val box = GeneralEquipment(
-        "Box",
-        R.string.box,
-        5.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val box = GeneralEquipment(
+        saveName = "Box",
+        name = R.string.box,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val bell = GeneralEquipment(
-        "Bell",
-        R.string.bell,
-        25.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val bell = GeneralEquipment(
+        saveName = "Bell",
+        name = R.string.bell,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val spyglass = GeneralEquipment(
-        "Spyglass",
-        R.string.spyglass,
-        250.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+    private val spyglass = GeneralEquipment(
+        saveName = "Spyglass",
+        name = R.string.spyglass,
+        baseCost = 250.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val smallTrap = GeneralEquipment(
-        "Small Trap",
-        R.string.smallTrap,
-        50.0,
-        CoinType.Silver,
-        3.0,
-        Availability.Common,
-        null
+    private val smallTrap = GeneralEquipment(
+        saveName = "Small Trap",
+        name = R.string.smallTrap,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = 3.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeTrap = GeneralEquipment(
-        "Large Trap",
-        R.string.largeTrap,
-        1.0,
-        CoinType.Gold,
-        5.0,
-        Availability.Common,
-        null
+    private val largeTrap = GeneralEquipment(
+        saveName = "Large Trap",
+        name = R.string.largeTrap,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 5.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val decentLock = GeneralEquipment(
-        "Decent Lock",
-        R.string.decentLock,
-        10.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val decentLock = GeneralEquipment(
+        saveName = "Decent Lock",
+        name = R.string.decentLock,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodLock = GeneralEquipment(
-        "Good Lock",
-        R.string.goodLock,
-        5.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+    private val goodLock = GeneralEquipment(
+        saveName = "Good Lock",
+        name = R.string.goodLock,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
     val excellentLock = GeneralEquipment(
-        "Excellent Lock",
-        R.string.excellentLock,
-        80.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+        saveName = "Excellent Lock",
+        name = R.string.excellentLock,
+        baseCost = 80.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val smallBasket = GeneralEquipment(
-        "Small Basket",
-        R.string.smallBasket,
-        5.0,
-        CoinType.Copper,
-        0.5,
-        Availability.Common,
-        null
+    private val smallBasket = GeneralEquipment(
+        saveName = "Small Basket",
+        name = R.string.smallBasket,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = 0.5,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeBasket = GeneralEquipment(
-        "Large Basket",
-        R.string.largeBasket,
-        1.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val largeBasket = GeneralEquipment(
+        saveName = "Large Basket",
+        name = R.string.largeBasket,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val cross = GeneralEquipment(
-        "Cross",
-        R.string.cross,
-        1.0,
-        CoinType.Silver,
-        0.2,
-        Availability.Common,
-        null
+    private val cross = GeneralEquipment(
+        saveName = "Cross",
+        name = R.string.cross,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val bucket = GeneralEquipment(
-        "Bucket",
-        R.string.bucket,
-        1.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val bucket = GeneralEquipment(
+        saveName = "Bucket",
+        name = R.string.bucket,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val decentRope = GeneralEquipment(
-        "Decent Rope (10 meters)",
-        R.string.decentRope,
-        5.0,
-        CoinType.Silver,
-        2.0,
-        Availability.Common,
-        null
+    private val decentRope = GeneralEquipment(
+        saveName = "Decent Rope (10 meters)",
+        name = R.string.decentRope,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = 2.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodRope = GeneralEquipment(
-        "Good Rope (10 meters)",
-        R.string.goodRope,
-        25.0,
-        CoinType.Silver,
-        2.0,
-        Availability.Common,
-        null
+    private val goodRope = GeneralEquipment(
+        saveName = "Good Rope (10 meters)",
+        name = R.string.goodRope,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = 2.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val excellentRope = GeneralEquipment(
-        "Excellent Rope (10 meters)",
-        R.string.excellentRope,
-        5.0,
-        CoinType.Gold,
-        6.0,
-        Availability.Common,
-        null
+    private val excellentRope = GeneralEquipment(
+        saveName = "Excellent Rope (10 meters)",
+        name = R.string.excellentRope,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = 6.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val ropeLadder = GeneralEquipment(
-        "Rope Ladder (10 meters)",
-        R.string.ropeLadder,
-        20.0,
-        CoinType.Silver,
-        6.0,
-        Availability.Common,
-        null
+    private val ropeLadder = GeneralEquipment(
+        saveName = "Rope Ladder (10 meters)",
+        name = R.string.ropeLadder,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = 6.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val metalMirror = GeneralEquipment(
-        "Small Metal Mirror",
-        R.string.smallMetalMirror,
-        1.0,
-        CoinType.Gold,
-        1.0,
-        Availability.Common,
-        null
+    private val metalMirror = GeneralEquipment(
+        saveName = "Small Metal Mirror",
+        name = R.string.smallMetalMirror,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val glassMirror = GeneralEquipment(
-        "Small Glass Mirror",
-        R.string.smallGlassMirror,
-        200.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+    private val glassMirror = GeneralEquipment(
+        saveName = "Small Glass Mirror",
+        name = R.string.smallGlassMirror,
+        baseCost = 200.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val spectacles = GeneralEquipment(
-        "Spectacles",
-        R.string.spectacles,
-        180.0,
-        CoinType.Gold,
-        0.1,
-        Availability.Common,
-        null
+    private val spectacles = GeneralEquipment(
+        saveName = "Spectacles",
+        name = R.string.spectacles,
+        baseCost = 180.0,
+        coinType = CoinType.Gold,
+        weight = 0.1,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val lockPick = GeneralEquipment(
-        "Lock Pick",
-        R.string.lockpick,
-        1.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Common,
-        null
+    private val lockPick = GeneralEquipment(
+        saveName = "Lock Pick",
+        name = R.string.lockpick,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val hook = GeneralEquipment(
-        "Hook",
-        R.string.generalHook,
-        15.0,
-        CoinType.Silver,
-        0.5,
-        Availability.Common,
-        null
+    private val hook = GeneralEquipment(
+        saveName = "Hook",
+        name = R.string.generalHook,
+        baseCost = 15.0,
+        coinType = CoinType.Silver,
+        weight = 0.5,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val soap = GeneralEquipment(
-        "Soap",
-        R.string.soap,
-        1.0,
-        CoinType.Silver,
-        0.5,
-        Availability.Common,
-        null
+    private val soap = GeneralEquipment(
+        saveName = "Soap",
+        name = R.string.soap,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 0.5,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallNotebook = GeneralEquipment(
-        "Small Blank-paged Book",
-        R.string.smallBook,
-        20.0,
-        CoinType.Gold,
-        1.0,
-        Availability.Uncommon,
-        null
+    private val smallNotebook = GeneralEquipment(
+        saveName = "Small Blank-paged Book",
+        name = R.string.smallBook,
+        baseCost = 20.0,
+        coinType = CoinType.Gold,
+        weight = 1.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val largeNotebook = GeneralEquipment(
-        "Large Blank-paged Book",
-        R.string.largeBook,
-        100.0,
-        CoinType.Gold,
-        2.0,
-        Availability.Uncommon,
-        null
+    private val largeNotebook = GeneralEquipment(
+        saveName = "Large Blank-paged Book",
+        name = R.string.largeBook,
+        baseCost = 100.0,
+        coinType = CoinType.Gold,
+        weight = 2.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val limeStick = GeneralEquipment(
-        "Lime Stick",
-        R.string.limeStick,
-        25.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val limeStick = GeneralEquipment(
+        saveName = "Lime Stick",
+        name = R.string.limeStick,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val candleLantern = GeneralEquipment(
-        "Lantern for Candles",
-        R.string.candleLantern,
-        50.0,
-        CoinType.Silver,
-        0.25,
-        Availability.Common,
-        null
+    private val candleLantern = GeneralEquipment(
+        saveName = "Lantern for Candles",
+        name = R.string.candleLantern,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = 0.25,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val oilLamp = GeneralEquipment(
-        "Oil Lamp",
-        R.string.oilLamp,
-        20.0,
-        CoinType.Silver,
-        2.0,
-        Availability.Uncommon,
-        null
+    private val oilLamp = GeneralEquipment(
+        saveName = "Oil Lamp",
+        name = R.string.oilLamp,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = 2.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val canvas = GeneralEquipment(
-        "Canvas (1 square meter)",
-        R.string.canvas,
-        20.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val canvas = GeneralEquipment(
+        saveName = "Canvas (1 square meter)",
+        name = R.string.canvas,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val blanket = GeneralEquipment(
-        "Blanket",
-        R.string.blanket,
-        1.0,
-        CoinType.Silver,
-        0.2,
-        Availability.Common,
-        null
+    private val blanket = GeneralEquipment(
+        saveName = "Blanket",
+        name = R.string.blanket,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val backpack = GeneralEquipment(
-        "Backpack",
-        R.string.backpack,
-        30.0,
-        CoinType.Silver,
-        1.0,
-        Availability.Common,
-        null
+    private val backpack = GeneralEquipment(
+        saveName = "Backpack",
+        name = R.string.backpack,
+        baseCost = 30.0,
+        coinType = CoinType.Silver,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val monocle = GeneralEquipment(
-        "Monocle",
-        R.string.monocle,
-        200.0,
-        CoinType.Gold,
-        0.1,
-        Availability.Common,
-        null
+    private val monocle = GeneralEquipment(
+        saveName = "Monocle",
+        name = R.string.monocle,
+        baseCost = 200.0,
+        coinType = CoinType.Gold,
+        weight = 0.1,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val wineskin = GeneralEquipment(
-        "Wineskin",
-        R.string.wineskin,
-        2.0,
-        CoinType.Silver,
-        0.2,
-        Availability.Common,
-        null
+    private val wineskin = GeneralEquipment(
+        saveName = "Wineskin",
+        name = R.string.wineskin,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val paper = GeneralEquipment(
-        "Paper",
-        R.string.paper,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val paper = GeneralEquipment(
+        saveName = "Paper",
+        name = R.string.paper,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val papyrus = GeneralEquipment(
-        "Papyrus",
-        R.string.papyrus,
-        20.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val papyrus = GeneralEquipment(
+        saveName = "Papyrus",
+        name = R.string.papyrus,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val decentPerfume = GeneralEquipment(
-        "Decent Perfume",
-        R.string.decentPerfume,
-        35.0,
-        CoinType.Silver,
-        0.2,
-        Availability.Common,
-        null
+    private val decentPerfume = GeneralEquipment(
+        saveName = "Decent Perfume",
+        name = R.string.decentPerfume,
+        baseCost = 35.0,
+        coinType = CoinType.Silver,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodPerfume = GeneralEquipment(
-        "Good Perfume",
-        R.string.goodPerfume,
-        2.0,
-        CoinType.Gold,
-        0.2,
-        Availability.Common,
-        null
+    private val goodPerfume = GeneralEquipment(
+        saveName = "Good Perfume",
+        name = R.string.goodPerfume,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val excellentPerfume = GeneralEquipment(
-        "Excellent Perfume",
-        R.string.excellentPerfume,
-        100.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+    private val excellentPerfume = GeneralEquipment(
+        saveName = "Excellent Perfume",
+        name = R.string.excellentPerfume,
+        baseCost = 100.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val parchment = GeneralEquipment(
-        "Parchment",
-        R.string.parchment,
-        50.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val parchment = GeneralEquipment(
+        saveName = "Parchment",
+        name = R.string.parchment,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val whetstone = GeneralEquipment(
-        "Sharpening Stone",
-        R.string.whetstone,
-        5.0,
-        CoinType.Copper,
-        0.3,
-        Availability.Common,
-        null
+    private val whetstone = GeneralEquipment(
+        saveName = "Sharpening Stone",
+        name = R.string.whetstone,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = 0.3,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val fishingNet = GeneralEquipment(
-        "Fishing Net (1 meter)",
-        R.string.fishingNet,
-        10.0,
-        CoinType.Silver,
-        0.5,
-        Availability.Common,
-        null
+    private val fishingNet = GeneralEquipment(
+        saveName = "Fishing Net (1 meter)",
+        name = R.string.fishingNet,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = 0.5,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val hourglass = GeneralEquipment(
-        "Hourglass",
-        R.string.hourglass,
-        2.0,
-        CoinType.Gold,
-        0.5,
-        Availability.Uncommon,
-        null
+    private val hourglass = GeneralEquipment(
+        saveName = "Hourglass",
+        name = R.string.hourglass,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = 0.5,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val mechClock = GeneralEquipment(
-        "Mechanical Clock",
-        R.string.mechClock,
-        300.0,
-        CoinType.Gold,
-        20.0,
-        Availability.Rare,
-        null
+    private val mechClock = GeneralEquipment(
+        saveName = "Mechanical Clock",
+        name = R.string.mechClock,
+        baseCost = 300.0,
+        coinType = CoinType.Gold,
+        weight = 20.0,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val smallSack = GeneralEquipment(
-        "Small Sack",
-        R.string.smallSack,
-        2.0,
-        CoinType.Silver,
-        0.2,
-        Availability.Common,
-        null
+    private val smallSack = GeneralEquipment(
+        saveName = "Small Sack",
+        name = R.string.smallSack,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeSack = GeneralEquipment(
-        "large Sack",
-        R.string.largeSack,
-        1.0,
-        CoinType.Silver,
-        0.4,
-        Availability.Common,
-        null
+    private val largeSack = GeneralEquipment(
+        saveName = "large Sack",
+        name = R.string.largeSack,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 0.4,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val whistle = GeneralEquipment(
-        "Whistle",
-        R.string.whistle,
-        10.0,
-        CoinType.Silver,
-        0.1,
-        Availability.Common,
-        null
+    private val whistle = GeneralEquipment(
+        saveName = "Whistle",
+        name = R.string.whistle,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = 0.1,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallTent = GeneralEquipment(
-        "Small Tent",
-        R.string.smallTent,
-        1.0,
-        CoinType.Gold,
-        1.0,
-        Availability.Common,
-        null
+    private val smallTent = GeneralEquipment(
+        saveName = "Small Tent",
+        name = R.string.smallTent,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 1.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeTent = GeneralEquipment(
-        "Large Tent",
-        R.string.largeTent,
-        20.0,
-        CoinType.Gold,
-        6.0,
-        Availability.Common,
-        null
+    private val largeTent = GeneralEquipment(
+        saveName = "Large Tent",
+        name = R.string.largeTent,
+        baseCost = 20.0,
+        coinType = CoinType.Gold,
+        weight = 6.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val pavilionTent = GeneralEquipment(
-        "Pavilion Tent",
-        R.string.pavilionTent,
-        150.0,
-        CoinType.Gold,
-        14.0,
-        Availability.Common,
-        null
+    private val pavilionTent = GeneralEquipment(
+        saveName = "Pavilion Tent",
+        name = R.string.pavilionTent,
+        baseCost = 150.0,
+        coinType = CoinType.Gold,
+        weight = 14.0,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val luxuryTent = GeneralEquipment(
-        "Luxurious Tent",
-        R.string.luxuryTent,
-        200.0,
-        CoinType.Gold,
-        4.0,
-        Availability.Uncommon,
-        null
+    private val luxuryTent = GeneralEquipment(
+        saveName = "Luxurious Tent",
+        name = R.string.luxuryTent,
+        baseCost = 200.0,
+        coinType = CoinType.Gold,
+        weight = 4.0,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val ink = GeneralEquipment(
-        "Ink",
-        R.string.ink,
-        1.0,
-        CoinType.Gold,
-        0.3,
-        Availability.Common,
-        null
+    private val ink = GeneralEquipment(
+        saveName = "Ink",
+        name = R.string.ink,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = 0.3,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val chalk = GeneralEquipment(
-        "Chalk",
-        R.string.chalk,
-        5.0,
-        CoinType.Copper,
-        0.2,
-        Availability.Common,
-        null
+    private val chalk = GeneralEquipment(
+        saveName = "Chalk",
+        name = R.string.chalk,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = 0.2,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val flintAndTinder = GeneralEquipment(
-        "Flint and Tinder",
-        R.string.flintTinder,
-        1.0,
-        CoinType.Silver,
-        0.3,
-        Availability.Common,
-        null
+    private val flintAndTinder = GeneralEquipment(
+        saveName = "Flint and Tinder",
+        name = R.string.flintTinder,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = 0.3,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
     init{

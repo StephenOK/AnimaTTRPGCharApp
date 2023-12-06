@@ -1,432 +1,432 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the earth element.
  */
 class EarthBook{
     private val detectMinerals = Spell(
-        R.string.detectMinerals,
-        Element.Earth,
-        true,
-        2,
-        20,
-        R.string.detectMineralsDesc,
-        R.string.detectMineralsEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.detectMinerals,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 2,
+        zCost = 20,
+        effect = R.string.detectMineralsDesc,
+        addedEffect = R.string.detectMineralsEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val mineralControl = Spell(
-        R.string.controlMineral,
-        Element.Earth,
-        true,
-        6,
-        30,
-        R.string.controlMineralDesc,
-        R.string.controlMineralEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.controlMineral,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 6,
+        zCost = 30,
+        effect = R.string.controlMineralDesc,
+        addedEffect = R.string.controlMineralEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val weightIncrement = Spell(
-        R.string.weightIncrement,
-        Element.Earth,
-        true,
-        10,
-        40,
-        R.string.weightIncrementDesc,
-        R.string.weightIncrementEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.weightIncrement,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 10,
+        zCost = 40,
+        effect = R.string.weightIncrementDesc,
+        addedEffect = R.string.weightIncrementEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val transformMineral = Spell(
-        R.string.transMineral,
-        Element.Earth,
-        false,
-        12,
-        40,
-        R.string.transMineralDesc,
-        R.string.transMineralEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.transMineral,
+        inBook = Element.Earth,
+        isActive = false,
+        level = 12,
+        zCost = 40,
+        effect = R.string.transMineralDesc,
+        addedEffect = R.string.transMineralEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val firmness = Spell(
-        R.string.firmness,
-        Element.Earth,
-        true,
-        16,
-        50,
-        R.string.firmnessDesc,
-        R.string.firmnessEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.firmness,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 16,
+        zCost = 50,
+        effect = R.string.firmnessDesc,
+        addedEffect = R.string.firmnessEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val stoneBarrier = Spell(
-        R.string.stoneBarrier,
-        Element.Earth,
-        false,
-        20,
-        60,
-        R.string.stoneBarrierDesc,
-        R.string.stoneBarrierEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.stoneBarrier,
+        inBook = Element.Earth,
+        isActive = false,
+        level = 20,
+        zCost = 60,
+        effect = R.string.stoneBarrierDesc,
+        addedEffect = R.string.stoneBarrierEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val slowness = Spell(
-        R.string.slowness,
-        Element.Earth,
-        true,
-        22,
-        60,
-        R.string.slownessDesc,
-        R.string.slownessEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.slowness,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 22,
+        zCost = 60,
+        effect = R.string.slownessDesc,
+        addedEffect = R.string.slownessEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val shell = Spell(
-        R.string.shell,
-        Element.Earth,
-        true,
-        26,
-        80,
-        R.string.shellDesc,
-        R.string.shellEff,
-        10,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.shell,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 26,
+        zCost = 80,
+        effect = R.string.shellDesc,
+        addedEffect = R.string.shellEff,
+        zMax = 10,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val magneticShield = Spell(
-        R.string.magnetShield,
-        Element.Earth,
-        false,
-        30,
-        50,
-        R.string.magnetShieldDesc,
-        R.string.magnetShieldEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.magnetShield,
+        inBook = Element.Earth,
+        isActive = false,
+        level = 30,
+        zCost = 50,
+        effect = R.string.magnetShieldDesc,
+        addedEffect = R.string.magnetShieldEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val passThroughMatter = Spell(
-        R.string.passMatter,
-        Element.Earth,
-        true,
-        32,
-        80,
-        R.string.passMatterDesc,
-        R.string.passMatterEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.passMatter,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 32,
+        zCost = 80,
+        effect = R.string.passMatterDesc,
+        addedEffect = R.string.passMatterEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val earthSpike = Spell(
-        R.string.earthSpike,
-        Element.Earth,
-        true,
-        36,
-        80,
-        R.string.earthSpikeDesc,
-        R.string.earthSpikeEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.earthSpike,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 36,
+        zCost = 80,
+        effect = R.string.earthSpikeDesc,
+        addedEffect = R.string.earthSpikeEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val breakage = Spell(
-        R.string.breakage,
-        Element.Earth,
-        true,
-        40,
-        60,
-        R.string.breakageDesc,
-        R.string.breakageEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.breakage,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 40,
+        zCost = 60,
+        effect = R.string.breakageDesc,
+        addedEffect = R.string.breakageEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val telemetry = Spell(
-        R.string.telemetry,
-        Element.Earth,
-        true,
-        42,
-        120,
-        R.string.telemetryDesc,
-        R.string.telemetryEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.telemetry,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 42,
+        zCost = 120,
+        effect = R.string.telemetryDesc,
+        addedEffect = R.string.telemetryEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val magneticControl = Spell(
-        R.string.magnetControl,
-        Element.Earth,
-        true,
-        46,
-        100,
-        R.string.magnetControlDesc,
-        R.string.magnetControlEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.magnetControl,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 46,
+        zCost = 100,
+        effect = R.string.magnetControlDesc,
+        addedEffect = R.string.magnetControlEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val forge = Spell(
-        R.string.forge,
-        Element.Earth,
-        true,
-        50,
-        160,
-        R.string.forgeDesc,
-        R.string.forgeEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.forge,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 50,
+        zCost = 160,
+        effect = R.string.forgeDesc,
+        addedEffect = R.string.forgeEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val solidBody = Spell(
-        R.string.solidBody,
-        Element.Earth,
-        true,
-        52,
-        100,
-        R.string.solidBodyDesc,
-        R.string.solidBodyEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.solidBody,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.solidBodyDesc,
+        addedEffect = R.string.solidBodyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val resistanceSpell = Spell(
-        R.string.resistance,
-        Element.Earth,
-        true,
-        56,
-        100,
-        R.string.resistanceDesc,
-        R.string.resistanceEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.resistance,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 56,
+        zCost = 100,
+        effect = R.string.resistanceDesc,
+        addedEffect = R.string.resistanceEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val petrify = Spell(
-        R.string.petrify,
-        Element.Earth,
-        true,
-        60,
-        140,
-        R.string.petrifyDesc,
-        R.string.petrifyEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.petrify,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 60,
+        zCost = 140,
+        effect = R.string.petrifyDesc,
+        addedEffect = R.string.petrifyEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val fissure = Spell(
-        R.string.fissure,
-        Element.Earth,
-        true,
-        62,
-        150,
-        R.string.fissureDesc,
-        R.string.fissureEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.fissure,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 62,
+        zCost = 150,
+        effect = R.string.fissureDesc,
+        addedEffect = R.string.fissureEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val reverseGravity = Spell(
-        R.string.gravReverse,
-        Element.Earth,
-        true,
-        66,
-        200,
-        R.string.gravReverseDesc,
-        R.string.gravReverseEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.gravReverse,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 66,
+        zCost = 200,
+        effect = R.string.gravReverseDesc,
+        addedEffect = R.string.gravReverseEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val mineralCreation = Spell(
-        R.string.createMineral,
-        Element.Earth,
-        true,
-        70,
-        120,
-        R.string.createMineralDesc,
-        R.string.createMineralEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createMineral,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 70,
+        zCost = 120,
+        effect = R.string.createMineralDesc,
+        addedEffect = R.string.createMineralEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val terrainErudition = Spell(
-        R.string.terraErudition,
-        Element.Earth,
-        true,
-        72,
-        120,
-        R.string.terraEruditionDesc,
-        R.string.terraEruditionEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.terraErudition,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 72,
+        zCost = 120,
+        effect = R.string.terraEruditionDesc,
+        addedEffect = R.string.terraEruditionEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val earthquake = Spell(
-        R.string.earthquake,
-        Element.Earth,
-        true,
-        76,
-        150,
-        R.string.earthquakeDesc,
-        R.string.earthquakeEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.earthquake,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 76,
+        zCost = 150,
+        effect = R.string.earthquakeDesc,
+        addedEffect = R.string.earthquakeEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val gravityDestruction = Spell(
-        R.string.gravDestruct,
-        Element.Earth,
-        true,
-        80,
-        180,
-        R.string.gravDestructDesc,
-        R.string.gravDestructEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.gravDestruct,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 80,
+        zCost = 180,
+        effect = R.string.gravDestructDesc,
+        addedEffect = R.string.gravDestructEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val createGolem = Spell(
-        R.string.createGolem,
-        Element.Earth,
-        true,
-        82,
-        250,
-        R.string.createGolemDesc,
-        R.string.createGolemEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createGolem,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.createGolemDesc,
+        addedEffect = R.string.createGolemEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val gravityIncrement = Spell(
-        R.string.incrementGrav,
-        Element.Earth,
-        true,
-        86,
-        200,
-        R.string.incrementGravDesc,
-        R.string.incrementGravEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.incrementGrav,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 86,
+        zCost = 200,
+        effect = R.string.incrementGravDesc,
+        addedEffect = R.string.incrementGravEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val meteor = Spell(
-        R.string.meteor,
-        Element.Earth,
-        true,
-        90,
-        200,
-        R.string.meteorDesc,
-        R.string.meteorEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.meteor,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 90,
+        zCost = 200,
+        effect = R.string.meteorDesc,
+        addedEffect = R.string.meteorEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val gravityControl = Spell(
-        R.string.controlGrav,
-        Element.Earth,
-        true,
-        92,
-        350,
-        R.string.controlGravDesc,
-        R.string.controlGravEff,
-        40,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.controlGrav,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 92,
+        zCost = 350,
+        effect = R.string.controlGravDesc,
+        addedEffect = R.string.controlGravEff,
+        zMax = 40,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val oneWithEarth = Spell(
-        R.string.oneWithEarth,
-        Element.Earth,
-        true,
-        96,
-        300,
-        R.string.oneWithEarthDesc,
-        R.string.oneWithEarthEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.oneWithEarth,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 96,
+        zCost = 300,
+        effect = R.string.oneWithEarthDesc,
+        addedEffect = R.string.oneWithEarthEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val atomicControl = Spell(
-        R.string.atomicControl,
-        Element.Earth,
-        true,
-        100,
-        450,
-        R.string.atomicControlDesc,
-        R.string.atomicControlEff,
-        40,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.atomicControl,
+        inBook = Element.Earth,
+        isActive = true,
+        level = 100,
+        zCost = 450,
+        effect = R.string.atomicControlDesc,
+        addedEffect = R.string.atomicControlEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     val fullBook = listOf(

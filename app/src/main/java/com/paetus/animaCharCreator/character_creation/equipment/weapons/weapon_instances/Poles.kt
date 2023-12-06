@@ -13,91 +13,97 @@ import java.io.Serializable
  */
 class Poles: Serializable {
     val cavLance = Weapon(
-        "cavLance",
-        R.string.cavLance,
-        80,
-        -30,
-        8, null,
-        AttackType.Thrust, null, WeaponType.Pole,
-        12, 7, 25,
-        listOf(WeaponAbility.Special), null,
-        R.string.cavLanceDesc
+        saveName = "cavLance",
+        name = R.string.cavLance,
+        damage = 80,
+        speed = -30,
+        oneHandStr = 8, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 12, breakage = 7, presence = 25,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.cavLanceDesc
     )
 
     val harpoon = ProjectileWeapon(
-        "harpoon",
-        R.string.harpoon,
-        35,
-        -5,
-        5, null,
-        AttackType.Thrust, null, WeaponType.Pole,
-        11, 0, 15,
-        100, 20,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
-        R.string.harpoonDesc
+        saveName = "harpoon",
+        name = R.string.harpoon,
+        damage = 35,
+        speed = -5,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 11, breakage = 0, presence = 15,
+        reloadOrRate = 100, range = 20,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.harpoonDesc
     )
 
     val javelin = ProjectileWeapon(
-        "javelin",
-        R.string.javelin,
-        35,
-        5,
-        4, null,
-        AttackType.Thrust, null, WeaponType.Pole,
-        10, -2, 20,
-        80,  30,
-        listOf(WeaponAbility.Throwable), null,
-        R.string.javelinDesc
+        saveName = "javelin",
+        name = R.string.javelin,
+        damage = 35,
+        speed = 5,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 10, breakage = -2, presence = 20,
+        reloadOrRate = 80, range = 30,
+        ability = listOf(WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.javelinDesc
     )
 
     val lance = ProjectileWeapon(
-        "lance",
-        R.string.lance,
-        40,
-        5,
-        6, 4,
-        AttackType.Thrust, null, WeaponType.Pole,
-        13, 2, 25,
-        80, 30,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
-        R.string.lanceDesc
+        saveName = "lance",
+        name = R.string.lance,
+        damage = 40,
+        speed = 5,
+        oneHandStr = 6, twoHandStr = 4,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 13, breakage = 2, presence = 25,
+        reloadOrRate = 80, range = 30,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.lanceDesc
     )
 
-    val quarterstaff = Weapon(
-        "quarterstaff",
-        R.string.quarterstaff,
-        30,
-        10,
-        4, null,
-        AttackType.Impact, null, WeaponType.Pole,
-        11, 0, 30,
-        listOf(WeaponAbility.TwoHanded), null,
-        R.string.quarterstaffDesc
+    private val quarterstaff = Weapon(
+        saveName = "quarterstaff",
+        name = R.string.quarterstaff,
+        damage = 30,
+        speed = 10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 11, breakage = 0, presence = 30,
+        ability = listOf(WeaponAbility.TwoHanded), ownStrength = null,
+        description = R.string.quarterstaffDesc
     )
 
     val trident = ProjectileWeapon(
-        "trident",
-        R.string.trident,
-        40,
-        -10,
-        7, 6,
-        AttackType.Thrust, null, WeaponType.Pole,
-        12, 3, 15,
-        100,  15,
-        listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), null,
-        R.string.tridentDesc
+        saveName = "trident",
+        name = R.string.trident,
+        damage = 40,
+        speed = -10,
+        oneHandStr = 7, twoHandStr = 6,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Pole,
+        fortitude = 12, breakage = 3, presence = 15,
+        reloadOrRate = 100, range = 15,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.tridentDesc
     )
 
-    val haruNoOkina = Weapon(
-        "haruNoOkina",
-        R.string.haruNoOkina,
-        35,
-        15,
-        4, null,
-        AttackType.Cut, AttackType.Thrust, WeaponType.Pole,
-        12, 2, 25,
-        listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special), null,
-        R.string.haruNoOkinaDesc
+    private val haruNoOkina = Weapon(
+        saveName = "haruNoOkina",
+        name = R.string.haruNoOkina,
+        damage = 35,
+        speed = 15,
+        oneHandStr = 4,
+        twoHandStr = null,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Thrust,
+        type = WeaponType.Pole,
+        fortitude = 12,
+        breakage = 2,
+        presence = 25,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.TwoHanded, WeaponAbility.Special),
+        ownStrength = null,
+        description = R.string.haruNoOkinaDesc
     )
 
     val poles = listOf(cavLance, harpoon, haruNoOkina, javelin, lance, quarterstaff, trident)

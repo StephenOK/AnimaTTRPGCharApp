@@ -13,602 +13,1240 @@ import java.io.ByteArrayOutputStream
  * @param charInstance object that holds the character's data
  */
 class ClassInstances(private val charInstance: BaseCharacter){
-    val warrior =
+    //initialize freelancer bonus selections
+    val freelancerSelection = mutableListOf(0, 0, 0)
+
+    private val warrior =
         CharClass(
-            "warrior",
-            listOf(Archetype.Fighter), 15,
-            15, 5, 25, 3, 0.6,
-            2, 2, 2, 2, 2, 20, 0.5,
-            3, 70, 3, 3, 3, 3, 3, 0.5,
-            20, 3, 2,
-            2, 2, 3, 2, 2, 2, {
-                charInstance.combat.attack.setPointPerLevel(5)
-                charInstance.combat.block.setPointPerLevel(5)
-                charInstance.combat.wearArmor.setPointPerLevel(5)
+            saveName = "warrior",
+            archetype = listOf(Archetype.Fighter),
+            lifePointMultiple = 15,
+            lifePointsPerLevel = 15,
+            initiativePerLevel = 5,
+            mkPerLevel = 25,
+            psyPerTurn = 3,
+            combatMax = 0.6,
+            atkGrowth = 2,
+            blockGrowth = 2,
+            dodgeGrowth = 2,
+            armorGrowth = 2,
+            kiGrowth = 2,
+            kiAccumMult = 20,
+            magMax = 0.5,
+            zeonGrowth = 3,
+            maGrowth = 70,
+            maProjGrowth = 3,
+            summonGrowth = 3,
+            controlGrowth = 3,
+            bindGrowth = 3,
+            banishGrowth = 3,
+            psyMax = 0.5,
+            psyPointGrowth = 20,
+            psyProjGrowth = 3,
+            athGrowth = 2,
+            socGrowth = 2,
+            percGrowth = 2,
+            intellGrowth = 3,
+            vigGrowth = 2,
+            subterGrowth = 2,
+            createGrowth = 2,
+            onTake = {
+                //apply attack, block, and wear armor class bonuses
+                charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+                charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
+                charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
 
-                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(5)
+                //give bonus for feats of strength
+                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
 
-                charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(1)
+                //set individual growth value for feats of strength
+                charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = 1)
+            },
+            onRemove = {
+                //remove class combat bonuses
+                charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+                charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+                charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+                //remove feats of strength class bonus
+                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
+
+                //reset growth value from this class
+                charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = -1)
             }
-        ) {
-            charInstance.combat.attack.setPointPerLevel(0)
-            charInstance.combat.block.setPointPerLevel(0)
-            charInstance.combat.wearArmor.setPointPerLevel(0)
+        )
 
-            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(0)
+    private val acroWarrior = CharClass(
+        saveName = "acroWarrior",
+        archetype = listOf(Archetype.Fighter),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 10,
+        mkPerLevel = 25,
+        psyPerTurn = 3,
+        combatMax = 0.6,
+        atkGrowth = 2,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.5,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.5,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
-            charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(-1)
+            //apply secondary characteristic bonuses
+            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 10)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+            //remove secondary characteristic bonuses
+            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
         }
-
-    val acroWarrior = CharClass(
-        "acroWarrior",
-        listOf(Archetype.Fighter), 20,
-        10, 10, 25, 3, 0.6,
-        2, 3, 2, 2, 2, 20, 0.5,
-        3, 70, 3, 3, 3, 3, 3, 0.5,
-        20, 3, 2,
-        2, 2, 3, 2, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.dodge.setPointPerLevel(5)
-
-            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(10)
-            charInstance.secondaryList.jump.setClassPointsPerLevel(10)
-            charInstance.secondaryList.athletics.setClassPointsPerLevel(10)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(10)
-        }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
-
-        charInstance.secondaryList.acrobatics.setClassPointsPerLevel(0)
-        charInstance.secondaryList.jump.setClassPointsPerLevel(0)
-        charInstance.secondaryList.athletics.setClassPointsPerLevel(0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(0)
-    }
+    )
 
     val paladin = CharClass(
-        "paladin",
-        listOf(Archetype.Fighter), 15,
-        15, 5, 20, 3, 0.60,
-        2, 2, 2, 2, 2, 20, 0.50,
-        2, 60, 3, 3, 3, 3, 1, 0.50,
-        20, 3, 2,
-        1, 2, 2, 2, 3, 2, {
-            charInstance.combat.block.setPointPerLevel(5)
-            charInstance.combat.wearArmor.setPointPerLevel(10)
+        saveName = "paladin",
+        archetype = listOf(Archetype.Fighter),
+        lifePointMultiple = 15,
+        lifePointsPerLevel = 15,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.50,
+        zeonGrowth = 2,
+        maGrowth = 60,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 1,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 1,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 2,
+        subterGrowth = 3,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
 
-            charInstance.secondaryList.leadership.setClassPointsPerLevel(10)
-            charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(5)
+            //apply secondary class bonuses
+            charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
 
+            //apply cost reduction to withstand pain
             charInstance.secondaryList.resistPain.setDevelopmentDeduction(1)
 
+            //apply magic abilities if chosen
             if(magPaladin.value){
-                charInstance.magic.setZeonPerLevel(20)
-                charInstance.summoning.banish.setPointsPerLevel(10)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
             }
-            else charInstance.secondaryList.composure.setClassPointsPerLevel(10)
+            //otherwise add composure class bonuses
+            else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+        },
+        onRemove = {
+            //remove combat class bonus
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+            //remove secondary class bonuses
+            charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+
+            //remove cost reduction to withstand pain
+            charInstance.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
+
+            //remove any applied magic ability
+            if (magPaladin.value) {
+                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+            }
+            //if no magic abilities, remove composure class bonus
+            else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
         }
-    ) {
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.wearArmor.setPointPerLevel(0)
-
-        charInstance.secondaryList.leadership.setClassPointsPerLevel(0)
-        charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(0)
-
-        charInstance.secondaryList.resistPain.setDevelopmentDeduction(-1)
-
-        if (magPaladin.value) {
-            charInstance.magic.setZeonPerLevel(0)
-            charInstance.summoning.banish.setPointsPerLevel(0)
-        } else charInstance.secondaryList.composure.setClassPointsPerLevel(0)
-    }
+    )
 
     val darkPaladin = CharClass(
-        "darkPaladin",
-        listOf(Archetype.Fighter), 15,
-        15, 5, 20, 3, 0.60,
-        2, 2, 2, 2, 2, 20, 0.50,
-        2, 60, 3, 3, 1, 3, 3, 0.50,
-        20, 3, 2,
-        1, 2, 2, 2, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.wearArmor.setPointPerLevel(5)
+        saveName = "darkPaladin",
+        archetype = listOf(Archetype.Fighter),
+        lifePointMultiple = 15,
+        lifePointsPerLevel = 15,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.50,
+        zeonGrowth = 2,
+        maGrowth = 60,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 1,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 1,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
 
-            charInstance.secondaryList.intimidate.setClassPointsPerLevel(10)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(5)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(5)
+            //apply secondary class bonuses
+            charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
 
-            charInstance.secondaryList.composure.setDevelopmentDeduction(1)
+            //reduce composure's cost
+            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
 
+            //apply class magic abilities, if chosen
             if(magPaladin.value){
-                charInstance.magic.setZeonPerLevel(20)
-                charInstance.summoning.control.setPointsPerLevel(10)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
             }
-            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
+            //if not, apply withstand pain class bonus
+            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+            //remove secondary class bonuses
+            charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
+
+            //remove composure cost reduction
+            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+
+            //remove any applied magic abilities
+            if (magPaladin.value) {
+                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+            }
+            //otherwise, remove withstand pain class bonus
+            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.wearArmor.setPointPerLevel(0)
-
-        charInstance.secondaryList.intimidate.setClassPointsPerLevel(0)
-        charInstance.secondaryList.composure.setClassPointsPerLevel(0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(0)
-        charInstance.secondaryList.persuasion.setClassPointsPerLevel(0)
-
-        charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
-
-        if (magPaladin.value) {
-            charInstance.magic.setZeonPerLevel(0)
-            charInstance.summoning.control.setPointsPerLevel(0)
-        } else charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
-    }
+    )
 
     val weaponMaster = CharClass(
-        "weaponMaster",
-        listOf(Archetype.Fighter), 10,
-        20, 5, 10, 3, 0.60,
-        2, 2, 2, 1, 3, 30, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 2, 3, 1, 3, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.block.setPointPerLevel(5)
-            charInstance.combat.wearArmor.setPointPerLevel(10)
+        saveName = "weaponMaster",
+        archetype = listOf(Archetype.Fighter),
+        lifePointMultiple = 10,
+        lifePointsPerLevel = 20,
+        initiativePerLevel = 5,
+        mkPerLevel = 10,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 1,
+        kiGrowth = 3,
+        kiAccumMult = 30,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 1,
+        subterGrowth = 3,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
 
-            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(5)
+            //apply feats of strength class bonus
+            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+            //remove feats of strength class bonus
+            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.wearArmor.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(0)
-    }
-
-    val technician = CharClass(
-        "technician",
-        listOf(Archetype.Domine), 20,
-        5, 5, 50, 3, 0.60,
-        2, 2, 2, 2, 1, 10, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 2, 3, 2, 2, 2, {charInstance.combat.attack.setPointPerLevel(5)}
-    ) { charInstance.combat.attack.setPointPerLevel(0) }
+    private val technician = CharClass(
+        saveName = "technician",
+        archetype = listOf(Archetype.Domine),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 50,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 1,
+        kiAccumMult = 10,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //set attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)},
+        onRemove = {
+            //remove attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        }
+    )
 
     val tao = CharClass(
-        "tao",
-        listOf(Archetype.Fighter, Archetype.Domine), 20,
-        10, 5, 30, 3, 0.60,
-        2, 2, 2, 2, 2, 15, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 2, 3, 2, 2, 2, {charInstance.secondaryList.style.setClassPointsPerLevel(5)}
-    ) { charInstance.secondaryList.style.setClassPointsPerLevel(0) }
-
-    val ranger = CharClass(
-        "ranger",
-        listOf(Archetype.Fighter, Archetype.Prowler), 20,
-        10, 5, 20, 3, 0.60,
-        2, 2, 2, 2, 2, 25, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 1, 3, 3, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-
-            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(10)
-            charInstance.secondaryList.track.setClassPointsPerLevel(10)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(5)
-            charInstance.secondaryList.animals.setClassPointsPerLevel(5)
-            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(5)
-
-            charInstance.secondaryList.trapLore.setDevelopmentDeduction(1)
-            charInstance.secondaryList.herbalLore.setDevelopmentDeduction(1)
-            charInstance.secondaryList.animals.setDevelopmentDeduction(2)
-            charInstance.secondaryList.medic.setDevelopmentDeduction(1)
+        saveName = "tao",
+        archetype = listOf(Archetype.Fighter, Archetype.Domine),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 5,
+        mkPerLevel = 30,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 15,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //set style class bonus
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
+        },
+        onRemove = {
+            //remove style class bonus
+            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(5)
+    )
 
-        charInstance.secondaryList.notice.setClassPointsPerLevel(0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(0)
-        charInstance.secondaryList.track.setClassPointsPerLevel(0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
-        charInstance.secondaryList.animals.setClassPointsPerLevel(0)
-        charInstance.secondaryList.herbalLore.setClassPointsPerLevel(0)
+    private val ranger = CharClass(
+        saveName = "ranger",
+        archetype = listOf(Archetype.Fighter, Archetype.Prowler),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 1,
+        intellGrowth = 3,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
 
-        charInstance.secondaryList.trapLore.setDevelopmentDeduction(-1)
-        charInstance.secondaryList.herbalLore.setDevelopmentDeduction(-1)
-        charInstance.secondaryList.animals.setDevelopmentDeduction(-2)
-        charInstance.secondaryList.medic.setDevelopmentDeduction(-1)
-    }
+            //apply secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 5)
 
-    val shadow = CharClass(
-        "shadow",
-        listOf(Archetype.Fighter, Archetype.Prowler), 20,
-        5, 10, 25, 3, 0.60,
-        2, 3, 2, 2, 2, 20, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 2, 3, 2, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.dodge.setPointPerLevel(5)
+            //apply secondary dp cost reductions
+            charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = 1)
+            charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = 1)
+            charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = 2)
+            charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = 1)
+        },
+        onRemove = {
+            //remove attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
 
-            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
+            //remove secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 0)
+
+            //remove secondary dp cost reductions
+            charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = -1)
+            charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = -1)
+            charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = -2)
+            charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = -1)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.notice.setClassPointsPerLevel(0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
-    }
+    private val shadow = CharClass(
+        saveName = "shadow",
+        archetype = listOf(Archetype.Fighter, Archetype.Prowler),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 10,
+        mkPerLevel = 25,
+        psyPerTurn = 3,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
-    val thief = CharClass(
-        "thief",
-        listOf(Archetype.Prowler), 20,
-        5, 10, 20, 3, 0.50,
-        2, 3, 2, 3, 2, 25, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 1,
-        2, 2, 3, 3, 1, 2, {
-            charInstance.combat.dodge.setPointPerLevel(5)
+            //apply secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
-            charInstance.secondaryList.notice.setClassPointsPerLevel(5)
-            charInstance.secondaryList.search.setClassPointsPerLevel(5)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(5)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(5)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(5)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(5)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(10)
-
-            charInstance.secondaryList.appraise.setDevelopmentDeduction(2)
+            //remove secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
         }
-    ) {
-        charInstance.combat.dodge.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.notice.setClassPointsPerLevel(0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
-        charInstance.secondaryList.theft.setClassPointsPerLevel(0)
+    private val thief = CharClass(
+        saveName = "thief",
+        archetype = listOf(Archetype.Prowler),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 10,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 2,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 1,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 3,
+        subterGrowth = 1,
+        createGrowth = 2,
+        onTake = {
+            //apply dodge class bonus
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
-        charInstance.secondaryList.appraise.setDevelopmentDeduction(-2)
-    }
+            //apply secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 10)
 
-    val assassin = CharClass(
-        "assassin",
-        listOf(Archetype.Prowler), 20,
-        5, 10, 20, 3, 0.50,
-        2, 3, 2, 3, 2, 25, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 1, 3, 3, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
+            //apply appraisal cost reduction
+            charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = 2)
+        },
+        onRemove = {
+            //remove dodge class bonus
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
-            charInstance.secondaryList.notice.setClassPointsPerLevel(10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
-            charInstance.secondaryList.poisons.setClassPointsPerLevel(10)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(10)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(10)
+            //remove secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.secondaryList.stealth.setDevelopmentDeduction(1)
-            charInstance.secondaryList.composure.setDevelopmentDeduction(1)
-            charInstance.secondaryList.memorize.setDevelopmentDeduction(1)
+            //remove appraisal cost reduction
+            charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = -2)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.notice.setClassPointsPerLevel(0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
-        charInstance.secondaryList.poisons.setClassPointsPerLevel(0)
-        charInstance.secondaryList.composure.setClassPointsPerLevel(0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(0)
+    private val assassin = CharClass(
+        saveName = "assassin",
+        archetype = listOf(Archetype.Prowler),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 10,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 2,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 1,
+        intellGrowth = 3,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
 
-        charInstance.secondaryList.stealth.setDevelopmentDeduction(-1)
-        charInstance.secondaryList.composure.setDevelopmentDeduction(-1)
-        charInstance.secondaryList.memorize.setDevelopmentDeduction(-1)
-    }
+            //apply secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 10)
 
-    val wizard = CharClass(
-        "wizard",
-        listOf(Archetype.Mystic), 20,
-        5, 5, 10, 3, 0.50,
-        3, 3, 2, 3, 3, 30, 0.60,
-        1, 50, 2, 2, 2, 2, 2, 0.50,
-        20, 3, 2,
-        2, 2, 2, 3, 2, 2, {
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(10)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
+            //apply secondary cost reductions
+            charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = 1)
+            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
+            charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = 1)
+        },
+        onRemove = {
+            //remove attack class bonus
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
 
-            charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(1)
+            //remove secondary class bonuses
+            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.magic.setZeonPerLevel(100)
+            //remove secondary cost reductions
+            charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = -1)
+            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+            charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = -1)
         }
-    ) {
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(0)
+    )
 
-        charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(-1)
+    private val wizard = CharClass(
+        saveName = "wizard",
+        archetype = listOf(Archetype.Mystic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 10,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 3,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 3,
+        kiAccumMult = 30,
+        magMax = 0.60,
+        zeonGrowth = 1,
+        maGrowth = 50,
+        maProjGrowth = 2,
+        summonGrowth = 2,
+        controlGrowth = 2,
+        bindGrowth = 2,
+        banishGrowth = 2,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
-        charInstance.magic.setZeonPerLevel(0)
-    }
+            //apply reduced magic appraisal cost reduction
+            charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = 1)
 
-    val warlock = CharClass(
-        "warlock",
-        listOf(Archetype.Fighter, Archetype.Mystic), 20,
-        10, 5, 20, 3, 0.50,
-        2, 2, 2, 2, 2, 25, 0.50,
-        1, 50, 2, 2, 2, 2, 2, 0.50,
-        20, 3, 2,
-        2, 2, 2, 2, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.block.setPointPerLevel(5)
-            charInstance.combat.dodge.setPointPerLevel(5)
+            //apply max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 100)
+        },
+        onRemove = {
+            //remove secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
+            //remove magic appraisal cost reduction
+            charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = -1)
 
-            charInstance.magic.setZeonPerLevel(20)
+            //remove max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
+    private val warlock = CharClass(
+        saveName = "warlock",
+        archetype = listOf(Archetype.Fighter, Archetype.Mystic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.50,
+        zeonGrowth = 1,
+        maGrowth = 50,
+        maProjGrowth = 2,
+        summonGrowth = 2,
+        controlGrowth = 2,
+        bindGrowth = 2,
+        banishGrowth = 2,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
-        charInstance.magic.setZeonPerLevel(0)
-    }
+            //apply magic appraisal class bonus
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
 
-    val illusionist = CharClass(
-        "illusionist",
-        listOf(Archetype.Mystic, Archetype.Prowler), 20,
-        5, 5, 20, 3, 0.50,
-        3, 3, 2, 3, 2, 25, 0.60,
-        1, 60, 2, 3, 3, 3, 3, 0.50,
-        20, 3, 2,
-        2, 2, 2, 3, 2, 2, {
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(10)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(10)
-            charInstance.secondaryList.disguise.setClassPointsPerLevel(5)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(5)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(5)
+            //apply zeon points per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
-            charInstance.secondaryList.sleightHand.setDevelopmentDeduction(1)
-            charInstance.secondaryList.persuasion.setDevelopmentDeduction(1)
+            //remove magic appraisal class bonus
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.magic.setZeonPerLevel(75)
+            //remove zeon points per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    ) {
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(0)
-        charInstance.secondaryList.disguise.setClassPointsPerLevel(0)
-        charInstance.secondaryList.theft.setClassPointsPerLevel(0)
-        charInstance.secondaryList.persuasion.setClassPointsPerLevel(0)
+    )
 
-        charInstance.secondaryList.sleightHand.setDevelopmentDeduction(-1)
-        charInstance.secondaryList.persuasion.setDevelopmentDeduction(-1)
+    private val illusionist = CharClass(
+        saveName = "illusionist",
+        archetype = listOf(Archetype.Mystic, Archetype.Prowler),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 3,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.60,
+        zeonGrowth = 1,
+        maGrowth = 60,
+        maProjGrowth = 2,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
 
-        charInstance.magic.setZeonPerLevel(0)
-    }
+            //apply secondary cost reductions
+            charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = 1)
+            charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = 1)
 
-    val wizMentalist = CharClass(
-        "wizMentalist",
-        listOf(Archetype.Mystic, Archetype.Psychic), 20,
-        5, 5, 10, 1, 0.50,
-        3, 3, 2, 3, 3, 30, 0.50,
-        1, 50, 2, 2, 2, 2, 2, 0.50,
-        10, 2, 2,
-        2, 2, 2, 3, 2, 2, {
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(10)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
+            //apply zeon points gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 75)
+        },
+        onRemove = {
+            //remove secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.magic.setZeonPerLevel(100)
+            //remove secondary cost reductions
+            charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = -1)
+            charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = -1)
+
+            //remove zeon points gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    ) {
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(0)
+    )
 
-        charInstance.magic.setZeonPerLevel(0)
-    }
+    private val wizMentalist = CharClass(
+        saveName = "wizMentalist",
+        archetype = listOf(Archetype.Mystic, Archetype.Psychic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 10,
+        psyPerTurn = 1,
+        combatMax = 0.50,
+        atkGrowth = 3,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 3,
+        kiAccumMult = 30,
+        magMax = 0.50,
+        zeonGrowth = 1,
+        maGrowth = 50,
+        maProjGrowth = 2,
+        summonGrowth = 2,
+        controlGrowth = 2,
+        bindGrowth = 2,
+        banishGrowth = 2,
+        psyMax = 0.50,
+        psyPointGrowth = 10,
+        psyProjGrowth = 2,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
-    val summoner = CharClass(
-        "summoner",
-        listOf(Archetype.Mystic), 20,
-        5, 5, 10, 3, 0.50,
-        3, 3, 2, 3, 3, 30, 0.60,
-        1, 60, 3, 1, 1, 1, 1, 0.50,
-        20, 3, 2,
-        2, 2, 2, 3, 2, 2, {
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(5)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(10)
+            //apply max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 100)
+        },
+        onRemove = {
+            //remove secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.secondaryList.occult.setDevelopmentDeduction(1)
-
-            charInstance.magic.setZeonPerLevel(50)
-
-            charInstance.summoning.summon.setPointsPerLevel(10)
-            charInstance.summoning.control.setPointsPerLevel(10)
-            charInstance.summoning.bind.setPointsPerLevel(10)
-            charInstance.summoning.banish.setPointsPerLevel(10)
+            //remove max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    ) {
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(0)
+    )
 
-        charInstance.secondaryList.occult.setDevelopmentDeduction(-1)
+    private val summoner = CharClass(
+        saveName = "summoner",
+        archetype = listOf(Archetype.Mystic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 10,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 3,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 3,
+        kiAccumMult = 30,
+        magMax = 0.60,
+        zeonGrowth = 1,
+        maGrowth = 60,
+        maProjGrowth = 3,
+        summonGrowth = 1,
+        controlGrowth = 1,
+        bindGrowth = 1,
+        banishGrowth = 1,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 10)
 
-        charInstance.magic.setZeonPerLevel(0)
+            //apply reduced cost to occult
+            charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = 1)
 
-        charInstance.summoning.summon.setPointsPerLevel(0)
-        charInstance.summoning.control.setPointsPerLevel(0)
-        charInstance.summoning.bind.setPointsPerLevel(0)
-        charInstance.summoning.banish.setPointsPerLevel(0)
-    }
+            //apply max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 50)
 
-    val warSummoner = CharClass(
-        "warSummoner",
-        listOf(Archetype.Fighter, Archetype.Mystic), 20,
-        10, 5, 20, 3, 0.50,
-        2, 2, 2, 2, 2, 20, 0.50,
-        1, 60, 3, 1, 1, 1, 1, 0.50,
-        20, 3, 2,
-        2, 2, 2, 2, 2, 2, {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.block.setPointPerLevel(5)
-            charInstance.combat.dodge.setPointPerLevel(5)
+            //apply summoning ability bonuses
+            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 10)
+            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
+            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 10)
+            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
+        },
+        onRemove = {
+            //remove secondary class bonuses
+            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
-            charInstance.secondaryList.occult.setClassPointsPerLevel(5)
+            //remove occult cost reduction
+            charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = -1)
 
-            charInstance.magic.setZeonPerLevel(20)
+            //remove max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
 
-            charInstance.summoning.summon.setPointsPerLevel(5)
-            charInstance.summoning.control.setPointsPerLevel(5)
-            charInstance.summoning.bind.setPointsPerLevel(5)
-            charInstance.summoning.banish.setPointsPerLevel(5)
+            //remove summoning ability bonuses
+            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
+    )
 
-        charInstance.secondaryList.occult.setClassPointsPerLevel(0)
+    private val warSummoner = CharClass(
+        saveName = "warSummoner",
+        archetype = listOf(Archetype.Fighter, Archetype.Mystic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 3,
+        combatMax = 0.50,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.50,
+        zeonGrowth = 1,
+        maGrowth = 60,
+        maProjGrowth = 3,
+        summonGrowth = 1,
+        controlGrowth = 1,
+        bindGrowth = 1,
+        banishGrowth = 1,
+        psyMax = 0.50,
+        psyPointGrowth = 20,
+        psyProjGrowth = 3,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            //apply combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
-        charInstance.magic.setZeonPerLevel(0)
+            //apply occult class bonus
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
-        charInstance.summoning.summon.setPointsPerLevel(0)
-        charInstance.summoning.control.setPointsPerLevel(0)
-        charInstance.summoning.bind.setPointsPerLevel(0)
-        charInstance.summoning.banish.setPointsPerLevel(0)
-    }
+            //apply max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+
+            //apply summoning class bonuses
+            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 5)
+            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 5)
+            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 5)
+            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 5)
+        },
+        onRemove = {
+            //remove combat class bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+            //remove occult class bonus
+            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+
+            //remove max zeon gained per level
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+
+            //remove summoning class bonuses
+            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+        }
+    )
 
     val mentalist = CharClass(
-        "mentalist",
-        listOf(Archetype.Psychic), 20,
-        5, 5, 10, 1, 0.50,
-        3, 3, 2, 3, 3, 30, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.60,
-        10, 2, 2,
-        2, 2, 2, 3, 2, 2, {}
-    ) {}
+        saveName = "mentalist",
+        archetype = listOf(Archetype.Psychic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 10,
+        psyPerTurn = 1,
+        combatMax = 0.50,
+        atkGrowth = 3,
+        blockGrowth = 3,
+        dodgeGrowth = 2,
+        armorGrowth = 3,
+        kiGrowth = 3,
+        kiAccumMult = 30,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.60,
+        psyPointGrowth = 10,
+        psyProjGrowth = 2,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 3,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {},
+        onRemove = {}
+    )
 
-    val warMentalist = CharClass(
-        "warMentalist",
-        listOf(Archetype.Fighter, Archetype.Psychic), 20,
-        10, 5, 20, 1, 0.50,
-        2, 2, 2, 2, 2, 25, 0.50,
-        3, 70, 3, 3, 3, 3, 3, 0.50,
-        15, 2, 2,
-        2, 2, 3, 2, 2, 2, {
+    private val warMentalist = CharClass(
+        saveName = "warMentalist",
+        archetype = listOf(Archetype.Fighter, Archetype.Psychic),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 10,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 1,
+        combatMax = 0.50,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 25,
+        magMax = 0.50,
+        zeonGrowth = 3,
+        maGrowth = 70,
+        maProjGrowth = 3,
+        summonGrowth = 3,
+        controlGrowth = 3,
+        bindGrowth = 3,
+        banishGrowth = 3,
+        psyMax = 0.50,
+        psyPointGrowth = 15,
+        psyProjGrowth = 2,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 3,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
             charInstance.combat.attack.setPointPerLevel(5)
             charInstance.combat.block.setPointPerLevel(5)
             charInstance.combat.dodge.setPointPerLevel(5)
+        },
+        onRemove = {
+            charInstance.combat.attack.setPointPerLevel(0)
+            charInstance.combat.block.setPointPerLevel(0)
+            charInstance.combat.dodge.setPointPerLevel(0)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
-    }
+    )
 
     val freelancer = CharClass(
-        "freelancer",
-        listOf(Archetype.Novel), 20,
-        5, 5, 20, 2, 0.60,
-        2, 2, 2, 2, 2, 20, 0.60,
-        2, 60, 2, 2, 2, 2, 2, 0.60,
-        20, 2, 2,
-        2, 2, 2, 2, 2, 2, {
-            freelancerAdded()
-            charInstance.magic.setZeonPerLevel(10)
-        }
-    ) {
-        freelancerRemoved()
-        charInstance.magic.setZeonPerLevel(0)
-    }
+        saveName = "freelancer",
+        archetype = listOf(Archetype.Novel),
+        lifePointMultiple = 20,
+        lifePointsPerLevel = 5,
+        initiativePerLevel = 5,
+        mkPerLevel = 20,
+        psyPerTurn = 2,
+        combatMax = 0.60,
+        atkGrowth = 2,
+        blockGrowth = 2,
+        dodgeGrowth = 2,
+        armorGrowth = 2,
+        kiGrowth = 2,
+        kiAccumMult = 20,
+        magMax = 0.60,
+        zeonGrowth = 2,
+        maGrowth = 60,
+        maProjGrowth = 2,
+        summonGrowth = 2,
+        controlGrowth = 2,
+        bindGrowth = 2,
+        banishGrowth = 2,
+        psyMax = 0.60,
+        psyPointGrowth = 20,
+        psyProjGrowth = 2,
+        athGrowth = 2,
+        socGrowth = 2,
+        percGrowth = 2,
+        intellGrowth = 2,
+        vigGrowth = 2,
+        subterGrowth = 2,
+        createGrowth = 2,
+        onTake = {
+            freelancerSelection.forEach{secondarySelected ->
+                //update characteristic's class value if a selection was made
+                if(secondarySelected != 0)
+                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 10)
+            }
 
+            //apply max zeon gained per level
+            charInstance.magic.setZeonPerLevel(10)
+        },
+        onRemove = {
+            //update characteristic's class value if a selection was made
+            freelancerSelection.forEach{secondarySelected ->
+                if(secondarySelected != 0)
+                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 0)
+            }
+
+            //remove max zeon gained per level
+            charInstance.magic.setZeonPerLevel(0)
+        }
+    )
+
+    //collect all available class items
     val allClasses = listOf(freelancer, warrior, acroWarrior, paladin, darkPaladin, weaponMaster, technician, tao,
     ranger, shadow, thief, assassin, wizard, warlock, illusionist, wizMentalist, summoner, warSummoner,
     mentalist, warMentalist)
 
-    //initialize freelancer bonus selections
-    val freelancerSelection = mutableListOf(0, 0, 0)
-
     //initialize paladin's magic selection
-    val magPaladin = mutableStateOf(true)
-
-    /**
-     * Function to run on the character's selection of the freelancer class.
-     */
-    fun freelancerAdded(){
-        freelancerSelection.forEach{
-            //update characteristic's class value if a selection was made
-            if(it != 0)
-                charInstance.secondaryList.getAllSecondaries()[it - 1].setClassPointsPerLevel(10)
-        }
-    }
-
-    /**
-     * Function to run on the character's change from the freelancer class.
-     */
-    fun freelancerRemoved(){
-        //update characteristic's class value if a selection was made
-        freelancerSelection.forEach{
-            if(it != 0)
-                charInstance.secondaryList.getAllSecondaries()[it - 1].setClassPointsPerLevel(0)
-        }
-    }
+    val magPaladin = mutableStateOf(value = true)
 
     /**
      * Attempts to change the selection in the indicated record index.
      *
-     * @param index record location to set the selection to
-     * @param input value to set the selection to
+     * @param selectionIndex record location to set the selection to
+     * @param secondarySelection value to set the selection to
      * @return value recorded after operation
      */
     fun setSelection(
-        index: Int,
-        input: Int
+        selectionIndex: Int,
+        secondarySelection: Int
     ): Int{
         //record current selected value
-        val prevIndex = freelancerSelection[index] - 1
+        val prevIndex = freelancerSelection[selectionIndex] - 1
 
         //if user is clearing selection
-        if(input == 0) {
+        if(secondarySelection == 0) {
             //remove previous bonus if one taken
             if(prevIndex >= 0)
                 charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
 
             //set new input
-            freelancerSelection[index] = 0
+            freelancerSelection[selectionIndex] = 0
         }
 
         //user is making a selection
         else{
             //determine that this input is not taken in another record index
-            freelancerSelection.forEach{
+            freelancerSelection.forEach{secondary ->
                 //return current value if match found
-                if(it == input)
-                    return freelancerSelection[index]
+                if(secondary == secondarySelection)
+                    return freelancerSelection[selectionIndex]
             }
 
             //remove previous bonus if one taken
@@ -616,14 +1254,14 @@ class ClassInstances(private val charInstance: BaseCharacter){
                 charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
 
             //set new input
-            freelancerSelection[index] = input
+            freelancerSelection[selectionIndex] = secondarySelection
 
             //add new bonus
-            charInstance.secondaryList.getAllSecondaries()[input - 1].setClassPointsPerLevel(10)
+            charInstance.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(classBonus = 10)
         }
 
         //return changed value
-        return freelancerSelection[index]
+        return freelancerSelection[selectionIndex]
     }
 
     /**
@@ -638,21 +1276,21 @@ class ClassInstances(private val charInstance: BaseCharacter){
             //grant magic options
             if(magPaladin.value){
                 //remove composure bonus
-                charInstance.secondaryList.composure.setClassPointsPerLevel(0)
+                charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
 
                 //grant zeon and banish points
-                charInstance.magic.setZeonPerLevel(20)
-                charInstance.summoning.banish.setPointsPerLevel(10)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
             }
 
             //grant secondary boon
             else {
                 //remove zeon and banish points
-                charInstance.magic.setZeonPerLevel(0)
-                charInstance.summoning.banish.setPointsPerLevel(0)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
 
                 //grant composure bonus
-                charInstance.secondaryList.composure.setClassPointsPerLevel(10)
+                charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
             }
         }
 
@@ -661,21 +1299,21 @@ class ClassInstances(private val charInstance: BaseCharacter){
             //grant magic options
             if(magPaladin.value){
                 //remove withstand pain bonus
-                charInstance.secondaryList.resistPain.setClassPointsPerLevel(0)
+                charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
 
                 //grant zeon and control points
-                charInstance.magic.setZeonPerLevel(20)
-                charInstance.summoning.control.setPointsPerLevel(10)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
             }
 
             //grant secondary boon
             else {
                 //remove zeon and control points
-                charInstance.magic.setZeonPerLevel(0)
-                charInstance.summoning.control.setPointsPerLevel(0)
+                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
 
                 //grant withstand pain bonus
-                charInstance.secondaryList.resistPain.setClassPointsPerLevel(10)
+                charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
             }
         }
     }
@@ -685,24 +1323,28 @@ class ClassInstances(private val charInstance: BaseCharacter){
      *
      * @param fileReader object that reads the file
      */
-    fun loadClassData(fileReader: BufferedReader){
+    fun loadClassData(
+        fileReader: BufferedReader
+    ){
         //get paladin's selection
         magPaladin.value = fileReader.readLine().toBoolean()
 
         //get each freelancer selected characteristic
-        freelancerSelection[0] = fileReader.readLine().toInt()
-        freelancerSelection[1] = fileReader.readLine().toInt()
-        freelancerSelection[2] = fileReader.readLine().toInt()
+        setSelection(selectionIndex = 0, secondarySelection = fileReader.readLine().toInt())
+        setSelection(selectionIndex = 1, secondarySelection = fileReader.readLine().toInt())
+        setSelection(selectionIndex = 2, secondarySelection = fileReader.readLine().toInt())
     }
 
     /**
      * Writes the data in this section to file.
      */
-    fun writeClassData(byteArray: ByteArrayOutputStream) {
-        writeDataTo(byteArray, magPaladin.value)
+    fun writeClassData(
+        byteArray: ByteArrayOutputStream
+    ){
+        writeDataTo(writer = byteArray, input = magPaladin.value)
 
         freelancerSelection.forEach{
-            writeDataTo(byteArray, it)
+            writeDataTo(writer = byteArray, input = it)
         }
     }
 }

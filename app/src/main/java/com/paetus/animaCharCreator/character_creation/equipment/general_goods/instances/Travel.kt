@@ -8,92 +8,117 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
 class Travel: GeneralCategory(
-    listOf(
-        QualityModifier("Mediocre Quality", R.string.mediocreQual,  0.5, Availability.Common),
-        QualityModifier("Decent Quality", R.string.decentQual, 1.0, Availability.Common),
-        QualityModifier("Good Quality", R.string.goodQual, 5.0, Availability.Common),
-        QualityModifier("Luxury Quality", R.string.luxQual, 100.0, Availability.Common),
-        QualityModifier("Dangerous Journey", R.string.dangerous, 10.0, Availability.Common)
+    qualityInput = listOf(
+        QualityModifier(
+            saveName = "Mediocre Quality",
+            qualityType = R.string.mediocreQual,
+            modifier = 0.5,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Decent Quality",
+            qualityType = R.string.decentQual,
+            modifier = 1.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Good Quality",
+            qualityType = R.string.goodQual,
+            modifier = 5.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Luxury Quality",
+            qualityType = R.string.luxQual,
+            modifier = 100.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Dangerous Journey",
+            qualityType = R.string.dangerous,
+            modifier = 10.0,
+            availability = Availability.Common
+        )
     )
 ) {
-    val shortPassage = GeneralEquipment(
-        "Short Passage (2 - 5 hours)",
-        R.string.shortPassage,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val shortPassage = GeneralEquipment(
+        saveName = "Short Passage (2 - 5 hours)",
+        name = R.string.shortPassage,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val shortVoyage = GeneralEquipment(
-        "Short Voyage (1 day)",
-        R.string.shortVoyage,
-        10.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val shortVoyage = GeneralEquipment(
+        saveName = "Short Voyage (1 day)",
+        name = R.string.shortVoyage,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val modestVoyage = GeneralEquipment(
-        "Modest Voyage (2 - 5 days)",
-        R.string.modestVoyage,
-        10.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val modestVoyage = GeneralEquipment(
+        saveName = "Modest Voyage (2 - 5 days)",
+        name = R.string.modestVoyage,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val longVoyage = GeneralEquipment(
-        "Long Voyage (more than a week)",
-        R.string.longVoyage,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val longVoyage = GeneralEquipment(
+        saveName = "Long Voyage (more than a week)",
+        name = R.string.longVoyage,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val shortTrip = GeneralEquipment(
-        "Short Trip (1 day)",
-        R.string.shortTrip,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val shortTrip = GeneralEquipment(
+        saveName = "Short Trip (1 day)",
+        name = R.string.shortTrip,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val significantJourney = GeneralEquipment(
-        "Significant Journey (2 - 5 days)",
-        R.string.significantJourney,
-        50.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val significantJourney = GeneralEquipment(
+        saveName = "Significant Journey (2 - 5 days)",
+        name = R.string.significantJourney,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val modestJourney = GeneralEquipment(
-        "Modest Journey (1 - 2 weeks)",
-        R.string.modestJourney,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val modestJourney = GeneralEquipment(
+        saveName = "Modest Journey (1 - 2 weeks)",
+        name = R.string.modestJourney,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val longJourney = GeneralEquipment(
-        "Long Journey (more than a month)",
-        R.string.longJourney,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val longJourney = GeneralEquipment(
+        saveName = "Long Journey (more than a month)",
+        name = R.string.longJourney,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
     init{

@@ -22,44 +22,45 @@ class AdvantageFragmentViewModel(
     private val advantageRecord: AdvantageRecord
 ): ViewModel() {
     //initialize creation point display state flow
-    private val _creationPoints = MutableStateFlow(3 - advantageRecord.creationPointSpent.value)
+    private val _creationPoints = MutableStateFlow(value = 3 - advantageRecord.creationPointSpent.intValue)
     val creationPoints = _creationPoints.asStateFlow()
 
     //initialize open state flow of the advantage cost dialog
-    private val _advantageCostOn = MutableStateFlow(false)
+    private val _advantageCostOn = MutableStateFlow(value = false)
     val advantageCostOn = _advantageCostOn.asStateFlow()
 
     //initialize base advantage worked on
-    private val _adjustedAdvantage = MutableStateFlow<Advantage?>(null)
+    private val _adjustedAdvantage = MutableStateFlow<Advantage?>(value = null)
     val adjustedAdvantage = _adjustedAdvantage.asStateFlow()
 
     //initialize page number of the dialog
-    private val _adjustingPage = MutableStateFlow(1)
+    private val _adjustingPage = MutableStateFlow(value = 1)
     val adjustingPage = _adjustingPage.asStateFlow()
 
     //initialize the option picked for the advantage
-    private val _optionPicked = MutableStateFlow<Int?>(null)
+    private val _optionPicked = MutableStateFlow<Int?>(value = null)
     val optionPicked = _optionPicked.asStateFlow()
 
     //initialize selected cost item for the advantage
-    private val _costPicked = MutableStateFlow(0)
+    private val _costPicked = MutableStateFlow(value = 0)
     val costPicked = _costPicked.asStateFlow()
 
     //initialize alert open state for removing The Gift
-    private val _giftAlertOpen = MutableStateFlow(false)
+    private val _giftAlertOpen = MutableStateFlow(value = false)
     val giftAlertOpen = _giftAlertOpen.asStateFlow()
 
     //initialize detail alert open state
-    private val _detailAlertOpen = MutableStateFlow(false)
+    private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
     //initialize item in detail alert
-    private val _detailItem = MutableStateFlow<Advantage?>(null)
+    private val _detailItem = MutableStateFlow<Advantage?>(value = null)
     val detailItem = _detailItem.asStateFlow()
 
     //initialize list of taken advantages
     val takenAdvantages = mutableStateListOf<Advantage>()
 
+    //initialize list of options taken for Half-Attuned to Tree advantage
     private val _halfAttunedOptions = MutableStateFlow(listOf<Int>())
     val halfAttunedOptions = _halfAttunedOptions.asStateFlow()
 
@@ -71,54 +72,75 @@ class AdvantageFragmentViewModel(
 
         //reset options on advantage cost dialog's opening
         if(advantageCostOn.value) {
-            setOptionPicked(null)
-            setCostPicked(0)
+            setOptionPicked(advOption = null)
+            setCostPicked(cost = 0)
         }
     }
 
     /**
      * Sets the advantage that is having options and/or costs selected for.
      *
-     * @param input advantage to select options for
+     * @param advantage advantage item to select options for
      */
-    fun setAdjustedAdvantage(input: Advantage){_adjustedAdvantage.update{input}}
+    fun setAdjustedAdvantage(advantage: Advantage){_adjustedAdvantage.update{advantage}}
 
     /**
      * Set the page number of the advantage selection dialog.
      *
-     * @param input page number to turn to
+     * @param pageNum page to turn to
      */
-    fun setAdjustingPage(input: Int){_adjustingPage.update{input}}
+    fun setAdjustingPage(pageNum: Int){_adjustingPage.update{pageNum}}
 
     /**
      * Set which option is selected for the advantage selection dialog.
      *
-     * @param input option to set the selection to
+     * @param advOption option to set the selection to
      */
-    fun setOptionPicked(input: Int?){_optionPicked.update{input}}
+    fun setOptionPicked(advOption: Int?){_optionPicked.update{advOption}}
 
+    /**
+     * Clears the half-attuned tree selections taken.
+     */
     fun emptyHalfAttuned(){_halfAttunedOptions.update{listOf()}}
 
-    fun addOptionPicked(input: Int){
-        if(!halfAttunedOptions.value.contains(input))
-            _halfAttunedOptions.update{halfAttunedOptions.value + input}
+    /**
+     * Adds the indicated item to the half-attuned tree option selection list.
+     *
+     * @param elementSelection item to add to the selection list
+     */
+    fun addOptionPicked(elementSelection: Int){
+        //add item if it is not currently present in the selection
+        if(!halfAttunedOptions.value.contains(element = elementSelection))
+            _halfAttunedOptions.update{halfAttunedOptions.value + elementSelection}
 
-        if(input % 2 == 0){
-            if(halfAttunedOptions.value.contains(input + 1))
-                _halfAttunedOptions.update{halfAttunedOptions.value - (input + 1)}
+        //remove opposite element if it is currently selected
+        if(elementSelection % 2 == 0){
+            if(halfAttunedOptions.value.contains(element = elementSelection + 1))
+                _halfAttunedOptions.update{halfAttunedOptions.value - (elementSelection + 1)}
         }
         else{
-            if(halfAttunedOptions.value.contains(input - 1))
-                _halfAttunedOptions.update{halfAttunedOptions.value - (input - 1)}
+            if(halfAttunedOptions.value.contains(element = elementSelection - 1))
+                _halfAttunedOptions.update{halfAttunedOptions.value - (elementSelection - 1)}
         }
+    }
+
+    /**
+     * Retrieve the name of the indicated custom secondary characteristic.
+     *
+     * @param customIndex index in the custom characteristic list to retrieve the name of
+     */
+    fun getCustomName(
+        customIndex: Int
+    ): String{
+        return charInstance.secondaryList.getAllCustoms()[customIndex].name.value
     }
 
     /**
      * Set cost selection for the advantage selection dialog.
      *
-     * @param input cost to set the selection to
+     * @param cost cost to set the selection to
      */
-    fun setCostPicked(input: Int){_costPicked.update{input}}
+    fun setCostPicked(cost: Int){_costPicked.update{cost}}
 
     /**
      * Toggles the open state of the Gift removal dialog.
@@ -130,12 +152,13 @@ class AdvantageFragmentViewModel(
      */
     fun getGift(): Advantage?{
         //for each advantage the character has
-        takenAdvantages.forEach{
+        takenAdvantages.forEach{advantage ->
             //return found gift advantage
-            if(it.name == R.string.gift)
-                return it
+            if(advantage.name == R.string.gift)
+                return advantage
         }
 
+        //notify of not found
         return null
     }
 
@@ -146,8 +169,10 @@ class AdvantageFragmentViewModel(
 
     /**
      * Sets the item to be displayed in the detail alert.
+     *
+     * @param advantage advantage to display
      */
-    fun setDetailItem(item: Advantage){_detailItem.update{item}}
+    fun setDetailItem(advantage: Advantage){_detailItem.update{advantage}}
 
     /**
      * Attempts to give an advantage to the character.
@@ -156,6 +181,7 @@ class AdvantageFragmentViewModel(
      * @return string message regarding nature of failure, if process fails
      */
     fun acquireAdvantage(): Int?{
+        //retrieve half-attuned to tree input, if needed
         val multInput =
             if(adjustedAdvantage.value!!.name == R.string.halfTreeAttuned)
                 halfAttunedOptions.value.toList()
@@ -163,10 +189,10 @@ class AdvantageFragmentViewModel(
 
         //attempt to add advantage and get message if it fails
         val attemptAction = advantageRecord.acquireAdvantage(
-            adjustedAdvantage.value!!,
-            optionPicked.value,
-            costPicked.value,
-            multInput
+            advantageBase = adjustedAdvantage.value!!,
+            taken = optionPicked.value,
+            takenCost = costPicked.value,
+            multTaken = multInput
         )
 
         //update advantages taken on successful acquisition
@@ -180,19 +206,25 @@ class AdvantageFragmentViewModel(
      * Attempts to give an advantage to the character.
      * Always used outside of the advantage cost selection dialog.
      *
-     * @param item base advantage to add
+     * @param advantage base advantage to add
      * @param taken item selection to apply to the base advantage
      * @param takenCost cost selection to apply to the base advantage
+     * @param multTaken multiple selections made for this advantage, if needed
      * @return string message regarding nature of failure, if process fails
      */
     fun acquireAdvantage(
-        item: Advantage,
+        advantage: Advantage,
         taken: Int?,
         takenCost: Int,
         multTaken: List<Int>?
     ): Int?{
         //attempt to add advantage and get message if it fails
-        val attemptAction =  advantageRecord.acquireAdvantage(item, taken, takenCost, multTaken)
+        val attemptAction = advantageRecord.acquireAdvantage(
+            advantageBase = advantage,
+            taken = taken,
+            takenCost = takenCost,
+            multTaken = multTaken
+        )
 
         //update advantages taken on successful acquisition
         if(attemptAction == null) updateAdvantagesTaken()
@@ -204,10 +236,10 @@ class AdvantageFragmentViewModel(
     /**
      * Removes the indicated advantage from the character and updates the advantage list.
      *
-     * @param item advantage to remove from the character
+     * @param advantage advantage to remove from the character
      */
-    fun removeAdvantage(item: Advantage){
-        advantageRecord.removeAdvantage(item)
+    fun removeAdvantage(advantage: Advantage){
+        advantageRecord.removeAdvantage(advantage = advantage)
         updateAdvantagesTaken()
     }
 
@@ -217,10 +249,10 @@ class AdvantageFragmentViewModel(
     private fun updateAdvantagesTaken() {
         //empty and refill the current state list
         takenAdvantages.clear()
-        takenAdvantages.addAll(advantageRecord.takenAdvantages)
+        takenAdvantages.addAll(elements = advantageRecord.takenAdvantages)
 
         //update the creation points spent by the user
-        _creationPoints.update{3 - advantageRecord.creationPointSpent.value}
+        _creationPoints.update{3 - advantageRecord.creationPointSpent.intValue}
     }
 
     /**
@@ -234,17 +266,29 @@ class AdvantageFragmentViewModel(
 
     //initialize the data for all of the advantage and disadvantage categories
     private val commonAdv = AdvantageButtonData(
-        R.string.commonAdv, advantageRecord.commonAdvantages.advantages)
+        category = R.string.commonAdv,
+        advList = advantageRecord.commonAdvantages.advantages
+    )
     private val commonDisadv = AdvantageButtonData(
-        R.string.commonDisadv, advantageRecord.commonAdvantages.disadvantages)
+        category = R.string.commonDisadv,
+        advList = advantageRecord.commonAdvantages.disadvantages
+    )
     private val magicAdv = AdvantageButtonData(
-        R.string.magicAdv, advantageRecord.magicAdvantages.advantages)
+        category = R.string.magicAdv,
+        advList = advantageRecord.magicAdvantages.advantages
+    )
     private val magicDisadv = AdvantageButtonData(
-        R.string.magicDisadv, advantageRecord.magicAdvantages.disadvantages)
+        category = R.string.magicDisadv,
+        advList = advantageRecord.magicAdvantages.disadvantages
+    )
     private val psychicAdv = AdvantageButtonData(
-        R.string.psychicAdv, advantageRecord.psychicAdvantages.advantages)
+        category = R.string.psychicAdv,
+        advList = advantageRecord.psychicAdvantages.advantages
+    )
     private val psychicDisadv = AdvantageButtonData(
-        R.string.psychicDisadv, advantageRecord.psychicAdvantages.disadvantages)
+        category = R.string.psychicDisadv,
+        advList = advantageRecord.psychicAdvantages.disadvantages
+    )
 
     //gather all advantage items
     val advantageButtons =
@@ -254,14 +298,14 @@ class AdvantageFragmentViewModel(
      * Data object for an advantage button.
      *
      * @param category name reference of the button
-     * @param items list of associated advantages
+     * @param advList list of associated advantages
      */
     class AdvantageButtonData(
         val category: Int,
-        val items: List<Advantage>
+        val advList: List<Advantage>
     ){
         //initialize button open state flow
-        private val _isOpen = MutableStateFlow(false)
+        private val _isOpen = MutableStateFlow(value = false)
         val isOpen = _isOpen.asStateFlow()
 
         /**

@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,33 +44,41 @@ fun SummoningFragment(
                 end = 30.dp
             )
     ){
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
 
         item{
             GeneralCard{
                 //display table header
                 Row(Modifier.fillMaxWidth()){
-                    Spacer(Modifier.weight(0.25f))
+                    Spacer(modifier = Modifier.weight(0.25f))
+
+                    //head for base value
                     Text(
-                        text = stringResource(R.string.baseLabel),
+                        text = stringResource(id = R.string.baseLabel),
                         modifier = Modifier
                             .weight(0.15f),
                         textAlign = TextAlign.Center
                     )
+
+                    //head for class bonus
                     Text(
-                        text = stringResource(R.string.classLabel),
+                        text = stringResource(id = R.string.classLabel),
                         modifier = Modifier
                             .weight(0.15f),
                         textAlign = TextAlign.Center
                     )
+
+                    //head for bought amount
                     Text(
-                        text = stringResource(R.string.boughtLabel),
+                        text = stringResource(id = R.string.boughtLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
                     )
+
+                    //head for final total
                     Text(
-                        text = stringResource(R.string.totalLabel),
+                        text = stringResource(id = R.string.totalLabel),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -79,26 +86,28 @@ fun SummoningFragment(
                 }
 
                 //display table data
-                summoningVM.allRows.forEach{
-                    SummoningAbilityRow(it, homePageVM)
+                summoningVM.allRows.forEach{summonItem ->
+                    SummoningAbilityRow(
+                        summonData = summonItem,
+                        homePageVM = homePageVM
+                    )
                 }
             }
         }
 
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
     }
 }
 
 /**
  * Creates a row of data that displays information on the given ability of the character.
  *
- * @param inputData table data to display to the user
+ * @param summonData table data to display to the user
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SummoningAbilityRow(
-    inputData: SummoningFragmentViewModel.SummonItemData,
+    summonData: SummoningFragmentViewModel.SummonItemData,
     homePageVM: HomePageViewModel
 ){
     Row(
@@ -107,23 +116,27 @@ private fun SummoningAbilityRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //initialize DP cost display of this item
-        val dpDisplay = stringResource(R.string.dpLabel, inputData.dpGetter())
+        val dpDisplay = stringResource(id = R.string.dpLabel, summonData.dpGetter())
 
-        //display item, points from modifier, and points from class
+        //display item name
         Text(
-            text = stringResource(inputData.nameRef),
+            text = stringResource(id = summonData.nameRef),
             modifier = Modifier
                 .weight(0.25f),
             textAlign = TextAlign.Center
         )
+
+        //display modifier point value
         Text(
-            text = inputData.item.modVal.value.toString(),
+            text = summonData.summonAbility.modVal.value.toString(),
             modifier = Modifier
                 .weight(0.15f),
             textAlign = TextAlign.Center
         )
+
+        //display class point value
         Text(
-            text = inputData.item.levelTotal.value.toString(),
+            text = summonData.summonAbility.levelTotal.value.toString(),
             modifier = Modifier
                 .weight(0.15f),
             textAlign = TextAlign.Center
@@ -131,28 +144,28 @@ private fun SummoningAbilityRow(
 
         //display points bought and give option to buy points
         NumberInput(
-            inputText = inputData.boughtVal.collectAsState().value,
-            inputFunction = {inputData.setBoughtVal(it.toInt())},
-            emptyFunction = {inputData.setBoughtVal("")},
+            inputText = summonData.boughtVal.collectAsState().value,
+            inputFunction = {summonData.setBoughtVal(it.toInt())},
+            emptyFunction = {summonData.setBoughtVal("")},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)
-                        inputData.setDPLabel(dpDisplay)
+                        summonData.setDPLabel(dpLabel = dpDisplay)
                     else
-                        inputData.setDPLabel("")
+                        summonData.setDPLabel(dpLabel = "")
                 }
                 .weight(0.25f),
-            label = inputData.dpLabel.collectAsState().value,
+            label = summonData.dpLabel.collectAsState().value,
             postRun = {homePageVM.updateExpenditures()}
         )
 
         //display final total
         AnimatedContent(
-            targetState = inputData.total.collectAsState().value,
+            targetState = summonData.total.collectAsState().value,
             modifier = Modifier
                 .weight(0.2f),
             transitionSpec = numberScroll,
-            label = "${stringResource(inputData.nameRef)}Total"
+            label = "${stringResource(id = summonData.nameRef)}Total"
         ) {
             Text(
                 text = "$it",

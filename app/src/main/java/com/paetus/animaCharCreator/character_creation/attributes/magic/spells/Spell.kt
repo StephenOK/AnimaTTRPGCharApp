@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 
 import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * Magic ability a character may be able to cast to perform special actions.

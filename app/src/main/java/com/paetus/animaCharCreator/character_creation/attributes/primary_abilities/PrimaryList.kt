@@ -11,105 +11,113 @@ import java.io.ByteArrayOutputStream
  */
 class PrimaryList(private val charInstance: BaseCharacter){
     val str = PrimaryCharacteristic(
-        charInstance,
-        11,
-        0
-    ){mod, total ->
-        charInstance.setWeightIndex(total)
-        charInstance.combat.wearArmor.setModPoints(mod)
-        charInstance.updateSize()
+        charInstance = charInstance,
+        advantageCap = 11,
+        charIndex = 0,
+        setUpdate = {mod, total ->
+            charInstance.setWeightIndex(weightValue = total)
+            charInstance.combat.wearArmor.setModPoints(modVal = mod)
+            charInstance.updateSize()
 
-        charInstance.secondaryList.updateSTR()
-        charInstance.ki.strKi.primaryUpdate(total)
-    }
+            charInstance.secondaryList.updateSTR()
+            charInstance.ki.strKi.primaryUpdate(primeBase = total)
+        }
+    )
 
     val dex = PrimaryCharacteristic(
-        charInstance,
-        11,
-        1
-    ){mod, total ->
-        charInstance.secondaryList.updateDEX()
-        charInstance.combat.attack.setModPoints(mod)
-        charInstance.combat.block.setModPoints(mod)
-        charInstance.combat.updateInitiative()
-        charInstance.ki.dexKi.primaryUpdate(total)
-        charInstance.magic.calcMagProj()
-        charInstance.psychic.updatePsyProjection()
-    }
+        charInstance = charInstance,
+        advantageCap = 11,
+        charIndex = 1,
+        setUpdate = {mod, total ->
+            charInstance.secondaryList.updateDEX()
+            charInstance.combat.attack.setModPoints(modVal = mod)
+            charInstance.combat.block.setModPoints(modVal = mod)
+            charInstance.combat.updateInitiative()
+            charInstance.ki.dexKi.primaryUpdate(primeBase = total)
+            charInstance.magic.calcMagProj()
+            charInstance.psychic.updatePsyProjection()
+        }
+    )
 
     val agi = PrimaryCharacteristic(
-        charInstance,
-        11,
-        2
-    ){mod, total ->
-        charInstance.setMovement(total)
-        charInstance.secondaryList.updateAGI()
-        charInstance.combat.dodge.setModPoints(mod)
-        charInstance.combat.updateInitiative()
-        charInstance.ki.agiKi.primaryUpdate(total)
-    }
+        charInstance = charInstance,
+        advantageCap = 11,
+        charIndex = 2,
+        setUpdate = {mod, total ->
+            charInstance.setMovement(moveValue = total)
+            charInstance.secondaryList.updateAGI()
+            charInstance.combat.dodge.setModPoints(modVal = mod)
+            charInstance.combat.updateInitiative()
+            charInstance.ki.agiKi.primaryUpdate(primeBase = total)
+        }
+    )
 
     val con = PrimaryCharacteristic(
-        charInstance,
-        11,
-        3
-    ){mod, total ->
-        charInstance.combat.updateFatigue()
-        charInstance.combat.getBaseRegen()
-        charInstance.updateSize()
+        charInstance = charInstance,
+        advantageCap = 11,
+        charIndex = 3,
+        setUpdate = {mod, total ->
+            charInstance.combat.updateFatigue()
+            charInstance.combat.getBaseRegen()
+            charInstance.updateSize()
 
-        charInstance.combat.updateLifeBase()
-        charInstance.combat.updateLifePoints()
-        charInstance.combat.diseaseRes.setMod(mod)
-        charInstance.combat.venomRes.setMod(mod)
-        charInstance.combat.physicalRes.setMod(mod)
-        charInstance.secondaryList.updateCON()
-        charInstance.ki.conKi.primaryUpdate(total)
-    }
+            charInstance.combat.updateLifeBase()
+            charInstance.combat.updateLifePoints()
+            charInstance.combat.diseaseRes.setMod(newMod = mod)
+            charInstance.combat.venomRes.setMod(newMod = mod)
+            charInstance.combat.physicalRes.setMod(newMod = mod)
+            charInstance.secondaryList.updateCON()
+            charInstance.ki.conKi.primaryUpdate(primeBase = total)
+        }
+    )
 
     val int = PrimaryCharacteristic(
-        charInstance,
-        13,
-        4
-    ){mod, total ->
-        charInstance.secondaryList.updateINT()
-        charInstance.magic.setMagicLevelMax()
-    }
+        charInstance = charInstance,
+        advantageCap = 13,
+        charIndex = 4,
+        setUpdate = {_, _ ->
+            charInstance.secondaryList.updateINT()
+            charInstance.magic.setMagicLevelMax()
+        }
+    )
 
     val pow = PrimaryCharacteristic(
-        charInstance,
-        13,
-        5
-    ){mod, total ->
-        charInstance.secondaryList.updatePOW()
-        charInstance.combat.magicRes.setMod(mod)
-        charInstance.ki.powKi.primaryUpdate(total)
-        charInstance.magic.setBaseZeon()
-        charInstance.magic.setBaseZeonAcc()
-        charInstance.summoning.summon.setModVal(mod)
-        charInstance.summoning.bind.setModVal(mod)
-        charInstance.summoning.banish.setModVal(mod)
-    }
+        charInstance = charInstance,
+        advantageCap = 13,
+        charIndex = 5,
+        setUpdate = {mod, total ->
+            charInstance.secondaryList.updatePOW()
+            charInstance.combat.magicRes.setMod(newMod = mod)
+            charInstance.ki.powKi.primaryUpdate(primeBase = total)
+            charInstance.magic.setBaseZeon()
+            charInstance.magic.setBaseZeonAcc()
+            charInstance.summoning.summon.setModVal(modValue = mod)
+            charInstance.summoning.bind.setModVal(modValue = mod)
+            charInstance.summoning.banish.setModVal(modValue = mod)
+        }
+    )
 
     val wp = PrimaryCharacteristic(
-        charInstance,
-        13,
-        6
-    ){mod, total ->
-        charInstance.secondaryList.updateWP()
-        charInstance.combat.psychicRes.setMod(mod)
-        charInstance.ki.wpKi.primaryUpdate(total)
-        charInstance.summoning.control.setModVal(mod)
-        charInstance.psychic.setBasePotential()
-    }
+        charInstance = charInstance,
+        advantageCap = 13,
+        charIndex = 6,
+        setUpdate = {mod, total ->
+            charInstance.secondaryList.updateWP()
+            charInstance.combat.psychicRes.setMod(newMod = mod)
+            charInstance.ki.wpKi.primaryUpdate(primeBase = total)
+            charInstance.summoning.control.setModVal(modValue = mod)
+            charInstance.psychic.setBasePotential()
+        }
+    )
 
     val per = PrimaryCharacteristic(
-        charInstance,
-        13,
-        7
-    ){mod, total ->
-        charInstance.secondaryList.updatePER()
-    }
+        charInstance = charInstance,
+        advantageCap = 13,
+        charIndex = 7,
+        setUpdate = {_, _ ->
+            charInstance.secondaryList.updatePER()
+        }
+    )
 
     //gather all primary characteristics into a list
     val allPrimaries = listOf(str, dex, agi, con, int, pow, wp, per)
@@ -122,9 +130,9 @@ class PrimaryList(private val charInstance: BaseCharacter){
     fun validLevelBonuses(): Boolean{
         var total = 0
 
-        allPrimaries.forEach{total += it.levelBonus.value}
+        allPrimaries.forEach{primary -> total += primary.levelBonus.intValue}
 
-        return total <= charInstance.lvl.value/2
+        return total <= charInstance.lvl.intValue/2
     }
 
     /**
@@ -133,13 +141,15 @@ class PrimaryList(private val charInstance: BaseCharacter){
      * @param fileReader file to get the data from
      */
     fun loadPrimaries(fileReader: BufferedReader){
-        allPrimaries.forEach{it.load(fileReader)}
+        allPrimaries.forEach{primary -> primary.load(fileReader = fileReader)}
     }
 
     /**
      * Save all primary characteristic data to file.
+     *
+     * @param byteArray output stream for the data
      */
     fun writePrimaries(byteArray: ByteArrayOutputStream) {
-        allPrimaries.forEach{it.write(byteArray) }
+        allPrimaries.forEach{primary -> primary.write(byteArray = byteArray) }
     }
 }

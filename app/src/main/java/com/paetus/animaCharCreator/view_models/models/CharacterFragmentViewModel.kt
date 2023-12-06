@@ -22,56 +22,56 @@ class CharacterFragmentViewModel(
     private val charInstance: BaseCharacter
 ): ViewModel() {
     //initialize input for the character's name
-    private val _nameInput = MutableStateFlow(charInstance.charName.value)
+    private val _nameInput = MutableStateFlow(value = charInstance.charName.value)
     val nameInput = _nameInput.asStateFlow()
 
     //initialize input for the character's experience points
-    private val _experiencePoints = MutableStateFlow(charInstance.experiencePoints.value.toString())
+    private val _experiencePoints = MutableStateFlow(value = charInstance.experiencePoints.intValue.toString())
     val experiencePoints = _experiencePoints.asStateFlow()
 
     //initialize character's gender tracker
-    private val _isMale = MutableStateFlow(charInstance.isMale.value)
+    private val _isMale = MutableStateFlow(value = charInstance.isMale.value)
     val isMale = _isMale.asStateFlow()
 
     //initialize display for character's gender
     private val _genderString = MutableStateFlow(
-        if(charInstance.isMale.value) R.string.maleString
-        else R.string.femaleString
+        value =
+            if(charInstance.isMale.value) R.string.maleString
+            else R.string.femaleString
     )
     val genderString = _genderString.asStateFlow()
 
     //initialize magic paladin open state
-    private val _magPaladinOpen = MutableStateFlow(getPaladin())
+    private val _magPaladinOpen = MutableStateFlow(value = getPaladin())
     val magPaladinOpen = _magPaladinOpen.asStateFlow()
 
     //initialize magic paladin checkbox input
-    private val _magPaladin = MutableStateFlow(charInstance.classes.magPaladin.value)
+    private val _magPaladin = MutableStateFlow(value = charInstance.classes.magPaladin.value)
     val magPaladin = _magPaladin.asStateFlow()
 
     //initialize the character's size category display
-    private val _sizeInput = MutableStateFlow(charInstance.sizeCategory.value)
+    private val _sizeInput = MutableStateFlow(value = charInstance.sizeCategory.intValue)
     val sizeInput = _sizeInput.asStateFlow()
 
     //initialize the character's appearance input string
-    private val _appearInput = MutableStateFlow(charInstance.appearance.value.toString())
+    private val _appearInput = MutableStateFlow(value = charInstance.appearance.intValue.toString())
     val appearInput = _appearInput.asStateFlow()
 
     //initialize the character's movement value display
     private val _movementDisplay = MutableStateFlow(
-        if(charInstance.movement.value == 0)
-            R.string.specialLabelCaps
-        else
-            R.string.distanceLabelM
+        value =
+            if(charInstance.movement.intValue == 0) R.string.specialLabelCaps
+            else R.string.distanceLabelM
     )
     val movementDisplay = _movementDisplay.asStateFlow()
 
     //initialize character's gnosis input
-    private val _gnosisDisplay = MutableStateFlow(charInstance.gnosis.value.toString())
+    private val _gnosisDisplay = MutableStateFlow(value = charInstance.gnosis.intValue.toString())
     val gnosisDisplay = _gnosisDisplay.asStateFlow()
 
     //initialize the character's weight index display
     private val _weightIndex = MutableStateFlow(
-        when(charInstance.primaryList.str.total.value) {
+        value = when(charInstance.primaryList.str.total.intValue) {
             in 0 .. 11 -> R.string.weightLabelKG
             in 12..19 -> R.string.weightLabelTons
             else -> R.string.specialLabelCaps
@@ -80,35 +80,35 @@ class CharacterFragmentViewModel(
     val weightIndex = _weightIndex.asStateFlow()
 
     //initialize level bonus string color
-    private val _bonusValid = MutableStateFlow(charInstance.primaryList.validLevelBonuses())
+    private val _bonusValid = MutableStateFlow(value = charInstance.primaryList.validLevelBonuses())
     val bonusValid = _bonusValid.asStateFlow()
 
     /**
      * Sets the character's name to the user's input.
      *
-     * @param newIn name to set for the character
+     * @param nameIn name to set for the character
      */
-    fun setNameInput(newIn: String){
-        charInstance.charName.value = newIn
-        _nameInput.update{newIn}
+    fun setNameInput(nameIn: String){
+        charInstance.charName.value = nameIn
+        _nameInput.update{nameIn}
     }
 
     /**
      * Sets the number of experience points the character currently has.
      *
-     * @param input number of points to set
+     * @param expVal number of points to set
      */
-    fun setExp(input: Int){
-        charInstance.experiencePoints.value = input
-        setExp(input.toString())
+    fun setExp(expVal: Int){
+        charInstance.experiencePoints.intValue = expVal
+        setExp(display = expVal.toString())
     }
 
     /**
      * Sets the display for the number of experience points held.
      *
-     * @param input new string to display
+     * @param display new string to display
      */
-    fun setExp(input: String){_experiencePoints.update{input}}
+    fun setExp(display: String){_experiencePoints.update{display}}
 
     /**
      * Swaps the character's gender to the other one.
@@ -116,7 +116,7 @@ class CharacterFragmentViewModel(
     fun toggleGender(){
         //update the gender input
         _isMale.update{!isMale.value}
-        charInstance.setGender(isMale.value)
+        charInstance.setGender(gender = isMale.value)
 
         //update display string appropriately
         if(isMale.value)
@@ -128,7 +128,7 @@ class CharacterFragmentViewModel(
     /**
      * Sets the visibility of the paladin boon option checkbox.
      */
-    fun setMagPaladinOpen(){_magPaladinOpen.update{getPaladin()}}
+    private fun setMagPaladinOpen(){_magPaladinOpen.update{getPaladin()}}
 
     /**
      * Toggles the character's selected paladin boon.
@@ -143,7 +143,7 @@ class CharacterFragmentViewModel(
      *
      * @return true if character is a paladin or dark paladin
      */
-    fun getPaladin(): Boolean{
+    private fun getPaladin(): Boolean{
         return charInstance.ownClass.value == charInstance.classes.paladin ||
                 charInstance.ownClass.value == charInstance.classes.darkPaladin
     }
@@ -151,24 +151,24 @@ class CharacterFragmentViewModel(
     /**
      * Sets the size category display to the character's value.
      */
-    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.value}}
+    private fun setSizeInput() {_sizeInput.update{charInstance.sizeCategory.intValue}}
 
     /**
      * Attempts to change the character's appearance to the inputted value.
      *
-     * @param newIn value to set the appearance to
+     * @param appearance value to set the appearance to
      * @return true if there was a change inputted
      */
-    fun setAppearInput(newIn: Int): Boolean{
+    fun setAppearInput(appearance: Int): Boolean{
         //set appearance in the character
-        charInstance.setAppearance(newIn)
+        charInstance.setAppearance(newAppearance = appearance)
 
         //check that a change occurred
-        val output = charInstance.appearance.value == newIn
+        val output = charInstance.appearance.intValue == appearance
 
         //change display string if there was a change
         if(output)
-            setAppearInput(newIn.toString())
+            setAppearInput(display = appearance.toString())
 
         //return if a change happened
         return output
@@ -177,9 +177,9 @@ class CharacterFragmentViewModel(
     /**
      * Sets the string display for the character's appearance.
      *
-     * @param newIn value to set the display to
+     * @param display value to set the display to
      */
-    fun setAppearInput(newIn: String){_appearInput.update{newIn}}
+    fun setAppearInput(display: String){_appearInput.update{display}}
 
     /**
      * Checks if the character has the Unattractive disadvantage.
@@ -187,14 +187,14 @@ class CharacterFragmentViewModel(
      * @return true if character has the Unattractive disadvantage
      */
     fun isNotUnattractive(): Boolean{
-        return charInstance.advantageRecord.getAdvantage("unattractive") == null
+        return charInstance.advantageRecord.getAdvantage(advantageString = "unattractive") == null
     }
 
     /**
      * Sets the display for the character's movement value as defined in the character.
      */
-    fun setMovementDisplay(){
-        if(charInstance.movement.value == 0)
+    private fun setMovementDisplay(){
+        if(charInstance.movement.intValue == 0)
             _movementDisplay.update{R.string.specialLabelCaps}
         else
             _movementDisplay.update{R.string.distanceLabelM}
@@ -205,34 +205,37 @@ class CharacterFragmentViewModel(
      *
      * @return character's movement value in meters
      */
-    fun getCharMovement(): Int{return charInstance.movement.value}
+    fun getCharMovement(): Int{return charInstance.movement.intValue}
 
     /**
      * Sets the character's gnosis value to the indicated number.
      *
-     * @param input value to set the gnosis to
+     * @param gnosisInput value to set the gnosis to
      */
-    fun setGnosisDisplay(input: Int){
-        charInstance.gnosis.value = input
-        setGnosisDisplay(input.toString())
+    fun setGnosisDisplay(gnosisInput: Int){
+        charInstance.gnosis.intValue = gnosisInput
+        setGnosisDisplay(display = gnosisInput.toString())
     }
 
     /**
      * Sets the displayed gnosis string to the indicated value.
      *
-     * @param input new value to display
+     * @param display new value to display
      */
-    fun setGnosisDisplay(input: String){_gnosisDisplay.update{input}}
+    fun setGnosisDisplay(display: String){_gnosisDisplay.update{display}}
 
     /**
      * Sets the display for the character's movement value as defined in the character.
      */
-    fun setWeightIndex(){
-        when(charInstance.primaryList.str.total.value) {
+    private fun setWeightIndex(){
+        when(charInstance.primaryList.str.total.intValue) {
+            //index in kilograms
             in 0 .. 11 ->
                 _weightIndex.update{R.string.weightLabelKG}
+            //index in tons
             in 12..19 ->
                 _weightIndex.update{R.string.weightLabelTons}
+            //special weight index value
             else ->
                 _weightIndex.update{R.string.specialLabelCaps}
         }
@@ -243,102 +246,118 @@ class CharacterFragmentViewModel(
      *
      * @return the character's weight
      */
-    fun getCharWeight(): Int{return charInstance.weightIndex.value}
+    fun getCharWeight(): Int{return charInstance.weightIndex.intValue}
 
     /**
      * Updates the validation flag for the characteristic bonus.
      */
-    fun setBonusColor(){_bonusValid.update{charInstance.primaryList.validLevelBonuses()}}
+    private fun setBonusColor(){_bonusValid.update{charInstance.primaryList.validLevelBonuses()}}
 
     //set race dropdown data
     val raceDropdown = DropdownData(
-        R.string.raceText,
-        R.array.raceArray,
-        charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value)
-    ) {
-        charInstance.setOwnRace(it)
-        strengthData.setOutput()
-        setSizeInput()
-        setAppearInput(charInstance.appearance.value.toString())
-    }
+        nameRef = R.string.raceText,
+        options = R.array.raceArray,
+        initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+        onChange = {
+            //change the character's race
+            charInstance.setOwnRace(raceNum = it)
+
+            //update the strength value for this character
+            strengthData.setOutput()
+            setSizeInput()
+
+            //update the appearance value for this character
+            setAppearInput(display = charInstance.appearance.intValue.toString())
+        }
+    )
 
     //set class dropdown data
     private val classDropdown = DropdownData(
-        R.string.classLabel,
-        R.array.classArray,
-        charInstance.classes.allClasses.indexOf(charInstance.ownClass.value)
-    ) {
-        charInstance.setOwnClass(it)
-        setMagPaladinOpen()
-    }
+        nameRef = R.string.classLabel,
+        options = R.array.classArray,
+        initialIndex = charInstance.classes.allClasses.indexOf(charInstance.ownClass.value),
+        onChange = {
+            charInstance.setOwnClass(classInt = it)
+            setMagPaladinOpen()
+        }
+    )
 
     //set level dropdown data
     private val levelDropdown = DropdownData(
-        R.string.levelText,
-        R.array.levelCountArray,
-        charInstance.lvl.value
-    ) {
-        charInstance.setLvl(it)
-        setBonusColor()
-    }
+        nameRef = R.string.levelText,
+        options = R.array.levelCountArray,
+        initialIndex = charInstance.lvl.intValue,
+        onChange = {
+            charInstance.setLvl(levNum = it)
+            setBonusColor()
+        }
+    )
 
     //set all dropdown data
     val dropdownList = listOf(raceDropdown, classDropdown, levelDropdown)
 
     //set all primary characteristic data
     private val strengthData = PrimeCharacteristicData(
-        0,
-        charInstance.primaryList.str,
-        {setBonusColor()},
-    ){
-        this.setSizeInput()
-        this.setWeightIndex()
-    }
+        name = 0,
+        primaryStat = charInstance.primaryList.str,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {
+            this.setSizeInput()
+            this.setWeightIndex()
+        }
+    )
 
     private val dexterityData = PrimeCharacteristicData(
-        1,
-        charInstance.primaryList.dex,
-        {setBonusColor()}
-    ){}
+        name = 1,
+        primaryStat = charInstance.primaryList.dex,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {}
+    )
 
     private val agilityData = PrimeCharacteristicData(
-        2,
-        charInstance.primaryList.agi,
-        {
+        name = 2,
+        primaryStat = charInstance.primaryList.agi,
+        bonusColorChange = {
             setBonusColor()
             this.setMovementDisplay()
-        }
-    ){}
+        },
+        changeFunc = {}
+    )
 
     private val constitutionData = PrimeCharacteristicData(
-        3,
-        charInstance.primaryList.con,
-        {setBonusColor()}
-    ){this.setSizeInput()}
+        name = 3,
+        primaryStat = charInstance.primaryList.con,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {this.setSizeInput()}
+    )
 
     private val intelligenceData = PrimeCharacteristicData(
-        4,
-        charInstance.primaryList.int,
-        {setBonusColor()}
-    ){}
+        name = 4,
+        primaryStat = charInstance.primaryList.int,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {}
+    )
 
     private val powerData = PrimeCharacteristicData(
-        5,
-        charInstance.primaryList.pow,
-        {setBonusColor()}
-    ){}
+        name = 5,
+        primaryStat = charInstance.primaryList.pow,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {}
+    )
 
     private val willpowerData = PrimeCharacteristicData(
-        6,
-        charInstance.primaryList.wp,
-        {setBonusColor()}
-    ){}
+        name = 6,
+        primaryStat = charInstance.primaryList.wp,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {}
+    )
 
     private val perceptionData = PrimeCharacteristicData(
-        7,
-        charInstance.primaryList.per,
-        {setBonusColor()}
-    ){}
+        name = 7,
+        primaryStat = charInstance.primaryList.per,
+        bonusColorChange = {setBonusColor()},
+        changeFunc = {}
+    )
 
     //gather all primary data
     val primaryDataList = listOf(strengthData, dexterityData, agilityData, constitutionData,
@@ -359,40 +378,40 @@ class CharacterFragmentViewModel(
         val onChange: (Int) -> Unit
     ){
         //initialize the selected item
-        private val _output = MutableStateFlow(initialIndex)
+        private val _output = MutableStateFlow(value = initialIndex)
         val output = _output.asStateFlow()
 
         //initialize box size
-        private val _size = MutableStateFlow(Size.Zero)
+        private val _size = MutableStateFlow(value = Size.Zero)
         val size = _size.asStateFlow()
 
         //initialize dropdown's open state
-        private val _isOpen = MutableStateFlow(false)
+        private val _isOpen = MutableStateFlow(value = false)
         val isOpen = _isOpen.asStateFlow()
 
         //initialize dropdown icon
-        private val _icon = MutableStateFlow(Icons.Filled.KeyboardArrowDown)
+        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
         val icon = _icon.asStateFlow()
 
         /**
          * Sets the item to the indicated index.
          *
-         * @param item new string of the selection
+         * @param dropdownIndex new string of the selection
          */
-        fun setOutput(item: Int){
-            _output.update{item}
+        fun setOutput(dropdownIndex: Int){
+            _output.update{dropdownIndex}
 
             //perform the required change and close the dropdown
-            onChange(item)
+            onChange(dropdownIndex)
             openToggle()
         }
 
         /**
          * Setter for the item's size.
          *
-         * @param input size to define for this object
+         * @param newSize size to define for this object
          */
-        fun setSize(input: Size){_size.update{input}}
+        fun setSize(newSize: Size){_size.update{newSize}}
 
         /**
          * Changes the open state of the dropdown item.
@@ -423,29 +442,29 @@ class CharacterFragmentViewModel(
         val changeFunc: () -> Unit
     ){
         //initialize characteristic input value
-        private val _input = MutableStateFlow(primaryStat.inputValue.value.toString())
+        private val _input = MutableStateFlow(value = primaryStat.inputValue.intValue.toString())
         val input = _input.asStateFlow()
 
         //initialize characteristic bonus input
-        private val _bonusInput = MutableStateFlow(primaryStat.levelBonus.value.toString())
+        private val _bonusInput = MutableStateFlow(value = primaryStat.levelBonus.intValue.toString())
         val bonusInput = _bonusInput.asStateFlow()
 
         //initialize other bonus display
-        private val _bonus = MutableStateFlow(primaryStat.bonus.value)
+        private val _bonus = MutableStateFlow(value = primaryStat.bonus.intValue)
         val bonus = _bonus.asStateFlow()
 
         //initialize final output mod display
-        private val _modTotal = MutableStateFlow(primaryStat.outputMod.value)
+        private val _modTotal = MutableStateFlow(value = primaryStat.outputMod.intValue)
         val modTotal = _modTotal.asStateFlow()
 
         /**
          * Change the value of this primary characteristic's input to the indicated value.
          *
-         * @param input value to set this to
+         * @param statVal value to set this to
          */
-        fun setInput(input: Int){
-            primaryStat.setInput(input)
-            setInput(primaryStat.inputValue.value.toString())
+        fun setInput(statVal: Int){
+            primaryStat.setInput(baseIn = statVal)
+            setInput(display = primaryStat.inputValue.intValue.toString())
             setOutput()
             changeFunc()
         }
@@ -453,17 +472,17 @@ class CharacterFragmentViewModel(
         /**
          * Change the displayed value of the primary characteristic input.
          *
-         * @param input string item to now display
+         * @param display string item to now display
          */
-        fun setInput(input: String){
+        fun setInput(display: String){
             //only change value if character does not have the indicated advantage
             if(primaryStat.charInstance.advantageRecord.getAdvantage(
-                    "Increase One Characteristic to Nine",
-                    primaryStat.charIndex,
-                    0
+                    name = "Increase One Characteristic to Nine",
+                    taken = primaryStat.charIndex,
+                    cost = 0
                 ) == null
             )
-                _input.update{input}
+                _input.update{display}
 
             //otherwise, keep value at 9
             else _input.update{"9"}
@@ -472,11 +491,11 @@ class CharacterFragmentViewModel(
         /**
          * Sets the level bonus for this characteristic.
          *
-         * @param input value to set the level bonus to
+         * @param lvlBonus value to set the level bonus to
          */
-        fun setBonusInput(input: Int){
-            primaryStat.setLevelBonus(input)
-            setBonusInput(input.toString())
+        fun setBonusInput(lvlBonus: Int){
+            primaryStat.setLevelBonus(lvlBonus = lvlBonus)
+            setBonusInput(display = lvlBonus.toString())
             bonusColorChange()
             setOutput()
             changeFunc()
@@ -485,24 +504,24 @@ class CharacterFragmentViewModel(
         /**
          * Sets the display of the characteristic's level bonus.
          *
-         * @param input new string to display
+         * @param display new string to display
          */
-        fun setBonusInput(input: String){_bonusInput.update{input}}
+        fun setBonusInput(display: String){_bonusInput.update{display}}
 
         /**
          * Update the bonus and total displays of this string item.
          */
         fun setOutput() {
-            _bonus.update{primaryStat.bonus.value}
-            _modTotal.update{primaryStat.outputMod.value}
+            _bonus.update{primaryStat.bonus.intValue}
+            _modTotal.update{primaryStat.outputMod.intValue}
         }
 
         /**
          * Resets the display for this item on returning to this page.
          */
         fun refreshItem(){
-            setInput(primaryStat.inputValue.value.toString())
-            setBonusInput(primaryStat.levelBonus.value.toString())
+            setInput(display = primaryStat.inputValue.intValue.toString())
+            setBonusInput(display = primaryStat.levelBonus.intValue.toString())
             setOutput()
         }
     }
@@ -511,10 +530,10 @@ class CharacterFragmentViewModel(
      * Refreshes items on returning to this page.
      */
     fun refreshPage(){
-        setExp(charInstance.experiencePoints.value.toString())
-        primaryDataList.forEach{it.refreshItem()}
+        setExp(display = charInstance.experiencePoints.intValue.toString())
+        primaryDataList.forEach{primary -> primary.refreshItem()}
         setSizeInput()
-        setAppearInput(charInstance.appearance.value.toString())
-        setGnosisDisplay(charInstance.gnosis.value.toString())
+        setAppearInput(display = charInstance.appearance.intValue.toString())
+        setGnosisDisplay(display = charInstance.gnosis.intValue.toString())
     }
 }

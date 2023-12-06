@@ -55,7 +55,7 @@ fun CharacterPageFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
 
         item{
             GeneralCard{
@@ -63,47 +63,48 @@ fun CharacterPageFragment(
                 TextInput(
                     display = charFragVM.nameInput.collectAsState().value,
                     onValueChange = {
-                        charFragVM.setNameInput(it)
+                        charFragVM.setNameInput(nameIn = it)
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.8f),
-                    label = stringResource(R.string.nameText)
+                    label = stringResource(id = R.string.nameText)
                 )
 
                 //class, race, and level dropdown items
-                charFragVM.dropdownList.forEach {
+                charFragVM.dropdownList.forEach {dropdown ->
                     OutlinedDropdown(
-                        it.options,
-                        it.output.collectAsState().value,
-                        it.isOpen.collectAsState().value,
-                        it.nameRef,
-                        it.icon.collectAsState().value,
-                        it.size.collectAsState().value,
-                        {coordinates ->
-                            it.setSize(coordinates.size.toSize())
+                        optionsRef = dropdown.options,
+                        index = dropdown.output.collectAsState().value,
+                        openState = dropdown.isOpen.collectAsState().value,
+                        labelRef = dropdown.nameRef,
+                        icon = dropdown.icon.collectAsState().value,
+                        size = dropdown.size.collectAsState().value,
+                        sizeSetter = {coordinates ->
+                            dropdown.setSize(coordinates.size.toSize())
                         },
-                        {input ->
-                            it.setOutput(input)
+                        itemSelection = {input ->
+                            dropdown.setOutput(input)
                             maxNumVM.updateMaximums()
                             maxNumVM.updateExpenditures()
-                        }
-                    ){it.openToggle()}
+                        },
+                        openFunc = {dropdown.openToggle()}
+                    )
                 }
 
                 //experience point input
                 NumberInput(
                     inputText = charFragVM.experiencePoints.collectAsState().value,
-                    inputFunction = { charFragVM.setExp(it.toInt()) },
-                    emptyFunction = { charFragVM.setExp("") },
+                    inputFunction = {charFragVM.setExp(expVal = it.toInt())},
+                    emptyFunction = {charFragVM.setExp(display = "")},
                     modifier = Modifier
                         .fillMaxWidth(0.8f),
                     alignment = TextAlign.Left,
-                    label = stringResource(R.string.expText)
+                    label = stringResource(id  = R.string.expText)
                 )
             }
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         //display gender bonus selection if the character is a duk'zarist
         item {
@@ -119,15 +120,15 @@ fun CharacterPageFragment(
                             //display checkbox for selection
                             Checkbox(
                                 checked = charFragVM.isMale.collectAsState().value,
-                                onCheckedChange = { charFragVM.toggleGender() },
+                                onCheckedChange = {charFragVM.toggleGender()},
                                 modifier = Modifier
                                     .weight(0.1f)
                             )
                             //display current selection
                             AnimatedContent(
-                                targetState = stringResource(charFragVM.genderString.collectAsState().value),
+                                targetState = stringResource(id = charFragVM.genderString.collectAsState().value),
                                 modifier = Modifier
-                                    .clickable { charFragVM.toggleGender() }
+                                    .clickable {charFragVM.toggleGender()}
                                     .weight(0.5f),
                                 transitionSpec = textScrollUp,
                                 label = "genderDisplay"
@@ -147,28 +148,29 @@ fun CharacterPageFragment(
                                 .fillMaxWidth(0.5f),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            //checkbox for selection
                             Checkbox(
                                 checked = charFragVM.magPaladin.collectAsState().value,
-                                onCheckedChange = { charFragVM.toggleMagPaladin() },
+                                onCheckedChange = {charFragVM.toggleMagPaladin()},
                                 modifier = Modifier
                                     .weight(0.1f)
                             )
 
+                            //prompt for paladin's magic abilities
                             Text(
-                                text = stringResource(R.string.isMagPaladin),
+                                text = stringResource(id = R.string.isMagPaladin),
                                 modifier = Modifier
-                                    .clickable { charFragVM.toggleMagPaladin() }
+                                    .clickable {charFragVM.toggleMagPaladin()}
                                     .weight(0.5f),
                                 textAlign = TextAlign.Center
                             )
                         }
-
                     }
                 }
             }
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         item{
             GeneralCard{
@@ -180,17 +182,17 @@ fun CharacterPageFragment(
 
                     //score header
                     Text(
-                        text = stringResource(R.string.scoreLabel),
+                        text = stringResource(id = R.string.scoreLabel),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
                     )
 
-                    Spacer(Modifier.weight(0.01f))
+                    Spacer(modifier = Modifier.weight(0.01f))
 
                     //level bonus input header
                     Text(
-                        text = stringResource(R.string.bonusLabel),
+                        text = stringResource(id = R.string.bonusLabel),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -198,7 +200,7 @@ fun CharacterPageFragment(
 
                     //bonus header
                     Text(
-                        text = stringResource(R.string.specialLabel),
+                        text = stringResource(id = R.string.specialLabel),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -206,7 +208,7 @@ fun CharacterPageFragment(
 
                     //mod header
                     Text(
-                        text = stringResource(R.string.modLabel),
+                        text = stringResource(id = R.string.modLabel),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -214,8 +216,11 @@ fun CharacterPageFragment(
                 }
 
                 //create row for each primary characteristic
-                charFragVM.primaryDataList.forEach{
-                    PrimaryRow(charFragVM, it)
+                charFragVM.primaryDataList.forEach{primary ->
+                    PrimaryRow(
+                        primeItem = primary,
+                        charFragVM = charFragVM
+                    )
                 }
             }
         }
@@ -234,7 +239,7 @@ fun CharacterPageFragment(
                         inputText = charFragVM.appearInput.collectAsState().value,
                         inputFunction = {
                             //attempt new input and notify user of failed input
-                            if (it.toInt() <= 10 && !charFragVM.setAppearInput(it.toInt()))
+                            if (it.toInt() <= 10 && !charFragVM.setAppearInput(appearance = it.toInt()))
                                 Toast.makeText(
                                     context,
                                     context.getString(R.string.appearanceFailure),
@@ -244,11 +249,11 @@ fun CharacterPageFragment(
                         emptyFunction = {
                             //clear input if user can change it
                             if (charFragVM.isNotUnattractive())
-                                charFragVM.setAppearInput("")
+                                charFragVM.setAppearInput(display = "")
                         },
                         modifier = Modifier
                             .weight(0.5f),
-                        label = stringResource(R.string.appearance)
+                        label = stringResource(id = R.string.appearance)
                     )
 
                     Spacer(Modifier.weight(0.01f))
@@ -256,19 +261,19 @@ fun CharacterPageFragment(
                     //create input for a character's gnosis
                     NumberInput(
                         inputText = charFragVM.gnosisDisplay.collectAsState().value,
-                        inputFunction = {charFragVM.setGnosisDisplay(it.toInt())},
-                        emptyFunction = {charFragVM.setGnosisDisplay("")},
+                        inputFunction = {charFragVM.setGnosisDisplay(gnosisInput = it.toInt())},
+                        emptyFunction = {charFragVM.setGnosisDisplay(display = "")},
                         modifier = Modifier
                             .weight(0.5f),
-                        label = stringResource(R.string.gnosisLabel)
+                        label = stringResource(id = R.string.gnosisLabel)
                     )
                 }
 
-                Spacer(Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 //display character's size category
                 InfoRow(
-                    stringResource(R.string.sizeCat)
+                    stringResource(id = R.string.sizeCat)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = charFragVM.sizeInput.collectAsState().value,
@@ -276,15 +281,13 @@ fun CharacterPageFragment(
                         transitionSpec = numberScroll,
                         label = "sizeDisplay"
                     ){
-                        Text(
-                            text = "$it"
-                        )
+                        Text(text = "$it")
                     }
                 }
 
                 //display character's movement value
                 InfoRow(
-                    label = stringResource(R.string.movement)
+                    label = stringResource(id = R.string.movement)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = charFragVM.getCharMovement(),
@@ -294,15 +297,17 @@ fun CharacterPageFragment(
                     ) {
                         Text(
                             text =
-                            if(it == 0) stringResource(charFragVM.movementDisplay.collectAsState().value)
-                            else stringResource(charFragVM.movementDisplay.collectAsState().value, it)
+                                if(it == 0)
+                                    stringResource(id = charFragVM.movementDisplay.collectAsState().value)
+                                else
+                                    stringResource(id = charFragVM.movementDisplay.collectAsState().value, it)
                         )
                     }
                 }
 
                 //display character's weight index
                 InfoRow(
-                    label = stringResource(R.string.weightIndex)
+                    label = stringResource(id = R.string.weightIndex)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = charFragVM.getCharWeight(),
@@ -313,29 +318,29 @@ fun CharacterPageFragment(
                         Text(
                             text =
                                 if(charFragVM.getCharWeight() == 0)
-                                    stringResource(charFragVM.weightIndex.collectAsState().value)
+                                    stringResource(id = charFragVM.weightIndex.collectAsState().value)
                                 else
-                                    stringResource(charFragVM.weightIndex.collectAsState().value, it)
+                                    stringResource(id = charFragVM.weightIndex.collectAsState().value, it)
                         )
                     }
                 }
             }
         }
 
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
     }
 }
 
 /**
  * Create a row for the primary characteristics table.
  *
- * @param charFragVM viewModel that manages this fragment
  * @param primeItem primary characteristic data to display
+ * @param charFragVM viewModel that manages this fragment
  */
 @Composable
 private fun PrimaryRow(
-    charFragVM: CharacterFragmentViewModel,
-    primeItem: CharacterFragmentViewModel.PrimeCharacteristicData
+    primeItem: CharacterFragmentViewModel.PrimeCharacteristicData,
+    charFragVM: CharacterFragmentViewModel
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -353,20 +358,20 @@ private fun PrimaryRow(
             inputFunction = {
                 //change input and other necessary items if in legal range
                 if(it.toInt() in 1..20)
-                    primeItem.setInput(it.toInt())
+                    primeItem.setInput(statVal = it.toInt())
             },
-            emptyFunction = {primeItem.setInput("")},
+            emptyFunction = {primeItem.setInput(display = "")},
             modifier = Modifier
                 .weight(0.2f)
         )
 
-        Spacer(Modifier.weight(0.01f))
+        Spacer(modifier = Modifier.weight(0.01f))
 
         //level bonus input
         NumberInput(
             inputText = primeItem.bonusInput.collectAsState().value,
-            inputFunction = {primeItem.setBonusInput(it.toInt())},
-            emptyFunction = {primeItem.setBonusInput("")},
+            inputFunction = {primeItem.setBonusInput(lvlBonus = it.toInt())},
+            emptyFunction = {primeItem.setBonusInput(display = "")},
             modifier = Modifier
                 .weight(0.2f),
             isError = !charFragVM.bonusValid.collectAsState().value,
@@ -401,7 +406,7 @@ private fun PrimaryRow(
         }
     }
 
-    Spacer(Modifier.height(5.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
 @Preview

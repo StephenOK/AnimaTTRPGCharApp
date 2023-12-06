@@ -6,145 +6,145 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class Poisons: GeneralCategory(null) {
-    val acquaToffana = GeneralEquipment(
-        "Acqua Toffana",
-        R.string.acquaToffana,
-        25.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+class Poisons: GeneralCategory(qualityInput = null) {
+    private val acquaToffana = GeneralEquipment(
+        saveName = "Acqua Toffana",
+        name = R.string.acquaToffana,
+        baseCost = 25.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val albaladin = GeneralEquipment(
-        "Al-Baladin",
-        R.string.albaladin,
-        80.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val albaladin = GeneralEquipment(
+        saveName = "Al-Baladin",
+        name = R.string.albaladin,
+        baseCost = 80.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val royalArsenic = GeneralEquipment(
-        "Royal Arsenic",
-        R.string.royalArsenic,
-        280.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val royalArsenic = GeneralEquipment(
+        saveName = "Royal Arsenic",
+        name = R.string.royalArsenic,
+        baseCost = 280.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val atropine = GeneralEquipment(
-        "Atropine",
-        R.string.atropine,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val atropine = GeneralEquipment(
+        saveName = "Atropine",
+        name = R.string.atropine,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val belladonna = GeneralEquipment(
-        "Belladonna",
-        R.string.belladonna,
-        15.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val belladonna = GeneralEquipment(
+        saveName = "Belladonna",
+        name = R.string.belladonna,
+        baseCost = 15.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val cantharidin = GeneralEquipment(
-        "Cantheridin",
-        R.string.cantheradin,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val cantharidin = GeneralEquipment(
+        saveName = "Cantheridin",
+        name = R.string.cantharidin,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val cyanide = GeneralEquipment(
-        "Cyanide",
-        R.string.cyanide,
-        80.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val cyanide = GeneralEquipment(
+        saveName = "Cyanide",
+        name = R.string.cyanide,
+        baseCost = 80.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val curare = GeneralEquipment(
-        "Curare",
-        R.string.curare,
-        100.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val curare = GeneralEquipment(
+        saveName = "Curare",
+        name = R.string.curare,
+        baseCost = 100.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val muscarine = GeneralEquipment(
-        "Muscarine",
-        R.string.muscarine,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val muscarine = GeneralEquipment(
+        saveName = "Muscarine",
+        name = R.string.muscarine,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val ramalenSap = GeneralEquipment(
-        "Ramalen Sap",
-        R.string.ramalanSap,
-        800.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val ramalenSap = GeneralEquipment(
+        saveName = "Ramalen Sap",
+        name = R.string.ramalenSap,
+        baseCost = 800.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val thallium = GeneralEquipment(
-        "Thallium",
-        R.string.thallium,
-        20.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val thallium = GeneralEquipment(
+        saveName = "Thallium",
+        name = R.string.thallium,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val whiteCobra = GeneralEquipment(
-        "White Cobra Venom",
-        R.string.whiteCobra,
-        500.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val whiteCobra = GeneralEquipment(
+        saveName = "White Cobra Venom",
+        name = R.string.whiteCobra,
+        baseCost = 500.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val serpentVenom = GeneralEquipment(
-        "Serpent\'s Venom",
-        R.string.serpentVenom,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val serpentVenom = GeneralEquipment(
+        saveName = "Serpent\'s Venom",
+        name = R.string.serpentVenom,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val saturnSalt = GeneralEquipment(
-        "Salt of Saturn",
-        R.string.saturnSalt,
-        3.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val saturnSalt = GeneralEquipment(
+        saveName = "Salt of Saturn",
+        name = R.string.saturnSalt,
+        baseCost = 3.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
     init{

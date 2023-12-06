@@ -2,7 +2,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,42 +56,44 @@ fun EquipmentFragment(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
 
         item{
             GeneralCard {
                 //create inputs for each maximum coin expenditure
-                equipFragVM.allQuantityMaximums.forEach{MaximumDisplay(it)}
+                equipFragVM.allQuantityMaximums.forEach{quantity ->
+                    MaximumDisplay(maxData = quantity)
+                }
 
                 //display bonus wealth if any taken
                 if(equipFragVM.getBonusWealth() > 0){
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
                         text =
                         stringResource(
-                            R.string.bonusWealthLabel,
-                            stringResource(R.string.goldLabel, equipFragVM.getBonusWealth())
+                            id = R.string.bonusWealthLabel,
+                            stringResource(id = R.string.goldLabel, equipFragVM.getBonusWealth())
                         )
                     )
                 }
             }
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         //display all coin spent
         item{
             GeneralCard {
                 Row{
                     Text(
-                        text = stringResource(R.string.spentLabel),
+                        text = stringResource(id = R.string.spentLabel),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
                 }
 
-                Spacer(Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 Row(
                     modifier = Modifier
@@ -100,77 +101,85 @@ fun EquipmentFragment(
                 ) {
                     //gold spent
                     SpentDisplay(
-                        CoinType.Gold,
-                        equipFragVM.getCoinSpent(CoinType.Gold),
-                        Modifier
+                        coinType = CoinType.Gold,
+                        amount = equipFragVM.getCoinSpent(CoinType.Gold),
+                        modifier = Modifier
                             .weight(0.2f)
                     )
 
                     //silver spent
                     SpentDisplay(
-                        CoinType.Silver,
-                        equipFragVM.getCoinSpent(CoinType.Silver),
-                        Modifier
+                        coinType = CoinType.Silver,
+                        amount = equipFragVM.getCoinSpent(CoinType.Silver),
+                        modifier = Modifier
                             .weight(0.2f)
                     )
 
                     //copper spent
                     SpentDisplay(
-                        CoinType.Copper,
-                        equipFragVM.getCoinSpent(CoinType.Copper),
-                        Modifier
+                        coinType = CoinType.Copper,
+                        amount = equipFragVM.getCoinSpent(CoinType.Copper),
+                        modifier = Modifier
                             .weight(0.2f)
                     )
                 }
             }
         }
 
-        item{Spacer(Modifier.height(10.dp))}
+        item{Spacer(modifier = Modifier.height(10.dp))}
 
         //display all purchasable items by category
-        items(equipFragVM.allCategoryData){
-            CategoryButton(equipFragVM, it)
+        items(equipFragVM.allCategoryData){category ->
+            CategoryButton(
+                category = category,
+                equipFragVM = equipFragVM
+            )
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         item{
             GeneralCard{
                 //current inventory label
                 Text(
-                    text = stringResource(R.string.inventoryHeader),
+                    text = stringResource(id = R.string.inventoryHeader),
                     textAlign = TextAlign.Center
                 )
 
                 //display current inventory
-                equipFragVM.boughtGoods.forEach{
-                    HeldItemRow(equipFragVM, it)
+                equipFragVM.boughtGoods.forEach{equipment ->
+                    HeldItemRow(
+                        equipment = equipment,
+                        equipFragVM = equipFragVM
+                    )
                 }
             }
         }
 
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
     }
 
     //display purchase options alert if currently visible
     if(equipFragVM.itemPurchaseOpen.collectAsState().value)
-        EquipmentItemPurchase(equipFragVM)
+        EquipmentItemPurchase(equipFragVM = equipFragVM)
 
     //display item details if requested
     if(equipFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
-            stringResource(equipFragVM.detailTitle.collectAsState().value),
-            equipFragVM.detailItem.collectAsState().value!!
+            title = stringResource(id = equipFragVM.detailTitle.collectAsState().value),
+            item = equipFragVM.detailItem.collectAsState().value!!
         ){equipFragVM.toggleDetailAlertOpen()}
 }
 
 /**
  * Displays a maximum coin input item.
  *
- * @param input data in regards to the coin type
+ * @param maxData data in regards to the coin type
  */
 @Composable
-fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
+fun MaximumDisplay(
+    maxData: EquipmentFragmentViewModel.MaximumData
+){
     Row (
         modifier = Modifier
             .fillMaxWidth(0.7f),
@@ -178,16 +187,16 @@ fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
     ){
         //display header
         Text(
-            text = stringResource(input.nameRef),
+            text = stringResource(id = maxData.nameRef),
             modifier = Modifier
                 .weight(0.25f)
         )
 
         //display input
         NumberInput(
-            inputText = input.maxValue.collectAsState().value,
-            inputFunction = { input.setMaxValue(it.toInt()) },
-            emptyFunction = { input.setMaxValue("") },
+            inputText = maxData.maxValue.collectAsState().value,
+            inputFunction = {maxData.setMaxValue(maxCoin = it.toInt())},
+            emptyFunction = {maxData.setMaxValue(display = "")},
             modifier = Modifier
                 .weight(0.45f)
         )
@@ -197,29 +206,33 @@ fun MaximumDisplay(input: EquipmentFragmentViewModel.MaximumData){
 /**
  * Displays a button that displays all purchasable items in its category.
  *
+ * @param category category data for this section
  * @param equipFragVM viewModel managing this section
- * @param item category data for this section
  */
 @Composable
 fun CategoryButton(
-    equipFragVM: EquipmentFragmentViewModel,
-    item: EquipmentFragmentViewModel.CategoryData
+    category: EquipmentFragmentViewModel.CategoryData,
+    equipFragVM: EquipmentFragmentViewModel
 ){
     //create button that displays category name
     Button(
-        onClick = {item.toggleCatOpen()},
+        onClick = {category.toggleCatOpen()},
         modifier = Modifier
             .fillMaxWidth(0.8f)
     ){
-        Text(text = stringResource(item.nameRef))
+        Text(text = stringResource(id = category.nameRef))
     }
 
     //list of items in this category that can be purchased
-    AnimatedVisibility(visible = item.catOpen.collectAsState().value) {
+    AnimatedVisibility(visible = category.catOpen.collectAsState().value) {
         GeneralCard{
             //create a row for each item
-            item.reference.itemsAvailable.forEach{
-                EquipmentRow(equipFragVM, it, item.reference)
+            category.equipmentList.itemsAvailable.forEach{ equipment ->
+                EquipmentRow(
+                    item = equipment,
+                    ownCategory = category.equipmentList,
+                    equipFragVM = equipFragVM
+                )
             }
         }
     }
@@ -228,15 +241,15 @@ fun CategoryButton(
 /**
  * Row that displays a purchasable piece of equipment.
  *
- * @param equipFragVM viewModel that manages this page
  * @param item piece of equipment to display
  * @param ownCategory category the item is from
+ * @param equipFragVM viewModel that manages this page
  */
 @Composable
 fun EquipmentRow(
-    equipFragVM: EquipmentFragmentViewModel,
     item: GeneralEquipment,
-    ownCategory: GeneralCategory
+    ownCategory: GeneralCategory,
+    equipFragVM: EquipmentFragmentViewModel
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -245,8 +258,8 @@ fun EquipmentRow(
         Button(
             onClick = {
                 equipFragVM.toggleItemPurchaseOpen()
-                equipFragVM.setPurchasedItem(item)
-                equipFragVM.setPurchasingCategory(ownCategory)
+                equipFragVM.setPurchasedItem(equipment = item)
+                equipFragVM.setPurchasingCategory(category = ownCategory)
             },
             modifier = Modifier
                 .weight(0.2f)
@@ -259,7 +272,7 @@ fun EquipmentRow(
 
         //display equipment name
         Text(
-            text = stringResource(item.name),
+            text = stringResource(id = item.name),
             modifier = Modifier
                 .weight(0.35f),
             textAlign = TextAlign.Center
@@ -268,9 +281,9 @@ fun EquipmentRow(
         //display item's base cost
         Text(text =
                 when(item.coinType){
-                    CoinType.Copper -> stringResource(R.string.copperLabel, item.baseCost)
-                    CoinType.Silver -> stringResource(R.string.silverLabel, item.baseCost)
-                    CoinType.Gold -> stringResource(R.string.goldLabel, item.baseCost)
+                    CoinType.Copper -> stringResource(id = R.string.copperLabel, item.baseCost)
+                    CoinType.Silver -> stringResource(id = R.string.silverLabel, item.baseCost)
+                    CoinType.Gold -> stringResource(id = R.string.goldLabel, item.baseCost)
                 },
             modifier = Modifier
                 .weight(0.2f),
@@ -280,7 +293,7 @@ fun EquipmentRow(
         //display details button
         DetailButton(
             onClick = {
-                equipFragVM.setDetailItem(item)
+                equipFragVM.setDetailItem(equipment = item)
                 equipFragVM.toggleDetailAlertOpen()
             },
             modifier = Modifier
@@ -292,15 +305,14 @@ fun EquipmentRow(
 /**
  * Row that displays the amount of the given coin spent.
  *
- * @param type kind of coin displayed in this row
- * @param value amount of coin spent
+ * @param coinType kind of coin displayed in this row
+ * @param amount number of this coin type spent
  * @param modifier code to alter the form of the item
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SpentDisplay(
-    type: CoinType,
-    value: Int,
+    coinType: CoinType,
+    amount: Int,
     modifier: Modifier
 ){
     Row(
@@ -308,21 +320,21 @@ fun SpentDisplay(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(R.string.spentAmount, type.name),
+            text = stringResource(id = R.string.spentAmount, coinType.name),
             modifier = Modifier
                 .weight(0.6f),
             textAlign = TextAlign.Center,
             maxLines = 1
         )
 
-        Spacer(Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.1f))
 
         AnimatedContent(
-            targetState = value,
+            targetState = amount,
             modifier = Modifier
                 .weight(0.3f),
             transitionSpec = numberScroll,
-            label = "${type.name}Spent"
+            label = "${coinType.name}Spent"
         ){
             Text(
                 text = "$it",
@@ -335,19 +347,18 @@ fun SpentDisplay(
 /**
  * Row that displays a character's currently purchased equipment.
  *
+ * @param equipment item in the character's inventory
  * @param equipFragVM viewModel that manages this fragment
- * @param input piece of purchased equipment
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HeldItemRow(
-    equipFragVM: EquipmentFragmentViewModel,
-    input: GeneralEquipment
+    equipment: GeneralEquipment,
+    equipFragVM: EquipmentFragmentViewModel
 ){
     //create name of the item to include quality, if any
-    val titleString = stringResource(input.name) +
-        if(input.currentQuality != null)
-            " " + stringResource(equipFragVM.getCategory(input)!!.qualityInput!![input.currentQuality].qualityType)
+    val titleString = stringResource(id = equipment.name) +
+        if(equipment.currentQuality != null)
+            " " + stringResource(id = equipFragVM.getCategory(equipment)!!.qualityInput!![equipment.currentQuality].qualityType)
         else ""
 
     Row(
@@ -357,7 +368,7 @@ fun HeldItemRow(
     ){
         //display item removal button
         Button(
-            onClick = {equipFragVM.removeItem(input)},
+            onClick = {equipFragVM.removeItem(equipment = equipment)},
             modifier = Modifier
                 .weight(0.2f)
         )
@@ -373,7 +384,7 @@ fun HeldItemRow(
 
         //display number of the held item
         AnimatedContent(
-            targetState = equipFragVM.getQuantity(input)!!,
+            targetState = equipFragVM.getQuantity(equipment = equipment)!!,
             modifier = Modifier
                 .weight(0.25f),
             transitionSpec = numberScroll,

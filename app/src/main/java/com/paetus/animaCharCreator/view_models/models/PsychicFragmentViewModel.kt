@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.update
  * @param psychic character's psychic abilities
  * @param charClass class record of the character
  * @param dexMod character's dexterity modifier
+ * @param context source of the accessed resources
  */
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
@@ -27,31 +28,31 @@ class PsychicFragmentViewModel(
     private val context: Context
 ): ViewModel() {
     //initialize character's free psychic point text
-    private val _freePsyPoints = MutableStateFlow(psychic.getFreePsyPoints())
+    private val _freePsyPoints = MutableStateFlow(value = psychic.getFreePsyPoints())
     val freePsyPoints = _freePsyPoints.asStateFlow()
 
     //initialize color of free point text
-    private val _freePointValid = MutableStateFlow(psychic.getFreePsyPoints() >= 0)
+    private val _freePointValid = MutableStateFlow(value = psychic.getFreePsyPoints() >= 0)
     val freePointValid = _freePointValid.asStateFlow()
 
     //initialize character's taken number of innate slots
-    private val _innateSlotDisplay = MutableStateFlow(psychic.innateSlotCount.value.toString())
+    private val _innateSlotDisplay = MutableStateFlow(value = psychic.innateSlotCount.intValue.toString())
     val innateSlotDisplay = _innateSlotDisplay.asStateFlow()
 
     //initialize character's innate slot label
-    private val _innateSlotLabel = MutableStateFlow("")
+    private val _innateSlotLabel = MutableStateFlow(value = "")
     val innateSlotLabel = _innateSlotLabel.asStateFlow()
 
     //initialize open state of the detail alert
-    private val _detailAlertOpen = MutableStateFlow(false)
+    private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
     //initialize title of the detail alert
-    private val _detailTitle = MutableStateFlow("")
+    private val _detailTitle = MutableStateFlow(value = "")
     val detailTitle = _detailTitle.asStateFlow()
 
     //initialize detail alert's displayed item
-    private val _detailItem = MutableStateFlow<PsychicPower?>(null)
+    private val _detailItem = MutableStateFlow<PsychicPower?>(value = null)
     val detailItem = _detailItem.asStateFlow()
 
     /**
@@ -67,27 +68,27 @@ class PsychicFragmentViewModel(
     /**
      * Sets the number of innate slots the character can use.
      *
-     * @param input number of innate slots to acquire
+     * @param slotBuy number of innate slots to acquire
      */
-    fun setInnateSlotDisplay(input: Int){
-        psychic.buyInnateSlots(input)
-        setInnateSlotDisplay(input.toString())
+    fun setInnateSlotDisplay(slotBuy: Int){
+        psychic.buyInnateSlots(slotBuy = slotBuy)
+        setInnateSlotDisplay(display = slotBuy.toString())
         updateFreePsyPoints()
     }
 
     /**
      * Sets the displayed number of innate slots.
      *
-     * @param input amount of slots to display
+     * @param display amount of slots to display
      */
-    fun setInnateSlotDisplay(input: String){_innateSlotDisplay.update{input}}
+    fun setInnateSlotDisplay(display: String){_innateSlotDisplay.update{display}}
 
     /**
      * Sets the label for the innate slot input.
      *
-     * @param input new label to set
+     * @param dpLabel new label to set
      */
-    fun setInnateSlotLabel(input: String){_innateSlotLabel.update{input}}
+    fun setInnateSlotLabel(dpLabel: String){_innateSlotLabel.update{dpLabel}}
 
     /**
      * Opens and closes the detail alert as needed.
@@ -96,130 +97,136 @@ class PsychicFragmentViewModel(
 
     /**
      * Sets the displayed content for the detail alert.
+     *
+     * @param power power to show the details of
      */
-    fun setDetailItem(input: PsychicPower){
-        _detailTitle.update{context.resources.getStringArray(R.array.powerNames)[input.name]}
-        _detailItem.update{input}
+    fun setDetailItem(power: PsychicPower){
+        _detailTitle.update{context.resources.getStringArray(R.array.powerNames)[power.name]}
+        _detailItem.update{power}
     }
 
     /**
      * Returns if the inputted discipline is legally obtainable by the character.
      *
-     * @param input discipline to check
+     * @param discipline discipline to check
+     * @return true if the character can take this discipline
      */
-    fun isLegalDiscipline(input: Discipline): Boolean{
-        return psychic.legalDisciplines.contains(input)
+    fun isLegalDiscipline(discipline: Discipline): Boolean{
+        return psychic.legalDisciplines.contains(discipline)
     }
 
     //initialize data in regards to the character's psychic potential
     private val psychicPotential = PsychicPurchaseItemData(
-        R.string.psyPotentialLabel,
-        {psychic.psyPotentialBase.value},
-        {psychic.pointsInPotential.value},
-        {psychic.psyPotentialTotal.value},
-        {R.string.psyPointInput},
-        {1},
-        {true},
-    ){input, item ->
-        psychic.setPointPotential(input)
-        item.update{psychic.psyPotentialTotal.value}
-        updateFreePsyPoints()
-    }
+        title = R.string.psyPotentialLabel,
+        baseString = {psychic.psyPotentialBase.intValue},
+        boughtVal = {psychic.pointsInPotential.intValue},
+        totalVal = {psychic.psyPotentialTotal.intValue},
+        getResource = {R.string.psyPointInput},
+        getValue = {1},
+        getValid = {true},
+        totalUpdate = {input, item ->
+            psychic.setPointPotential(potentialBuy = input)
+            item.update{psychic.psyPotentialTotal.intValue}
+            updateFreePsyPoints()
+        }
+    )
 
     //initialize data in regards to the character's psychic points
     private val psychicPoints = PsychicPurchaseItemData(
-        R.string.psyPointLabel,
-        {psychic.innatePsyPoints.value},
-        {psychic.boughtPsyPoints.value},
-        {psychic.totalPsychicPoints.value},
-        {R.string.dpLabel},
-        {charClass.value.psyPointGrowth},
-        {true}
-    ){input, item ->
-        psychic.buyPsyPoints(input)
-        item.update{psychic.totalPsychicPoints.value}
-        updateFreePsyPoints()
-    }
+        title = R.string.psyPointLabel,
+        baseString = {psychic.innatePsyPoints.intValue},
+        boughtVal = {psychic.boughtPsyPoints.intValue},
+        totalVal = {psychic.totalPsychicPoints.intValue},
+        getResource = {R.string.dpLabel},
+        getValue = {charClass.value.psyPointGrowth},
+        getValid = {true},
+        totalUpdate = {input, item ->
+            psychic.buyPsyPoints(ppBuy = input)
+            item.update{psychic.totalPsychicPoints.intValue}
+            updateFreePsyPoints()
+        }
+    )
 
     //initialize data in regards to the character's psychic projection
     private val psychicProjection = PsychicPurchaseItemData(
-        R.string.psyProjectionLabel,
-        {dexMod},
-        {psychic.psyProjectionBought.value},
-        {psychic.psyProjectionTotal.value},
-        {R.string.dpLabel},
-        {charClass.value.psyProjGrowth},
-        {psychic.getValidProjection()}
-    ){input, item ->
-        psychic.buyPsyProjection(input)
-        item.update{psychic.psyProjectionTotal.value}
-    }
+        title = R.string.psyProjectionLabel,
+        baseString = {dexMod},
+        boughtVal = {psychic.psyProjectionBought.intValue},
+        totalVal = {psychic.psyProjectionTotal.intValue},
+        getResource = {R.string.dpLabel},
+        getValue = {charClass.value.psyProjGrowth},
+        getValid = {psychic.getValidProjection()},
+        totalUpdate = {input, item ->
+            psychic.buyPsyProjection(projBuy = input)
+            item.update{psychic.psyProjectionTotal.intValue}
+        }
+    )
 
     //gather purchase items into a list
     val buyItems = listOf(psychicPotential, psychicProjection, psychicPoints)
 
     //initialize data for each psychic discipline
     private val telepathy = DisciplineItemData(
-        psychic,
-        this,
-        0,
-        psychic.telepathy
+        psychic = psychic,
+        nameRef = 0,
+        discipline = psychic.telepathy,
+        psyFragVM = this
     )
 
     private val kinesis = DisciplineItemData(
-        psychic,
-        this,
-        1,
-        psychic.psychokinesis
+        psychic = psychic,
+        nameRef = 1,
+        discipline = psychic.psychokinesis,
+        psyFragVM = this
     )
 
     private val pyrokinesis = DisciplineItemData(
-        psychic,
-        this,
-        2,
-        psychic.pyrokinesis
+        psychic = psychic,
+        nameRef = 2,
+        discipline = psychic.pyrokinesis,
+        psyFragVM = this
     )
 
     private val cryokinesis = DisciplineItemData(
-        psychic,
-        this,
-        3,
-        psychic.cryokinesis
+        psychic = psychic,
+        nameRef = 3,
+        discipline = psychic.cryokinesis,
+        psyFragVM = this
     )
 
     private val physIncrease = DisciplineItemData(
-        psychic,
-        this,
-        4,
-        psychic.physicalIncrease
+        psychic = psychic,
+        nameRef = 4,
+        discipline = psychic.physicalIncrease,
+        psyFragVM = this
     )
 
     private val energy = DisciplineItemData(
-        psychic,
-        this,
-        5,
-        psychic.energyPowers
+        psychic = psychic,
+        nameRef = 5,
+        discipline = psychic.energyPowers,
+        psyFragVM = this
     )
 
     private val sentience = DisciplineItemData(
-        psychic,
-        this,
-        6,
-        psychic.sentiencePowers
+        psychic = psychic,
+        nameRef = 6,
+        discipline = psychic.sentiencePowers,
+        psyFragVM = this
     )
 
     private val telemetry = DisciplineItemData(
-        psychic,
-        this,
-        7,
-        psychic.telemetry
+        psychic = psychic,
+        nameRef = 7,
+        discipline = psychic.telemetry,
+        psyFragVM = this
     )
 
     private val matrixPowers = DisciplineItemData(
-        psychic,
-        this,
-        8,
-        psychic.matrixPowers
+        psychic = psychic,
+        nameRef = 8,
+        discipline = psychic.matrixPowers,
+        psyFragVM = this
     )
 
     //gather all discipline data
@@ -230,14 +237,14 @@ class PsychicFragmentViewModel(
      * Updates all discipline and power checkboxes to reflect the character's ownership of them.
      */
     fun setAllPowers(){
-        allDisciplines.forEach{
+        allDisciplines.forEach{discipline ->
             //set investment checkbox
-            it.setInvestedIn()
+            discipline.setInvestedIn()
 
             //update each of the discipline's powers
-            it.powerList.forEach{power ->
-                if(power.powerInvestedIn.value != psychic.masteredPowers.contains(power.item))
-                    power.setPowerInvestedIn(psychic.masteredPowers.contains(power.item))
+            discipline.powerList.forEach{power ->
+                if(power.powerInvestedIn.value != psychic.masteredPowers.contains(power.psyPower))
+                    power.setPowerInvestedIn(psychic.masteredPowers.contains(power.psyPower))
             }
         }
     }
@@ -265,53 +272,54 @@ class PsychicFragmentViewModel(
         val totalUpdate: (Int, MutableStateFlow<Int>) -> Unit
     ){
         //initialize purchase input for this item
-        private val _purchaseAmount = MutableStateFlow(boughtVal().toString())
+        private val _purchaseAmount = MutableStateFlow(value = boughtVal().toString())
         val purchaseAmount = _purchaseAmount.asStateFlow()
 
         //initialize text's color
-        private val _inputValid = MutableStateFlow(getValid())
+        private val _inputValid = MutableStateFlow(value = getValid())
         val inputValid = _inputValid.asStateFlow()
 
-        private val _dpDisplay = MutableStateFlow("")
+        //initialize development point label
+        private val _dpDisplay = MutableStateFlow(value = "")
         val dpDisplay = _dpDisplay.asStateFlow()
 
         //initialize total display for this item
-        private val _totalAmount = MutableStateFlow(totalVal())
+        private val _totalAmount = MutableStateFlow(value = totalVal())
         val totalAmount = _totalAmount.asStateFlow()
 
         /**
          * Sets the purchased amount to the indicated value.
          *
-         * @param input value to buy for the character
+         * @param buyVal value to buy for the character
          */
-        fun setPurchaseAmount(input: Int){
-            setPurchaseAmount(input.toString())
-            totalUpdate(input, _totalAmount)
+        fun setPurchaseAmount(buyVal: Int){
+            setPurchaseAmount(display = buyVal.toString())
+            totalUpdate(buyVal, _totalAmount)
             setTextColor()
         }
 
         /**
          * Sets the purchased display to the inputted value.
          *
-         * @param input new item to display
+         * @param display new item to display
          */
-        fun setPurchaseAmount(input: String){_purchaseAmount.update{input}}
+        fun setPurchaseAmount(display: String){_purchaseAmount.update{display}}
 
         /**
          * Sets the color of the displayed input text.
          */
-        fun setTextColor(){_inputValid.update{getValid()}}
+        private fun setTextColor(){_inputValid.update{getValid()}}
 
         /**
          * Sets the displayed DP string.
          */
-        fun setDPDisplay(input: String){_dpDisplay.update{input}}
+        fun setDPDisplay(dpDisplay: String){_dpDisplay.update{dpDisplay}}
 
         /**
          * Refreshes the item value on loading this page.
          */
         fun refreshItem(){
-            setPurchaseAmount(boughtVal())
+            setPurchaseAmount(buyVal = boughtVal())
         }
     }
 
@@ -319,22 +327,22 @@ class PsychicFragmentViewModel(
      * Data in regards to a character's psychic discipline.
      *
      * @param psychic character's psychic abilities
+     * @param nameRef string reference to the discipline's name
+     * @param discipline discipline related to this item
      * @param psyFragVM view model that manages psychic abilities
-     * @param name string reference to the discipline's name
-     * @param item discipline related to this item
      */
     class DisciplineItemData(
         val psychic: Psychic,
-        private val psyFragVM: PsychicFragmentViewModel,
-        val name: Int,
-        val item: Discipline
+        val nameRef: Int,
+        val discipline: Discipline,
+        private val psyFragVM: PsychicFragmentViewModel
     ){
         //initialize open state of the discipline item
-        private val _isOpen = MutableStateFlow(false)
+        private val _isOpen = MutableStateFlow(value = false)
         val isOpen = _isOpen.asStateFlow()
 
         //initialize invested state of this discipline
-        private val _investedIn = MutableStateFlow(psychic.disciplineInvestment.contains(item))
+        private val _investedIn = MutableStateFlow(value = psychic.disciplineInvestment.contains(element = discipline))
         val investedIn = _investedIn.asStateFlow()
 
         //initialize checklist of all associated powers
@@ -348,14 +356,14 @@ class PsychicFragmentViewModel(
         /**
          * Sets the discipline's invested in state to the inputted value.
          *
-         * @param input true if user desires to add it to their character
+         * @param investIn true if user desires to add it to their character
          */
-        fun setInvestedIn(input: Boolean){
+        fun setInvestedIn(investIn: Boolean){
             //attempt discipline investment change
-            _investedIn.update{psychic.updateInvestment(item, input)}
+            _investedIn.update{psychic.updateInvestment(discipline = discipline, isTaken = investIn)}
 
             //remove psychic powers if removing discipline
-            if(!input)
+            if(!investIn)
                 psyFragVM.setAllPowers()
 
             //update available psychic points
@@ -365,12 +373,19 @@ class PsychicFragmentViewModel(
         /**
          * Sets the invested in state to the value held by the character.
          */
-        fun setInvestedIn(){_investedIn.update{psychic.disciplineInvestment.contains(item)}}
+        fun setInvestedIn(){_investedIn.update{psychic.disciplineInvestment.contains(element = discipline)}}
 
         init{
             //initialize checkboxes for all powers
-            item.allPowers.forEach{
-                powerList.add(PowerItemData(psyFragVM, psychic, this, it))
+            discipline.allPowers.forEach{power ->
+                powerList.add(
+                    element = PowerItemData(
+                        psychic = psychic,
+                        discipline = this,
+                        psyPower = power,
+                        psyFragVM = psyFragVM
+                    )
+                )
             }
         }
     }
@@ -378,59 +393,65 @@ class PsychicFragmentViewModel(
     /**
      * Object that manages data for an individual psychic power.
      *
-     * @param psyFragVM view model that manages this item
      * @param psychic character's psychic ability object
-     * @param home discipline data object that this power is associated with
-     * @param item psychic power maintained by this object
+     * @param discipline discipline data object that this power is associated with
+     * @param psyPower psychic power maintained by this object
+     * @param psyFragVM view model that manages this item
      */
     class PowerItemData(
-        val psyFragVM: PsychicFragmentViewModel,
         val psychic: Psychic,
-        val home: DisciplineItemData,
-        val item: PsychicPower
+        val discipline: DisciplineItemData,
+        val psyPower: PsychicPower,
+        val psyFragVM: PsychicFragmentViewModel
     ){
         //initialize whether the character has mastered this power
-        private val _powerInvestedIn = MutableStateFlow(psychic.masteredPowers.contains(item))
+        private val _powerInvestedIn = MutableStateFlow(value = psychic.masteredPowers.contains(psyPower))
         val powerInvestedIn = _powerInvestedIn.asStateFlow()
 
         //initialize displayed psychic point cost label
-        private val _pointLabel = MutableStateFlow("")
+        private val _pointLabel = MutableStateFlow(value = "")
         val pointLabel = _pointLabel.asStateFlow()
 
         //initialize psychic point investment in this power
         private val _pointInvestment = MutableStateFlow(
-            if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item].toString()
-            else "0"
+            value =
+                if(psychic.masteredPowers.contains(key = psyPower)) psychic.masteredPowers[psyPower].toString()
+                else "0"
         )
         val pointInvestment = _pointInvestment.asStateFlow()
 
         //initialize display for bonus potential gained
         private val _bonusGained = MutableStateFlow(
-            if(psychic.masteredPowers.contains(item)) psychic.masteredPowers[item]!!
-            else 0
+            value =
+                if(psychic.masteredPowers.contains(key = psyPower)) psychic.masteredPowers[psyPower]!!
+                else 0
         )
         val bonusGained = _bonusGained.asStateFlow()
 
         /**
          * Sets the character's mastery of this power.
          *
-         * @param input true if character is mastering this power
+         * @param isTaking true if character is mastering this power
          */
-        fun setPowerInvestedIn(input: Boolean){
+        fun setPowerInvestedIn(isTaking: Boolean){
             //attempt to add discipline if character does not currently have it
-            if(input && !psychic.disciplineInvestment.contains(home.item) && home.name != 8)
-                home.setInvestedIn(true)
+            if(isTaking && !psychic.disciplineInvestment.contains(element = discipline.discipline) && discipline.nameRef != 8)
+                discipline.setInvestedIn(investIn = true)
 
             //change mastery as needed
-            _powerInvestedIn.update{psychic.masterPower(item, home.item, input)}
+            _powerInvestedIn.update{psychic.masterPower(
+                power = psyPower,
+                discipline = discipline.discipline,
+                isMastering = isTaking
+            )}
 
             //if user is removing mastery
-            if(!input) {
+            if(!isTaking) {
                 //reflect other power checks if this power is being removed
                 psyFragVM.setAllPowers()
 
                 //update point investment on power's removal
-                setPointInvestment("0")
+                setPointInvestment(display = "0")
                 setBonusGained()
             }
 
@@ -441,23 +462,23 @@ class PsychicFragmentViewModel(
         /**
          * Sets the displayed psychic point cost to the inputted value.
          *
-         * @param input new string to display
+         * @param display new string to display
          */
-        fun setPointLabel(input: String){_pointLabel.update{input}}
+        fun setPointLabel(display: String){_pointLabel.update{display}}
 
         /**
          * Sets the number of points invested in enhancing this power.
          *
-         * @param input number of points to invest
+         * @param ppInvest number of points to invest
          */
-        fun setPointInvestment(input: Int){
+        fun setPointInvestment(ppInvest: Int){
             //only run if power is mastered and input is valid
-            if(psychic.masteredPowers.contains(item) && input <= 10){
+            if(psychic.masteredPowers.contains(key = psyPower) && ppInvest <= 10){
                 //update power enhancement
-                psychic.enhancePower(item, input)
+                psychic.enhancePower(power = psyPower, applyPoints = ppInvest)
 
                 //update related displays
-                setPointInvestment(psychic.masteredPowers[item].toString())
+                setPointInvestment(display = psychic.masteredPowers[psyPower].toString())
                 psyFragVM.updateFreePsyPoints()
                 setBonusGained()
             }
@@ -466,18 +487,18 @@ class PsychicFragmentViewModel(
         /**
          * Updates the displayed value for the power's enhancement.
          *
-         * @param input string to display
+         * @param display string to display
          */
-        fun setPointInvestment(input: String){_pointInvestment.update{input}}
+        fun setPointInvestment(display: String){_pointInvestment.update{display}}
 
         /**
          * Updates the displayed potential gained from psychic point investment.
          */
-        fun setBonusGained(){
+        private fun setBonusGained(){
             _bonusGained.update{
                 //display bonus to mastered power
-                if(psychic.masteredPowers.contains(item))
-                    psychic.masteredPowers[item]!!
+                if(psychic.masteredPowers.contains(key = psyPower))
+                    psychic.masteredPowers[psyPower]!!
                 //display nothing if power isn't mastered
                 else 0
             }
@@ -489,19 +510,19 @@ class PsychicFragmentViewModel(
      */
     fun refreshPage(){
         //refresh each bought item
-        buyItems.forEach{it.refreshItem()}
+        buyItems.forEach{power -> power.refreshItem()}
 
         //refresh innate slots purchased
-        setInnateSlotDisplay(psychic.innateSlotCount.value.toString())
+        setInnateSlotDisplay(display = psychic.innateSlotCount.intValue.toString())
 
         //refresh all power and discipline data
         setAllPowers()
-        allDisciplines.forEach{
-            it.powerList.forEach{power ->
-                if(psychic.masteredPowers.contains(power.item))
-                    power.setPointInvestment(psychic.masteredPowers[power.item]!!)
+        allDisciplines.forEach{discipline ->
+            discipline.powerList.forEach{power ->
+                if(psychic.masteredPowers.contains(key = power.psyPower))
+                    power.setPointInvestment(ppInvest = psychic.masteredPowers[power.psyPower]!!)
                 else
-                    power.setPointInvestment("0")
+                    power.setPointInvestment(display = "0")
             }
         }
     }

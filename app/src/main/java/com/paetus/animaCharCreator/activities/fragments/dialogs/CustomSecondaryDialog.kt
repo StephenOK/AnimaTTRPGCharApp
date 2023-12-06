@@ -28,18 +28,28 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
+/**
+ * Dialog for the user to create their own custom secondary characteristic.
+ * Users select the characteristic's field and primary characteristic bonus applied to it.
+ *
+ * @param secondaryList character's secondary characteristic section
+ * @param filename file to associate with the characteristic
+ * @param customSecondVM viewModel for this dialog
+ */
 @Composable
 fun CustomSecondaryDialog(
-    customSecondVM: CustomSecondaryViewModel,
     secondaryList: SecondaryList,
-    filename: String
+    filename: String,
+    customSecondVM: CustomSecondaryViewModel
 ){
+    //get local context
     val context = LocalContext.current
 
-    customSecondVM.customSecondary.setFilename(filename)
+    //set the current file name for this custom secondary characteristic
+    customSecondVM.customSecondary.setFilename(filename = filename)
 
     DialogFrame(
-        dialogTitle = stringResource(R.string.customCharacteristicTitle),
+        dialogTitle = stringResource(id = R.string.customCharacteristicTitle),
         mainContent = {
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -48,32 +58,32 @@ fun CustomSecondaryDialog(
                 item{
                     TextInput(
                         display = customSecondVM.charName.collectAsState().value,
-                        onValueChange = {customSecondVM.setCustomName(it)}
+                        onValueChange = {customSecondVM.setCustomName(nameInput = it)}
                     )
                 }
 
-                item{Spacer(Modifier.height(10.dp))}
+                item{Spacer(modifier = Modifier.height(10.dp))}
 
                 //field and characteristic selection
-                items(customSecondVM.allDropdowns){
+                items(customSecondVM.allDropdowns){dropdown ->
                     OutlinedDropdown(
-                        optionsRef = it.optionsRef,
-                        index = it.index.collectAsState().value,
-                        openState = it.isOpen.collectAsState().value,
-                        labelRef = it.labelRef,
-                        icon = it.icon.collectAsState().value,
-                        size = it.size.collectAsState().value,
+                        optionsRef = dropdown.optionsRef,
+                        index = dropdown.index.collectAsState().value,
+                        openState = dropdown.isOpen.collectAsState().value,
+                        labelRef = dropdown.labelRef,
+                        icon = dropdown.icon.collectAsState().value,
+                        size = dropdown.size.collectAsState().value,
                         sizeSetter = {coordinates ->
-                            it.setSize(coordinates.size.toSize())
+                            dropdown.setSize(newSize = coordinates.size.toSize())
                         },
                         itemSelection = {index ->
-                            it.setIndex(index)
+                            dropdown.setIndex(selection = index)
                         },
-                        openFunc = {it.openToggle()}
+                        openFunc = {dropdown.openToggle()}
                     )
                 }
 
-                item{Spacer(Modifier.height(10.dp))}
+                item{Spacer(modifier = Modifier.height(10.dp))}
 
                 //make characteristic public
                 item{
@@ -81,12 +91,12 @@ fun CustomSecondaryDialog(
                         Checkbox(
                             checked = customSecondVM.secondaryIsPublic.collectAsState().value,
                             onCheckedChange = {
-                                customSecondVM.setSecondaryPublic(it)
+                                customSecondVM.setSecondaryPublic(isPublic = it)
                             }
                         )
 
                         Text(
-                            text = stringResource(R.string.publicPrompt)
+                            text = stringResource(id = R.string.publicPrompt)
                         )
                     }
                 }
@@ -96,42 +106,69 @@ fun CustomSecondaryDialog(
             Row{
                 TextButton(
                     onClick = {
+                        //if a name is given
                         if(customSecondVM.customSecondary.name.value != "") {
+                            //create filename
                             val secondaryFilename = "${context.filesDir}/CustomSecondaryDIR/${customSecondVM.customSecondary.name.value}"
+
+                            //determine if file exists
                             val prevFile = File(secondaryFilename)
 
+                            //if file does not exist
                             if(!prevFile.exists()) {
+                                //initialize file writer
                                 val saveSecChar = FileOutputStream(prevFile)
-
                                 val secCharData = ByteArrayOutputStream()
+
+                                //write characteristic's public state
                                 writeDataTo(
-                                    secCharData,
-                                    customSecondVM.customSecondary.isPublic.value
+                                    writer = secCharData,
+                                    input = customSecondVM.customSecondary.isPublic.value
                                 )
-                                writeDataTo(secCharData, filename)
-                                writeDataTo(secCharData, customSecondVM.charName.value)
+
+                                //write characteristic's associated character
                                 writeDataTo(
-                                    secCharData,
-                                    customSecondVM.customSecondary.fieldIndex.value
+                                    writer = secCharData,
+                                    input = filename
                                 )
+
+                                //write characteristic's name
                                 writeDataTo(
-                                    secCharData,
-                                    customSecondVM.customSecondary.primaryCharIndex.value
+                                    writer = secCharData,
+                                    input = customSecondVM.charName.value
                                 )
+
+                                //write characteristic's associated field
+                                writeDataTo(
+                                    writer = secCharData,
+                                    input = customSecondVM.customSecondary.fieldIndex.value
+                                )
+
+                                //write characteristic's primary stat
+                                writeDataTo(
+                                    writer = secCharData,
+                                    input = customSecondVM.customSecondary.primaryCharIndex.value
+                                )
+
                                 secCharData.close()
 
+                                //write characteristic data
                                 saveSecChar.write(secCharData.toByteArray())
                                 saveSecChar.close()
 
-                                secondaryList.addCustomSecondary(customSecondVM.customSecondary)
+                                //apply new characteristic to file
+                                secondaryList.addCustomSecondary(newSecondary = customSecondVM.customSecondary)
+
+                                //apply new characteristic to fragment
                                 customSecondVM.secondarySource.addCharToField(
-                                    customSecondVM.customSecondary,
-                                    customSecondVM.customSecondary.fieldIndex.value
+                                    characteristic = customSecondVM.customSecondary,
+                                    field = customSecondVM.customSecondary.fieldIndex.value
                                 )
 
                                 customSecondVM.secondarySource.toggleCustomOpen()
                             }
 
+                            //notify user of existing custom characteristic
                             else{
                                 Toast.makeText(
                                     context,
@@ -140,6 +177,8 @@ fun CustomSecondaryDialog(
                                 ).show()
                             }
                         }
+
+                        //notify user of name requirement
                         else{
                             Toast.makeText(
                                 context,
@@ -150,7 +189,7 @@ fun CustomSecondaryDialog(
                     }
                 ) {
                     Text(
-                        text = stringResource(R.string.createLabel),
+                        text = stringResource(id = R.string.createLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -161,7 +200,7 @@ fun CustomSecondaryDialog(
                     }
                 ){
                     Text(
-                        text = stringResource(R.string.cancelLabel),
+                        text = stringResource(id = R.string.cancelLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

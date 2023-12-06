@@ -1,572 +1,572 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the destruction element.
  */
 class DestructionBook{
     private val fragility = Spell(
-        R.string.fragility,
-        Element.Destruction,
-        true,
-        2,
-        30,
-        R.string.fragilityDesc,
-        R.string.fragilityEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.fragility,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.fragilityDesc,
+        addedEffect = R.string.fragilityEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val dismantle = Spell(
-        R.string.dismantle,
-        Element.Destruction,
-        true,
-        6,
-        40,
-        R.string.dismantleDesc,
-        R.string.dismantleEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.dismantle,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 6,
+        zCost = 40,
+        effect = R.string.dismantleDesc,
+        addedEffect = R.string.dismantleEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val destroyIntensities = Spell(
-        R.string.destroyIntense,
-        Element.Destruction,
-        true,
-        8,
-        40,
-        R.string.destroyIntenseDesc,
-        R.string.destroyIntenseEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.destroyIntense,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 8,
+        zCost = 40,
+        effect = R.string.destroyIntenseDesc,
+        addedEffect = R.string.destroyIntenseEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val minorDestruction = Spell(
-        R.string.minorDestruct,
-        Element.Destruction,
-        true,
-        10,
-        50,
-        R.string.minorDestructDesc,
-        R.string.minorDestructEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.minorDestruct,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 10,
+        zCost = 50,
+        effect = R.string.minorDestructDesc,
+        addedEffect = R.string.minorDestructEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val destructionSphere = Spell(
-        R.string.destructSphere,
-        Element.Destruction,
-        true,
-        12,
-        30,
-        R.string.destructSphereDesc,
-        R.string.destructSphereEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.destructSphere,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 12,
+        zCost = 30,
+        effect = R.string.destructSphereDesc,
+        addedEffect = R.string.destructSphereEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val increaseWeakness = Spell(
-        R.string.weakIncrease,
-        Element.Destruction,
-        true,
-        16,
-        50,
-        R.string.weakIncreaseDesc,
-        R.string.weakIncreaseEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.weakIncrease,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 16,
+        zCost = 50,
+        effect = R.string.weakIncreaseDesc,
+        addedEffect = R.string.weakIncreaseEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val magicDestruction = Spell(
-        R.string.magDestruct,
-        Element.Destruction,
-        false,
-        18,
-        60,
-        R.string.magDestructDesc,
-        R.string.magDestructEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.magDestruct,
+        inBook = Element.Destruction,
+        isActive = false,
+        level = 18,
+        zCost = 60,
+        effect = R.string.magDestructDesc,
+        addedEffect = R.string.magDestructEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val aggravateDamage = Spell(
-        R.string.aggravateDamage,
-        Element.Destruction,
-        false,
-        20,
-        60,
-        R.string.aggravateDamageDesc,
-        R.string.aggravateDamageEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.aggravateDamage,
+        inBook = Element.Destruction,
+        isActive = false,
+        level = 20,
+        zCost = 60,
+        effect = R.string.aggravateDamageDesc,
+        addedEffect = R.string.aggravateDamageEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val destructMatrices = Spell(
-        R.string.matrixDestruction,
-        Element.Destruction,
-        false,
-        22,
-        80,
-        R.string.matrixDestructionDesc,
-        R.string.matrixDestructionEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.matrixDestruction,
+        inBook = Element.Destruction,
+        isActive = false,
+        level = 22,
+        zCost = 80,
+        effect = R.string.matrixDestructionDesc,
+        addedEffect = R.string.matrixDestructionEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val woundSpell = Spell(
-        R.string.wound,
-        Element.Destruction,
-        true,
-        26,
-        80,
-        R.string.woundDesc,
-        R.string.woundEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.wound,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 26,
+        zCost = 80,
+        effect = R.string.woundDesc,
+        addedEffect = R.string.woundEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val destroyKi = Spell(
-        R.string.kiDestroy,
-        Element.Destruction,
-        true,
-        28,
-        80,
-        R.string.kiDestroyDesc,
-        R.string.kiDestroyEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.kiDestroy,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 28,
+        zCost = 80,
+        effect = R.string.kiDestroyDesc,
+        addedEffect = R.string.kiDestroyEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val produceDamage = Spell(
-        R.string.produceDamage,
-        Element.Destruction,
-        true,
-        30,
-        80,
-        R.string.produceDamageDesc,
-        R.string.produceDamageEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.produceDamage,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 30,
+        zCost = 80,
+        effect = R.string.produceDamageDesc,
+        addedEffect = R.string.produceDamageEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val senseDestroy = Spell(
-        R.string.senseDestruct,
-        Element.Destruction,
-        true,
-        32,
-        100,
-        R.string.senseDestructDesc,
-        R.string.senseDestructEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.senseDestruct,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 32,
+        zCost = 100,
+        effect = R.string.senseDestructDesc,
+        addedEffect = R.string.senseDestructEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val mysticBolt = Spell(
-        R.string.mysticBolt,
-        Element.Destruction,
-        true,
-        36,
-        80,
-        R.string.mysticBoltDesc,
-        R.string.mysticBoltEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.mysticBolt,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 36,
+        zCost = 80,
+        effect = R.string.mysticBoltDesc,
+        addedEffect = R.string.mysticBoltEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val unravelTies = Spell(
-        R.string.tieUnravel,
-        Element.Destruction,
-        true,
-        38,
-        100,
-        R.string.tieUnravelDesc,
-        R.string.tieUnravelEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.tieUnravel,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 38,
+        zCost = 100,
+        effect = R.string.tieUnravelDesc,
+        addedEffect = R.string.tieUnravelEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val destroyResistances = Spell(
-        R.string.resistDestroy,
-        Element.Destruction,
-        true,
-        40,
-        80,
-        R.string.resistDestroyDesc,
-        R.string.resistDestroyEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.resistDestroy,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.resistDestroyDesc,
+        addedEffect = R.string.resistDestroyEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val undoState = Spell(
-        R.string.undoState,
-        Element.Destruction,
-        true,
-        42,
-        120,
-        R.string.undoStateDesc,
-        R.string.undoStateEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.undoState,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 42,
+        zCost = 120,
+        effect = R.string.undoStateDesc,
+        addedEffect = R.string.undoStateEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val destructionDome = Spell(
-        R.string.destructDome,
-        Element.Destruction,
-        true,
-        46,
-        100,
-        R.string.destructDomeDesc,
-        R.string.destructDomeEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.destructDome,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 46,
+        zCost = 100,
+        effect = R.string.destructDomeDesc,
+        addedEffect = R.string.destructDomeEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val decayZone = Spell(
-        R.string.decayZone,
-        Element.Destruction,
-        true,
-        48,
-        140,
-        R.string.decayZoneDesc,
-        R.string.decayZoneEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.decayZone,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 48,
+        zCost = 140,
+        effect = R.string.decayZoneDesc,
+        addedEffect = R.string.decayZoneEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val destructionAura = Spell(
-        R.string.destructAura,
-        Element.Destruction,
-        true,
-        50,
-        150,
-        R.string.destructAuraDesc,
-        R.string.destructAuraEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.destructAura,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 50,
+        zCost = 150,
+        effect = R.string.destructAuraDesc,
+        addedEffect = R.string.destructAuraEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val destroyMemories = Spell(
-        R.string.destroyMem,
-        Element.Destruction,
-        true,
-        52,
-        140,
-        R.string.destroyMemDesc,
-        R.string.destroyMemEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.destroyMem,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 52,
+        zCost = 140,
+        effect = R.string.destroyMemDesc,
+        addedEffect = R.string.destroyMemEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val blockLearning = Spell(
-        R.string.learnBlock,
-        Element.Destruction,
-        true,
-        56,
-        120,
-        R.string.learnBlockDesc,
-        R.string.learnBlockEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.learnBlock,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 56,
+        zCost = 120,
+        effect = R.string.learnBlockDesc,
+        addedEffect = R.string.learnBlockEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val forbid = Spell(
-        R.string.forbid,
-        Element.Destruction,
-        true,
-        58,
-        100,
-        R.string.forbidDesc,
-        R.string.forbidEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.forbid,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 58,
+        zCost = 100,
+        effect = R.string.forbidDesc,
+        addedEffect = R.string.forbidEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val destroyPowers = Spell(
-        R.string.powerDestroy,
-        Element.Destruction,
-        true,
-        60,
-        140,
-        R.string.powerDestroyDesc,
-        R.string.powerDestroyEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.powerDestroy,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 60,
+        zCost = 140,
+        effect = R.string.powerDestroyDesc,
+        addedEffect = R.string.powerDestroyEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val greatMysticBolt = Spell(
-        R.string.greatMysticBolt,
-        Element.Destruction,
-        true,
-        62,
-        150,
-        R.string.greatMysticBoltDesc,
-        R.string.greatMysticBoltEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.greatMysticBolt,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 62,
+        zCost = 150,
+        effect = R.string.greatMysticBoltDesc,
+        addedEffect = R.string.greatMysticBoltEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val destroyWill = Spell(
-        R.string.destroyWill,
-        Element.Destruction,
-        true,
-        66,
-        160,
-        R.string.destroyWillDesc,
-        R.string.destroyWillEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.destroyWill,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 66,
+        zCost = 160,
+        effect = R.string.destroyWillDesc,
+        addedEffect = R.string.destroyWillEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val weaknessZone = Spell(
-        R.string.weakZone,
-        Element.Destruction,
-        true,
-        68,
-        200,
-        R.string.weakZoneDesc,
-        R.string.weakZoneEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.weakZone,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 68,
+        zCost = 200,
+        effect = R.string.weakZoneDesc,
+        addedEffect = R.string.weakZoneEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val destructionEssence = Spell(
-        R.string.essenceDestruct,
-        Element.Destruction,
-        true,
-        70,
-        150,
-        R.string.essenceDestructDesc,
-        R.string.essenceDestructEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.essenceDestruct,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 70,
+        zCost = 150,
+        effect = R.string.essenceDestructDesc,
+        addedEffect = R.string.essenceDestructEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val deathSpell = Spell(
-        R.string.death,
-        Element.Destruction,
-        true,
-        72,
-        200,
-        R.string.deathDesc,
-        R.string.deathEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.death,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 72,
+        zCost = 200,
+        effect = R.string.deathDesc,
+        addedEffect = R.string.deathEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val devouringZone = Spell(
-        R.string.devourZone,
-        Element.Destruction,
-        true,
-        76,
-        250,
-        R.string.devourZoneDesc,
-        R.string.devourZoneEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.devourZone,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 76,
+        zCost = 250,
+        effect = R.string.devourZoneDesc,
+        addedEffect = R.string.devourZoneEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val destroyCapabilities = Spell(
-        R.string.destroyCapabilities,
-        Element.Destruction,
-        true,
-        78,
-        150,
-        R.string.destroyCapabilitiesDesc,
-        R.string.destroyCapabilitiesEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.destroyCapabilities,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 78,
+        zCost = 150,
+        effect = R.string.destroyCapabilitiesDesc,
+        addedEffect = R.string.destroyCapabilitiesEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val severExistence = Spell(
-        R.string.existSever,
-        Element.Destruction,
-        true,
-        80,
-        340,
-        R.string.existSeverDesc,
-        R.string.existSeverEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.existSever,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 80,
+        zCost = 340,
+        effect = R.string.existSeverDesc,
+        addedEffect = R.string.existSeverEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val destructionRain = Spell(
-        R.string.destructRain,
-        Element.Destruction,
-        true,
-        82,
-        250,
-        R.string.destructRainDesc,
-        R.string.destructRainEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.destructRain,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.destructRainDesc,
+        addedEffect = R.string.destructRainEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val zeonDestruction = Spell(
-        R.string.destructZeon,
-        Element.Destruction,
-        true,
-        86,
-        200,
-        R.string.destructZeonDesc,
-        R.string.destructZeonEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.destructZeon,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 86,
+        zCost = 200,
+        effect = R.string.destructZeonDesc,
+        addedEffect = R.string.destructZeonEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val heavenSweep = Spell(
-        R.string.heavenSweep,
-        Element.Destruction,
-        true,
-        88,
-        300,
-        R.string.heavenSweepDesc,
-        R.string.heavenSweepEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.heavenSweep,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 88,
+        zCost = 300,
+        effect = R.string.heavenSweepDesc,
+        addedEffect = R.string.heavenSweepEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val void = Spell(
-        R.string.voidSpell,
-        Element.Destruction,
-        true,
-        90,
-        250,
-        R.string.voidDesc,
-        R.string.voidEff,
-        30,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.voidSpell,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 90,
+        zCost = 250,
+        effect = R.string.voidDesc,
+        addedEffect = R.string.voidEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val greaterDestruction = Spell(
-        R.string.greatDestruction,
-        Element.Destruction,
-        true,
-        92,
-        350,
-        R.string.greatDestructionDesc,
-        R.string.greatDestructionEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.greatDestruction,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 92,
+        zCost = 350,
+        effect = R.string.greatDestructionDesc,
+        addedEffect = R.string.greatDestructionEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val destroySouls = Spell(
-        R.string.soulDestroy,
-        Element.Destruction,
-        true,
-        96,
-        500,
-        R.string.soulDestroyDesc,
-        R.string.soulDestroyEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.soulDestroy,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 96,
+        zCost = 500,
+        effect = R.string.soulDestroyDesc,
+        addedEffect = R.string.soulDestroyEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val chaos = Spell(
-        R.string.chaos,
-        Element.Destruction,
-        true,
-        98,
-        700,
-        R.string.chaosDesc,
-        R.string.chaosEff,
-        50,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.chaos,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 98,
+        zCost = 700,
+        effect = R.string.chaosDesc,
+        addedEffect = R.string.chaosEff,
+        zMax = 50,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val uncreation = Spell(
-        R.string.uncreation,
-        Element.Destruction,
-        true,
-        100,
-        1000,
-        R.string.uncreationDesc,
-        R.string.uncreationEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.uncreation,
+        inBook = Element.Destruction,
+        isActive = true,
+        level = 100,
+        zCost = 1000,
+        effect = R.string.uncreationDesc,
+        addedEffect = R.string.uncreationEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     val fullBook = listOf(

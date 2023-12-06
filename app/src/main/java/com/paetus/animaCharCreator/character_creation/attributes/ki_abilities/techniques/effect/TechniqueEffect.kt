@@ -4,6 +4,14 @@ import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.ByteArrayOutputStream
 
+/**
+ * Effect to apply to a technique.
+ *
+ * @param data constant values applied to this effect
+ * @param kiBuild ki build distribution for this effect
+ * @param buildAdditions additional ki needed for this index of cost
+ * @param elements associated elements with this effect
+ */
 class TechniqueEffect(
     val data: TechniqueTableData,
     val kiBuild: MutableList<Int>,
@@ -20,7 +28,7 @@ class TechniqueEffect(
         //initialize build total
         var total = 0
 
-        //determine build needed based on whether it's primary
+        //determine build needed based on if it's primary
         var accTotal =
             if(isPrimary) data.primaryCost
             else data.secondaryCost
@@ -51,13 +59,18 @@ class TechniqueEffect(
                 compareTo.elements == elements
     }
 
+    /**
+     * Write the data in this object to file.
+     *
+     * @param byteArray output stream to write the data to
+     */
     fun write(byteArray: ByteArrayOutputStream){
-        data.write(byteArray)
+        data.write(byteArray = byteArray)
 
-        kiBuild.forEach{writeDataTo(byteArray, it)}
-        buildAdditions.forEach{writeDataTo(byteArray, it)}
+        kiBuild.forEach{buildData -> writeDataTo(writer = byteArray, input = buildData)}
+        buildAdditions.forEach{buildAdditions -> writeDataTo(writer = byteArray, input = buildAdditions)}
 
         writeDataTo(byteArray, elements.size)
-        elements.forEach{writeDataTo(byteArray, it.name)}
+        elements.forEach{element -> writeDataTo(writer = byteArray, input = element.name)}
     }
 }

@@ -41,7 +41,7 @@ import com.paetus.animaCharCreator.enumerations.Archetype
  * @param intellGrowth default points spent on intelligence secondaries
  * @param vigGrowth default points spent on vigor secondaries
  * @param subterGrowth default points spent on subterfuge secondaries
- * @param creatGrowth default points spent on creative secondaries
+ * @param createGrowth default points spent on creative secondaries
  *
  * @param onTake function to run on class acquisition
  * @param onRemove function to run on class removal
@@ -83,7 +83,7 @@ class CharClass(
     val intellGrowth: Int,
     val vigGrowth: Int,
     val subterGrowth: Int,
-    val creatGrowth: Int,
+    val createGrowth: Int,
 
     val onTake: () -> Unit,
     val onRemove: () -> Unit

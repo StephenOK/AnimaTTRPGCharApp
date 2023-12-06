@@ -1,432 +1,432 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the water element.
  */
 class WaterBook{
     private val spring = Spell(
-        R.string.spring,
-        Element.Water,
-        true,
-        2,
-        30,
-        R.string.springDesc,
-        R.string.springEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.spring,
+        inBook = Element.Water,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.springDesc,
+        addedEffect = R.string.springEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val createChill = Spell(
-        R.string.createChill,
-        Element.Water,
-        true,
-        6,
-        30,
-        R.string.createChillDesc,
-        R.string.createChillEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createChill,
+        inBook = Element.Water,
+        isActive = true,
+        level = 6,
+        zCost = 30,
+        effect = R.string.createChillDesc,
+        addedEffect = R.string.createChillEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val aquaticCapability = Spell(
-        R.string.aquaCapable,
-        Element.Water,
-        true,
-        10,
-        50,
-        R.string.aquaCapableDesc,
-        R.string.aquaCapableEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.aquaCapable,
+        inBook = Element.Water,
+        isActive = true,
+        level = 10,
+        zCost = 50,
+        effect = R.string.aquaCapableDesc,
+        addedEffect = R.string.aquaCapableEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val coldImmunity = Spell(
-        R.string.coldImmune,
-        Element.Water,
-        true,
-        12,
-        50,
-        R.string.coldImmuneDesc,
-        R.string.coldImmuneEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.coldImmune,
+        inBook = Element.Water,
+        isActive = true,
+        level = 12,
+        zCost = 50,
+        effect = R.string.coldImmuneDesc,
+        addedEffect = R.string.coldImmuneEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val protectionBubble = Spell(
-        R.string.protectionBubble,
-        Element.Water,
-        false,
-        16,
-        40,
-        R.string.protectionBubbleDesc,
-        R.string.protectionBubbleEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.protectionBubble,
+        inBook = Element.Water,
+        isActive = false,
+        level = 16,
+        zCost = 40,
+        effect = R.string.protectionBubbleDesc,
+        addedEffect = R.string.protectionBubbleEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val waterImpact = Spell(
-        R.string.waterImpact,
-        Element.Water,
-        true,
-        20,
-        50,
-        R.string.waterImpactDesc,
-        R.string.waterImpactEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.waterImpact,
+        inBook = Element.Water,
+        isActive = true,
+        level = 20,
+        zCost = 50,
+        effect = R.string.waterImpactDesc,
+        addedEffect = R.string.waterImpactEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val liquidControl = Spell(
-        R.string.controlLiquid,
-        Element.Water,
-        true,
-        22,
-        60,
-        R.string.controlLiquidDesc,
-        R.string.controlLiquidEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.controlLiquid,
+        inBook = Element.Water,
+        isActive = true,
+        level = 22,
+        zCost = 60,
+        effect = R.string.controlLiquidDesc,
+        addedEffect = R.string.controlLiquidEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val freezeEmotions = Spell(
-        R.string.freezeEmote,
-        Element.Water,
-        true,
-        26,
-        60,
-        R.string.freezeEmoteDesc,
-        R.string.freezeEmoteEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.freezeEmote,
+        inBook = Element.Water,
+        isActive = true,
+        level = 26,
+        zCost = 60,
+        effect = R.string.freezeEmoteDesc,
+        addedEffect = R.string.freezeEmoteEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val controlCold = Spell(
-        R.string.controlCold,
-        Element.Water,
-        true,
-        30,
-        50,
-        R.string.controlColdDesc,
-        R.string.controlColdEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.controlCold,
+        inBook = Element.Water,
+        isActive = true,
+        level = 30,
+        zCost = 50,
+        effect = R.string.controlColdDesc,
+        addedEffect = R.string.controlColdEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val freeze = Spell(
-        R.string.freeze,
-        Element.Water,
-        true,
-        32,
-        60,
-        R.string.freezeDesc,
-        R.string.freezeEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.freeze,
+        inBook = Element.Water,
+        isActive = true,
+        level = 32,
+        zCost = 60,
+        effect = R.string.freezeDesc,
+        addedEffect = R.string.freezeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val iceScreen = Spell(
-        R.string.iceScreen,
-        Element.Water,
-        false,
-        36,
-        60,
-        R.string.iceScreenDesc,
-        R.string.iceScreenEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.iceScreen,
+        inBook = Element.Water,
+        isActive = false,
+        level = 36,
+        zCost = 60,
+        effect = R.string.iceScreenDesc,
+        addedEffect = R.string.iceScreenEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val createLiquids = Spell(
-        R.string.createLiquid,
-        Element.Water,
-        true,
-        40,
-        80,
-        R.string.createLiquidDesc,
-        R.string.createLiquidEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createLiquid,
+        inBook = Element.Water,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.createLiquidDesc,
+        addedEffect = R.string.createLiquidEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val iceAttack = Spell(
-        R.string.iceAttack,
-        Element.Water,
-        true,
-        42,
-        80,
-        R.string.iceAttackDesc,
-        R.string.iceAttackEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.iceAttack,
+        inBook = Element.Water,
+        isActive = true,
+        level = 42,
+        zCost = 80,
+        effect = R.string.iceAttackDesc,
+        addedEffect = R.string.iceAttackEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val crystallization = Spell(
-        R.string.crystallization,
-        Element.Water,
-        true,
-        46,
-        80,
-        R.string.crystallizationDesc,
-        R.string.crystallizationEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.crystallization,
+        inBook = Element.Water,
+        isActive = true,
+        level = 46,
+        zCost = 80,
+        effect = R.string.crystallizationDesc,
+        addedEffect = R.string.crystallizationEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val reflectedControl = Spell(
-        R.string.reflectedControl,
-        Element.Water,
-        true,
-        50,
-        80,
-        R.string.reflectedControlDesc,
-        R.string.reflectedControlEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.reflectedControl,
+        inBook = Element.Water,
+        isActive = true,
+        level = 50,
+        zCost = 80,
+        effect = R.string.reflectedControlDesc,
+        addedEffect = R.string.reflectedControlEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val liquidBody = Spell(
-        R.string.liquidBody,
-        Element.Water,
-        true,
-        52,
-        100,
-        R.string.liquidBodyDesc,
-        R.string.liquidBodyEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.liquidBody,
+        inBook = Element.Water,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.liquidBodyDesc,
+        addedEffect = R.string.liquidBodyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val reflectStates = Spell(
-        R.string.stateReflect,
-        Element.Water,
-        false,
-        56,
-        120,
-        R.string.stateReflectDesc,
-        R.string.stateReflectEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.stateReflect,
+        inBook = Element.Water,
+        isActive = false,
+        level = 56,
+        zCost = 120,
+        effect = R.string.stateReflectDesc,
+        addedEffect = R.string.stateReflectEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val iceStorm = Spell(
-        R.string.iceStorm,
-        Element.Water,
-        true,
-        60,
-        120,
-        R.string.iceStormDesc,
-        R.string.iceStormEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.iceStorm,
+        inBook = Element.Water,
+        isActive = true,
+        level = 60,
+        zCost = 120,
+        effect = R.string.iceStormDesc,
+        addedEffect = R.string.iceStormEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val tideControl = Spell(
-        R.string.tideControl,
-        Element.Water,
-        true,
-        62,
-        150,
-        R.string.tideControlDesc,
-        R.string.tideControlEff,
-        40,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.tideControl,
+        inBook = Element.Water,
+        isActive = true,
+        level = 62,
+        zCost = 150,
+        effect = R.string.tideControlDesc,
+        addedEffect = R.string.tideControlEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val waterConfinement = Spell(
-        R.string.waterConfine,
-        Element.Water,
-        true,
-        66,
-        140,
-        R.string.waterConfineDesc,
-        R.string.waterConfineEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.waterConfine,
+        inBook = Element.Water,
+        isActive = true,
+        level = 66,
+        zCost = 140,
+        effect = R.string.waterConfineDesc,
+        addedEffect = R.string.waterConfineEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val glacier = Spell(
-        R.string.glacier,
-        Element.Water,
-        true,
-        70,
-        200,
-        R.string.glacierDesc,
-        R.string.glacierEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.glacier,
+        inBook = Element.Water,
+        isActive = true,
+        level = 70,
+        zCost = 200,
+        effect = R.string.glacierDesc,
+        addedEffect = R.string.glacierEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val tsunami = Spell(
-        R.string.tsunami,
-        Element.Water,
-        true,
-        72,
-        250,
-        R.string.tsunamiDesc,
-        R.string.tsunamiEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.tsunami,
+        inBook = Element.Water,
+        isActive = true,
+        level = 72,
+        zCost = 250,
+        effect = R.string.tsunamiDesc,
+        addedEffect = R.string.tsunamiEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val soulReflection = Spell(
-        R.string.reflectSoul,
-        Element.Water,
-        true,
-        76,
-        200,
-        R.string.reflectSoulDesc,
-        R.string.reflectSoulEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.reflectSoul,
+        inBook = Element.Water,
+        isActive = true,
+        level = 76,
+        zCost = 200,
+        effect = R.string.reflectSoulDesc,
+        addedEffect = R.string.reflectSoulEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val slowTime = Spell(
-        R.string.slowTime,
-        Element.Water,
-        true,
-        80,
-        200,
-        R.string.slowTimeDesc,
-        R.string.slowTimeEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.slowTime,
+        inBook = Element.Water,
+        isActive = true,
+        level = 80,
+        zCost = 200,
+        effect = R.string.slowTimeDesc,
+        addedEffect = R.string.slowTimeEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val createUndine = Spell(
-        R.string.createUndine,
-        Element.Water,
-        true,
-        82,
-        250,
-        R.string.createUndineDesc,
-        R.string.createUndineEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createUndine,
+        inBook = Element.Water,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.createUndineDesc,
+        addedEffect = R.string.createUndineEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val freezeMagic = Spell(
-        R.string.freezeMag,
-        Element.Water,
-        false,
-        86,
-        250,
-        R.string.freezeMagDesc,
-        R.string.freezeMagEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.freezeMag,
+        inBook = Element.Water,
+        isActive = false,
+        level = 86,
+        zCost = 250,
+        effect = R.string.freezeMagDesc,
+        addedEffect = R.string.freezeMagEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val inTheMirror = Spell(
-        R.string.inMirror,
-        Element.Water,
-        true,
-        90,
-        300,
-        R.string.inMirrorDesc,
-        R.string.inMirrorEff,
-        40,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.inMirror,
+        inBook = Element.Water,
+        isActive = true,
+        level = 90,
+        zCost = 300,
+        effect = R.string.inMirrorDesc,
+        addedEffect = R.string.inMirrorEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val lordOfIce = Spell(
-        R.string.iceLord,
-        Element.Water,
-        true,
-        92,
-        300,
-        R.string.iceLordDesc,
-        R.string.iceLordEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.iceLord,
+        inBook = Element.Water,
+        isActive = true,
+        level = 92,
+        zCost = 300,
+        effect = R.string.iceLordDesc,
+        addedEffect = R.string.iceLordEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val lordOfWater = Spell(
-        R.string.waterLord,
-        Element.Water,
-        true,
-        96,
-        300,
-        R.string.waterLordDesc,
-        R.string.waterLordEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.waterLord,
+        inBook = Element.Water,
+        isActive = true,
+        level = 96,
+        zCost = 300,
+        effect = R.string.waterLordDesc,
+        addedEffect = R.string.waterLordEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val perfectWorld = Spell(
-        R.string.perfectWorld,
-        Element.Water,
-        true,
-        100,
-        450,
-        R.string.perfectWorldDesc,
-        R.string.perfectWorldEff,
-        40,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.perfectWorld,
+        inBook = Element.Water,
+        isActive = true,
+        level = 100,
+        zCost = 450,
+        effect = R.string.perfectWorldDesc,
+        addedEffect = R.string.perfectWorldEff,
+        zMax = 40,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     val fullBook = listOf(

@@ -12,65 +12,78 @@ import java.io.Serializable
  * List of cord weapons the character may take.
  */
 class Cords: Serializable {
-    val chain = Weapon(
-        "chain",
-        R.string.chain,
-        25,
-        0,
-        6, null,
-        AttackType.Impact, null, WeaponType.Cord,
-        13, 2, 15,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping), 8,
-        R.string.chainDesc
+    private val chain = Weapon(
+        saveName = "chain",
+        name = R.string.chain,
+        damage = 25,
+        speed = 0,
+        oneHandStr = 6, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Cord,
+        fortitude = 13, breakage = 2, presence = 15,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.Trapping), ownStrength = 8,
+        description = R.string.chainDesc
     )
 
     val gladNet = ProjectileWeapon(
-        "gladNet",
-        R.string.gladNet,
-        5,
-        0,
-        4, null,
-        AttackType.Impact, AttackType.Cut, WeaponType.Cord,
-        13, -4, 15,
-        100, 5,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Trapping, WeaponAbility.Special), 10,
-        R.string.gladNetDesc
+        saveName = "gladNet",
+        name = R.string.gladNet,
+        damage = 5,
+        speed = 0,
+        oneHandStr = 4,
+        twoHandStr = null,
+        primaryType = AttackType.Impact,
+        secondaryType = AttackType.Cut,
+        type = WeaponType.Cord,
+        fortitude = 13,
+        breakage = -4,
+        presence = 15,
+        reloadOrRate = 100,
+        range = 5,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.Trapping, WeaponAbility.Special),
+        ownStrength = 10,
+        description = R.string.gladNetDesc
     )
 
-    val lasso = Weapon(
-        "lasso",
-        R.string.lasso,
-        5,
-        10,
-        4, null,
-        AttackType.Impact, null, WeaponType.Cord,
-        9, -4, 20,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping, WeaponAbility.Special), 9,
-        R.string.lassoDesc
+    private val lasso = Weapon(
+        saveName = "lasso",
+        name = R.string.lasso,
+        damage = 5,
+        speed = 10,
+        oneHandStr = 4,
+        twoHandStr = null,
+        primaryType = AttackType.Impact,
+        secondaryType = null,
+        type = WeaponType.Cord,
+        fortitude = 9,
+        breakage = -4,
+        presence = 20,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.Trapping, WeaponAbility.Special),
+        ownStrength = 9,
+        description = R.string.lassoDesc
     )
 
     val whip = Weapon(
-        "whip",
-        R.string.whip,
-        35,
-        -20,
-        4, null,
-        AttackType.Cut, AttackType.Impact, WeaponType.Cord,
-        9, -3, 20,
-        listOf(WeaponAbility.Complex, WeaponAbility.Trapping), 8,
-        R.string.whipDesc
+        saveName = "whip",
+        name = R.string.whip,
+        damage = 35,
+        speed = -20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Impact, type = WeaponType.Cord,
+        fortitude = 9, breakage = -3, presence = 20,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.Trapping), ownStrength = 8,
+        description = R.string.whipDesc
     )
 
-    val nunchakus = Weapon(
-        "nunchakus",
-        R.string.nunchakus,
-        30,
-        15,
-        5, null,
-        AttackType.Impact, null, WeaponType.Cord,
-        11, 0, 15,
-        null, null,
-        R.string.nunchakusDesc
+    private val nunchakus = Weapon(
+        saveName = "nunchakus",
+        name = R.string.nunchakus,
+        damage = 30,
+        speed = 15,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Cord,
+        fortitude = 11, breakage = 0, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.nunchakusDesc
     )
 
     val cords = listOf(chain, gladNet, lasso, nunchakus, whip)

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.paetus.animaCharCreator.theme.detailLightColors
 
 /**
- * Frame to build other dialog objects onto.
+ * Composes a dialog object with the inputted title, content, and buttons.
  *
  * @param dialogTitle header to display for the individual item
  * @param mainContent what to display in the main body of the dialog
@@ -29,6 +29,7 @@ fun DialogFrame(
 ){
     MaterialTheme(colorScheme = detailLightColors) {
         AlertDialog(
+            //prevent user from dismissing dialog
             onDismissRequest = {},
             content = {
                 Surface {
@@ -36,7 +37,7 @@ fun DialogFrame(
                         Modifier
                             .size(600.dp, 600.dp)
                     ) {
-                        //title level
+                        //dialog title
                         Row(
                             Modifier
                                 .align(Alignment.TopCenter)

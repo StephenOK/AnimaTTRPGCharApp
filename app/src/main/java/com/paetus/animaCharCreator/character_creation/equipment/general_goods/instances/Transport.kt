@@ -6,215 +6,215 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class Transport: GeneralCategory(null) {
-    val packMule = GeneralEquipment(
-        "Pack Mule",
-        R.string.packMule,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+class Transport: GeneralCategory(qualityInput = null) {
+    private val packMule = GeneralEquipment(
+        saveName = "Pack Mule",
+        name = R.string.packMule,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val horse = GeneralEquipment(
-        "Horse",
-        R.string.horse,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val horse = GeneralEquipment(
+        saveName = "Horse",
+        name = R.string.horse,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val purebredHorse = GeneralEquipment(
-        "Purebred Horse",
-        R.string.purebredHorse,
-        50.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val purebredHorse = GeneralEquipment(
+        saveName = "Purebred Horse",
+        name = R.string.purebredHorse,
+        baseCost = 50.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val warhorse = GeneralEquipment(
-        "Warhorse",
-        R.string.warhorse,
-        250.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val warhorse = GeneralEquipment(
+        saveName = "Warhorse",
+        name = R.string.warhorse,
+        baseCost = 250.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val workingOx = GeneralEquipment(
-        "Working Ox",
-        R.string.workingOx,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val workingOx = GeneralEquipment(
+        saveName = "Working Ox",
+        name = R.string.workingOx,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val packBull = GeneralEquipment(
-        "Pack Bull",
-        R.string.packBull,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val packBull = GeneralEquipment(
+        saveName = "Pack Bull",
+        name = R.string.packBull,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val ridingBull = GeneralEquipment(
-        "Riding Bull",
-        R.string.ridingBull,
-        3.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val ridingBull = GeneralEquipment(
+        saveName = "Riding Bull",
+        name = R.string.ridingBull,
+        baseCost = 3.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val saintBernard = GeneralEquipment(
-        "Saint Bernard",
-        R.string.saintBernard,
-        15.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val saintBernard = GeneralEquipment(
+        saveName = "Saint Bernard",
+        name = R.string.saintBernard,
+        baseCost = 15.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val cart = GeneralEquipment(
-        "Cart",
-        R.string.cart,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val cart = GeneralEquipment(
+        saveName = "Cart",
+        name = R.string.cart,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val clothWagon = GeneralEquipment(
-        "Cloth-enclosed Wagon",
-        R.string.clothWagon,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val clothWagon = GeneralEquipment(
+        saveName = "Cloth-enclosed Wagon",
+        name = R.string.clothWagon,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val woodWagon = GeneralEquipment(
-        "Wood-enclosed Wagon",
-        R.string.woodWagon,
-        30.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val woodWagon = GeneralEquipment(
+        saveName = "Wood-enclosed Wagon",
+        name = R.string.woodWagon,
+        baseCost = 30.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val standardCoach = GeneralEquipment(
-        "Standard Coach",
-        R.string.standardCoach,
-        60.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val standardCoach = GeneralEquipment(
+        saveName = "Standard Coach",
+        name = R.string.standardCoach,
+        baseCost = 60.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val luxuryCoach = GeneralEquipment(
-        "Luxurious Coach",
-        R.string.luxuryCoach,
-        150.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val luxuryCoach = GeneralEquipment(
+        saveName = "Luxurious Coach",
+        name = R.string.luxuryCoach,
+        baseCost = 150.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val sleigh = GeneralEquipment(
-        "Sleigh",
-        R.string.sleigh,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val sleigh = GeneralEquipment(
+        saveName = "Sleigh",
+        name = R.string.sleigh,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val boat = GeneralEquipment(
-        "Boat",
-        R.string.boat,
-        20.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val boat = GeneralEquipment(
+        saveName = "Boat",
+        name = R.string.boat,
+        baseCost = 20.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val singleSail = GeneralEquipment(
-        "Single-masted Sailing Vessel",
-        R.string.singleSail,
-        150.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val singleSail = GeneralEquipment(
+        saveName = "Single-masted Sailing Vessel",
+        name = R.string.singleSail,
+        baseCost = 150.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val twoSail = GeneralEquipment(
-        "Two-masted Sailing Vessel",
-        R.string.twoSail,
-        450.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val twoSail = GeneralEquipment(
+        saveName = "Two-masted Sailing Vessel",
+        name = R.string.twoSail,
+        baseCost = 450.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val threeSail = GeneralEquipment(
-        "Three-masted Sailing Vessel",
-        R.string.threeSail,
-        1200.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val threeSail = GeneralEquipment(
+        saveName = "Three-masted Sailing Vessel",
+        name = R.string.threeSail,
+        baseCost = 1200.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val smallCruiser = GeneralEquipment(
-        "Small Cruiser",
-        R.string.smallCruiser,
-        3500.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val smallCruiser = GeneralEquipment(
+        saveName = "Small Cruiser",
+        name = R.string.smallCruiser,
+        baseCost = 3500.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val cruiser = GeneralEquipment(
-        "Cruiser",
-        R.string.cruiser,
-        8000.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val cruiser = GeneralEquipment(
+        saveName = "Cruiser",
+        name = R.string.cruiser,
+        baseCost = 8000.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val warship = GeneralEquipment(
-        "Warship",
-        R.string.warship,
-        15000.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val warship = GeneralEquipment(
+        saveName = "Warship",
+        name = R.string.warship,
+        baseCost = 15000.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
     init{

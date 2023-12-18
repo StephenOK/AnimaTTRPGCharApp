@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "goldCoinName">Gold</string>
+    <string name = "silverCoinName">Silver</string>
+    <string name = "copperCoinName">Copper</string>
+</resources>

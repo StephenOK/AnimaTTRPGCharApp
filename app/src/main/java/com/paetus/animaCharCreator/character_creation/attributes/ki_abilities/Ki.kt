@@ -35,32 +35,32 @@ class Ki(private val charInstance: BaseCharacter){
     val techniqueDatabase = TechniqueTableDataRecord()
 
     //initialize martial knowledge values
-    val martialKnowledgeMax = mutableIntStateOf(0)
-    val martialKnowledgeSpec = mutableIntStateOf(0)
-    val martialKnowledgeRemaining = mutableIntStateOf(0)
+    val martialKnowledgeMax = mutableIntStateOf(value = 0)
+    private val martialKnowledgeSpec = mutableIntStateOf(value = 0)
+    val martialKnowledgeRemaining = mutableIntStateOf(value = 0)
 
     //initialize stat ki points and accumulation
-    val strKi = KiStat(this@Ki)
-    val dexKi = KiStat(this@Ki)
-    val agiKi = KiStat(this@Ki)
-    val conKi = KiStat(this@Ki)
-    val powKi = KiStat(this@Ki)
-    val wpKi = KiStat(this@Ki)
+    val strKi = KiStat(parent = this@Ki)
+    val dexKi = KiStat(parent = this@Ki)
+    val agiKi = KiStat(parent = this@Ki)
+    val conKi = KiStat(parent = this@Ki)
+    val powKi = KiStat(parent = this@Ki)
+    val wpKi = KiStat(parent = this@Ki)
 
     //gather all ki stat items
-    val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+    private val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
 
     //initialize value for total ki points bought
-    val totalPointBuy = mutableStateOf(0)
+    private val totalPointBuy = mutableIntStateOf(value = 0)
 
     //initialize total bought accumulation value
-    val totalAccBuy = mutableStateOf(0)
+    private val totalAccBuy = mutableIntStateOf(value = 0)
 
     //initialize total ki points
-    val totalKi = mutableStateOf(0)
+    val totalKi = mutableIntStateOf(value = 0)
 
     //initialize total accumulation value
-    val totalAcc = mutableStateOf(0)
+    val totalAcc = mutableIntStateOf(value = 0)
 
     //get data of ki techniques
     val kiRecord = KiRecord()
@@ -68,43 +68,42 @@ class Ki(private val charInstance: BaseCharacter){
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
 
-    //get all prebuilt techniques
-    val allPrebuilts = TechniquePrebuilts().allTechniques
-
-    //initialize character's prebuilt techniques
-    val prebuiltTechniques = mutableListOf<PrebuiltTech>()
+    //create of map of prebuilt techniques and their taken states
+    val allPrebuilts =
+        TechniquePrebuilts(techniqueDataRecord = techniqueDatabase)
+            .allTechniques.associateBy(
+                keySelector = {it},
+                valueTransform = {mutableStateOf(false)}
+            )
 
     //initialize character's custom techniques
     val customTechniques = mutableMapOf<CustomTechnique, MutableState<Boolean>>()
 
-    //compile all of the character's techniques
-    val takenTechniques = (prebuiltTechniques + getTakenCustomTechs()).toMutableList()
-
     /**
      * Sets martial knowledge to the appropriate amount for each taken item.
      */
-    fun updateMkSpent(){
+    private fun updateMkSpent(){
         //reset martial knowledge remaining to its maximum value
         martialKnowledgeRemaining.intValue = martialKnowledgeMax.intValue
 
         //removes martial knowledge for each ki ability taken
-        takenAbilities.forEach{
-            martialKnowledgeRemaining.intValue -= it.mkCost
+        takenAbilities.forEach{kiAbility ->
+            martialKnowledgeRemaining.intValue -= kiAbility.mkCost
         }
 
         //removes martial knowledge for each dominion technique taken
-        takenTechniques.forEach{
-            martialKnowledgeRemaining.intValue -= it.mkCost()
+        getTakenTechs().forEach{techniques ->
+            martialKnowledgeRemaining.intValue -= techniques.mkCost()
         }
     }
 
     /**
      * Changes the martial knowledge bonus by the inputted amount.
      *
-     * @param input value to change the martial knowledge bonus by
+     * @param mkBonus value to change the martial knowledge bonus by
      */
-    fun updateMKSpec(input: Int){
-        martialKnowledgeSpec.intValue += input
+    fun updateMKSpec(mkBonus: Int){
+        martialKnowledgeSpec.intValue += mkBonus
         updateMK()
     }
 
@@ -114,7 +113,7 @@ class Ki(private val charInstance: BaseCharacter){
     fun updateMK(){
         //determine MK gained from class levels
         val classMK =
-            if(charInstance.lvl.value != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.value
+            if(charInstance.lvl.intValue != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.intValue
             //give half from one level if level 0 character
             else charInstance.ownClass.value.mkPerLevel/2
 
@@ -126,32 +125,32 @@ class Ki(private val charInstance: BaseCharacter){
      * Updates the total ki points bought for each KiStat item.
      */
     fun updateBoughtPoints(){
-        totalPointBuy.value = 0
-        allKiStats.forEach{totalPointBuy.value += it.boughtKiPoints.value}
+        totalPointBuy.intValue = 0
+        allKiStats.forEach{kiStat -> totalPointBuy.intValue += kiStat.boughtKiPoints.intValue}
     }
 
     /**
      * Updates the total ki accumulation bought for each KiStat item.
      */
     fun updateBoughtAcc(){
-        totalAccBuy.value = 0
-        allKiStats.forEach{totalAccBuy.value += it.boughtAccumulation.value}
+        totalAccBuy.intValue = 0
+        allKiStats.forEach{kiStat -> totalAccBuy.intValue += kiStat.boughtAccumulation.intValue}
     }
 
     /**
      * Recalculates the total ki points acquired by the character.
      */
     fun updateTotalPoints(){
-        totalKi.value = 0
-        allKiStats.forEach{totalKi.value += it.totalKiPoints.value}
+        totalKi.intValue = 0
+        allKiStats.forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
     }
 
     /**
      * Recalculates the total ki accumulation acquired by the character.
      */
     fun updateTotalAcc(){
-        totalAcc.value = 0
-        allKiStats.forEach{totalAcc.value += it.totalAccumulation.value}
+        totalAcc.intValue = 0
+        allKiStats.forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
     }
 
     /**
@@ -161,8 +160,8 @@ class Ki(private val charInstance: BaseCharacter){
         var total = 0
 
         //add bought ki points and accumulation values
-        total += totalPointBuy.value * charInstance.ownClass.value.kiGrowth
-        total += totalAccBuy.value * charInstance.ownClass.value.kiAccumMult
+        total += totalPointBuy.intValue * charInstance.ownClass.value.kiGrowth
+        total += totalAccBuy.intValue * charInstance.ownClass.value.kiAccumMult
 
         return total
     }
@@ -170,13 +169,15 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Attempt to add a Ki Ability to the character.
      *
-     * @param newIn Ki Ability to attempt to add
+     * @param newAbility Ki Ability to attempt to add
      * @return true if ability has been successfully added
      */
-    fun attemptAbilityAdd(newIn: KiAbility): Boolean{
+    fun attemptAbilityAdd(
+        newAbility: KiAbility
+    ): Boolean{
         //check if character has the necessary martial knowledge for the ability
-        if(martialKnowledgeRemaining.intValue - newIn.mkCost >= 0) {
-            takenAbilities += newIn
+        if(martialKnowledgeRemaining.intValue - newAbility.mkCost >= 0) {
+            takenAbilities += newAbility
             updateMkSpent()
             return true
         }
@@ -188,32 +189,29 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Removes the Ki Ability indicated by the user
      *
-     * @param item Ki Ability to remove
+     * @param ability Ki Ability to remove
      */
-    fun removeAbility(item: KiAbility){
+    fun removeAbility(ability: KiAbility){
         //remove the item from the list
-        takenAbilities -= item
+        takenAbilities -= ability
 
         //make sure any other ability is not disqualified by this one's removal
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            takenAbilities.removeIf{!isQualified(it)}
+            takenAbilities.removeIf{!isQualified(ability = it)}
         }
         else{
             val removeList = mutableListOf<KiAbility>()
 
-            takenAbilities.forEach{
-                if(!isQualified(it)) removeList += it
+            takenAbilities.forEach{kiAbility ->
+                if(!isQualified(ability = kiAbility)) removeList += kiAbility
             }
 
-            takenAbilities.removeAll(removeList)
+            takenAbilities.removeAll(elements = removeList)
         }
 
         //remove techniques if Ki Control removed
-        if(!takenAbilities.contains(kiRecord.kiControl))
-            while(takenTechniques.isNotEmpty()) {
-                removeTechnique(takenTechniques[0])
-                updateFullList()
-            }
+        allPrebuilts.forEach{prebuilts -> prebuilts.value.value = false}
+        customTechniques.forEach{customs -> customs.value.value = false}
 
         //update martial knowledge expenditure
         updateMkSpent()
@@ -222,25 +220,26 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Determines if the inputted Ki Ability is valid for the character to have.
      * 
-     * @param input Ki Ability to check
+     * @param ability Ki Ability to check
      * @return true if ability is a valid addition
      */
-    fun isQualified(input: KiAbility): Boolean{
+    private fun isQualified(ability: KiAbility): Boolean{
         //return true for no prerequisites or all prerequisites met
-        return input.prerequisites == null ||
-                (takenAbilities.contains(input.prerequisites) && isQualified(input.prerequisites))
+        return ability.prerequisite == null ||
+                (takenAbilities.contains(element = ability.prerequisite) &&
+                        isQualified(ability = ability.prerequisite))
     }
 
     /**
      * Finds a ki ability based on its name.
      *
-     * @param toFind name of the ki ability to find
+     * @param findAbility name of the ki ability to find
      * @return ki ability of the search if available
      */
-    fun getAbility(toFind: String): KiAbility?{
-        kiRecord.allKiAbilities.forEach{
-            if(it.saveTag == toFind)
-                return it
+    private fun getAbility(findAbility: String): KiAbility?{
+        kiRecord.allKiAbilities.forEach{ability ->
+            if(ability.saveTag == findAbility)
+                return ability
         }
 
         return null
@@ -249,87 +248,106 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Attempts to add a technique to the character.
      *
-     * @param input the technique to attempt to add
+     * @param technique the technique to attempt to add
      * @return state of successful addition
      */
-    fun attemptTechAddition(input: TechniqueBase): Boolean{
-        if(martialKnowledgeRemaining.intValue - input.mkCost() >= 0){
-            if(input.level.intValue == 1 || getLevelCount(input.level.intValue - 1) >= 2) {
-                addTechnique(input)
-                return true
-            }
-        }
-
-        return false
+    fun attemptTechAddition(technique: TechniqueBase){
+        //check if technique is purchasable
+        if(martialKnowledgeRemaining.intValue - technique.mkCost() >= 0)
+            //check if character is qualified to have this technique
+            if(technique.level.intValue == 1 || getLevelCount(level = technique.level.intValue - 1) >= 2)
+                addTechnique(technique = technique)
     }
 
-    fun addTechnique(input: TechniqueBase){
-        if(input is PrebuiltTech) prebuiltTechniques += input
+    /**
+     * Adds the inputted technique to the character.
+     *
+     * @param technique technique to add to the character
+     */
+    private fun addTechnique(technique: TechniqueBase){
+        //if prebuilt technique, toggle the corresponding checkbox
+        if(technique is PrebuiltTech) allPrebuilts[technique]!!.value = true
+
+        //if custom technique
         else {
+            //search for existing copy of this technique
             var found = false
-            customTechniques.forEach{
-                if(it.key.equivalentTo(input)){
-                    customTechniques[it.key]!!.value = true
+            customTechniques.keys.forEach{customTech ->
+                //toggle the associated checkbox if found
+                if(customTech.equivalentTo(compareTo = technique)){
+                    customTechniques[customTech]!!.value = true
                     found = true
                     return@forEach
                 }
             }
 
+            //add custom technique if never found
             if(!found)
-                customTechniques += Pair(input as CustomTechnique, mutableStateOf(true))
+                customTechniques += Pair(technique as CustomTechnique, mutableStateOf(value = true))
         }
 
-        updateFullList()
+        //update the spent martial knowledge
+        updateMkSpent()
     }
 
-    fun getLevelCount(level: Int): Int{
+    /**
+     * Retrieves the number of techniques of the indicated level.
+     *
+     * @param level technique level to retrieve the number of
+     * @return the number of techniques the character has with the indicated level
+     */
+    fun getLevelCount(
+        level: Int
+    ): Int{
+        //initialize the counter
         var output = 0
-        takenTechniques.forEach{
-            if(it.level.intValue == level) output++
+
+        //count each technique with the desired level
+        getTakenTechs().forEach{heldTech ->
+            if(heldTech.level.intValue == level) output++
         }
 
+        //return the final count
         return output
     }
 
     /**
      * Removes a technique from the character.
      *
-     * @param input the technique to remove from the character
+     * @param technique the technique to remove from the character
      */
-    fun removeTechnique(input: TechniqueBase){
+    fun removeTechnique(technique: TechniqueBase){
         //remove technique from the appropriate list
-        if(input is PrebuiltTech) prebuiltTechniques -= input
-        else customTechniques[input as CustomTechnique]!!.value = false
+        if(technique is PrebuiltTech) allPrebuilts[technique]!!.value = false
+        else customTechniques[technique as CustomTechnique]!!.value = false
 
-        //remove any potential invalid techniques after this one's removal
+        //remove any potential invalidated techniques after this one's removal
         removeExtra()
-        updateFullList()
+        updateMkSpent()
     }
 
     /**
      * Checks if second and third level techniques are still valid for the character to take.
      */
-    fun removeExtra(){
-        val removeList = mutableListOf<TechniqueBase>()
-
+    private fun removeExtra(){
         //remove second level techniques if not enough first level techniques
-        if(getLevelCount(1) < 2)
-            takenTechniques.forEach{if(it.level.intValue == 2) removeList += it}
-
-        removeList.forEach{
-            if(it is PrebuiltTech) prebuiltTechniques -= it
-            else customTechniques -= it as CustomTechnique
+        if(getLevelCount(1) < 2) {
+            allPrebuilts.forEach{(heldPrebuilt, isHeld) ->
+                if(heldPrebuilt.level.intValue == 2 && isHeld.value) isHeld.value = false
+            }
+            customTechniques.forEach{(heldCustom, isHeld) ->
+                if(heldCustom.level.intValue == 2 && isHeld.value) isHeld.value = false
+            }
         }
 
-        removeList.clear()
-
         //remove third level techniques if not enough second level techniques
-        if(getLevelCount(2) < 2)
-            takenTechniques.forEach{if(it.level.intValue == 3) removeList += it}
-
-        removeList.forEach{
-            if(it is PrebuiltTech) prebuiltTechniques -= it
-            else customTechniques -= it as CustomTechnique
+        if(getLevelCount(2) < 2){
+            allPrebuilts.forEach{(heldCustom, isHeld) ->
+                if(heldCustom.level.intValue == 3 && isHeld.value) isHeld.value = false
+            }
+            customTechniques.forEach{(heldCustom, isHeld) ->
+                if(heldCustom.level.intValue == 3 && isHeld.value) isHeld.value = false
+            }
         }
     }
 
@@ -339,46 +357,69 @@ class Ki(private val charInstance: BaseCharacter){
      * @param compareTo technique to check against prebuilt techniques
      * @return prebuilt technique if one matches
      */
-    fun techEquivalent(compareTo: TechniqueBase): TechniqueBase?{
-        allPrebuilts.forEach{
-            if(it.equivalentTo(compareTo))
-                return it
+    private fun techEquivalent(
+        compareTo: TechniqueBase
+    ): TechniqueBase?{
+        //look through prebuilts for a match
+        allPrebuilts.keys.forEach{prebuilts ->
+            //return technique if match found
+            if(prebuilts.equivalentTo(compareTo = compareTo))
+                return prebuilts
         }
 
+        //notify of no match found
         return null
-    }
-
-    fun getTakenCustomTechs(): MutableList<CustomTechnique>{
-        val output = mutableListOf<CustomTechnique>()
-
-        customTechniques.forEach{
-            if(it.value.value) output.add(it.key)
-        }
-
-        return output
     }
 
     /**
-     * Recompiles the full technique list after a change in one of them.
+     * Finds a prebuilt technique based on the inputted string.
+     *
+     * @param input name key for the prebuilt technique
+     * @return prebuilt technique if matching key found
      */
-    fun updateFullList(){
-        takenTechniques.clear()
-        takenTechniques += prebuiltTechniques + getTakenCustomTechs()
-        updateMkSpent()
-    }
-
-    fun findPrebuilt(input: String): PrebuiltTech?{
-        allPrebuilts.forEach{
-            if(it.saveName == input) return it
+    private fun findPrebuilt(
+        input: String
+    ): PrebuiltTech?{
+        //check each technique's save tag for a match
+        allPrebuilts.keys.forEach{prebuilt ->
+            if(prebuilt.saveName == input) return prebuilt
         }
 
+        //notify of no match found
         return null
+    }
+
+    /**
+     * Retrieves all techniques this character has access to.
+     *
+     * @return all techniques possessed by this character
+     */
+    private fun getTakenTechs(): List<TechniqueBase>{
+        //initialize output
+        val output = mutableListOf<TechniqueBase>()
+
+        //get all taken prebuilt techniques
+        allPrebuilts.forEach{(prebuilt, isHeld) ->
+            if(isHeld.value)
+                output += prebuilt
+        }
+
+        //get all taken custom techniques
+        customTechniques.forEach{(custom, isHeld) ->
+            if(isHeld.value)
+                output += custom
+        }
+
+        //return all techniques as a list
+        return output.toList()
     }
 
     /**
      * Loads data in regards to this section from saved file data.
      *
      * @param fileReader file to read the data from
+     * @param writeVersion version of the file being read
+     * @param filename name of the file being read
      */
     fun loadKiAttributes(
         fileReader: BufferedReader,
@@ -386,46 +427,71 @@ class Ki(private val charInstance: BaseCharacter){
         filename: String
     ){
         //set bought ki points and accumulation for each KiStat item
-        allKiStats.forEach{
-            it.setBoughtKiPoints(fileReader.readLine().toInt())
-            it.setBoughtAccumulation(fileReader.readLine().toInt())
+        allKiStats.forEach{kiStat ->
+            kiStat.setBoughtKiPoints(kiPurchase = fileReader.readLine().toInt())
+            kiStat.setBoughtAccumulation(accPurchase = fileReader.readLine().toInt())
         }
 
         //acquire saved data for ki abilities
         for(index in 0 until fileReader.readLine().toInt()){
-            takenAbilities += listOf(getAbility(fileReader.readLine())!!)
+            takenAbilities += listOf(getAbility(findAbility = fileReader.readLine())!!)
         }
 
         when(writeVersion){
-            in 0 .. 9 -> loadCustomTech(writeVersion, filename, fileReader)
+            //version before prebuilts applied
+            in 0 .. 9 ->
+                loadCustomTech(
+                    writeVersion = writeVersion,
+                    filename = filename,
+                    fileReader = fileReader
+                )
+
+            //version before custom techniques were in their own file
             in 10 .. 24 -> {
+                //retrieve each applied prebuilt
                 for(index in 0 until fileReader.readLine().toInt())
-                    prebuiltTechniques += findPrebuilt(fileReader.readLine())!!
+                    allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
 
-                loadCustomTech(writeVersion, filename, fileReader)
+                //load all custom techniques
+                loadCustomTech(
+                    writeVersion = writeVersion,
+                    filename = filename,
+                    fileReader = fileReader
+                )
             }
-            else -> {
-                for(index in 0 until fileReader.readLine().toInt())
-                    prebuiltTechniques += findPrebuilt(fileReader.readLine())!!
 
+            else -> {
+                //retrieve each applied prebuilt
+                for(index in 0 until fileReader.readLine().toInt())
+                    allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
+
+                //for each indicated custom technique held
                 for(index in 0 until fileReader.readLine().toInt()){
+                    //get the custom technique's name and held state
                     val techName = fileReader.readLine()
                     val hasFile = fileReader.readLine().toBoolean()
 
-                    customTechniques.forEach{
-                        if(it.key.name.value == techName)
-                            it.value.value = hasFile
+                    //apply held state to the indicated custom technique, if available
+                    customTechniques.forEach{(custom, isHeld) ->
+                        if(custom.name.value == techName)
+                            isHeld.value = hasFile
                     }
                 }
-
-                updateFullList()
             }
         }
 
+        //update spent martial knowledge
         updateMkSpent()
     }
 
-    fun loadCustomTech(
+    /**
+     * Load data for a custom technique this character has.
+     *
+     * @param writeVersion version the read file is written in
+     * @param filename name of the file being read
+     * @param fileReader item reading the file
+     */
+    private fun loadCustomTech(
         writeVersion: Int,
         filename: String,
         fileReader: BufferedReader
@@ -456,37 +522,60 @@ class Ki(private val charInstance: BaseCharacter){
 
             for (techLoops in 0 until fileReader.readLine().toInt()) {
                 techEffects +=
-                    if(writeVersion <= 10) loadEffectOld(fileReader)
-                    else loadEffect(fileReader)
+                    if(writeVersion <= 10) loadEffectOld(fileReader = fileReader)
+                    else loadEffect(fileReader = fileReader)
             }
 
             //create full technique to add
             val newTech = CustomTechnique(
-                techName,
-                true,
-                "",
-                techDesc,
-                techLvl,
-                techMaint,
-                techEffects
+                name = techName,
+                isPublic = true,
+                fileOrigin = "",
+                description = techDesc,
+                level = techLvl,
+                maintArray = techMaint,
+                givenAbilities = techEffects
             )
 
-            val equivalent = techEquivalent(newTech)
+            //determine if equal to prebuilt technique
+            val equivalent = techEquivalent(compareTo = newTech)
 
             //add prebuilt technique if this item matches one
             if (equivalent != null)
-                attemptTechAddition(equivalent)
+                attemptTechAddition(technique = equivalent)
+            //otherwise add custom technique if available to the character
             else if(newTech.isPublic.value || newTech.fileOrigin.value == filename)
-                attemptTechAddition(newTech)
+                attemptTechAddition(technique = newTech)
         }
     }
 
-    fun loadEffect(fileReader: BufferedReader): TechniqueEffect{
+    /**
+     * Loads data for a technique's effect.
+     *
+     * @param fileReader input reader for the effect data
+     * @return the technique effect from the data being read
+     */
+    private fun loadEffect(
+        fileReader: BufferedReader
+    ): TechniqueEffect{
+        //get the effect's name reference
         val name = fileReader.readLine().toInt()
 
+        //retrieve the appropriate technique table data
         val tableData =
-            if(name != 14) techniqueDatabase.findData(name, fileReader.readLine().toInt(), fileReader.readLine().toInt(), fileReader.readLine().toInt())
-            else techniqueDatabase.stateEffect(fileReader.readLine().toInt(), fileReader.readLine().toInt(), fileReader.readLine().toInt())!!
+            //retrieve data based on the saved values
+            if(name != 14) techniqueDatabase.findData(
+                name = name,
+                primary = fileReader.readLine().toInt(),
+                secondary = fileReader.readLine().toInt(),
+                mkCost = fileReader.readLine().toInt()
+            )
+            //retrieve data for a saved state effect
+            else techniqueDatabase.stateEffect(
+                stateRef = fileReader.readLine().toInt(),
+                costRemain = fileReader.readLine().toInt(),
+                primary = fileReader.readLine().toInt()
+            )!!
 
         //get effect build array
         val teBuild = mutableListOf(
@@ -511,24 +600,34 @@ class Ki(private val charInstance: BaseCharacter){
         //initialize effect elements
         val teElements = mutableListOf<Element>()
 
+        //get all saved elements
         for (effectLoops in 0 until fileReader.readLine().toInt()) {
             teElements += Element.fromString(fileReader.readLine())
         }
 
+        //return the loaded effect
         return TechniqueEffect(
-            tableData,
-            teBuild,
-            teAdditions,
-            teElements
+            data = tableData,
+            kiBuild = teBuild,
+            buildAdditions = teAdditions,
+            elements = teElements
         )
     }
 
-    fun loadEffectOld(fileReader: BufferedReader): TechniqueEffect{
+    /**
+     * Loads data for a technique's effect for data saved before app version 10.
+     *
+     * @param fileReader input reader for the effect data
+     * @return the technique effect from the data being read
+     */
+    private fun loadEffectOld(
+        fileReader: BufferedReader
+    ): TechniqueEffect{
         //get effect name
-        var teName = nameToReference(fileReader.readLine())
+        var teName = nameToReference(effectName = fileReader.readLine())
 
         //get effect amount
-        var teEffect = stringToEffectRefs(fileReader.readLine())
+        var teEffect = stringToEffectRefs(effectString = fileReader.readLine())
 
         //get effect cost
         var teCost = fileReader.readLine().toInt()
@@ -564,11 +663,12 @@ class Ki(private val charInstance: BaseCharacter){
 
         //get effect elements
         for (effectLoops in 0 until fileReader.readLine().toInt()) {
-            teElements += Element.fromString(fileReader.readLine())
+            teElements += Element.fromString(elementName = fileReader.readLine())
         }
 
         var teLevel = fileReader.readLine().toInt()
 
+        //correct mistake in determined condition and predetermination costs
         if(teName == 38){
             teName = 37
             teEffect = Pair(R.string.determinedCondition, null)
@@ -582,24 +682,32 @@ class Ki(private val charInstance: BaseCharacter){
 
         //add effect to  technique
         return TechniqueEffect(
-                TechniqueTableData(
-                    teName,
-                    teEffect.first,
-                    teEffect.second,
-                    tePair.first,
-                    tePair.second,
-                    teCost,
-                    teMaint,
-                    teLevel
-                ),
-                teBuild,
-                teAdditions,
-                teElements
-            )
+            data = TechniqueTableData(
+                name = teName,
+                effectRef = teEffect.first,
+                effectVal = teEffect.second,
+                primaryCost = tePair.first,
+                secondaryCost = tePair.second,
+                mkCost = teCost,
+                maintCost = teMaint,
+                level = teLevel
+            ),
+            kiBuild = teBuild,
+            buildAdditions = teAdditions,
+            elements = teElements
+        )
     }
 
-    fun nameToReference(input: String): Int{
-        return when(input){
+    /**
+     * Convert a string to its numerical reference.
+     *
+     * @param effectName name of the effect to convert
+     * @return number representation of the effect name
+     */
+    private fun nameToReference(
+        effectName: String
+    ): Int{
+        return when(effectName){
             "Attack Ability" -> 1
             "Counterattack Ability" -> 2
             "Block Ability" -> 3
@@ -642,35 +750,63 @@ class Ki(private val charInstance: BaseCharacter){
         }
     }
 
-    fun stringToEffectRefs(input: String): Pair<Int, Int?>{
+    /**
+     * Convert an effect string to a pair for string resource use.
+     *
+     * @param effectString string that describes the effect
+     * @return pair of integers for use in stringResource functions
+     */
+    private fun stringToEffectRefs(
+        effectString: String
+    ): Pair<Int, Int?>{
         try {
-            input.first().digitToInt()
-            return Pair(R.string.justNum, input.toInt())
+            //attempt to convert entirely to digit
+            effectString.first().digitToInt()
+            return Pair(R.string.justNum, effectString.toInt())
         }
+        //if more values present in input
         catch(e: Exception) {
-            return when (input.first()) {
+            return when (effectString.first()) {
+                //with addition input
                 '+' -> {
-                    try{Pair(R.string.addNumber, input.drop(1).toInt())}
+                    //attempt putting in integer with no other alterations
+                    try{Pair(R.string.addNumber, effectString.drop(1).toInt())}
                     catch(e: Exception){
+                        //attempt to remove only last character
                         try {
-                            Pair(R.string.distanceLabelM, input.dropLast(1).toInt())
-                        } catch (e: Exception) {
-                            Pair(R.string.distanceLabelKM, input.dropLast(2).toInt())
+                            Pair(R.string.distanceLabelM, effectString.dropLast(1).toInt())
+                        }
+                        //remove last two characters
+                        catch (e: Exception) {
+                            Pair(R.string.distanceLabelKM, effectString.dropLast(2).toInt())
                         }
                     }
                 }
-                'x' -> Pair(R.string.multNumber, input.drop(1).toInt())
+
+                //with multiplication input, only remove first character
+                'x' -> Pair(R.string.multNumber, effectString.drop(1).toInt())
+
+                //with subtraction input
                 '-' -> {
+                    //attempt to remove ending character
                     try {
-                        Pair(R.string.subtractNumber, input.drop(1).toInt())
-                    } catch (e: Exception) {
-                        Pair(R.string.subtractAT, (input.drop(1)).dropLast(3).toInt())
+                        Pair(R.string.subtractNumber, effectString.drop(1).toInt())
+                    }
+                    //remove the last three characters
+                    catch (e: Exception) {
+                        Pair(R.string.subtractAT, (effectString.drop(1)).dropLast(3).toInt())
                     }
                 }
+
+                //if not easily discernible by the first character
                 else ->{
+                    //get string for a state effect
                     try{
-                        val copyRef = input.dropLast(4)
-                        val copyVal = input.dropWhile{it != '('}.drop(1).toInt()
+                        //remove but remember potential integer notification
+                        val copyRef = effectString.dropLast(4)
+                        val copyVal = effectString.dropWhile{it != '('}.drop(1).toInt()
+
+                        //get the name for the state applied
                         when(copyRef){
                             "PhR Reduction" -> Pair(R.string.physReduction, copyVal)
                             "Blindness" -> Pair(R.string.blindnessData, copyVal)
@@ -685,8 +821,12 @@ class Ki(private val charInstance: BaseCharacter){
                             "Death" -> Pair(R.string.death, copyVal)
                             else -> Pair(0, null)
                         }
-                    }catch(e: Exception) {
-                        when (input) {
+                    }
+
+                    //item has been determined to not be a state effect
+                    catch(e: Exception) {
+                        //attempt to return string with no addition
+                        when (effectString) {
                             "Vital Sacrifice" -> Pair(R.string.vitalSacData, null)
                             "Double Vital Sacrifice" -> Pair(R.string.doubleVitalSac, null)
                             "Health Sacrifice" -> Pair(R.string.healthSac, null)
@@ -722,11 +862,16 @@ class Ki(private val charInstance: BaseCharacter){
                             "Major Intensity" -> Pair(R.string.majorIntensity, null)
                             "Determined Condition" -> Pair(R.string.determinedCondition, null)
                             "Predetermination" -> Pair(R.string.predetermination, null)
+
+                            //other input found
                             else -> {
+                                //get input for distance in meters
                                 try {
-                                    Pair(R.string.distanceLabelM, input.dropLast(1).toInt())
-                                } catch (e: Exception) {
-                                    Pair(R.string.distanceLabelKM, input.dropLast(2).toInt())
+                                    Pair(R.string.distanceLabelM, effectString.dropLast(1).toInt())
+                                }
+                                //get input for distance in kilometers
+                                catch (e: Exception) {
+                                    Pair(R.string.distanceLabelKM, effectString.dropLast(2).toInt())
                                 }
                             }
                         }
@@ -737,50 +882,78 @@ class Ki(private val charInstance: BaseCharacter){
     }
 
     /**
-     * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation
+     * Writes data to file for ki abilities, techniques, and purchases for ki points and accumulation.
+     *
+     * @param byteArray output stream to write the data to
      */
     fun writeKiAttributes(byteArray: ByteArrayOutputStream) {
         //write data from KiStats
-        allKiStats.forEach{
-            writeDataTo(byteArray, it.boughtKiPoints.value)
-            writeDataTo(byteArray, it.boughtAccumulation.value)
+        allKiStats.forEach{kiStat ->
+            writeDataTo(writer = byteArray, input = kiStat.boughtKiPoints.intValue)
+            writeDataTo(writer = byteArray, input = kiStat.boughtAccumulation.intValue)
         }
 
         //write number of ki abilities taken and specific abilities taken
-        writeDataTo(byteArray, takenAbilities.size)
-        takenAbilities.forEach{
-            writeDataTo(byteArray, it.saveTag)
+        writeDataTo(writer = byteArray, input = takenAbilities.size)
+        takenAbilities.forEach{kiAbility ->
+            writeDataTo(writer = byteArray, input = kiAbility.saveTag)
         }
 
-        //write number of techniques taken and data on each technique
-        writeDataTo(byteArray, prebuiltTechniques.size)
-        prebuiltTechniques.forEach{
-            it.write(byteArray)
+        //gather held prebuilt techniques
+        val writePrebuilts = mutableListOf<PrebuiltTech>()
+        allPrebuilts.forEach{(prebuilt, isHeld) ->
+            if(isHeld.value) writePrebuilts += prebuilt
         }
 
-        writeDataTo(byteArray, customTechniques.size)
-        customTechniques.forEach{
-            writeDataTo(byteArray, it.key.name.value)
-            writeDataTo(byteArray, it.value.value)
+        //write held prebuilts and prebuilt data
+        writeDataTo(writer = byteArray, input = writePrebuilts.size)
+        writePrebuilts.forEach{heldPrebuilt ->
+            heldPrebuilt.write(byteArray = byteArray)
+        }
+
+        //write data on held custom techniques
+        writeDataTo(writer = byteArray, input = customTechniques.size)
+        customTechniques.forEach{(custom, isHeld) ->
+            writeDataTo(writer = byteArray, input = custom.name.value)
+            writeDataTo(writer = byteArray, input = isHeld.value)
         }
     }
 
+    /**
+     * Take data about all created custom techniques and apply them to the character if they can
+     * use them.
+     *
+     * @param customTechDir directory that holds the custom technique data
+     * @param filename name of the file associated with this character
+     */
     fun applyCustomTechs(
-        input: File,
+        customTechDir: File,
         filename: String
     ){
-        input.walk().forEach{
-            if(it != input){
-                val customInput = FileInputStream(it)
+        //for each file in the directory
+        customTechDir.walk().forEach{customTechFile ->
+            if(customTechFile != customTechDir){
+                //open file reader
+                val customInput = FileInputStream(customTechFile)
                 val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
                 val fileReader = BufferedReader(readCustom)
 
+                //get the name of the technique
                 val name = fileReader.readLine()
+
+                //get the public state of the technique
                 val public = fileReader.readLine().toBoolean()
+
+                //get the file name of the character who created this technique
                 val fileOrigin = fileReader.readLine()
+
+                //get the description of the technique
                 val description = fileReader.readLine()
+
+                //get the level of the technique
                 val level = fileReader.readLine().toInt()
 
+                //get the maintenance array of the technique
                 val maintArray = mutableListOf(
                     fileReader.readLine().toInt(),
                     fileReader.readLine().toInt(),
@@ -790,41 +963,56 @@ class Ki(private val charInstance: BaseCharacter){
                     fileReader.readLine().toInt()
                 )
 
+                //get data on the technique's effects
                 val givenAbilities = mutableListOf<TechniqueEffect>()
                 for(techLoops in 0 until fileReader.readLine().toInt()){
-                    givenAbilities += loadEffect(fileReader)
+                    givenAbilities += loadEffect(fileReader = fileReader)
                 }
 
+                //close file reader
                 customInput.close()
 
+                //if character can access the technique
                 if(public || filename == fileOrigin){
+                    //add to the character's available list
                     customTechniques +=
                         Pair(
                             CustomTechnique(
-                                name,
-                                public,
-                                fileOrigin,
-                                description,
-                                level,
-                                maintArray,
-                                givenAbilities
+                                name = name,
+                                isPublic = public,
+                                fileOrigin = fileOrigin,
+                                description = description,
+                                level = level,
+                                maintArray = maintArray,
+                                givenAbilities = givenAbilities
                             ),
-                            mutableStateOf(false)
+                            mutableStateOf(value = false)
                         )
                 }
             }
         }
     }
 
+    /**
+     * Saves the held status about this character's available custom techniques.
+     *
+     * @param directory where the data will be saved
+     */
     fun saveOutCustoms(
         directory: File
     ){
-        customTechniques.keys.forEach{
-            val fileWriter = File(directory, it.name.value).outputStream()
+        customTechniques.keys.forEach{customTech ->
+            //open the file and byte writer
+            val fileWriter = File(directory, customTech.name.value).outputStream()
             val byteArray = ByteArrayOutputStream()
-            it.write(byteArray)
+
+            //write the byte data
+            customTech.write(byteArray = byteArray)
+
+            //close the byte reader
             byteArray.close()
 
+            //output to the file writer
             fileWriter.write(byteArray.toByteArray())
             fileWriter.close()
         }

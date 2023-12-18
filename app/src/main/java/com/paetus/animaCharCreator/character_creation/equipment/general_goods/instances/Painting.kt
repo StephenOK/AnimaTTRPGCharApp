@@ -7,39 +7,56 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
-class Painting: GeneralCategory(listOf(
-    QualityModifier("Known Artist", R.string.knownArt, 2.0, Availability.Common),
-    QualityModifier("Prestigious Artist", R.string.prestigiousArt, 4.0, Availability.Uncommon),
-    QualityModifier("Legendary Artist", R.string.legendaryArt, 10.0, Availability.Rare)
-)) {
-    val commonPainting = GeneralEquipment(
-        "Common Painting",
-        R.string.commonPainting,
-        25.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+class Painting: GeneralCategory(
+    qualityInput = listOf(
+        QualityModifier(
+            saveName = "Known Artist",
+            qualityType = R.string.knownArt,
+            modifier = 2.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Prestigious Artist",
+            qualityType = R.string.prestigiousArt,
+            modifier = 4.0,
+            availability = Availability.Uncommon
+        ),
+        QualityModifier(
+            saveName = "Legendary Artist",
+            qualityType = R.string.legendaryArt,
+            modifier = 10.0,
+            availability = Availability.Rare
+        )
+    )
+) {
+    private val commonPainting = GeneralEquipment(
+        saveName = "Common Painting",
+        name = R.string.commonPainting,
+        baseCost = 25.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodPainting = GeneralEquipment(
-        "Good Painting",
-        R.string.goodPainting,
-        80.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val goodPainting = GeneralEquipment(
+        saveName = "Good Painting",
+        name = R.string.goodPainting,
+        baseCost = 80.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val excellentPainting = GeneralEquipment(
-        "Excellent Painting",
-        R.string.excellentPainting,
-        125.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val excellentPainting = GeneralEquipment(
+        saveName = "Excellent Painting",
+        name = R.string.excellentPainting,
+        baseCost = 125.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
     init{

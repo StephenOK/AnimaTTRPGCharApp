@@ -8,251 +8,271 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
 class Clothing: GeneralCategory(
-    listOf(
-        QualityModifier("Mediocre Quality", R.string.mediocreQual, 0.5, Availability.Common),
-        QualityModifier("Decent Quality", R.string.decentQual, 1.0, Availability.Common),
-        QualityModifier("Good Quality", R.string.goodQual, 10.0, Availability.Common),
-        QualityModifier("Luxury or Designer", R.string.luxDesign, 100.0, Availability.Uncommon)
+    qualityInput = listOf(
+        QualityModifier(
+            saveName = "Mediocre Quality",
+            qualityType = R.string.mediocreQual,
+            modifier = 0.5,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Decent Quality",
+            qualityType = R.string.decentQual,
+            modifier = 1.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Good Quality",
+            qualityType = R.string.goodQual,
+            modifier = 10.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Luxury or Designer",
+            qualityType = R.string.luxDesign,
+            modifier = 100.0,
+            availability = Availability.Uncommon
+        )
     )
 ) {
-    val pants = GeneralEquipment(
-        "Pants",
-        R.string.pants,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val pants = GeneralEquipment(
+        saveName = "Pants",
+        name = R.string.pants,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val shirt = GeneralEquipment(
-        "Shirt",
-        R.string.shirt,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val shirt = GeneralEquipment(
+        saveName = "Shirt",
+        name = R.string.shirt,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val vest = GeneralEquipment(
-        "Vest",
-        R.string.vest,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val vest = GeneralEquipment(
+        saveName = "Vest",
+        name = R.string.vest,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val tunic = GeneralEquipment(
-        "Tunic",
-        R.string.tunic,
-        3.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val tunic = GeneralEquipment(
+        saveName = "Tunic",
+        name = R.string.tunic,
+        baseCost = 3.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val cap = GeneralEquipment(
-        "Cap",
-        R.string.cap,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val cap = GeneralEquipment(
+        saveName = "Cap",
+        name = R.string.cap,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val jacket = GeneralEquipment(
-        "Jacket",
-        R.string.jacket,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val jacket = GeneralEquipment(
+        saveName = "Jacket",
+        name = R.string.jacket,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val coat = GeneralEquipment(
-        "Coat",
-        R.string.coat,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val coat = GeneralEquipment(
+        saveName = "Coat",
+        name = R.string.coat,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val dress = GeneralEquipment(
-        "Dress",
-        R.string.dress,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val dress = GeneralEquipment(
+        saveName = "Dress",
+        name = R.string.dress,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val scarf = GeneralEquipment(
-        "Scarf",
-        R.string.scarf,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val scarf = GeneralEquipment(
+        saveName = "Scarf",
+        name = R.string.scarf,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val gloves = GeneralEquipment(
-        "Gloves",
-        R.string.gloves,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val gloves = GeneralEquipment(
+        saveName = "Gloves",
+        name = R.string.gloves,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val broadBrimmedHat = GeneralEquipment(
-        "Broad-brimmed hat",
-        R.string.broadHat,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val broadBrimmedHat = GeneralEquipment(
+        saveName = "Broad-brimmed hat",
+        name = R.string.broadHat,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val mittens = GeneralEquipment(
-        "Mittens",
-        R.string.mittens,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val mittens = GeneralEquipment(
+        saveName = "Mittens",
+        name = R.string.mittens,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val mensUnderwear = GeneralEquipment(
-        "Men\'s Underwear",
-        R.string.manUnderwear,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val mensUnderwear = GeneralEquipment(
+        saveName = "Men\'s Underwear",
+        name = R.string.manUnderwear,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val womensUnderwear = GeneralEquipment(
-        "Women\'s Underwear",
-        R.string.womanUnderwear,
-        2.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val womensUnderwear = GeneralEquipment(
+        saveName = "Women\'s Underwear",
+        name = R.string.womanUnderwear,
+        baseCost = 2.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val lingerie = GeneralEquipment(
-        "Lingerie",
-        R.string.lingerie,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val lingerie = GeneralEquipment(
+        saveName = "Lingerie",
+        name = R.string.lingerie,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val belt = GeneralEquipment(
-        "Belt",
-        R.string.belt,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val belt = GeneralEquipment(
+        saveName = "Belt",
+        name = R.string.belt,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val handkerchief = GeneralEquipment(
-        "Handkerchief",
-        R.string.handkerchief,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val handkerchief = GeneralEquipment(
+        saveName = "Handkerchief",
+        name = R.string.handkerchief,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val ballGown = GeneralEquipment(
-        "Ball Gown",
-        R.string.ballGown,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val ballGown = GeneralEquipment(
+        saveName = "Ball Gown",
+        name = R.string.ballGown,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val mansFormalOutfit = GeneralEquipment(
-        "Man\'s Formal Outfit",
-        R.string.manFormal,
-        2.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val mansFormalOutfit = GeneralEquipment(
+        saveName = "Man\'s Formal Outfit",
+        name = R.string.manFormal,
+        baseCost = 2.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val mansKimono = GeneralEquipment(
-        "Man\'s Kimono",
-        R.string.manKimono,
-        15.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val mansKimono = GeneralEquipment(
+        saveName = "Man\'s Kimono",
+        name = R.string.manKimono,
+        baseCost = 15.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val womansKimono = GeneralEquipment(
-        "Woman\'s Kimono",
-        R.string.womanKimono,
-        20.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val womansKimono = GeneralEquipment(
+        saveName = "Woman\'s Kimono",
+        name = R.string.womanKimono,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val clogs = GeneralEquipment(
-        "Clogs",
-        R.string.clogs,
-        5.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+    private val clogs = GeneralEquipment(
+        saveName = "Clogs",
+        name = R.string.clogs,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val walkingBoots = GeneralEquipment(
-        "Walking Boots",
-        R.string.walkBoots,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val walkingBoots = GeneralEquipment(
+        saveName = "Walking Boots",
+        name = R.string.walkBoots,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val shoes = GeneralEquipment(
-        "Shoes",
-        R.string.shoes,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val shoes = GeneralEquipment(
+        saveName = "Shoes",
+        name = R.string.shoes,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
     init{

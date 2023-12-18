@@ -7,116 +7,116 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  * List of psychic advantages and disadvantages a character may take.
  */
 class PsychicAdvantages{
-    val amplifySustainedPower = Advantage(
-        "amplifyPower",
-        R.string.amplifySustainedPower,
-        R.string.amplifyPowerDesc,
-        R.string.amplifyPowerEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val amplifySustainedPower = Advantage(
+        saveTag = "amplifyPower",
+        name = R.string.amplifySustainedPower,
+        description = R.string.amplifyPowerDesc,
+        effect = R.string.amplifyPowerEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val psychicPointRecovery = Advantage(
-        "psyPointRecovery",
-        R.string.psyPointRecovery,
-        R.string.psyPointRecoverDesc,
-        R.string.psyPointRecoverEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
+    private val psychicPointRecovery = Advantage(
+        saveTag = "psyPointRecovery",
+        name = R.string.psyPointRecovery,
+        description = R.string.psyPointRecoverDesc,
+        effect = R.string.psyPointRecoverEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val psychicFatigueResistance = Advantage(
-        "psyFatigueRes",
-        R.string.psyFatigueRes,
-        R.string.psyFatResDesc,
-        R.string.psyFatResEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val psychicFatigueResistance = Advantage(
+        saveTag = "psyFatigueRes",
+        name = R.string.psyFatigueRes,
+        description = R.string.psyFatResDesc,
+        effect = R.string.psyFatResEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val passiveConcentration = Advantage(
-        "passiveConcentration",
-        R.string.passiveConcentration,
-        R.string.passiveConcDesc,
-        R.string.passiveConcEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val passiveConcentration = Advantage(
+        saveTag = "passiveConcentration",
+        name = R.string.passiveConcentration,
+        description = R.string.passiveConcDesc,
+        effect = R.string.passiveConcEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val psychicInclination = Advantage(
-        "psyInclination",
-        R.string.psyInclination,
-        R.string.psyInclineDesc,
-        R.string.psyInclineEff,
-        null,
-        null,
-        R.array.disciplineNames,
-        0,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val psychicInclination = Advantage(
+        saveTag = "psyInclination",
+        name = R.string.psyInclination,
+        description = R.string.psyInclineDesc,
+        effect = R.string.psyInclineEff,
+        restriction = null,
+        special = null,
+        options = R.array.disciplineNames,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val focus = Advantage(
-        "focus",
-        R.string.focus,
-        R.string.focusDesc,
-        R.string.focusEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val focus = Advantage(
+        saveTag = "focus",
+        name = R.string.focus,
+        description = R.string.focusDesc,
+        effect = R.string.focusEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val extremeConcentration = Advantage(
-        "extremeConcentration",
-        R.string.extremeConcentration,
-        R.string.exConcDesc,
-        R.string.exConcEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val extremeConcentration = Advantage(
+        saveTag = "extremeConcentration",
+        name = R.string.extremeConcentration,
+        description = R.string.exConcDesc,
+        effect = R.string.exConcEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val advantages = listOf(amplifySustainedPower, psychicPointRecovery, psychicFatigueResistance,
@@ -125,68 +125,68 @@ class PsychicAdvantages{
 
 
 
-    val psychicExhaustion = Advantage(
-        "psyExhaustion",
-        R.string.psyExhaustion,
-        R.string.psyExhaustDesc,
-        R.string.psyExhaustEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val psychicExhaustion = Advantage(
+        saveTag = "psyExhaustion",
+        name = R.string.psyExhaustion,
+        description = R.string.psyExhaustDesc,
+        effect = R.string.psyExhaustEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val psychicConsumption = Advantage(
-        "psyConsumption",
-        R.string.psyConsumption,
-        R.string.psyConsumptDesc,
-        R.string.psyConsumptEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-2),
-        0,
-        null,
-        null
+    private val psychicConsumption = Advantage(
+        saveTag = "psyConsumption",
+        name = R.string.psyConsumption,
+        description = R.string.psyConsumptDesc,
+        effect = R.string.psyConsumptEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val onePowerAtATime = Advantage(
-        "singlePower",
-        R.string.singlePower,
-        R.string.singlePowerDesc,
-        R.string.singlePowerEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val onePowerAtATime = Advantage(
+        saveTag = "singlePower",
+        name = R.string.singlePower,
+        description = R.string.singlePowerDesc,
+        effect = R.string.singlePowerEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val noConcentration = Advantage(
-        "noConcentration",
-        R.string.noConcentration,
-        R.string.noConcDesc,
-        R.string.noConcEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val noConcentration = Advantage(
+        saveTag = "noConcentration",
+        name = R.string.noConcentration,
+        description = R.string.noConcDesc,
+        effect = R.string.noConcEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val disadvantages = listOf(psychicExhaustion, psychicConsumption, onePowerAtATime, noConcentration)

@@ -1,6 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.summoning
 
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
@@ -13,28 +13,27 @@ import java.io.ByteArrayOutputStream
  */
 class SummonAbility(private val charInstance: BaseCharacter){
     //initialize points spent in this item
-    val buyVal = mutableStateOf(0)
+    val buyVal = mutableIntStateOf(value = 0)
 
     //initialize modifier for this item
-    val modVal = mutableStateOf(0)
+    val modVal = mutableIntStateOf(value = 0)
 
     //initialize points gained in this item per level
-    val pointsPerLevel = mutableStateOf(0)
+    private val pointsPerLevel = mutableIntStateOf(value = 0)
 
     //initialize total class points in this item
-    val levelTotal = mutableStateOf(0)
+    val levelTotal = mutableIntStateOf(value = 0)
 
     //initialize total in this item
-    val abilityTotal = mutableStateOf(0)
+    val abilityTotal = mutableIntStateOf(value = 0)
 
     /**
-     * Set the number of points purchased in this section.
+     * Set the number of points purchased in this item.
      *
-     * @param input number of points to buy for this section
+     * @param pointPurchase number of points to buy for this section
      */
-    @JvmName("setBuyVal1")
-    fun setBuyVal(input: Int){
-        buyVal.value = input
+    fun setBuyVal(pointPurchase: Int){
+        buyVal.intValue = pointPurchase
         charInstance.updateTotalSpent()
         updateTotal()
     }
@@ -42,22 +41,20 @@ class SummonAbility(private val charInstance: BaseCharacter){
     /**
      * Set the number of modifier points for this item.
      *
-     * @param input value to set the modifier to
+     * @param modValue value to set the modifier to
      */
-    @JvmName("setModVal1")
-    fun setModVal(input: Int){
-        modVal.value = input
+    fun setModVal(modValue: Int){
+        modVal.intValue = modValue
         updateTotal()
     }
 
     /**
      * Set the number of points gained in this item per level.
      *
-     * @param input value to set the per level value to
+     * @param lvlBonus value to set the per level value to
      */
-    @JvmName("setPointsPerLevel1")
-    fun setPointsPerLevel(input: Int){
-        pointsPerLevel.value = input
+    fun setPointsPerLevel(lvlBonus: Int){
+        pointsPerLevel.intValue = lvlBonus
         updateLevelTotal()
     }
 
@@ -65,9 +62,9 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * Refresh the number of points in this stat from levels.
      */
     fun updateLevelTotal(){
-        levelTotal.value =
-            if(charInstance.lvl.value != 0) pointsPerLevel.value * charInstance.lvl.value
-            else pointsPerLevel.value/2
+        levelTotal.intValue =
+            if(charInstance.lvl.intValue != 0) pointsPerLevel.intValue * charInstance.lvl.intValue
+            else pointsPerLevel.intValue/2
 
         updateTotal()
     }
@@ -75,8 +72,8 @@ class SummonAbility(private val charInstance: BaseCharacter){
     /**
      * Refresh the total value for this item.
      */
-    fun updateTotal(){
-        abilityTotal.value = buyVal.value + modVal.value + levelTotal.value
+    private fun updateTotal(){
+        abilityTotal.intValue = buyVal.intValue + modVal.intValue + levelTotal.intValue
     }
 
     /**
@@ -85,13 +82,15 @@ class SummonAbility(private val charInstance: BaseCharacter){
      * @param fileReader file to get the data from
      */
     fun loadAbility(fileReader: BufferedReader){
-        setBuyVal(fileReader.readLine().toInt())
+        setBuyVal(pointPurchase = fileReader.readLine().toInt())
     }
 
     /**
      * Write the points bought in this item to file.
+     *
+     * @param byteArray output stream for this item's data
      */
     fun writeAbility(byteArray: ByteArrayOutputStream) {
-        writeDataTo(byteArray, buyVal.value)
+        writeDataTo(writer = byteArray, input = buyVal.intValue)
     }
 }

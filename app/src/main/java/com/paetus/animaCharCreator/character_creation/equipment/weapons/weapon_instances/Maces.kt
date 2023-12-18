@@ -13,112 +13,112 @@ import java.io.Serializable
  */
 class Maces: Serializable {
     val club = Weapon(
-        "club",
-        R.string.club,
-        30,
-        0,
-        5, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        11, -2, 15,
-        null, null,
-        R.string.clubDesc
+        saveName = "club",
+        name = R.string.club,
+        damage = 30,
+        speed = 0,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 11, breakage = -2, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.clubDesc
     )
 
-    val greatHammer = Weapon(
-        "greatWarhammer",
-        R.string.greatWarhammer,
-        70,
-        -35,
-        10, 7,
-        AttackType.Impact, null, WeaponType.Mace,
-        16, 6, 20,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.greatWarhammerDesc
+    private val greatHammer = Weapon(
+        saveName = "greatWarhammer",
+        name = R.string.greatWarhammer,
+        damage = 70,
+        speed = -35,
+        oneHandStr = 10, twoHandStr = 7,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 16, breakage = 6, presence = 20,
+        ability = listOf(WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.greatWarhammerDesc
     )
 
     val mace = Weapon(
-        "mace",
-        R.string.mace,
-        40,
-        0,
-        6, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        14, 4, 15,
-        null, null,
-        R.string.maceDesc
+        saveName = "mace",
+        name = R.string.mace,
+        damage = 40,
+        speed = 0,
+        oneHandStr = 6, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 14, breakage = 4, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.maceDesc
     )
 
-    val warhammer = Weapon(
-        "warhammer",
-        R.string.warhammer,
-        50,
-        -5,
-        6, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        15, 4, 15,
-        null, null,
-        R.string.warhammerDesc
+    private val warhammer = Weapon(
+        saveName = "warhammer",
+        name = R.string.warhammer,
+        damage = 50,
+        speed = -5,
+        oneHandStr = 6, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 15, breakage = 4, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.warhammerDesc
     )
 
     val hammer = Weapon(
-        "hammer",
-        R.string.hammer,
-        30,
-        -20,
-        4, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        12, 2, 10,
-        null, null,
-        R.string.emptyItem
+        saveName = "hammer",
+        name = R.string.hammer,
+        damage = 30,
+        speed = -20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 12, breakage = 2, presence = 10,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val metalBar = Weapon(
-        "metalBar",
-        R.string.metalBar,
-        25,
-        -5,
-        5, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        12, 2, 15,
-        null, null,
-        R.string.emptyItem
+        saveName = "metalBar",
+        name = R.string.metalBar,
+        damage = 25,
+        speed = -5,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 12, breakage = 2, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val torch = Weapon(
-        "torch",
-        R.string.torch,
-        20,
-        -10,
-        4, null,
-        AttackType.Impact, AttackType.Heat, WeaponType.Mace,
-        10, -2, 20,
-        null, null,
-        R.string.emptyItem
+        saveName = "torch",
+        name = R.string.torch,
+        damage = 20,
+        speed = -10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = AttackType.Heat, type = WeaponType.Mace,
+        fortitude = 10, breakage = -2, presence = 20,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val vase = ProjectileWeapon(
-        "vase",
-        R.string.vase,
-        15,
-        -10,
-        4, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        6, -2, 20,
-        null, null,
-        listOf(WeaponAbility.Throwable), null,
-        R.string.emptyItem
+        saveName = "vase",
+        name = R.string.vase,
+        damage = 15,
+        speed = -10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 6, breakage = -2, presence = 20,
+        reloadOrRate = null, range = null,
+        ability = listOf(WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val woodenPole = Weapon(
-        "woodPole",
-        R.string.woodenPole,
-        20,
-        0,
-        4, null,
-        AttackType.Impact, null, WeaponType.Mace,
-        8, -1, 10,
-        null, null,
-        R.string.emptyItem
+        saveName = "woodPole",
+        name = R.string.woodenPole,
+        damage = 20,
+        speed = 0,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Mace,
+        fortitude = 8, breakage = -1, presence = 10,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val maces = listOf(club, greatHammer, hammer, mace, metalBar, torch, vase, warhammer, woodenPole)

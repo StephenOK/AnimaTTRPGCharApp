@@ -22,47 +22,47 @@ class EquipmentFragmentViewModel(
     private val inventory: Inventory
 ) : ViewModel() {
     //initialize open state of item details
-    private val _detailAlertOpen = MutableStateFlow(false)
+    private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
     //initialize title of detail dialog
-    private val _detailTitle = MutableStateFlow(R.string.emptyItem)
+    private val _detailTitle = MutableStateFlow(value = R.string.emptyItem)
     val detailTitle = _detailTitle.asStateFlow()
 
     //initialize item to detail
-    private val _detailItem = MutableStateFlow<GeneralEquipment?>(null)
+    private val _detailItem = MutableStateFlow<GeneralEquipment?>(value = null)
     val detailItem = _detailItem.asStateFlow()
 
     //initialize dialog's open state
-    private val _itemPurchaseOpen = MutableStateFlow(false)
+    private val _itemPurchaseOpen = MutableStateFlow(value = false)
     val itemPurchaseOpen = _itemPurchaseOpen.asStateFlow()
 
     //initialize item obtained at the moment
-    private val _purchasedItem = MutableStateFlow<GeneralEquipment?>(null)
-    val purchasedItem = _purchasedItem.asStateFlow()
+    private val _purchasedItem = MutableStateFlow<GeneralEquipment?>(value = null)
+    private val purchasedItem = _purchasedItem.asStateFlow()
 
     //initialize purchased item's category
-    private val _purchasingCategory = MutableStateFlow<GeneralCategory?>(null)
+    private val _purchasingCategory = MutableStateFlow<GeneralCategory?>(value = null)
     val purchasingCategory = _purchasingCategory.asStateFlow()
 
     //initialize number of items purchased display
-    private val _purchasedNumber = MutableStateFlow("1")
+    private val _purchasedNumber = MutableStateFlow(value = "1")
     val purchasedNumber = _purchasedNumber.asStateFlow()
 
     //initialize item's current quality
-    private val _currentQuality = MutableStateFlow<QualityModifier?>(null)
+    private val _currentQuality = MutableStateFlow<QualityModifier?>(value = null)
     val currentQuality = _currentQuality.asStateFlow()
 
     //initialize gold cost display
-    private val _totalGoldPurchase = MutableStateFlow(0)
+    private val _totalGoldPurchase = MutableStateFlow(value = 0)
     val totalGoldPurchase = _totalGoldPurchase.asStateFlow()
 
     //initialize silver cost display
-    private val _totalSilverPurchase = MutableStateFlow(0)
+    private val _totalSilverPurchase = MutableStateFlow(value = 0)
     val totalSilverPurchase = _totalSilverPurchase.asStateFlow()
 
     //initialize copper cost display
-    private val _totalCopperPurchase = MutableStateFlow(0)
+    private val _totalCopperPurchase = MutableStateFlow(value = 0)
     val totalCopperPurchase = _totalCopperPurchase.asStateFlow()
 
     //initialize state list for character's inventory
@@ -76,11 +76,11 @@ class EquipmentFragmentViewModel(
     /**
      * Sets the item to be displayed in the detail alert.
      *
-     * @param input item to detail
+     * @param equipment item to detail
      */
-    fun setDetailItem(input: GeneralEquipment){
-        _detailTitle.update{input.name}
-        _detailItem.update{input}
+    fun setDetailItem(equipment: GeneralEquipment){
+        _detailTitle.update{equipment.name}
+        _detailItem.update{equipment}
     }
 
     /**
@@ -91,61 +91,61 @@ class EquipmentFragmentViewModel(
     /**
      * Declares what item the user is currently purchasing for their character.
      *
-     * @param input item to set as purchased
+     * @param equipment item to set as purchased
      */
-    fun setPurchasedItem(input: GeneralEquipment){
-        _purchasedItem.update{input}
+    fun setPurchasedItem(equipment: GeneralEquipment){
+        _purchasedItem.update{equipment}
 
         //set default amount to 1
-        setPurchasedNumber(1)
+        setPurchasedNumber(quantity = 1)
     }
 
     /**
      * Defines the category of the item being purchased.
      *
-     * @param input category item belongs to
+     * @param category category item belongs to
      */
-    fun setPurchasingCategory(input: GeneralCategory){
-        _purchasingCategory.update{input}
+    fun setPurchasingCategory(category: GeneralCategory){
+        _purchasingCategory.update{category}
 
         //set corresponding quality options
-        if(input.qualityInput != null)
-            setCurrentQuality(input.qualityInput[0])
+        if(category.qualityInput != null)
+            setCurrentQuality(quality = category.qualityInput[0])
         else
-            setCurrentQuality(null)
+            setCurrentQuality(quality = null)
     }
 
     /**
      * Sets the value of the number of items purchased.
      *
-     * @param input number to set for purchase
+     * @param quantity number to set for purchase
      */
-    fun setPurchasedNumber(input: Int){
-        setPurchasedNumber(input.toString())
+    fun setPurchasedNumber(quantity: Int){
+        setPurchasedNumber(display = quantity.toString())
         updatePurchaseTotals()
     }
 
     /**
      * Sets the displayed purchased item number.
      *
-     * @param input string to display
+     * @param display string to display
      */
-    fun setPurchasedNumber(input: String){_purchasedNumber.update{input}}
+    fun setPurchasedNumber(display: String){_purchasedNumber.update{display}}
 
     /**
      * Sets the currently selected quality of the purchased item.
      *
-     * @param input quality to set for the item
+     * @param quality quality to set for the item
      */
-    fun setCurrentQuality(input: QualityModifier?){
-        _currentQuality.update{input}
+    fun setCurrentQuality(quality: QualityModifier?){
+        _currentQuality.update{quality}
         updatePurchaseTotals()
     }
 
     /**
      * Updates the cost displays for the current purchase being made.
      */
-    fun updatePurchaseTotals(){
+    private fun updatePurchaseTotals(){
         //retrieve the current cost for the item
         val initialCost =
             if(currentQuality.value != null)
@@ -155,82 +155,111 @@ class EquipmentFragmentViewModel(
 
         //fix the coin amounts to display valid values
         when(purchasedItem.value!!.coinType){
-            CoinType.Copper -> {setTotalCopperPurchase(initialCost, true)}
-            CoinType.Silver -> {setTotalSilverPurchase(initialCost, true, true)}
-            CoinType.Gold -> {setTotalGoldPurchase(initialCost, true)}
+            CoinType.Copper -> {
+                setTotalCopperPurchase(
+                    copperCoin = initialCost,
+                    setSilver = true
+                )
+            }
+            CoinType.Silver -> {
+                setTotalSilverPurchase(
+                    silverCoin = initialCost,
+                    setCopper = true,
+                    setGold = true
+                )
+            }
+            CoinType.Gold -> {
+                setTotalGoldPurchase(
+                    goldCoins = initialCost,
+                    setSilver = true
+                )
+            }
         }
     }
 
     /**
      * Sets the purchase figures for an item with a base cost in gold coins.
      *
-     * @param input number of gold coins to adjust
+     * @param goldCoins number of gold coins to adjust
      * @param setSilver true if function might need to set the silver amount afterwards
      */
-    fun setTotalGoldPurchase(input: Double, setSilver: Boolean){
+    private fun setTotalGoldPurchase(
+        goldCoins: Double,
+        setSilver: Boolean
+    ){
         //update silver display if any decimal places in input
         if(setSilver)
             setTotalSilverPurchase(
-                (input % 1.0) * 100, true, false)
+                silverCoin = (goldCoins % 1.0) * 100,
+                setCopper = true,
+                setGold = false
+            )
 
         //update gold display
-        _totalGoldPurchase.update{input.toInt()}
+        _totalGoldPurchase.update{goldCoins.toInt()}
     }
 
     /**
      * Sets the purchase figures for an item with a base cost in silver coins.
      *
-     * @param input number of silver coins to adjust
+     * @param silverCoin number of silver coins to adjust
      * @param setCopper true if function might need to set the copper amount afterwards
      * @param setGold true if function might need to set the gold amount afterwards
      */
-    fun setTotalSilverPurchase(input: Double, setCopper: Boolean, setGold: Boolean){
+    private fun setTotalSilverPurchase(
+        silverCoin: Double,
+        setCopper: Boolean,
+        setGold: Boolean
+    ){
         //initialize silver converted to gold and gold received from conversion
         var reduction = 0.0
         var goldTotal = 0.0
 
         //determine reduction amount required
-        while(input - reduction >= 100){
+        while(silverCoin - reduction >= 100){
             goldTotal += 1
             reduction += 100
         }
 
         //determine current silver amount
-        val silvFinal = input - reduction
+        val silvFinal = silverCoin - reduction
 
         //update silver display
         _totalSilverPurchase.update{silvFinal.toInt()}
 
         //update copper display if any decimal places in current result
-        if(setCopper) setTotalCopperPurchase((silvFinal % 1.0) * 10, false)
+        if(setCopper) setTotalCopperPurchase(copperCoin = (silvFinal % 1.0) * 10, setSilver = false)
 
         //update gold display for added gold amount
-        if(setGold) setTotalGoldPurchase(goldTotal, false)
+        if(setGold) setTotalGoldPurchase(goldCoins = goldTotal, setSilver = false)
     }
 
     /**
      * Sets the purchase figures for an item with a base cost in copper coins.
      *
-     * @param input number of copper coins to adjust
+     * @param copperCoin number of copper coins to adjust
      * @param setSilver true if function might need to set the silver amount afterwards
      */
-    fun setTotalCopperPurchase(input: Double, setSilver: Boolean){
+    private fun setTotalCopperPurchase(
+        copperCoin: Double,
+        setSilver: Boolean
+    ){
         //initialize copper converted to silver and silver received from conversion
         var reduction = 0.0
         var silvTotal = 0.0
 
         //determine reduction amount required
-        while(input - reduction >= 10){
+        while(copperCoin - reduction >= 10){
             silvTotal += 1
             reduction += 10
         }
 
         //update copper purchase display
-        _totalCopperPurchase.update{(input - reduction).toInt()}
+        _totalCopperPurchase.update{(copperCoin - reduction).toInt()}
 
         //if necessary, update the silver amount displayed
         if(setSilver)
-            setTotalSilverPurchase(silvTotal, false, true)
+            setTotalSilverPurchase(silverCoin = silvTotal, setCopper = false, setGold = true)
     }
 
     /**
@@ -254,16 +283,16 @@ class EquipmentFragmentViewModel(
 
         //construct item from data and add it to inventory
         inventory.buyItem(
-            GeneralEquipment(
-                purchasedItem.value!!.saveName,
-                purchasedItem.value!!.name,
-                purchasedItem.value!!.baseCost * qualityMult,
-                purchasedItem.value!!.coinType,
-                purchasedItem.value!!.weight,
-                purchasedItem.value!!.availability,
-                qualityIndex
+            equipment = GeneralEquipment(
+                saveName = purchasedItem.value!!.saveName,
+                name = purchasedItem.value!!.name,
+                baseCost = purchasedItem.value!!.baseCost * qualityMult,
+                coinType = purchasedItem.value!!.coinType,
+                weight = purchasedItem.value!!.weight,
+                availability = purchasedItem.value!!.availability,
+                currentQuality = qualityIndex
             ),
-            purchasedNumber.value.toInt()
+            quantity = purchasedNumber.value.toInt()
         )
 
         //update list
@@ -276,37 +305,42 @@ class EquipmentFragmentViewModel(
     /**
      * Removes the indicated item from the character's inventory.
      *
-     * @param input item to remove from inventory
+     * @param equipment item to remove from inventory
      */
-    fun removeItem(input: GeneralEquipment){
-        inventory.removeItem(input)
+    fun removeItem(equipment: GeneralEquipment){
+        inventory.removeItem(equipment = equipment)
         updateBoughtGoods()
     }
 
     /**
      * Retrieves the amount of the indicated coin spent by the character.
      *
-     * @param input type of coin to look up
+     * @param coin type of coin to look up
      * @return amount of that coin spent
      */
-    fun getCoinSpent(input: CoinType): Int{
-        return when(input){
-            CoinType.Copper -> inventory.copperSpent.value.toInt()
-            CoinType.Silver -> inventory.silverSpent.value.toInt()
-            CoinType.Gold -> inventory.goldSpent.value.toInt()
+    fun getCoinSpent(coin: CoinType): Int{
+        return when(coin){
+            CoinType.Copper -> inventory.copperSpent.doubleValue.toInt()
+            CoinType.Silver -> inventory.silverSpent.doubleValue.toInt()
+            CoinType.Gold -> inventory.goldSpent.doubleValue.toInt()
         }
     }
 
     /**
      * Determines the category a piece of equipment belongs to.
      *
-     * @param input equipment to find the category of
+     * @param equipment equipment to find the category of
      * @return the category it belongs to
      */
-    fun getCategory(input: GeneralEquipment): GeneralCategory?{
-        inventory.allCategories.forEach{
-            if(it.findEquipment(input.saveName, input.currentQuality) != null)
-                return it
+    fun getCategory(
+        equipment: GeneralEquipment
+    ): GeneralCategory?{
+        inventory.allCategories.forEach{category ->
+            if(category.findEquipment(
+                    equipName = equipment.saveName,
+                    quality = equipment.currentQuality
+                ) != null)
+                return category
         }
 
         return null
@@ -315,7 +349,7 @@ class EquipmentFragmentViewModel(
     /**
      * Refreshes the state list to match the character's held inventory.
      */
-    fun updateBoughtGoods(){
+    private fun updateBoughtGoods(){
         boughtGoods.clear()
         boughtGoods += inventory.boughtGoods.keys
     }
@@ -323,106 +357,109 @@ class EquipmentFragmentViewModel(
     /**
      * Gets the number of the inputted item in the character's inventory.
      *
-     * @param input item to look for
+     * @param equipment item to look for
      * @return number of queried items in inventory
      */
-    fun getQuantity(input: GeneralEquipment): Int?{return inventory.boughtGoods[input]}
+    fun getQuantity(equipment: GeneralEquipment): Int?{return inventory.boughtGoods[equipment]}
 
     /**
      * Gets the bonus wealth value the character has.
      *
      * @return amount of bonus wealth the character has
      */
-    fun getBonusWealth(): Int{return inventory.wealthBonus.value}
+    fun getBonusWealth(): Int{return inventory.wealthBonus.intValue}
 
     //initialize data for all coin maximums
-    val maxGold = MaximumData(
-        R.string.maxGoldLabel,
-        {inventory.maxGold.value}
-    ){inventory.setMaxGold(it)}
+    private val maxGold = MaximumData(
+        nameRef = R.string.maxGoldLabel,
+        maxInput = {inventory.maxGold.intValue},
+        changeAmount = {inventory.setMaxGold(maxVal = it)}
+    )
 
-    val maxSilver = MaximumData(
-        R.string.maxSilverLabel,
-        {inventory.maxSilver.value}
-    ){inventory.setMaxSilver(it)}
+    private val maxSilver = MaximumData(
+        nameRef = R.string.maxSilverLabel,
+        maxInput = {inventory.maxSilver.intValue},
+        changeAmount = {inventory.setMaxSilver(maxVal = it)}
+    )
 
-    val maxCopper = MaximumData(
-        R.string.maxCopperLabel,
-        {inventory.maxCopper.value}
-    ){inventory.setMaxCopper(it)}
+    private val maxCopper = MaximumData(
+        nameRef = R.string.maxCopperLabel,
+        maxInput = {inventory.maxCopper.intValue},
+        changeAmount = {inventory.setMaxCopper(maxVal = it)}
+    )
 
     //collect all maximum data
     val allQuantityMaximums = listOf(maxGold, maxSilver, maxCopper)
 
     //instantiate all category data
     private val clothes = CategoryData(
-        R.string.clothingLabel,
-        inventory.clothing
+        nameRef = R.string.clothingLabel,
+        equipmentList = inventory.clothing
     )
 
     private val travel = CategoryData(
-        R.string.travelLabel,
-        inventory.travel
+        nameRef = R.string.travelLabel,
+        equipmentList = inventory.travel
     )
 
     private val transport = CategoryData(
-        R.string.transport,
-        inventory.transport
+        nameRef = R.string.transport,
+        equipmentList = inventory.transport
     )
 
     private val foodAndDrink = CategoryData(
-        R.string.foodAndDrinkLabel,
-        inventory.foodAndDrink
+        nameRef = R.string.foodAndDrinkLabel,
+        equipmentList = inventory.foodAndDrink
     )
 
     private val lodging = CategoryData(
-        R.string.lodgingLabel,
-        inventory.lodging
+        nameRef = R.string.lodgingLabel,
+        equipmentList = inventory.lodging
     )
 
     private val dwellings = CategoryData(
-        R.string.dwellingLabel,
-        inventory.dwellings
+        nameRef = R.string.dwellingLabel,
+        equipmentList = inventory.dwellings
     )
 
     private val services = CategoryData(
-        R.string.serviceLabel,
-        inventory.services
+        nameRef = R.string.serviceLabel,
+        equipmentList = inventory.services
     )
 
     private val art = CategoryData(
-        R.string.artAndDecorLabel,
-        inventory.art
+        nameRef = R.string.artAndDecorLabel,
+        equipmentList = inventory.art
     )
 
     private val gems = CategoryData(
-        R.string.gemLabel,
-        inventory.gems
+        nameRef = R.string.gemLabel,
+        equipmentList = inventory.gems
     )
 
     private val paintings = CategoryData(
-        R.string.paintingLabel,
-        inventory.painting
+        nameRef = R.string.paintingLabel,
+        equipmentList = inventory.painting
     )
 
     private val poisons = CategoryData(
-        R.string.poisonLabel,
-        inventory.poisons
+        nameRef = R.string.poisonLabel,
+        equipmentList = inventory.poisons
     )
 
     private val miscellaneous = CategoryData(
-        R.string.miscLabel,
-        inventory.miscellaneous
+        nameRef = R.string.miscLabel,
+        equipmentList = inventory.miscellaneous
     )
 
     private val weapons = CategoryData(
-        R.string.weaponsLabel,
-        inventory.weapons
+        nameRef = R.string.weaponsLabel,
+        equipmentList = inventory.weapons
     )
 
     private val armors = CategoryData(
-        R.string.armorsLabel,
-        inventory.armors
+        nameRef = R.string.armorsLabel,
+        equipmentList = inventory.armors
     )
 
     //gather all category data
@@ -456,36 +493,36 @@ class EquipmentFragmentViewModel(
         val changeAmount: (Int) -> Unit
     ){
         //initialize maximum string display
-        private val _maxValue = MutableStateFlow(maxInput().toString())
+        private val _maxValue = MutableStateFlow(value = maxInput().toString())
         val maxValue = _maxValue.asStateFlow()
 
         /**
          * Changes the maximum coin value in the character's record.
          *
-         * @param input new value to set as maximum
+         * @param maxCoin new value to set as maximum
          */
-        fun setMaxValue(input: Int){
-            changeAmount(input)
-            setMaxValue(input.toString())
+        fun setMaxValue(maxCoin: Int){
+            changeAmount(maxCoin)
+            setMaxValue(maxCoin.toString())
         }
 
         /**
          * Changes the maximum coin display string.
          *
-         * @param input new value to display
+         * @param display new value to display
          */
-        fun setMaxValue(input: String){_maxValue.update{input}}
+        fun setMaxValue(display: String){_maxValue.update{display}}
     }
 
     /**
      * Data object for an equipment category type.
      *
      * @param nameRef resource reference to the displayed name
-     * @param reference category for this display
+     * @param equipmentList category for this display
      */
     class CategoryData(
         val nameRef: Int,
-        val reference: GeneralCategory
+        val equipmentList: GeneralCategory
     ){
         //initialize open state of the display
         private val _catOpen = MutableStateFlow(false)
@@ -498,10 +535,10 @@ class EquipmentFragmentViewModel(
     }
 
     fun refreshPage(){
-        allQuantityMaximums.forEach{it.setMaxValue(it.maxInput().toString())}
-        allCategoryData.forEach{
-            if(it.catOpen.value)
-                it.toggleCatOpen()
+        allQuantityMaximums.forEach{maxCoin -> maxCoin.setMaxValue(maxCoin.maxInput().toString())}
+        allCategoryData.forEach{category ->
+            if(category.catOpen.value)
+                category.toggleCatOpen()
         }
     }
 }

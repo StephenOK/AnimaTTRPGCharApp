@@ -11,8 +11,14 @@ enum class Availability {
     Rare;
 
     companion object{
-        fun toAddress(input: Availability): Int{
-            return when(input){
+        /**
+         * Retrieves the address of the availability's associated string.
+         *
+         * @param availability availability to translate to an address
+         * @return associated string reference
+         */
+        fun toAddress(availability: Availability): Int{
+            return when(availability){
                 Common -> R.string.availCommon
                 Uncommon -> R.string.availUncommon
                 Rare -> R.string.availRare

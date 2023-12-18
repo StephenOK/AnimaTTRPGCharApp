@@ -1,6 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.combat
 
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
@@ -16,31 +16,30 @@ class CombatItem(
     private val charInstance: BaseCharacter
 ){
     //initialize user input value for this stat
-    val inputVal = mutableStateOf(0)
+    val inputVal = mutableIntStateOf(value = 0)
 
     //initialize modifier points for this stat
-    val modPoints = mutableStateOf(0)
+    val modPoints = mutableIntStateOf(value = 0)
 
     //initialize points per level for this stat
-    val pointPerLevel = mutableStateOf(0)
+    private val pointPerLevel = mutableIntStateOf(value = 0)
 
     //initialize additional points for this stat
-    val classBonus = mutableStateOf(0)
+    private val classBonus = mutableIntStateOf(value = 0)
 
     //initialize class total for this stat
-    val classTotal = mutableStateOf(0)
+    val classTotal = mutableIntStateOf(value = 0)
 
     //initialize total for this stat
-    val total = mutableStateOf(0)
+    val total = mutableIntStateOf(value = 0)
 
     /**
      * Sets the user's input for this stat
      *
-     * @param score value of user applied points
+     * @param purchase value of user applied points
      */
-    @JvmName("setInputVal1")
-    fun setInputVal(score: Int){
-        inputVal.value = score
+    fun setInputVal(purchase: Int){
+        inputVal.intValue = purchase
         charInstance.updateTotalSpent()
         updateTotal()
     }
@@ -48,33 +47,30 @@ class CombatItem(
     /**
      * Sets the modifier points for this stat.
      *
-     * @param input number of points to set for the mod
+     * @param modVal number of points to set for the mod
      */
-    @JvmName("setModPoints1")
-    fun setModPoints(input: Int){
-        modPoints.value = input
+    fun setModPoints(modVal: Int){
+        modPoints.intValue = modVal
         updateTotal()
     }
 
     /**
      * Sets the points per level for this stat.
      *
-     * @param input points per level to set
+     * @param lvlBonus points per level to set
      */
-    @JvmName("setPointPerLevel1")
-    fun setPointPerLevel(input: Int){
-        pointPerLevel.value = input
+    fun setPointPerLevel(lvlBonus: Int){
+        pointPerLevel.intValue = lvlBonus
         updateClassTotal()
     }
 
     /**
      * Sets additional bonuses that apply to class maximum cap.
      *
-     * @param input amount to increment the bonus by
+     * @param classBonus amount to increment the bonus by
      */
-    @JvmName("setClassBonus1")
-    fun setClassBonus(input: Int){
-        classBonus.value += input
+    fun setClassBonus(classBonus: Int){
+        this.classBonus.intValue += classBonus
         updateClassTotal()
     }
 
@@ -83,13 +79,13 @@ class CombatItem(
      */
     fun updateClassTotal(){
         //determine actual total
-        classTotal.value =
-            if(charInstance.lvl.value != 0) (pointPerLevel.value * charInstance.lvl.value) + classBonus.value
-            else (pointPerLevel.value/2) + classBonus.value
+        classTotal.intValue =
+            if(charInstance.lvl.intValue != 0) (pointPerLevel.intValue * charInstance.lvl.intValue) + classBonus.intValue
+            else (pointPerLevel.intValue/2) + classBonus.intValue
 
         //set class cap if it is exceeded
-        if(classTotal.value > 50)
-            classTotal.value = 50
+        if(classTotal.intValue > 50)
+            classTotal.intValue = 50
 
         //update overall total
         updateTotal()
@@ -98,9 +94,9 @@ class CombatItem(
     /**
      * Updates the total value for each contributing item.
      */
-    fun updateTotal(){
+    private fun updateTotal(){
         //determine total
-        total.value = inputVal.value + modPoints.value + classTotal.value
+        total.intValue = inputVal.intValue + modPoints.intValue + classTotal.intValue
 
         //update total martial arts the character can take
         charInstance.weaponProficiencies.updateMartialMax()
@@ -112,13 +108,15 @@ class CombatItem(
      * @param fileReader file to take the item's data from
      */
     fun loadItem(fileReader: BufferedReader){
-        setInputVal(fileReader.readLine().toInt())
+        setInputVal(purchase = fileReader.readLine().toInt())
     }
 
     /**
      * Writes the user's inputted value to a file.
+     *
+     * @param byteArray output stream to write to
      */
     fun writeItem(byteArray: ByteArrayOutputStream) {
-        writeDataTo(byteArray, inputVal.value)
+        writeDataTo(writer = byteArray, input = inputVal.intValue)
     }
 }

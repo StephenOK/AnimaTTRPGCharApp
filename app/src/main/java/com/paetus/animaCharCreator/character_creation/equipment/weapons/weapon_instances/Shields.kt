@@ -12,39 +12,39 @@ import java.io.Serializable
  */
 class Shields: Serializable {
     val buckler = Weapon(
-        "buckler",
-        R.string.buckler,
-        15,
-        -15,
-        5, null,
-        AttackType.Impact, null, WeaponType.Shield,
-        14, 0, 20,
-        listOf(WeaponAbility.Special), null,
-        R.string.bucklerDesc
+        saveName = "buckler",
+        name = R.string.buckler,
+        damage = 15,
+        speed = -15,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Shield,
+        fortitude = 14, breakage = 0, presence = 20,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.bucklerDesc
     )
 
     val shield = Weapon(
-        "shield",
-        R.string.shield,
-        20,
-        -25,
-        7, null,
-        AttackType.Impact, null, WeaponType.Shield,
-        16, 0, 25,
-        listOf(WeaponAbility.Special), null,
-        R.string.shieldDesc,
+        saveName = "shield",
+        name = R.string.shield,
+        damage = 20,
+        speed = -25,
+        oneHandStr = 7, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Shield,
+        fortitude = 16, breakage = 0, presence = 25,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.shieldDesc,
     )
 
     val fullShield = Weapon(
-        "fullShield",
-        R.string.fullShield,
-        25,
-        -40,
-        10, null,
-        AttackType.Impact, null, WeaponType.Shield,
-        18, 1, 25,
-        listOf(WeaponAbility.Special), null,
-        R.string.fullShieldDesc
+        saveName = "fullShield",
+        name = R.string.fullShield,
+        damage = 25,
+        speed = -40,
+        oneHandStr = 10, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Shield,
+        fortitude = 18, breakage = 1, presence = 25,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.fullShieldDesc
     )
 
     val shields = listOf(buckler, shield, fullShield)

@@ -7,71 +7,98 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
-class Dwellings: GeneralCategory(listOf(
-    QualityModifier("Mediocre Quality", R.string.mediocreQual, 0.5, Availability.Common),
-    QualityModifier("Decent Quality", R.string.decentQual, 1.0, Availability.Common),
-    QualityModifier("Good Quality", R.string.goodQual, 2.0, Availability.Common),
-    QualityModifier("Luxurious", R.string.luxQual, 10.0, Availability.Common),
-    QualityModifier("Urban Area", R.string.urban, 2.0, Availability.Common)
-)) {
-    val shack = GeneralEquipment(
-        "Shack",
-        R.string.shack,
-        15.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+class Dwellings: GeneralCategory(
+    qualityInput = listOf(
+        QualityModifier(
+            saveName = "Mediocre Quality",
+            qualityType = R.string.mediocreQual,
+            modifier = 0.5,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Decent Quality",
+            qualityType = R.string.decentQual,
+            modifier = 1.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Good Quality",
+            qualityType = R.string.goodQual,
+            modifier = 2.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Luxurious",
+            qualityType = R.string.luxQual,
+            modifier = 10.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Urban Area",
+            qualityType = R.string.urban,
+            modifier = 2.0,
+            availability = Availability.Common
+        )
+    )
+) {
+    private val shack = GeneralEquipment(
+        saveName = "Shack",
+        name = R.string.shack,
+        baseCost = 15.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val house = GeneralEquipment(
-        "House",
-        R.string.house,
-        60.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val house = GeneralEquipment(
+        saveName = "House",
+        name = R.string.house,
+        baseCost = 60.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val largeHouse = GeneralEquipment(
-        "Large House",
-        R.string.largeHouse,
-        150.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val largeHouse = GeneralEquipment(
+        saveName = "Large House",
+        name = R.string.largeHouse,
+        baseCost = 150.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val mansion = GeneralEquipment(
-        "Mansion",
-        R.string.mansion,
-        800.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val mansion = GeneralEquipment(
+        saveName = "Mansion",
+        name = R.string.mansion,
+        baseCost = 800.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val palace = GeneralEquipment(
-        "Palace",
-        R.string.palace,
-        2000.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val palace = GeneralEquipment(
+        saveName = "Palace",
+        name = R.string.palace,
+        baseCost = 2000.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val castle = GeneralEquipment(
-        "Castle",
-        R.string.castle,
-        30000.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val castle = GeneralEquipment(
+        saveName = "Castle",
+        name = R.string.castle,
+        baseCost = 30000.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
     init{

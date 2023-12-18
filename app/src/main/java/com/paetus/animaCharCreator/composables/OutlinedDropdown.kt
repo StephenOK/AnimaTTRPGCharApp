@@ -21,6 +21,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 
+/**
+ * Creates a dropdown object with a border around its contents.
+ *
+ * @param optionsRef list of items contained in the dropdown
+ * @param index currently selected item in the list
+ * @param openState whether the dropdown is open or not
+ * @param labelRef contents for this item's label
+ * @param icon trailing icon contents
+ * @param size size needed for this item
+ * @param sizeSetter function to change this item's size
+ * @param itemSelection function to run on the selection of a dropdown item
+ * @param openFunc function to run on opening and closing this dropdown
+ */
 @Composable
 fun OutlinedDropdown(
     optionsRef: Int,
@@ -33,7 +46,8 @@ fun OutlinedDropdown(
     itemSelection: (Int) -> Unit,
     openFunc: () -> Unit
 ){
-    val optionsList = stringArrayResource(optionsRef)
+    //retrieve list of options
+    val optionsList = stringArrayResource(id = optionsRef)
 
     Row(
         modifier = Modifier
@@ -41,18 +55,19 @@ fun OutlinedDropdown(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
+        //create outlined text field
         OutlinedTextField(
             value = optionsList[index],
             onValueChange = {},
             modifier = Modifier
-                .clickable { openFunc() }
+                .clickable {openFunc()}
                 .onGloballyPositioned { sizeSetter(it) },
-            label = {Text(text = stringResource(labelRef))},
+            label = {Text(text = stringResource(id = labelRef))},
             readOnly = true,
             trailingIcon = {
                 Icon(
-                    icon,
-                    "",
+                    imageVector = icon,
+                    contentDescription = "",
                     modifier = Modifier
                         .clickable{openFunc()}
                 )
@@ -65,11 +80,11 @@ fun OutlinedDropdown(
             modifier = Modifier
                 .width(with(LocalDensity.current){size.width.toDp()})
         ){
-            optionsList.forEach{
+            optionsList.forEach{option ->
                 DropdownMenuItem(
-                    onClick = {itemSelection(optionsList.indexOf(it))}
+                    onClick = {itemSelection(optionsList.indexOf(element = option))}
                 ) {
-                    Text(text = it)
+                    Text(text = option)
                 }
             }
         }

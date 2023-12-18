@@ -7,17 +7,17 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 /**
  * Record of all of the available physically increasing powers.
  */
-class PhysicalIncrease: Discipline("physIncrease"){
-    val increaseJump = PsychicPower(
-        "increaseJump",
-        52,
-        1,
-        true,
-        true,
-        R.string.increaseJumpDesc,
-        listOf(R.string.jumpIncrease, R.string.jumpIncreaseInhuman, R.string.jumpIncreaseZen),
-        listOf(1, 5, 8, 10),
-        listOf(
+class PhysicalIncrease: Discipline(saveName = "physIncrease"){
+    private val increaseJump = PsychicPower(
+        saveName = "increaseJump",
+        name = 52,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseJumpDesc,
+        stringBaseList = listOf(R.string.jumpIncrease, R.string.jumpIncreaseInhuman, R.string.jumpIncreaseZen),
+        stringBaseCount = listOf(1, 5, 8, 10),
+        stringInput = listOf(
             2,
             10,
             20,
@@ -31,16 +31,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseAbility = PsychicPower(
-        "increaseAbility",
-        53,
-        1,
-        true,
-        true,
-        R.string.increaseAbilityDesc,
-        listOf(R.string.dexOrAgiIncrease),
-        listOf(2, 10),
-        listOf(
+    private val increaseAbility = PsychicPower(
+        saveName = "increaseAbility",
+        name = 53,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseAbilityDesc,
+        stringBaseList = listOf(R.string.dexOrAgiIncrease),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             4, 2,
             1,
             2,
@@ -53,16 +53,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseAcrobatics = PsychicPower(
-        "increaseAcro",
-        54,
-        1,
-        true,
-        true,
-        R.string.increaseAcrobaticsDesc,
-        listOf(R.string.acroIncrease, R.string.acroIncreaseInhuman, R.string.acroIncreaseZen),
-        listOf(1, 5, 8, 10),
-        listOf(
+    private val increaseAcrobatics = PsychicPower(
+        saveName = "increaseAcro",
+        name = 54,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseAcrobaticsDesc,
+        stringBaseList = listOf(R.string.acroIncrease, R.string.acroIncreaseInhuman, R.string.acroIncreaseZen),
+        stringBaseCount = listOf(1, 5, 8, 10),
+        stringInput = listOf(
             2,
             10,
             20,
@@ -76,16 +76,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseStrength = PsychicPower(
-        "increaseStr",
-        55,
-        1,
-        true,
-        true,
-        R.string.increaseStrengthDesc,
-        listOf(R.string.strengthIncrease),
-        listOf(2, 10),
-        listOf(
+    private val increaseStrength = PsychicPower(
+        saveName = "increaseStr",
+        name = 55,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseStrengthDesc,
+        stringBaseList = listOf(R.string.strengthIncrease),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             4, 2,
             1,
             2,
@@ -98,16 +98,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val inhumanity = PsychicPower(
-        "inhumanity",
-        56,
-        1,
-        true,
-        true,
-        R.string.inhumanityPowerDesc,
-        listOf(R.string.inhumanityPower, R.string.athleticsIncrease, R.string.athleticsIncreaseZen),
-        listOf(2, 3, 6, 10),
-        listOf(
+    private val inhumanity = PsychicPower(
+        saveName = "inhumanity",
+        name = 56,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.inhumanityPowerDesc,
+        stringBaseList = listOf(R.string.inhumanityPower, R.string.athleticsIncrease, R.string.athleticsIncreaseZen),
+        stringBaseCount = listOf(2, 3, 6, 10),
+        stringInput = listOf(
             4, 2,
             null,
             5,
@@ -120,16 +120,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseMotion = PsychicPower(
-        "increaseMotion",
-        57,
-        1,
-        true,
-        true,
-        R.string.increaseMotionDesc,
-        listOf(R.string.movementValIncrease),
-        listOf(3, 10),
-        listOf(
+    private val increaseMotion = PsychicPower(
+        saveName = "increaseMotion",
+        name = 57,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseMotionDesc,
+        stringBaseList = listOf(R.string.movementValIncrease),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             6, 4, 2,
             1,
             2,
@@ -141,16 +141,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseReaction = PsychicPower(
-        "increaseReaction",
-        58,
-        2,
-        true,
-        true,
-        R.string.increaseReactionPowerDesc,
-        listOf(R.string.initiativeIncrease),
-        listOf(3, 10),
-        listOf(
+    private val increaseReaction = PsychicPower(
+        saveName = "increaseReaction",
+        name = 58,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.increaseReactionPowerDesc,
+        stringBaseList = listOf(R.string.initiativeIncrease),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 4, 2,
             20,
             40,
@@ -162,16 +162,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val perceptionIncrease = PsychicPower(
-        "percIncrease",
-        59,
-        2,
-        true,
-        true,
-        R.string.percIncreaseDesc,
-        listOf(R.string.perceptionIncrease),
-        listOf(3, 10),
-        listOf(
+    private val perceptionIncrease = PsychicPower(
+        saveName = "percIncrease",
+        name = 59,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.percIncreaseDesc,
+        stringBaseList = listOf(R.string.perceptionIncrease),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 4, 2,
             1,
             2,
@@ -183,16 +183,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val increaseEndurance = PsychicPower(
-        "increaseEndurance",
-        60,
-        2,
-        false,
-        true,
-        R.string.increaseEnduranceDesc,
-        listOf(R.string.addPhysRes),
-        listOf(3, 10),
-        listOf(
+    private val increaseEndurance = PsychicPower(
+        saveName = "increaseEndurance",
+        name = 60,
+        level = 2,
+        isActive = false,
+        maintained = true,
+        description = R.string.increaseEnduranceDesc,
+        stringBaseList = listOf(R.string.addPhysRes),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 4, 2,
             10,
             20,
@@ -205,15 +205,15 @@ class PhysicalIncrease: Discipline("physIncrease"){
     )
 
     val regeneration = PsychicPower(
-        "regeneration",
-        61,
-        2,
-        true,
-        true,
-        R.string.regenPowerDesc,
-        listOf(R.string.regenerationIncrease),
-        listOf(3, 10),
-        listOf(
+        saveName = "regeneration",
+        name = 61,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.regenPowerDesc,
+        stringBaseList = listOf(R.string.regenerationIncrease),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 6, 4,
             1,
             2,
@@ -225,16 +225,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val fatigueElimination = PsychicPower(
-        "fatigueEliminate",
-        62,
-        3,
-        true,
-        false,
-        R.string.fatigueEliminateDesc,
-        listOf(R.string.fatigueRecovery, R.string.completeRecovery),
-        listOf(5, 9, 10),
-        listOf(
+    private val fatigueElimination = PsychicPower(
+        saveName = "fatigueEliminate",
+        name = 62,
+        level = 3,
+        isActive = true,
+        maintained = false,
+        description = R.string.fatigueEliminateDesc,
+        stringBaseList = listOf(R.string.fatigueRecovery, R.string.completeRecovery),
+        stringBaseCount = listOf(5, 9, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             2,
             4,
@@ -244,16 +244,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val totalIncrease = PsychicPower(
-        "totalIncrease",
-        63,
-        3,
-        true,
-        true,
-        R.string.totalIncreaseDesc,
-        listOf(R.string.physCharIncreaseInput),
-        listOf(5, 10),
-        listOf(
+    private val totalIncrease = PsychicPower(
+        saveName = "totalIncrease",
+        name = 63,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.totalIncreaseDesc,
+        stringBaseList = listOf(R.string.physCharIncreaseInput),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             1,
             2,
@@ -263,16 +263,16 @@ class PhysicalIncrease: Discipline("physIncrease"){
         )
     )
 
-    val imbue = PsychicPower(
-        "imbue",
-        64,
-        3,
-        true,
-        true,
-        R.string.imbueDesc,
-        listOf(R.string.powerLevel),
-        listOf(5, 10),
-        listOf(
+    private val imbue = PsychicPower(
+        saveName = "imbue",
+        name = 64,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.imbueDesc,
+        stringBaseList = listOf(R.string.powerLevel),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             {R.string.veryDifficult},
             {R.string.absurd},
@@ -283,20 +283,22 @@ class PhysicalIncrease: Discipline("physIncrease"){
     )
 
     init {
-        allPowers.addAll(listOf(
-            increaseJump,
-            increaseAbility,
-            increaseAcrobatics,
-            increaseStrength,
-            inhumanity,
-            increaseMotion,
-            increaseReaction,
-            perceptionIncrease,
-            increaseEndurance,
-            regeneration,
-            fatigueElimination,
-            totalIncrease,
-            imbue
-        ))
+        allPowers.addAll(
+            elements = listOf(
+                increaseJump,
+                increaseAbility,
+                increaseAcrobatics,
+                increaseStrength,
+                inhumanity,
+                increaseMotion,
+                increaseReaction,
+                perceptionIncrease,
+                increaseEndurance,
+                regeneration,
+                fatigueElimination,
+                totalIncrease,
+                imbue
+            )
+        )
     }
 }

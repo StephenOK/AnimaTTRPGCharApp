@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import com.paetus.animaCharCreator.R
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +37,7 @@ import com.paetus.animaCharCreator.activities.fragments.dialogs.AdvantageCostPic
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
@@ -48,12 +48,12 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
  * Allows the user to select advantages and disadvantages for their character.
  * Also displays advantages of their character's current race.
  *
- * @param advantageFragVM viewModel to run with this fragment
+ * @param advantageFragVM viewModel that manages the advantage page data
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AdvantageFragment(
+    secondaryList: SecondaryList,
     advantageFragVM: AdvantageFragmentViewModel,
     homePageVM: HomePageViewModel,
 ){
@@ -73,7 +73,7 @@ fun AdvantageFragment(
 
         //display creation points remaining
         InfoRow(
-            label = stringResource(R.string.creationPointLabel)
+            label = stringResource(id = R.string.creationPointLabel)
         ) {modifier, _ ->
             AnimatedContent(
                 targetState = advantageFragVM.creationPoints.collectAsState().value,
@@ -95,41 +95,47 @@ fun AdvantageFragment(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //display each list of base advantages
-            items(advantageFragVM.advantageButtons) {
+            items(advantageFragVM.advantageButtons) {buttonData ->
                 AdvantageDisplay(
-                    advantageFragVM,
-                    it,
-                    homePageVM
+                    advantageList = buttonData,
+                    advantageFragVM = advantageFragVM,
+                    homePageVM = homePageVM
                 )
             }
 
-            item { Spacer(Modifier.height(20.dp)) }
+            item {Spacer(Modifier.height(20.dp))}
 
             item{
                 GeneralCard{
                     //display held advantages title
-                    Text(text = stringResource(R.string.heldAdvantageLabel))
+                    Text(text = stringResource(id = R.string.heldAdvantageLabel))
 
                     //display all of the character's taken advantages and disadvantages
-                    advantageFragVM.takenAdvantages.forEach{
+                    advantageFragVM.takenAdvantages.forEach{advantage ->
                         HeldAdvantageDisplay(
-                            advantageFragVM,
-                            it,
-                            homePageVM
+                            advantage = advantage,
+                            advantageFragVM = advantageFragVM,
+                            homePageVM = homePageVM
                         )
                     }
                 }
             }
 
-            item { Spacer(Modifier.height(20.dp)) }
+            item {Spacer(Modifier.height(20.dp))}
 
             item{
                 GeneralCard{
                     //display all advantages acquired from their race
-                    Text(text = stringResource(R.string.racialAdvantageLabel))
+                    Text(text = stringResource(id = R.string.racialAdvantageLabel))
 
-                    advantageFragVM.getRacialAdvantages().forEach{
-                        AdvantageRow(it, advantageFragVM, null, {}, null)
+                    advantageFragVM.getRacialAdvantages().forEach{advantage ->
+                        AdvantageRow(
+                            advantage = advantage,
+                            takenAddition = null,
+                            advantageFragVM = advantageFragVM,
+                            buttonIcon = {},
+                            buttonAction = null
+                        )
                     }
                 }
             }
@@ -143,8 +149,9 @@ fun AdvantageFragment(
             advantageFragVM.emptyHalfAttuned()
 
             AdvantageCostPick(
-                advantageFragVM
-            ) { input: Int? ->
+                secondaryList,
+                advantageFragVM = advantageFragVM
+            ) {input: Int? ->
                 //notify user of failed acquisition
                 if (input != null)
                     Toast.makeText(
@@ -167,7 +174,7 @@ fun AdvantageFragment(
                 onDismissRequest = {},
                 text = {
                     Text(
-                        text = stringResource(R.string.giftWarning)
+                        text = stringResource(id = R.string.giftWarning)
                     )
                 },
                 confirmButton = {
@@ -181,13 +188,13 @@ fun AdvantageFragment(
                         //close gift alert
                         advantageFragVM.toggleGiftAlertOn()
                     }) {
-                        Text(text = stringResource(R.string.confirmLabel))
+                        Text(text = stringResource(id = R.string.confirmLabel))
                     }
                 },
                 //close dialog without removing The Gift
                 dismissButton = {
                     TextButton(onClick = {advantageFragVM.toggleGiftAlertOn()}){
-                        Text(text = stringResource(R.string.cancelLabel))
+                        Text(text = stringResource(id = R.string.cancelLabel))
                     }
                 }
             )
@@ -196,8 +203,8 @@ fun AdvantageFragment(
         //display an advantage's details if open
         if(advantageFragVM.detailAlertOpen.collectAsState().value)
             DetailAlert(
-                stringResource(advantageFragVM.detailItem.collectAsState().value!!.name),
-                advantageFragVM.detailItem.collectAsState().value!!
+                title = stringResource(id = advantageFragVM.detailItem.collectAsState().value!!.name),
+                item = advantageFragVM.detailItem.collectAsState().value!!
             ){advantageFragVM.toggleDetailAlertOn()}
     }
 }
@@ -205,14 +212,14 @@ fun AdvantageFragment(
 /**
  * Creates a button that displays the base advantages or disadvantages in the input.
  *
- * @param advantageFragVM viewModel for the advantage fragment
  * @param advantageList advantage data to display
+ * @param advantageFragVM viewModel for the advantage fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun AdvantageDisplay(
-    advantageFragVM: AdvantageFragmentViewModel,
     advantageList: AdvantageFragmentViewModel.AdvantageButtonData,
+    advantageFragVM: AdvantageFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
     //get local context
@@ -230,7 +237,7 @@ private fun AdvantageDisplay(
                 .fillMaxWidth(0.8f)
         ){
             //display category name
-            Text(text = stringResource(advantageList.category))
+            Text(text = stringResource(id = advantageList.category))
         }
 
         //displayable list of options
@@ -240,13 +247,13 @@ private fun AdvantageDisplay(
                 .fillMaxWidth()
         ) {
             GeneralCard {
-                advantageList.items.forEach {
+                advantageList.advList.forEach { advantage ->
                     //display advantage as an obtainable item
                     AdvantageRow(
-                        it,
-                        advantageFragVM,
-                        null,
-                        {
+                        advantage = advantage,
+                        takenAddition = null,
+                        advantageFragVM = advantageFragVM,
+                        buttonIcon = {
                             Icon(
                                 imageVector = Icons.Filled.Add,
                                 contentDescription = "Add Advantage"
@@ -254,25 +261,25 @@ private fun AdvantageDisplay(
                         }
                     ){
                         //if more selections need to be made
-                        if(it.options != null || it.cost.size > 1) {
+                        if(advantage.options != null || advantage.cost.size > 1) {
                             //activate dialog if multiple options available
-                            if (it.options != null)
-                                advantageFragVM.setAdjustingPage(1)
+                            if (advantage.options != null)
+                                advantageFragVM.setAdjustingPage(pageNum = 1)
                             //activate dialog if multiple costs available
                             else
-                                advantageFragVM.setAdjustingPage(2)
+                                advantageFragVM.setAdjustingPage(pageNum = 2)
 
                             //open cost selection dialog for this advantage
-                            advantageFragVM.setAdjustedAdvantage(it)
+                            advantageFragVM.setAdjustedAdvantage(advantage = advantage)
                             advantageFragVM.toggleAdvantageCostOn()
                         }
                         //attempt to add the base advantage to the character
                         else {
                             val resultText = advantageFragVM.acquireAdvantage(
-                                it,
-                                it.picked,
-                                it.pickedCost,
-                                it.multPicked
+                                advantage = advantage,
+                                taken = advantage.picked,
+                                takenCost = advantage.pickedCost,
+                                multTaken = advantage.multPicked
                             )
 
                             //display text if unable to add advantage
@@ -296,24 +303,24 @@ private fun AdvantageDisplay(
  * Creates a row for an advantage where the user can add or remove it, depending on the inputted
  * button action.
  *
- * @param item advantage in this display
- * @param advantageFragVM viewModel that manages this fragment's data
+ * @param advantage advantage in this display
  * @param takenAddition potential additional information to display
- * @param button display image on the row's button
+ * @param advantageFragVM viewModel that manages this fragment's data
+ * @param buttonIcon display image on the row's button
  * @param buttonAction what the button does in its context
  */
 @Composable
 private fun AdvantageRow(
-    item: Advantage,
-    advantageFragVM: AdvantageFragmentViewModel,
+    advantage: Advantage,
     takenAddition: String?,
-    button: @Composable () -> Unit,
+    advantageFragVM: AdvantageFragmentViewModel,
+    buttonIcon: @Composable () -> Unit,
     buttonAction: (() -> Unit)?,
 ){
     //initialize the advantage's name with potential additional information
     val nameString =
-        if(takenAddition != null) stringResource(item.name) + takenAddition
-        else stringResource(item.name)
+        if(takenAddition != null) stringResource(id = advantage.name) + takenAddition
+        else stringResource(id = advantage.name)
 
     Row(
         modifier = Modifier
@@ -323,10 +330,10 @@ private fun AdvantageRow(
         if(buttonAction != null) {
             //implement button with given image and function
             Button(
-                onClick = { buttonAction() },
+                onClick = {buttonAction()},
                 modifier = Modifier
                     .weight(0.25f)
-            ) { button() }
+            ){buttonIcon()}
         }
         else
             Spacer(Modifier.weight(0.25f))
@@ -342,7 +349,7 @@ private fun AdvantageRow(
         //details button
         DetailButton(
             onClick = {
-                advantageFragVM.setDetailItem(item)
+                advantageFragVM.setDetailItem(advantage = advantage)
                 advantageFragVM.toggleDetailAlertOn()
             },
             modifier = Modifier
@@ -354,42 +361,47 @@ private fun AdvantageRow(
 /**
  * Display for an already acquired advantage.
  *
- * @param advantageFragVM viewModel that holds data for this object
- * @param item advantage to display
+ * @param advantage advantage to display
+ * @param advantageFragVM viewModel that holds data for this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun HeldAdvantageDisplay(
+    advantage: Advantage,
     advantageFragVM: AdvantageFragmentViewModel,
-    item: Advantage,
     homePageVM: HomePageViewModel
 ){
     //retrieve additional information on the advantage
     val nameAddition =
-        if(item.picked != null)
-            " (${stringArrayResource(item.options!!)[item.picked]})"
+        if(advantage.picked != null) {
+            //get indicated option name
+            if(advantage.picked < stringArrayResource(id = advantage.options!!).size)
+                " (${stringArrayResource(id = advantage.options)[advantage.picked]})"
+            //otherwise get custom characteristic name
+            else
+                " (${advantageFragVM.getCustomName(38 - advantage.picked)} - Custom)"
+        }
         else null
 
     //display the advantage row
     AdvantageRow(
-        item,
-        advantageFragVM,
-        nameAddition,
-        {
+        advantage = advantage,
+        takenAddition = nameAddition,
+        advantageFragVM = advantageFragVM,
+        buttonIcon = {
             Icon(
                 imageVector = Icons.Filled.Close,
                 contentDescription = "Add Advantage"
             )
         }
-    )
-    {
+    ){
         //toggle gift alert if advantage is gift
-        if(item.name == R.string.gift)
+        if(advantage.name == R.string.gift)
             advantageFragVM.toggleGiftAlertOn()
 
         //otherwise, simply remove advantage
         else {
-            advantageFragVM.removeAdvantage(item)
+            advantageFragVM.removeAdvantage(advantage = advantage)
             homePageVM.updateExpenditures()
         }
     }
@@ -408,5 +420,5 @@ fun AdvantagePreview(){
 
     val homePageVM = HomePageViewModel(charInstance)
 
-    AdvantageFragment(advantageFragVM, homePageVM)
+    AdvantageFragment(charInstance.secondaryList, advantageFragVM, homePageVM)
 }

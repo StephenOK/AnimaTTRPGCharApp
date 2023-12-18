@@ -7,120 +7,142 @@ import com.paetus.animaCharCreator.character_creation.equipment.general_goods.Ge
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
 
-class Services: GeneralCategory(listOf(
-    QualityModifier("Mediocre (Level 0)", R.string.mediocreLevel, 1.0, Availability.Common),
-    QualityModifier("Decent (Level 1)", R.string.decentLevel, 2.0, Availability.Common),
-    QualityModifier("Professional (Level 3)", R.string.professional, 10.0, Availability.Uncommon),
-    QualityModifier("Celebrated (Level 5)", R.string.celebrated, 100.0, Availability.Rare)
-)) {
-    val artisan = GeneralEquipment(
-        "Artisan",
-        R.string.artisan,
-        10.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+class Services: GeneralCategory(
+    qualityInput = listOf(
+        QualityModifier(
+            saveName = "Mediocre (Level 0)",
+            qualityType = R.string.mediocreLevel,
+            modifier = 1.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Decent (Level 1)",
+            qualityType = R.string.decentLevel,
+            modifier = 2.0,
+            availability = Availability.Common
+        ),
+        QualityModifier(
+            saveName = "Professional (Level 3)",
+            qualityType = R.string.professional,
+            modifier = 10.0,
+            availability = Availability.Uncommon
+        ),
+        QualityModifier(
+            saveName = "Celebrated (Level 5)",
+            qualityType = R.string.celebrated,
+            modifier = 100.0,
+            availability = Availability.Rare
+        )
+    )
+) {
+    private val artisan = GeneralEquipment(
+        saveName = "Artisan",
+        name = R.string.artisan,
+        baseCost = 10.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val assassin = GeneralEquipment(
-        "Assassin",
-        R.string.assassin,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val assassin = GeneralEquipment(
+        saveName = "Assassin",
+        name = R.string.assassin,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val guide = GeneralEquipment(
-        "Guide",
-        R.string.guide,
-        20.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val guide = GeneralEquipment(
+        saveName = "Guide",
+        name = R.string.guide,
+        baseCost = 20.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val blacksmith = GeneralEquipment(
-        "Blacksmith",
-        R.string.blacksmith,
-        25.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val blacksmith = GeneralEquipment(
+        saveName = "Blacksmith",
+        name = R.string.blacksmith,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val instructor = GeneralEquipment(
-        "Teacher/Instructor",
-        R.string.teacher,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val instructor = GeneralEquipment(
+        saveName = "Teacher/Instructor",
+        name = R.string.teacher,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val healer = GeneralEquipment(
-        "Physician/Healer",
-        R.string.healer,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val healer = GeneralEquipment(
+        saveName = "Physician/Healer",
+        name = R.string.healer,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val messenger = GeneralEquipment(
-        "Messenger",
-        R.string.messenger,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val messenger = GeneralEquipment(
+        saveName = "Messenger",
+        name = R.string.messenger,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val mercenary = GeneralEquipment(
-        "Mercenary",
-        R.string.mercenary,
-        50.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val mercenary = GeneralEquipment(
+        saveName = "Mercenary",
+        name = R.string.mercenary,
+        baseCost = 50.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val lackey = GeneralEquipment(
-        "Valet/Lackey",
-        R.string.valet,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val lackey = GeneralEquipment(
+        saveName = "Valet/Lackey",
+        name = R.string.valet,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val thief = GeneralEquipment(
-        "Thief",
-        R.string.thief,
-        1.0,
-        CoinType.Gold,
-        null,
-        Availability.Common,
-        null
+    private val thief = GeneralEquipment(
+        saveName = "Thief",
+        name = R.string.thief,
+        baseCost = 1.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val troubadour = GeneralEquipment(
-        "Troubadour",
-        R.string.troubadour,
-        5.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val troubadour = GeneralEquipment(
+        saveName = "Troubadour",
+        name = R.string.troubadour,
+        baseCost = 5.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
     init{

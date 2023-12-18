@@ -28,42 +28,39 @@ class KiFragmentViewModel(
     private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
-    private val _remainingMK = MutableStateFlow(ki.martialKnowledgeRemaining.intValue)
+    private val _remainingMK = MutableStateFlow(value = ki.martialKnowledgeRemaining.intValue)
     val remainingMK = _remainingMK.asStateFlow()
 
     //initialize ki accumulation total display
-    private val _kiAccTotal = MutableStateFlow(ki.totalAcc.value)
+    private val _kiAccTotal = MutableStateFlow(value = ki.totalAcc.intValue)
     val kiAccTotal = _kiAccTotal.asStateFlow()
 
     //initialize ki point total display
-    private val _kiPointTotal = MutableStateFlow(ki.totalKi.value)
+    private val _kiPointTotal = MutableStateFlow(value = ki.totalKi.intValue)
     val kiPointTotal = _kiPointTotal.asStateFlow()
 
     //initialize open state of technique list
-    private val _techListOpen = MutableStateFlow(false)
+    private val _techListOpen = MutableStateFlow(value = false)
     val techListOpen = _techListOpen.asStateFlow()
 
     //initialize open state of ki ability list
-    private val _kiListOpen = MutableStateFlow(false)
+    private val _kiListOpen = MutableStateFlow(value = false)
     val kiListOpen = _kiListOpen.asStateFlow()
 
     //initialize open state of the detail alert
-    private val _detailAlertOpen = MutableStateFlow(false)
+    private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
 
     //initialize name of detailed item
-    private val _detailName = MutableStateFlow("")
+    private val _detailName = MutableStateFlow(value = "")
     val detailName = _detailName.asStateFlow()
 
     //initialize item to get the details of
-    private val _detailItem = MutableStateFlow<Any?>(null)
+    private val _detailItem = MutableStateFlow<Any?>(value = null)
     val detailItem = _detailItem.asStateFlow()
 
     //initialize map of all ki ability checkboxes
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
-
-    //initialize map of all technique checkboxes
-    val allTechniques = mutableMapOf<TechniqueBase, MutableState<Boolean>>()
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -73,12 +70,12 @@ class KiFragmentViewModel(
     /**
      * Sets the ki accumulation total display to the character's recorded value.
      */
-    private fun setKiAccTotal() {_kiAccTotal.update{ki.totalAcc.value}}
+    private fun setKiAccTotal(){_kiAccTotal.update{ki.totalAcc.intValue}}
 
     /**
      * Sets the ki point total display to the character's recorded value.
      */
-    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.value}}
+    private fun setKiPointTotal() {_kiPointTotal.update{ki.totalKi.intValue}}
 
     /**
      * Changes the technique list's open state.
@@ -86,16 +83,13 @@ class KiFragmentViewModel(
      * @return if open state is openable given the character's current abilities
      */
     fun checkIfToggle(): Boolean{
-        //return true if character has ki control ability
-        if(ki.takenAbilities.contains(ki.kiRecord.kiControl)) {
-            toggleTechOpen()
-            return true
-        }
-
-        //otherwise return false
-        return false
+        //return true if character has ki control ability or if list is already open
+        return techListOpen.value || ki.takenAbilities.contains(ki.kiRecord.kiControl)
     }
 
+    /**
+     * Toggles the open state of the technique dropdown.
+     */
     fun toggleTechOpen(){_techListOpen.update{!techListOpen.value}}
 
     /**
@@ -111,44 +105,47 @@ class KiFragmentViewModel(
     /**
      * Sets a ki ability displayed in the detail alert.
      *
-     * @param input ki ability to display in the details alert
+     * @param kiAbility ki ability to display in the details alert
      */
-    fun setDetailItem(input: KiAbility){
-        _detailName.update{context.getString(input.name)}
-        _detailItem.update{input}
+    fun setDetailItem(kiAbility: KiAbility){
+        _detailName.update{context.getString(kiAbility.name)}
+        _detailItem.update{kiAbility}
     }
 
     /**
      * Sets a technique displayed in the detail alert.
      *
-     * @param input technique to display in the detail alert
+     * @param technique technique to display in the detail alert
      */
-    fun setDetailItem(input: TechniqueBase){
+    fun setDetailItem(technique: TechniqueBase){
         _detailName.update{
-            if(input is PrebuiltTech) context.getString(input.name)
-            else (input as CustomTechnique).name.value
+            if(technique is PrebuiltTech) context.getString(technique.name)
+            else (technique as CustomTechnique).name.value
         }
-        _detailItem.update{input}
+        _detailItem.update{technique}
     }
 
     /**
      * Attempts to grant or remove the indicated ki ability to the character.
      *
-     * @param item ki ability to affect
-     * @param input true if character is gaining the ability
+     * @param kiAbility ki ability to affect
+     * @param isTaken true if character is gaining the ability
      */
-    fun setKiAbilityTaken(item: KiAbility, input: Boolean){
+    fun setKiAbilityTaken(
+        kiAbility: KiAbility,
+        isTaken: Boolean
+    ){
         //if attempting to acquire
-        if(input) {
+        if(isTaken) {
             //grant to character if prerequisites met
-            if (item.prerequisites == null || ki.takenAbilities.contains(item.prerequisites))
-                allKiAbilities[item]!!.value = ki.attemptAbilityAdd(item)
+            if (kiAbility.prerequisite == null || ki.takenAbilities.contains(element = kiAbility.prerequisite))
+                allKiAbilities[kiAbility]!!.value = ki.attemptAbilityAdd(newAbility = kiAbility)
         }
 
         //if attempting to remove
         else{
             //remove the item from the character
-            ki.removeAbility(item)
+            ki.removeAbility(ability = kiAbility)
             updateKiTaken()
         }
 
@@ -161,13 +158,8 @@ class KiFragmentViewModel(
      */
     private fun updateKiTaken(){
         //update each checkbox to match their taken state
-        allKiAbilities.forEach{
-            it.value.value = ki.takenAbilities.contains(it.key)
-        }
-
-        //update techniques taken in case of Ki Control removal
-        allTechniques.forEach{
-            it.value.value = ki.takenTechniques.contains(it.key)
+        allKiAbilities.forEach{(kiAbility, isTaken) ->
+            isTaken.value = ki.takenAbilities.contains(element = kiAbility)
         }
 
         //close the technique list if it is open and the character no longer has ki control
@@ -176,27 +168,25 @@ class KiFragmentViewModel(
     }
 
     /**
-     * Either applies ar removes the indicated technique as desired by the user.
+     * Applies ar removes the indicated technique as desired by the user.
      *
-     * @param item technique to affect
-     * @param input true if adding the item
+     * @param technique technique to affect
+     * @param isTaken true if adding the item
      */
-    fun attemptTechniqueChange(item: TechniqueBase, input: Boolean){
+    fun attemptTechniqueChange(
+        technique: TechniqueBase,
+        isTaken: Boolean
+    ){
         //if attempting an addition
-        if(input){
+        if(isTaken){
             //attempt to add to the character and reflect that change
-            if (ki.attemptTechAddition(item))
-                allTechniques[item]!!.value = true
-
-            updateTechTaken()
+            ki.attemptTechAddition(technique = technique)
         }
 
         //if attempting a removal
         else{
             //remove the item and indicate the change
-            ki.removeTechnique(item)
-            allTechniques[item]!!.value = false
-            updateTechTaken()
+            ki.removeTechnique(technique = technique)
         }
 
         //update the martial knowledge display
@@ -204,23 +194,22 @@ class KiFragmentViewModel(
     }
 
     /**
-     * Add the indicated technique to the character.
+     * Add the indicated custom technique to the character.
      *
-     * @param item technique to add
+     * @param customTech technique to add
      */
-    fun addTechnique(item: CustomTechnique){
+    fun addTechnique(customTech: CustomTechnique){
         val copy = CustomTechnique(
-            item.name.value,
-            item.isPublic.value,
-            item.fileOrigin.value,
-            item.description.value,
-            item.level.intValue,
-            item.maintArray,
-            item.givenAbilities
+            name = customTech.name.value,
+            isPublic = customTech.isPublic.value,
+            fileOrigin = customTech.fileOrigin.value,
+            description = customTech.description.value,
+            level = customTech.level.intValue,
+            maintArray = customTech.maintArray,
+            givenAbilities = customTech.givenAbilities
         )
 
-        ki.attemptTechAddition(copy)
-        allTechniques += Pair(copy, mutableStateOf(true))
+        ki.attemptTechAddition(technique = copy)
     }
 
     /**
@@ -259,69 +248,60 @@ class KiFragmentViewModel(
     fun getAllKiAbilities(): List<KiAbility>{return ki.kiRecord.allKiAbilities}
 
     /**
-     * Retrieves the list of techniques the character currently has.
+     * Retrieves the list of prebuilt techniques available to the character.
      *
-     * @return list of character's techniques
+     * @return list of available prebuilt techniques
      */
-    fun getAllPrebuilts(): List<TechniqueBase>{return ki.allPrebuilts}
+    fun getAllPrebuilts(): Map<PrebuiltTech, MutableState<Boolean>>{return ki.allPrebuilts}
 
     /**
-     * Retrieves the list of custom techniques the character currently has.
+     * Retrieves the list of custom techniques the character has access to.
      *
-     * @return list of character's custom techniques
+     * @return list of available custom techniques
      */
-    fun getCustomTechniques(): List<CustomTechnique>{return ki.customTechniques.keys.toList()}
-
-    /**
-     * Updates the checkboxes for techniques taken.
-     */
-    private fun updateTechTaken(){
-        allTechniques.forEach{
-            it.value.value = ki.takenTechniques.contains(it.key)
-        }
-    }
+    fun getCustomTechniques(): Map<CustomTechnique, MutableState<Boolean>>{return ki.customTechniques}
 
     //initialize all ki items for each relevant primary characteristic
     private val kiSTR = KiRowData(
-        0,
-        ki.strKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 0,
+        kiStat = ki.strKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     private val kiDEX = KiRowData(
-        1,
-        ki.dexKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 1,
+        kiStat = ki.dexKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     private val kiAGI = KiRowData(
-        2,
-        ki.agiKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 2,
+        kiStat = ki.agiKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     private val kiCON = KiRowData(
-        3,
-        ki.conKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 3,
+        kiStat = ki.conKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     private val kiPOW = KiRowData(
-        5,
-        ki.powKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 5,
+        kiStat = ki.powKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     private val kiWP = KiRowData(
-        6,
-        ki.wpKi,
-        {setKiPointTotal() },
-        {setKiAccTotal() }
+        title = 6,
+        kiStat = ki.wpKi,
+        setTotalPoints = {setKiPointTotal()},
+        setTotalAcc = {setKiAccTotal()}
     )
 
     //gather all ki point and accumulation items
@@ -331,110 +311,110 @@ class KiFragmentViewModel(
      * Item that holds data on a primary characteristic's ki accumulation and points.
      *
      * @param title characteristic name for this item
-     * @param item source of the primary ki data
+     * @param kiStat source of the primary ki data
      * @param setTotalPoints function to run to update ki point total
      * @param setTotalAcc function to run to update ki accumulation total
      */
     class KiRowData(
         val title: Int,
-        val item: KiStat,
+        val kiStat: KiStat,
         val setTotalPoints: () -> Unit,
         val setTotalAcc: () -> Unit
     ){
         //initialize point input string
-        private val _pointInputString = MutableStateFlow(item.boughtKiPoints.value.toString())
+        private val _pointInputString = MutableStateFlow(value = kiStat.boughtKiPoints.intValue.toString())
         val pointInputString = _pointInputString.asStateFlow()
 
-        private val _pointDPLabel = MutableStateFlow("")
+        private val _pointDPLabel = MutableStateFlow(value = "")
         val pointDPLabel = _pointDPLabel.asStateFlow()
 
         //initialize accumulation input
-        private val _accInputString = MutableStateFlow(item.boughtAccumulation.value.toString())
+        private val _accInputString = MutableStateFlow(value = kiStat.boughtAccumulation.intValue.toString())
         val accInputString = _accInputString.asStateFlow()
 
-        private val _accDPLabel = MutableStateFlow("")
+        private val _accDPLabel = MutableStateFlow(value = "")
         val accDPLabel = _accDPLabel.asStateFlow()
 
         //initialize characteristic ki point total
-        private val _pointTotalString = MutableStateFlow(item.totalKiPoints.value)
+        private val _pointTotalString = MutableStateFlow(value = kiStat.totalKiPoints.intValue)
         val pointTotalString = _pointTotalString.asStateFlow()
 
         //initialize characteristic ki accumulation total
-        private val _accTotalString = MutableStateFlow(item.totalAccumulation.value)
+        private val _accTotalString = MutableStateFlow(value = kiStat.totalAccumulation.intValue)
         val accTotalString = _accTotalString.asStateFlow()
 
         /**
          * Set the bought value for ki points to the inputted value.
          *
-         * @param input value to apply to the character
+         * @param pointBuy value to apply to the character
          */
-        fun setPointInputString(input: Int){
-            item.setBoughtKiPoints(input)
-            setPointInputString(input.toString())
-            _pointTotalString.update{item.totalKiPoints.value}
+        fun setPointInputString(pointBuy: Int){
+            kiStat.setBoughtKiPoints(kiPurchase = pointBuy)
+            setPointInputString(display = pointBuy.toString())
+            _pointTotalString.update{kiStat.totalKiPoints.intValue}
             setTotalPoints()
         }
 
         /**
          * Sets the point display to the desired input.
          *
-         * @param input value to display
+         * @param display value to display
          */
-        fun setPointInputString(input: String){_pointInputString.update{input}}
+        fun setPointInputString(display: String){_pointInputString.update{display}}
 
         /**
          * Sets the DP cost display to the indicated value.
          *
-         * @param input new item to display
+         * @param dpDisplay dp cost to show
          */
-        fun setPointDPLabel(input: String){_pointDPLabel.update{input}}
+        fun setPointDPLabel(dpDisplay: String){_pointDPLabel.update{dpDisplay}}
 
         /**
          * Set the bought value for ki accumulation to the inputted value.
          *
-         * @param input value to apply to the character
+         * @param accBuy value to apply to the character
          */
-        fun setAccInputString(input: Int){
-            item.setBoughtAccumulation(input)
-            setAccInputString(input.toString())
-            _accTotalString.update{item.totalAccumulation.value}
+        fun setAccInputString(accBuy: Int){
+            kiStat.setBoughtAccumulation(accPurchase = accBuy)
+            setAccInputString(display = accBuy.toString())
+            _accTotalString.update{kiStat.totalAccumulation.intValue}
             setTotalAcc()
         }
 
         /**
          * Sets the accumulation display to the desired input.
          *
-         * @param input value to display
+         * @param display value to now show
          */
-        fun setAccInputString(input: String){_accInputString.update{input}}
+        fun setAccInputString(display: String){_accInputString.update{display}}
 
-        fun setAccDPLabel(input: String){_accDPLabel.update{input}}
+        /**
+         * Defines the dp label for this item's accumulation input.
+         *
+         * @param dpDisplay value to show for this item's dp cost
+         */
+        fun setAccDPLabel(dpDisplay: String){_accDPLabel.update{dpDisplay}}
 
+        /**
+         * Updates the values of this item on opening the Ki Fragment.
+         */
         fun refreshItem(){
-            setPointInputString(item.boughtKiPoints.value.toString())
+            //update the point values for this item
+            setPointInputString(kiStat.boughtKiPoints.intValue.toString())
             setTotalPoints()
-            setAccInputString(item.boughtAccumulation.value.toString())
+
+            //update the accumulation value for this item
+            setAccInputString(kiStat.boughtAccumulation.intValue.toString())
             setTotalAcc()
         }
     }
 
     init{
         //get each ki ability and designate a checkbox to it
-        ki.kiRecord.allKiAbilities.forEach{
-            allKiAbilities += Pair(it, mutableStateOf(ki.takenAbilities.contains(it)))
+        ki.kiRecord.allKiAbilities.forEach{kiAbility ->
+            allKiAbilities += Pair(kiAbility, mutableStateOf(value = ki.takenAbilities.contains(element = kiAbility)))
         }
         updateKiTaken()
-
-        //get each technique and designate a checkbox to it
-        ki.allPrebuilts.forEach{
-            allTechniques += Pair(it, mutableStateOf(ki.takenTechniques.contains(it)))
-        }
-
-        ki.customTechniques.forEach{
-            allTechniques += Pair(it.key, mutableStateOf(it.value.value))
-        }
-
-        updateTechTaken()
         setRemainingMK()
     }
 
@@ -443,8 +423,8 @@ class KiFragmentViewModel(
      */
     fun refreshPage(){
         //refresh each ki point and accumulation item
-        allRowData.forEach{
-            it.refreshItem()
+        allRowData.forEach{kiRowData ->
+            kiRowData.refreshItem()
         }
         setRemainingMK()
     }

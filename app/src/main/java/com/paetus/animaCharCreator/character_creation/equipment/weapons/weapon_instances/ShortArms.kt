@@ -12,250 +12,263 @@ import java.io.Serializable
  * List of short weapons the character may take.
  */
 class ShortArms: Serializable {
-    val cestus = Weapon(
-        "cestus",
-        R.string.cestus,
-        25,
-        10,
-        3, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        11, -2, 15,
-        null, null,
-        R.string.cestusDesc
+    private val cestus = Weapon(
+        saveName = "cestus",
+        name = R.string.cestus,
+        damage = 25,
+        speed = 10,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 11, breakage = -2, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.cestusDesc
     )
 
     val dagger = ProjectileWeapon(
-        "dagger",
-        R.string.dagger,
-        30,
-        20,
-        3, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        10, -2, 15,
-        50,  20,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        R.string.daggerDesc
+        saveName = "dagger",
+        name = R.string.dagger,
+        damage = 30,
+        speed = 20,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 10, breakage = -2, presence = 15,
+        reloadOrRate = 50, range = 20,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.Precision), ownStrength = null,
+        description = R.string.daggerDesc
     )
 
     val hook = Weapon(
-        "hook",
-        R.string.hook,
-        30,
-        10,
-        3, null,
-        AttackType.Thrust, null, WeaponType.Short,
-        11, -2, 15,
-        null, null,
-        R.string.hookDesc
+        saveName = "hook",
+        name = R.string.hook,
+        damage = 30,
+        speed = 10,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Short,
+        fortitude = 11, breakage = -2, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.hookDesc
     )
 
     val parryDagger = ProjectileWeapon(
-        "parryDagger",
-        R.string.parryDagger,
-        30,
-        15,
-        3, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        12, 0, 20,
-        50, 15,
-        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        R.string.parryDaggerDesc
+        saveName = "parryDagger",
+        name = R.string.parryDagger,
+        damage = 30,
+        speed = 15,
+        oneHandStr = 3,
+        twoHandStr = null,
+        primaryType = AttackType.Thrust,
+        secondaryType = AttackType.Cut,
+        type = WeaponType.Short,
+        fortitude = 12,
+        breakage = 0,
+        presence = 20,
+        reloadOrRate = 50,
+        range = 15,
+        ability = listOf(WeaponAbility.WeaponTrap, WeaponAbility.Throwable, WeaponAbility.Precision),
+        ownStrength = null,
+        description = R.string.parryDaggerDesc
     )
 
     val shortSword = Weapon(
-        "shortSword",
-        R.string.shortSword,
-        40,
-        15,
-        4, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        12, 1, 20,
-        listOf(WeaponAbility.Precision), null,
-        R.string.shortSwordDesc
+        saveName = "shortSword",
+        name = R.string.shortSword,
+        damage = 40,
+        speed = 15,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 12, breakage = 1, presence = 20,
+        ability = listOf(WeaponAbility.Precision), ownStrength = null,
+        description = R.string.shortSwordDesc
     )
 
     val stiletto = ProjectileWeapon(
-        "stiletto",
-        R.string.stiletto,
-        25,
-        20,
-        3, null,
-        AttackType.Thrust, null, WeaponType.Short,
-        8, -3, 15,
-        30, 30,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Precision), null,
-        R.string.stilettoDesc
+        saveName = "stiletto",
+        name = R.string.stiletto,
+        damage = 25,
+        speed = 20,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Short,
+        fortitude = 8, breakage = -3, presence = 15,
+        reloadOrRate = 30, range = 30,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.Precision), ownStrength = null,
+        description = R.string.stilettoDesc
     )
 
-    val boomerang = ProjectileWeapon(
-        "boomerang",
-        R.string.boomerang,
-        30,
-        10,
-        4, null,
-        AttackType.Impact, AttackType.Cut, WeaponType.Short,
-        10, 0, 15,
-        60, 20,
-        listOf(WeaponAbility.Throwable, WeaponAbility.Special), null,
-        R.string.boomerangDesc
+    private val boomerang = ProjectileWeapon(
+        saveName = "boomerang",
+        name = R.string.boomerang,
+        damage = 30,
+        speed = 10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 10, breakage = 0, presence = 15,
+        reloadOrRate = 60, range = 20,
+        ability = listOf(WeaponAbility.Throwable, WeaponAbility.Special), ownStrength = null,
+        description = R.string.boomerangDesc
     )
 
     val claws = Weapon(
-        "claws",
-        R.string.claws,
-        30,
-        15,
-        4, null,
-        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
-        12, 2, 15,
-        null, null,
-        R.string.clawsDesc
+        saveName = "claws",
+        name = R.string.claws,
+        damage = 30,
+        speed = 15,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Thrust, type = WeaponType.Short,
+        fortitude = 12, breakage = 2, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.clawsDesc
     )
 
-    val katar = Weapon(
-        "katar",
-        R.string.katar,
-        40,
-        10,
-        8, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        13, 3, 25,
-        listOf(WeaponAbility.Complex, WeaponAbility.Special), null,
-        R.string.katarDesc
+    private val katar = Weapon(
+        saveName = "katar",
+        name = R.string.katar,
+        damage = 40,
+        speed = 10,
+        oneHandStr = 8, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 13, breakage = 3, presence = 25,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.Special), ownStrength = null,
+        description = R.string.katarDesc
     )
 
-    val raven = Weapon(
-        "raven",
-        R.string.raven,
-        35,
-        10,
-        4, null,
-        AttackType.Impact, AttackType.Cut, WeaponType.Short,
-        11, 2, 25,
-        listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special), null,
-        R.string.ravenDesc
+    private val raven = Weapon(
+        saveName = "raven",
+        name = R.string.raven,
+        damage = 35,
+        speed = 10,
+        oneHandStr = 4,
+        twoHandStr = null,
+        primaryType = AttackType.Impact,
+        secondaryType = AttackType.Cut,
+        type = WeaponType.Short,
+        fortitude = 11,
+        breakage = 2,
+        presence = 25,
+        ability = listOf(WeaponAbility.Complex, WeaponAbility.Precision, WeaponAbility.Special),
+        ownStrength = null,
+        description = R.string.ravenDesc
     )
 
-    val sai = Weapon(
-        "sai",
-        R.string.sai,
-        35,
-        15,
-        4, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Short,
-        12, 0, 25,
-        listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), null,
-        R.string.saiDesc
+    private val sai = Weapon(
+        saveName = "sai",
+        name = R.string.sai,
+        damage = 35,
+        speed = 15,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Short,
+        fortitude = 12, breakage = 0, presence = 25,
+        ability = listOf(WeaponAbility.WeaponTrap, WeaponAbility.Precision), ownStrength = null,
+        description = R.string.saiDesc
     )
 
-    val shuko = Weapon(
-        "shuko",
-        R.string.shuko,
-        20,
-        10,
-        4, null,
-        AttackType.Thrust, null, WeaponType.Short,
-        9, -2, 25,
-        listOf(WeaponAbility.Special), null,
-        R.string.shukoDesc
+    private val shuko = Weapon(
+        saveName = "shuko",
+        name = R.string.shuko,
+        damage = 20,
+        speed = 10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Short,
+        fortitude = 9, breakage = -2, presence = 25,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.shukoDesc
     )
 
     val shuriken = ProjectileWeapon(
-        "shuriken",
-        R.string.shuriken,
-        25,
-        20,
-        4, null,
-        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
-        10, 1, 20,
-        30, 20,
-        listOf(WeaponAbility.Throwable), null,
-        R.string.shurikenDesc
+        saveName = "shuriken",
+        name = R.string.shuriken,
+        damage = 25,
+        speed = 20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Thrust, type = WeaponType.Short,
+        fortitude = 10, breakage = 1, presence = 20,
+        reloadOrRate = 30, range = 20,
+        ability = listOf(WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.shurikenDesc
     )
 
     val tanto = Weapon(
-        "tanto",
-        R.string.tanto,
-        40,
-        20,
-        3, null,
-        AttackType.Cut, null, WeaponType.Short,
-        9, 1, 40,
-        listOf(WeaponAbility.Precision), null,
-        R.string.tantoDesc
+        saveName = "tanto",
+        name = R.string.tanto,
+        damage = 40,
+        speed = 20,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Short,
+        fortitude = 9, breakage = 1, presence = 40,
+        ability = listOf(WeaponAbility.Precision), ownStrength = null,
+        description = R.string.tantoDesc
     )
 
-    val tessen = ProjectileWeapon(
-        "tessen",
-        R.string.tessen,
-        30,
-        20,
-        4, null,
-        AttackType.Cut, AttackType.Impact, WeaponType.Short,
-        8, 0, 25,
-        40, 20,
-        listOf(WeaponAbility.Precision, WeaponAbility.Throwable), null,
-        R.string.tessenDesc
+    private val tessen = ProjectileWeapon(
+        saveName = "tessen",
+        name = R.string.tessen,
+        damage = 30,
+        speed = 20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Impact, type = WeaponType.Short,
+        fortitude = 8, breakage = 0, presence = 25,
+        reloadOrRate = 40, range = 20,
+        ability = listOf(WeaponAbility.Precision, WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.tessenDesc
     )
 
-    val tonfa = Weapon(
-        "tonfa",
-        R.string.tonfa,
-        30,
-        20,
-        4, null,
-        AttackType.Impact, null, WeaponType.Short,
-        13, 0, 25,
-        listOf(WeaponAbility.Precision), null,
-        R.string.tonfaDesc
+    private val tonfa = Weapon(
+        saveName = "tonfa",
+        name = R.string.tonfa,
+        damage = 30,
+        speed = 20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Short,
+        fortitude = 13, breakage = 0, presence = 25,
+        ability = listOf(WeaponAbility.Precision), ownStrength = null,
+        description = R.string.tonfaDesc
     )
 
     val brokenBottle = Weapon(
-        "brokenBottle",
-        R.string.brokenBottle,
-        15,
-        10,
-        3, null,
-        AttackType.Cut, AttackType.Impact, WeaponType.Short,
-        5, -3, 15,
-        null, null,
-        R.string.emptyItem
+        saveName = "brokenBottle",
+        name = R.string.brokenBottle,
+        damage = 15,
+        speed = 10,
+        oneHandStr = 3, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Impact, type = WeaponType.Short,
+        fortitude = 5, breakage = -3, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val kitchenKnife = Weapon(
-        "kitchenKnife",
-        R.string.kitchenKnife,
-        25,
-        10,
-        4, null,
-        AttackType.Cut, null, WeaponType.Short,
-        9, -1, 10,
-        null, null,
-        R.string.emptyItem
+        saveName = "kitchenKnife",
+        name = R.string.kitchenKnife,
+        damage = 25,
+        speed = 10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Short,
+        fortitude = 9, breakage = -1, presence = 10,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val pick = Weapon(
-        "pick",
-        R.string.pick,
-        40,
-        -20,
-        5, null,
-        AttackType.Thrust, null, WeaponType.Short,
-        10, 3, 15,
-        null, null,
-        R.string.emptyItem
+        saveName = "pick",
+        name = R.string.pick,
+        damage = 40,
+        speed = -20,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = null, type = WeaponType.Short,
+        fortitude = 10, breakage = 3, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val sickle = Weapon(
-        "sickle",
-        R.string.sickle,
-        35,
-        -10,
-        4, null,
-        AttackType.Cut, AttackType.Thrust, WeaponType.Short,
-        8, 0, 15,
-        null, null,
-        R.string.emptyItem
+        saveName = "sickle",
+        name = R.string.sickle,
+        damage = 35,
+        speed = -10,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Thrust, type = WeaponType.Short,
+        fortitude = 8, breakage = 0, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val shortArms = listOf(boomerang, brokenBottle, cestus, claws, dagger, hook, katar, kitchenKnife,

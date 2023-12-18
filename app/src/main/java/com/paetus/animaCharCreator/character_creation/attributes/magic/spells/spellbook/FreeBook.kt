@@ -3,189 +3,189 @@ package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.s
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with no element.
  */
 class FreeBook{
     private val tieSpell = FreeSpell(
-        "tie",
-        R.string.tie,
-        true,
-        5,
-        40,
-        R.string.tieDesc,
-        R.string.tieEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction, Element.Illusion)
+        saveName = "tie",
+        name = R.string.tie,
+        isActive = true,
+        level = 5,
+        zCost = 40,
+        effect = R.string.tieDesc,
+        addedEffect = R.string.tieEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction, Element.Illusion)
     )
 
     private val createFire = FreeSpell(
-        "createFireFree",
-        R.string.createFireFree,
-        true,
-        5,
-        40,
-        R.string.createFireFreeDesc,
-        R.string.createFireFreeEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Water)
+        saveName = "createFireFree",
+        name = R.string.createFireFree,
+        isActive = true,
+        level = 5,
+        zCost = 40,
+        effect = R.string.createFireFreeDesc,
+        addedEffect = R.string.createFireFreeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Water)
     )
 
     private val opening = FreeSpell(
-        "opening",
-        R.string.opening,
-        true,
-        5,
-        30,
-        R.string.openingDesc,
-        R.string.openingEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction, Element.Fire)
+        saveName = "opening",
+        name = R.string.opening,
+        isActive = true,
+        level = 5,
+        zCost = 30,
+        effect = R.string.openingDesc,
+        addedEffect = R.string.openingEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction, Element.Fire)
     )
 
     private val moveObjects = FreeSpell(
-        "moveObjects",
-        R.string.moveObjects,
-        true,
-        5,
-        30,
-        R.string.moveObjectsDesc,
-        R.string.moveObjectsEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction, Element.Earth)
+        saveName = "moveObjects",
+        name = R.string.moveObjects,
+        isActive = true,
+        level = 5,
+        zCost = 30,
+        effect = R.string.moveObjectsDesc,
+        addedEffect = R.string.moveObjectsEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction, Element.Earth)
     )
 
     private val stopFall = FreeSpell(
-        "stopFall",
-        R.string.stopFall,
-        false,
-        5,
-        40,
-        R.string.stopFallDesc,
-        R.string.stopFallEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "stopFall",
+        name = R.string.stopFall,
+        isActive = false,
+        level = 5,
+        zCost = 40,
+        effect = R.string.stopFallDesc,
+        addedEffect = R.string.stopFallEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val cleanliness = FreeSpell(
-        "cleanliness",
-        R.string.cleanliness,
-        true,
-        5,
-        30,
-        R.string.cleanlinessDesc,
-        R.string.cleanlinessEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "cleanliness",
+        name = R.string.cleanliness,
+        isActive = true,
+        level = 5,
+        zCost = 30,
+        effect = R.string.cleanlinessDesc,
+        addedEffect = R.string.cleanlinessEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val magicDetection = FreeSpell(
-        "detectMag",
-        R.string.detectMag,
-        true,
-        5,
-        40,
-        R.string.detectMagDesc,
-        R.string.detectMagEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Dark)
+        saveName = "detectMag",
+        name = R.string.detectMag,
+        isActive = true,
+        level = 5,
+        zCost = 40,
+        effect = R.string.detectMagDesc,
+        addedEffect = R.string.detectMagEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val createMusic = FreeSpell(
-        "createMusic",
-        R.string.createMusic,
-        true,
-        5,
-        40,
-        R.string.createMusicDesc,
-        R.string.createMusicEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "createMusic",
+        name = R.string.createMusic,
+        isActive = true,
+        level = 5,
+        zCost = 40,
+        effect = R.string.createMusicDesc,
+        addedEffect = R.string.createMusicEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val undoWriting = FreeSpell(
-        "undoWriting",
-        R.string.undoWriting,
-        true,
-        5,
-        40,
-        R.string.undoWritingDesc,
-        R.string.undoWritingEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "undoWriting",
+        name = R.string.undoWriting,
+        isActive = true,
+        level = 5,
+        zCost = 40,
+        effect = R.string.undoWritingDesc,
+        addedEffect = R.string.undoWritingEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val staticMessage = FreeSpell(
-        "staticMessage",
-        R.string.staticMessage,
-        true,
-        5,
-        30,
-        R.string.staticMessageDesc,
-        R.string.staticMessageEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "staticMessage",
+        name = R.string.staticMessage,
+        isActive = true,
+        level = 5,
+        zCost = 30,
+        effect = R.string.staticMessageDesc,
+        addedEffect = R.string.staticMessageEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val jump = FreeSpell(
-        "jump",
-        R.string.jump,
-        true,
-        5,
-        50,
-        R.string.jumpDesc,
-        R.string.jumpEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "jump",
+        name = R.string.jump,
+        isActive = true,
+        level = 5,
+        zCost = 50,
+        effect = R.string.jumpDesc,
+        addedEffect = R.string.jumpEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val changeColor = FreeSpell(
-        "changeColor",
-        R.string.changeColor,
-        true,
-        5,
-        30,
-        R.string.changeColorDesc,
-        R.string.changeColorEff,
-        10,
-        20,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Destruction)
+        saveName = "changeColor",
+        name = R.string.changeColor,
+        isActive = true,
+        level = 5,
+        zCost = 30,
+        effect = R.string.changeColorDesc,
+        addedEffect = R.string.changeColorEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     val firstBook = listOf(
@@ -204,183 +204,183 @@ class FreeBook{
     )
 
     private val createSounds = FreeSpell(
-        "createSounds",
-        R.string.createSounds,
-        true,
-        15,
-        40,
-        R.string.createSoundsDesc,
-        R.string.createSoundsEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "createSounds",
+        name = R.string.createSounds,
+        isActive = true,
+        level = 15,
+        zCost = 40,
+        effect = R.string.createSoundsDesc,
+        addedEffect = R.string.createSoundsEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val fog = FreeSpell(
-        "fog",
-        R.string.fog,
-        true,
-        15,
-        60,
-        R.string.fogDesc,
-        R.string.fogEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Fire)
+        saveName = "fog",
+        name = R.string.fog,
+        isActive = true,
+        level = 15,
+        zCost = 60,
+        effect = R.string.fogDesc,
+        addedEffect = R.string.fogEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Fire)
     )
 
     private val breatheLiquids = FreeSpell(
-        "breatheLiquids",
-        R.string.breatheLiquids,
-        true,
-        15,
-        40,
-        R.string.breatheLiquidsDesc,
-        R.string.breatheLiquidsEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth, Element.Fire)
+        saveName = "breatheLiquids",
+        name = R.string.breatheLiquids,
+        isActive = true,
+        level = 15,
+        zCost = 40,
+        effect = R.string.breatheLiquidsDesc,
+        addedEffect = R.string.breatheLiquidsEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth, Element.Fire)
     )
 
     private val enchantSpell = FreeSpell(
-        "enchant",
-        R.string.enchant,
-        true,
-        15,
-        50,
-        R.string.enchantDesc,
-        R.string.enchantEff,
-        10,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "enchant",
+        name = R.string.enchant,
+        isActive = true,
+        level = 15,
+        zCost = 50,
+        effect = R.string.enchantDesc,
+        addedEffect = R.string.enchantEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val recreateImage = FreeSpell(
-        "recreateImage",
-        R.string.recreateImage,
-        true,
-        15,
-        40,
-        R.string.recreateImageDesc,
-        R.string.recreateImageEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "recreateImage",
+        name = R.string.recreateImage,
+        isActive = true,
+        level = 15,
+        zCost = 40,
+        effect = R.string.recreateImageDesc,
+        addedEffect = R.string.recreateImageEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val repair = FreeSpell(
-        "repair",
-        R.string.repair,
-        true,
-        15,
-        60,
-        R.string.repairDesc,
-        R.string.repairEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction, Element.Illusion)
+        saveName = "repair",
+        name = R.string.repair,
+        isActive = true,
+        level = 15,
+        zCost = 60,
+        effect = R.string.repairDesc,
+        addedEffect = R.string.repairEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction, Element.Illusion)
     )
 
     private val climb = FreeSpell(
-        "climb",
-        R.string.climb,
-        true,
-        15,
-        50,
-        R.string.climbDesc,
-        R.string.climbEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Air)
+        saveName = "climb",
+        name = R.string.climb,
+        isActive = true,
+        level = 15,
+        zCost = 50,
+        effect = R.string.climbDesc,
+        addedEffect = R.string.climbEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Air)
     )
 
     private val passWithoutTrace = FreeSpell(
-        "passWithoutTrace",
-        R.string.passWithoutTrace,
-        true,
-        15,
-        60,
-        R.string.passWithoutTraceDesc,
-        R.string.passWithoutTraceEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Light)
+        saveName = "passWithoutTrace",
+        name = R.string.passWithoutTrace,
+        isActive = true,
+        level = 15,
+        zCost = 60,
+        effect = R.string.passWithoutTraceDesc,
+        addedEffect = R.string.passWithoutTraceEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Light)
     )
 
     private val slipperyArea = FreeSpell(
-        "slipperyArea",
-        R.string.slipperyArea,
-        true,
-        15,
-        50,
-        R.string.slipperyAreaDesc,
-        R.string.slipperyAreaEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Fire)
+        saveName = "slipperyArea",
+        name = R.string.slipperyArea,
+        isActive = true,
+        level = 15,
+        zCost = 50,
+        effect = R.string.slipperyAreaDesc,
+        addedEffect = R.string.slipperyAreaEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Fire)
     )
 
     private val attractMinorVermin = FreeSpell(
-        "attractVermin",
-        R.string.attractVermin,
-        true,
-        15,
-        30,
-        R.string.attractVerminDesc,
-        R.string.attractVerminEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "attractVermin",
+        name = R.string.attractVermin,
+        isActive = true,
+        level = 15,
+        zCost = 30,
+        effect = R.string.attractVerminDesc,
+        addedEffect = R.string.attractVerminEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val infiniteBag = FreeSpell(
-        "infiniteBag",
-        R.string.infiniteBag,
-        true,
-        15,
-        40,
-        R.string.infiniteBagDesc,
-        R.string.infiniteBagEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "infiniteBag",
+        name = R.string.infiniteBag,
+        isActive = true,
+        level = 15,
+        zCost = 40,
+        effect = R.string.infiniteBagDesc,
+        addedEffect = R.string.infiniteBagEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val inhumanity = FreeSpell(
-        "inhumanity",
-        R.string.inhumanity,
-        true,
-        15,
-        50,
-        R.string.inhumanitySpellDesc,
-        R.string.inhumanitySpellEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "inhumanity",
+        name = R.string.inhumanity,
+        isActive = true,
+        level = 15,
+        zCost = 50,
+        effect = R.string.inhumanitySpellDesc,
+        addedEffect = R.string.inhumanitySpellEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     val secondBook = listOf(
@@ -399,183 +399,183 @@ class FreeBook{
     )
 
     private val closeWithMagic = FreeSpell(
-        "magicClose",
-        R.string.magicClose,
-        true,
-        25,
-        100,
-        R.string.magicCloseDesc,
-        R.string.magicCloseEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "magicClose",
+        name = R.string.magicClose,
+        isActive = true,
+        level = 25,
+        zCost = 100,
+        effect = R.string.magicCloseDesc,
+        addedEffect = R.string.magicCloseEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val causeFear = FreeSpell(
-        "causeFear",
-        R.string.causeFear,
-        true,
-        25,
-        100,
-        R.string.causeFearDesc,
-        R.string.causeFearEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Light)
+        saveName = "causeFear",
+        name = R.string.causeFear,
+        isActive = true,
+        level = 25,
+        zCost = 100,
+        effect = R.string.causeFearDesc,
+        addedEffect = R.string.causeFearEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Light)
     )
 
     private val understandLanguage = FreeSpell(
-        "understandLanguage",
-        R.string.understandLanguage,
-        true,
-        25,
-        100,
-        R.string.understandLanguageDesc,
-        R.string.understandLanguageEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "understandLanguage",
+        name = R.string.understandLanguage,
+        isActive = true,
+        level = 25,
+        zCost = 100,
+        effect = R.string.understandLanguageDesc,
+        addedEffect = R.string.understandLanguageEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val net = FreeSpell(
-        "net",
-        R.string.net,
-        true,
-        25,
-        60,
-        R.string.netDesc,
-        R.string.netEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "net",
+        name = R.string.net,
+        isActive = true,
+        level = 25,
+        zCost = 60,
+        effect = R.string.netDesc,
+        addedEffect = R.string.netEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val serenity = FreeSpell(
-        "serenity",
-        R.string.serenity,
-        true,
-        25,
-        50,
-        R.string.serenityDesc,
-        R.string.serenityEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Fire, Element.Dark)
+        saveName = "serenity",
+        name = R.string.serenity,
+        isActive = true,
+        level = 25,
+        zCost = 50,
+        effect = R.string.serenityDesc,
+        addedEffect = R.string.serenityEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Fire, Element.Dark)
     )
 
     private val magicShield = FreeSpell(
-        "magicShield",
-        R.string.magicShield,
-        false,
-        25,
-        60,
-        R.string.magicShieldDesc,
-        R.string.magicShieldEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Defense),
-        listOf()
+        saveName = "magicShield",
+        name = R.string.magicShield,
+        isActive = false,
+        level = 25,
+        zCost = 60,
+        effect = R.string.magicShieldDesc,
+        addedEffect = R.string.magicShieldEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense),
+        forbiddenElements = listOf()
     )
 
     private val magicalProtection = FreeSpell(
-        "magProtection",
-        R.string.magProtection,
-        true,
-        25,
-        60,
-        R.string.magProtectionDesc,
-        R.string.magProtectionEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "magProtection",
+        name = R.string.magProtection,
+        isActive = true,
+        level = 25,
+        zCost = 60,
+        effect = R.string.magProtectionDesc,
+        addedEffect = R.string.magProtectionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val clouds = FreeSpell(
-        "clouds",
-        R.string.clouds,
-        true,
-        25,
-        80,
-        R.string.cloudsDesc,
-        R.string.cloudsEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Fire, Element.Earth)
+        saveName = "clouds",
+        name = R.string.clouds,
+        isActive = true,
+        level = 25,
+        zCost = 80,
+        effect = R.string.cloudsDesc,
+        addedEffect = R.string.cloudsEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Fire, Element.Earth)
     )
 
     private val sendMessage = FreeSpell(
-        "sendMessage",
-        R.string.sendMessage,
-        true,
-        25,
-        80,
-        R.string.sendMessageDesc,
-        R.string.sendMessageEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "sendMessage",
+        name = R.string.sendMessage,
+        isActive = true,
+        level = 25,
+        zCost = 80,
+        effect = R.string.sendMessageDesc,
+        addedEffect = R.string.sendMessageEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val speed = FreeSpell(
-        "speedFree",
-        R.string.speedFree,
-        true,
-        25,
-        80,
-        R.string.speedFreeDesc,
-        R.string.speedFreeEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "speedFree",
+        name = R.string.speedFree,
+        isActive = true,
+        level = 25,
+        zCost = 80,
+        effect = R.string.speedFreeDesc,
+        addedEffect = R.string.speedFreeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val levitation = FreeSpell(
-        "levitation",
-        R.string.levitation,
-        true,
-        25,
-        50,
-        R.string.levitationSpellDesc,
-        R.string.levitationSpellEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "levitation",
+        name = R.string.levitation,
+        isActive = true,
+        level = 25,
+        zCost = 50,
+        effect = R.string.levitationSpellDesc,
+        addedEffect = R.string.levitationSpellEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val contraceptiveProtection = FreeSpell(
-        "contraceptiveProtection",
-        R.string.contraceptiveProtection,
-        true,
-        25,
-        60,
-        R.string.contraceptiveProtectionDesc,
-        R.string.contraceptiveProtectionEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "contraceptiveProtection",
+        name = R.string.contraceptiveProtection,
+        isActive = true,
+        level = 25,
+        zCost = 60,
+        effect = R.string.contraceptiveProtectionDesc,
+        addedEffect = R.string.contraceptiveProtectionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     val thirdBook = listOf(
@@ -594,183 +594,183 @@ class FreeBook{
     )
 
     private val painResistance = FreeSpell(
-        "painResistance",
-        R.string.painResistance,
-        true,
-        35,
-        60,
-        R.string.painResistanceDesc,
-        R.string.painResistanceEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Essence)
+        saveName = "painResistance",
+        name = R.string.painResistance,
+        isActive = true,
+        level = 35,
+        zCost = 60,
+        effect = R.string.painResistanceDesc,
+        addedEffect = R.string.painResistanceEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Essence)
     )
 
     private val trueClose = FreeSpell(
-        "trueClose",
-        R.string.trueClose,
-        true,
-        35,
-        80,
-        R.string.trueCloseDesc,
-        R.string.trueCloseEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "trueClose",
+        name = R.string.trueClose,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.trueCloseDesc,
+        addedEffect = R.string.trueCloseEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val purification = FreeSpell(
-        "purification",
-        R.string.purification,
-        true,
-        35,
-        80,
-        R.string.purificationDesc,
-        R.string.purificationEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "purification",
+        name = R.string.purification,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.purificationDesc,
+        addedEffect = R.string.purificationEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val extendPresence = FreeSpell(
-        "extendPresence",
-        R.string.extendPresence,
-        true,
-        35,
-        100,
-        R.string.extendPresenceDesc,
-        R.string.extendPresenceEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "extendPresence",
+        name = R.string.extendPresence,
+        isActive = true,
+        level = 35,
+        zCost = 100,
+        effect = R.string.extendPresenceDesc,
+        addedEffect = R.string.extendPresenceEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val alterSize = FreeSpell(
-        "alterSize",
-        R.string.alterSize,
-        true,
-        35,
-        80,
-        R.string.alterSizeDesc,
-        R.string.alterSizeEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Destruction)
+        saveName = "alterSize",
+        name = R.string.alterSize,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.alterSizeDesc,
+        addedEffect = R.string.alterSizeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val invokeAggressiveness = FreeSpell(
-        "invokeAggressive",
-        R.string.invokeAggressive,
-        true,
-        35,
-        80,
-        R.string.invokeAggressiveDesc,
-        R.string.invokeAggressiveEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Light)
+        saveName = "invokeAggressive",
+        name = R.string.invokeAggressive,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.invokeAggressiveDesc,
+        addedEffect = R.string.invokeAggressiveEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Light)
     )
 
     private val outlookChange = FreeSpell(
-        "outlookChange",
-        R.string.outlookChange,
-        true,
-        35,
-        80,
-        R.string.outlookChangeDesc,
-        R.string.outlookChangeEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect, SpellType.Spiritual),
-        listOf(Element.Destruction)
+        saveName = "outlookChange",
+        name = R.string.outlookChange,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.outlookChangeDesc,
+        addedEffect = R.string.outlookChangeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val healDiseases = FreeSpell(
-        "healDisease",
-        R.string.healDisease,
-        true,
-        35,
-        80,
-        R.string.healDiseaseDesc,
-        R.string.healDiseaseEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "healDisease",
+        name = R.string.healDisease,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.healDiseaseDesc,
+        addedEffect = R.string.healDiseaseEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val magicBeam = FreeSpell(
-        "magicBeam",
-        R.string.magBeam,
-        true,
-        35,
-        60,
-        R.string.magBeamDesc,
-        R.string.magBeamEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack),
-        listOf(Element.Creation)
+        saveName = "magicBeam",
+        name = R.string.magBeam,
+        isActive = true,
+        level = 35,
+        zCost = 60,
+        effect = R.string.magBeamDesc,
+        addedEffect = R.string.magBeamEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val eliminateDreams = FreeSpell(
-        "eliminateDream",
-        R.string.eliminateDream,
-        true,
-        35,
-        80,
-        R.string.eliminateDreamDesc,
-        R.string.eliminateDreamEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Light, Element.Dark)
+        saveName = "eliminateDream",
+        name = R.string.eliminateDream,
+        isActive = true,
+        level = 35,
+        zCost = 80,
+        effect = R.string.eliminateDreamDesc,
+        addedEffect = R.string.eliminateDreamEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Light, Element.Dark)
     )
 
     private val senseFeelings = FreeSpell(
-        "senseFeelings",
-        R.string.senseFeelings,
-        true,
-        35,
-        60,
-        R.string.senseFeelingsDesc,
-        R.string.senseFeelingsEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Detection),
-        listOf()
+        saveName = "senseFeelings",
+        name = R.string.senseFeelings,
+        isActive = true,
+        level = 35,
+        zCost = 60,
+        effect = R.string.senseFeelingsDesc,
+        addedEffect = R.string.senseFeelingsEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Detection),
+        forbiddenElements = listOf()
     )
 
     private val eliminateSpells = FreeSpell(
-        "eliminateSpells",
-        R.string.spellEliminate,
-        true,
-        35,
-        150,
-        R.string.spellEliminateDesc,
-        R.string.spellEliminateEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Creation)
+        saveName = "eliminateSpells",
+        name = R.string.spellEliminate,
+        isActive = true,
+        level = 35,
+        zCost = 150,
+        effect = R.string.spellEliminateDesc,
+        addedEffect = R.string.spellEliminateEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     val fourthBook = listOf(
@@ -789,183 +789,183 @@ class FreeBook{
     )
 
     private val friendship = FreeSpell(
-        "friendship",
-        R.string.friendship,
-        true,
-        45,
-        80,
-        R.string.friendshipDesc,
-        R.string.friendshipEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Dark)
+        saveName = "friendship",
+        name = R.string.friendship,
+        isActive = true,
+        level = 45,
+        zCost = 80,
+        effect = R.string.friendshipDesc,
+        addedEffect = R.string.friendshipEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val quickTransport = FreeSpell(
-        "quickTransport",
-        R.string.quickTransport,
-        true,
-        45,
-        60,
-        R.string.quickTransportDesc,
-        R.string.quickTransportEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "quickTransport",
+        name = R.string.quickTransport,
+        isActive = true,
+        level = 45,
+        zCost = 60,
+        effect = R.string.quickTransportDesc,
+        addedEffect = R.string.quickTransportEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val sendDreams = FreeSpell(
-        "sendDreams",
-        R.string.sendDreams,
-        true,
-        45,
-        120,
-        R.string.sendDreamsDesc,
-        R.string.sendDreamsEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic),
-        listOf()
+        saveName = "sendDreams",
+        name = R.string.sendDreams,
+        isActive = true,
+        level = 45,
+        zCost = 120,
+        effect = R.string.sendDreamsDesc,
+        addedEffect = R.string.sendDreamsEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     private val readMinds = FreeSpell(
-        "readMinds",
-        R.string.mindRead,
-        true,
-        45,
-        100,
-        R.string.mindReadDesc,
-        R.string.mindReadEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Dark)
+        saveName = "readMinds",
+        name = R.string.mindRead,
+        isActive = true,
+        level = 45,
+        zCost = 100,
+        effect = R.string.mindReadDesc,
+        addedEffect = R.string.mindReadEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val cancelMagic = FreeSpell(
-        "cancelMagic",
-        R.string.cancelMagic,
-        true,
-        45,
-        150,
-        R.string.cancelMagicDesc,
-        R.string.cancelMagicEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Creation)
+        saveName = "cancelMagic",
+        name = R.string.cancelMagic,
+        isActive = true,
+        level = 45,
+        zCost = 150,
+        effect = R.string.cancelMagicDesc,
+        addedEffect = R.string.cancelMagicEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val curse = FreeSpell(
-        "curse",
-        R.string.curse,
-        true,
-        45,
-        200,
-        R.string.curseDesc,
-        R.string.curseEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf()
+        saveName = "curse",
+        name = R.string.curse,
+        isActive = true,
+        level = 45,
+        zCost = 200,
+        effect = R.string.curseDesc,
+        addedEffect = R.string.curseEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf()
     )
 
     private val absorbInfo = FreeSpell(
-        "absorbInfo",
-        R.string.absorbInfo,
-        true,
-        45,
-        50,
-        R.string.absorbInfoDesc,
-        R.string.absorbInfoEff,
-        20,
-        5,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "absorbInfo",
+        name = R.string.absorbInfo,
+        isActive = true,
+        level = 45,
+        zCost = 50,
+        effect = R.string.absorbInfoDesc,
+        addedEffect = R.string.absorbInfoEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val showInvisible = FreeSpell(
-        "showInvisible",
-        R.string.showInvisible,
-        true,
-        45,
-        60,
-        R.string.showInvisibleDesc,
-        R.string.showInvisibleEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Dark)
+        saveName = "showInvisible",
+        name = R.string.showInvisible,
+        isActive = true,
+        level = 45,
+        zCost = 60,
+        effect = R.string.showInvisibleDesc,
+        addedEffect = R.string.showInvisibleEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val undo = FreeSpell(
-        "undo",
-        R.string.undo,
-        true,
-        45,
-        100,
-        R.string.undoDesc,
-        R.string.undoEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "undo",
+        name = R.string.undo,
+        isActive = true,
+        level = 45,
+        zCost = 100,
+        effect = R.string.undoDesc,
+        addedEffect = R.string.undoEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val causeSickness = FreeSpell(
-        "causeSickness",
-        R.string.causeSickness,
-        true,
-        45,
-        60,
-        R.string.causeSicknessDesc,
-        R.string.causeSicknessEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Illusion, Element.Water)
+        saveName = "causeSickness",
+        name = R.string.causeSickness,
+        isActive = true,
+        level = 45,
+        zCost = 60,
+        effect = R.string.causeSicknessDesc,
+        addedEffect = R.string.causeSicknessEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Illusion, Element.Water)
     )
 
     private val slow = FreeSpell(
-        "slow",
-        R.string.slow,
-        true,
-        45,
-        60,
-        R.string.slowDesc,
-        R.string.slowEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Air)
+        saveName = "slow",
+        name = R.string.slow,
+        isActive = true,
+        level = 45,
+        zCost = 60,
+        effect = R.string.slowDesc,
+        addedEffect = R.string.slowEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Air)
     )
 
     private val alterEnergy = FreeSpell(
-        "alterEnergy",
-        R.string.alterEnergy,
-        true,
-        45,
-        100,
-        R.string.alterEnergyDesc,
-        R.string.alterEnergyEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Destruction)
+        saveName = "alterEnergy",
+        name = R.string.alterEnergy,
+        isActive = true,
+        level = 45,
+        zCost = 100,
+        effect = R.string.alterEnergyDesc,
+        addedEffect = R.string.alterEnergyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     val fifthBook = listOf(
@@ -984,183 +984,183 @@ class FreeBook{
     )
 
     private val blindness = FreeSpell(
-        "blindness",
-        R.string.blindness,
-        true,
-        55,
-        80,
-        R.string.blindnessDesc,
-        R.string.blindnessEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Creation, Element.Light)
+        saveName = "blindness",
+        name = R.string.blindness,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.blindnessDesc,
+        addedEffect = R.string.blindnessEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Creation, Element.Light)
     )
 
     private val deafness = FreeSpell(
-        "deafness",
-        R.string.deafnessSpell,
-        true,
-        55,
-        80,
-        R.string.deafnessSpellDesc,
-        R.string.deafnessSpellEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Creation)
+        saveName = "deafness",
+        name = R.string.deafnessSpell,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.deafnessSpellDesc,
+        addedEffect = R.string.deafnessSpellEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val muteness = FreeSpell(
-        "muteness",
-        R.string.muteness,
-        true,
-        55,
-        80,
-        R.string.mutenessDesc,
-        R.string.mutenessEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Creation)
+        saveName = "muteness",
+        name = R.string.muteness,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.mutenessDesc,
+        addedEffect = R.string.mutenessEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val healWounds = FreeSpell(
-        "healWounds",
-        R.string.healWounds,
-        true,
-        55,
-        100,
-        R.string.healWoundsDesc,
-        R.string.healWoundsEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "healWounds",
+        name = R.string.healWounds,
+        isActive = true,
+        level = 55,
+        zCost = 100,
+        effect = R.string.healWoundsDesc,
+        addedEffect = R.string.healWoundsEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val visualizeCartography = FreeSpell(
-        "visualCartography",
-        R.string.visualCartography,
-        true,
-        55,
-        60,
-        R.string.visualCartographyDesc,
-        R.string.visualCartographyEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Dark)
+        saveName = "visualCartography",
+        name = R.string.visualCartography,
+        isActive = true,
+        level = 55,
+        zCost = 60,
+        effect = R.string.visualCartographyDesc,
+        addedEffect = R.string.visualCartographyEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val sleep = FreeSpell(
-        "sleep",
-        R.string.sleep,
-        true,
-        55,
-        80,
-        R.string.sleepDesc,
-        R.string.sleepEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf()
+        saveName = "sleep",
+        name = R.string.sleep,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.sleepDesc,
+        addedEffect = R.string.sleepEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf()
     )
 
     private val walkOnWalls = FreeSpell(
-        "walkOnWalls",
-        R.string.walkOnWalls,
-        true,
-        55,
-        60,
-        R.string.walkOnWallsDesc,
-        R.string.walkOnWallsEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Water)
+        saveName = "walkOnWalls",
+        name = R.string.walkOnWalls,
+        isActive = true,
+        level = 55,
+        zCost = 60,
+        effect = R.string.walkOnWallsDesc,
+        addedEffect = R.string.walkOnWallsEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Water)
     )
 
     private val magicSaddle = FreeSpell(
-        "magSaddle",
-        R.string.magSaddle,
-        true,
-        55,
-        100,
-        R.string.magSaddleDesc,
-        R.string.magSaddleEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Illusion)
+        saveName = "magSaddle",
+        name = R.string.magSaddle,
+        isActive = true,
+        level = 55,
+        zCost = 100,
+        effect = R.string.magSaddleDesc,
+        addedEffect = R.string.magSaddleEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Illusion)
     )
 
     private val bodyMerge = FreeSpell(
-        "bodyMerge",
-        R.string.bodyMerge,
-        true,
-        55,
-        60,
-        R.string.bodyMergeDesc,
-        R.string.bodyMergeEff,
-        10,
-        5,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "bodyMerge",
+        name = R.string.bodyMerge,
+        isActive = true,
+        level = 55,
+        zCost = 60,
+        effect = R.string.bodyMergeDesc,
+        addedEffect = R.string.bodyMergeEff,
+        zMax = 10,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val eliminateFatigue = FreeSpell(
-        "eliminateFatigue",
-        R.string.eliminateFatigue,
-        true,
-        55,
-        80,
-        R.string.eliminateFatigueDesc,
-        R.string.eliminateFatigueEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Dark)
+        saveName = "eliminateFatigue",
+        name = R.string.eliminateFatigue,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.eliminateFatigueDesc,
+        addedEffect = R.string.eliminateFatigueEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val acidCloud = FreeSpell(
-        "acidCloud",
-        R.string.acidCloud,
-        true,
-        55,
-        100,
-        R.string.acidCloudDesc,
-        R.string.acidCloudEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Earth)
+        saveName = "acidCloud",
+        name = R.string.acidCloud,
+        isActive = true,
+        level = 55,
+        zCost = 100,
+        effect = R.string.acidCloudDesc,
+        addedEffect = R.string.acidCloudEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val leaveUnprotected = FreeSpell(
-        "leaveUnprotected",
-        R.string.leaveUnprotected,
-        true,
-        55,
-        80,
-        R.string.leaveUnprotectedDesc,
-        R.string.leaveUnprotectedEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Creation)
+        saveName = "leaveUnprotected",
+        name = R.string.leaveUnprotected,
+        isActive = true,
+        level = 55,
+        zCost = 80,
+        effect = R.string.leaveUnprotectedDesc,
+        addedEffect = R.string.leaveUnprotectedEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     val sixthBook = listOf(
@@ -1179,183 +1179,183 @@ class FreeBook{
     )
 
     private val increasePsyChar = FreeSpell(
-        "increasePsyChar",
-        R.string.psyCharIncrease,
-        true,
-        65,
-        100,
-        R.string.psyCharIncreaseDesc,
-        R.string.psyCharIncreaseEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "increasePsyChar",
+        name = R.string.psyCharIncrease,
+        isActive = true,
+        level = 65,
+        zCost = 100,
+        effect = R.string.psyCharIncreaseDesc,
+        addedEffect = R.string.psyCharIncreaseEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val magicalWeapon = FreeSpell(
-        "magWeapon",
-        R.string.magWeapon,
-        true,
-        65,
-        140,
-        R.string.magWeaponDesc,
-        R.string.magWeaponEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "magWeapon",
+        name = R.string.magWeapon,
+        isActive = true,
+        level = 65,
+        zCost = 140,
+        effect = R.string.magWeaponDesc,
+        addedEffect = R.string.magWeaponEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val increasePhysChar = FreeSpell(
-        "physCharIncrease",
-        R.string.physCharIncrease,
-        true,
-        65,
-        80,
-        R.string.physCharIncreaseDesc,
-        R.string.physCharIncreaseEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "physCharIncrease",
+        name = R.string.physCharIncrease,
+        isActive = true,
+        level = 65,
+        zCost = 80,
+        effect = R.string.physCharIncreaseDesc,
+        addedEffect = R.string.physCharIncreaseEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val minorAlteration = FreeSpell(
-        "minorAlteration",
-        R.string.minorAlteration,
-        true,
-        65,
-        80,
-        R.string.minorAlterationDesc,
-        R.string.minorAlterationEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "minorAlteration",
+        name = R.string.minorAlteration,
+        isActive = true,
+        level = 65,
+        zCost = 80,
+        effect = R.string.minorAlterationDesc,
+        addedEffect = R.string.minorAlterationEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val bodyToMagic = FreeSpell(
-        "bodyToMagic",
-        R.string.bodyToMagic,
-        true,
-        65,
-        100,
-        R.string.bodyToMagicDesc,
-        R.string.bodyToMagicEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "bodyToMagic",
+        name = R.string.bodyToMagic,
+        isActive = true,
+        level = 65,
+        zCost = 100,
+        effect = R.string.bodyToMagicDesc,
+        addedEffect = R.string.bodyToMagicEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val paralyze = FreeSpell(
-        "paralyze",
-        R.string.paralyze,
-        true,
-        65,
-        140,
-        R.string.paralyzeDesc,
-        R.string.paralyzeEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Air)
+        saveName = "paralyze",
+        name = R.string.paralyze,
+        isActive = true,
+        level = 65,
+        zCost = 140,
+        effect = R.string.paralyzeDesc,
+        addedEffect = R.string.paralyzeEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Air)
     )
 
     private val createEmotion = FreeSpell(
-        "createEmotion",
-        R.string.createEmotion,
-        true,
-        65,
-        160,
-        R.string.createEmotionDesc,
-        R.string.createEmotionEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Illusion)
+        saveName = "createEmotion",
+        name = R.string.createEmotion,
+        isActive = true,
+        level = 65,
+        zCost = 160,
+        effect = R.string.createEmotionDesc,
+        addedEffect = R.string.createEmotionEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Illusion)
     )
 
     private val forgetfulness = FreeSpell(
-        "forgetfulness",
-        R.string.forgetfulnessFree,
-        true,
-        65,
-        160,
-        R.string.forgetfulnessFreeEff,
-        R.string.forgetfulnessFreeEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Essence)
+        saveName = "forgetfulness",
+        name = R.string.forgetfulnessFree,
+        isActive = true,
+        level = 65,
+        zCost = 160,
+        effect = R.string.forgetfulnessFreeEff,
+        addedEffect = R.string.forgetfulnessFreeEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Essence)
     )
 
     private val weakness = FreeSpell(
-        "weakness",
-        R.string.weakness,
-        true,
-        65,
-        80,
-        R.string.weaknessDesc,
-        R.string.weaknessEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Creation)
+        saveName = "weakness",
+        name = R.string.weakness,
+        isActive = true,
+        level = 65,
+        zCost = 80,
+        effect = R.string.weaknessDesc,
+        addedEffect = R.string.weaknessEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val resistSpell = FreeSpell(
-        "resist",
-        R.string.resist,
-        false,
-        65,
-        80,
-        R.string.resistanceDesc,
-        R.string.resistEff,
-        10,
-        5,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "resist",
+        name = R.string.resist,
+        isActive = false,
+        level = 65,
+        zCost = 80,
+        effect = R.string.resistanceDesc,
+        addedEffect = R.string.resistEff,
+        zMax = 10,
+        maintenance = 5,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val plague = FreeSpell(
-        "plague",
-        R.string.plague,
-        true,
-        65,
-        140,
-        R.string.plagueDesc,
-        R.string.plagueEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic),
-        listOf(Element.Illusion)
+        saveName = "plague",
+        name = R.string.plague,
+        isActive = true,
+        level = 65,
+        zCost = 140,
+        effect = R.string.plagueDesc,
+        addedEffect = R.string.plagueEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Illusion)
     )
 
     private val rejection = FreeSpell(
-        "rejection",
-        R.string.rejection,
-        true,
-        65,
-        80,
-        R.string.rejectionDesc,
-        R.string.rejectionEff,
-        10,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Essence, Element.Water)
+        saveName = "rejection",
+        name = R.string.rejection,
+        isActive = true,
+        level = 65,
+        zCost = 80,
+        effect = R.string.rejectionDesc,
+        addedEffect = R.string.rejectionEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Essence, Element.Water)
     )
 
     val seventhBook = listOf(
@@ -1374,183 +1374,183 @@ class FreeBook{
     )
 
     private val invisibility = FreeSpell(
-        "invisibility",
-        R.string.invisibility,
-        true,
-        75,
-        140,
-        R.string.invisibilityDesc,
-        R.string.invisibilityEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Essence)
+        saveName = "invisibility",
+        name = R.string.invisibility,
+        isActive = true,
+        level = 75,
+        zCost = 140,
+        effect = R.string.invisibilityDesc,
+        addedEffect = R.string.invisibilityEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Essence)
     )
 
     private val levitationSphere = FreeSpell(
-        "levitationSphere",
-        R.string.levitationSphere,
-        true,
-        75,
-        150,
-        R.string.levitationSphereDesc,
-        R.string.levitationSphereEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Earth, Element.Water)
+        saveName = "levitationSphere",
+        name = R.string.levitationSphere,
+        isActive = true,
+        level = 75,
+        zCost = 150,
+        effect = R.string.levitationSphereDesc,
+        addedEffect = R.string.levitationSphereEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Earth, Element.Water)
     )
 
     private val uselessness = FreeSpell(
-        "uselessness",
-        R.string.uselessness,
-        true,
-        75,
-        120,
-        R.string.uselessnessDesc,
-        R.string.uselessnessEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf(Element.Water)
+        saveName = "uselessness",
+        name = R.string.uselessness,
+        isActive = true,
+        level = 75,
+        zCost = 120,
+        effect = R.string.uselessnessDesc,
+        addedEffect = R.string.uselessnessEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Water)
     )
 
     private val dominion = FreeSpell(
-        "dominion",
-        R.string.dominion,
-        true,
-        75,
-        160,
-        R.string.dominionDesc,
-        R.string.dominionEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf()
+        saveName = "dominion",
+        name = R.string.dominion,
+        isActive = true,
+        level = 75,
+        zCost = 160,
+        effect = R.string.dominionDesc,
+        addedEffect = R.string.dominionEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf()
     )
 
     private val deflectTrajectory = FreeSpell(
-        "deflectTrajectory",
-        R.string.deflect,
-        false,
-        75,
-        100,
-        R.string.deflectDesc,
-        R.string.deflectEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect, SpellType.Defense),
-        listOf(Element.Fire)
+        saveName = "deflectTrajectory",
+        name = R.string.deflect,
+        isActive = false,
+        level = 75,
+        zCost = 100,
+        effect = R.string.deflectDesc,
+        addedEffect = R.string.deflectEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Defense),
+        forbiddenElements = listOf(Element.Fire)
     )
 
     private val stallSpell = FreeSpell(
-        "stallSpell",
-        R.string.stallSpell,
-        true,
-        75,
-        150,
-        R.string.stallSpellDesc,
-        R.string.stallSpellEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Air)
+        saveName = "stallSpell",
+        name = R.string.stallSpell,
+        isActive = true,
+        level = 75,
+        zCost = 150,
+        effect = R.string.stallSpellDesc,
+        addedEffect = R.string.stallSpellEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Air)
     )
 
     private val detectionMark = FreeSpell(
-        "detectionMark",
-        R.string.detectionMark,
-        true,
-        75,
-        100,
-        R.string.detectionMarkDesc,
-        R.string.detectionMarkEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect, SpellType.Spiritual),
-        listOf(Element.Dark)
+        saveName = "detectionMark",
+        name = R.string.detectionMark,
+        isActive = true,
+        level = 75,
+        zCost = 100,
+        effect = R.string.detectionMarkDesc,
+        addedEffect = R.string.detectionMarkEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val flight = FreeSpell(
-        "flightFree",
-        R.string.freeFlight,
-        true,
-        75,
-        100,
-        R.string.freeFlightDesc,
-        R.string.freeFlightEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "flightFree",
+        name = R.string.freeFlight,
+        isActive = true,
+        level = 75,
+        zCost = 100,
+        effect = R.string.freeFlightDesc,
+        addedEffect = R.string.freeFlightEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val offenseErudition = FreeSpell(
-        "offenseErudition",
-        R.string.offenseErudition,
-        true,
-        75,
-        80,
-        R.string.offenseEruditionDesc,
-        R.string.offenseEruditionEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "offenseErudition",
+        name = R.string.offenseErudition,
+        isActive = true,
+        level = 75,
+        zCost = 80,
+        effect = R.string.offenseEruditionDesc,
+        addedEffect = R.string.offenseEruditionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val defenseErudition = FreeSpell(
-        "defenseErudition",
-        R.string.defenseErudition,
-        true,
-        75,
-        80,
-        R.string.defenseEruditionDesc,
-        R.string.defenseEruditionEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "defenseErudition",
+        name = R.string.defenseErudition,
+        isActive = true,
+        level = 75,
+        zCost = 80,
+        effect = R.string.defenseEruditionDesc,
+        addedEffect = R.string.defenseEruditionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val containment = FreeSpell(
-        "containment",
-        R.string.containment,
-        true,
-        75,
-        200,
-        R.string.containmentDesc,
-        R.string.containmentEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Automatic),
-        listOf()
+        saveName = "containment",
+        name = R.string.containment,
+        isActive = true,
+        level = 75,
+        zCost = 200,
+        effect = R.string.containmentDesc,
+        addedEffect = R.string.containmentEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     private val perfectTarget = FreeSpell(
-        "perfectTarget",
-        R.string.perfectTarget,
-        true,
-        75,
-        80,
-        R.string.perfectTargetDesc,
-        R.string.perfectTargetEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "perfectTarget",
+        name = R.string.perfectTarget,
+        isActive = true,
+        level = 75,
+        zCost = 80,
+        effect = R.string.perfectTargetDesc,
+        addedEffect = R.string.perfectTargetEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     val eighthBook = listOf(
@@ -1569,183 +1569,183 @@ class FreeBook{
     )
 
     private val spellReturn = FreeSpell(
-        "spellReturn",
-        R.string.spellReturn,
-        false,
-        85,
-        150,
-        R.string.spellReturnDesc,
-        R.string.spellReturnEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic),
-        listOf()
+        saveName = "spellReturn",
+        name = R.string.spellReturn,
+        isActive = false,
+        level = 85,
+        zCost = 150,
+        effect = R.string.spellReturnDesc,
+        addedEffect = R.string.spellReturnEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     private val disenchantment = FreeSpell(
-        "disenchantment",
-        R.string.disenchantment,
-        true,
-        85,
-        200,
-        R.string.disenchantmentDesc,
-        R.string.disenchantmentEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Creation)
+        saveName = "disenchantment",
+        name = R.string.disenchantment,
+        isActive = true,
+        level = 85,
+        zCost = 200,
+        effect = R.string.disenchantmentDesc,
+        addedEffect = R.string.disenchantmentEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val naturalSpell = FreeSpell(
-        "naturalSpell",
-        R.string.naturalSpell,
-        true,
-        85,
-        350,
-        R.string.naturalSpellDesc,
-        R.string.naturalSpellEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "naturalSpell",
+        name = R.string.naturalSpell,
+        isActive = true,
+        level = 85,
+        zCost = 350,
+        effect = R.string.naturalSpellDesc,
+        addedEffect = R.string.naturalSpellEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val stealSpell = FreeSpell(
-        "stealSpell",
-        R.string.stealSpell,
-        true,
-        85,
-        200,
-        R.string.stealSpellDesc,
-        R.string.stealSpellEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Automatic),
-        listOf()
+        saveName = "stealSpell",
+        name = R.string.stealSpell,
+        isActive = true,
+        level = 85,
+        zCost = 200,
+        effect = R.string.stealSpellDesc,
+        addedEffect = R.string.stealSpellEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     private val immortality = FreeSpell(
-        "immortality",
-        R.string.immortality,
-        true,
-        85,
-        300,
-        R.string.immortalityDesc,
-        R.string.immortalityEff,
-        30,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "immortality",
+        name = R.string.immortality,
+        isActive = true,
+        level = 85,
+        zCost = 300,
+        effect = R.string.immortalityDesc,
+        addedEffect = R.string.immortalityEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val magicPrism = FreeSpell(
-        "magPrism",
-        R.string.magPrism,
-        true,
-        85,
-        200,
-        R.string.magPrismDesc,
-        R.string.magPrismEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "magPrism",
+        name = R.string.magPrism,
+        isActive = true,
+        level = 85,
+        zCost = 200,
+        effect = R.string.magPrismDesc,
+        addedEffect = R.string.magPrismEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val eliminateNeeds = FreeSpell(
-        "eliminateNeeds",
-        R.string.eliminateNeeds,
-        true,
-        85,
-        300,
-        R.string.eliminateNeedsDesc,
-        R.string.eliminateNeedsEff,
-        30,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Essence)
+        saveName = "eliminateNeeds",
+        name = R.string.eliminateNeeds,
+        isActive = true,
+        level = 85,
+        zCost = 300,
+        effect = R.string.eliminateNeedsDesc,
+        addedEffect = R.string.eliminateNeedsEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Essence)
     )
 
     private val prepareSpell = FreeSpell(
-        "prepareSpell",
-        R.string.prepareSpell,
-        true,
-        85,
-        200,
-        R.string.prepareSpellDesc,
-        R.string.prepareSpellEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "prepareSpell",
+        name = R.string.prepareSpell,
+        isActive = true,
+        level = 85,
+        zCost = 200,
+        effect = R.string.prepareSpellDesc,
+        addedEffect = R.string.prepareSpellEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val physicalImmunity = FreeSpell(
-        "physImmunity",
-        R.string.physImmunity,
-        true,
-        85,
-        200,
-        R.string.physImmunityDesc,
-        R.string.physImmunityEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Essence)
+        saveName = "physImmunity",
+        name = R.string.physImmunity,
+        isActive = true,
+        level = 85,
+        zCost = 200,
+        effect = R.string.physImmunityDesc,
+        addedEffect = R.string.physImmunityEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Essence)
     )
 
     private val gate = FreeSpell(
-        "gate",
-        R.string.gate,
-        true,
-        85,
-        500,
-        R.string.gateDesc,
-        R.string.gateEff,
-        50,
-        20,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "gate",
+        name = R.string.gate,
+        isActive = true,
+        level = 85,
+        zCost = 500,
+        effect = R.string.gateDesc,
+        addedEffect = R.string.gateEff,
+        zMax = 50,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val teletransportation = FreeSpell(
-        "teletransportation",
-        R.string.teletransportation,
-        true,
-        85,
-        300,
-        R.string.teletransportationDesc,
-        R.string.teletransportationEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Earth)
+        saveName = "teletransportation",
+        name = R.string.teletransportation,
+        isActive = true,
+        level = 85,
+        zCost = 300,
+        effect = R.string.teletransportationDesc,
+        addedEffect = R.string.teletransportationEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Earth)
     )
 
     private val location = FreeSpell(
-        "location",
-        R.string.location,
-        true,
-        85,
-        300,
-        R.string.locationDesc,
-        R.string.locationEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Detection),
-        listOf(Element.Dark)
+        saveName = "location",
+        name = R.string.location,
+        isActive = true,
+        level = 85,
+        zCost = 300,
+        effect = R.string.locationDesc,
+        addedEffect = R.string.locationEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Detection),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     val ninthBook = listOf(
@@ -1764,183 +1764,183 @@ class FreeBook{
     )
 
     private val eyeOfTime = FreeSpell(
-        "eyeOfTime",
-        R.string.timeEye,
-        true,
-        95,
-        300,
-        R.string.timeEyeDesc,
-        R.string.timeEyeEff,
-        50,
-        20,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Dark)
+        saveName = "eyeOfTime",
+        name = R.string.timeEye,
+        isActive = true,
+        level = 95,
+        zCost = 300,
+        effect = R.string.timeEyeDesc,
+        addedEffect = R.string.timeEyeEff,
+        zMax = 50,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Dark)
     )
 
     private val possession = FreeSpell(
-        "possession",
-        R.string.possession,
-        true,
-        95,
-        300,
-        R.string.possessionDesc,
-        R.string.possessionEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Spiritual),
-        listOf()
+        saveName = "possession",
+        name = R.string.possession,
+        isActive = true,
+        level = 95,
+        zCost = 300,
+        effect = R.string.possessionDesc,
+        addedEffect = R.string.possessionEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf()
     )
 
     private val powerShield = FreeSpell(
-        "powerShield",
-        R.string.powerShield,
-        true,
-        95,
-        300,
-        R.string.powerShieldDesc,
-        R.string.powerShieldEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic),
-        listOf(Element.Creation)
+        saveName = "powerShield",
+        name = R.string.powerShield,
+        isActive = true,
+        level = 95,
+        zCost = 300,
+        effect = R.string.powerShieldDesc,
+        addedEffect = R.string.powerShieldEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf(Element.Creation)
     )
 
     private val seal = FreeSpell(
-        "seal",
-        R.string.seal,
-        true,
-        95,
-        200,
-        R.string.sealDesc,
-        R.string.sealEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "seal",
+        name = R.string.seal,
+        isActive = true,
+        level = 95,
+        zCost = 200,
+        effect = R.string.sealDesc,
+        addedEffect = R.string.sealEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val imitateSpell = FreeSpell(
-        "imitateSpell",
-        R.string.imitateSpell,
-        false,
-        95,
-        200,
-        R.string.imitateSpellDesc,
-        R.string.imitateSpellEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "imitateSpell",
+        name = R.string.imitateSpell,
+        isActive = false,
+        level = 95,
+        zCost = 200,
+        effect = R.string.imitateSpellDesc,
+        addedEffect = R.string.imitateSpellEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val conditioning = FreeSpell(
-        "conditioning",
-        R.string.conditioning,
-        true,
-        95,
-        300,
-        R.string.conditioningDesc,
-        R.string.conditioningEff,
-        40,
-        5,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "conditioning",
+        name = R.string.conditioning,
+        isActive = true,
+        level = 95,
+        zCost = 300,
+        effect = R.string.conditioningDesc,
+        addedEffect = R.string.conditioningEff,
+        zMax = 40,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
     private val linkMaintenance = FreeSpell(
-        "linkMaintenance",
-        R.string.linkMaintenance,
-        true,
-        95,
-        200,
-        R.string.linkMaintenanceDesc,
-        R.string.linkMaintenanceEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual),
-        listOf()
+        saveName = "linkMaintenance",
+        name = R.string.linkMaintenance,
+        isActive = true,
+        level = 95,
+        zCost = 200,
+        effect = R.string.linkMaintenanceDesc,
+        addedEffect = R.string.linkMaintenanceEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual),
+        forbiddenElements = listOf()
     )
 
     private val magistrate = FreeSpell(
-        "magistrate",
-        R.string.magistrate,
-        true,
-        95,
-        450,
-        R.string.magistrateDesc,
-        R.string.magistrateEff,
-        40,
-        10,
-        true,
-        listOf(SpellType.Automatic),
-        listOf()
+        saveName = "magistrate",
+        name = R.string.magistrate,
+        isActive = true,
+        level = 95,
+        zCost = 450,
+        effect = R.string.magistrateDesc,
+        addedEffect = R.string.magistrateEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     private val giftOfKnowledge = FreeSpell(
-        "knowledgeGift",
-        R.string.knowledgeGift,
-        true,
-        95,
-        300,
-        R.string.knowledgeGiftDesc,
-        R.string.knowledgeGiftEff,
-        50,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "knowledgeGift",
+        name = R.string.knowledgeGift,
+        isActive = true,
+        level = 95,
+        zCost = 300,
+        effect = R.string.knowledgeGiftDesc,
+        addedEffect = R.string.knowledgeGiftEff,
+        zMax = 50,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val strengthenMagic = FreeSpell(
-        "magicStrengthen",
-        R.string.magicStrengthen,
-        true,
-        95,
-        200,
-        R.string.magicStrengthenDesc,
-        R.string.magicStrengthenEff,
-        40,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf(Element.Destruction)
+        saveName = "magicStrengthen",
+        name = R.string.magicStrengthen,
+        isActive = true,
+        level = 95,
+        zCost = 200,
+        effect = R.string.magicStrengthenDesc,
+        addedEffect = R.string.magicStrengthenEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf(Element.Destruction)
     )
 
     private val innateMagic = FreeSpell(
-        "innateMagic",
-        R.string.innateMagicSpell,
-        true,
-        95,
-        500,
-        R.string.innateMagicSpellDesc,
-        R.string.innateMagicSpellEff,
-        50,
-        10,
-        true,
-        listOf(SpellType.Effect),
-        listOf()
+        saveName = "innateMagic",
+        name = R.string.innateMagicSpell,
+        isActive = true,
+        level = 95,
+        zCost = 500,
+        effect = R.string.innateMagicSpellDesc,
+        addedEffect = R.string.innateMagicSpellEff,
+        zMax = 50,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect),
+        forbiddenElements = listOf()
     )
 
-    val predestination = FreeSpell(
-        "predestination",
-        R.string.predestination,
-        true,
-        95,
-        600,
-        R.string.predestinationDesc,
-        R.string.predestinationEff,
-        40,
-        20,
-        true,
-        listOf(SpellType.Automatic),
-        listOf()
+    private val predestination = FreeSpell(
+        saveName = "predestination",
+        name = R.string.predestination,
+        isActive = true,
+        level = 95,
+        zCost = 600,
+        effect = R.string.predestinationDesc,
+        addedEffect = R.string.predestinationEff,
+        zMax = 40,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Automatic),
+        forbiddenElements = listOf()
     )
 
     val tenthBook = listOf(
@@ -1957,4 +1957,52 @@ class FreeBook{
         innateMagic,
         predestination
     )
+
+    //compile all free spell books
+    val allFreeSpells = listOf(
+        firstBook,
+        secondBook,
+        thirdBook,
+        fourthBook,
+        fifthBook,
+        sixthBook,
+        seventhBook,
+        eighthBook,
+        ninthBook,
+        tenthBook
+    )
+
+    //create generic placeholder spell
+    val generic = FreeSpell(
+        saveName = "PlaceHolder",
+        name = R.string.emptyItem,
+        isActive = false,
+        level = 0,
+        zCost = 0,
+        effect = R.string.emptyItem,
+        addedEffect = R.string.emptyItem,
+        zMax = 0,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(),
+        forbiddenElements = listOf()
+    )
+
+    /**
+     * Finds the free spell with the given save name.
+     *
+     * @param saveName queried name to find the spell
+     */
+    fun findFreeSpell(saveName: String): FreeSpell{
+        //search each free spell book
+        allFreeSpells.forEach{book ->
+            //return a match if found
+            book.forEach{spell ->
+                if(spell.saveName == saveName) return spell
+            }
+        }
+
+        //return generic item if no match found
+        return generic
+    }
 }

@@ -1,6 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.advantages
 
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.CommonAdvantages
@@ -21,49 +21,53 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance head character object that holds this section
  */
-class AdvantageRecord(private val charInstance: BaseCharacter){
+class AdvantageRecord(
+    private val charInstance: BaseCharacter
+){
     //initialize instances of advantages and disadvantages
-    val commonAdvantages = CommonAdvantages(charInstance)
-    val magicAdvantages = MagicAdvantages(charInstance)
+    val commonAdvantages = CommonAdvantages(charInstance = charInstance)
+    val magicAdvantages = MagicAdvantages(charInstance = charInstance)
     val psychicAdvantages = PsychicAdvantages()
 
     //initialize list of taken advantages
     val takenAdvantages = mutableListOf<Advantage>()
 
     //initialize spent creation points
-    val creationPointSpent = mutableStateOf(0)
+    val creationPointSpent = mutableIntStateOf(value = 0)
 
     /**
      * Finds the base advantage of the inputted name.
      *
-     * @param toFind name of the advantage to find
+     * @param findAdvantage name flag for the queried advantage
      * @return the sought for advantage, if there is one present
      */
-    private fun findAdvantage(toFind: String): Advantage?{
+    private fun findAdvantage(
+        findAdvantage: String
+    ): Advantage?{
         //search through each base list to find a match
-        commonAdvantages.advantages.forEach{
+        commonAdvantages.advantages.forEach{advantage ->
             //return if a common advantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
-        magicAdvantages.advantages.forEach{
+        magicAdvantages.advantages.forEach{advantage ->
             //return if a magic advantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
-        psychicAdvantages.advantages.forEach{
+        psychicAdvantages.advantages.forEach{advantage ->
             //return if a psychic advantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
-        commonAdvantages.disadvantages.forEach{
+        commonAdvantages.disadvantages.forEach{advantage ->
             //return if a common disadvantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
-        magicAdvantages.disadvantages.forEach{
+        magicAdvantages.disadvantages.forEach{advantage ->
             //return if a magic disadvantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
-        psychicAdvantages.disadvantages.forEach{
+        psychicAdvantages.disadvantages.forEach{advantage ->
             //return if a psychic disadvantage matches
-            if(it.saveTag == toFind) return it
+            if(advantage.saveTag == findAdvantage) return advantage
         }
 
         //return null for no match found
@@ -73,37 +77,41 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     /**
      * Method used to add an advantage or disadvantage to the character
      *
-     * @param toAdd base version of the advantage to add
+     * @param advantageBase base version of the advantage to add
      * @param taken index of the chosen item if applicable
      * @param takenCost index of the chosen cost of the advantage
+     * @param multTaken list of taken options if applicable to the advantage
      * @return either an error message for a failed addition or a null item for a successful addition
      */
     fun acquireAdvantage(
-        toAdd: Advantage,
+        advantageBase: Advantage,
         taken: Int?,
         takenCost: Int,
         multTaken: List<Int>?
     ): Int?{
         //halt addition of fourth disadvantage
-        if(toAdd.cost[takenCost] < 0 && countDisadvantages() >= 3)
+        if(advantageBase.cost[takenCost] < 0 && countDisadvantages() >= 3)
             return R.string.excessDisadvantages
 
         //implement racial restrictions on advantages
         when(charInstance.ownRace.value){
+            //advantage restrictions for sylvain
             charInstance.races.sylvainAdvantages -> {
-                when(toAdd){
-                    //forbid these advantages for sylvain
+                when(advantageBase){
+                    //forbid sickly, serious illness, and magic susceptibility for sylvain
                     commonAdvantages.sickly,
                     commonAdvantages.seriousIllness,
                     commonAdvantages.magicSusceptibility -> return R.string.sylvainRestriction
 
-                    //forbid Dark element option for this advantage
+                    //forbid Dark element option for elemental compatibility
                     magicAdvantages.elementalCompatibility -> if(taken == 1)
                         return R.string.sylvainDarkRestriction
                 }
             }
+
+            //advantage restrictions for jayan
             charInstance.races.jayanAdvantages -> {
-                when(toAdd){
+                when(advantageBase){
                     //forbid size reduction in Jayan
                     commonAdvantages.uncommonSize -> if(taken!! < 5)
                         return R.string.jayanSizeRestriction
@@ -112,8 +120,10 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                         return R.string.jayanStrengthRestriction
                 }
             }
+
+            //advantage restrictions for duk'zarist
             charInstance.races.dukzaristAdvantages -> {
-                when(toAdd){
+                when(advantageBase){
                     //forbid these disadvantages for dukzarist
                     commonAdvantages.atrophiedLimb,
                     commonAdvantages.blind,
@@ -140,25 +150,31 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         }
 
         //implement advantage restrictions
-        when(toAdd){
+        when(advantageBase){
             commonAdvantages.characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
-                    0 -> if(charInstance.primaryList.str.total.value + 1 > 11) return R.string.strengthIncreaseRestriction
-                    1 -> if(charInstance.primaryList.dex.total.value + 1 > 11) return R.string.dexterityIncreaseRestriction
-                    2 -> if(charInstance.primaryList.agi.total.value + 1 > 11) return R.string.agilityIncreaseRestriction
-                    3 -> if(charInstance.primaryList.con.total.value + 1 > 11) return R.string.constitutionIncreaseRestriction
-                    4 -> if(charInstance.primaryList.int.total.value + 1 > 13) return R.string.intelligenceIncreaseRestriction
-                    5 -> if(charInstance.primaryList.pow.total.value + 1 > 13) return R.string.powerIncreaseRestriction
-                    6 -> if(charInstance.primaryList.wp.total.value + 1 > 13) return R.string.willpowerIncreaseRestriction
-                    7 -> if(charInstance.primaryList.per.total.value + 1 > 13) return R.string.perceptionIncreaseRestriction
+                    0 -> if(charInstance.primaryList.str.total.intValue + 1 > 11) return R.string.strengthIncreaseRestriction
+                    1 -> if(charInstance.primaryList.dex.total.intValue + 1 > 11) return R.string.dexterityIncreaseRestriction
+                    2 -> if(charInstance.primaryList.agi.total.intValue + 1 > 11) return R.string.agilityIncreaseRestriction
+                    3 -> if(charInstance.primaryList.con.total.intValue + 1 > 11) return R.string.constitutionIncreaseRestriction
+                    4 -> if(charInstance.primaryList.int.total.intValue + 1 > 13) return R.string.intelligenceIncreaseRestriction
+                    5 -> if(charInstance.primaryList.pow.total.intValue + 1 > 13) return R.string.powerIncreaseRestriction
+                    6 -> if(charInstance.primaryList.wp.total.intValue + 1 > 13) return R.string.willpowerIncreaseRestriction
+                    7 -> if(charInstance.primaryList.per.total.intValue + 1 > 13) return R.string.perceptionIncreaseRestriction
                     else -> return R.string.failedInput
                 }
             }
 
             //forbid reduction of growth stat to below zero
             commonAdvantages.subjectAptitude -> {
-                if(charInstance.secondaryList.getAllSecondaries()[taken!!].devPerPoint.value - toAdd.cost[takenCost] <= 0)
+                //get the indicated characteristic, be it default or custom
+                val secondary =
+                    if(taken!! < 38) charInstance.secondaryList.fullList[taken]
+                    else charInstance.secondaryList.getAllCustoms()[taken - 38]
+
+                //check that stat does not fall to or below zero
+                if(secondary.devPerPoint.intValue - advantageBase.cost[takenCost] <= 0)
                     return R.string.costReductionRestriction
             }
 
@@ -167,7 +183,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                 val prevGrowth =
                     when(taken){
                         0 -> charInstance.ownClass.value.athGrowth
-                        1 -> charInstance.ownClass.value.creatGrowth
+                        1 -> charInstance.ownClass.value.createGrowth
                         2 -> charInstance.ownClass.value.percGrowth
                         3 -> charInstance.ownClass.value.socGrowth
                         4 -> charInstance.ownClass.value.subterGrowth
@@ -187,7 +203,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                     return R.string.redundantPsychicDiscipline
             }
 
-            //prevent certain classes from taking this disadvantage
+            //character's class archetype must be one of the indicated types
             commonAdvantages.exclusiveWeapon -> {
                 if(!charInstance.ownClass.value.archetype.contains(Archetype.Fighter) &&
                         !charInstance.ownClass.value.archetype.contains(Archetype.Domine) &&
@@ -198,8 +214,9 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
 
             //check minimum appearance before taking this disadvantage
             commonAdvantages.unattractive ->
-                if(charInstance.appearance.value < 7) return R.string.appearanceRestriction
+                if(charInstance.appearance.intValue < 7) return R.string.appearanceRestriction
 
+            //assure all elements picked for half attuned to tree advantage
             magicAdvantages.halfTreeAttuned ->
                 if (multTaken!!.size != 5) return R.string.incompleteHalfTree
 
@@ -226,30 +243,30 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         }
 
         //check if able to take multiple times
-        if(toAdd.special == null && this.getAdvantage(toAdd.saveTag) != null)
+        if(advantageBase.special == null && this.getAdvantage(advantageBase.saveTag) != null)
             return R.string.duplicateRestriction
         else if(taken != null && getAdvantage("Natural Knowledge of a Path", taken, takenCost) != null)
             return R.string.duplicatePathRestriction
 
         //create advantage to take
         val copyAdvantage = Advantage(
-            toAdd.saveTag,
-            toAdd.name,
-            toAdd.description,
-            toAdd.effect,
-            toAdd.restriction,
-            toAdd.special,
-            toAdd.options,
-            taken,
-            multTaken,
-            toAdd.cost,
-            takenCost,
-            toAdd.onTake,
-            toAdd.onRemove
+            saveTag = advantageBase.saveTag,
+            name = advantageBase.name,
+            description = advantageBase.description,
+            effect = advantageBase.effect,
+            restriction = advantageBase.restriction,
+            special = advantageBase.special,
+            options = advantageBase.options,
+            picked = taken,
+            multPicked = multTaken,
+            cost = advantageBase.cost,
+            pickedCost = takenCost,
+            onTake = advantageBase.onTake,
+            onRemove = advantageBase.onRemove
         )
 
         //check that character has sufficient creation points to buy this advantage
-        if(creationPointSpent.value + copyAdvantage.cost[copyAdvantage.pickedCost] <= 3){
+        if(creationPointSpent.intValue + copyAdvantage.cost[copyAdvantage.pickedCost] <= 3){
             takenAdvantages += copyAdvantage
 
             //apply effect
@@ -267,20 +284,22 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     /**
      * Removes an advantage from the character.
      *
-     * @param toRemove item to be removed from the character
+     * @param advantage item to be removed
      */
-    fun removeAdvantage(toRemove: Advantage){
+    fun removeAdvantage(
+        advantage: Advantage
+    ){
         //search for copy of inputted advantage
-        takenAdvantages.forEach{
-            if(it.isEquivalent(toRemove)){
+        takenAdvantages.forEach{heldCopy ->
+            if(heldCopy.isEquivalent(advantage)){
                 //remove the found advantage
-                takenAdvantages -= it
+                takenAdvantages -= heldCopy
 
                 //undo its effect
-                if(it.onRemove != null)
-                    it.onRemove!!(it.picked, it.cost[it.pickedCost])
+                if(heldCopy.onRemove != null)
+                    heldCopy.onRemove!!(heldCopy.picked, heldCopy.cost[heldCopy.pickedCost])
 
-                //halt process
+                //terminate process
                 refreshSpent()
                 return
             }
@@ -290,14 +309,16 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     /**
      * Finds a taken advantage of the inputted name.
      *
-     * @param itemName name of the advantage to find
+     * @param advantageString name of the advantage to find
      * @return the sought for advantage, if there is one present
      */
-    fun getAdvantage(itemName: String): Advantage?{
+    fun getAdvantage(
+        advantageString: String
+    ): Advantage?{
         //search through all acquired advantages
-        takenAdvantages.forEach{
+        takenAdvantages.forEach{advantage ->
             //return if match is found
-            if(it.saveTag == itemName) return it
+            if(advantage.saveTag == advantageString) return advantage
         }
 
         //return null if no match
@@ -307,20 +328,21 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
     /**
      * Finds a taken advantage of the inputted name, type, and cost.
      *
-     * @param itemName name of the advantage to find
-     * @param itemTaken type of the advantage to find
-     * @param itemCost cost of the item to find
+     * @param name name of the advantage to find
+     * @param taken type of the advantage to find
+     * @param cost cost of the item to find
      * @return the sought for advantage, if there is one present
      */
     fun getAdvantage(
-        itemName: String,
-        itemTaken: Int,
-        itemCost: Int
+        name: String,
+        taken: Int,
+        cost: Int
     ): Advantage?{
         //search through all acquired advantages
-        takenAdvantages.forEach{
+        takenAdvantages.forEach{advantage ->
             //return if identical advantage found
-            if(it.saveTag == itemName && it.picked == itemTaken && it.pickedCost == itemCost) return it
+            if(advantage.saveTag == name && advantage.picked == taken && advantage.pickedCost == cost)
+                return advantage
         }
 
         //return null if no match
@@ -332,11 +354,11 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
      */
     private fun refreshSpent(){
         //reset spent value
-        creationPointSpent.value = 0
+        creationPointSpent.intValue = 0
 
         //add cost of each taken advantage
-        takenAdvantages.forEach{
-            creationPointSpent.value += it.cost[it.pickedCost]
+        takenAdvantages.forEach{advantage ->
+            creationPointSpent.intValue += advantage.cost[advantage.pickedCost]
         }
     }
 
@@ -350,9 +372,9 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         var total = 0
 
         //search through all acquired advantages
-        takenAdvantages.forEach{
+        takenAdvantages.forEach{advantage ->
             //increment if disadvantage found
-            if(it.cost[it.pickedCost] < 0)
+            if(advantage.cost[advantage.pickedCost] < 0)
                 total++
         }
 
@@ -365,23 +387,30 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
      * Retrieves advantage data from file.
      *
      * @param fileReader file reader to gather data from
+     * @param version app version that the file was saved as
      */
-    fun loadAdvantages(fileReader: BufferedReader, version: Int){
+    fun loadAdvantages(
+        fileReader: BufferedReader,
+        version: Int
+    ){
         //retrieve number of taken advantages
         for(index in 0 until fileReader.readLine().toInt()){
             if(version <= 13) {
                 //apply recorded advantage data
                 acquireAdvantage(
-                    findAdvantage(fileReader.readLine())!!,
-                    fileReader.readLine().toIntOrNull(),
-                    fileReader.readLine().toInt(),
-                    null
+                    advantageBase = findAdvantage(findAdvantage = fileReader.readLine())!!,
+                    taken = fileReader.readLine().toIntOrNull(),
+                    takenCost = fileReader.readLine().toInt(),
+                    multTaken = null
                 )
             }
             else{
+                //retrieve advantage name, option, and cost
                 val advName = findAdvantage(fileReader.readLine())!!
                 val advTaken = fileReader.readLine().toIntOrNull()
                 val advCost = fileReader.readLine().toInt()
+
+                //get multiple options taken if applicable
                 val advMultTaken =
                     if(fileReader.readLine().toIntOrNull() == null) null
                     else{
@@ -394,6 +423,7 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
                         )
                     }
 
+                //add data as an advantage
                 acquireAdvantage(advName, advTaken, advCost, advMultTaken)
             }
         }
@@ -406,16 +436,18 @@ class AdvantageRecord(private val charInstance: BaseCharacter){
         //record number of taken advantages
         writeDataTo(byteArray, takenAdvantages.size)
 
-        //write advantage data
-        takenAdvantages.forEach{
-            writeDataTo(byteArray, it.saveTag)
-            writeDataTo(byteArray, it.picked)
-            writeDataTo(byteArray, it.pickedCost)
+        takenAdvantages.forEach{advantage ->
+            //write advantage name, option, and cost
+            writeDataTo(byteArray, advantage.saveTag)
+            writeDataTo(byteArray, advantage.picked)
+            writeDataTo(byteArray, advantage.pickedCost)
 
-            if(it.multPicked == null) writeDataTo(byteArray, null)
+            //write if multiple options picked
+            if(advantage.multPicked == null) writeDataTo(byteArray, null)
             else{
-                writeDataTo(byteArray, it.multPicked.size)
-                it.multPicked.forEach{multItem ->
+                //record size of list and options
+                writeDataTo(byteArray, advantage.multPicked.size)
+                advantage.multPicked.forEach{multItem ->
                     writeDataTo(byteArray, multItem)
                 }
             }

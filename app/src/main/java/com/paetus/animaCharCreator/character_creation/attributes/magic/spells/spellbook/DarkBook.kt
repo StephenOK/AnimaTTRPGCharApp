@@ -1,624 +1,587 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the dark element.
  */
-class DarkBook{
+class DarkBook: MagicBook(Element.Dark){
     private val createDark = Spell(
-        R.string.createDark,
-        Element.Dark,
-        true,
-        2,
-        20,
-        R.string.createDarkDesc,
-        R.string.createDarkEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createDark,
+        isActive = true,
+        level = 2,
+        zCost = 20,
+        effect = R.string.createDarkDesc,
+        addedEffect = R.string.createDarkEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val induceFear = Spell(
-        R.string.induceFear,
-        Element.Dark,
-        true,
-        6,
-        40,
-        R.string.induceFearDesc,
-        R.string.induceFearEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.induceFear,
+        isActive = true,
+        level = 6,
+        zCost = 40,
+        effect = R.string.induceFearDesc,
+        addedEffect = R.string.induceFearEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val seeInDarkness = Spell(
-        R.string.seeInDark,
-        Element.Dark,
-        true,
-        8,
-        40,
-        R.string.seeInDarkDesc,
-        R.string.seeInDarkEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.seeInDark,
+        isActive = true,
+        level = 8,
+        zCost = 40,
+        effect = R.string.seeInDarkDesc,
+        addedEffect = R.string.seeInDarkEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkShield = Spell(
-        R.string.darkShield,
-        Element.Dark,
-        false,
-        10,
-        50,
-        R.string.darkShieldDesc,
-        R.string.darkShieldEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.darkShield,
+        isActive = false,
+        level = 10,
+        zCost = 50,
+        effect = R.string.darkShieldDesc,
+        addedEffect = R.string.darkShieldEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val shadow = Spell(
-        R.string.shadow,
-        Element.Dark,
-        false,
-        12,
-        50,
-        R.string.shadowDesc,
-        R.string.shadowEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.shadow,
+        isActive = false,
+        level = 12,
+        zCost = 50,
+        effect = R.string.shadowDesc,
+        addedEffect = R.string.shadowEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkArmor = Spell(
-        R.string.darkArmor,
-        Element.Dark,
-        true,
-        16,
-        60,
-        R.string.darkArmorDesc,
-        R.string.darkArmorEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.darkArmor,
+        isActive = true,
+        level = 16,
+        zCost = 60,
+        effect = R.string.darkArmorDesc,
+        addedEffect = R.string.darkArmorEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val banishLight = Spell(
-        R.string.banLight,
-        Element.Dark,
-        true,
-        18,
-        60,
-        R.string.banLightDesc,
-        R.string.banLightEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.banLight,
+        isActive = true,
+        level = 18,
+        zCost = 60,
+        effect = R.string.banLightDesc,
+        addedEffect = R.string.banLightEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val hideMagic = Spell(
-        R.string.hideMag,
-        Element.Dark,
-        false,
-        20,
-        50,
-        R.string.hideMagDesc,
-        R.string.hideMagEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.hideMag,
+        isActive = false,
+        level = 20,
+        zCost = 50,
+        effect = R.string.hideMagDesc,
+        addedEffect = R.string.hideMagEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkBeam = Spell(
-        R.string.darkBeam,
-        Element.Dark,
-        true,
-        22,
-        50,
-        R.string.darkBeamDesc,
-        R.string.darkBeamEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.darkBeam,
+        isActive = true,
+        level = 22,
+        zCost = 50,
+        effect = R.string.darkBeamDesc,
+        addedEffect = R.string.darkBeamEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val darkzone = Spell(
-        R.string.darkZone,
-        Element.Dark,
-        true,
-        26,
-        60,
-        R.string.darkZoneDesc,
-        R.string.darkZoneEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.darkZone,
+        isActive = true,
+        level = 26,
+        zCost = 60,
+        effect = R.string.darkZoneDesc,
+        addedEffect = R.string.darkZoneEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkBond = Spell(
-        R.string.darkBond,
-        Element.Dark,
-        true,
-        28,
-        60,
-        R.string.darkBondDesc,
-        R.string.darkBondEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.darkBond,
+        isActive = true,
+        level = 28,
+        zCost = 60,
+        effect = R.string.darkBondDesc,
+        addedEffect = R.string.darkBondEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val controlDark = Spell(
-        R.string.controlDark,
-        Element.Dark,
-        true,
-        30,
-        50,
-        R.string.controlDarkDesc,
-        R.string.controlDarkEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.controlDark,
+        isActive = true,
+        level = 30,
+        zCost = 50,
+        effect = R.string.controlDarkDesc,
+        addedEffect = R.string.controlDarkEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val concealment = Spell(
-        R.string.concealment,
-        Element.Dark,
-        false,
-        32,
-        60,
-        R.string.concealmentDesc,
-        R.string.concealmentEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.concealment,
+        isActive = false,
+        level = 32,
+        zCost = 60,
+        effect = R.string.concealmentDesc,
+        addedEffect = R.string.concealmentEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val obfuscate = Spell(
-        R.string.obfuscate,
-        Element.Dark,
-        true,
-        36,
-        100,
-        R.string.obfuscateDesc,
-        R.string.obfuscateEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.obfuscate,
+        isActive = true,
+        level = 36,
+        zCost = 100,
+        effect = R.string.obfuscateDesc,
+        addedEffect = R.string.obfuscateEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val enrage = Spell(
-        R.string.enrage,
-        Element.Dark,
-        true,
-        38,
-        60,
-        R.string.enrageDesc,
-        R.string.enrageEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.enrage,
+        isActive = true,
+        level = 38,
+        zCost = 60,
+        effect = R.string.enrageDesc,
+        addedEffect = R.string.enrageEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val banishPositiveEmotions = Spell(
-        R.string.banPosEmote,
-        Element.Dark,
-        true,
-        40,
-        80,
-        R.string.banPosEmoteDesc,
-        R.string.banPosEmoteEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.banPosEmote,
+        isActive = true,
+        level = 40,
+        zCost = 80,
+        effect = R.string.banPosEmoteDesc,
+        addedEffect = R.string.banPosEmoteEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val night = Spell(
-        R.string.night,
-        Element.Dark,
-        true,
-        42,
-        80,
-        R.string.nightDesc,
-        R.string.nightEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.night,
+        isActive = true,
+        level = 42,
+        zCost = 80,
+        effect = R.string.nightDesc,
+        addedEffect = R.string.nightEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkSphere = Spell(
-        R.string.darkSphere,
-        Element.Dark,
-        true,
-        46,
-        120,
-        R.string.darkSphereDesc,
-        R.string.darkSphereEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.darkSphere,
+        isActive = true,
+        level = 46,
+        zCost = 120,
+        effect = R.string.darkSphereDesc,
+        addedEffect = R.string.darkSphereEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val concealZone = Spell(
-        R.string.concealZone,
-        Element.Dark,
-        true,
-        48,
-        140,
-        R.string.concealZoneDesc,
-        R.string.concealZoneEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Detection)
+        name = R.string.concealZone,
+        isActive = true,
+        level = 48,
+        zCost = 140,
+        effect = R.string.concealZoneDesc,
+        addedEffect = R.string.concealZoneEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Detection)
     )
 
     private val enterNightmare = Spell(
-        R.string.enterNightmare,
-        Element.Dark,
-        true,
-        50,
-        120,
-        R.string.enterNightmareDesc,
-        R.string.enterNightmareEff,
-        20,
-        50,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.enterNightmare,
+        isActive = true,
+        level = 50,
+        zCost = 120,
+        effect = R.string.enterNightmareDesc,
+        addedEffect = R.string.enterNightmareEff,
+        zMax = 20,
+        maintenance = 50,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val darkForm = Spell(
-        R.string.darkForm,
-        Element.Dark,
-        true,
-        52,
-        100,
-        R.string.darkFormDesc,
-        R.string.darkFormEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.darkForm,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.darkFormDesc,
+        addedEffect = R.string.darkFormEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val perdition = Spell(
-        R.string.perdition,
-        Element.Dark,
-        true,
-        56,
-        100,
-        R.string.perditionDesc,
-        R.string.perditionEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.perdition,
+        isActive = true,
+        level = 56,
+        zCost = 100,
+        effect = R.string.perditionDesc,
+        addedEffect = R.string.perditionEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val createNegativeFeelings = Spell(
-        R.string.createNegEmote,
-        Element.Dark,
-        true,
-        58,
-        100,
-        R.string.createNegEmoteDesc,
-        R.string.createNegEmoteEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.createNegEmote,
+        isActive = true,
+        level = 58,
+        zCost = 100,
+        effect = R.string.createNegEmoteDesc,
+        addedEffect = R.string.createNegEmoteEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val eliminateTraces = Spell(
-        R.string.eliminateTrace,
-        Element.Dark,
-        true,
-        60,
-        100,
-        R.string.eliminateTraceDesc,
-        R.string.eliminateTraceEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.eliminateTrace,
+        isActive = true,
+        level = 60,
+        zCost = 100,
+        effect = R.string.eliminateTraceDesc,
+        addedEffect = R.string.eliminateTraceEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val shieldFromPositive = Spell(
-        R.string.shieldPositive,
-        Element.Dark,
-        true,
-        62,
-        140,
-        R.string.shieldPositiveDesc,
-        R.string.shieldPositiveEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.shieldPositive,
+        isActive = true,
+        level = 62,
+        zCost = 140,
+        effect = R.string.shieldPositiveDesc,
+        addedEffect = R.string.shieldPositiveEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val devouringDark = Spell(
-        R.string.darkDevour,
-        Element.Dark,
-        false,
-        66,
-        120,
-        R.string.darkDevourDesc,
-        R.string.darkDevourEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.darkDevour,
+        isActive = false,
+        level = 66,
+        zCost = 120,
+        effect = R.string.darkDevourDesc,
+        addedEffect = R.string.darkDevourEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val devastate = Spell(
-        R.string.devastate,
-        Element.Dark,
-        true,
-        68,
-        100,
-        R.string.devastateDesc,
-        R.string.devastateEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.devastate,
+        isActive = true,
+        level = 68,
+        zCost = 100,
+        effect = R.string.devastateDesc,
+        addedEffect = R.string.devastateEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val markOfFear = Spell(
-        R.string.fearMark,
-        Element.Dark,
-        true,
-        70,
-        140,
-        R.string.fearMarkDesc,
-        R.string.fearMarkEff,
-        20,
-        50,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.fearMark,
+        isActive = true,
+        level = 70,
+        zCost = 140,
+        effect = R.string.fearMarkDesc,
+        addedEffect = R.string.fearMarkEff,
+        zMax = 20,
+        maintenance = 50,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val catastrophicDarkness = Spell(
-        R.string.darkCatastrophe,
-        Element.Dark,
-        true,
-        72,
-        120,
-        R.string.darkCatastropheDesc,
-        R.string.darkCatastropheEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.darkCatastrophe,
+        isActive = true,
+        level = 72,
+        zCost = 120,
+        effect = R.string.darkCatastropheDesc,
+        addedEffect = R.string.darkCatastropheEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val darkMaterialObjects = Spell(
-        R.string.darkMatObj,
-        Element.Dark,
-        true,
-        76,
-        150,
-        R.string.darkMatObjDesc,
-        R.string.darkMatObjEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.darkMatObj,
+        isActive = true,
+        level = 76,
+        zCost = 150,
+        effect = R.string.darkMatObjDesc,
+        addedEffect = R.string.darkMatObjEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val shadowTravel = Spell(
-        R.string.shadowTravel,
-        Element.Dark,
-        true,
-        78,
-        250,
-        R.string.shadowTravelDesc,
-        R.string.shadowTravelEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.shadowTravel,
+        isActive = true,
+        level = 78,
+        zCost = 250,
+        effect = R.string.shadowTravelDesc,
+        addedEffect = R.string.shadowTravelEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val nightmareLord = Spell(
-        R.string.nightmareLord,
-        Element.Dark,
-        true,
-        80,
-        300,
-        R.string.nightmareLordDesc,
-        R.string.nightmareLordEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual, SpellType.Effect)
+        name = R.string.nightmareLord,
+        isActive = true,
+        level = 80,
+        zCost = 300,
+        effect = R.string.nightmareLordDesc,
+        addedEffect = R.string.nightmareLordEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual, SpellType.Effect)
     )
 
     private val createDarkBeing = Spell(
-        R.string.darkBeing,
-        Element.Dark,
-        true,
-        82,
-        250,
-        R.string.darkBeingDesc,
-        R.string.darkBeingEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.darkBeing,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.darkBeingDesc,
+        addedEffect = R.string.darkBeingEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val concealmentFromMagic = Spell(
-        R.string.concealFromMag,
-        Element.Dark,
-        false,
-        86,
-        200,
-        R.string.concealFromMagDesc,
-        R.string.concealFromMagEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.concealFromMag,
+        isActive = false,
+        level = 86,
+        zCost = 200,
+        effect = R.string.concealFromMagDesc,
+        addedEffect = R.string.concealFromMagEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val darknessKingdom = Spell(
-        R.string.darkKingdom,
-        Element.Dark,
-        true,
-        88,
-        200,
-        R.string.darkKingdomDesc,
-        R.string.darkKingdomEff,
-        30,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.darkKingdom,
+        isActive = true,
+        level = 88,
+        zCost = 200,
+        effect = R.string.darkKingdomDesc,
+        addedEffect = R.string.darkKingdomEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val undetectable = Spell(
-        R.string.undetectable,
-        Element.Dark,
-        true,
-        90,
-        380,
-        R.string.undetectableDesc,
-        R.string.undetectableEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.undetectable,
+        isActive = true,
+        level = 90,
+        zCost = 380,
+        effect = R.string.undetectableDesc,
+        addedEffect = R.string.undetectableEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val prisonOfDarkness = Spell(
-        R.string.darkPrison,
-        Element.Dark,
-        true,
-        92,
-        200,
-        R.string.darkPrisonDesc,
-        R.string.darkPrisonEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.darkPrison,
+        isActive = true,
+        level = 92,
+        zCost = 200,
+        effect = R.string.darkPrisonDesc,
+        addedEffect = R.string.darkPrisonEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val oneWithDarkness = Spell(
-        R.string.darkOne,
-        Element.Dark,
-        true,
-        96,
-        100,
-        R.string.darkOneDesc,
-        R.string.darkOneEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.darkOne,
+        isActive = true,
+        level = 96,
+        zCost = 100,
+        effect = R.string.darkOneDesc,
+        addedEffect = R.string.darkOneEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkAscension = Spell(
-        R.string.darkAscension,
-        Element.Dark,
-        true,
-        98,
-        300,
-        R.string.darkAscensionDesc,
-        R.string.darkAscensionEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.darkAscension,
+        isActive = true,
+        level = 98,
+        zCost = 300,
+        effect = R.string.darkAscensionDesc,
+        addedEffect = R.string.darkAscensionEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val darkHolocaust = Spell(
-        R.string.holoDark,
-        Element.Dark,
-        true,
-        100,
-        600,
-        R.string.holoDarkDesc,
-        R.string.holoDarkEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Attack, SpellType.Spiritual)
+        name = R.string.holoDark,
+        isActive = true,
+        level = 100,
+        zCost = 600,
+        effect = R.string.holoDarkDesc,
+        addedEffect = R.string.holoDarkEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack, SpellType.Spiritual)
     )
 
-    val fullBook = listOf(
-        createDark,
-        null,
-        induceFear,
-        seeInDarkness,
-        darkShield,
-        shadow,
-        null,
-        darkArmor,
-        banishLight,
-        hideMagic,
-        darkBeam,
-        null,
-        darkzone,
-        darkBond,
-        controlDark,
-        concealment,
-        null,
-        obfuscate,
-        enrage,
-        banishPositiveEmotions,
-        night,
-        null,
-        darkSphere,
-        concealZone,
-        enterNightmare,
-        darkForm,
-        null,
-        perdition,
-        createNegativeFeelings,
-        eliminateTraces,
-        shieldFromPositive,
-        null,
-        devouringDark,
-        devastate,
-        markOfFear,
-        catastrophicDarkness,
-        null,
-        darkMaterialObjects,
-        shadowTravel,
-        nightmareLord,
-        createDarkBeing,
-        null,
-        concealmentFromMagic,
-        darknessKingdom,
-        undetectable,
-        prisonOfDarkness,
-        null,
-        oneWithDarkness,
-        darkAscension,
-        darkHolocaust
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            createDark,
+            null,
+            induceFear,
+            seeInDarkness,
+            darkShield,
+            shadow,
+            null,
+            darkArmor,
+            banishLight,
+            hideMagic,
+            darkBeam,
+            null,
+            darkzone,
+            darkBond,
+            controlDark,
+            concealment,
+            null,
+            obfuscate,
+            enrage,
+            banishPositiveEmotions,
+            night,
+            null,
+            darkSphere,
+            concealZone,
+            enterNightmare,
+            darkForm,
+            null,
+            perdition,
+            createNegativeFeelings,
+            eliminateTraces,
+            shieldFromPositive,
+            null,
+            devouringDark,
+            devastate,
+            markOfFear,
+            catastrophicDarkness,
+            null,
+            darkMaterialObjects,
+            shadowTravel,
+            nightmareLord,
+            createDarkBeing,
+            null,
+            concealmentFromMagic,
+            darknessKingdom,
+            undetectable,
+            prisonOfDarkness,
+            null,
+            oneWithDarkness,
+            darkAscension,
+            darkHolocaust
+        ))
+    }
 }

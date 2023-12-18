@@ -12,15 +12,18 @@ open class GeneralCategory(val qualityInput: List<QualityModifier>?){
     /**
      * Finds a piece of equipment based on the inputted qualities.
      *
-     * @param name distinguishing item for the equipment
+     * @param equipName distinguishing item for the equipment
      * @param quality index of the item's quality, if one is available
      * @return either a copy of the found equipment with the indicated quality or a null flag
      */
-    fun findEquipment(name: String, quality: Int?): GeneralEquipment?{
+    fun findEquipment(
+        equipName: String,
+        quality: Int?
+    ): GeneralEquipment?{
         //look at each available item
-        itemsAvailable.forEach{
+        itemsAvailable.forEach{equipment ->
             //item name found
-            if(it.saveName == name){
+            if(equipment.saveName == equipName){
                 //determine cost multiplier
                 val multiplier =
                     if(qualityInput != null) qualityInput[quality!!].modifier
@@ -28,13 +31,13 @@ open class GeneralCategory(val qualityInput: List<QualityModifier>?){
 
                 //create and return appropriate item
                 return GeneralEquipment(
-                    it.saveName,
-                    it.name,
-                    it.baseCost * multiplier,
-                    it.coinType,
-                    it.weight,
-                    it.availability,
-                    quality
+                    saveName = equipment.saveName,
+                    name = equipment.name,
+                    baseCost = equipment.baseCost * multiplier,
+                    coinType = equipment.coinType,
+                    weight = equipment.weight,
+                    availability = equipment.availability,
+                    currentQuality = quality
                 )
             }
         }

@@ -9,7 +9,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,7 +40,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,52 +90,65 @@ class HomeActivity : AppCompatActivity() {
         val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
 
+        //get custom item directories
         val customSecondaryFile = File(this.filesDir, "CustomSecondaryDIR")
         val customTechFile = File(this.filesDir, "CustomTechDIR")
 
         //create character object
         val charInstance = if(isNew)
             BaseCharacter(
-                filename,
-                customSecondaryFile,
-                customTechFile
+                filename = filename,
+                secondaryFile = customSecondaryFile,
+                techFile = customTechFile
             )
         else
             BaseCharacter(
-                filename,
-                File("${this.filesDir}/AnimaChars", filename),
-                customSecondaryFile,
-                customTechFile
+                charFile = File("${this.filesDir}/AnimaChars", filename),
+                secondaryFile = customSecondaryFile,
+                techFile = customTechFile
             )
 
-        //create file on new character creation
+        //save file on new character creation
         if(isNew)
-            attemptSave(filename, charInstance)
+            attemptSave(
+                charInstance = charInstance,
+                filename = filename
+            )
 
-        //create viewModels for the home page and home alert items
+        //create viewModels for this activity
         val homePageVM: HomePageViewModel by viewModels{
-            CustomFactory(HomePageViewModel::class.java, charInstance, baseContext)
+            CustomFactory(
+                viewModel = HomePageViewModel::class.java,
+                charInstance = charInstance,
+                context = baseContext
+            )
         }
 
+        //draw home page
         setContent{
             MaterialTheme(colorScheme = homeLightColors){
-                HomeContents(homePageVM, charInstance, filename)
+                HomeContents(
+                    charInstance = charInstance,
+                    filename = filename,
+                    homePageVM = homePageVM
+                )
             }
         }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
     /**
-     * Display the general contents for the home page activity.
+     * Create the framework for the Home Activity.
      *
      * @param charInstance character the user is editing
      * @param filename name of the character's associated file
+     * @param homePageVM viewModel for the home page activity
      */
     @Composable
     private fun HomeContents(
-        homePageVM: HomePageViewModel,
         charInstance: BaseCharacter,
-        filename: String
+        filename: String,
+        homePageVM: HomePageViewModel
     ) {
         //prevent user from flipping app
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -145,68 +156,114 @@ class HomeActivity : AppCompatActivity() {
         //initialize current context
         val context = LocalContext.current
 
-        //get scaffold state, coroutine scope, and navigation controller
+        //initialize coroutine scope and navigation controller
         val scope = rememberCoroutineScope()
         val navController = rememberNavController()
 
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
+        //initialize drawer state
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
         //create viewModels for each individual fragment
         val charFragVM: CharacterFragmentViewModel by viewModels{
-            CustomFactory(CharacterFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = CharacterFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val combatFragVM: CombatFragViewModel by viewModels{
-            CustomFactory(CombatFragViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = CombatFragViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val secondaryFragVM: SecondaryFragmentViewModel by viewModels{
-            CustomFactory(SecondaryFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = SecondaryFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val advantageFragVM: AdvantageFragmentViewModel by viewModels{
-            CustomFactory(AdvantageFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = AdvantageFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val modFragVM: ModuleFragmentViewModel by viewModels{
-            CustomFactory(ModuleFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = ModuleFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val kiFragVM: KiFragmentViewModel by viewModels{
-            CustomFactory(KiFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = KiFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val customTechVM: CustomTechniqueViewModel by viewModels{
-            CustomFactory(CustomTechniqueViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = CustomTechniqueViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val magFragVM: MagicFragmentViewModel by viewModels{
-            CustomFactory(MagicFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = MagicFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val summonFragVM: SummoningFragmentViewModel by viewModels{
-            CustomFactory(SummoningFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = SummoningFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val psyFragVM: PsychicFragmentViewModel by viewModels{
-            CustomFactory(PsychicFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = PsychicFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
         val equipFragVM: EquipmentFragmentViewModel by viewModels{
-            CustomFactory(EquipmentFragmentViewModel::class.java, charInstance, context)
+            CustomFactory(
+                viewModel = EquipmentFragmentViewModel::class.java,
+                charInstance = charInstance,
+                context = context
+            )
         }
 
+        //create activity drawer
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
                 MaterialTheme(colorScheme = drawerLightColors) {
                     AppDrawer(
-                        homePageVM,
-                        filename,
-                        charInstance,
-                        drawerState,
-                        scope,
-                        navController
+                        charInstance = charInstance,
+                        filename = filename,
+                        drawerState = drawerState,
+                        scope = scope,
+                        navController = navController,
+                        homePageVM = homePageVM
                     )
                 }
             }
@@ -215,16 +272,19 @@ class HomeActivity : AppCompatActivity() {
             Scaffold(
                 topBar = {
                     MaterialTheme(colorScheme = headerLightColors) {
-                        AppHeader(homePageVM, drawerState, scope)
+                        AppHeader(
+                            drawerState = drawerState,
+                            scope = scope,
+                            homePageVM = homePageVM
+                        )
                     }
                 },
                 bottomBar = {
                     MaterialTheme(colorScheme = headerLightColors){
-                        AppFooter(homePageVM)
+                        AppFooter(homePageVM = homePageVM)
                     }
                 }
             ) {
-
                 //set navigation host in scaffold
                 NavHost(
                     navController = navController,
@@ -236,8 +296,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Character.name) {
                         charFragVM.refreshPage()
                         CharacterPageFragment(
-                            charFragVM,
-                            homePageVM
+                            charFragVM = charFragVM,
+                            maxNumVM = homePageVM
                         )
                     }
 
@@ -245,8 +305,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Combat.name) {
                         combatFragVM.refreshPage()
                         CombatFragment(
-                            combatFragVM,
-                            homePageVM
+                            combatFragVM = combatFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -254,9 +314,9 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.SecondaryCharacteristics.name) {
                         secondaryFragVM.refreshPage()
                         SecondaryAbilityFragment(
-                            secondaryFragVM,
-                            homePageVM,
-                            filename
+                            filename = filename,
+                            secondaryFragVM = secondaryFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -264,8 +324,9 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Advantages.name) {
                         advantageFragVM.refreshPage()
                         AdvantageFragment(
-                            advantageFragVM,
-                            homePageVM
+                            secondaryList = charInstance.secondaryList,
+                            advantageFragVM = advantageFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -273,8 +334,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Modules.name) {
                         modFragVM.refreshPage()
                         ModuleFragment(
-                            modFragVM,
-                            homePageVM
+                            modFragVM = modFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -282,10 +343,10 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Ki.name) {
                         kiFragVM.refreshPage()
                         KiFragment(
-                            kiFragVM,
-                            homePageVM,
-                            customTechVM,
-                            filename
+                            filename = filename,
+                            kiFragVM = kiFragVM,
+                            customTechVM = customTechVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -293,8 +354,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Magic.name) {
                         magFragVM.refreshPage()
                         MagicFragment(
-                            magFragVM,
-                            homePageVM
+                            magFragVM = magFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -302,8 +363,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Summoning.name) {
                         summonFragVM.refreshPage()
                         SummoningFragment(
-                            summonFragVM,
-                            homePageVM
+                            summoningVM = summonFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -311,8 +372,8 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Psychic.name) {
                         psyFragVM.refreshPage()
                         PsychicFragment(
-                            psyFragVM,
-                            homePageVM
+                            psyFragVM = psyFragVM,
+                            homePageVM = homePageVM
                         )
                     }
 
@@ -320,7 +381,7 @@ class HomeActivity : AppCompatActivity() {
                     composable(route = ScreenPage.Equipment.name) {
                         equipFragVM.refreshPage()
                         EquipmentFragment(
-                            equipFragVM
+                            equipFragVM = equipFragVM
                         )
                     }
                 }
@@ -328,33 +389,37 @@ class HomeActivity : AppCompatActivity() {
                 //show exit alert if user opens it
                 if (homePageVM.exitOpen.collectAsState().value)
                     MaterialTheme(colorScheme = detailLightColors) {
-                        ExitAlert(filename, charInstance) { homePageVM.toggleExitAlert() }
+                        ExitAlert(
+                            charInstance = charInstance,
+                            filename = filename
+                        ) { homePageVM.toggleExitAlert() }
                     }
             }
         }
 
+        //open or close exit alert on back button push
         BackHandler{homePageVM.toggleExitAlert()}
     }
 
     /**
-     * Composes the top bar for the app in this activity.
+     * Composes the top bar for this activity.
      *
-     * @param homePageVM viewModel that manages this activity
      * @param drawerState state manager of the drawer state
      * @param scope coroutine for this item
+     * @param homePageVM viewModel that manages this activity
      */
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun AppHeader(
-        homePageVM: HomePageViewModel,
         drawerState: DrawerState,
-        scope: CoroutineScope
+        scope: CoroutineScope,
+        homePageVM: HomePageViewModel
     ) {
         TopAppBar(
-            //update title with any page change
+            //draw border for the page title
             title = {
                 Text(
-                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    text = stringResource(id = ScreenPage.toAddress(screenPage = homePageVM.currentFragment.collectAsState().value)),
                     style = LocalTextStyle.current.copy(
                         drawStyle = Stroke(
                             miter = 10f,
@@ -366,8 +431,9 @@ class HomeActivity : AppCompatActivity() {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
+                //create the page title
                 Text(
-                    text = stringResource(ScreenPage.toAddress(homePageVM.currentFragment.collectAsState().value)),
+                    text = stringResource(id = ScreenPage.toAddress(screenPage = homePageVM.currentFragment.collectAsState().value)),
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -381,11 +447,11 @@ class HomeActivity : AppCompatActivity() {
                             scope.launch{drawerState.open()}
                         else
                             scope.launch{drawerState.close()}
-                    })
-                {
+                    }
+                ){
                     Icon(
                         painter = painterResource(R.drawable.baseline_menu_24),
-                        contentDescription = stringResource(R.string.openLabel)
+                        contentDescription = stringResource(id = R.string.openLabel)
                     )
                 }
             }
@@ -417,38 +483,42 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Composes the app sidebar for this activity.
+     * Composes the sidebar for this activity.
      *
-     * @param homePageVM viewModel that manages this section
-     * @param filename name of the file being worked on
      * @param charInstance character object being worked on
+     * @param filename name of the file being worked on
      * @param drawerState state manager of the activity's scaffold
      * @param scope coroutine for this item
      * @param navController navigation host this drawer affects
+     * @param homePageVM viewModel that manages this section
      */
     @Composable
     private fun AppDrawer(
-        homePageVM: HomePageViewModel,
-        filename: String,
         charInstance: BaseCharacter,
+        filename: String,
         drawerState: DrawerState,
         scope: CoroutineScope,
-        navController: NavHostController
+        navController: NavHostController,
+        homePageVM: HomePageViewModel
     ){
         ModalDrawerSheet{
             LazyColumn {
                 //for each page enumeration present
-                items(enumValues<ScreenPage>()){
+                items(enumValues<ScreenPage>()){page ->
+                    //create a drawer item
                     NavigationDrawerItem(
-                        label = { Text(stringResource(ScreenPage.toAddress(it))) },
-                        selected = homePageVM.currentFragment.collectAsState().value == it,
+                        label = {Text(text = stringResource(id = ScreenPage.toAddress(page)))},
+                        selected = homePageVM.currentFragment.collectAsState().value == page,
                         onClick = {
-                            homePageVM.setCurrentFragment(it)
-                            scope.launch { drawerState.close() }
+                            //set display to this item
+                            homePageVM.setCurrentFragment(input = page)
+
+                            //close drawer
+                            scope.launch {drawerState.close()}
 
                             //remove backstack
-                            navController.navigate(it.name) {
-                                popUpTo(0)
+                            navController.navigate(route = page.name) {
+                                popUpTo(id = 0)
                             }
                         },
                         colors = NavigationDrawerItemDefaults.colors(
@@ -459,29 +529,36 @@ class HomeActivity : AppCompatActivity() {
                     )
                 }
 
+                //divide page items from actions
                 item{
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Divider()
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
 
+                //create save option
                 item {
                     NavigationDrawerItem(
-                        label = { Text(stringResource(R.string.saveLabel)) },
+                        label = {Text(text = stringResource(id = R.string.saveLabel))},
                         selected = false,
                         onClick = {
-                            scope.launch { drawerState.close() }
-                            attemptSave(filename, charInstance)
+                            //close drawer and save character
+                            scope.launch{drawerState.close()}
+                            attemptSave(
+                                charInstance = charInstance,
+                                filename = filename
+                            )
                         }
                     )
                 }
 
+                //create exit option
                 item {
                     NavigationDrawerItem(
-                        label = { Text(stringResource(R.string.exitLabel)) },
+                        label = {Text(text = stringResource(id = R.string.exitLabel))},
                         selected = false,
                         onClick = {
-                            scope.launch { drawerState.close() }
+                            scope.launch{drawerState.close()}
                             homePageVM.toggleExitAlert()
                         }
                     )
@@ -496,7 +573,9 @@ class HomeActivity : AppCompatActivity() {
      * @param homePageVM viewModel that manages this section
      */
     @Composable
-    private fun AppFooter(homePageVM: HomePageViewModel) {
+    private fun AppFooter(
+        homePageVM: HomePageViewModel
+    ){
         Surface {
             Column {
                 //row for table header
@@ -504,38 +583,42 @@ class HomeActivity : AppCompatActivity() {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(Modifier.weight(0.2f))
+                    Spacer(modifier = Modifier.weight(0.2f))
                     //total column
                     Text(
-                        text = stringResource(R.string.totalLabel),
+                        text = stringResource(id = R.string.totalLabel),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier
+                            .weight(0.2f)
                     )
                     //combat column
                     Text(
-                        text = stringResource(R.string.combatLabel),
+                        text = stringResource(id = R.string.combatLabel),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier
+                            .weight(0.2f)
                     )
                     //magic column
                     Text(
-                        text = stringResource(R.string.magicLabel),
+                        text = stringResource(id = R.string.magicLabel),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier
+                            .weight(0.2f)
                     )
                     //psychic column
                     Text(
-                        text = stringResource(R.string.psychicLabel),
+                        text = stringResource(id = R.string.psychicLabel),
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(0.2f)
+                        modifier = Modifier
+                            .weight(0.2f)
                     )
                 }
 
                 //create row for maximum values
-                BottomBarRow(homePageVM.maximums)
+                BottomBarRow(item = homePageVM.maximums)
 
                 //create row for spent values
-                BottomBarRow(homePageVM.expenditures)
+                BottomBarRow(item = homePageVM.expenditures)
             }
         }
     }
@@ -545,7 +628,6 @@ class HomeActivity : AppCompatActivity() {
      *
      * @param item bottom bar row data that is to be displayed in this row
      */
-    @OptIn(ExperimentalAnimationApi::class)
     @Composable
     private fun BottomBarRow(
         item: HomePageViewModel.BottomBarRowData
@@ -556,7 +638,7 @@ class HomeActivity : AppCompatActivity() {
         ) {
             //display title
             Text(
-                text = stringResource(item.nameRef),
+                text = stringResource(id = item.nameRef),
                 textAlign = TextAlign.End,
                 modifier = Modifier.weight(0.2f)
             )
@@ -567,7 +649,7 @@ class HomeActivity : AppCompatActivity() {
                 modifier = Modifier
                     .weight(0.2f),
                 transitionSpec = numberScroll,
-                label = "${stringResource(item.nameRef)}Max"
+                label = "${stringResource(id = item.nameRef)}Max"
             ) {
                 Text(
                     text = "$it",
@@ -581,7 +663,7 @@ class HomeActivity : AppCompatActivity() {
                 modifier = Modifier
                     .weight(0.2f),
                 transitionSpec = numberScroll,
-                label = "${stringResource(item.nameRef)}Combat"
+                label = "${stringResource(id = item.nameRef)}Combat"
             ){
                 Text(
                     text = "$it",
@@ -595,7 +677,7 @@ class HomeActivity : AppCompatActivity() {
                 modifier = Modifier
                     .weight(0.2f),
                 transitionSpec = numberScroll,
-                label = "${stringResource(item.nameRef)}Magic"
+                label = "${stringResource(id = item.nameRef)}Magic"
             ) {
                 Text(
                     text = "$it",
@@ -609,7 +691,7 @@ class HomeActivity : AppCompatActivity() {
                 modifier = Modifier
                     .weight(0.2f),
                 transitionSpec = numberScroll,
-                label = "${stringResource(item.nameRef)}Psychic"
+                label = "${stringResource(id = item.nameRef)}Psychic"
             ) {
                 Text(
                     text = "$it",
@@ -622,45 +704,45 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Alert for when user wishes to leave the current activity.
      *
-     * @param filename name of the character file for save option
      * @param charInstance character object for save option
+     * @param filename name of the character file for save option
      * @param closeDialog function to run on close option
      */
     @Composable
     private fun ExitAlert(
-        filename: String,
         charInstance: BaseCharacter,
+        filename: String,
         closeDialog: () -> Unit
     ){
         AlertDialog(
-            //only close alert on dismissal
+            //close alert on dismissal
             onDismissRequest = {closeDialog()},
             title = {
                 Text(
-                    text = stringResource(R.string.exitTitle)
+                    text = stringResource(id = R.string.exitTitle)
                 )
             },
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(
                     onClick = {
-                        attemptSave(filename, charInstance)
+                        attemptSave(charInstance, filename)
                         finish()
                     }
                 ){
                     Text(
-                        text = stringResource(R.string.saveLabel),
+                        text = stringResource(id = R.string.saveLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                }},
+                }
+            },
             dismissButton = {
                 //leave page without saving
                 TextButton(
-                    onClick = {
-                        finish()
-                    }){
+                    onClick = {finish()}
+                ){
                     Text(
-                        text = stringResource(R.string.exitLabel),
+                        text = stringResource(id = R.string.exitLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -671,12 +753,12 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Attempts to save the character's data to its designated file.
      *
-     * @param filename name of the file to save to
      * @param charInstance character object to be saved
+     * @param filename name of the file to save to
      */
     private fun attemptSave(
-        filename: String,
-        charInstance: BaseCharacter
+        charInstance: BaseCharacter,
+        filename: String
     ){
         try{
             //create file writer
@@ -694,7 +776,7 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        //notify of no file found
+        //notify that file not found
         catch(e: FileNotFoundException){
             Toast.makeText(
                 this@HomeActivity,
@@ -702,7 +784,7 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        //notify of error in file writing
+        //notify for error in file writing
         catch(e: IOException) {
             Toast.makeText(
                 this@HomeActivity,
@@ -717,9 +799,9 @@ class HomeActivity : AppCompatActivity() {
     fun PreviewHeader(){
         MaterialTheme(colorScheme = headerLightColors) {
             AppHeader(
-                HomePageViewModel(BaseCharacter()),
                 rememberDrawerState(DrawerValue.Closed),
-                rememberCoroutineScope()
+                rememberCoroutineScope(),
+                HomePageViewModel(BaseCharacter())
             )
         }
     }

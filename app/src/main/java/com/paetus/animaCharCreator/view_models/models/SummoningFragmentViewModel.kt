@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding fragment.
  *
  * @param summoning character's summoning abilities
+ * @param charClass current class that the character is
  */
 class SummoningFragmentViewModel(
     val summoning: Summoning,
@@ -23,27 +24,31 @@ class SummoningFragmentViewModel(
     //initialize all summoning ability data
     private val summon =
         SummonItemData(
-            R.string.summonTitle,
-            summoning.summon
-        ){charClass.value.summonGrowth}
+            nameRef = R.string.summonTitle,
+            summonAbility = summoning.summon,
+            dpGetter = {charClass.value.summonGrowth}
+        )
 
     private val control =
         SummonItemData(
-            R.string.controlTitle,
-            summoning.control
-        ){charClass.value.controlGrowth}
+            nameRef = R.string.controlTitle,
+            summonAbility = summoning.control,
+            dpGetter = {charClass.value.controlGrowth}
+        )
 
     private val bind =
         SummonItemData(
-            R.string.bindTitle,
-            summoning.bind
-        ){charClass.value.bindGrowth}
+            nameRef = R.string.bindTitle,
+            summonAbility = summoning.bind,
+            dpGetter = {charClass.value.bindGrowth}
+        )
 
     private val banish =
         SummonItemData(
-            R.string.banishTitle,
-            summoning.banish
-        ){charClass.value.banishGrowth}
+            nameRef = R.string.banishTitle,
+            summonAbility = summoning.banish,
+            dpGetter = {charClass.value.banishGrowth}
+        )
 
     //gather all summoning items
     val allRows = listOf(summon, control, bind, banish)
@@ -52,56 +57,56 @@ class SummoningFragmentViewModel(
      * Data object for this summoning ability.
      *
      * @param nameRef string reference for this ability
-     * @param item summoning ability for this item
+     * @param summonAbility summoning ability for this item
      * @param dpGetter function to run for the DP cost of this item
      */
     class SummonItemData(
         val nameRef: Int,
-        val item: SummonAbility,
+        val summonAbility: SummonAbility,
         val dpGetter: () -> Int
     ){
         //initialize bought input
-        private val _boughtVal = MutableStateFlow(item.buyVal.value.toString())
+        private val _boughtVal = MutableStateFlow(value = summonAbility.buyVal.intValue.toString())
         val boughtVal = _boughtVal.asStateFlow()
 
         //initialize DP display
-        private val _dpLabel = MutableStateFlow("")
+        private val _dpLabel = MutableStateFlow(value = "")
         val dpLabel = _dpLabel.asStateFlow()
 
         //initialize total display
-        private val _total = MutableStateFlow(item.abilityTotal.value)
+        private val _total = MutableStateFlow(value = summonAbility.abilityTotal.intValue)
         val total = _total.asStateFlow()
 
         /**
          * Change bought input to the indicated value.
          *
-         * @param input value to buy for the character
+         * @param buyVal value to buy for the character
          */
-        fun setBoughtVal(input: Int){
-            item.setBuyVal(input)
-            _total.update{item.abilityTotal.value}
-            setBoughtVal(input.toString())
+        fun setBoughtVal(buyVal: Int){
+            summonAbility.setBuyVal(pointPurchase = buyVal)
+            _total.update{summonAbility.abilityTotal.intValue}
+            setBoughtVal(display = buyVal.toString())
         }
 
         /**
          * Change the bought display to the inputted string.
          *
-         * @param input new string to display
+         * @param display new string to display
          */
-        fun setBoughtVal(input: String){_boughtVal.update{input}}
+        fun setBoughtVal(display: String){_boughtVal.update{display}}
 
         /**
          * Change the DP display item to show the indicated item.
          *
-         * @param input new item to display
+         * @param dpLabel new item to display
          */
-        fun setDPLabel(input: String){_dpLabel.update{input}}
+        fun setDPLabel(dpLabel: String){_dpLabel.update{dpLabel}}
 
         /**
          * Refreshes the item on page loading.
          */
         fun refreshItem(){
-            setBoughtVal(item.buyVal.value)
+            setBoughtVal(summonAbility.buyVal.intValue)
         }
     }
 
@@ -109,6 +114,6 @@ class SummoningFragmentViewModel(
      * Function to run on loading this page.
      */
     fun refreshPage(){
-        allRows.forEach{it.refreshItem()}
+        allRows.forEach{summoningRow -> summoningRow.refreshItem()}
     }
 }

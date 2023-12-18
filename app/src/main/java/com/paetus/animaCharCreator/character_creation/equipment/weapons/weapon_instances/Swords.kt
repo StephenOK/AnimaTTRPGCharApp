@@ -11,88 +11,88 @@ import java.io.Serializable
  * List of sword weapons the character may take.
  */
 class Swords: Serializable {
-    val broadsword = Weapon(
-        "broadsword",
-        R.string.broadsword,
-        55,
-        -5,
-        5, null,
-        AttackType.Cut, null, WeaponType.Sword,
-        15, 3, 25,
-        null, null,
-        R.string.broadswordDesc
+    private val broadsword = Weapon(
+        saveName = "broadsword",
+        name = R.string.broadsword,
+        damage = 55,
+        speed = -5,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Sword,
+        fortitude = 15, breakage = 3, presence = 25,
+        ability = null, ownStrength = null,
+        description = R.string.broadswordDesc
     )
 
     val longSword = Weapon(
-        "longSword",
-        R.string.longsword,
-        50,
-        0,
-        6, null,
-        AttackType.Cut, null, WeaponType.Sword,
-        13, 3, 25,
-        null, null,
-        R.string.longswordDesc
+        saveName = "longSword",
+        name = R.string.longsword,
+        damage = 50,
+        speed = 0,
+        oneHandStr = 6, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Sword,
+        fortitude = 13, breakage = 3, presence = 25,
+        ability = null, ownStrength = null,
+        description = R.string.longswordDesc
     )
 
     val rapier = Weapon(
-        "rapier",
-        R.string.rapier,
-        40,
-        15,
-        4, null,
-        AttackType.Thrust, AttackType.Cut, WeaponType.Sword,
-        11, 2, 20,
-        listOf(WeaponAbility.Precision), null,
-        R.string.rapierDesc
+        saveName = "rapier",
+        name = R.string.rapier,
+        damage = 40,
+        speed = 15,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Thrust, secondaryType = AttackType.Cut, type = WeaponType.Sword,
+        fortitude = 11, breakage = 2, presence = 20,
+        ability = listOf(WeaponAbility.Precision), ownStrength = null,
+        description = R.string.rapierDesc
     )
 
     val saber = Weapon(
-        "saber",
-        R.string.saber,
-        45,
-        10,
-        6, null,
-        AttackType.Cut, AttackType.Thrust, WeaponType.Sword,
-        12, 3, 20,
-        null, null,
-        R.string.saberDesc
+        saveName = "saber",
+        name = R.string.saber,
+        damage = 45,
+        speed = 10,
+        oneHandStr = 6, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Thrust, type = WeaponType.Sword,
+        fortitude = 12, breakage = 3, presence = 20,
+        ability = null, ownStrength = null,
+        description = R.string.saberDesc
     )
 
     val scimitar = Weapon(
-        "scimitar",
-        R.string.scimitar,
-        50,
-        -5,
-        5, null,
-        AttackType.Cut, null, WeaponType.Sword,
-        13, 4, 20,
-        null, null,
-        R.string.scimitarDesc
+        saveName = "scimitar",
+        name = R.string.scimitar,
+        damage = 50,
+        speed = -5,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Sword,
+        fortitude = 13, breakage = 4, presence = 20,
+        ability = null, ownStrength = null,
+        description = R.string.scimitarDesc
     )
 
     val katana = Weapon(
-        "katana",
-        R.string.katana,
-        50,
-        0,
-        6, 5,
-        AttackType.Cut, null, WeaponType.Sword,
-        11, 3, 40,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.katanaDesc
+        saveName = "katana",
+        name = R.string.katana,
+        damage = 50,
+        speed = 0,
+        oneHandStr = 6, twoHandStr = 5,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Sword,
+        fortitude = 11, breakage = 3, presence = 40,
+        ability = listOf(WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.katanaDesc
     )
 
-    val twoBladeKatana = Weapon(
-        "twoBladeKatana",
-        R.string.twoBladeKatana,
-        55,
-        -5,
-        8, null,
-        AttackType.Cut, null, WeaponType.Sword,
-        11, 3, 40,
-        listOf(WeaponAbility.Special), null,
-        R.string.twoBladeKatanaDesc
+    private val twoBladeKatana = Weapon(
+        saveName = "twoBladeKatana",
+        name = R.string.twoBladeKatana,
+        damage = 55,
+        speed = -5,
+        oneHandStr = 8, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Sword,
+        fortitude = 11, breakage = 3, presence = 40,
+        ability = listOf(WeaponAbility.Special), ownStrength = null,
+        description = R.string.twoBladeKatanaDesc
     )
 
     val swords = listOf(broadsword, katana, longSword, rapier, saber, scimitar, twoBladeKatana)

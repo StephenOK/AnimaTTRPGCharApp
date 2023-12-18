@@ -1,7 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types
 
 /**
- * Subtype of advantage which comes with a character's race selection.
+ * Subclass of advantage which comes with a character's race selection.
  *
  * @param name address of the displayed name
  * @param description details of the advantage's effects

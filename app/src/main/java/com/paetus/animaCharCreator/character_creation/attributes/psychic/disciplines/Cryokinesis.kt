@@ -7,17 +7,17 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 /**
  * Record of all of the available cryokinetic powers.
  */
-class Cryokinesis: Discipline("cryokinesis"){
-    val createChill = PsychicPower(
-        "createChill",
-        40,
-        1,
-        true,
-        true,
-        R.string.createChillPowDesc,
-        listOf(R.string.intensities),
-        listOf(1, 10),
-        listOf(
+class Cryokinesis: Discipline(saveName = "cryokinesis"){
+    private val createChill = PsychicPower(
+        saveName = "createChill",
+        name = 40,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.createChillPowDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(1, 10),
+        stringInput = listOf(
             1,
             1,
             3,
@@ -31,16 +31,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val freeze = PsychicPower(
-        "freeze",
-        41,
-        1,
-        true,
-        true,
-        R.string.freezePowDesc,
-        listOf(R.string.physResInput),
-        listOf(3, 10),
-        listOf(
+    private val freeze = PsychicPower(
+        saveName = "freeze",
+        name = 41,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.freezePowDesc,
+        stringBaseList = listOf(R.string.physResInput),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 6, 4,
             80,
             100,
@@ -52,16 +52,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val senseTemperature = PsychicPower(
-        "senseTemp",
-        42,
-        1,
-        true,
-        true,
-        R.string.senseTempDesc,
-        listOf(R.string.meterRadius, R.string.kilometerRadius),
-        listOf(3, 7, 10),
-        listOf(
+    private val senseTemperature = PsychicPower(
+        saveName = "senseTemp",
+        name = 42,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.senseTempDesc,
+        stringBaseList = listOf(R.string.meterRadius, R.string.kilometerRadius),
+        stringBaseCount = listOf(3, 7, 10),
+        stringInput = listOf(
             4, 2, 1,
             10,
             50,
@@ -73,16 +73,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val eliminateCold = PsychicPower(
-        "elimCold",
-        43,
-        1,
-        true,
-        false,
-        R.string.elimColdDesc,
-        listOf(R.string.physResReduceIntense),
-        listOf(1, 10),
-        listOf(
+    private val eliminateCold = PsychicPower(
+        saveName = "elimCold",
+        name = 43,
+        level = 1,
+        isActive = true,
+        maintained = false,
+        description = R.string.elimColdDesc,
+        stringBaseList = listOf(R.string.physResReduceIntense),
+        stringBaseCount = listOf(1, 10),
+        stringInput = listOf(
             1,
             Pair(80, 1),
             Pair(100, 3),
@@ -96,16 +96,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val coldDominion = PsychicPower(
-        "coldDominion",
-        44,
-        1,
-        true,
-        true,
-        R.string.coldDominionDesc,
-        listOf(R.string.physResIntensities),
-        listOf(2, 10),
-        listOf(
+    private val coldDominion = PsychicPower(
+        saveName = "coldDominion",
+        name = 44,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.coldDominionDesc,
+        stringBaseList = listOf(R.string.physResIntensities),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             2, 1,
             Pair(80, 4),
             Pair(100, 6),
@@ -118,16 +118,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val crystallize = PsychicPower(
-        "crystallize",
-        45,
-        2,
-        true,
-        true,
-        R.string.crystallizeDesc,
-        listOf(R.string.physResInput),
-        listOf(5, 10),
-        listOf(
+    private val crystallize = PsychicPower(
+        saveName = "crystallize",
+        name = 45,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.crystallizeDesc,
+        stringBaseList = listOf(R.string.physResInput),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             12, 8, 6, 4, 2,
             120,
             140,
@@ -137,16 +137,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val iceSplinters = PsychicPower(
-        "iceSplinters",
-        46,
-        2,
-        true,
-        false,
-        R.string.iceSplintersDesc,
-        listOf(R.string.baseDamageInput, R.string.baseDamageArea),
-        listOf(5, 8, 10),
-        listOf(
+    private val iceSplinters = PsychicPower(
+        saveName = "iceSplinters",
+        name = 46,
+        level = 2,
+        isActive = true,
+        maintained = false,
+        description = R.string.iceSplintersDesc,
+        stringBaseList = listOf(R.string.baseDamageInput, R.string.baseDamageArea),
+        stringBaseCount = listOf(5, 8, 10),
+        stringInput = listOf(
             8, 6, 4, 2, 1,
             80,
             100,
@@ -156,16 +156,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val decreaseTemperature = PsychicPower(
-        "decreaseTemp",
-        47,
-        2,
-        true,
-        true,
-        R.string.decreaseTempDesc,
-        listOf(R.string.tempDecreaseKilometer),
-        listOf(4, 10),
-        listOf(
+    private val decreaseTemperature = PsychicPower(
+        saveName = "decreaseTemp",
+        name = 47,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.decreaseTempDesc,
+        stringBaseList = listOf(R.string.tempDecreaseKilometer),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             6, 4, 2, 1,
             Pair(5, 1),
             Pair(10, 5),
@@ -176,16 +176,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val iceShield = PsychicPower(
-        "iceShield",
-        48,
-        2,
-        false,
-        true,
-        R.string.iceShieldDesc,
-        listOf(R.string.lifePointInput),
-        listOf(3, 10),
-        listOf(
+    private val iceShield = PsychicPower(
+        saveName = "iceShield",
+        name = 48,
+        level = 2,
+        isActive = false,
+        maintained = true,
+        description = R.string.iceShieldDesc,
+        stringBaseList = listOf(R.string.lifePointInput),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             6, 4, 2,
             600,
             800,
@@ -197,16 +197,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val absoluteZero = PsychicPower(
-        "absoluteZero",
-        49,
-        3,
-        true,
-        true,
-        R.string.absoluteZeroDesc,
-        listOf(R.string.meterRadius),
-        listOf(5, 10),
-        listOf(
+    private val absoluteZero = PsychicPower(
+        saveName = "absoluteZero",
+        name = 49,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.absoluteZeroDesc,
+        stringBaseList = listOf(R.string.meterRadius),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             5,
             10,
@@ -216,16 +216,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val everlastingMoment = PsychicPower(
-        "everlastMoment",
-        50,
-        3,
-        true,
-        true,
-        R.string.everlastMomentDesc,
-        listOf(R.string.physResMeter),
-        listOf(5, 10),
-        listOf(
+    private val everlastingMoment = PsychicPower(
+        saveName = "everlastMoment",
+        name = 50,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.everlastMomentDesc,
+        stringBaseList = listOf(R.string.physResMeter),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             Pair(120, 5),
             Pair(140, 10),
@@ -235,16 +235,16 @@ class Cryokinesis: Discipline("cryokinesis"){
         )
     )
 
-    val majorCold = PsychicPower(
-        "majorCold",
-        51,
-        3,
-        true,
-        true,
-        R.string.majorColdDesc,
-        listOf(R.string.intensities),
-        listOf(6, 10),
-        listOf(
+    private val majorCold = PsychicPower(
+        saveName = "majorCold",
+        name = 51,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.majorColdDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(6, 10),
+        stringInput = listOf(
             20, 16, 12, 8, 6, 4,
             30,
             40,
@@ -254,19 +254,21 @@ class Cryokinesis: Discipline("cryokinesis"){
     )
 
     init{
-        allPowers.addAll(listOf(
-            createChill,
-            freeze,
-            senseTemperature,
-            eliminateCold,
-            coldDominion,
-            crystallize,
-            iceSplinters,
-            decreaseTemperature,
-            iceShield,
-            absoluteZero,
-            everlastingMoment,
-            majorCold
-        ))
+        allPowers.addAll(
+            elements = listOf(
+                createChill,
+                freeze,
+                senseTemperature,
+                eliminateCold,
+                coldDominion,
+                crystallize,
+                iceSplinters,
+                decreaseTemperature,
+                iceShield,
+                absoluteZero,
+                everlastingMoment,
+                majorCold
+            )
+        )
     }
 }

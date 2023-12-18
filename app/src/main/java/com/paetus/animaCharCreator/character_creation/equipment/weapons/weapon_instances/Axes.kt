@@ -13,53 +13,53 @@ import java.io.Serializable
  */
 class Axes: Serializable {
     val battleAxe = ProjectileWeapon(
-        "battleAxe",
-        R.string.battleAxe,
-        70,
-        -30,
-        7, null,
-        AttackType.Cut, AttackType.Impact, WeaponType.Axe,
-        15, 5, 25,
-        100, 5,
-        listOf(WeaponAbility.Throwable), null,
-        R.string.battleAxeDesc
+        saveName = "battleAxe",
+        name = R.string.battleAxe,
+        damage = 70,
+        speed = -30,
+        oneHandStr = 7, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Impact, type = WeaponType.Axe,
+        fortitude = 15, breakage = 5, presence = 25,
+        reloadOrRate = 100, range = 5,
+        ability = listOf(WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.battleAxeDesc
     )
 
     val handAxe = ProjectileWeapon(
-        "handAxe",
-        R.string.handAxe,
-        45,
-        0,
-        5, null,
-        AttackType.Cut, null, WeaponType.Axe,
-        13, 4, 15,
-        80, 10,
-        listOf(WeaponAbility.Throwable), null,
-        R.string.handAxeDesc
+        saveName = "handAxe",
+        name = R.string.handAxe,
+        damage = 45,
+        speed = 0,
+        oneHandStr = 5, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Axe,
+        fortitude = 13, breakage = 4, presence = 15,
+        reloadOrRate = 80, range = 10,
+        ability = listOf(WeaponAbility.Throwable), ownStrength = null,
+        description = R.string.handAxeDesc
     )
 
     val hoe = Weapon(
-        "hoe",
-        R.string.hoe,
-        30,
-        -20,
-        4, null,
-        AttackType.Cut, AttackType.Impact, WeaponType.Axe,
-        10, 1, 15,
-        null, null,
-        R.string.emptyItem
+        saveName = "hoe",
+        name = R.string.hoe,
+        damage = 30,
+        speed = -20,
+        oneHandStr = 4, twoHandStr = null,
+        primaryType = AttackType.Cut, secondaryType = AttackType.Impact, type = WeaponType.Axe,
+        fortitude = 10, breakage = 1, presence = 15,
+        ability = null, ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val woodAxe = Weapon(
-        "woodAxe",
-        R.string.woodsmanAxe,
-        40,
-        -10,
-        7, 5,
-        AttackType.Cut, null, WeaponType.Axe,
-        12, 3, 15,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.emptyItem
+        saveName = "woodAxe",
+        name = R.string.woodsmanAxe,
+        damage = 40,
+        speed = -10,
+        oneHandStr = 7, twoHandStr = 5,
+        primaryType = AttackType.Cut, secondaryType = null, type = WeaponType.Axe,
+        fortitude = 12, breakage = 3, presence = 15,
+        ability = listOf(WeaponAbility.OneOrTwoHanded), ownStrength = null,
+        description = R.string.emptyItem
     )
 
     val axes = listOf(battleAxe, handAxe, hoe, woodAxe)

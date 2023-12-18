@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.activities.fragments.home_fragments
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -44,7 +43,6 @@ import com.paetus.animaCharCreator.view_models.models.MagicFragmentViewModel
  * @param magFragVM viewModel to run with this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MagicFragment(
     magFragVM: MagicFragmentViewModel,
@@ -61,49 +59,55 @@ fun MagicFragment(
                 end = 30.dp
             )
     ){
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
 
         item{
             GeneralCard{
                 //header for zeon point maximums
                 Text(
-                    text = stringResource(R.string.zeonPointLabel),
+                    text = stringResource(id = R.string.zeonPointLabel),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 //zeon point table header
                 Row(
                     Modifier
                         .fillMaxWidth()
                 ){
+                    //head for base zeon points
                     Text(
-                        text = stringResource(R.string.baseLabel),
-                        modifier = Modifier
-                            .weight(0.25f),
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = stringResource(R.string.boughtLabel),
+                        text = stringResource(id = R.string.baseLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
                     )
 
-                    Spacer(Modifier.weight(0.1f))
-
+                    //head for bought zeon points
                     Text(
-                        text = stringResource(R.string.classLabel),
+                        text = stringResource(id = R.string.boughtLabel),
+                        modifier = Modifier
+                            .weight(0.25f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.weight(0.1f))
+
+                    //head for class zeon points
+                    Text(
+                        text = stringResource(id = R.string.classLabel),
                         modifier = Modifier
                             .weight(0.15f),
                         textAlign = TextAlign.Center
                     )
+
+                    //head for total zeon points
                     Text(
-                        text = stringResource(R.string.totalLabel),
+                        text = stringResource(id = R.string.totalLabel),
                         modifier = Modifier
                             .weight(0.25f),
                         textAlign = TextAlign.Center
@@ -111,13 +115,13 @@ fun MagicFragment(
                 }
 
                 //initialize zeon point DP cost string
-                val dpString = stringResource(R.string.dpLabel, magFragVM.getBoughtZeonDP())
+                val dpString = stringResource(id = R.string.dpLabel, magFragVM.getBoughtZeonDP())
 
                 //zeon point maximum row
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    //display base maximum Zeon
+                    //display base zeon points
                     Text(
                         text = magFragVM.getBaseZeon().toString(),
                         modifier = Modifier
@@ -125,14 +129,14 @@ fun MagicFragment(
                         textAlign = TextAlign.Center
                     )
 
-                    //Zeon point purchase input
+                    //zeon point purchase input
                     NumberInput(
                         inputText = magFragVM.boughtZeonString.collectAsState().value,
                         inputFunction = {
                             if(magFragVM.isGifted() || it.contains('\n'))
-                                magFragVM.setBoughtZeonString(it.toInt())
+                                magFragVM.setBoughtZeonString(zeonBought = it.toInt())
                         },
-                        emptyFunction = {magFragVM.setBoughtZeonString("")},
+                        emptyFunction = {magFragVM.setBoughtZeonString(display = "")},
                         modifier = Modifier
                             .onFocusChanged {
                                 //display Gift not taken message
@@ -147,9 +151,9 @@ fun MagicFragment(
 
                                 //change DP display to appropriate value
                                 if (it.isFocused)
-                                    magFragVM.setBoughtZeonDP(dpString)
+                                    magFragVM.setBoughtZeonDP(dpCost = dpString)
                                 else
-                                    magFragVM.setBoughtZeonDP("")
+                                    magFragVM.setBoughtZeonDP(dpCost = "")
                             }
                             .weight(0.25f),
                         label = magFragVM.boughtZeonDP.collectAsState().value,
@@ -158,7 +162,7 @@ fun MagicFragment(
 
                     //display multiplier for zeon point purchases
                     Text(
-                        text = stringResource(R.string.zeonPointMultiplier),
+                        text = stringResource(id = R.string.zeonPointMultiplier),
                         modifier = Modifier
                             .weight(0.1f),
                         textAlign = TextAlign.Center
@@ -183,15 +187,20 @@ fun MagicFragment(
             }
         }
 
-        item{Spacer(Modifier.height(10.dp))}
+        item{Spacer(modifier = Modifier.height(10.dp))}
 
         item{
             GeneralCard{
-                ZeonPurchaseItem(magFragVM.allPurchaseData[0], magFragVM, homePageVM)
+                //display magic accumulation
+                ZeonPurchaseItem(
+                    tableItem = magFragVM.zeonAccumulation,
+                    magFragVM = magFragVM,
+                    homePageVM = homePageVM
+                )
 
                 //display zeon recovery
                 InfoRow(
-                    label = stringResource(R.string.zeonRecoveryLabel)
+                    label = stringResource(id = R.string.zeonRecoveryLabel)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = magFragVM.zeonRecoveryString.collectAsState().value,
@@ -199,15 +208,13 @@ fun MagicFragment(
                         transitionSpec = numberScroll,
                         label = "zeonRecovery"
                     ){
-                        Text(
-                            text = "$it"
-                        )
+                        Text(text = "$it")
                     }
                 }
 
                 //display innate magic
                 InfoRow(
-                    label = stringResource(R.string.innateMagic)
+                    label = stringResource(id = R.string.innateMagic)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = magFragVM.innateMagic.collectAsState().value,
@@ -215,9 +222,7 @@ fun MagicFragment(
                         transitionSpec = numberScroll,
                         label = "innateMagic"
                     ){
-                        Text(
-                            text = "$it"
-                        )
+                        Text(text = "$it")
                     }
                 }
             }
@@ -228,7 +233,11 @@ fun MagicFragment(
         //display zeon accumulation and magic projection tables
         item{
             GeneralCard {
-                ZeonPurchaseItem(magFragVM.allPurchaseData[1], magFragVM, homePageVM)
+                ZeonPurchaseItem(
+                    tableItem = magFragVM.zeonProjection,
+                    magFragVM = magFragVM,
+                    homePageVM = homePageVM
+                )
 
                 Spacer(Modifier.height(10.dp))
 
@@ -240,23 +249,23 @@ fun MagicFragment(
                 ) {
                     //title for section
                     Text(
-                        text = stringResource(R.string.imbalanceLabel),
+                        text = stringResource(id = R.string.imbalanceLabel),
                         modifier = Modifier
                             .weight(0.21f)
                     )
 
-                    Spacer(Modifier.weight(0.01f))
+                    Spacer(modifier = Modifier.weight(0.01f))
 
                     //input to change imbalance
                     NumberInput(
                         inputText = magFragVM.projectionImbalance.collectAsState().value,
                         inputFunction = {
                             //if imbalance is a legal input
-                            if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains('\n'))
-                                magFragVM.setProjectionImbalance(it.toInt())
+                            if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains(char = '\n'))
+                                magFragVM.setProjectionImbalance(imbalance = it.toInt())
                         },
                         emptyFunction = {
-                            magFragVM.setProjectionImbalance("")
+                            magFragVM.setProjectionImbalance(display = "")
                         },
                         modifier = Modifier
                             .onFocusChanged {
@@ -272,31 +281,31 @@ fun MagicFragment(
                             .weight(0.22f)
                     )
 
-                    Spacer(Modifier.weight(0.01f))
+                    Spacer(modifier = Modifier.weight(0.01f))
 
                     Button(
                         //switch imbalance preference
                         onClick = {
-                            magFragVM.setImbalanceIsAttack(!magFragVM.imbalanceIsAttack.value)
+                            magFragVM.setImbalanceIsAttack(isOffense = !magFragVM.imbalanceIsAttack.value)
                         },
                         modifier = Modifier
                             .weight(0.3f)
                     ) {
                         //display current imbalance preference
-                        Text(text = stringResource(magFragVM.imbalanceTypeString.collectAsState().value))
+                        Text(text = stringResource(id = magFragVM.imbalanceTypeString.collectAsState().value))
                     }
 
-                    Spacer(Modifier.weight(0.01f))
+                    Spacer(modifier = Modifier.weight(0.01f))
 
-                    //display imbalanced projection values
                     Column(
                         Modifier
                             .weight(0.24f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        //display imbalanced offensive projection
                         Row {
                             Text(
-                                text = "${stringResource(R.string.offenseLabel)}:"
+                                text = "${stringResource(id = R.string.offenseLabel)}:"
                             )
 
                             AnimatedContent(
@@ -304,15 +313,14 @@ fun MagicFragment(
                                 transitionSpec = numberScroll,
                                 label = "offenseImbalance"
                             ){
-                                Text(
-                                    text = "$it"
-                                )
+                                Text(text = "$it")
                             }
                         }
 
+                        //display imbalanced defensive projection
                         Row {
                             Text(
-                                text = "${stringResource(R.string.defenseLabel)}:"
+                                text = "${stringResource(id = R.string.defenseLabel)}:"
                             )
 
                             AnimatedContent(
@@ -330,22 +338,22 @@ fun MagicFragment(
             }
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         //display magic levels available and magic levels spent
         item{
             GeneralCard{
                 InfoRow(
-                    label = stringResource(R.string.magicLevelLabel)
-                ){it, _ ->
+                    label = stringResource(id = R.string.magicLevelLabel)
+                ){modifier, _ ->
                     Text(
                         text = magFragVM.getMagicLevelMax(),
-                        modifier = it
+                        modifier = modifier
                     )
                 }
 
                 InfoRow(
-                    label = stringResource(R.string.magicLevelSpentLabel)
+                    label = stringResource(id = R.string.magicLevelSpentLabel)
                 ){modifier, _ ->
                     AnimatedContent(
                         targetState = magFragVM.magicLevelSpent.collectAsState().value,
@@ -353,71 +361,71 @@ fun MagicFragment(
                         transitionSpec = numberScroll,
                         label = "magLevelSpent"
                     ){
-                        Text(
-                            text = "$it"
-                        )
+                        Text(text = "$it")
                     }
                 }
             }
         }
 
         //display each book investment row and spell displays
-        items(magFragVM.allBooks){
+        items(magFragVM.allBooks){spellBook ->
             SpellBookInvestment(
-                magFragVM,
-                it
+                magFragVM = magFragVM,
+                spellData = spellBook
             )
         }
 
-        item{Spacer(Modifier.height(20.dp))}
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         item{
             GeneralCard{
                 //header for held spells section
                 Text(
-                    text = stringResource(R.string.spellsTakenLabel),
+                    text = stringResource(id = R.string.spellsTakenLabel),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display all currently taken spells
-                magFragVM.heldSpells.forEach{
+                magFragVM.heldSpells.forEach{spell ->
                     //display free spell exchange if it's a free spell
-                    if(it is FreeSpell)
+                    if(spell is FreeSpell)
                         FreeSpellExchange(
-                            magFragVM,
-                            it
+                            currentFreeSpell = spell,
+                            magFragVM = magFragVM
                         )
                     else
                         SpellRow(
-                            magFragVM,
-                            it,
-                            false
-                        ) {}
+                            spell = spell,
+                            buyable = false,
+                            spellData = magFragVM.getSpellData(spell = spell),
+                            magFragVM = magFragVM,
+                            updateList = {}
+                        )
 
-                    Row{Spacer(Modifier.height(3.dp))}
+                    Row{Spacer(modifier = Modifier.height(3.dp))}
                 }
             }
         }
 
-        item{Spacer(Modifier.height(15.dp))}
+        item{Spacer(modifier = Modifier.height(15.dp))}
     }
 
     //show free spell dialog if displayed
     if(magFragVM.freeExchangeOpen.collectAsState().value)
         FreeSpellPick(
-            magFragVM
+            magFragVM = magFragVM
         )
 
     //show spell details if requested
     if(magFragVM.detailAlertOpen.collectAsState().value)
         DetailAlert(
-            magFragVM.detailTitle.collectAsState().value,
-            magFragVM.detailItem.collectAsState().value!!
+            title = magFragVM.detailTitle.collectAsState().value,
+            item = magFragVM.detailItem.collectAsState().value!!
         ) {magFragVM.toggleDetailAlertOpen()}
 }
 
@@ -438,7 +446,7 @@ private fun ZeonPurchaseItem(
     val context = LocalContext.current
 
     Column{
-        Row{Spacer(Modifier.height(20.dp))}
+        Row{Spacer(modifier = Modifier.height(20.dp))}
 
         //display table title
         Row(
@@ -446,7 +454,7 @@ private fun ZeonPurchaseItem(
                 .fillMaxWidth()
         ){
             Text(
-                text = stringResource(tableItem.nameRef),
+                text = stringResource(id = tableItem.nameRef),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -456,20 +464,25 @@ private fun ZeonPurchaseItem(
 
         //display table header
         Row{
+            //display base value head
             Text(
-                text = stringResource(R.string.baseLabel),
+                text = stringResource(id = R.string.baseLabel),
                 modifier = Modifier
                     .weight(0.3f),
                 textAlign = TextAlign.Center
             )
+
+            //display bought points header
             Text(
-                text = stringResource(R.string.boughtLabel),
+                text = stringResource(id = R.string.boughtLabel),
                 modifier = Modifier
                     .weight(0.3f),
                 textAlign = TextAlign.Center
             )
+
+            //display total value header
             Text(
-                text = stringResource(R.string.totalLabel),
+                text = stringResource(id = R.string.totalLabel),
                 modifier = Modifier
                     .weight(0.3f),
                 textAlign = TextAlign.Center
@@ -477,7 +490,7 @@ private fun ZeonPurchaseItem(
         }
 
         //initialize item's DP cost string
-        val dpString = stringResource(R.string.dpLabel, tableItem.dpGetter())
+        val dpString = stringResource(id = R.string.dpLabel, tableItem.dpGetter())
 
         //display table items
         Row(
@@ -495,10 +508,10 @@ private fun ZeonPurchaseItem(
             NumberInput(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || it.contains('\n'))
-                        tableItem.setBoughtString(it.toInt())
+                    if(magFragVM.isGifted() || it.contains(char = '\n'))
+                        tableItem.setBoughtString(buyValue = it.toInt())
                 },
-                emptyFunction = {tableItem.setBoughtString("")},
+                emptyFunction = {tableItem.setBoughtString(display = "")},
                 modifier = Modifier
                     .onFocusChanged {
                         //display warning for not having The Gift
@@ -513,9 +526,9 @@ private fun ZeonPurchaseItem(
 
                         //update DP display
                         if (it.isFocused)
-                            tableItem.setDPDisplay(dpString)
+                            tableItem.setDPDisplay(dpDisplay = dpString)
                         else
-                            tableItem.setDPDisplay("")
+                            tableItem.setDPDisplay(dpDisplay = "")
                     }
                     .weight(0.3f),
                 label = tableItem.dpDisplay.collectAsState().value,
@@ -556,14 +569,15 @@ private fun SpellBookInvestment(
         ){
             //primary element checkbox
             Checkbox(
-                checked = magFragVM.primaryElementBoxes[spellData.spellElement]!!.value,
-                onCheckedChange = {magFragVM.changePrimaryBook(spellData.spellElement, it)},
-                modifier = Modifier.weight(0.1f)
+                checked = spellData.isPrimary.collectAsState().value,
+                onCheckedChange = {spellData.setPrimaryElement(isPrimary = it)},
+                modifier = Modifier
+                    .weight(0.1f)
             )
 
             //display associated element
             Text(
-                text = spellData.spellElement.name,
+                text = spellData.magicBook.element.name,
                 modifier = Modifier
                     .weight(0.25f)
             )
@@ -572,10 +586,10 @@ private fun SpellBookInvestment(
             NumberInput(
                 inputText = spellData.elementInvestment.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || it.contains('\n'))
-                        spellData.setElementInvestment(it.toInt())
+                    if(magFragVM.isGifted() || it.contains(char = '\n'))
+                        spellData.setElementInvestment(magLevels = it.toInt())
                 },
-                emptyFunction = {spellData.setElementInvestment("")},
+                emptyFunction = {spellData.setElementInvestment(display = "")},
                 modifier = Modifier
                     .onFocusChanged {
                         if (it.isFocused && !magFragVM.isGifted())
@@ -590,9 +604,9 @@ private fun SpellBookInvestment(
                     .weight(0.24f),
             )
 
-            Spacer(Modifier.weight(0.01f))
+            Spacer(modifier = Modifier.weight(0.01f))
 
-            //spell display button
+            //button to display book's spell list
             Button(
                 onClick = {spellData.toggleListOpen()},
                 modifier = Modifier
@@ -600,8 +614,9 @@ private fun SpellBookInvestment(
             ) {
                 Text(
                     text = stringResource(
-                        if(spellData.listOpen.collectAsState().value) R.string.spellsHidden
-                        else R.string.spellsShown
+                        id =
+                            if(spellData.listOpen.collectAsState().value) R.string.spellsHidden
+                            else R.string.spellsShown
                     ),
                     textAlign = TextAlign.Center
                 )
@@ -619,25 +634,38 @@ private fun SpellBookInvestment(
                 var freeSpellLevel = 0
 
                 //for each of the element's spells
-                spellData.spellList.forEach {
+                spellData.magicBook.fullBook.forEach {spell ->
                     //display the given spell if one is given
-                    if (it != null) {
+                    if (spell != null) {
                         SpellRow(
-                            magFragVM,
-                            it,
-                            true
-                        ) { magFragVM.reflectPrimaryElement(); magFragVM.setMagicLevelSpent()}
+                            spell = spell,
+                            buyable = true,
+                            spellData = spellData,
+                            magFragVM = magFragVM,
+                            updateList = {
+                                spellData.setPrimaryElement(isPrimary = spellData.magicBook.isPrimary.value)
+                                magFragVM.setMagicLevelSpent()
+                            }
+                        )
 
                         //increment free spell level
-                        freeSpellLevel = it.level + 2
+                        freeSpellLevel = spell.level + 2
                     }
 
                     //display free spell row if no spell given
                     else
-                        FreeSpellRow(magFragVM, freeSpellLevel, spellData.spellElement)
-                        { magFragVM.reflectPrimaryElement(); magFragVM.setMagicLevelSpent()}
+                        FreeSpellRow(
+                            spellLevel = freeSpellLevel,
+                            spellElement = spellData.magicBook.element,
+                            spellData = spellData,
+                            magFragVM = magFragVM,
+                            updateList = {
+                                spellData.setPrimaryElement(isPrimary = spellData.isPrimary.value)
+                                magFragVM.setMagicLevelSpent()
+                            }
+                        )
 
-                    Spacer(Modifier.height(3.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
                 }
             }
         }
@@ -647,16 +675,18 @@ private fun SpellBookInvestment(
 /**
  * Row that displays the inputted spell.
  *
- * @param magFragVM viewModel that manages the data for this page
- * @param displayItem spell to display
+ * @param spell spell to display
  * @param buyable whether the row is a purchasable individual spell or just a display
+ * @param spellData spellbook data for this row's spell
+ * @param magFragVM viewModel that manages the data for this page
  * @param updateList function to run on a button change
  */
 @Composable
 private fun SpellRow(
-    magFragVM: MagicFragmentViewModel,
-    displayItem: Spell,
+    spell: Spell,
     buyable: Boolean,
+    spellData: MagicFragmentViewModel.SpellRowData,
+    magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
 ){
     Row(
@@ -664,26 +694,28 @@ private fun SpellRow(
     ){
         //make purchase button if buyable row
         PopInItem(
-            visible = buyable && magFragVM.spellIsRemovable(displayItem),
+            visible = buyable && magFragVM.spellIsRemovable(spell = spell),
             modifier = Modifier
                 .weight(0.35f)
         ){
             BuySingleSpellButton(
-                magFragVM,
-                displayItem,
-                Modifier.weight(0.35f),
-                updateList
+                spell = spell,
+                spellData = spellData,
+                modifier = Modifier
+                    .weight(0.35f),
+                magFragVM = magFragVM,
+                updateList = updateList
             )
         }
 
         //display spell name
         Text(
-            text = stringResource(displayItem.name),
+            text = stringResource(id = spell.name),
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center,
             color =
-                if(!magFragVM.getCastable(displayItem.level))
+                if(!magFragVM.getCastable(spellLevel = spell.level))
                     MaterialTheme.colorScheme.secondary
                 else
                     MaterialTheme.colorScheme.error
@@ -692,7 +724,7 @@ private fun SpellRow(
         //create display button
         DetailButton(
             onClick = {
-                magFragVM.setDetailItem(displayItem)
+                magFragVM.setDetailItem(spell = spell)
                 magFragVM.toggleDetailAlertOpen()
             },
             modifier = Modifier
@@ -704,16 +736,18 @@ private fun SpellRow(
 /**
  * Row to display a free spell in the book column.
  *
+ * @param spellLevel level of the free spell
+ * @param spellElement element of the free spell
+ * @param spellData spellbook data for this row's spell
  * @param magFragVM viewModel that manages the data for this page
- * @param lvlVal level of the free spell
- * @param eleVal element of the free spell
  * @param updateList function to run on free spell purchase
  */
 @Composable
 private fun FreeSpellRow(
+    spellLevel: Int,
+    spellElement: Element,
+    spellData: MagicFragmentViewModel.SpellRowData,
     magFragVM: MagicFragmentViewModel,
-    lvlVal: Int,
-    eleVal: Element,
     updateList: () -> Unit
 ){
     Row(
@@ -721,49 +755,52 @@ private fun FreeSpellRow(
     ){
         //button to buy free spell individually
         PopInItem(
-            visible = magFragVM.freeSpellIsRemovable(lvlVal, eleVal),
+            visible = magFragVM.freeSpellIsRemovable(spellLevel = spellLevel, element = spellElement),
             modifier = Modifier
                 .weight(0.35f)
         ) {
             BuySingleFreeSpellButton(
-                magFragVM,
-                lvlVal,
-                eleVal,
-                Modifier.weight(0.35f),
-                updateList
+                spellLevel = spellLevel,
+                spellData = spellData,
+                modifier = Modifier
+                    .weight(0.35f),
+                magFragVM = magFragVM,
+                updateList = updateList
             )
         }
 
-        //display free spell values
+        //display free spell slot's level
         Text(
-            text = stringResource(R.string.freeLevelLabel, lvlVal),
+            text = stringResource(id = R.string.freeLevelLabel, spellLevel),
             modifier = Modifier
                 .weight(0.4f),
             textAlign = TextAlign.Center,
             color =
-                if(!magFragVM.getCastable(lvlVal))
+                if(!magFragVM.getCastable(spellLevel = spellLevel))
                     MaterialTheme.colorScheme.secondary
                 else
                     MaterialTheme.colorScheme.error
         )
 
-        Spacer(Modifier.weight(0.25f))
+        Spacer(modifier = Modifier.weight(0.25f))
     }
 }
 
 /**
  * Button to purchase a spell individually.
  *
- * @param magFragVM viewModel that manages the data for this page
- * @param inputSpell spell to be purchased
+ * @param spell spell to be purchased
+ * @param spellData spellbook data for this item's associated spell
  * @param modifier parameters for the button's style
+ * @param magFragVM viewModel that manages the data for this page
  * @param updateList function to run after spell purchase
  */
 @Composable
 private fun BuySingleSpellButton(
-    magFragVM: MagicFragmentViewModel,
-    inputSpell: Spell,
+    spell: Spell,
+    spellData: MagicFragmentViewModel.SpellRowData,
     modifier: Modifier,
+    magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
 ){
     //initialize context
@@ -773,7 +810,7 @@ private fun BuySingleSpellButton(
         onClick = {
             //attempt to purchase the spell
             if(magFragVM.isGifted()) {
-                magFragVM.changeIndividualSpell(inputSpell)
+                spellData.buySingleSpell(spellLevel = spell.level)
                 updateList()
             }
             else
@@ -787,7 +824,7 @@ private fun BuySingleSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getSpellHeld(inputSpell)) R.string.spellRemoval
+                if(magFragVM.getSpellHeld(spell = spell)) R.string.spellRemoval
                 else R.string.spellPurchase
             ),
             textAlign = TextAlign.Center
@@ -798,18 +835,18 @@ private fun BuySingleSpellButton(
 /**
  * Button to purchase an individual free spell.
  *
- * @param magFragVM viewModel that manages the data on this page
  * @param spellLevel level of the free spell
- * @param spellElement element associated with the free spell
+ * @param spellData spellbook data for this row's associated spell
  * @param modifier parameters for the button style
+ * @param magFragVM viewModel that manages the data on this page
  * @param updateList function to run after spell purchase
  */
 @Composable
 private fun BuySingleFreeSpellButton(
-    magFragVM: MagicFragmentViewModel,
     spellLevel: Int,
-    spellElement: Element,
+    spellData: MagicFragmentViewModel.SpellRowData,
     modifier: Modifier,
+    magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
 ){
     //initialize context
@@ -819,7 +856,7 @@ private fun BuySingleFreeSpellButton(
     Button(
         onClick = {
             if(magFragVM.isGifted()) {
-                magFragVM.changeIndividualFreeSpell(spellLevel, spellElement)
+                spellData.buySingleSpell(spellLevel = spellLevel)
                 updateList()
             }
             else
@@ -833,7 +870,7 @@ private fun BuySingleFreeSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getFreeSpellHeld(spellLevel, spellElement)) R.string.spellRemoval
+                if((spellLevel/2) - 1 in spellData.magicBook.individualSpells) R.string.spellRemoval
                 else R.string.spellPurchase
             )
         )
@@ -843,29 +880,27 @@ private fun BuySingleFreeSpellButton(
 /**
  * Row to change the spell in the character's free spell slot
  *
- * @param magFragVM viewModel that manages the data for this page
  * @param currentFreeSpell free spell currently in the slot
+ * @param magFragVM viewModel that manages the data for this page
  */
 @Composable
 private fun FreeSpellExchange(
-    magFragVM: MagicFragmentViewModel,
-    currentFreeSpell: FreeSpell
+    currentFreeSpell: FreeSpell,
+    magFragVM: MagicFragmentViewModel
 ){
     //get local context
     val context = LocalContext.current
 
     //set spell name if one given
     val spellName =
-        if(currentFreeSpell.saveName != "PlaceHolder") stringResource(currentFreeSpell.name)
-        else stringResource(R.string.emptySlotLabel)
+        if(currentFreeSpell.saveName != "PlaceHolder") stringResource(id = currentFreeSpell.name)
+        else stringResource(id = R.string.emptySlotLabel)
 
     Row{
         //button that opens free spell exchange dialog
         Button(
             onClick = {
-                if(magFragVM.tryExchangeOpen(
-                        currentFreeSpell
-                    ))
+                if(magFragVM.tryExchangeOpen(freeSpell = currentFreeSpell))
                     Toast.makeText(
                         context,
                         context.getString(R.string.magicTiesRestriction),
@@ -877,7 +912,7 @@ private fun FreeSpellExchange(
         )
         {
             Text(
-                text = stringResource(R.string.changeSpellLabel),
+                text = stringResource(id = R.string.changeSpellLabel),
                 textAlign = TextAlign.Center
             )
         }
@@ -885,9 +920,9 @@ private fun FreeSpellExchange(
         //display slot's current spell, level, and element
         Text(
             text = stringResource(
-                R.string.currentFreeSpell,
+                id = R.string.currentFreeSpell,
                 spellName,
-                magFragVM.getFreeElement(currentFreeSpell).name,
+                magFragVM.getFreeElement(freeSpell = currentFreeSpell).name,
                 currentFreeSpell.level
             ),
             modifier = Modifier
@@ -896,13 +931,13 @@ private fun FreeSpellExchange(
         )
 
         //show nothing here if no spell found
-        if(currentFreeSpell.saveName == "PlaceHolder"){Spacer(Modifier.weight(0.25f))}
+        if(currentFreeSpell.saveName == "PlaceHolder"){Spacer(modifier = Modifier.weight(0.25f))}
 
         //show detail button if spell found
         else
             DetailButton(
                 onClick = {
-                    magFragVM.setDetailItem(currentFreeSpell)
+                    magFragVM.setDetailItem(spell = currentFreeSpell)
                     magFragVM.toggleDetailAlertOpen()
                 },
                 modifier = Modifier
@@ -927,8 +962,8 @@ fun MagicPreview(){
     magFragVM.setProjectionImbalance(30)
 
     magFragVM.allBooks[0].toggleListOpen()
-    magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[2]!!)
-    magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[3]!!)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[2]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[3]!!.level)
 
     MagicFragment(magFragVM, homePageVM)
 }

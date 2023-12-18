@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 
 import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * A spell with no associated element.
@@ -33,15 +34,14 @@ class FreeSpell(
     type: List<SpellType>,
     val forbiddenElements: List<Element>
 ) : Spell(
-    name,
-    Element.Free,
-    isActive,
-    level,
-    zCost,
-    effect,
-    addedEffect,
-    zMax,
-    maintenance,
-    isDaily,
-    type
+    name = name,
+    isActive = isActive,
+    level = level,
+    zCost = zCost,
+    effect = effect,
+    addedEffect = addedEffect,
+    zMax = zMax,
+    maintenance = maintenance,
+    isDaily = isDaily,
+    type = type
 )

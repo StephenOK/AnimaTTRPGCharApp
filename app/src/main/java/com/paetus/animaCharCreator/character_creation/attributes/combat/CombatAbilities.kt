@@ -1,6 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.combat
 
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
@@ -15,19 +15,19 @@ import java.io.ByteArrayOutputStream
  */
 class CombatAbilities(private val charInstance: BaseCharacter){
     //set default presence
-    val presence = mutableStateOf(20)
+    val presence = mutableIntStateOf(20)
 
     //character's health items
-    val lifeBase = mutableStateOf(0)
-    val lifeMultsTaken = mutableStateOf(0)
-    val lifeClassTotal = mutableStateOf(0)
-    val lifeMax = mutableStateOf(0)
+    val lifeBase = mutableIntStateOf(0)
+    val lifeMultsTaken = mutableIntStateOf(0)
+    val lifeClassTotal = mutableIntStateOf(0)
+    val lifeMax = mutableIntStateOf(0)
 
     //initialize the character's combat data
-    val attack = CombatItem(charInstance)
-    val block = CombatItem(charInstance)
-    val dodge = CombatItem(charInstance)
-    val wearArmor = CombatItem(charInstance)
+    val attack = CombatItem(charInstance = charInstance)
+    val block = CombatItem(charInstance = charInstance)
+    val dodge = CombatItem(charInstance = charInstance)
+    val wearArmor = CombatItem(charInstance = charInstance)
 
     //gather all combat abilities
     val allAbilities = listOf(attack, block, dodge, wearArmor)
@@ -43,41 +43,41 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     val allResistances = listOf(physicalRes, diseaseRes, venomRes, magicRes, psychicRes)
 
     //initialize initiative
-    val specInitiative = mutableStateOf(0)
-    val totalInitiative = mutableStateOf(0)
+    val specInitiative = mutableIntStateOf(0)
+    val totalInitiative = mutableIntStateOf(0)
 
     //initialize fatigue
-    val fatigue = mutableStateOf(0)
-    val specFatigue = mutableStateOf(0)
+    val fatigue = mutableIntStateOf(0)
+    val specFatigue = mutableIntStateOf(0)
 
     //initialize regeneration
-    val baseRegen = mutableStateOf(0)
-    val specRegen = mutableStateOf(0)
-    val totalRegen = mutableStateOf(0)
+    private val baseRegen = mutableIntStateOf(0)
+    val specRegen = mutableIntStateOf(0)
+    val totalRegen = mutableIntStateOf(0)
 
     /**
      * Update the character's presence.
      */
     fun updatePresence(){
         //set the presence value
-        presence.value =
-            if(charInstance.lvl.value == 0)
+        presence.intValue =
+            if(charInstance.lvl.intValue == 0)
                 20
             else
-                25 + (5 * charInstance.lvl.value)
+                25 + (5 * charInstance.lvl.intValue)
 
         //update the character's resistances
-        allResistances.forEach{it.setBase(presence.value)}
+        allResistances.forEach{resistance -> resistance.setBase(presence.intValue)}
     }
 
     /**
      * Update the base number of life points based on the character's constitution.
      */
     fun updateLifeBase(){
-        lifeBase.value = if(charInstance.primaryList.con.total.value == 1)
+        lifeBase.intValue = if(charInstance.primaryList.con.total.intValue == 1)
             5
         else
-            20 + (charInstance.primaryList.con.total.value * 10) + charInstance.primaryList.con.outputMod.value
+            20 + (charInstance.primaryList.con.total.intValue * 10) + charInstance.primaryList.con.outputMod.intValue
     }
 
     /**
@@ -85,8 +85,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      *
      * @param multTake number of multiples the user intends to take
      */
-    fun takeLifeMult(multTake: Int){
-        lifeMultsTaken.value = multTake
+    fun takeLifeMult(
+        multTake: Int
+    ){
+        lifeMultsTaken.intValue = multTake
         charInstance.updateTotalSpent()
         updateLifePoints()
     }
@@ -95,9 +97,9 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Updates the number of life points gained from their class and level.
      */
     fun updateClassLife(){
-        lifeClassTotal.value =
-            if(charInstance.lvl.value != 0)
-                charInstance.ownClass.value.lifePointsPerLevel * charInstance.lvl.value
+        lifeClassTotal.intValue =
+            if(charInstance.lvl.intValue != 0)
+                charInstance.ownClass.value.lifePointsPerLevel * charInstance.lvl.intValue
             else charInstance.ownClass.value.lifePointsPerLevel/2
 
         updateLifePoints()
@@ -107,10 +109,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Updates the character's total life points
      */
     fun updateLifePoints(){
-        lifeMax.value =
-            lifeBase.value +
-                    (lifeMultsTaken.value * charInstance.primaryList.con.total.value) +
-                    lifeClassTotal.value
+        lifeMax.intValue =
+            lifeBase.intValue +
+                    (lifeMultsTaken.intValue * charInstance.primaryList.con.total.intValue) +
+                    lifeClassTotal.intValue
     }
 
     /**
@@ -120,27 +122,27 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun validAttackDodgeBlock(): Boolean{
         //if only one stat developed, cannot exceed 25% of overall devPT
-        return ((block.inputVal.value == 0 && dodge.inputVal.value == 0 && attack.inputVal.value * charInstance.ownClass.value.atkGrowth <= charInstance.devPT.value/4) ||
-                (attack.inputVal.value == 0 && dodge.inputVal.value == 0 && block.inputVal.value * charInstance.ownClass.value.blockGrowth <= charInstance.devPT.value/4) ||
-                (attack.inputVal.value == 0 && block.inputVal.value == 0 && dodge.inputVal.value * charInstance.ownClass.value.dodgeGrowth <= charInstance.devPT.value/4)) ||
+        return ((block.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && attack.inputVal.intValue * charInstance.ownClass.value.atkGrowth <= charInstance.devPT.intValue/4) ||
+                (attack.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && block.inputVal.intValue * charInstance.ownClass.value.blockGrowth <= charInstance.devPT.intValue/4) ||
+                (attack.inputVal.intValue == 0 && block.inputVal.intValue == 0 && dodge.inputVal.intValue * charInstance.ownClass.value.dodgeGrowth <= charInstance.devPT.intValue/4)) ||
 
                 //attack, dodge, and block cannot equate to over 50% of overall devPT
-                (((attack.inputVal.value * charInstance.ownClass.value.atkGrowth) + (block.inputVal.value * charInstance.ownClass.value.blockGrowth) + (dodge.inputVal.value * charInstance.ownClass.value.dodgeGrowth) <= charInstance.devPT.value/2) &&
+                (((attack.inputVal.intValue * charInstance.ownClass.value.atkGrowth) + (block.inputVal.intValue * charInstance.ownClass.value.blockGrowth) + (dodge.inputVal.intValue * charInstance.ownClass.value.dodgeGrowth) <= charInstance.devPT.intValue/2) &&
 
                         //attack can not be more than 50 of either one of block or dodge
-                        (attack.total.value - block.total.value <= 50 || attack.total.value - dodge.total.value <= 50) &&
+                        (attack.total.intValue - block.total.intValue <= 50 || attack.total.intValue - dodge.total.intValue <= 50) &&
 
                         //neither block nor dodge can be 50 more than attack
-                        (block.total.value - attack.total.value <= 50 && dodge.total.value - attack.total.value <= 50))
+                        (block.total.intValue - attack.total.intValue <= 50 && dodge.total.intValue - attack.total.intValue <= 50))
     }
 
     /**
      * Applies changes to the special initiative value.
      *
-     * @param changeBy value to alter the special initiative by
+     * @param initSpecial value to alter the special initiative by
      */
-    fun changeSpecInitiative(changeBy: Int){
-        specInitiative.value += changeBy
+    fun changeSpecInitiative(initSpecial: Int){
+        specInitiative.intValue += initSpecial
         updateInitiative()
     }
 
@@ -148,21 +150,22 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Function that updates the character's total initiative.
      */
     fun updateInitiative(){
+        //only add half a level value if character is level 0
         val classInitiative =
-            if(charInstance.lvl.value != 0) charInstance.ownClass.value.initiativePerLevel * charInstance.lvl.value
+            if(charInstance.lvl.intValue != 0) charInstance.ownClass.value.initiativePerLevel * charInstance.lvl.intValue
             else charInstance.ownClass.value.initiativePerLevel/2
 
         //add together class level value, dexterity, agility, and special input
-        totalInitiative.value =
-            classInitiative + charInstance.primaryList.dex.outputMod.value +
-                    charInstance.primaryList.agi.outputMod.value + specInitiative.value
+        totalInitiative.intValue =
+            classInitiative + charInstance.primaryList.dex.outputMod.intValue +
+                    charInstance.primaryList.agi.outputMod.intValue + specInitiative.intValue
     }
 
     /**
      * Function that updates the character's total fatigue.
      */
     fun updateFatigue(){
-        fatigue.value = charInstance.primaryList.con.total.value + specFatigue.value
+        fatigue.intValue = charInstance.primaryList.con.total.intValue + specFatigue.intValue
     }
 
     /**
@@ -170,10 +173,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun getBaseRegen(){
         //get value based on the character's constitution
-        baseRegen.value = when(charInstance.primaryList.con.total.value){
+        baseRegen.intValue = when(charInstance.primaryList.con.total.intValue){
             in 3..7 -> 1
             in 8..9 -> 2
-            in 10..18 -> charInstance.primaryList.con.total.value - 7
+            in 10..18 -> charInstance.primaryList.con.total.intValue - 7
             in 19..20 -> 12
             else -> 0
         }
@@ -186,7 +189,7 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * Updates the character's total regeneration value.
      */
     fun updateRegeneration(){
-        totalRegen.value = baseRegen.value + specRegen.value
+        totalRegen.intValue = baseRegen.intValue + specRegen.intValue
     }
 
     /**
@@ -195,10 +198,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * @return development points spent
      */
     fun calculateSpent(): Int{
-        return attack.inputVal.value * charInstance.ownClass.value.atkGrowth +
-                block.inputVal.value * charInstance.ownClass.value.blockGrowth +
-                dodge.inputVal.value * charInstance.ownClass.value.dodgeGrowth +
-                wearArmor.inputVal.value * charInstance.ownClass.value.armorGrowth
+        return attack.inputVal.intValue * charInstance.ownClass.value.atkGrowth +
+                block.inputVal.intValue * charInstance.ownClass.value.blockGrowth +
+                dodge.inputVal.intValue * charInstance.ownClass.value.dodgeGrowth +
+                wearArmor.inputVal.intValue * charInstance.ownClass.value.armorGrowth
     }
 
     /**
@@ -208,24 +211,26 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun loadCombat(fileReader: BufferedReader){
         //retrieve life multiple data
-        takeLifeMult(fileReader.readLine().toInt())
+        takeLifeMult(multTake = fileReader.readLine().toInt())
 
         //retrieve data on attack, defenses, and wear armor
-        allAbilities.forEach{
-            it.loadItem(fileReader)
+        allAbilities.forEach{combatItem ->
+            combatItem.loadItem(fileReader = fileReader)
         }
     }
 
     /**
      * Write the data for the combat section.
+     *
+     * @param byteArray output stream to write the data to
      */
     fun writeCombat(byteArray: ByteArrayOutputStream) {
         //write life multiple data
-        writeDataTo(byteArray, lifeMultsTaken.value)
+        writeDataTo(writer = byteArray, input = lifeMultsTaken.intValue)
 
         //write data on attack, defenses, and wear armor
-        allAbilities.forEach{
-            it.writeItem(byteArray)
+        allAbilities.forEach{combatItem ->
+            combatItem.writeItem(byteArray = byteArray)
         }
     }
 }

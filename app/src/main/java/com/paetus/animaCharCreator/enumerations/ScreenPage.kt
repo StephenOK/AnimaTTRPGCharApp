@@ -3,7 +3,7 @@ package com.paetus.animaCharCreator.enumerations
 import com.paetus.animaCharCreator.R
 
 /**
- * Enumeration that denotes the page of the character aspect that is being editted.
+ * Enumeration that denotes the page of the character aspect that is being edited.
  */
 enum class ScreenPage {
     Character,
@@ -21,11 +21,11 @@ enum class ScreenPage {
         /**
          * Convert a ScreenPage enumeration to a string reference.
          *
-         * @param input enumeration to convert
+         * @param screenPage enumeration to convert
          * @return corresponding string resource for the inputted item
          */
-        fun toAddress(input: ScreenPage): Int {
-            return when (input) {
+        fun toAddress(screenPage: ScreenPage): Int {
+            return when (screenPage) {
                 Character -> R.string.charLabel
                 Combat -> R.string.combatLabel
                 SecondaryCharacteristics -> R.string.secondaryLabel

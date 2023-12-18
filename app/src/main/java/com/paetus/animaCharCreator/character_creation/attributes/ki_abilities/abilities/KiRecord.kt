@@ -7,187 +7,187 @@ import com.paetus.animaCharCreator.R
  */
 class KiRecord{
     val useOfKi = KiAbility(
-        "useOfKi",
-        R.string.kiUse,
-        null,
-        40,
-        R.string.kiUseDesc
+        saveTag = "useOfKi",
+        name = R.string.kiUse,
+        prerequisite = null,
+        mkCost = 40,
+        description = R.string.kiUseDesc
     )
 
     val kiControl = KiAbility(
-        "kiControl",
-        R.string.kiControl,
-        useOfKi,
-        30,
-        R.string.kiControlDesc
+        saveTag = "kiControl",
+        name = R.string.kiControl,
+        prerequisite = useOfKi,
+        mkCost = 30,
+        description = R.string.kiControlDesc
     )
 
-    val kiDetection = KiAbility(
-        "kiDetection",
-        R.string.kiDetection,
-        kiControl,
-        20,
-        R.string.kiDetectionDesc
+    private val kiDetection = KiAbility(
+        saveTag = "kiDetection",
+        name = R.string.kiDetection,
+        prerequisite = kiControl,
+        mkCost = 20,
+        description = R.string.kiDetectionDesc
     )
 
-    val erudition = KiAbility(
-        "erudition",
-        R.string.erudition,
-        kiDetection,
-        10,
-        R.string.eruditionDesc
+    private val erudition = KiAbility(
+        saveTag = "erudition",
+        name = R.string.erudition,
+        prerequisite = kiDetection,
+        mkCost = 10,
+        description = R.string.eruditionDesc
     )
 
-    val weightElimination = KiAbility(
-        "weightElimination",
-        R.string.weightElim,
-        useOfKi,
-        10,
-        R.string.weightElimDesc
+    private val weightElimination = KiAbility(
+        saveTag = "weightElimination",
+        name = R.string.weightElim,
+        prerequisite = useOfKi,
+        mkCost = 10,
+        description = R.string.weightElimDesc
     )
 
-    val levitation = KiAbility(
-        "levitation",
-        R.string.levitation,
-        weightElimination,
-        20,
-        R.string.leviDesc
+    private val levitation = KiAbility(
+        saveTag = "levitation",
+        name = R.string.levitation,
+        prerequisite = weightElimination,
+        mkCost = 20,
+        description = R.string.leviDesc
     )
 
-    val objectMotion = KiAbility(
-        "objectMotion",
-        R.string.objectMotion,
-        levitation,
-        10,
-        R.string.objectMotionDesc
+    private val objectMotion = KiAbility(
+        saveTag = "objectMotion",
+        name = R.string.objectMotion,
+        prerequisite = levitation,
+        mkCost = 10,
+        description = R.string.objectMotionDesc
     )
 
     val flight = KiAbility(
-        "flight",
-        R.string.flight,
-        levitation,
-        20,
-        R.string.flightDesc
+        saveTag = "flight",
+        name = R.string.flight,
+        prerequisite = levitation,
+        mkCost = 20,
+        description = R.string.flightDesc
     )
 
     val presenceExtrusion = KiAbility(
-        "presenceExtrusion",
-        R.string.presExtrude,
-        useOfKi,
-        10,
-        R.string.presExtrudeDesc
+        saveTag = "presenceExtrusion",
+        name = R.string.presExtrude,
+        prerequisite = useOfKi,
+        mkCost = 10,
+        description = R.string.presExtrudeDesc
     )
 
-    val energyArmor = KiAbility(
-        "energyArmor",
-        R.string.energyArmor,
-        presenceExtrusion,
-        10,
-        R.string.energyArmorDesc
+    private val energyArmor = KiAbility(
+        saveTag = "energyArmor",
+        name = R.string.energyArmor,
+        prerequisite = presenceExtrusion,
+        mkCost = 10,
+        description = R.string.energyArmorDesc
     )
 
-    val auraExtension = KiAbility(
-        "auraExtension",
-        R.string.auraExt,
-        presenceExtrusion,
-        10,
-        R.string.auraExtDesc
+    private val auraExtension = KiAbility(
+        saveTag = "auraExtension",
+        name = R.string.auraExt,
+        prerequisite = presenceExtrusion,
+        mkCost = 10,
+        description = R.string.auraExtDesc
     )
 
-    val destructionByKi = KiAbility(
-        "kiDestruction",
-        R.string.kiDestruction,
-        presenceExtrusion,
-        20,
-        R.string.kiDestructionDesc
+    private val destructionByKi = KiAbility(
+        saveTag = "kiDestruction",
+        name = R.string.kiDestruction,
+        prerequisite = presenceExtrusion,
+        mkCost = 20,
+        description = R.string.kiDestructionDesc
     )
 
-    val kiTransmission = KiAbility(
-        "kiTransmit",
-        R.string.kiTransmit,
-        useOfKi,
-        10,
-        R.string.kiTransmitDesc
+    private val kiTransmission = KiAbility(
+        saveTag = "kiTransmit",
+        name = R.string.kiTransmit,
+        prerequisite = useOfKi,
+        mkCost = 10,
+        description = R.string.kiTransmitDesc
     )
 
-    val kiHealing = KiAbility(
-        "kiHeal",
-        R.string.kiHeal,
-        kiTransmission,
-        10,
-        R.string.kiHealDesc
+    private val kiHealing = KiAbility(
+        saveTag = "kiHeal",
+        name = R.string.kiHeal,
+        prerequisite = kiTransmission,
+        mkCost = 10,
+        description = R.string.kiHealDesc
     )
 
     val useOfNecessaryEnergy = KiAbility(
-        "useOfNecEnergy",
-        R.string.useNecEnergy,
-        useOfKi,
-        10,
-        R.string.useNecEnergyDesc
+        saveTag = "useOfNecEnergy",
+        name = R.string.useNecEnergy,
+        prerequisite = useOfKi,
+        mkCost = 10,
+        description = R.string.useNecEnergyDesc
     )
 
-    val kiConcealment = KiAbility(
-        "kiConceal",
-        R.string.kiConceal,
-        useOfNecessaryEnergy,
-        10,
-        R.string.kiConcealDesc
+    private val kiConcealment = KiAbility(
+        saveTag = "kiConceal",
+        name = R.string.kiConceal,
+        prerequisite = useOfNecessaryEnergy,
+        mkCost = 10,
+        description = R.string.kiConcealDesc
     )
 
-    val falseDeath = KiAbility(
-        "falseDeath",
-        R.string.falseDeath,
-        kiConcealment,
-        10,
-        R.string.falseDeathDesc
+    private val falseDeath = KiAbility(
+        saveTag = "falseDeath",
+        name = R.string.falseDeath,
+        prerequisite = kiConcealment,
+        mkCost = 10,
+        description = R.string.falseDeathDesc
     )
 
-    val eliminateNecessities = KiAbility(
-        "eliminateNecessities",
-        R.string.elimNecess,
-        useOfNecessaryEnergy,
-        10,
-        R.string.elimNecessDesc
+    private val eliminateNecessities = KiAbility(
+        saveTag = "eliminateNecessities",
+        name = R.string.elimNecess,
+        prerequisite = useOfNecessaryEnergy,
+        mkCost = 10,
+        description = R.string.elimNecessDesc
     )
 
-    val penaltyReduction = KiAbility(
-        "penaltyReduce",
-        R.string.penaltyReduce,
-        useOfNecessaryEnergy,
-        20,
-        R.string.penaltyReduceDesc
+    private val penaltyReduction = KiAbility(
+        saveTag = "penaltyReduce",
+        name = R.string.penaltyReduce,
+        prerequisite = useOfNecessaryEnergy,
+        mkCost = 20,
+        description = R.string.penaltyReduceDesc
     )
 
     val recovery = KiAbility(
-        "recovery",
-        R.string.recovery,
-        penaltyReduction,
-        20,
-        R.string.recoveryDesc
+        saveTag = "recovery",
+        name = R.string.recovery,
+        prerequisite = penaltyReduction,
+        mkCost = 20,
+        description = R.string.recoveryDesc
     )
 
-    val charAugmentation = KiAbility(
-        "charAugmentation",
-        R.string.charAugment,
-        useOfNecessaryEnergy,
-        20,
-        R.string.charAugmentDesc
+    private val charAugmentation = KiAbility(
+        saveTag = "charAugmentation",
+        name = R.string.charAugment,
+        prerequisite = useOfNecessaryEnergy,
+        mkCost = 20,
+        description = R.string.charAugmentDesc
     )
 
     val inhumanity = KiAbility(
-        "inhumanity",
-        R.string.inhumanity,
-        useOfKi,
-        30,
-        R.string.inhumanityDesc
+        saveTag = "inhumanity",
+        name = R.string.inhumanity,
+        prerequisite = useOfKi,
+        mkCost = 30,
+        description = R.string.inhumanityDesc
     )
 
-    val zen = KiAbility(
-        "zen",
-        R.string.zen,
-        inhumanity,
-        50,
-        R.string.zenDesc
+    private val zen = KiAbility(
+        saveTag = "zen",
+        name = R.string.zen,
+        prerequisite = inhumanity,
+        mkCost = 50,
+        description = R.string.zenDesc
     )
 
     //compile all ki abilities together

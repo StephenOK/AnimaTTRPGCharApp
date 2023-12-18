@@ -9,820 +9,900 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  *
  * @param charInstance object holding the character's stats
  */
-class CommonAdvantages(private val charInstance: BaseCharacter) {
+class CommonAdvantages(
+    private val charInstance: BaseCharacter
+){
     val characteristicPoint = Advantage(
-        "characteristicPoint",
-        R.string.addCharPoint,
-        R.string.charPointDesc,
-        R.string.charPointEffect,
-        R.string.charPointRestriction,
-        R.string.advantageSpecial,
-        R.array.primaryCharArray,
-        0,
-        null,
-        listOf(1),
-        0,
-        { input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].setBonus(1)
-        }
-    ) { input, _ ->
-        charInstance.primaryList.allPrimaries[input!!].setBonus(-1)
-    }
-
-    val acuteSenses = Advantage(
-        "acuteSenses",
-        R.string.acuteSenses,
-        R.string.acuteDesc,
-        R.string.acuteEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        {_, _ ->
-            charInstance.secondaryList.notice.setSpecial(30)
-            charInstance.secondaryList.search.setSpecial(30)
-        }
-    ) { _, _ ->
-        charInstance.secondaryList.notice.setSpecial(-30)
-        charInstance.secondaryList.search.setSpecial(-30)
-    }
-
-    val artifact = Advantage(
-        "artifact",
-        R.string.artifact,
-        R.string.artifactDesc,
-        R.string.artifactEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
-    )
-
-    val ambidextrous = Advantage(
-        "ambidextrous",
-        R.string.ambidextrous,
-        R.string.ambiDesc,
-        R.string.ambiEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
-    )
-
-    val characteristicToNine = Advantage(
-        "characteristicToNine",
-        R.string.charToNine,
-        R.string.charTo9Desc,
-        R.string.charTo9Effect,
-        null,
-        R.string.advantageSpecial,
-        R.array.primaryCharArray,
-        0,
-        null,
-        listOf(2),
-        0,
-        {input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].setInput(9)
+        saveTag = "characteristicPoint",
+        name = R.string.addCharPoint,
+        description = R.string.charPointDesc,
+        effect = R.string.charPointEffect,
+        restriction = R.string.charPointRestriction,
+        special = R.string.advantageSpecial,
+        options = R.array.primaryCharArray,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            //increase characteristic by one point
+            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = 1)
         },
-        null
+        onRemove = {input, _ ->
+            //remove characteristic bonus point
+            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = -1)
+        }
+    )
+
+    private val acuteSenses = Advantage(
+        saveTag = "acuteSenses",
+        name = R.string.acuteSenses,
+        description = R.string.acuteDesc,
+        effect = R.string.acuteEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply bonuses to perception and search
+            charInstance.secondaryList.notice.setSpecial(specBonus = 30)
+            charInstance.secondaryList.search.setSpecial(specBonus = 30)
+        },
+        onRemove = {_, _ ->
+            //remove perception and search bonuses
+            charInstance.secondaryList.notice.setSpecial(specBonus = -30)
+            charInstance.secondaryList.search.setSpecial(specBonus = -30)
+        }
+    )
+
+    private val artifact = Advantage(
+        saveTag = "artifact",
+        name = R.string.artifact,
+        description = R.string.artifactDesc,
+        effect = R.string.artifactEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val ambidextrous = Advantage(
+        saveTag = "ambidextrous",
+        name = R.string.ambidextrous,
+        description = R.string.ambiDesc,
+        effect = R.string.ambiEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val characteristicToNine = Advantage(
+        saveTag = "characteristicToNine",
+        name = R.string.charToNine,
+        description = R.string.charTo9Desc,
+        effect = R.string.charTo9Effect,
+        restriction = null,
+        special = R.string.advantageSpecial,
+        options = R.array.primaryCharArray,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            //set the determined primary stat to 9
+            charInstance.primaryList.allPrimaries[input!!].setInput(baseIn = 9)
+        },
+        onRemove = null
     )
 
     val psyDisciplineAccess = Advantage(
-        "psyDisciplineAccess",
-        R.string.psyDiscAccess,
-        R.string.disciplineAccDesc,
-        R.string.disciplineAccEff,
-        null,
-        null,
-        R.array.disciplineNames,
-        0,
-        null,
-        listOf(1),
-        0,
-        {input, _ ->
-            charInstance.psychic.legalDisciplines.add(charInstance.psychic.allDisciplines[input!!])
-            charInstance.psychic.legalDisciplines.add(charInstance.psychic.matrixPowers)
+        saveTag = "psyDisciplineAccess",
+        name = R.string.psyDiscAccess,
+        description = R.string.disciplineAccDesc,
+        effect = R.string.disciplineAccEff,
+        restriction = null,
+        special = null,
+        options = R.array.disciplineNames,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            //add access to the indicated psychic discipline and matrix powers
+            charInstance.psychic.legalDisciplines.add(element = charInstance.psychic.allDisciplines[input!!])
+            charInstance.psychic.legalDisciplines.add(element = charInstance.psychic.matrixPowers)
+        },
+        onRemove = {input, _ ->
+            //remove the indicated psychic discipline from accessibility
+            charInstance.psychic.removeLegalDisciplineFromInt(discIndex = input!!)
         }
-    ) { input, _ ->
-        charInstance.psychic.removeLegalDisciplineFromInt(input!!)
-    }
-
-    val charm = Advantage(
-        "charm",
-        R.string.charm,
-        R.string.charmDesc,
-        R.string.charmEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
     )
 
-    val disquieting = Advantage(
-        "disquieting",
-        R.string.disquieting,
-        R.string.disquietDesc,
-        R.string.disquietEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val charm = Advantage(
+        saveTag = "charm",
+        name = R.string.charm,
+        description = R.string.charmDesc,
+        effect = R.string.charmEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val animalAffinity = Advantage(
-        "animalAffinity",
-        R.string.animalAffinity,
-        R.string.affinityDesc,
-        R.string.affinityEffect,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val disquieting = Advantage(
+        saveTag = "disquieting",
+        name = R.string.disquieting,
+        description = R.string.disquietDesc,
+        effect = R.string.disquietEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val dangerSense = Advantage(
-        "dangerSense",
-        R.string.dangerSense,
-        R.string.dangerSenseDesc,
-        R.string.dangerSenseEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null,
-        null
+    private val animalAffinity = Advantage(
+        saveTag = "animalAffinity",
+        name = R.string.animalAffinity,
+        description = R.string.affinityDesc,
+        effect = R.string.affinityEffect,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val beenAround = Advantage(
-        "beenAround",
-        R.string.beenAround,
-        R.string.beenAroundDesc,
-        R.string.beenAroundEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
+    private val dangerSense = Advantage(
+        saveTag = "dangerSense",
+        name = R.string.dangerSense,
+        description = R.string.dangerSenseDesc,
+        effect = R.string.dangerSenseEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val beenAround = Advantage(
+        saveTag = "beenAround",
+        name = R.string.beenAround,
+        description = R.string.beenAroundDesc,
+        effect = R.string.beenAroundEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val subjectAptitude = Advantage(
-        "subjectAptitude",
-        R.string.subjectAptitude,
-        R.string.subjAptDesc,
-        R.string.subjAptEff,
-        R.string.subjAptRestriction,
-        null,
-        R.array.secondaryCharacteristics,
-        0,
-        null,
-        listOf(1, 2),
-        0,
-        {input, cost ->
-            charInstance.secondaryList.getAllSecondaries()[input!!].setDevelopmentDeduction(cost)
+        saveTag = "subjectAptitude",
+        name = R.string.subjectAptitude,
+        description = R.string.subjAptDesc,
+        effect = R.string.subjAptEff,
+        restriction = R.string.subjAptRestriction,
+        special = null,
+        options = R.array.secondaryCharacteristics,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1, 2),
+        pickedCost = 0,
+        onTake = {input, cost ->
+            //reduce the cost of the indicated secondary characteristic
+            if(input!! < 38)
+                charInstance.secondaryList.fullList[input].setDevelopmentDeduction(dpDeduction = cost)
+            else
+                charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost)
+
+            charInstance.updateTotalSpent()
+        },
+        onRemove = {input, cost ->
+            //restore the previous cost for this characteristic
+            if(input!! < 38)
+                charInstance.secondaryList.fullList[input].setDevelopmentDeduction(dpDeduction = cost * -1)
+            else
+                charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost * -1)
+
             charInstance.updateTotalSpent()
         }
-    ) { input, cost ->
-        charInstance.secondaryList.getAllSecondaries()[input!!].setDevelopmentDeduction(cost * -1)
-        charInstance.updateTotalSpent()
-    }
+    )
 
     val naturalPsychicPower = Advantage(
-        "naturalPsychicPower",
-        R.string.psyPowerAccess,
-        R.string.natPsyPowDesc,
-        R.string.natPsyPowEff,
-        null,
-        null,
-        R.array.powerNames,
-        0,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
+        saveTag = "naturalPsychicPower",
+        name = R.string.psyPowerAccess,
+        description = R.string.natPsyPowDesc,
+        effect = R.string.natPsyPowEff,
+        restriction = null,
+        special = null,
+        options = R.array.powerNames,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val fieldAptitude = Advantage(
-        "fieldAptitude",
-        R.string.fieldAptitude,
-        R.string.fieldAptDesc,
-        R.string.fieldAptEff,
-        R.string.fieldAptRestriction,
-        null,
-        R.array.secondaryFields,
-        0,
-        null,
-        listOf(2),
-        0,
-        {input, _ ->
-            val field = charInstance.secondaryList.intToField(input!!)
-            field.forEach{it.setDevelopmentDeduction(1)}
+        saveTag = "fieldAptitude",
+        name = R.string.fieldAptitude,
+        description = R.string.fieldAptDesc,
+        effect = R.string.fieldAptEff,
+        restriction = R.string.fieldAptRestriction,
+        special = null,
+        options = R.array.secondaryFields,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            //reduce the cost of each item in the indicated field
+            val field = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            field.forEach{secondaryChar ->
+                secondaryChar.setDevelopmentDeduction(dpDeduction = 1)
+            }
+            charInstance.updateTotalSpent()
+        },
+        onRemove = {input, _ ->
+            //remove the bonus to the indicated field's cost
+            val field = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            field.forEach{secondaryChar ->
+                secondaryChar.setDevelopmentDeduction(dpDeduction = -1)
+            }
             charInstance.updateTotalSpent()
         }
-    ) { input, _ ->
-        val field = charInstance.secondaryList.intToField(input!!)
-        field.forEach { it.setDevelopmentDeduction(-1) }
-        charInstance.updateTotalSpent()
-    }
-
-    val characteristicReroll = Advantage(
-        "characteristicReroll",
-        R.string.repeatCharRoll,
-        R.string.charRerollDesc,
-        R.string.charRerollEff,
-        R.string.charRerollRestriction,
-        R.string.advantageSpecial,
-        R.array.primaryCharArray,
-        0,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
     )
 
-    val martialMastery = Advantage(
-        "martialMastery",
-        R.string.martialMastery,
-        R.string.mmDesc,
-        R.string.mmEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
+    private val characteristicReroll = Advantage(
+        saveTag = "characteristicReroll",
+        name = R.string.repeatCharRoll,
+        description = R.string.charRerollDesc,
+        effect = R.string.charRerollEff,
+        restriction = R.string.charRerollRestriction,
+        special = R.string.advantageSpecial,
+        options = R.array.primaryCharArray,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val martialMastery = Advantage(
+        saveTag = "martialMastery",
+        name = R.string.martialMastery,
+        description = R.string.mmDesc,
+        effect = R.string.mmEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //add the desired amount of martial knowledge
             when(cost){
                 1 -> charInstance.ki.updateMKSpec(40)
                 2 -> charInstance.ki.updateMKSpec(80)
                 3 -> charInstance.ki.updateMKSpec(120)
             }
+        },
+        onRemove = {_, cost ->
+            //remove the granted martial knowledge bonus
+            when (cost) {
+                1 -> charInstance.ki.updateMKSpec(-40)
+                2 -> charInstance.ki.updateMKSpec(-80)
+                3 -> charInstance.ki.updateMKSpec(-120)
+            }
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.ki.updateMKSpec(-40)
-            2 -> charInstance.ki.updateMKSpec(-80)
-            3 -> charInstance.ki.updateMKSpec(-120)
-        }
-    }
-
-    val goodLuck = Advantage(
-        "goodLuck",
-        R.string.goodLuck,
-        R.string.goodLuckDesc,
-        R.string.goodLuckEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
     )
 
-    val kiRecovery = Advantage(
-        "kiRecovery",
-        R.string.kiRecovery,
-        R.string.kiRecoverDesc,
-        R.string.kiRecoverEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
+    private val goodLuck = Advantage(
+        saveTag = "goodLuck",
+        name = R.string.goodLuck,
+        description = R.string.goodLuckDesc,
+        effect = R.string.goodLuckEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val jackOfAllTrades = Advantage(
-        "jackOfAllTrades",
-        R.string.jackTrades,
-        R.string.jackDesc,
-        R.string.jackEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        {_, _ ->
+    private val kiRecovery = Advantage(
+        saveTag = "kiRecovery",
+        name = R.string.kiRecovery,
+        description = R.string.kiRecoverDesc,
+        effect = R.string.kiRecoverEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val jackOfAllTrades = Advantage(
+        saveTag = "jackOfAllTrades",
+        name = R.string.jackTrades,
+        description = R.string.jackDesc,
+        effect = R.string.jackEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //let secondary list know of the change and update characteristics accordingly
             charInstance.secondaryList.allTradesTaken.value = true
-            charInstance.secondaryList.getAllSecondaries().forEach{it.refreshTotal()}
+            charInstance.secondaryList.getAllSecondaries().forEach{secondary ->
+                secondary.refreshTotal()
+            }
+        },
+        onRemove = {_, _ ->
+            //let secondary list know of the change and restore characteristics to normal
+            charInstance.secondaryList.allTradesTaken.value = false
+            charInstance.secondaryList.getAllSecondaries().forEach{secondary ->
+                secondary.refreshTotal()
+            }
         }
-    ) { _, _ ->
-        charInstance.secondaryList.allTradesTaken.value = false
-        charInstance.secondaryList.getAllSecondaries().forEach{it.refreshTotal()}
-    }
-
-    val naturalArmor = Advantage(
-        "naturalArmor",
-        R.string.naturalArmor,
-        R.string.natArmorDesc,
-        R.string.natArmorEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
     )
 
-    val mysticalArmor = Advantage(
-        "mysticalArmor",
-        R.string.mysticArmor,
-        R.string.mysArmorDesc,
-        R.string.mysArmorEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val naturalArmor = Advantage(
+        saveTag = "naturalArmor",
+        name = R.string.naturalArmor,
+        description = R.string.natArmorDesc,
+        effect = R.string.natArmorEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val untiring = Advantage(
-        "untiring",
-        R.string.untiring,
-        R.string.untiringDesc,
-        R.string.untiringEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
+    private val mysticalArmor = Advantage(
+        saveTag = "mysticalArmor",
+        name = R.string.mysticArmor,
+        description = R.string.mysArmorDesc,
+        effect = R.string.mysArmorEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val untiring = Advantage(
+        saveTag = "untiring",
+        name = R.string.untiring,
+        description = R.string.untiringDesc,
+        effect = R.string.untiringEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //update fatigue points as desired
             when(cost){
-                1 -> charInstance.combat.specFatigue.value += 3
-                2 -> charInstance.combat.specFatigue.value += 6
-                3 -> charInstance.combat.specFatigue.value += 9
+                1 -> charInstance.combat.specFatigue.intValue += 3
+                2 -> charInstance.combat.specFatigue.intValue += 6
+                3 -> charInstance.combat.specFatigue.intValue += 9
+            }
+
+            charInstance.combat.updateFatigue()
+        },
+        onRemove = {_, cost ->
+            //remove bonus to fatigue points
+            when (cost) {
+                1 -> charInstance.combat.specFatigue.intValue -= 3
+                2 -> charInstance.combat.specFatigue.intValue -= 6
+                3 -> charInstance.combat.specFatigue.intValue -= 9
             }
 
             charInstance.combat.updateFatigue()
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.combat.specFatigue.value -= 3
-            2 -> charInstance.combat.specFatigue.value -= 6
-            3 -> charInstance.combat.specFatigue.value -= 9
-        }
-
-        charInstance.combat.updateFatigue()
-    }
+    )
 
     val uncommonSize = Advantage(
-        "uncommonSize",
-        R.string.uncommonSize,
-        R.string.uncommonSizeDesc,
-        R.string.uncommonSizeEff,
-        null,
-        null,
-        R.array.sizeList,
-        0,
-        null,
-        listOf(1),
-        0,
-        {input, _ ->
-            charInstance.changeSize(input!!)
+        saveTag = "uncommonSize",
+        name = R.string.uncommonSize,
+        description = R.string.uncommonSizeDesc,
+        effect = R.string.uncommonSizeEff,
+        restriction = null,
+        special = null,
+        options = R.array.sizeList,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            charInstance.changeSize(sizeInput = input!!)
+        },
+        onRemove = {input, _ ->
+            charInstance.changeSize(sizeInput = 9 - input!!)
         }
-    ) { input, _ ->
-        charInstance.changeSize(9 - input!!)
-    }
+    )
 
-    val startingWealth = Advantage(
-        "startingWealth",
-        R.string.startingWealth,
-        R.string.startWealthDesc,
-        R.string.startWealthEff,
-        R.string.startWealthRestriction,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
+    private val startingWealth = Advantage(
+        saveTag = "startingWealth",
+        name = R.string.startingWealth,
+        description = R.string.startWealthDesc,
+        effect = R.string.startWealthEff,
+        restriction = R.string.startWealthRestriction,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = { _, cost ->
+            //set bonus wealth to the indicated value
             when(cost){
-                1 -> charInstance.inventory.setWealthBonus(2000)
-                2 -> charInstance.inventory.setWealthBonus(5000)
-                3 -> charInstance.inventory.setWealthBonus(10000)
+                1 -> charInstance.inventory.setWealthBonus(bonusWealth = 2000)
+                2 -> charInstance.inventory.setWealthBonus(bonusWealth = 5000)
+                3 -> charInstance.inventory.setWealthBonus(bonusWealth = 10000)
             }
+        },
+        onRemove = { _, _ ->
+            //remove all bonus wealth
+            charInstance.inventory.setWealthBonus(bonusWealth = 0)
         }
-    ) { _, _ -> charInstance.inventory.setWealthBonus(0) }
+    )
 
-    val increasedRegeneration = Advantage(
-        "increasedRegeneration",
-        R.string.increaseRegen,
-        R.string.regenDesc,
-        R.string.regenEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
+    private val increasedRegeneration = Advantage(
+        saveTag = "increasedRegeneration",
+        name = R.string.increaseRegen,
+        description = R.string.regenDesc,
+        effect = R.string.regenEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //set regeneration bonus value
             when(cost){
-                1 -> charInstance.combat.specRegen.value += 2
-                2 -> charInstance.combat.specRegen.value += 4
-                3 -> charInstance.combat.specRegen.value += 6
+                1 -> charInstance.combat.specRegen.intValue += 2
+                2 -> charInstance.combat.specRegen.intValue += 4
+                3 -> charInstance.combat.specRegen.intValue += 6
+            }
+
+            charInstance.combat.updateRegeneration()
+        },
+        onRemove = {_, cost ->
+            //remove regeneration bonus
+            when (cost) {
+                1 -> charInstance.combat.specRegen.intValue -= 2
+                2 -> charInstance.combat.specRegen.intValue -= 4
+                3 -> charInstance.combat.specRegen.intValue -= 6
             }
 
             charInstance.combat.updateRegeneration()
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.combat.specRegen.value -= 2
-            2 -> charInstance.combat.specRegen.value -= 4
-            3 -> charInstance.combat.specRegen.value -= 6
-        }
-
-        charInstance.combat.updateRegeneration()
-    }
-
-    val elan = Advantage(
-        "elan",
-        R.string.elan,
-        R.string.elanDesc,
-        R.string.elanEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
     )
 
-    val painImmunity = Advantage(
-        "painImmunity",
-        R.string.painImmunity,
-        R.string.painImmuneDesc,
-        R.string.painImmuneEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val elan = Advantage(
+        saveTag = "elan",
+        name = R.string.elan,
+        description = R.string.elanDesc,
+        effect = R.string.elanEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val painImmunity = Advantage(
+        saveTag = "painImmunity",
+        name = R.string.painImmunity,
+        description = R.string.painImmuneDesc,
+        effect = R.string.painImmuneEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val gift = Advantage(
-        "gift",
-        R.string.gift,
-        R.string.giftDesc,
-        R.string.giftEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        null
-    ) { _, _ ->
-        charInstance.magic.loseMagic()
-    }
-
-    val seeSupernatural = Advantage(
-        "seeSupernatural",
-        R.string.seeSupernatural,
-        R.string.seeSuperDesc,
-        R.string.seeSuperEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+        saveTag = "gift",
+        name = R.string.gift,
+        description = R.string.giftDesc,
+        effect = R.string.giftEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = {_, _ ->
+            charInstance.magic.loseMagic()
+        }
     )
 
-    val nightVision = Advantage(
-        "nightVision",
-        R.string.nightVision,
-        R.string.nightVisDesc,
-        R.string.nightVisEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val seeSupernatural = Advantage(
+        saveTag = "seeSupernatural",
+        name = R.string.seeSupernatural,
+        description = R.string.seeSuperDesc,
+        effect = R.string.seeSuperEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val fortunate = Advantage(
-        "fortunate",
-        R.string.fortunate,
-        R.string.fortuneDesc,
-        R.string.fortuneEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val nightVision = Advantage(
+        saveTag = "nightVision",
+        name = R.string.nightVision,
+        description = R.string.nightVisDesc,
+        effect = R.string.nightVisEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val freePsychicDiscipline = Advantage(
-        "allPsyDisciplines",
-        R.string.allPsyDisciplines,
-        R.string.allDiscDesc,
-        R.string.allDiscEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(2),
-        0,
-        {_, _ ->
-            val removable = charInstance.advantageRecord.getAdvantage("psyDisciplineAccess")
+    private val fortunate = Advantage(
+        saveTag = "fortunate",
+        name = R.string.fortunate,
+        description = R.string.fortuneDesc,
+        effect = R.string.fortuneEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val freePsychicDiscipline = Advantage(
+        saveTag = "allPsyDisciplines",
+        name = R.string.allPsyDisciplines,
+        description = R.string.allDiscDesc,
+        effect = R.string.allDiscEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(2),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //remove any individual discipline access acquired
+            val removable = charInstance.advantageRecord.getAdvantage(advantageString = "psyDisciplineAccess")
             if(removable != null)
-                charInstance.advantageRecord.removeAdvantage(removable)
+                charInstance.advantageRecord.removeAdvantage(advantage = removable)
 
-            charInstance.psychic.legalDisciplines.addAll(charInstance.psychic.allDisciplines)
-        }
-    ) { _, _ ->
-        charInstance.psychic.allDisciplines.forEach {
-            charInstance.psychic.removeLegalDiscipline(it)
-        }
-    }
-
-    val quickReflexes = Advantage(
-        "quickReflexes",
-        R.string.quickReflexes,
-        R.string.reflexDesc,
-        R.string.reflexEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {_, cost ->
-            when(cost){
-                1 -> charInstance.combat.changeSpecInitiative(25)
-                2 -> charInstance.combat.changeSpecInitiative(45)
-                3 -> charInstance.combat.changeSpecInitiative(60)
+            //add all disciplines to character's access
+            charInstance.psychic.legalDisciplines.addAll(elements = charInstance.psychic.allDisciplines)
+        },
+        onRemove = {_, _ ->
+            //remove all disciplines from character's access
+            charInstance.psychic.allDisciplines.forEach {discipline ->
+                charInstance.psychic.removeLegalDiscipline(discipline = discipline)
             }
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.combat.changeSpecInitiative(-25)
-            2 -> charInstance.combat.changeSpecInitiative(-45)
-            3 -> charInstance.combat.changeSpecInitiative(-60)
-        }
-    }
-
-    val learning = Advantage(
-        "learning",
-        R.string.learning,
-        R.string.learningDesc,
-        R.string.learningEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2, 3),
-        0,
-        null,
-        null
     )
 
-    val naturalLearner = Advantage(
-        "naturalLearner",
-        R.string.naturalLearner,
-        R.string.natLearnDesc,
-        R.string.natLearnEff,
-        null,
-        null,
-        R.array.secondaryCharacteristics,
-        0,
-        null,
-        listOf(1, 2, 3),
-        0,
-        {input, cost ->
-            val characteristic = charInstance.secondaryList.getAllSecondaries()[input!!]
-
+    private val quickReflexes = Advantage(
+        saveTag = "quickReflexes",
+        name = R.string.quickReflexes,
+        description = R.string.reflexDesc,
+        effect = R.string.reflexEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //apply desired initiative bonus to the character
             when(cost){
-                1 -> characteristic.setSpecialPerLevel(10)
-                2 -> characteristic.setSpecialPerLevel(20)
-                3 -> characteristic.setSpecialPerLevel(30)
+                1 -> charInstance.combat.changeSpecInitiative(initSpecial = 25)
+                2 -> charInstance.combat.changeSpecInitiative(initSpecial = 45)
+                3 -> charInstance.combat.changeSpecInitiative(initSpecial = 60)
             }
-        }
-    ) { input, cost ->
-        val characteristic = charInstance.secondaryList.getAllSecondaries()[input!!]
-
-        when (cost) {
-            1 -> characteristic.setSpecialPerLevel(-10)
-            2 -> characteristic.setSpecialPerLevel(-20)
-            3 -> characteristic.setSpecialPerLevel(-30)
-        }
-    }
-
-    val fieldLearner = Advantage(
-        "fieldLearner",
-        R.string.fieldLearner,
-        R.string.fieldLearnDesc,
-        R.string.fieldLearnEff,
-        null,
-        null,
-        R.array.secondaryFields,
-        0,
-        null,
-        listOf(2, 3),
-        0,
-        {input, cost ->
-            val charList = charInstance.secondaryList.intToField(input!!)
-            charList.forEach{
-                when(cost){
-                    2 -> it.setSpecialPerLevel(5)
-                    3 -> it.setSpecialPerLevel(10)
-                }
-            }
-        }
-    ) { input, cost ->
-        val charList = charInstance.secondaryList.intToField(input!!)
-        charList.forEach {
+        },
+        onRemove = {_, cost ->
+            //remove bonus from the character's initiative
             when (cost) {
-                2 -> it.setSpecialPerLevel(-5)
-                3 -> it.setSpecialPerLevel(-10)
+                1 -> charInstance.combat.changeSpecInitiative(initSpecial = -25)
+                2 -> charInstance.combat.changeSpecInitiative(initSpecial = -45)
+                3 -> charInstance.combat.changeSpecInitiative(initSpecial = -60)
             }
         }
-    }
+    )
 
-    val exceptionalMagicResistance = Advantage(
-        "exceptionalMagRes",
-        R.string.exceptionalMagRes,
-        R.string.exMagResDesc,
-        R.string.exMagResEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2),
-        0,
-        {_, cost ->
+    private val learning = Advantage(
+        saveTag = "learning",
+        name = R.string.learning,
+        description = R.string.learningDesc,
+        effect = R.string.learningEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val naturalLearner = Advantage(
+        saveTag = "naturalLearner",
+        name = R.string.naturalLearner,
+        description = R.string.natLearnDesc,
+        effect = R.string.natLearnEff,
+        restriction = null,
+        special = null,
+        options = R.array.secondaryCharacteristics,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1, 2, 3),
+        pickedCost = 0,
+        onTake = {input, cost ->
+            //apply the desired bonus to the indicated characteristic
+            val characteristic =
+                if(input!! < 38) charInstance.secondaryList.fullList[input]
+                else charInstance.secondaryList.getAllCustoms()[input - 38]
+
             when(cost){
-                1 -> charInstance.combat.magicRes.setSpecial(25)
-                2 -> charInstance.combat.magicRes.setSpecial(50)
+                1 -> characteristic.setSpecialPerLevel(lvlBonus = 10)
+                2 -> characteristic.setSpecialPerLevel(lvlBonus = 20)
+                3 -> characteristic.setSpecialPerLevel(lvlBonus = 30)
+            }
+        },
+        onRemove = {input, cost ->
+            //remove the bonus from the characteristic
+            val characteristic =
+                if(input!! < 38) charInstance.secondaryList.fullList[input]
+                else charInstance.secondaryList.getAllCustoms()[input - 38]
+
+            when (cost) {
+                1 -> characteristic.setSpecialPerLevel(lvlBonus = -10)
+                2 -> characteristic.setSpecialPerLevel(lvlBonus = -20)
+                3 -> characteristic.setSpecialPerLevel(lvlBonus = -30)
             }
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.combat.magicRes.setSpecial(-25)
-            2 -> charInstance.combat.magicRes.setSpecial(-50)
-        }
-    }
+    )
 
-    val exceptionalPhysicalResistance = Advantage(
-        "exceptionalPhysRes",
-        R.string.exceptionalPhysRes,
-        R.string.exPhysResDesc,
-        R.string.exPhysResEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2),
-        0,
-        {_, cost ->
+    private val fieldLearner = Advantage(
+        saveTag = "fieldLearner",
+        name = R.string.fieldLearner,
+        description = R.string.fieldLearnDesc,
+        effect = R.string.fieldLearnEff,
+        restriction = null,
+        special = null,
+        options = R.array.secondaryFields,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(2, 3),
+        pickedCost = 0,
+        onTake = {input, cost ->
+            //add level bonuses to the indicated field characteristics
+            val charList = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            charList.forEach{secondary ->
+                when(cost){
+                    2 -> secondary.setSpecialPerLevel(lvlBonus = 5)
+                    3 -> secondary.setSpecialPerLevel(lvlBonus = 10)
+                }
+            }
+        },
+        onRemove = {input, cost ->
+            //remove level bonuses to the indicated field characteristics
+            val charList = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            charList.forEach {secondary ->
+                when (cost) {
+                    2 -> secondary.setSpecialPerLevel(lvlBonus = -5)
+                    3 -> secondary.setSpecialPerLevel(lvlBonus = -10)
+                }
+            }
+        }
+    )
+
+    private val exceptionalMagicResistance = Advantage(
+        saveTag = "exceptionalMagRes",
+        name = R.string.exceptionalMagRes,
+        description = R.string.exMagResDesc,
+        effect = R.string.exMagResEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //add desired bonus to magic resistance
             when(cost){
+                1 -> charInstance.combat.magicRes.setSpecial(specChange = 25)
+                2 -> charInstance.combat.magicRes.setSpecial(specChange = 50)
+            }
+        },
+        onRemove = {_, cost ->
+            //remove previous bonus to magic resistance
+            when (cost) {
+                1 -> charInstance.combat.magicRes.setSpecial(specChange = -25)
+                2 -> charInstance.combat.magicRes.setSpecial(specChange = -50)
+            }
+        }
+    )
+
+    private val exceptionalPhysicalResistance = Advantage(
+        saveTag = "exceptionalPhysRes",
+        name = R.string.exceptionalPhysRes,
+        description = R.string.exPhysResDesc,
+        effect = R.string.exPhysResEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            when(cost){
+                //set bonuses for the appropriate resistances
                 1 -> {
-                    charInstance.combat.physicalRes.setSpecial(25)
-                    charInstance.combat.venomRes.setSpecial(25)
-                    charInstance.combat.diseaseRes.setSpecial(25)
+                    charInstance.combat.physicalRes.setSpecial(specChange = 25)
+                    charInstance.combat.venomRes.setSpecial(specChange = 25)
+                    charInstance.combat.diseaseRes.setSpecial(specChange = 25)
                 }
+
                 2 -> {
-                    charInstance.combat.physicalRes.setSpecial(50)
-                    charInstance.combat.venomRes.setSpecial(50)
-                    charInstance.combat.diseaseRes.setSpecial(50)
+                    charInstance.combat.physicalRes.setSpecial(specChange = 50)
+                    charInstance.combat.venomRes.setSpecial(specChange = 50)
+                    charInstance.combat.diseaseRes.setSpecial(specChange = 50)
+                }
+            }
+        },
+        onRemove = {_, cost ->
+            when (cost) {
+                //remove bonuses from the appropriate resistances
+                1 -> {
+                    charInstance.combat.physicalRes.setSpecial(specChange = -25)
+                    charInstance.combat.venomRes.setSpecial(specChange = -25)
+                    charInstance.combat.diseaseRes.setSpecial(specChange = -25)
+                }
+
+                2 -> {
+                    charInstance.combat.physicalRes.setSpecial(specChange = -50)
+                    charInstance.combat.venomRes.setSpecial(specChange = -50)
+                    charInstance.combat.diseaseRes.setSpecial(specChange = -50)
                 }
             }
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> {
-                charInstance.combat.physicalRes.setSpecial(-25)
-                charInstance.combat.venomRes.setSpecial(-25)
-                charInstance.combat.diseaseRes.setSpecial(-25)
-            }
+    )
 
-            2 -> {
-                charInstance.combat.physicalRes.setSpecial(-50)
-                charInstance.combat.venomRes.setSpecial(-50)
-                charInstance.combat.diseaseRes.setSpecial(-50)
-            }
-        }
-    }
-
-    val exceptionalPsychicResistance = Advantage(
-        "exceptionalPsyRes",
-        R.string.exceptionalPsyRes,
-        R.string.exPsyResDesc,
-        R.string.exPsyResEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1, 2),
-        0,
-        {_, cost ->
+    private val exceptionalPsychicResistance = Advantage(
+        saveTag = "exceptionalPsyRes",
+        name = R.string.exceptionalPsyRes,
+        description = R.string.exPsyResDesc,
+        effect = R.string.exPsyResEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1, 2),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //give bonus points to psychic resistance
             when(cost){
-                1 -> charInstance.combat.psychicRes.setSpecial(25)
-                2 -> charInstance.combat.psychicRes.setSpecial(50)
+                1 -> charInstance.combat.psychicRes.setSpecial(specChange = 25)
+                2 -> charInstance.combat.psychicRes.setSpecial(specChange = 50)
+            }
+        },
+        onRemove = {_, cost ->
+            //remove bonus points to psychic resistance
+            when (cost) {
+                1 -> charInstance.combat.psychicRes.setSpecial(specChange = -25)
+                2 -> charInstance.combat.psychicRes.setSpecial(specChange = -50)
             }
         }
-    ) { _, cost ->
-        when (cost) {
-            1 -> charInstance.combat.psychicRes.setSpecial(-25)
-            2 -> charInstance.combat.psychicRes.setSpecial(-50)
-        }
-    }
+    )
 
-    val lightSleeper = Advantage(
-        "lightSleeper",
-        R.string.lightSleeper,
-        R.string.lightSleepDesc,
-        R.string.lightSleepEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(1),
-        0,
-        null,
-        null
+    private val lightSleeper = Advantage(
+        saveTag = "lightSleeper",
+        name = R.string.lightSleeper,
+        description = R.string.lightSleepDesc,
+        effect = R.string.lightSleepEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val advantages = listOf(
@@ -839,444 +919,484 @@ class CommonAdvantages(private val charInstance: BaseCharacter) {
 
 
 
-    val badLuck = Advantage(
-        "badLuck",
-        R.string.badLuck,
-        R.string.badLuckDesc,
-        R.string.badLuckEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val badLuck = Advantage(
+        saveTag = "badLuck",
+        name = R.string.badLuck,
+        description = R.string.badLuckDesc,
+        effect = R.string.badLuckEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val blind = Advantage(
-        "blind",
-        R.string.blind,
-        R.string.blindDesc,
-        R.string.blindEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-2),
-        0,
-        null,
-        null
+        saveTag = "blind",
+        name = R.string.blind,
+        description = R.string.blindDesc,
+        effect = R.string.blindEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val deafness = Advantage(
-        "deafness",
-        R.string.deafness,
-        R.string.deafDesc,
-        R.string.deafEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+        saveTag = "deafness",
+        name = R.string.deafness,
+        description = R.string.deafDesc,
+        effect = R.string.deafEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val mute = Advantage(
-        "mute",
-        R.string.mute,
-        R.string.muteDesc,
-        R.string.muteEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+        saveTag = "mute",
+        name = R.string.mute,
+        description = R.string.muteDesc,
+        effect = R.string.muteEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val nearsighted = Advantage(
-        "nearsighted",
-        R.string.nearsighted,
-        R.string.nearsightDesc,
-        R.string.nearsightEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+        saveTag = "nearsighted",
+        name = R.string.nearsighted,
+        description = R.string.nearsightDesc,
+        effect = R.string.nearsightEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val exclusiveWeapon = Advantage(
-        "exclusiveWeapon",
-        R.string.exclusiveWeapon,
-        R.string.exclusiveDesc,
-        R.string.exclusiveEff,
-        R.string.exclusiveRestriction,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+        saveTag = "exclusiveWeapon",
+        name = R.string.exclusiveWeapon,
+        description = R.string.exclusiveDesc,
+        effect = R.string.exclusiveEff,
+        restriction = R.string.exclusiveRestriction,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val severeAllergy = Advantage(
-        "severeAllergy",
-        R.string.severeAllergy,
-        R.string.allergyDesc,
-        R.string.allergyEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val severeAllergy = Advantage(
+        saveTag = "severeAllergy",
+        name = R.string.severeAllergy,
+        description = R.string.allergyDesc,
+        effect = R.string.allergyEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val seriousVice = Advantage(
-        "seriousVice",
-        R.string.seriousVice,
-        R.string.viceDesc,
-        R.string.viceEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val seriousVice = Advantage(
+        saveTag = "seriousVice",
+        name = R.string.seriousVice,
+        description = R.string.viceDesc,
+        effect = R.string.viceEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val atrophiedLimb = Advantage(
-        "atrophiedLimb",
-        R.string.atrophiedLimb,
-        R.string.atrophyDesc,
-        R.string.atrophyEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+        saveTag = "atrophiedLimb",
+        name = R.string.atrophiedLimb,
+        description = R.string.atrophyDesc,
+        effect = R.string.atrophyEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val seriousIllness = Advantage(
-        "seriousIllness",
-        R.string.seriousIllness,
-        R.string.illnessDesc,
-        R.string.illnessEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-2),
-        0,
-        null,
-        null
+        saveTag = "seriousIllness",
+        name = R.string.seriousIllness,
+        description = R.string.illnessDesc,
+        effect = R.string.illnessEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val physicalWeakness = Advantage(
-        "physWeakness",
-        R.string.physWeakness,
-        R.string.physWeakDesc,
-        R.string.physWeakEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ -> charInstance.combat.physicalRes.setMultiplier(0.5)}
-    ) { _, _ -> charInstance.combat.physicalRes.setMultiplier(1.0) }
+        saveTag = "physWeakness",
+        name = R.string.physWeakness,
+        description = R.string.physWeakDesc,
+        effect = R.string.physWeakEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply penalty to physical resistance
+            charInstance.combat.physicalRes.setMultiplier(multVal = 0.5)
+        },
+        onRemove = {_, _ ->
+            //remove penalty to physical resistance
+            charInstance.combat.physicalRes.setMultiplier(multVal = 1.0)
+        }
+    )
 
-    val deepSleeper = Advantage(
-        "deepSleeper",
-        R.string.deepSleeper,
-        R.string.deepSleepDesc,
-        R.string.deepSleepEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val deepSleeper = Advantage(
+        saveTag = "deepSleeper",
+        name = R.string.deepSleeper,
+        description = R.string.deepSleepDesc,
+        effect = R.string.deepSleepEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val deductCharacteristic = Advantage(
-        "charDeduction",
-        R.string.deductChar,
-        R.string.charDeductDesc,
-        R.string.charDeductEff,
-        R.string.charDeductRestriction,
-        null,
-        R.array.primaryCharArray,
-        0,
-        null,
-        listOf(-1),
-        0,
-        {input, _ ->
-            charInstance.primaryList.allPrimaries[input!!].setBonus(-2)
+        saveTag = "charDeduction",
+        name = R.string.deductChar,
+        description = R.string.charDeductDesc,
+        effect = R.string.charDeductEff,
+        restriction = R.string.charDeductRestriction,
+        special = null,
+        options = R.array.primaryCharArray,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {input, _ ->
+            //apply penalty to stat
+            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = -2)
+        },
+        onRemove = {input, _ ->
+            //remove penalty from stat
+            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = 2)
         }
-    ) { input, _ ->
-        charInstance.primaryList.allPrimaries[input!!].setBonus(2)
-    }
-
-    val unfortunate = Advantage(
-        "unfortunate",
-        R.string.unfortunate,
-        R.string.unfortuneDesc,
-        R.string.unfortuneEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
     )
 
-    val easilyPossessed = Advantage(
-        "easilyPossessed",
-        R.string.easilyPossessed,
-        R.string.possessedDesc,
-        R.string.possessedEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val unfortunate = Advantage(
+        saveTag = "unfortunate",
+        name = R.string.unfortunate,
+        description = R.string.unfortuneDesc,
+        effect = R.string.unfortuneEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
-    val exhausted = Advantage(
-        "exhausted",
-        R.string.exhausted,
-        R.string.exhaustDesc,
-        R.string.exhaustEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ ->
-            charInstance.combat.specFatigue.value -= 1
+    private val easilyPossessed = Advantage(
+        saveTag = "easilyPossessed",
+        name = R.string.easilyPossessed,
+        description = R.string.possessedDesc,
+        effect = R.string.possessedEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val exhausted = Advantage(
+        saveTag = "exhausted",
+        name = R.string.exhausted,
+        description = R.string.exhaustDesc,
+        effect = R.string.exhaustEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply fatigue penalty
+            charInstance.combat.specFatigue.intValue -= 1
+            charInstance.combat.updateFatigue()
+        },
+        onRemove = {_, _ ->
+            //remove fatigue penalty
+            charInstance.combat.specFatigue.intValue += 1
             charInstance.combat.updateFatigue()
         }
-    ) { _, _ ->
-        charInstance.combat.specFatigue.value += 1
-        charInstance.combat.updateFatigue()
-    }
-
-    val severePhobia = Advantage(
-        "phobia",
-        R.string.severePhobia,
-        R.string.phobiaDesc,
-        R.string.phobiaEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
     )
 
-    val painVulnerability = Advantage(
-        "painVulnerability",
-        R.string.painVulnerability,
-        R.string.painVulnDesc,
-        R.string.painVulnEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    private val severePhobia = Advantage(
+        saveTag = "phobia",
+        name = R.string.severePhobia,
+        description = R.string.phobiaDesc,
+        effect = R.string.phobiaEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val painVulnerability = Advantage(
+        saveTag = "painVulnerability",
+        name = R.string.painVulnerability,
+        description = R.string.painVulnDesc,
+        effect = R.string.painVulnEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val sickly = Advantage(
-        "sickly",
-        R.string.sickly,
-        R.string.sicklyDesc,
-        R.string.sicklyEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ -> charInstance.combat.diseaseRes.setMultiplier(0.5)}
-    ) { _, _ -> charInstance.combat.diseaseRes.setMultiplier(1.0) }
-
-    val slowHealer = Advantage(
-        "slowHeal",
-        R.string.slowHealer,
-        R.string.slowHealDesc,
-        R.string.slowHealEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ ->
-            charInstance.combat.specRegen.value -= 1
-            charInstance.combat.updateRegeneration()
+        saveTag = "sickly",
+        name = R.string.sickly,
+        description = R.string.sicklyDesc,
+        effect = R.string.sicklyEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply penalty to disease resistance
+            charInstance.combat.diseaseRes.setMultiplier(multVal = 0.5)
+                 },
+        onRemove = {_, _ ->
+            //remove penalty from disease resistance
+            charInstance.combat.diseaseRes.setMultiplier(multVal = 1.0)
         }
-    ) { _, _ ->
-        charInstance.combat.specRegen.value += 1
-        charInstance.combat.updateRegeneration()
-    }
-
-    val slowLearner = Advantage(
-        "slowLearner",
-        R.string.slowLearner,
-        R.string.slowLearnDesc,
-        R.string.slowLearnEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1, -2),
-        0,
-        null,
-        null
     )
 
-    val slowReactions = Advantage(
-        "slowReactions",
-        R.string.slowReactions,
-        R.string.slowReactDesc,
-        R.string.slowReactEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1, -2),
-        0,
-        {_, cost ->
+    private val slowHealer = Advantage(
+        saveTag = "slowHeal",
+        name = R.string.slowHealer,
+        description = R.string.slowHealDesc,
+        effect = R.string.slowHealEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply regeneration penalty
+            charInstance.combat.specRegen.intValue -= 1
+            charInstance.combat.updateRegeneration()
+        },
+        onRemove = {_, _ ->
+            //remove regeneration penalty
+            charInstance.combat.specRegen.intValue += 1
+            charInstance.combat.updateRegeneration()
+        }
+    )
+
+    private val slowLearner = Advantage(
+        saveTag = "slowLearner",
+        name = R.string.slowLearner,
+        description = R.string.slowLearnDesc,
+        effect = R.string.slowLearnEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1, -2),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
+    )
+
+    private val slowReactions = Advantage(
+        saveTag = "slowReactions",
+        name = R.string.slowReactions,
+        description = R.string.slowReactDesc,
+        effect = R.string.slowReactEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1, -2),
+        pickedCost = 0,
+        onTake = {_, cost ->
+            //apply desired initiative penalty
             when(cost){
-                -1 -> charInstance.combat.specInitiative.value -= 30
-                -2 -> charInstance.combat.specInitiative.value -= 60
+                -1 -> charInstance.combat.specInitiative.intValue -= 30
+                -2 -> charInstance.combat.specInitiative.intValue -= 60
+            }
+
+            charInstance.combat.updateInitiative()
+        },
+        onRemove = {_, cost ->
+            //remove desired initiative penalty
+            when (cost) {
+                -1 -> charInstance.combat.specInitiative.intValue += 30
+                -2 -> charInstance.combat.specInitiative.intValue += 60
             }
 
             charInstance.combat.updateInitiative()
         }
-    ) { _, cost ->
-        when (cost) {
-            -1 -> charInstance.combat.specInitiative.value += 30
-            -2 -> charInstance.combat.specInitiative.value += 60
-        }
-
-        charInstance.combat.updateInitiative()
-    }
-
-    val magicSusceptibility = Advantage(
-        "magSusceptibility",
-        R.string.magSusceptibility,
-        R.string.magSusceptDesc,
-        R.string.magSusceptEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ -> charInstance.combat.magicRes.setMultiplier(0.5) }
-    ) { _, _ -> charInstance.combat.magicRes.setMultiplier(1.0) }
-
-    val poisonSusceptibility = Advantage(
-        "venSusceptibility",
-        R.string.poisonSusceptibility,
-        R.string.venSusceptDesc,
-        R.string.venSusceptEff,
-        null,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ -> charInstance.combat.venomRes.setMultiplier(0.5)}
-    ) { _, _ -> charInstance.combat.venomRes.setMultiplier(1.0) }
-
-    val unattractive = Advantage(
-        "unattractive",
-        R.string.unattractive,
-        R.string.unattractiveDesc,
-        R.string.unattractiveEff,
-        R.string.unattractiveRestriction,
-        null,
-        null,
-        null,
-        null,
-        listOf(-1),
-        0,
-        {_, _ ->
-            charInstance.setAppearance(2)
-        },
-        null
     )
 
-    val temperatureVulnerability = Advantage(
-        "tempVulnerability",
-        R.string.tempVulnerability,
-        R.string.tempVulnDesc,
-        R.string.tempVulnEff,
-        null,
-        null,
-        R.array.tempVulnerableOptions,
-        0,
-        null,
-        listOf(-1),
-        0,
-        null,
-        null
+    val magicSusceptibility = Advantage(
+        saveTag = "magSusceptibility",
+        name = R.string.magSusceptibility,
+        description = R.string.magSusceptDesc,
+        effect = R.string.magSusceptEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply magic resistance penalty
+            charInstance.combat.magicRes.setMultiplier(multVal = 0.5)
+        },
+        onRemove = {_, _ ->
+            //remove magic resistance penalty
+            charInstance.combat.magicRes.setMultiplier(multVal = 1.0)
+        }
+    )
+
+    val poisonSusceptibility = Advantage(
+        saveTag = "venSusceptibility",
+        name = R.string.poisonSusceptibility,
+        description = R.string.venSusceptDesc,
+        effect = R.string.venSusceptEff,
+        restriction = null,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = {_, _ ->
+            //apply poison resistance penalty
+            charInstance.combat.venomRes.setMultiplier(multVal = 0.5)
+        },
+        onRemove = {_, _ ->
+            //remove poison resistance penalty
+            charInstance.combat.venomRes.setMultiplier(multVal = 1.0)
+        }
+    )
+
+    val unattractive = Advantage(
+        saveTag = "unattractive",
+        name = R.string.unattractive,
+        description = R.string.unattractiveDesc,
+        effect = R.string.unattractiveEff,
+        restriction = R.string.unattractiveRestriction,
+        special = null,
+        options = null,
+        picked = null,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = { _, _ ->
+            charInstance.setAppearance(newAppearance = 2)
+        },
+        onRemove = null
+    )
+
+    private val temperatureVulnerability = Advantage(
+        saveTag = "tempVulnerability",
+        name = R.string.tempVulnerability,
+        description = R.string.tempVulnDesc,
+        effect = R.string.tempVulnEff,
+        restriction = null,
+        special = null,
+        options = R.array.tempVulnerableOptions,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(-1),
+        pickedCost = 0,
+        onTake = null,
+        onRemove = null
     )
 
     val disadvantages = listOf(

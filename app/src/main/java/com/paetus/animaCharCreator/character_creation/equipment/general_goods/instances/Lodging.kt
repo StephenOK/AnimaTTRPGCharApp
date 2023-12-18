@@ -6,45 +6,45 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class Lodging: GeneralCategory(null) {
-    val mediocreLodging = GeneralEquipment(
-        "Mediocre Lodging",
-        R.string.medLodging,
-        5.0,
-        CoinType.Copper,
-        null,
-        Availability.Common,
-        null
+class Lodging: GeneralCategory(qualityInput = null) {
+    private val mediocreLodging = GeneralEquipment(
+        saveName = "Mediocre Lodging",
+        name = R.string.medLodging,
+        baseCost = 5.0,
+        coinType = CoinType.Copper,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val decentLodging = GeneralEquipment(
-        "Decent Lodging",
-        R.string.decentLodging,
-        1.0,
-        CoinType.Silver,
-        null,
-        Availability.Common,
-        null
+    private val decentLodging = GeneralEquipment(
+        saveName = "Decent Lodging",
+        name = R.string.decentLodging,
+        baseCost = 1.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Common,
+        currentQuality = null
     )
 
-    val goodLodging = GeneralEquipment(
-        "Good Lodging",
-        R.string.goodLodging,
-        25.0,
-        CoinType.Silver,
-        null,
-        Availability.Uncommon,
-        null
+    private val goodLodging = GeneralEquipment(
+        saveName = "Good Lodging",
+        name = R.string.goodLodging,
+        baseCost = 25.0,
+        coinType = CoinType.Silver,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val luxuryLodging = GeneralEquipment(
-        "Luxurious Lodging",
-        R.string.luxLodging,
-        5.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val luxuryLodging = GeneralEquipment(
+        saveName = "Luxurious Lodging",
+        name = R.string.luxLodging,
+        baseCost = 5.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
     init{

@@ -11,6 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Item that holds a section of a fragment on top of the fragment's background.
+ *
+ * @param contents composable to portray in the fragment
+ */
 @Composable
 fun GeneralCard(contents: @Composable () -> Unit) {
     Card(
@@ -19,6 +24,7 @@ fun GeneralCard(contents: @Composable () -> Unit) {
         )
     ){
         Column(
+            //give slightly less padding on the top
             modifier = Modifier
                 .padding(
                     top = 2.dp,

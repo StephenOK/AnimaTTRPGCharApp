@@ -6,95 +6,95 @@ import com.paetus.animaCharCreator.enumerations.Availability
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 
-class Gems: GeneralCategory(null) {
-    val zircon = GeneralEquipment(
-        "Zircon",
-        R.string.zircon,
-        50.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+class Gems: GeneralCategory(qualityInput = null) {
+    private val zircon = GeneralEquipment(
+        saveName = "Zircon",
+        name = R.string.zircon,
+        baseCost = 50.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
     val various = GeneralEquipment(
-        "Various Gems",
-        R.string.various,
-        100.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+        saveName = "Various Gems",
+        name = R.string.various,
+        baseCost = 100.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val pearls = GeneralEquipment(
-        "Pearls",
-        R.string.pearls,
-        150.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val pearls = GeneralEquipment(
+        saveName = "Pearls",
+        name = R.string.pearls,
+        baseCost = 150.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val sapphire = GeneralEquipment(
-        "Sapphire",
-        R.string.sapphire,
-        200.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val sapphire = GeneralEquipment(
+        saveName = "Sapphire",
+        name = R.string.sapphire,
+        baseCost = 200.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val ruby = GeneralEquipment(
-        "Ruby",
-        R.string.ruby,
-        300.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val ruby = GeneralEquipment(
+        saveName = "Ruby",
+        name = R.string.ruby,
+        baseCost = 300.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val diamond = GeneralEquipment(
-        "Diamond",
-        R.string.diamond,
-        320.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val diamond = GeneralEquipment(
+        saveName = "Diamond",
+        name = R.string.diamond,
+        baseCost = 320.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val emerald = GeneralEquipment(
-        "Emerald",
-        R.string.emerald,
-        440.0,
-        CoinType.Gold,
-        null,
-        Availability.Uncommon,
-        null
+    private val emerald = GeneralEquipment(
+        saveName = "Emerald",
+        name = R.string.emerald,
+        baseCost = 440.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Uncommon,
+        currentQuality = null
     )
 
-    val blackOpal = GeneralEquipment(
-        "Black Opal",
-        R.string.blackOpal,
-        500.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val blackOpal = GeneralEquipment(
+        saveName = "Black Opal",
+        name = R.string.blackOpal,
+        baseCost = 500.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
-    val blackPearl = GeneralEquipment(
-        "Black Pearl",
-        R.string.blackPearl,
-        650.0,
-        CoinType.Gold,
-        null,
-        Availability.Rare,
-        null
+    private val blackPearl = GeneralEquipment(
+        saveName = "Black Pearl",
+        name = R.string.blackPearl,
+        baseCost = 650.0,
+        coinType = CoinType.Gold,
+        weight = null,
+        availability = Availability.Rare,
+        currentQuality = null
     )
 
     init{

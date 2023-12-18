@@ -7,17 +7,17 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 /**
  * Record of all of the available energy powers.
  */
-class Energy: Discipline("energy"){
-    val objectCreation = PsychicPower(
-        "createEnergyObj",
-        65,
-        1,
-        true,
-        true,
-        R.string.createEnergyObjDesc,
-        listOf(R.string.cubicMeterInput),
-        listOf(2, 10),
-        listOf(
+class Energy: Discipline(saveName = "energy"){
+    private val objectCreation = PsychicPower(
+        saveName = "createEnergyObj",
+        name = 65,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.createEnergyObjDesc,
+        stringBaseList = listOf(R.string.cubicMeterInput),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             4, 2, 1,
             1,
             2,
@@ -29,16 +29,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val energyDischarge = PsychicPower(
-        "energyDischarge",
-        66,
-        1,
-        true,
-        false,
-        R.string.energyDischargeDesc,
-        listOf(R.string.damageInput, R.string.damageImmaterial),
-        listOf(3, 7, 10),
-        listOf(
+    private val energyDischarge = PsychicPower(
+        saveName = "energyDischarge",
+        name = 66,
+        level = 1,
+        isActive = true,
+        maintained = false,
+        description = R.string.energyDischargeDesc,
+        stringBaseList = listOf(R.string.damageInput, R.string.damageImmaterial),
+        stringBaseCount = listOf(3, 7, 10),
+        stringInput = listOf(
             4, 2, 1,
             50,
             70,
@@ -50,16 +50,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val createEnergy = PsychicPower(
-        "createEnergy",
-        67,
-        1,
-        true,
-        true,
-        R.string.createEnergyPowerDesc,
-        listOf(R.string.intensities),
-        listOf(2, 10),
-        listOf(
+    private val createEnergy = PsychicPower(
+        saveName = "createEnergy",
+        name = 67,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.createEnergyPowerDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             2, 1,
             1,
             3,
@@ -72,16 +72,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val energyShield = PsychicPower(
-        "energyShield",
-        68,
-        1,
-        false,
-        true,
-        R.string.energyShieldDesc,
-        listOf(R.string.lifePointInput),
-        listOf(3, 10),
-        listOf(
+    private val energyShield = PsychicPower(
+        saveName = "energyShield",
+        name = 68,
+        level = 1,
+        isActive = false,
+        maintained = true,
+        description = R.string.energyShieldDesc,
+        stringBaseList = listOf(R.string.lifePointInput),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             6, 4, 2,
             300,
             500,
@@ -93,16 +93,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val senseEnergy = PsychicPower(
-        "senseEnergy",
-        69,
-        1,
-        true,
-        true,
-        R.string.senseEnergyDesc,
-        listOf(R.string.meterRadius, R.string.kilometerRadius),
-        listOf(2, 7, 10),
-        listOf(
+    private val senseEnergy = PsychicPower(
+        saveName = "senseEnergy",
+        name = 69,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.senseEnergyDesc,
+        stringBaseList = listOf(R.string.meterRadius, R.string.kilometerRadius),
+        stringBaseCount = listOf(2, 7, 10),
+        stringInput = listOf(
             2, 1,
             10,
             50,
@@ -115,16 +115,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val modifyNature = PsychicPower(
-        "modNature",
-        70,
-        2,
-        true,
-        false,
-        R.string.modNatureDesc,
-        listOf(R.string.physResIntensities),
-        listOf(4, 10),
-        listOf(
+    private val modifyNature = PsychicPower(
+        saveName = "modNature",
+        name = 70,
+        level = 2,
+        isActive = true,
+        maintained = false,
+        description = R.string.modNatureDesc,
+        stringBaseList = listOf(R.string.physResIntensities),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             8, 6, 4, 2,
             Pair(100, 6),
             Pair(120, 8),
@@ -135,16 +135,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val undoEnergy = PsychicPower(
-        "undoEnergy",
-        71,
-        2,
-        true,
-        false,
-        R.string.undoEnergyDesc,
-        listOf(R.string.physResReduceIntense),
-        listOf(3, 10),
-        listOf(
+    private val undoEnergy = PsychicPower(
+        saveName = "undoEnergy",
+        name = 71,
+        level = 2,
+        isActive = true,
+        maintained = false,
+        description = R.string.undoEnergyDesc,
+        stringBaseList = listOf(R.string.physResReduceIntense),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             6, 4, 2,
             Pair(100, 1),
             Pair(120, 3),
@@ -156,16 +156,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val immunity = PsychicPower(
-        "immunity",
-        72,
-        2,
-        false,
-        true,
-        R.string.immunityPowerDesc,
-        listOf(R.string.intensities),
-        listOf(5, 10),
-        listOf(
+    private val immunity = PsychicPower(
+        saveName = "immunity",
+        name = 72,
+        level = 2,
+        isActive = false,
+        maintained = true,
+        description = R.string.immunityPowerDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             12, 8, 6, 4, 2,
             10,
             15,
@@ -175,16 +175,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val controlEnergy = PsychicPower(
-        "controlEnergy",
-        73,
-        2,
-        true,
-        true,
-        R.string.controlEnergyDesc,
-        listOf(R.string.physResIntensities),
-        listOf(3, 10),
-        listOf(
+    private val controlEnergy = PsychicPower(
+        saveName = "controlEnergy",
+        name = 73,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.controlEnergyDesc,
+        stringBaseList = listOf(R.string.physResIntensities),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             6, 4, 2,
             Pair(80, 4),
             Pair(100, 6),
@@ -196,16 +196,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val energyDome = PsychicPower(
-        "energyDome",
-        74,
-        3,
-        true,
-        false,
-        R.string.energyDomeDesc,
-        listOf(R.string.baseDamageArea, R.string.baseDamageAreaImmaterial),
-        listOf(5, 8, 10),
-        listOf(
+    private val energyDome = PsychicPower(
+        saveName = "energyDome",
+        name = 74,
+        level = 3,
+        isActive = true,
+        maintained = false,
+        description = R.string.energyDomeDesc,
+        stringBaseList = listOf(R.string.baseDamageArea, R.string.baseDamageAreaImmaterial),
+        stringBaseCount = listOf(5, 8, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             Pair(100, 25),
             Pair(120, 50),
@@ -215,16 +215,16 @@ class Energy: Discipline("energy"){
         )
     )
 
-    val majorEnergy = PsychicPower(
-        "majorEnergy",
-        75,
-        3,
-        true,
-        true,
-        R.string.majorEnergyDesc,
-        listOf(R.string.intensities),
-        listOf(6, 10),
-        listOf(
+    private val majorEnergy = PsychicPower(
+        saveName = "majorEnergy",
+        name = 75,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.majorEnergyDesc,
+        stringBaseList = listOf(R.string.intensities),
+        stringBaseCount = listOf(6, 10),
+        stringInput = listOf(
             20, 16, 12, 8, 6, 4,
             25,
             35,
@@ -234,18 +234,20 @@ class Energy: Discipline("energy"){
     )
 
     init{
-        allPowers.addAll(listOf(
-            objectCreation,
-            energyDischarge,
-            createEnergy,
-            energyShield,
-            senseEnergy,
-            modifyNature,
-            undoEnergy,
-            immunity,
-            controlEnergy,
-            energyDome,
-            majorEnergy
-        ))
+        allPowers.addAll(
+            elements = listOf(
+                objectCreation,
+                energyDischarge,
+                createEnergy,
+                energyShield,
+                senseEnergy,
+                modifyNature,
+                undoEnergy,
+                immunity,
+                controlEnergy,
+                energyDome,
+                majorEnergy
+            )
+        )
     }
 }

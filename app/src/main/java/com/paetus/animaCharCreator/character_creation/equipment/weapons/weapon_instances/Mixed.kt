@@ -12,111 +12,165 @@ import java.io.Serializable
  */
 class Mixed: Serializable {
     val bastardSword = MixedWeapon(
-        "bastardSword",
-        R.string.bastardSword,
-        70,
-        -30,
-        9, 7,
-        AttackType.Cut, AttackType.Impact, listOf(WeaponType.Sword, WeaponType.TwoHanded),
-        15, 5, 25,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.bastardSwordDesc
+        saveName = "bastardSword",
+        name = R.string.bastardSword,
+        damage = 70,
+        speed = -30,
+        oneHandStr = 9,
+        twoHandStr = 7,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        mixedType = listOf(WeaponType.Sword, WeaponType.TwoHanded),
+        fortitude = 15,
+        breakage = 5,
+        presence = 25,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.bastardSwordDesc
     )
 
-    val flail = MixedWeapon(
-        "flail",
-        R.string.flail,
-        40,
-        0,
-        6, null,
-        AttackType.Impact, null, listOf(WeaponType.Mace, WeaponType.Cord),
-        13, 4, 15,
-        listOf(WeaponAbility.Complex), null,
-        R.string.flailDesc
+    private val flail = MixedWeapon(
+        saveName = "flail",
+        name = R.string.flail,
+        damage = 40,
+        speed = 0,
+        oneHandStr = 6,
+        twoHandStr = null,
+        primaryType = AttackType.Impact,
+        secondaryType = null,
+        mixedType = listOf(WeaponType.Mace, WeaponType.Cord),
+        fortitude = 13,
+        breakage = 4,
+        presence = 15,
+        ability = listOf(WeaponAbility.Complex),
+        ownStrength = null,
+        description = R.string.flailDesc
     )
 
     val foil = MixedWeapon(
-        "foil",
-        R.string.foil,
-        35,
-        15,
-        3, null,
-        AttackType.Thrust, null, listOf(WeaponType.Sword, WeaponType.Short),
-        9, -2, 20,
-        listOf(WeaponAbility.Precision), null,
-        R.string.foilDesc
+        saveName = "foil",
+        name = R.string.foil,
+        damage = 35,
+        speed = 15,
+        oneHandStr = 3,
+        twoHandStr = null,
+        primaryType = AttackType.Thrust,
+        secondaryType = null,
+        mixedType = listOf(WeaponType.Sword, WeaponType.Short),
+        fortitude = 9,
+        breakage = -2,
+        presence = 20,
+        ability = listOf(WeaponAbility.Precision),
+        ownStrength = null,
+        description = R.string.foilDesc
     )
 
     val halberd = MixedWeapon(
-        "halberd",
-        R.string.halberd,
-        60,
-        -15,
-        11, 6,
-        AttackType.Cut, AttackType.Impact, listOf(WeaponType.Pole, WeaponType.TwoHanded),
-        15, 4, 20,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.halberdDesc
+        saveName = "halberd",
+        name = R.string.halberd,
+        damage = 60,
+        speed = -15,
+        oneHandStr = 11,
+        twoHandStr = 6,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        mixedType = listOf(WeaponType.Pole, WeaponType.TwoHanded),
+        fortitude = 15,
+        breakage = 4,
+        presence = 20,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.halberdDesc
     )
 
     val heavyBattleMace = MixedWeapon(
-        "heavyBattleMace",
-        R.string.heavyBattleMace,
-        60,
-        -15,
-        10, 6,
-        AttackType.Impact, null, listOf(WeaponType.Mace, WeaponType.TwoHanded),
-        16, 5, 15,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.heavyBattleMaceDesc
+        saveName = "heavyBattleMace",
+        name = R.string.heavyBattleMace,
+        damage = 60,
+        speed = -15,
+        oneHandStr = 10,
+        twoHandStr = 6,
+        primaryType = AttackType.Impact,
+        secondaryType = null,
+        mixedType = listOf(WeaponType.Mace, WeaponType.TwoHanded),
+        fortitude = 16,
+        breakage = 5,
+        presence = 15,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.heavyBattleMaceDesc
     )
 
-    val largeMultiFlail = MixedWeapon(
-        "largeMultiFlail",
-        R.string.largeMultiFlail,
-        80,
-        -50,
-        10, 8,
-        AttackType.Impact, null, listOf(WeaponType.Mace, WeaponType.TwoHanded),
-        14, 6, 20,
-        listOf(WeaponAbility.Complex), null,
-        R.string.largeMultiFlailDesc
+    private val largeMultiFlail = MixedWeapon(
+        saveName = "largeMultiFlail",
+        name = R.string.largeMultiFlail,
+        damage = 80,
+        speed = -50,
+        oneHandStr = 10,
+        twoHandStr = 8,
+        primaryType = AttackType.Impact,
+        secondaryType = null,
+        mixedType = listOf(WeaponType.Mace, WeaponType.TwoHanded),
+        fortitude = 14,
+        breakage = 6,
+        presence = 20,
+        ability = listOf(WeaponAbility.Complex),
+        ownStrength = null,
+        description = R.string.largeMultiFlailDesc
     )
 
-    val scythe = MixedWeapon(
-        "scythe",
-        R.string.scythe,
-        35,
-        0,
-        9, 5,
-        AttackType.Cut, AttackType.Impact, listOf(WeaponType.Pole, WeaponType.TwoHanded),
-        12, 2, 25,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.scytheDesc
+    private val scythe = MixedWeapon(
+        saveName = "scythe",
+        name = R.string.scythe,
+        damage = 35,
+        speed = 0,
+        oneHandStr = 9,
+        twoHandStr = 5,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        mixedType = listOf(WeaponType.Pole, WeaponType.TwoHanded),
+        fortitude = 12,
+        breakage = 2,
+        presence = 25,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.scytheDesc
     )
 
     val twoHandAxe = MixedWeapon(
-        "twoHandAxe",
-        R.string.twoHandAxe,
-        100,
-        -70,
-        11, 9,
-        AttackType.Cut, AttackType.Impact, listOf(WeaponType.Axe, WeaponType.TwoHanded),
-        17, 7, 30,
-        listOf(WeaponAbility.OneOrTwoHanded), null,
-        R.string.twoHandAxeDesc
+        saveName = "twoHandAxe",
+        name = R.string.twoHandAxe,
+        damage = 100,
+        speed = -70,
+        oneHandStr = 11,
+        twoHandStr = 9,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        mixedType = listOf(WeaponType.Axe, WeaponType.TwoHanded),
+        fortitude = 17,
+        breakage = 7,
+        presence = 30,
+        ability = listOf(WeaponAbility.OneOrTwoHanded),
+        ownStrength = null,
+        description = R.string.twoHandAxeDesc
     )
 
     val kusariGama = MixedWeapon(
-        "kusariGama",
-        R.string.kusari,
-        40,
-        5,
-        5, null,
-        AttackType.Cut, AttackType.Impact, listOf(WeaponType.Short, WeaponType.Cord),
-        12, 4, 25,
-        listOf(WeaponAbility.TwoHanded, WeaponAbility.Trapping, WeaponAbility.Special), 8,
-        R.string.kusariDesc
+        saveName = "kusariGama",
+        name = R.string.kusari,
+        damage = 40,
+        speed = 5,
+        oneHandStr = 5,
+        twoHandStr = null,
+        primaryType = AttackType.Cut,
+        secondaryType = AttackType.Impact,
+        mixedType = listOf(WeaponType.Short, WeaponType.Cord),
+        fortitude = 12,
+        breakage = 4,
+        presence = 25,
+        ability = listOf(WeaponAbility.TwoHanded, WeaponAbility.Trapping, WeaponAbility.Special),
+        ownStrength = 8,
+        description = R.string.kusariDesc
     )
 
     val mixed = listOf(bastardSword, flail, foil, halberd, heavyBattleMace, kusariGama,

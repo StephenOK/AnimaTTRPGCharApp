@@ -7,17 +7,17 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 /**
  * Record of all of the available sentience powers.
  */
-class Sentience: Discipline("sentience"){
-    val senseFeelings = PsychicPower(
-        "senseFeeling",
-        76,
-        1,
-        true,
-        true,
-        R.string.senseFeelingDesc,
-        listOf(R.string.psyResInput),
-        listOf(2, 10),
-        listOf(
+class Sentience: Discipline(saveName = "sentience"){
+    private val senseFeelings = PsychicPower(
+        saveName = "senseFeeling",
+        name = 76,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.senseFeelingDesc,
+        stringBaseList = listOf(R.string.psyResInput),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             2, 1,
             100,
             120,
@@ -30,16 +30,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val intensifyFeelings = PsychicPower(
-        "intensifyFeeling",
-        77,
-        1,
-        true,
-        true,
-        R.string.intensifyFeelingDesc,
-        listOf(R.string.psyResInput),
-        listOf(2, 10),
-        listOf(
+    private val intensifyFeelings = PsychicPower(
+        saveName = "intensifyFeeling",
+        name = 77,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.intensifyFeelingDesc,
+        stringBaseList = listOf(R.string.psyResInput),
+        stringBaseCount = listOf(2, 10),
+        stringInput = listOf(
             2, 1,
             100,
             120,
@@ -52,16 +52,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val detectFeelings = PsychicPower(
-        "detectFeelings",
-        78,
-        1,
-        true,
-        true,
-        R.string.detectFeelingsDesc,
-        listOf(R.string.psyResMeter, R.string.psyResKilometer),
-        listOf(2, 7, 10),
-        listOf(
+    private val detectFeelings = PsychicPower(
+        saveName = "detectFeelings",
+        name = 78,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.detectFeelingsDesc,
+        stringBaseList = listOf(R.string.psyResMeter, R.string.psyResKilometer),
+        stringBaseCount = listOf(2, 7, 10),
+        stringInput = listOf(
             2, 1,
             Pair(80, 10),
             Pair(100, 50),
@@ -74,16 +74,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val connectSenses = PsychicPower(
-        "connectSenses",
-        79,
-        1,
-        true,
-        true,
-        R.string.connectSensesDesc,
-        listOf(R.string.psyResMeter, R.string.psyResKilometer, R.string.psyResAnyDistance),
-        listOf(2, 5, 9, 10),
-        listOf(
+    private val connectSenses = PsychicPower(
+        saveName = "connectSenses",
+        name = 79,
+        level = 1,
+        isActive = true,
+        maintained = true,
+        description = R.string.connectSensesDesc,
+        stringBaseList = listOf(R.string.psyResMeter, R.string.psyResKilometer, R.string.psyResAnyDistance),
+        stringBaseCount = listOf(2, 5, 9, 10),
+        stringInput = listOf(
             2, 1,
             Pair(60, 10),
             Pair(80, 100),
@@ -96,16 +96,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val projectSenses = PsychicPower(
-        "projectSenses",
-        80,
-        2,
-        true,
-        true,
-        R.string.projectSensesDesc,
-        listOf(R.string.kilometerRadius, R.string.anyDistance),
-        listOf(4, 9, 10),
-        listOf(
+    private val projectSenses = PsychicPower(
+        saveName = "projectSenses",
+        name = 80,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.projectSensesDesc,
+        stringBaseList = listOf(R.string.kilometerRadius, R.string.anyDistance),
+        stringBaseCount = listOf(4, 9, 10),
+        stringInput = listOf(
             8, 6, 4, 2,
             1,
             10,
@@ -116,16 +116,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val eliminateSenses = PsychicPower(
-        "eliminateSenses",
-        81,
-        2,
-        true,
-        true,
-        R.string.elimSensesDesc,
-        listOf(R.string.psyResInput),
-        listOf(4, 10),
-        listOf(
+    private val eliminateSenses = PsychicPower(
+        saveName = "eliminateSenses",
+        name = 81,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.elimSensesDesc,
+        stringBaseList = listOf(R.string.psyResInput),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             8, 6, 4, 2,
             100,
             120,
@@ -136,16 +136,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val createFeelings = PsychicPower(
-        "Create Feelings",
-        82,
-        2,
-        true,
-        true,
-        R.string.createFeelingsDesc,
-        listOf(R.string.psyResInput),
-        listOf(3, 10),
-        listOf(
+    private val createFeelings = PsychicPower(
+        saveName = "Create Feelings",
+        name = 82,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.createFeelingsDesc,
+        stringBaseList = listOf(R.string.psyResInput),
+        stringBaseCount = listOf(3, 10),
+        stringInput = listOf(
             8, 4, 2,
             80,
             100,
@@ -157,16 +157,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val infuseFeelings = PsychicPower(
-        "infuseFeelings",
-        83,
-        2,
-        true,
-        true,
-        R.string.infuseFeelingsDesc,
-        listOf(R.string.psyResMeter),
-        listOf(4, 10),
-        listOf(
+    private val infuseFeelings = PsychicPower(
+        saveName = "infuseFeelings",
+        name = 83,
+        level = 2,
+        isActive = true,
+        maintained = true,
+        description = R.string.infuseFeelingsDesc,
+        stringBaseList = listOf(R.string.psyResMeter),
+        stringBaseCount = listOf(4, 10),
+        stringInput = listOf(
             8, 6, 4, 2,
             Pair(100, 5),
             Pair(120, 10),
@@ -177,16 +177,16 @@ class Sentience: Discipline("sentience"){
         )
     )
 
-    val destroyFeelings = PsychicPower(
-        "destroyFeelings",
-        84,
-        3,
-        true,
-        false,
-        R.string.destroyFeelingsDesc,
-        listOf(R.string.psyResInput),
-        listOf(5, 10),
-        listOf(
+    private val destroyFeelings = PsychicPower(
+        saveName = "destroyFeelings",
+        name = 84,
+        level = 3,
+        isActive = true,
+        maintained = false,
+        description = R.string.destroyFeelingsDesc,
+        stringBaseList = listOf(R.string.psyResInput),
+        stringBaseCount = listOf(5, 10),
+        stringInput = listOf(
             16, 12, 8, 6, 4,
             120,
             140,
@@ -197,15 +197,15 @@ class Sentience: Discipline("sentience"){
     )
 
     val area = PsychicPower(
-        "areaSentience",
-        85,
-        3,
-        true,
-        true,
-        R.string.areaSentienceDesc,
-        listOf(R.string.meterRadius, R.string.kilometerRadius),
-        listOf(4, 6, 10),
-        listOf(
+        saveName = "areaSentience",
+        name = 85,
+        level = 3,
+        isActive = true,
+        maintained = true,
+        description = R.string.areaSentienceDesc,
+        stringBaseList = listOf(R.string.meterRadius, R.string.kilometerRadius),
+        stringBaseCount = listOf(4, 6, 10),
+        stringInput = listOf(
             16, 12, 8, 4,
             10,
             100,
@@ -217,17 +217,19 @@ class Sentience: Discipline("sentience"){
     )
 
     init{
-        allPowers.addAll(listOf(
-            senseFeelings,
-            intensifyFeelings,
-            detectFeelings,
-            connectSenses,
-            projectSenses,
-            eliminateSenses,
-            createFeelings,
-            infuseFeelings,
-            destroyFeelings,
-            area
-        ))
+        allPowers.addAll(
+            elements = listOf(
+                senseFeelings,
+                intensifyFeelings,
+                detectFeelings,
+                connectSenses,
+                projectSenses,
+                eliminateSenses,
+                createFeelings,
+                infuseFeelings,
+                destroyFeelings,
+                area
+            )
+        )
     }
 }

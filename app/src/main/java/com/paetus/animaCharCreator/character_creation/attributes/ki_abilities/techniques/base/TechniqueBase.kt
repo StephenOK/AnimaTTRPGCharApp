@@ -4,12 +4,25 @@ import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
 import java.io.ByteArrayOutputStream
 
+/**
+ * Base item for both prebuilt and custom techniques.
+ */
 open class TechniqueBase(){
+    //initialize the technique's level
     val level = mutableIntStateOf(1)
+
+    //initialize the technique's maintenance values
     val maintArray = mutableListOf(0, 0, 0, 0, 0, 0)
+
+    //initialize the technique's held effects
     val givenAbilities = mutableListOf<TechniqueEffect>()
 
-    fun setLevel(input: Int){level.intValue = input}
+    /**
+     * Sets the technique's level to the indicated value.
+     *
+     * @param lvlInput new value to set as the level
+     */
+    fun setLevel(lvlInput: Int){level.intValue = lvlInput}
 
     /**
      * Determines the total cost of the technique.
@@ -21,8 +34,8 @@ open class TechniqueBase(){
         var total = 0
 
         //calculate cost from each effect
-        givenAbilities.forEach{
-            total += it.data.mkCost
+        givenAbilities.forEach{effect ->
+            total += effect.data.mkCost
         }
 
         //add points based on level if technique is maintained
@@ -48,8 +61,8 @@ open class TechniqueBase(){
         var total = 0
 
         //calculate value from each effect
-        givenAbilities.forEach{
-            total += it.data.maintCost
+        givenAbilities.forEach{effect ->
+            total += effect.data.maintCost
         }
 
         //return final total
@@ -77,26 +90,24 @@ open class TechniqueBase(){
     }
 
     /**
-     * Determines the total accumulation for the technique
+     * Determines the total accumulation for the technique.
      *
      * @return total accumulation needed for the technique
      */
     fun accTotal(): Int {
-        //get the array of ki needed
-        val addUp = statSpent()
-
         //initialize final total
         var total = 0
 
         //add amount from the ki built
-        addUp.forEach{
-            total += it
+        statSpent().forEach{kiBuild ->
+            total += kiBuild
         }
 
         //add maintenance amount if maintainable
-        givenAbilities.forEach{
-            if(isMaintained())
-                total += it.data.maintCost
+        if(isMaintained()){
+            givenAbilities.forEach { effect ->
+                total += effect.data.maintCost
+            }
         }
 
         //return total
@@ -142,13 +153,13 @@ open class TechniqueBase(){
     /**
      * Checks if there is any build ability in the indicated stat for the whole technique
      *
-     * @param index characteristic to check for build
-     * @return if any build needed for the indicated characteristic
+     * @param buildIndex characteristic to check for build
+     * @return true if any build needed for the indicated characteristic
      */
-    fun hasAccumulation(index: Int): Boolean{
+    fun hasAccumulation(buildIndex: Int): Boolean{
         //check each ki build for any inputted ki build
         givenAbilities.forEach{
-            if(it.kiBuild[index] != 0)
+            if(it.kiBuild[buildIndex] != 0)
                 return true
         }
 
@@ -161,17 +172,17 @@ open class TechniqueBase(){
      * @param compareTo list of effects to compare with
      * @return true if lists are equivalent
      */
-    fun listCheck(compareTo: List<TechniqueEffect>): Boolean{
+    private fun listCheck(compareTo: List<TechniqueEffect>): Boolean{
         //immediately dismiss if sizes are different
         if(compareTo.size != givenAbilities.size)
             return false
 
         //remove effects if they are present
         var listCopy = compareTo
-        listCopy.forEach{comparison ->
-            givenAbilities.forEach{
-                if(it.equivalentTo(comparison))
-                    listCopy = listCopy - comparison
+        listCopy.forEach{effect ->
+            givenAbilities.forEach{heldEffect ->
+                if(heldEffect.equivalentTo(compareTo = effect))
+                    listCopy = listCopy - effect
             }
         }
 
@@ -185,9 +196,9 @@ open class TechniqueBase(){
      * @return true if all builds qualify
      */
     fun checkBuilds(): Boolean{
-        givenAbilities.forEach{
-            val isPrimary = givenAbilities[0] == it
-            if(!it.checkBuild(isPrimary)) return false
+        givenAbilities.forEach{heldEffect ->
+            val isPrimary = givenAbilities[0] == heldEffect
+            if(!heldEffect.checkBuild(isPrimary = isPrimary)) return false
         }
 
         return true
@@ -197,17 +208,27 @@ open class TechniqueBase(){
      * Finds the desired effect in the technique's list.
      *
      * @param name name of the effect to search for
+     * @param primeCost primary cost of the desired effect
+     * @param secondCost secondary cost of the desired effect
+     * @param mkCost martial knowledge cost of the effect
      * @return the sought for technique, if found
      */
-    fun getAbility(name: Int, primeCost: Int, secondCost: Int, mkCost: Int): TechniqueEffect?{
-        (givenAbilities).forEach{
-            if(it.data.name == name &&
-                    it.data.primaryCost == primeCost &&
-                    it.data.secondaryCost == secondCost &&
-                    it.data.mkCost == mkCost)
-                return it
+    fun getAbility(
+        name: Int,
+        primeCost: Int,
+        secondCost: Int,
+        mkCost: Int
+    ): TechniqueEffect?{
+        //check each held ability for an exact match
+        (givenAbilities).forEach{effect ->
+            if(effect.data.name == name &&
+                    effect.data.primaryCost == primeCost &&
+                    effect.data.secondaryCost == secondCost &&
+                    effect.data.mkCost == mkCost)
+                return effect
         }
 
+        //notify of no match found
         return null
     }
 
@@ -220,17 +241,27 @@ open class TechniqueBase(){
     fun equivalentTo(compareTo: TechniqueBase): Boolean{
         return compareTo.level.intValue == level.intValue &&
                 compareTo.maintArray == maintArray &&
-                listCheck(compareTo.givenAbilities)
+                listCheck(compareTo = compareTo.givenAbilities)
     }
 
+    /**
+     * Open function for writing this technique to file.
+     */
     open fun write(byteArray: ByteArrayOutputStream){}
 
+    /**
+     * Constructor with the values for this item given.
+     *
+     * @param level strength of this technique
+     * @param maintArray maintenance values for this technique
+     * @param givenAbilities effects this technique possesses
+     */
     constructor(
         level: Int,
         maintArray: MutableList<Int>,
         givenAbilities: MutableList<TechniqueEffect>
     ) : this() {
-        setLevel(level)
+        setLevel(lvlInput = level)
 
         for(index in 0..5)
             this.maintArray[index] = maintArray[index]

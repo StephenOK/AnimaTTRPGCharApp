@@ -21,20 +21,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 
 /**
  * Dialog that allows the user to choose specific information about their desired advantage.
- * First gives option for the type of advantage desired.
+ * First gives option for the item the advantage affects.
  * Second gives option for the cost of advantage desired.
  * Attempts to apply advantage after choices are made.
  *
  * @param advantageFragVM advantage viewModel passed down to this composable
  * @param closeDialog function to run on dialog's close
  */
-
 @Composable
 fun AdvantageCostPick(
+    secondaryList: SecondaryList,
     advantageFragVM: AdvantageFragmentViewModel,
     closeDialog: (Int?) -> Unit
 ){
@@ -44,10 +45,10 @@ fun AdvantageCostPick(
     //initialize page tracker
     val currentPage = advantageFragVM.adjustingPage.collectAsState().value
 
-
     DialogFrame(
-        stringResource(R.string.advantageSelectPrompt),
-        {
+        //prompt for user selection(s)
+        dialogTitle = stringResource(id = R.string.advantageSelectPrompt),
+        mainContent = {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -57,19 +58,54 @@ fun AdvantageCostPick(
                     //page for type options
                     1 -> {
                         //for each available option
-                        context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).forEach {
-                            if (advantageFragVM.adjustedAdvantage.value!!.name != R.string.halfTreeAttuned)
-                                item { OptionRow(advantageFragVM, it) }
-                            else
-                                item { HalfTreeOptions(advantageFragVM, it) }
+                        context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
+                            .forEach {option ->
+                                //display indicated choices
+                                if (advantageFragVM.adjustedAdvantage.value!!.name != R.string.halfTreeAttuned) {
+                                    item {
+                                        OptionRow(
+                                            name = option,
+                                            secondaryList = secondaryList,
+                                            advantageFragVM = advantageFragVM
+                                        )
+                                    }
+                                }
+
+                                //special choice options for Half-Tree Attuned advantage
+                                else
+                                    item {
+                                        HalfTreeOptions(
+                                            name = option,
+                                            advantageFragVM = advantageFragVM
+                                        )
+                                    }
+                            }
+
+                        //add custom secondary characteristic options for natural learner and subject aptitude
+                        if(advantageFragVM.adjustedAdvantage.value!!.saveTag == "subjectAptitude" ||
+                            advantageFragVM.adjustedAdvantage.value!!.saveTag == "naturalLearner"){
+                            secondaryList.getAllCustoms().forEach{secondary ->
+                                item{
+                                    OptionRow(
+                                        name = secondary.name.value + " (Custom)",
+                                        secondaryList = secondaryList,
+                                        advantageFragVM = advantageFragVM
+                                    )
+                                }
+                            }
                         }
                     }
 
                     //page for cost option
                     2 -> {
-                        //for each cost available
-                        advantageFragVM.adjustedAdvantage.value!!.cost.forEach {
-                            item { CostRow(advantageFragVM, it) }
+                        //make selection for each option
+                        advantageFragVM.adjustedAdvantage.value!!.cost.forEach {cost ->
+                            item {
+                                CostRow(
+                                    costVal = cost,
+                                    advantageFragVM = advantageFragVM
+                                )
+                            }
                         }
                     }
                 }
@@ -82,54 +118,49 @@ fun AdvantageCostPick(
 
             //back options for the cost selection
             BackHandler(currentPage == 2) {
-                //return to first page if multiples options
+                //return to first page if available
                 if (advantageFragVM.adjustedAdvantage.value!!.options != null)
-                    advantageFragVM.setAdjustingPage(1)
+                    advantageFragVM.setAdjustingPage(pageNum = 1)
                 //close dialog if no additional options available
                 else closeDialog(null)
             }
         },
-        {
+        buttonContent = {
             //button to go back if option is available
             if (advantageFragVM.adjustingPage.collectAsState().value == 2 &&
                 advantageFragVM.adjustedAdvantage.collectAsState().value!!.options != null
             )
-                TextButton(onClick = {
-                    advantageFragVM.setAdjustingPage(1)
-                }) {
+                TextButton(
+                    onClick = {advantageFragVM.setAdjustingPage(pageNum = 1) }
+                ){
                     Text(
-                        text = stringResource(R.string.backLabel),
+                        text = stringResource(id = R.string.backLabel),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
-            //button for user's item selection
-            TextButton(onClick = {
-                when (advantageFragVM.adjustingPage.value) {
-                    1 -> {
-                        //go to cost page if cost must be chosen
-                        if (advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
-                            advantageFragVM.setAdjustingPage(2)
-                        //attempt to apply advantage to character
-                        else
-                            closeDialog(advantageFragVM.acquireAdvantage())
-                    }
-
-                    2 ->
-                        //attempt to apply advantage to character
+            //button to confirm user's selection
+            TextButton(
+                onClick = {
+                    //if selecting option and cost must also be chosen, go to cost selection
+                    if(advantageFragVM.adjustingPage.value == 1 &&
+                        advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
+                        advantageFragVM.setAdjustingPage(pageNum = 2)
+                    //otherwise attempt advantage acquisition
+                    else
                         closeDialog(advantageFragVM.acquireAdvantage())
                 }
-            }) {
+            ){
                 Text(
-                    text = stringResource(R.string.selectLabel),
+                    text = stringResource(id = R.string.selectLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             //close selection dialog
-            TextButton(onClick = { closeDialog(null) }) {
+            TextButton(onClick = {closeDialog(null)}) {
                 Text(
-                    text = stringResource(R.string.cancelLabel),
+                    text = stringResource(id = R.string.cancelLabel),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -140,17 +171,19 @@ fun AdvantageCostPick(
 /**
  * Row displaying an option for the selected advantage.
  *
- * @param advantageFragVM viewModel working on the current section
  * @param name description of the current option
+ * @param secondaryList secondary characteristic record to retrieve custom characteristic data
+ * @param advantageFragVM viewModel for the advantage page
  */
 @Composable
 private fun OptionRow(
-    advantageFragVM: AdvantageFragmentViewModel,
-    name: String
+    name: String,
+    secondaryList: SecondaryList,
+    advantageFragVM: AdvantageFragmentViewModel
 ) {
     //do not display matrix powers for psychic discipline access
     if(advantageFragVM.adjustedAdvantage.collectAsState().value!!.name == R.string.psyDiscAccess &&
-        stringArrayResource(R.array.disciplineNames).indexOf(name) == 8)
+        stringArrayResource(R.array.disciplineNames).indexOf(element = name) == 8)
         return
 
     //get current context
@@ -163,8 +196,26 @@ private fun OptionRow(
     ){
         //display a radio button
         RadioButton(
-            selected = advantageFragVM.optionPicked.collectAsState().value == stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name),
-            onClick = {advantageFragVM.setOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))},
+            selected =
+                if(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(element = name) >= 0)
+                    advantageFragVM.optionPicked.collectAsState().value == stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(element = name)
+                else
+                    advantageFragVM.optionPicked.collectAsState().value == 38 + secondaryList.getCustomIndex(name.dropLast(9)),
+            onClick = {
+                //attempt to get the index of this item
+                val input = context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(element = name)
+
+                //if getting a custom item's string
+                if(input < 0){
+                    //apply added index value
+                    advantageFragVM.setOptionPicked(
+                        advOption = 38 + secondaryList.getCustomIndex(name.dropLast(9))
+                    )
+                }
+                //otherwise apply index value
+                else
+                    advantageFragVM.setOptionPicked(advOption = input)
+            },
             modifier = Modifier
                 .weight(0.1f),
             colors = RadioButtonDefaults.colors(
@@ -178,13 +229,21 @@ private fun OptionRow(
             modifier = Modifier
                 .weight(0.2f)
                 .clickable {
-                    advantageFragVM.setOptionPicked(
-                        context.resources
-                            .getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
-                            .indexOf(
-                                name
-                            )
-                    )
+                    //attempt to get the index of this item
+                    val input = context.resources
+                        .getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
+                        .indexOf(element = name)
+
+                    //if getting a custom item's string
+                    if (input < 0) {
+                        //apply added index value
+                        advantageFragVM.setOptionPicked(
+                            advOption = 38 + secondaryList.getCustomIndex(name.dropLast(9))
+                        )
+                    }
+                    //otherwise apply index value
+                    else
+                        advantageFragVM.setOptionPicked(advOption = input)
                 },
             textAlign = TextAlign.Center
         )
@@ -194,13 +253,13 @@ private fun OptionRow(
 /**
  * Composes an option when selecting for the Half-Attuned to Tree advantage.
  *
- * @param advantageFragVM viewModel working on this section
  * @param name description of the current option
+ * @param advantageFragVM viewModel for the advantage page
  */
 @Composable
 private fun HalfTreeOptions(
-    advantageFragVM: AdvantageFragmentViewModel,
-    name: String
+    name: String,
+    advantageFragVM: AdvantageFragmentViewModel
 ) {
     //do not display necromancy for this option
     if(stringArrayResource(R.array.elementList).indexOf(name) == 10)
@@ -216,8 +275,8 @@ private fun HalfTreeOptions(
     ){
         //create radio button for this option
         RadioButton(
-            selected = advantageFragVM.halfAttunedOptions.collectAsState().value.contains(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(name)),
-            onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(name))},
+            selected = advantageFragVM.halfAttunedOptions.collectAsState().value.contains(stringArrayResource(advantageFragVM.adjustedAdvantage.collectAsState().value!!.options!!).indexOf(element = name)),
+            onClick = {advantageFragVM.addOptionPicked(context.resources.getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!).indexOf(element = name))},
             colors = RadioButtonDefaults.colors(
                 unselectedColor = MaterialTheme.colorScheme.onSurface
             )
@@ -232,7 +291,7 @@ private fun HalfTreeOptions(
                     advantageFragVM.addOptionPicked(
                         context.resources
                             .getStringArray(advantageFragVM.adjustedAdvantage.value!!.options!!)
-                            .indexOf(name)
+                            .indexOf(element = name)
                     )
                 },
             textAlign = TextAlign.Center
@@ -243,21 +302,21 @@ private fun HalfTreeOptions(
 /**
  * Compose a row for a cost option to select.
  *
- * @param advantageFragVM viewModel of the current section
- * @param item cost to display in this row
+ * @param costVal cost to display in this row
+ * @param advantageFragVM viewModel for the advantage page
  */
 @Composable
 private fun CostRow(
-    advantageFragVM: AdvantageFragmentViewModel,
-    item: Int
+    costVal: Int,
+    advantageFragVM: AdvantageFragmentViewModel
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
         //display a radio button
         RadioButton(
-            selected = advantageFragVM.costPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.cost.indexOf(item),
-            onClick = {advantageFragVM.setCostPicked(advantageFragVM.adjustedAdvantage.value!!.cost.indexOf(item))},
+            selected = advantageFragVM.costPicked.collectAsState().value == advantageFragVM.adjustedAdvantage.collectAsState().value!!.cost.indexOf(element = costVal),
+            onClick = {advantageFragVM.setCostPicked(advantageFragVM.adjustedAdvantage.value!!.cost.indexOf(element = costVal))},
             modifier = Modifier
                 .weight(0.1f),
             colors = RadioButtonDefaults.colors(
@@ -267,7 +326,7 @@ private fun CostRow(
 
         //display the cost value
         Text(
-            text = item.toString(),
+            text = costVal.toString(),
             modifier = Modifier
                 .weight(0.2f)
         )
@@ -283,5 +342,5 @@ fun AdvantageCostPreview(){
     advantageFragVM.setAdjustedAdvantage(charInstance.advantageRecord.commonAdvantages.naturalPsychicPower)
     //advantageFragVM.setAdjustingPage(2)
 
-    AdvantageCostPick(advantageFragVM){}
+    AdvantageCostPick(charInstance.secondaryList, advantageFragVM){}
 }

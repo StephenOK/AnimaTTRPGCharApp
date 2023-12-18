@@ -17,11 +17,11 @@ import kotlinx.coroutines.flow.update
  */
 class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     //initialize the page's current fragment
-    private val _currentFragment = MutableStateFlow(ScreenPage.Character)
+    private val _currentFragment = MutableStateFlow(value = ScreenPage.Character)
     val currentFragment = _currentFragment.asStateFlow()
 
     //initialize open state of exit dialog
-    private val _exitOpen = MutableStateFlow(false)
+    private val _exitOpen = MutableStateFlow(value = false)
     val exitOpen = _exitOpen.asStateFlow()
 
     /**
@@ -40,20 +40,20 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
 
     //initialize bottom bar maximum values
     val maximums = BottomBarRowData(
-        R.string.maxRowLabel,
-        charInstance.devPT.value,
-        charInstance.maxCombatDP.value,
-        charInstance.maxMagDP.value,
-        charInstance.maxPsyDP.value
+        nameRef = R.string.maxRowLabel,
+        maxInput = charInstance.devPT.intValue,
+        combatInput = charInstance.maxCombatDP.intValue,
+        magInput = charInstance.maxMagDP.intValue,
+        psyInput = charInstance.maxPsyDP.intValue
     )
 
     //initialize bottom bar spent values
     val expenditures = BottomBarRowData(
-        R.string.usedRowLabel,
-        charInstance.spentTotal.value,
-        charInstance.ptInCombat.value,
-        charInstance.ptInMag.value,
-        charInstance.ptInPsy.value
+        nameRef = R.string.usedRowLabel,
+        maxInput = charInstance.spentTotal.intValue,
+        combatInput = charInstance.ptInCombat.intValue,
+        magInput = charInstance.ptInMag.intValue,
+        psyInput = charInstance.ptInPsy.intValue
     )
 
     /**
@@ -61,10 +61,10 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
      */
     fun updateMaximums(){
         maximums.updateItems(
-            charInstance.devPT.value,
-            charInstance.maxCombatDP.value,
-            charInstance.maxMagDP.value,
-            charInstance.maxPsyDP.value
+            max = charInstance.devPT.intValue,
+            combat = charInstance.maxCombatDP.intValue,
+            mag = charInstance.maxMagDP.intValue,
+            psy = charInstance.maxPsyDP.intValue
         )
     }
 
@@ -73,10 +73,10 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
      */
     fun updateExpenditures(){
         expenditures.updateItems(
-            charInstance.spentTotal.value,
-            charInstance.ptInCombat.value,
-            charInstance.ptInMag.value,
-            charInstance.ptInPsy.value
+            max = charInstance.spentTotal.intValue,
+            combat = charInstance.ptInCombat.intValue,
+            mag = charInstance.ptInMag.intValue,
+            psy = charInstance.ptInPsy.intValue
         )
     }
 
@@ -97,19 +97,19 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
         psyInput: Int
     ){
         //initialize maximum display
-        private val _maxVal = MutableStateFlow(maxInput)
+        private val _maxVal = MutableStateFlow(value = maxInput)
         val maxVal = _maxVal.asStateFlow()
 
         //initialize combat display
-        private val _combatVal = MutableStateFlow(combatInput)
+        private val _combatVal = MutableStateFlow(value = combatInput)
         val combatVal = _combatVal.asStateFlow()
 
         //initialize magic display
-        private val _magVal = MutableStateFlow(magInput)
+        private val _magVal = MutableStateFlow(value = magInput)
         val magVal = _magVal.asStateFlow()
 
         //initialize psychic display
-        private val _psyVal = MutableStateFlow(psyInput)
+        private val _psyVal = MutableStateFlow(value = psyInput)
         val psyVal = _psyVal.asStateFlow()
 
         /**
@@ -120,7 +120,12 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
          * @param mag magic value column input
          * @param psy psychic value column input
          */
-        fun updateItems(max: Int, combat: Int, mag: Int, psy: Int){
+        fun updateItems(
+            max: Int,
+            combat: Int,
+            mag: Int,
+            psy: Int
+        ){
             _maxVal.update{max}
             _combatVal.update{combat}
             _magVal.update{mag}

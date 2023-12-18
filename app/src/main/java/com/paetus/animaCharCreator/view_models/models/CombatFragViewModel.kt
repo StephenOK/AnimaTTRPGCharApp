@@ -26,79 +26,80 @@ class CombatFragViewModel(
     private val charClass: MutableState<CharClass>
 ): ViewModel() {
     //initialize life multiples taken input string
-    private val _lifeMults = MutableStateFlow(combat.lifeMultsTaken.value.toString())
+    private val _lifeMults = MutableStateFlow(value = combat.lifeMultsTaken.intValue.toString())
     val lifeMults = _lifeMults.asStateFlow()
 
     //initialize maximum life point display
-    private val _lifeTotal = MutableStateFlow(combat.lifeMax.value)
+    private val _lifeTotal = MutableStateFlow(value = combat.lifeMax.intValue)
     val lifeTotal = _lifeTotal.asStateFlow()
 
-    private val _lifeDPLabel = MutableStateFlow("")
+    //initialize life point DP cost label
+    private val _lifeDPLabel = MutableStateFlow(value = "")
     val lifeDPLabel = _lifeDPLabel.asStateFlow()
 
     //initialize text color for the combat items
-    private val _pointValid = MutableStateFlow(true)
+    private val _pointValid = MutableStateFlow(value = true)
     val pointValid = _pointValid.asStateFlow()
 
     /**
      * Changes the number of life multiples the character has obtained.
      *
-     * @param input value to set the multiples count to
+     * @param multBuy value to set the multiples count to
      */
-    fun setLifeMults(input: Int){
-        combat.takeLifeMult(input)
-        setLifeMults(input.toString())
-        setLifeTotal(combat.lifeMax.value)
+    fun setLifeMults(multBuy: Int){
+        combat.takeLifeMult(multTake = multBuy)
+        setLifeMults(display = multBuy.toString())
+        setLifeTotal(totalDisplay = combat.lifeMax.intValue)
     }
 
     /**
      * Changes the display of life mults taken.
      *
-     * @param input new string to display
+     * @param display new string to display
      */
-    fun setLifeMults(input: String){_lifeMults.update{input}}
+    fun setLifeMults(display: String){_lifeMults.update{display}}
 
     /**
      * Changes the display of life point total.
      *
-     * @param input new string to display
+     * @param totalDisplay new string to display
      */
-    private fun setLifeTotal(input: Int){_lifeTotal.update{input}}
+    private fun setLifeTotal(totalDisplay: Int){_lifeTotal.update{totalDisplay}}
 
     /**
      * Changes the display of the life mult DP cost.
      *
-     * @param input new string to display
+     * @param dpDisplay new string to display
      */
-    fun setLifeDPLabel(input: String){_lifeDPLabel.update{input}}
+    fun setLifeDPLabel(dpDisplay: String){_lifeDPLabel.update{dpDisplay}}
 
     /**
      * Defines the color of the text for the combat items.
      *
-     * @param input color to set
+     * @param isValid color to set
      */
-    private fun setPointColor(input: Boolean){_pointValid.update{input}}
+    private fun setPointColor(isValid: Boolean){_pointValid.update{isValid}}
 
     /**
      * Retrieves the character's presence to display.
      *
      * @return string of the character's presence
      */
-    fun getPresence(): String{return combat.presence.value.toString()}
+    fun getPresence(): String{return combat.presence.intValue.toString()}
 
     /**
      * Retrieves the character's base life points to display.
      *
      * @return string of the character's base life points
      */
-    fun getBaseLife(): String{return combat.lifeBase.value.toString()}
+    fun getBaseLife(): String{return combat.lifeBase.intValue.toString()}
 
     /**
      * Retrieves the character's life points gained from class levels to display.
      *
      * @return string of the character's life points from levels
      */
-    fun getClassLife(): String{return combat.lifeClassTotal.value.toString()}
+    fun getClassLife(): String{return combat.lifeClassTotal.intValue.toString()}
 
     /**
      * Retrieves the character's DP cost for life mults.
@@ -112,79 +113,88 @@ class CombatFragViewModel(
      *
      * @return string of the character's initiative
      */
-    fun getInitiativeTotal(): String{return combat.totalInitiative.value.toString()}
+    fun getInitiativeTotal(): String{return combat.totalInitiative.intValue.toString()}
 
     /**
      * Retrieves the character's fatigue to display.
      *
      * @return string of the character's fatigue
      */
-    fun getFatigue(): String{return combat.fatigue.value.toString()}
+    fun getFatigue(): String{return combat.fatigue.intValue.toString()}
 
     /**
      * Retrieves the character's regeneration to display.
      *
      * @return string of the character's regeneration
      */
-    fun getRegen(): String{return combat.totalRegen.value.toString()}
+    fun getRegen(): String{return combat.totalRegen.intValue.toString()}
 
     //initialize all resistance display items
     private val disRes = ResistanceData(
-        R.string.drLabel,
-        combat.diseaseRes
-    ){primaryList.con.outputMod.value.toString()}
+        resLabel = R.string.drLabel,
+        resItem = combat.diseaseRes,
+        getModStat = {primaryList.con.outputMod.intValue.toString()}
+    )
 
     private val magRes = ResistanceData(
-        R.string.mrLabel,
-        combat.magicRes
-    ){primaryList.pow.outputMod.value.toString()}
+        resLabel = R.string.mrLabel,
+        resItem = combat.magicRes,
+        getModStat = {primaryList.pow.outputMod.intValue.toString()}
+    )
 
     private val physRes = ResistanceData(
-        R.string.phrLabel,
-        combat.physicalRes
-    ){primaryList.con.outputMod.value.toString()}
+        resLabel = R.string.phrLabel,
+        resItem = combat.physicalRes,
+        getModStat = {primaryList.con.outputMod.intValue.toString()}
+    )
 
     private val venRes = ResistanceData(
-        R.string.vrLabel,
-        combat.venomRes
-    ){primaryList.con.outputMod.value.toString()}
+        resLabel = R.string.vrLabel,
+        resItem = combat.venomRes,
+        getModStat = {primaryList.con.outputMod.intValue.toString()}
+    )
 
     private val psyRes = ResistanceData(
-        R.string.psrLabel,
-        combat.psychicRes
-    ){primaryList.wp.outputMod.value.toString()}
+        resLabel = R.string.psrLabel,
+        resItem = combat.psychicRes,
+        getModStat = {primaryList.wp.outputMod.intValue.toString()}
+    )
 
     //gather all resistance items
     val resistanceList = listOf(disRes, magRes, physRes, venRes, psyRes)
 
     //initialize all combat items
     private val attack = CombatItemData(
-        combat,
-        R.string.attackLabel,
-        combat.attack,
-        {charClass.value.atkGrowth}
-    ){setPointColor(it)}
+        combat = combat,
+        label = R.string.attackLabel,
+        combatItem = combat.attack,
+        growthGetter = {charClass.value.atkGrowth},
+        setPointValid = {setPointColor(isValid = it)}
+    )
 
     private val block = CombatItemData(
-        combat,
-        R.string.blockLabel,
-        combat.block,
-        {charClass.value.blockGrowth}
-    ){setPointColor(it)}
+        combat = combat,
+        label = R.string.blockLabel,
+        combatItem = combat.block,
+        growthGetter = {charClass.value.blockGrowth},
+        setPointValid = {setPointColor(isValid = it)}
+    )
 
     private val dodge = CombatItemData(
-        combat,
-        R.string.dodgeLabel,
-        combat.dodge,
-        {charClass.value.dodgeGrowth}
-    ){setPointColor(it)}
+        combat = combat,
+        label = R.string.dodgeLabel,
+        combatItem = combat.dodge,
+        growthGetter = {charClass.value.dodgeGrowth},
+        setPointValid = {setPointColor(isValid = it)}
+    )
 
     private val wearArmor = CombatItemData(
-        combat,
-        R.string.wearLabel,
-        combat.wearArmor,
-        {charClass.value.armorGrowth}
-    ) {}
+        combat = combat,
+        label = R.string.wearLabel,
+        combatItem = combat.wearArmor,
+        growthGetter = {charClass.value.armorGrowth},
+        setPointValid = {}
+    )
 
     //gather all combat item data
     val allCombatItems = listOf(attack, block, dodge, wearArmor)
@@ -192,13 +202,13 @@ class CombatFragViewModel(
     /**
      * Data regarding one of a character's resistances.
      *
-     * @param label name of the resistance
-     * @param item resistance data to reference
+     * @param resLabel name of the resistance
+     * @param resItem resistance data to reference
      * @param getModStat gets the appropriate modifier value for the resistance
      */
     data class ResistanceData(
-        val label: Int,
-        val item: ResistanceItem,
+        val resLabel: Int,
+        val resItem: ResistanceItem,
         val getModStat: () -> String
     )
 
@@ -207,38 +217,38 @@ class CombatFragViewModel(
      *
      * @param combat section of the character to work on
      * @param label name of the item in question
-     * @param item data regarding this individual item
+     * @param combatItem data regarding this individual item
      * @param growthGetter function to run to get the stat's associated DP amount
      * @param setPointValid changes the point color in the combat fragment's view model
      */
     class CombatItemData(
         private val combat: CombatAbilities,
         val label: Int,
-        val item: CombatItem,
+        val combatItem: CombatItem,
         val growthGetter: () -> Int,
         val setPointValid: (Boolean) -> Unit
     ){
         //initialize user's input value into this ability
-        private val _pointsIn = MutableStateFlow(item.inputVal.value.toString())
+        private val _pointsIn = MutableStateFlow(value = combatItem.inputVal.intValue.toString())
         val pointsIn = _pointsIn.asStateFlow()
 
         //initialize final display for this stat
-        private val _totalVal = MutableStateFlow(item.total.value)
+        private val _totalVal = MutableStateFlow(value = combatItem.total.intValue)
         val totalVal = _totalVal.asStateFlow()
 
         //initialize the DP display for this stat
-        private val _labelDisplay = MutableStateFlow("")
+        private val _labelDisplay = MutableStateFlow(value = "")
         val labelDisplay = _labelDisplay.asStateFlow()
 
         /**
          * Sets the purchased amount for this item as indicated.
          *
-         * @param input amount to set as bought
+         * @param pointBuy amount to set as bought
          */
-        fun setPointsIn(input: Int){
+        fun setPointsIn(pointBuy: Int){
             //change the bought value and display
-            item.setInputVal(input)
-            setPointsIn(input.toString())
+            combatItem.setInputVal(purchase = pointBuy)
+            setPointsIn(display = pointBuy.toString())
 
             //update valid state of user's input
             setPointValid(combat.validAttackDodgeBlock())
@@ -250,32 +260,32 @@ class CombatFragViewModel(
         /**
          * Sets the display of the purchased amount to the inputted string.
          *
-         * @param input value to set this to
+         * @param display value to set this to
          */
-        fun setPointsIn(input: String){_pointsIn.update{input}}
+        fun setPointsIn(display: String){_pointsIn.update{display}}
 
         /**
          * Sets the displayed total to the appropriate value.
          */
-        fun setTotalVal() {_totalVal.update{item.total.value}}
+        fun setTotalVal() {_totalVal.update{combatItem.total.intValue}}
 
         /**
          * Sets the DP label to the inputted value.
          *
-         * @param input new string to display
+         * @param dpDisplay new string to display
          */
-        fun setLabelDisplay(input: String){_labelDisplay.update{input}}
+        fun setLabelDisplay(dpDisplay: String){_labelDisplay.update{dpDisplay}}
     }
 
     /**
      * Function to run on loading this model's page.
      */
     fun refreshPage(){
-        setLifeMults(combat.lifeMultsTaken.value.toString())
-        setLifeTotal(combat.lifeMax.value)
-        allCombatItems.forEach{
-            it.setPointsIn(it.item.inputVal.value.toString())
-            it.setTotalVal()
+        setLifeMults(display = combat.lifeMultsTaken.intValue.toString())
+        setLifeTotal(totalDisplay = combat.lifeMax.intValue)
+        allCombatItems.forEach{combatItemData ->
+            combatItemData.setPointsIn(display = combatItemData.combatItem.inputVal.intValue.toString())
+            combatItemData.setTotalVal()
         }
     }
 }

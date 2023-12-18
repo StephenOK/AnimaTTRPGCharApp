@@ -1,624 +1,646 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with necromancy.
  */
-class NecromancyBook{
+class NecromancyBook: MagicBook(Element.Necromancy){
     private val feelDeath = Spell(
-        R.string.feelDeath,
-        Element.Necromancy,
-        true,
-        2,
-        30,
-        R.string.feelDeathDesc,
-        R.string.feelDeathEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.feelDeath,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.feelDeathDesc,
+        addedEffect = R.string.feelDeathEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val seeBeyond = Spell(
-        R.string.seeBeyond,
-        Element.Necromancy,
-        true,
-        6,
-        30,
-        R.string.seeBeyondDesc,
-        R.string.seeBeyondEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.seeBeyond,
+        isActive = true,
+        level = 6,
+        zCost = 30,
+        effect = R.string.seeBeyondDesc,
+        addedEffect = R.string.seeBeyondEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val controlScavengers = Spell(
-        R.string.controlScavenger,
-        Element.Necromancy,
-        true,
-        8,
-        40,
-        R.string.controlScavengerDesc,
-        R.string.controlScavengerEff,
-        30,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.controlScavenger,
+        isActive = true,
+        level = 8,
+        zCost = 40,
+        effect = R.string.controlScavengerDesc,
+        addedEffect = R.string.controlScavengerEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val spectralShield = Spell(
-        R.string.spectralShield,
-        Element.Necromancy,
-        false,
-        10,
-        40,
-        R.string.spectralShieldDesc,
-        R.string.spectralShieldEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.spectralShield,
+        isActive = false,
+        level = 10,
+        zCost = 40,
+        effect = R.string.spectralShieldDesc,
+        addedEffect = R.string.spectralShieldEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val drainLife = Spell(
-        R.string.drainLife,
-        Element.Necromancy,
-        true,
-        12,
-        50,
-        R.string.drainLifeDesc,
-        R.string.drainLifeEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.drainLife,
+        isActive = true,
+        level = 12,
+        zCost = 50,
+        effect = R.string.drainLifeDesc,
+        addedEffect = R.string.drainLifeEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val necromanticDetection = Spell(
-        R.string.necroDetection,
-        Element.Necromancy,
-        true,
-        16,
-        50,
-        R.string.necroDetectionDesc,
-        R.string.necroDetectionEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Detection)
+        name = R.string.necroDetection,
+        isActive = true,
+        level = 16,
+        zCost = 50,
+        effect = R.string.necroDetectionDesc,
+        addedEffect = R.string.necroDetectionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Detection)
     )
 
     private val talkToDead = Spell(
-        R.string.talkToDead,
-        Element.Necromancy,
-        true,
-        18,
-        60,
-        R.string.talkToDeadDesc,
-        R.string.talkToDeadEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.talkToDead,
+        isActive = true,
+        level = 18,
+        zCost = 60,
+        effect = R.string.talkToDeadDesc,
+        addedEffect = R.string.talkToDeadEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val necromanticParalysis = Spell(
-        R.string.necroParalyze,
-        Element.Necromancy,
-        true,
-        20,
-        60,
-        R.string.necroParalyzeDesc,
-        R.string.necroParalyzeEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.necroParalyze,
+        isActive = true,
+        level = 20,
+        zCost = 60,
+        effect = R.string.necroParalyzeDesc,
+        addedEffect = R.string.necroParalyzeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val necromitude = Spell(
-        R.string.necromitude,
-        Element.Necromancy,
-        true,
-        22,
-        80,
-        R.string.necromitudeDesc,
-        R.string.necromitudeEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.necromitude,
+        isActive = true,
+        level = 22,
+        zCost = 80,
+        effect = R.string.necromitudeDesc,
+        addedEffect = R.string.necromitudeEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val deathBeam = Spell(
-        R.string.deathBeam,
-        Element.Necromancy,
-        true,
-        26,
-        60,
-        R.string.deathBeamDesc,
-        R.string.deathBeamEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.deathBeam,
+        isActive = true,
+        level = 26,
+        zCost = 60,
+        effect = R.string.deathBeamDesc,
+        addedEffect = R.string.deathBeamEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val raiseCorpses = Spell(
-        R.string.raiseCorpse,
-        Element.Necromancy,
-        true,
-        28,
-        80,
-        R.string.raiseCorpseDesc,
-        R.string.raiseCorpseEff,
-        20,
-        20,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.raiseCorpse,
+        isActive = true,
+        level = 28,
+        zCost = 80,
+        effect = R.string.raiseCorpseDesc,
+        addedEffect = R.string.raiseCorpseEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val deadBody = Spell(
-        R.string.deadBody,
-        Element.Necromancy,
-        true,
-        30,
-        80,
-        R.string.deadBodyDesc,
-        R.string.deadBodyEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.deadBody,
+        isActive = true,
+        level = 30,
+        zCost = 80,
+        effect = R.string.deadBodyDesc,
+        addedEffect = R.string.deadBodyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val drainMagic = Spell(
-        R.string.drainMag,
-        Element.Necromancy,
-        true,
-        32,
-        60,
-        R.string.drainMagDesc,
-        R.string.drainMagEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.drainMag,
+        isActive = true,
+        level = 32,
+        zCost = 60,
+        effect = R.string.drainMagDesc,
+        addedEffect = R.string.drainMagEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val destroyUndead = Spell(
-        R.string.destroyUndead,
-        Element.Necromancy,
-        true,
-        36,
-        80,
-        R.string.destroyUndeadDesc,
-        R.string.destroyUndeadEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.destroyUndead,
+        isActive = true,
+        level = 36,
+        zCost = 80,
+        effect = R.string.destroyUndeadDesc,
+        addedEffect = R.string.destroyUndeadEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val drainCharacteristic = Spell(
-        R.string.drainChar,
-        Element.Necromancy,
-        true,
-        38,
-        80,
-        R.string.drainCharDesc,
-        R.string.drainCharEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.drainChar,
+        isActive = true,
+        level = 38,
+        zCost = 80,
+        effect = R.string.drainCharDesc,
+        addedEffect = R.string.drainCharEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val controlDead = Spell(
-        R.string.controlDead,
-        Element.Necromancy,
-        true,
-        40,
-        100,
-        R.string.controlDeadDesc,
-        R.string.controlDeadEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.controlDead,
+        isActive = true,
+        level = 40,
+        zCost = 100,
+        effect = R.string.controlDeadDesc,
+        addedEffect = R.string.controlDeadEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val witherLife = Spell(
-        R.string.witherLife,
-        Element.Necromancy,
-        true,
-        42,
-        80,
-        R.string.witherLifeDesc,
-        R.string.witherLifeEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.witherLife,
+        isActive = true,
+        level = 42,
+        zCost = 80,
+        effect = R.string.witherLifeDesc,
+        addedEffect = R.string.witherLifeEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val necromanticShield = Spell(
-        R.string.necroShield,
-        Element.Necromancy,
-        false,
-        46,
-        80,
-        R.string.necroShieldDesc,
-        R.string.necroShieldEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.necroShield,
+        isActive = false,
+        level = 46,
+        zCost = 80,
+        effect = R.string.necroShieldDesc,
+        addedEffect = R.string.necroShieldEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val dominateLife = Spell(
-        R.string.dominateLife,
-        Element.Necromancy,
-        false,
-        48,
-        140,
-        R.string.dominateLifeDesc,
-        R.string.dominateLifeEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.dominateLife,
+        isActive = false,
+        level = 48,
+        zCost = 140,
+        effect = R.string.dominateLifeDesc,
+        addedEffect = R.string.dominateLifeEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val vampireStigma = Spell(
-        R.string.vampireStigma,
-        Element.Necromancy,
-        true,
-        50,
-        140,
-        R.string.vampireStigmaDesc,
-        R.string.vampireStigmaEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.vampireStigma,
+        isActive = true,
+        level = 50,
+        zCost = 140,
+        effect = R.string.vampireStigmaDesc,
+        addedEffect = R.string.vampireStigmaEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val spectralForm = Spell(
-        R.string.spectralForm,
-        Element.Necromancy,
-        true,
-        52,
-        100,
-        R.string.spectralFormDesc,
-        R.string.spectralFormEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.spectralForm,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.spectralFormDesc,
+        addedEffect = R.string.spectralFormEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val necromanticModification = Spell(
-        R.string.necroMod,
-        Element.Necromancy,
-        true,
-        56,
-        100,
-        R.string.necroModDesc,
-        R.string.necroModEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.necroMod,
+        isActive = true,
+        level = 56,
+        zCost = 100,
+        effect = R.string.necroModDesc,
+        addedEffect = R.string.necroModEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val summonDead = Spell(
-        R.string.deadSummon,
-        Element.Necromancy,
-        true,
-        58,
-        100,
-        R.string.deadSummonDesc,
-        R.string.deadSummonEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.deadSummon,
+        isActive = true,
+        level = 58,
+        zCost = 100,
+        effect = R.string.deadSummonDesc,
+        addedEffect = R.string.deadSummonEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val raiseSpecters = Spell(
-        R.string.raiseSpecters,
-        Element.Necromancy,
-        true,
-        60,
-        200,
-        R.string.raiseSpectersDesc,
-        R.string.raiseSpectersEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.raiseSpecters,
+        isActive = true,
+        level = 60,
+        zCost = 200,
+        effect = R.string.raiseSpectersDesc,
+        addedEffect = R.string.raiseSpectersEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val drainLifeForce = Spell(
-        R.string.drainLifeForce,
-        Element.Necromancy,
-        true,
-        62,
-        180,
-        R.string.drainLifeForceDesc,
-        R.string.drainLifeForceEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.drainLifeForce,
+        isActive = true,
+        level = 62,
+        zCost = 180,
+        effect = R.string.drainLifeForceDesc,
+        addedEffect = R.string.drainLifeForceEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val kill = Spell(
-        R.string.kill,
-        Element.Necromancy,
-        true,
-        66,
-        100,
-        R.string.killDesc,
-        R.string.killEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.kill,
+        isActive = true,
+        level = 66,
+        zCost = 100,
+        effect = R.string.killDesc,
+        addedEffect = R.string.killEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val soulBeam = Spell(
-        R.string.soulBeam,
-        Element.Necromancy,
-        true,
-        68,
-        140,
-        R.string.soulBeamDesc,
-        R.string.soulBeamEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.soulBeam,
+        isActive = true,
+        level = 68,
+        zCost = 140,
+        effect = R.string.soulBeamDesc,
+        addedEffect = R.string.soulBeamEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val necromanticChimera = Spell(
-        R.string.necroChimera,
-        Element.Necromancy,
-        true,
-        70,
-        250,
-        R.string.necroChimeraDesc,
-        R.string.necroChimeraEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.necroChimera,
+        isActive = true,
+        level = 70,
+        zCost = 250,
+        effect = R.string.necroChimeraDesc,
+        addedEffect = R.string.necroChimeraEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val lifePerversion = Spell(
-        R.string.lifePerversion,
-        Element.Necromancy,
-        true,
-        72,
-        180,
-        R.string.lifePerversionDesc,
-        R.string.lifePerversionEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.lifePerversion,
+        isActive = true,
+        level = 72,
+        zCost = 180,
+        effect = R.string.lifePerversionDesc,
+        addedEffect = R.string.lifePerversionEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val vassalage = Spell(
-        R.string.vassalage,
-        Element.Necromancy,
-        true,
-        76,
-        250,
-        R.string.vassalageDesc,
-        R.string.vassalageEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.vassalage,
+        isActive = true,
+        level = 76,
+        zCost = 250,
+        effect = R.string.vassalageDesc,
+        addedEffect = R.string.vassalageEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val drainSouls = Spell(
-        R.string.drainSouls,
-        Element.Necromancy,
-        true,
-        78,
-        200,
-        R.string.drainSoulsDesc,
-        R.string.drainSoulsEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Spiritual)
+        name = R.string.drainSouls,
+        isActive = true,
+        level = 78,
+        zCost = 200,
+        effect = R.string.drainSoulsDesc,
+        addedEffect = R.string.drainSoulsEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val surpassDeath = Spell(
-        R.string.surpassDeath,
-        Element.Necromancy,
-        true,
-        80,
-        300,
-        R.string.surpassDeathDesc,
-        R.string.surpassDeathEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.surpassDeath,
+        isActive = true,
+        level = 80,
+        zCost = 300,
+        effect = R.string.surpassDeathDesc,
+        addedEffect = R.string.surpassDeathEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val trueRise = Spell(
-        R.string.trueRise,
-        Element.Necromancy,
-        true,
-        82,
-        320,
-        R.string.trueRiseDesc,
-        R.string.trueRiseEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.trueRise,
+        isActive = true,
+        level = 82,
+        zCost = 320,
+        effect = R.string.trueRiseDesc,
+        addedEffect = R.string.trueRiseEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val wellOfLife = Spell(
-        R.string.lifeWell,
-        Element.Necromancy,
-        true,
-        86,
-        300,
-        R.string.lifeWellDesc,
-        R.string.lifeWellEff,
-        30,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.lifeWell,
+        isActive = true,
+        level = 86,
+        zCost = 300,
+        effect = R.string.lifeWellDesc,
+        addedEffect = R.string.lifeWellEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val cursedLand = Spell(
-        R.string.cursedLand,
-        Element.Necromancy,
-        true,
-        88,
-        350,
-        R.string.cursedLandDesc,
-        R.string.cursedLandEff,
-        40,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.cursedLand,
+        isActive = true,
+        level = 88,
+        zCost = 350,
+        effect = R.string.cursedLandDesc,
+        addedEffect = R.string.cursedLandEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val sustenance = Spell(
-        R.string.sustenance,
-        Element.Necromancy,
-        true,
-        90,
-        200,
-        R.string.sustenanceDesc,
-        R.string.sustenanceEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.sustenance,
+        isActive = true,
+        level = 90,
+        zCost = 200,
+        effect = R.string.sustenanceDesc,
+        addedEffect = R.string.sustenanceEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val rawMaterial = Spell(
-        R.string.rawMaterial,
-        Element.Necromancy,
-        true,
-        92,
-        350,
-        R.string.rawMaterialDesc,
-        R.string.rawMaterialEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.rawMaterial,
+        isActive = true,
+        level = 92,
+        zCost = 350,
+        effect = R.string.rawMaterialDesc,
+        addedEffect = R.string.rawMaterialEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val lordOfTheDead = Spell(
-        R.string.deadLord,
-        Element.Necromancy,
-        true,
-        96,
-        300,
-        R.string.deadLordDesc,
-        R.string.deadLordEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.deadLord,
+        isActive = true,
+        level = 96,
+        zCost = 300,
+        effect = R.string.deadLordDesc,
+        addedEffect = R.string.deadLordEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val comeBackFromDead = Spell(
-        R.string.comeBackFromDead,
-        Element.Necromancy,
-        true,
-        98,
-        400,
-        R.string.comeBackFromDeadDesc,
-        R.string.comeBackFromDeadEff,
-        40,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.comeBackFromDead,
+        isActive = true,
+        level = 98,
+        zCost = 400,
+        effect = R.string.comeBackFromDeadDesc,
+        addedEffect = R.string.comeBackFromDeadEff,
+        zMax = 40,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val awakening = Spell(
-        R.string.awakening,
-        Element.Necromancy,
-        true,
-        100,
-        900,
-        R.string.awakeningDesc,
-        R.string.awakeningEff,
-        50,
-        null,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.awakening,
+        isActive = true,
+        level = 100,
+        zCost = 900,
+        effect = R.string.awakeningDesc,
+        addedEffect = R.string.awakeningEff,
+        zMax = 50,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        feelDeath,
-        null,
-        seeBeyond,
-        controlScavengers,
-        spectralShield,
-        drainLife,
-        null,
-        necromanticDetection,
-        talkToDead,
-        necromanticParalysis,
-        necromitude,
-        null,
-        deathBeam,
-        raiseCorpses,
-        deadBody,
-        drainMagic,
-        null,
-        destroyUndead,
-        drainCharacteristic,
-        controlDead,
-        witherLife,
-        null,
-        necromanticShield,
-        dominateLife,
-        vampireStigma,
-        spectralForm,
-        null,
-        necromanticModification,
-        summonDead,
-        raiseSpecters,
-        drainLifeForce,
-        null,
-        kill,
-        soulBeam,
-        necromanticChimera,
-        lifePerversion,
-        null,
-        vassalage,
-        drainSouls,
-        surpassDeath,
-        trueRise,
-        null,
-        wellOfLife,
-        cursedLand,
-        sustenance,
-        rawMaterial,
-        null,
-        lordOfTheDead,
-        comeBackFromDead,
-        awakening
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            feelDeath,
+            null,
+            seeBeyond,
+            controlScavengers,
+            spectralShield,
+            drainLife,
+            null,
+            necromanticDetection,
+            talkToDead,
+            necromanticParalysis,
+            necromitude,
+            null,
+            deathBeam,
+            raiseCorpses,
+            deadBody,
+            drainMagic,
+            null,
+            destroyUndead,
+            drainCharacteristic,
+            controlDead,
+            witherLife,
+            null,
+            necromanticShield,
+            dominateLife,
+            vampireStigma,
+            spectralForm,
+            null,
+            necromanticModification,
+            summonDead,
+            raiseSpecters,
+            drainLifeForce,
+            null,
+            kill,
+            soulBeam,
+            necromanticChimera,
+            lifePerversion,
+            null,
+            vassalage,
+            drainSouls,
+            surpassDeath,
+            trueRise,
+            null,
+            wellOfLife,
+            cursedLand,
+            sustenance,
+            rawMaterial,
+            null,
+            lordOfTheDead,
+            comeBackFromDead,
+            awakening
+        ))
+    }
+
+    /**
+     * Sets the primary status of this book in ways unique to the necromancy book.
+     *
+     * @param isTaking value to set the primary status to
+     */
+    override fun changePrimary(isTaking: Boolean) {
+        //if making necromancy book primary element
+        if(hasInvestment() && isTaking){
+            //remove all other elements' primary statuses
+            opposingBooks.forEach{book ->
+                book.isPrimary.value = false
+            }
+
+            //apply primary status to this book
+            isPrimary.value = true
+        }
+        //if removing primary element status
+        else if (!isTaking && isPrimary.value){
+            //initialize opposing book pointer
+            var index = 0
+
+            while(index < 10){
+                //retrieve the two opposing books
+                val book1 = opposingBooks[index++]
+                val book2 = opposingBooks[index++]
+
+                //make the larger invested in book the primary one
+                if(book1.pointsIn.intValue > book2.pointsIn.intValue)
+                    book1.changePrimary(isTaking = true)
+                //make sure there are points invested in the other book
+                else if(book2.hasInvestment())
+                    book2.changePrimary(isTaking = true)
+            }
+        }
+    }
+
+    /**
+     * Check if the character has the indicated free spell.
+     *
+     * @param freeSpell spell to search for in the books
+     * @return magic book the free spell belongs to
+     */
+    override fun charHasFreeSpell(freeSpell: FreeSpell): MagicBook?{
+        //check all other books for the queried item
+        opposingBooks.forEach{opposing ->
+            opposing.freeSpells.forEach{spell ->
+                if(spell.saveName == freeSpell.saveName) return opposing
+            }
+        }
+
+        //check this book for the spell
+        freeSpells.forEach{spell ->
+            if(spell.saveName == freeSpell.saveName) return this
+        }
+
+        return null
+    }
 }

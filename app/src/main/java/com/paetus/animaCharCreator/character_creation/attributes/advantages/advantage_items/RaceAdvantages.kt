@@ -12,439 +12,495 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
  */
 class RaceAdvantages(private val charInstance: BaseCharacter){
     private val exceptionalResistancesSylvain = RacialAdvantage(
-        R.string.sylvainResistances,
-        R.string.sylvResDesc,
-        {_, _ ->
-            charInstance.combat.physicalRes.setSpecial(5)
-            charInstance.combat.diseaseRes.setSpecial(20)
-            charInstance.combat.venomRes.setSpecial(5)
-            charInstance.combat.magicRes.setSpecial(10)
-            charInstance.combat.psychicRes.setSpecial(10)
+        name = R.string.sylvainResistances,
+        description = R.string.sylvResDesc,
+        onTake = {_, _ ->
+            //set special resistance values for this race
+            charInstance.combat.physicalRes.setSpecial(specChange = 5)
+            charInstance.combat.diseaseRes.setSpecial(specChange = 20)
+            charInstance.combat.venomRes.setSpecial(specChange = 5)
+            charInstance.combat.magicRes.setSpecial(specChange = 10)
+            charInstance.combat.psychicRes.setSpecial(specChange = 10)
 
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.sickly)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.seriousIllness)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.magicSusceptibility)
+            //remove any restricted disadvantages for Sylvain
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.sickly)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.seriousIllness)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.magicSusceptibility)
         },
-        {_, _ ->
-            charInstance.combat.physicalRes.setSpecial(-5)
-            charInstance.combat.diseaseRes.setSpecial(-20)
-            charInstance.combat.venomRes.setSpecial(-5)
-            charInstance.combat.magicRes.setSpecial(-10)
-            charInstance.combat.psychicRes.setSpecial(-10)
+        onRemove = {_, _ ->
+            //remove resistance bonuses from this race
+            charInstance.combat.physicalRes.setSpecial(specChange = -5)
+            charInstance.combat.diseaseRes.setSpecial(specChange = -20)
+            charInstance.combat.venomRes.setSpecial(specChange = -5)
+            charInstance.combat.magicRes.setSpecial(specChange = -10)
+            charInstance.combat.psychicRes.setSpecial(specChange = -10)
         }
     )
 
     private val inclinationLight = RacialAdvantage(
-        R.string.lightInclination,
-        R.string.lightInclineDesc,
-        {_, _ ->
+        name = R.string.lightInclination,
+        description = R.string.lightInclineDesc,
+        onTake = {_, _ ->
+            //obtain base version of the elemental compatibility advantage
             val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
 
+            //create advantage for compatibility with Dark
             val dummyAdvantage = Advantage(
-                reference.saveTag,
-                reference.name,
-                reference.description,
-                reference.effect,
-                reference.restriction,
-                reference.special,
-                null,
-                1,
-                null,
-                reference.cost,
-                reference.pickedCost,
-                reference.onTake,
-                reference.onRemove
+                saveTag = reference.saveTag,
+                name = reference.name,
+                description = reference.description,
+                effect = reference.effect,
+                restriction = reference.restriction,
+                special = reference.special,
+                options = null,
+                picked = 1,
+                multPicked = null,
+                cost = reference.cost,
+                pickedCost = reference.pickedCost,
+                onTake = reference.onTake,
+                onRemove = reference.onRemove
             )
 
-            charInstance.advantageRecord.removeAdvantage(dummyAdvantage)
+            //remove any dark compatibility from the character
+            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
-        null
+        onRemove = null
     )
 
     private val quickHealingSylvain = RacialAdvantage(
-        R.string.sylvainHealing,
-        R.string.sylvainHealingDesc,
-        {_, _ ->
-            charInstance.combat.specRegen.value += 1
+        name = R.string.sylvainHealing,
+        description = R.string.sylvainHealingDesc,
+        onTake = {_, _ ->
+            //apply sylvain's regeneration bonus
+            charInstance.combat.specRegen.intValue += 1
             charInstance.combat.updateRegeneration()
         },
-        {_, _ ->
-            charInstance.combat.specRegen.value -= 1
+        onRemove = {_, _ ->
+            //remove sylvain's regeneration bonus
+            charInstance.combat.specRegen.intValue -= 1
             charInstance.combat.updateRegeneration()
         }
     )
 
     private val senseLightDarkSylvain = RacialAdvantage(
-        R.string.sylvainSense,
-        R.string.lightSenseDesc,
-        null,
-        null
+        name = R.string.sylvainSense,
+        description = R.string.lightSenseDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val immortalSoulSylvain = RacialAdvantage(
-        R.string.sylvainSoul,
-        R.string.sylvainSoulDesc,
-        null,
-        null
+        name = R.string.sylvainSoul,
+        description = R.string.sylvainSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val giant = RacialAdvantage(
-        R.string.giant,
-        R.string.giantDesc,
-        {_, _ ->
-            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage("uncommonSize")
-            if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
-                charInstance.advantageRecord.removeAdvantage(uncommonSizeHeld)
+        name = R.string.giant,
+        description = R.string.giantDesc,
+        onTake = {_, _ ->
+            //check for uncommon size advantage
+            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage(advantageString = "uncommonSize")
 
-            charInstance.changeSize(6)
+            //remove advantage if it reduces their size
+            if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
+                charInstance.advantageRecord.removeAdvantage(advantage = uncommonSizeHeld)
+
+            //increase size of character
+            charInstance.changeSize(sizeInput = 6)
         },
-        {_, _ ->
-            charInstance.changeSize(3)
+        onRemove = {_, _ ->
+            //restore character's size from their race
+            charInstance.changeSize(sizeInput = 3)
         }
     )
 
     private val withstandFatigue = RacialAdvantage(
-        R.string.jayanFatigue,
-        R.string.standFatigueDesc,
-        {_, _ ->
-            charInstance.combat.specFatigue.value += 1
+        name = R.string.jayanFatigue,
+        description = R.string.standFatigueDesc,
+        onTake = {_, _ ->
+            //grant racial fatigue bonus
+            charInstance.combat.specFatigue.intValue += 1
             charInstance.combat.updateFatigue()
         },
-        {_, _ ->
-            charInstance.combat.specFatigue.value -= 1
+        onRemove = {_, _ ->
+            //remove racial fatigue bonus
+            charInstance.combat.specFatigue.intValue -= 1
             charInstance.combat.updateFatigue()
         }
     )
 
     private val damageResistance = RacialAdvantage(
-        R.string.resDamage,
-        R.string.damageResDesc,
-        {_, _ -> charInstance.combat.physicalRes.setSpecial(15)},
-        {_, _ -> charInstance.combat.physicalRes.setSpecial(-15)}
+        name = R.string.resDamage,
+        description = R.string.damageResDesc,
+        onTake = {_, _ ->
+            //grant physical resistance bonus
+            charInstance.combat.physicalRes.setSpecial(specChange = 15)
+        },
+        onRemove = {_, _ ->
+            //remove physical resistance bonus
+            charInstance.combat.physicalRes.setSpecial(specChange = -15)
+        }
     )
 
     private val uncommonStrength = RacialAdvantage(
-        R.string.uncommonStr,
-        R.string.uncommonStrDesc,
-        {_, _ ->
-            charInstance.primaryList.str.setBonus(1)
-            val reference = charInstance.advantageRecord.commonAdvantages.deductCharacteristic
+        name = R.string.uncommonStr,
+        description = R.string.uncommonStrDesc,
+        onTake = {_, _ ->
+            //set new racial bonus value
+            charInstance.primaryList.str.setBonus(bonusInput = 1)
 
+            //check for reduction in strength stat
+            val reference = charInstance.advantageRecord.commonAdvantages.deductCharacteristic
             val dummyAdvantage = Advantage(
-                reference.saveTag,
-                reference.name,
-                reference.description,
-                reference.effect,
-                reference.restriction,
-                reference.special,
-                null,
-                0,
-                null,
-                reference.cost,
-                reference.pickedCost,
-                reference.onTake,
-                reference.onRemove
+                saveTag = reference.saveTag,
+                name = reference.name,
+                description = reference.description,
+                effect = reference.effect,
+                restriction = reference.restriction,
+                special = reference.special,
+                options = null,
+                picked = 0,
+                multPicked = null,
+                cost = reference.cost,
+                pickedCost = reference.pickedCost,
+                onTake = reference.onTake,
+                onRemove = reference.onRemove
             )
 
-            charInstance.advantageRecord.removeAdvantage(dummyAdvantage)
+            //remove if present
+            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
-        {_, _ -> charInstance.primaryList.str.setBonus(-1)}
+        onRemove = {_, _ ->
+            //remove strength bonus
+            charInstance.primaryList.str.setBonus(bonusInput = -1)
+        }
     )
 
     private val spiritualVision = RacialAdvantage(
-        R.string.spiritualVision,
-        R.string.spiritVisionDesc,
-        null,
-        null
+        name = R.string.spiritualVision,
+        description = R.string.spiritVisionDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val magicSusceptibility = RacialAdvantage(
-        R.string.jayanMagSusceptibility,
-        R.string.jayanMagSusDesc,
-        {_, _ -> charInstance.combat.magicRes.setSpecial(-10)},
-        {_, _ -> charInstance.combat.magicRes.setSpecial(10)}
+        name = R.string.jayanMagSusceptibility,
+        description = R.string.jayanMagSusDesc,
+        onTake = {_, _ ->
+            //reduce the Jayan's magic resistance
+            charInstance.combat.magicRes.setSpecial(specChange = -10)
+        },
+        onRemove = {_, _ ->
+            //remove magic resistance penalty
+            charInstance.combat.magicRes.setSpecial(specChange = 10)
+        }
     )
 
     private val immortalSoulJayan = RacialAdvantage(
-        R.string.jayanSoul,
-        R.string.jayanSoulDesc,
-        null,
-        null
+        name = R.string.jayanSoul,
+        description = R.string.jayanSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val withoutTrace = RacialAdvantage(
-        R.string.withoutTrace,
-        R.string.withoutTraceDesc,
-        null,
-        null
+        name = R.string.withoutTrace,
+        description = R.string.withoutTraceDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val forgetfulness = RacialAdvantage(
-        R.string.forgetfulness,
-        R.string.forgetDesc,
-        null,
-        null
+        name = R.string.forgetfulness,
+        description = R.string.forgetDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val commonAppearance = RacialAdvantage(
-        R.string.commonAppearance,
-        R.string.commonAppearDesc,
-        {_, _ -> if(charInstance.appearance.value !in 3..7) charInstance.setAppearance(5)},
-        null
+        name = R.string.commonAppearance,
+        description = R.string.commonAppearDesc,
+        onTake = { _, _ ->
+            //set D'Anjayni's appearance value if current appearance is illegal
+            if(charInstance.appearance.intValue !in 3..7)
+                charInstance.setAppearance(newAppearance = 5)
+        },
+        onRemove = null
     )
 
     private val undetectability = RacialAdvantage(
-        R.string.undetectability,
-        R.string.undetectDesc,
-        null,
-        null
+        name = R.string.undetectability,
+        description = R.string.undetectDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val silentWhisper = RacialAdvantage(
-        R.string.silentWhisper,
-        R.string.silentWhisperDesc,
-        null,
-        null
+        name = R.string.silentWhisper,
+        description = R.string.silentWhisperDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val immortalSoulDanjayni = RacialAdvantage(
-        R.string.danjayniSoul,
-        R.string.danjayniSoulDesc,
-        null,
-        null
+        name = R.string.danjayniSoul,
+        description = R.string.danjayniSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val orinie = RacialAdvantage(
-        R.string.orinie,
-        R.string.orinieDesc,
-        null,
-        null
+        name = R.string.orinie,
+        description = R.string.orinieDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val celestialEssence = RacialAdvantage(
-        R.string.celestialEssence,
-        R.string.celestEssenceDesc,
-        null,
-        null
+        name = R.string.celestialEssence,
+        description = R.string.celestEssenceDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val seraphimWings = RacialAdvantage(
-        R.string.seraphimWings,
-        R.string.seraphWingDesc,
-        null,
-        null
+        name = R.string.seraphimWings,
+        description = R.string.seraphWingDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val immortalSoulEbudan = RacialAdvantage(
-        R.string.ebudanSoul,
-        R.string.ebudanSoulDesc,
-        null,
-        null
+        name = R.string.ebudanSoul,
+        description = R.string.ebudanSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val seeEssence = RacialAdvantage(
-        R.string.seeEssence,
-        R.string.seeEssenceDesc,
-        null,
-        null
+        name = R.string.seeEssence,
+        description = R.string.seeEssenceDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val forestSense = RacialAdvantage(
-        R.string.forestSense,
-        R.string.forestSenseDesc,
-        null,
-        null
+        name = R.string.forestSense,
+        description = R.string.forestSenseDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val natureCure = RacialAdvantage(
-        R.string.natureCure,
-        R.string.natureCureDesc,
-        null,
-        null
+        name = R.string.natureCure,
+        description = R.string.natureCureDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val forestMovement = RacialAdvantage(
-        R.string.forestMovement,
-        R.string.forestMoveDesc,
-        null,
-        null
+        name = R.string.forestMovement,
+        description = R.string.forestMoveDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val smallSize = RacialAdvantage(
-        R.string.smallSize,
-        R.string.smallSizeDesc,
-        {_, _ ->
-            charInstance.sizeSpecial.value -= 1
+        name = R.string.smallSize,
+        description = R.string.smallSizeDesc,
+        onTake = {_, _ ->
+            //reduce the Daimah's size
+            charInstance.sizeSpecial.intValue -= 1
             charInstance.updateSize()
         },
-        {_, _ ->
-            charInstance.sizeSpecial.value += 1
+        onRemove = {_, _ ->
+            //remove the Daimah's size reduction
+            charInstance.sizeSpecial.intValue += 1
             charInstance.updateSize()
         }
     )
 
     private val immortalSoulDaimah = RacialAdvantage(
-        R.string.daimahSoul,
-        R.string.daimahSoulDesc,
-        null,
-        null
+        name = R.string.daimahSoul,
+        description = R.string.daimahSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val exceptionalResistancesDukzarist = RacialAdvantage(
-        R.string.dukzaristResistances,
-        R.string.dukResDesc,
-        {_, _ ->
-            charInstance.combat.allResistances.forEach{it.setSpecial(15)}
+        name = R.string.dukzaristResistances,
+        description = R.string.dukResDesc,
+        onTake = {_, _ ->
+            //increase all of the character's resistances
+            charInstance.combat.allResistances.forEach{resistance ->
+                resistance.setSpecial(specChange = 15)
+            }
 
-            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(5)
-            else charInstance.combat.magicRes.setSpecial(5)
+            //apply the gender specific bonus
+            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(specChange = 5)
+            else charInstance.combat.magicRes.setSpecial(specChange = 5)
         },
-        {_, _ ->
-            charInstance.combat.allResistances.forEach{it.setSpecial(-15)}
+        onRemove = {_, _ ->
+            //remove bonuses from resistances
+            charInstance.combat.allResistances.forEach{resistance ->
+                resistance.setSpecial(specChange = -15)
+            }
 
-            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(-5)
-            else charInstance.combat.magicRes.setSpecial(-5)
+            //remove the gender specific bonus
+            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(specChange = -5)
+            else charInstance.combat.magicRes.setSpecial(specChange = -5)
         }
     )
 
     private val inclinationDark = RacialAdvantage(
-        R.string.inclinationDark,
-        R.string.darkInclineDesc,
-        {_, _ ->
+        name = R.string.inclinationDark,
+        description = R.string.darkInclineDesc,
+        onTake = {_, _ ->
+            //construct elemental compatibility with light advantage
             val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
-
             val dummyAdvantage = Advantage(
-                reference.saveTag,
-                reference.name,
-                reference.description,
-                reference.effect,
-                reference.restriction,
-                reference.special,
-                null,
-                0,
-                null,
-                reference.cost,
-                reference.pickedCost,
-                reference.onTake,
-                reference.onRemove
+                saveTag = reference.saveTag,
+                name = reference.name,
+                description = reference.description,
+                effect = reference.effect,
+                restriction = reference.restriction,
+                special = reference.special,
+                options = null,
+                picked = 0,
+                multPicked = null,
+                cost = reference.cost,
+                pickedCost = reference.pickedCost,
+                onTake = reference.onTake,
+                onRemove = reference.onRemove
             )
 
-            charInstance.advantageRecord.removeAdvantage(dummyAdvantage)
+            //remove any elemental compatibility with light advantage held
+            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
-        null
+        onRemove = null
     )
 
     private val withstandDeath = RacialAdvantage(
-        R.string.withstandDeath,
-        R.string.deathWithstandDesc,
-        null,
-        null
+        name = R.string.withstandDeath,
+        description = R.string.deathWithstandDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val quickHealingDukzarist = RacialAdvantage(
-        R.string.dukzaristHealing,
-        R.string.dukRegenDesc,
-        {_, _ ->
-            charInstance.combat.specRegen.value += 1
+        name = R.string.dukzaristHealing,
+        description = R.string.dukRegenDesc,
+        onTake = {_, _ ->
+            //increase the character's regeneration
+            charInstance.combat.specRegen.intValue += 1
             charInstance.combat.updateRegeneration()
         },
-        {_, _ ->
-            charInstance.combat.specRegen.value -= 1
+        onRemove = {_, _ ->
+            //remove the character's regeneration bonus
+            charInstance.combat.specRegen.intValue -= 1
             charInstance.combat.updateRegeneration()
         }
     )
 
     private val limitedNeeds = RacialAdvantage(
-        R.string.limitedNeeds,
-        R.string.limitedNeedsDesc,
-        null,
-        null
+        name = R.string.limitedNeeds,
+        description = R.string.limitedNeedsDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val senseLightDarkDukzarist = RacialAdvantage(
-        R.string.dukzaristSense,
-        R.string.darkSenseDesc,
-        null,
-        null
+        name = R.string.dukzaristSense,
+        description = R.string.darkSenseDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val nightVision = RacialAdvantage(
-        R.string.nightVision,
-        R.string.dukNightVisDesc,
-        null,
-        null
+        name = R.string.nightVision,
+        description = R.string.dukNightVisDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val fireDevotion = RacialAdvantage(
-        R.string.fireDevotion,
-        R.string.devoteFireDesc,
-        {_, _ ->
-            if(charInstance.psychic.totalPsychicPoints.value > 0) {
+        name = R.string.fireDevotion,
+        description = R.string.devoteFireDesc,
+        onTake = {_, _ ->
+            //if the character has any psychic points to work with
+            if(charInstance.psychic.totalPsychicPoints.intValue > 0) {
+                //if character currently has no free psychic points
                 if (charInstance.psychic.getFreePsyPoints() == 0) {
-                    val powerRemoved =
-                        if (charInstance.psychic.masteredPowers.isNotEmpty())
-                            charInstance.psychic.masteredPowers.keys.last()
-                        else null
-                    if(powerRemoved != null)
+                    //remove the most recently acquired power, if available
+                    if(charInstance.psychic.masteredPowers.isNotEmpty()) {
+                        val power = charInstance.psychic.masteredPowers.keys.last()
                         charInstance.psychic.masterPower(
-                            powerRemoved,
-                            charInstance.psychic.getPowerDiscipline(powerRemoved)!!,
-                            false
+                            power = power,
+                            discipline = charInstance.psychic.getPowerDiscipline(power = power)!!,
+                            isMastering = false
                         )
+                    }
                     else{
-                        val disciplineRemoved =
-                            if (charInstance.psychic.disciplineInvestment.size > 0) charInstance.psychic.disciplineInvestment.last()
-                            else null
-                        if(disciplineRemoved != null)
-                            charInstance.psychic.updateInvestment(disciplineRemoved, false)
+                        //remove most recently added discipline, if available
+                        if(charInstance.psychic.disciplineInvestment.size > 0)
+                            charInstance.psychic.updateInvestment(
+                                discipline = charInstance.psychic.disciplineInvestment.last(),
+                                isTaken = false
+                            )
                     }
                 }
 
+                //attempt to add pyrokinesis to the character's accessible disciplines
                 charInstance.psychic.updateInvestment(charInstance.psychic.pyrokinesis, true)
             }
         },
-        null
+        onRemove = null
     )
 
     private val perfectBodies = RacialAdvantage(
-        R.string.perfectBodies,
-        R.string.perfectBodDesc,
-        {_, _ ->
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.atrophiedLimb)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.blind)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.deafness)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.mute)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.nearsighted)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.physicalWeakness)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.seriousIllness)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.sickly)
-            charInstance.advantageRecord.removeAdvantage(charInstance.advantageRecord.commonAdvantages.poisonSusceptibility)
+        name = R.string.perfectBodies,
+        description = R.string.perfectBodDesc,
+        onTake = {_, _ ->
+            //remove any disadvantage forbidden by this race
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.atrophiedLimb)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.blind)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.deafness)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.mute)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.nearsighted)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.physicalWeakness)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.seriousIllness)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.sickly)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.poisonSusceptibility)
         },
-        null
+        onRemove = null
     )
 
     private val metalAllergy = RacialAdvantage(
-        R.string.metalAllergy,
-        R.string.metalAllergyDesc,
-        null,
-        null
+        name = R.string.metalAllergy,
+        description = R.string.metalAllergyDesc,
+        onTake = null,
+        onRemove = null
     )
 
     private val immortalSoulDukzarist = RacialAdvantage(
-        R.string.dukzaristSoul,
-        R.string.dukzaristSoulDesc,
-        null,
-        null
+        name = R.string.dukzaristSoul,
+        description = R.string.dukzaristSoulDesc,
+        onTake = null,
+        onRemove = null
     )
 
     /**
      * Retrieves a racial advantage list based on a string input.
      *
-     * @param input name of the race that is input
+     * @param raceName name of the race that is queried for
      * @return list of the corresponding advantages
      */
-    fun getFromString(input: String): List<RacialAdvantage>{
-        return when(input){
+    fun getFromString(
+        raceName: String
+    ): List<RacialAdvantage>{
+        return when(raceName){
             "Sylvain" -> sylvainAdvantages
             "Jayan" -> jayanAdvantages
             "D\'Anjayni" -> danjayniAdvantages
@@ -458,11 +514,13 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     /**
      * Get string that describes the inputted racial advantage list.
      *
-     * @param input to get the name of
+     * @param raceAdvantages list of advantages associated with a race
      * @return string name associated with the list
      */
-    fun getNameOfList(input: List<RacialAdvantage>): String{
-        return when(input){
+    fun getNameOfList(
+        raceAdvantages: List<RacialAdvantage>
+    ): String{
+        return when(raceAdvantages){
             sylvainAdvantages -> "Sylvain"
             jayanAdvantages -> "Jayan"
             danjayniAdvantages -> "D\'Anjayni"
@@ -473,24 +531,31 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
         }
     }
 
+    //compile advantages for Sylvain
     val sylvainAdvantages = listOf(exceptionalResistancesSylvain, inclinationLight, quickHealingSylvain,
         senseLightDarkSylvain, immortalSoulSylvain)
 
+    //compile advantages for Jayan
     val jayanAdvantages = listOf(giant, withstandFatigue, damageResistance, uncommonStrength,
         spiritualVision, magicSusceptibility, immortalSoulJayan)
 
+    //compile advantages for D'Anjayni
     val danjayniAdvantages = listOf(withoutTrace, forgetfulness, commonAppearance, undetectability,
         silentWhisper, immortalSoulDanjayni)
 
-    val ebudanAdvantages = listOf(orinie, celestialEssence, seraphimWings, immortalSoulEbudan)
+    //compile advantages for Ebudan
+    private val ebudanAdvantages = listOf(orinie, celestialEssence, seraphimWings, immortalSoulEbudan)
 
-    val daimahAdvantages = listOf(seeEssence, forestSense, natureCure, forestMovement, smallSize,
+    //compile advantages for Daimah
+    private val daimahAdvantages = listOf(seeEssence, forestSense, natureCure, forestMovement, smallSize,
         immortalSoulDaimah)
 
+    //compile advantages for Duk'zarist
     val dukzaristAdvantages = listOf(exceptionalResistancesDukzarist, inclinationDark, withstandDeath,
         quickHealingDukzarist, limitedNeeds, senseLightDarkDukzarist, nightVision, fireDevotion,
         perfectBodies, metalAllergy, immortalSoulDukzarist)
 
+    //make full list of racial advantages, including an empty one for humans
     val allAdvantageLists = listOf(
         listOf(),
         sylvainAdvantages,

@@ -1,484 +1,457 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellType
+import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the air element.
  */
-class AirBook{
+class AirBook: MagicBook(Element.Air) {
     private val raiseWind = Spell(
-        R.string.raiseWind,
-        Element.Air,
-        true,
-        2,
-        30,
-        R.string.raiseWindDesc,
-        R.string.raiseWindEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.raiseWind,
+        isActive = true,
+        level = 2,
+        zCost = 30,
+        effect = R.string.raiseWindDesc,
+        addedEffect = R.string.raiseWindEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val moveSpell = Spell(
-        R.string.move,
-        Element.Air,
-        true,
-        6,
-        30,
-        R.string.moveDesc,
-        R.string.moveEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.move,
+        isActive = true,
+        level = 6,
+        zCost = 30,
+        effect = R.string.moveDesc,
+        addedEffect = R.string.moveEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val reduceWeight = Spell(
-        R.string.reduceWeight,
-        Element.Air,
-        true,
-        10,
-        40,
-        R.string.reduceWeightDesc,
-        R.string.reduceWeightEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.reduceWeight,
+        isActive = true,
+        level = 10,
+        zCost = 40,
+        effect = R.string.reduceWeightDesc,
+        addedEffect = R.string.reduceWeightEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val stopBreathing = Spell(
-        R.string.stopBreathe,
-        Element.Air,
-        false,
-        12,
-        40,
-        R.string.stopBreatheDesc,
-        R.string.stopBreatheEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.stopBreathe,
+        isActive = false,
+        level = 12,
+        zCost = 40,
+        effect = R.string.stopBreatheDesc,
+        addedEffect = R.string.stopBreatheEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val freeMotion = Spell(
-        R.string.freeMotion,
-        Element.Air,
-        true,
-        16,
-        50,
-        R.string.freeMotionDesc,
-        R.string.freeMotionEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.freeMotion,
+        isActive = true,
+        level = 16,
+        zCost = 50,
+        effect = R.string.freeMotionDesc,
+        addedEffect = R.string.freeMotionEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val airBlow = Spell(
-        R.string.airBlow,
-        Element.Air,
-        true,
-        20,
-        40,
-        R.string.airBlowDesc,
-        R.string.airBlowEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.airBlow,
+        isActive = true,
+        level = 20,
+        zCost = 40,
+        effect = R.string.airBlowDesc,
+        addedEffect = R.string.airBlowEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val airScreen = Spell(
-        R.string.airScreen,
-        Element.Air,
-        false,
-        22,
-        50,
-        R.string.airScreenDesc,
-        R.string.airScreenEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.airScreen,
+        isActive = false,
+        level = 22,
+        zCost = 50,
+        effect = R.string.airScreenDesc,
+        addedEffect = R.string.airScreenEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val autoTransport = Spell(
-        R.string.autoTransport,
-        Element.Air,
-        true,
-        26,
-        50,
-        R.string.autoTransportDesc,
-        R.string.autoTransportEff,
-        10,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.autoTransport,
+        isActive = true,
+        level = 26,
+        zCost = 50,
+        effect = R.string.autoTransportDesc,
+        addedEffect = R.string.autoTransportEff,
+        zMax = 10,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val flight = Spell(
-        R.string.flightSpell,
-        Element.Air,
-        true,
-        30,
-        60,
-        R.string.flightSpellDesc,
-        R.string.flightSpellEff,
-        10,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.flightSpell,
+        isActive = true,
+        level = 30,
+        zCost = 60,
+        effect = R.string.flightSpellDesc,
+        addedEffect = R.string.flightSpellEff,
+        zMax = 10,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val reactionIncrease = Spell(
-        R.string.increaseReaction,
-        Element.Air,
-        true,
-        32,
-        60,
-        R.string.increaseReactionDesc,
-        R.string.increaseReactionEff,
-        10,
-        20,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.increaseReaction,
+        isActive = true,
+        level = 32,
+        zCost = 60,
+        effect = R.string.increaseReactionDesc,
+        addedEffect = R.string.increaseReactionEff,
+        zMax = 10,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val electrify = Spell(
-        R.string.electrify,
-        Element.Air,
-        true,
-        36,
-        80,
-        R.string.electrifyDesc,
-        R.string.electrifyEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.electrify,
+        isActive = true,
+        level = 36,
+        zCost = 80,
+        effect = R.string.electrifyDesc,
+        addedEffect = R.string.electrifyEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val airCut = Spell(
-        R.string.airCut,
-        Element.Air,
-        true,
-        40,
-        60,
-        R.string.airCutDesc,
-        R.string.airCutEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.airCut,
+        isActive = true,
+        level = 40,
+        zCost = 60,
+        effect = R.string.airCutDesc,
+        addedEffect = R.string.airCutEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val speedSpell = Spell(
-        R.string.speed,
-        Element.Air,
-        true,
-        42,
-        80,
-        R.string.speedDesc,
-        R.string.speedEff,
-        10,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.speed,
+        isActive = true,
+        level = 42,
+        zCost = 80,
+        effect = R.string.speedDesc,
+        addedEffect = R.string.speedEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val lightning = Spell(
-        R.string.lightning,
-        Element.Air,
-        true,
-        46,
-        80,
-        R.string.lightningDesc,
-        R.string.lightningEff,
-        20,
-        null,
-        false,
-        listOf(SpellType.Attack)
+        name = R.string.lightning,
+        isActive = true,
+        level = 46,
+        zCost = 80,
+        effect = R.string.lightningDesc,
+        addedEffect = R.string.lightningEff,
+        zMax = 20,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Attack)
     )
 
     private val whirlwind = Spell(
-        R.string.whirlwind,
-        Element.Air,
-        true,
-        50,
-        140,
-        R.string.whirlwindDesc,
-        R.string.whirlwindEff,
-        20,
-        5,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.whirlwind,
+        isActive = true,
+        level = 50,
+        zCost = 140,
+        effect = R.string.whirlwindDesc,
+        addedEffect = R.string.whirlwindEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val etherealForm = Spell(
-        R.string.etherForm,
-        Element.Air,
-        true,
-        52,
-        100,
-        R.string.etherFormDesc,
-        R.string.etherFormEff,
-        10,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.etherForm,
+        isActive = true,
+        level = 52,
+        zCost = 100,
+        effect = R.string.etherFormDesc,
+        addedEffect = R.string.etherFormEff,
+        zMax = 10,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val airControl = Spell(
-        R.string.airControl,
-        Element.Air,
-        true,
-        56,
-        80,
-        R.string.airControlDesc,
-        R.string.airControlEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.airControl,
+        isActive = true,
+        level = 56,
+        zCost = 80,
+        effect = R.string.airControlDesc,
+        addedEffect = R.string.airControlEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val electricityControl = Spell(
-        R.string.controlElec,
-        Element.Air,
-        true,
-        60,
-        80,
-        R.string.controlElecDesc,
-        R.string.controlElecEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Effect, SpellType.Spiritual)
+        name = R.string.controlElec,
+        isActive = true,
+        level = 60,
+        zCost = 80,
+        effect = R.string.controlElecDesc,
+        addedEffect = R.string.controlElecEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Spiritual)
     )
 
     private val defensiveMovement = Spell(
-        R.string.defenseMove,
-        Element.Air,
-        false,
-        62,
-        120,
-        R.string.defenseMoveDesc,
-        R.string.defenseMoveEff,
-        20,
-        10,
-        false,
-        listOf(SpellType.Defense)
+        name = R.string.defenseMove,
+        isActive = false,
+        level = 62,
+        zCost = 120,
+        effect = R.string.defenseMoveDesc,
+        addedEffect = R.string.defenseMoveEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Defense)
     )
 
     private val teletransportation = Spell(
-        R.string.teleTransport,
-        Element.Air,
-        true,
-        66,
-        150,
-        R.string.teleTransportDesc,
-        R.string.teleTransportEff,
-        30,
-        null,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.teleTransport,
+        isActive = true,
+        level = 66,
+        zCost = 150,
+        effect = R.string.teleTransportDesc,
+        addedEffect = R.string.teleTransportEff,
+        zMax = 30,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val immateriality = Spell(
-        R.string.immaterial,
-        Element.Air,
-        true,
-        70,
-        120,
-        R.string.immaterialDesc,
-        R.string.immaterialEff,
-        20,
-        10,
-        true,
-        listOf(SpellType.Spiritual)
+        name = R.string.immaterial,
+        isActive = true,
+        level = 70,
+        zCost = 120,
+        effect = R.string.immaterialDesc,
+        addedEffect = R.string.immaterialEff,
+        zMax = 20,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Spiritual)
     )
 
     private val hurricane = Spell(
-        R.string.hurricane,
-        Element.Air,
-        true,
-        72,
-        200,
-        R.string.hurricaneDesc,
-        R.string.hurricaneEff,
-        30,
-        20,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.hurricane,
+        isActive = true,
+        level = 72,
+        zCost = 200,
+        effect = R.string.hurricaneDesc,
+        addedEffect = R.string.hurricaneEff,
+        zMax = 30,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
     private val solidAir = Spell(
-        R.string.solidAir,
-        Element.Air,
-        true,
-        76,
-        140,
-        R.string.solidAirDesc,
-        R.string.solidAirEff,
-        20,
-        20,
-        false,
-        listOf(SpellType.Effect, SpellType.Attack)
+        name = R.string.solidAir,
+        isActive = true,
+        level = 76,
+        zCost = 140,
+        effect = R.string.solidAirDesc,
+        addedEffect = R.string.solidAirEff,
+        zMax = 20,
+        maintenance = 20,
+        isDaily = false,
+        type = listOf(SpellType.Effect, SpellType.Attack)
     )
 
     private val weatherControl = Spell(
-        R.string.weatherControl,
-        Element.Air,
-        true,
-        80,
-        220,
-        R.string.weatherControlDesc,
-        R.string.weatherControlEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.weatherControl,
+        isActive = true,
+        level = 80,
+        zCost = 220,
+        effect = R.string.weatherControlDesc,
+        addedEffect = R.string.weatherControlEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val createSylph = Spell(
-        R.string.createSylph,
-        Element.Air,
-        true,
-        82,
-        250,
-        R.string.createSylphDesc,
-        R.string.createSylphEff,
-        30,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.createSylph,
+        isActive = true,
+        level = 82,
+        zCost = 250,
+        effect = R.string.createSylphDesc,
+        addedEffect = R.string.createSylphEff,
+        zMax = 30,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val superiorPsychokinesis = Spell(
-        R.string.superPsychokinesis,
-        Element.Air,
-        true,
-        86,
-        160,
-        R.string.superPsychokinesisDesc,
-        R.string.superPsychokinesisEff,
-        20,
-        5,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.superPsychokinesis,
+        isActive = true,
+        level = 86,
+        zCost = 160,
+        effect = R.string.superPsychokinesisDesc,
+        addedEffect = R.string.superPsychokinesisEff,
+        zMax = 20,
+        maintenance = 5,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val relocateMagic = Spell(
-        R.string.magRelocate,
-        Element.Air,
-        true,
-        90,
-        180,
-        R.string.magRelocateDesc,
-        R.string.magRelocateEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Effect)
+        name = R.string.magRelocate,
+        isActive = true,
+        level = 90,
+        zCost = 180,
+        effect = R.string.magRelocateDesc,
+        addedEffect = R.string.magRelocateEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Effect)
     )
 
     private val passiveMagic = Spell(
-        R.string.passiveMag,
-        Element.Air,
-        true,
-        92,
-        300,
-        R.string.passiveMagDesc,
-        R.string.passiveMagEff,
-        30,
-        10,
-        false,
-        listOf(SpellType.Effect)
+        name = R.string.passiveMag,
+        isActive = true,
+        level = 92,
+        zCost = 300,
+        effect = R.string.passiveMagDesc,
+        addedEffect = R.string.passiveMagEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Effect)
     )
 
     private val airLord = Spell(
-        R.string.airLord,
-        Element.Air,
-        true,
-        96,
-        300,
-        R.string.airLordDesc,
-        R.string.airLordEff,
-        30,
-        10,
-        true,
-        listOf(SpellType.Automatic)
+        name = R.string.airLord,
+        isActive = true,
+        level = 96,
+        zCost = 300,
+        effect = R.string.airLordDesc,
+        addedEffect = R.string.airLordEff,
+        zMax = 30,
+        maintenance = 10,
+        isDaily = true,
+        type = listOf(SpellType.Automatic)
     )
 
     private val placeInTheWorld = Spell(
-        R.string.placeInWorld,
-        Element.Air,
-        true,
-        100,
-        450,
-        R.string.placeInWorldDesc,
-        R.string.placeInWorldEff,
-        40,
-        10,
-        false,
-        listOf(SpellType.Automatic)
+        name = R.string.placeInWorld,
+        isActive = true,
+        level = 100,
+        zCost = 450,
+        effect = R.string.placeInWorldDesc,
+        addedEffect = R.string.placeInWorldEff,
+        zMax = 40,
+        maintenance = 10,
+        isDaily = false,
+        type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        raiseWind,
-        null,
-        moveSpell,
-        null,
-        reduceWeight,
-        stopBreathing,
-        null,
-        freeMotion,
-        null,
-        airBlow,
-        airScreen,
-        null,
-        autoTransport,
-        null,
-        flight,
-        reactionIncrease,
-        null,
-        electrify,
-        null,
-        airCut,
-        speedSpell,
-        null,
-        lightning,
-        null,
-        whirlwind,
-        etherealForm,
-        null,
-        airControl,
-        null,
-        electricityControl,
-        defensiveMovement,
-        null,
-        teletransportation,
-        null,
-        immateriality,
-        hurricane,
-        null,
-        solidAir,
-        null,
-        weatherControl,
-        createSylph,
-        null,
-        superiorPsychokinesis,
-        null,
-        relocateMagic,
-        passiveMagic,
-        null,
-        airLord,
-        null,
-        placeInTheWorld
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            raiseWind,
+            null,
+            moveSpell,
+            null,
+            reduceWeight,
+            stopBreathing,
+            null,
+            freeMotion,
+            null,
+            airBlow,
+            airScreen,
+            null,
+            autoTransport,
+            null,
+            flight,
+            reactionIncrease,
+            null,
+            electrify,
+            null,
+            airCut,
+            speedSpell,
+            null,
+            lightning,
+            null,
+            whirlwind,
+            etherealForm,
+            null,
+            airControl,
+            null,
+            electricityControl,
+            defensiveMovement,
+            null,
+            teletransportation,
+            null,
+            immateriality,
+            hurricane,
+            null,
+            solidAir,
+            null,
+            weatherControl,
+            createSylph,
+            null,
+            superiorPsychokinesis,
+            null,
+            relocateMagic,
+            passiveMagic,
+            null,
+            airLord,
+            null,
+            placeInTheWorld
+        ))
+    }
 }

@@ -18,11 +18,13 @@ enum class AttackType {
         /**
          * Retrieves the address of the attack type's associated string.
          *
-         * @param input attack type to convert
+         * @param attack attack type to convert
          * @return address of the displayed string
          */
-        fun toAddress(input: AttackType): Int{
-            return when(input){
+        fun toAddress(
+            attack: AttackType
+        ): Int{
+            return when(attack){
                 Cut -> R.string.attackCut
                 Impact -> R.string.attackImpact
                 Thrust -> R.string.attackThrust

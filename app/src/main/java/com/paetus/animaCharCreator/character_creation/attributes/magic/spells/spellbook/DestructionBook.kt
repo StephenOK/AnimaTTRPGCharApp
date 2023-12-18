@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the destruction element.
  */
-class DestructionBook{
+class DestructionBook: MagicBook(Element.Destruction){
     private val fragility = Spell(
         name = R.string.fragility,
-        inBook = Element.Destruction,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class DestructionBook{
 
     private val dismantle = Spell(
         name = R.string.dismantle,
-        inBook = Element.Destruction,
         isActive = true,
         level = 6,
         zCost = 40,
@@ -39,7 +38,6 @@ class DestructionBook{
 
     private val destroyIntensities = Spell(
         name = R.string.destroyIntense,
-        inBook = Element.Destruction,
         isActive = true,
         level = 8,
         zCost = 40,
@@ -53,7 +51,6 @@ class DestructionBook{
 
     private val minorDestruction = Spell(
         name = R.string.minorDestruct,
-        inBook = Element.Destruction,
         isActive = true,
         level = 10,
         zCost = 50,
@@ -67,7 +64,6 @@ class DestructionBook{
 
     private val destructionSphere = Spell(
         name = R.string.destructSphere,
-        inBook = Element.Destruction,
         isActive = true,
         level = 12,
         zCost = 30,
@@ -81,7 +77,6 @@ class DestructionBook{
 
     private val increaseWeakness = Spell(
         name = R.string.weakIncrease,
-        inBook = Element.Destruction,
         isActive = true,
         level = 16,
         zCost = 50,
@@ -95,7 +90,6 @@ class DestructionBook{
 
     private val magicDestruction = Spell(
         name = R.string.magDestruct,
-        inBook = Element.Destruction,
         isActive = false,
         level = 18,
         zCost = 60,
@@ -109,7 +103,6 @@ class DestructionBook{
 
     private val aggravateDamage = Spell(
         name = R.string.aggravateDamage,
-        inBook = Element.Destruction,
         isActive = false,
         level = 20,
         zCost = 60,
@@ -123,7 +116,6 @@ class DestructionBook{
 
     private val destructMatrices = Spell(
         name = R.string.matrixDestruction,
-        inBook = Element.Destruction,
         isActive = false,
         level = 22,
         zCost = 80,
@@ -137,7 +129,6 @@ class DestructionBook{
 
     private val woundSpell = Spell(
         name = R.string.wound,
-        inBook = Element.Destruction,
         isActive = true,
         level = 26,
         zCost = 80,
@@ -151,7 +142,6 @@ class DestructionBook{
 
     private val destroyKi = Spell(
         name = R.string.kiDestroy,
-        inBook = Element.Destruction,
         isActive = true,
         level = 28,
         zCost = 80,
@@ -165,7 +155,6 @@ class DestructionBook{
 
     private val produceDamage = Spell(
         name = R.string.produceDamage,
-        inBook = Element.Destruction,
         isActive = true,
         level = 30,
         zCost = 80,
@@ -179,7 +168,6 @@ class DestructionBook{
 
     private val senseDestroy = Spell(
         name = R.string.senseDestruct,
-        inBook = Element.Destruction,
         isActive = true,
         level = 32,
         zCost = 100,
@@ -193,7 +181,6 @@ class DestructionBook{
 
     private val mysticBolt = Spell(
         name = R.string.mysticBolt,
-        inBook = Element.Destruction,
         isActive = true,
         level = 36,
         zCost = 80,
@@ -207,7 +194,6 @@ class DestructionBook{
 
     private val unravelTies = Spell(
         name = R.string.tieUnravel,
-        inBook = Element.Destruction,
         isActive = true,
         level = 38,
         zCost = 100,
@@ -221,7 +207,6 @@ class DestructionBook{
 
     private val destroyResistances = Spell(
         name = R.string.resistDestroy,
-        inBook = Element.Destruction,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -235,7 +220,6 @@ class DestructionBook{
 
     private val undoState = Spell(
         name = R.string.undoState,
-        inBook = Element.Destruction,
         isActive = true,
         level = 42,
         zCost = 120,
@@ -249,7 +233,6 @@ class DestructionBook{
 
     private val destructionDome = Spell(
         name = R.string.destructDome,
-        inBook = Element.Destruction,
         isActive = true,
         level = 46,
         zCost = 100,
@@ -263,7 +246,6 @@ class DestructionBook{
 
     private val decayZone = Spell(
         name = R.string.decayZone,
-        inBook = Element.Destruction,
         isActive = true,
         level = 48,
         zCost = 140,
@@ -277,7 +259,6 @@ class DestructionBook{
 
     private val destructionAura = Spell(
         name = R.string.destructAura,
-        inBook = Element.Destruction,
         isActive = true,
         level = 50,
         zCost = 150,
@@ -291,7 +272,6 @@ class DestructionBook{
 
     private val destroyMemories = Spell(
         name = R.string.destroyMem,
-        inBook = Element.Destruction,
         isActive = true,
         level = 52,
         zCost = 140,
@@ -305,7 +285,6 @@ class DestructionBook{
 
     private val blockLearning = Spell(
         name = R.string.learnBlock,
-        inBook = Element.Destruction,
         isActive = true,
         level = 56,
         zCost = 120,
@@ -319,7 +298,6 @@ class DestructionBook{
 
     private val forbid = Spell(
         name = R.string.forbid,
-        inBook = Element.Destruction,
         isActive = true,
         level = 58,
         zCost = 100,
@@ -333,7 +311,6 @@ class DestructionBook{
 
     private val destroyPowers = Spell(
         name = R.string.powerDestroy,
-        inBook = Element.Destruction,
         isActive = true,
         level = 60,
         zCost = 140,
@@ -347,7 +324,6 @@ class DestructionBook{
 
     private val greatMysticBolt = Spell(
         name = R.string.greatMysticBolt,
-        inBook = Element.Destruction,
         isActive = true,
         level = 62,
         zCost = 150,
@@ -361,7 +337,6 @@ class DestructionBook{
 
     private val destroyWill = Spell(
         name = R.string.destroyWill,
-        inBook = Element.Destruction,
         isActive = true,
         level = 66,
         zCost = 160,
@@ -375,7 +350,6 @@ class DestructionBook{
 
     private val weaknessZone = Spell(
         name = R.string.weakZone,
-        inBook = Element.Destruction,
         isActive = true,
         level = 68,
         zCost = 200,
@@ -389,7 +363,6 @@ class DestructionBook{
 
     private val destructionEssence = Spell(
         name = R.string.essenceDestruct,
-        inBook = Element.Destruction,
         isActive = true,
         level = 70,
         zCost = 150,
@@ -403,7 +376,6 @@ class DestructionBook{
 
     private val deathSpell = Spell(
         name = R.string.death,
-        inBook = Element.Destruction,
         isActive = true,
         level = 72,
         zCost = 200,
@@ -417,7 +389,6 @@ class DestructionBook{
 
     private val devouringZone = Spell(
         name = R.string.devourZone,
-        inBook = Element.Destruction,
         isActive = true,
         level = 76,
         zCost = 250,
@@ -431,7 +402,6 @@ class DestructionBook{
 
     private val destroyCapabilities = Spell(
         name = R.string.destroyCapabilities,
-        inBook = Element.Destruction,
         isActive = true,
         level = 78,
         zCost = 150,
@@ -445,7 +415,6 @@ class DestructionBook{
 
     private val severExistence = Spell(
         name = R.string.existSever,
-        inBook = Element.Destruction,
         isActive = true,
         level = 80,
         zCost = 340,
@@ -459,7 +428,6 @@ class DestructionBook{
 
     private val destructionRain = Spell(
         name = R.string.destructRain,
-        inBook = Element.Destruction,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -473,7 +441,6 @@ class DestructionBook{
 
     private val zeonDestruction = Spell(
         name = R.string.destructZeon,
-        inBook = Element.Destruction,
         isActive = true,
         level = 86,
         zCost = 200,
@@ -487,7 +454,6 @@ class DestructionBook{
 
     private val heavenSweep = Spell(
         name = R.string.heavenSweep,
-        inBook = Element.Destruction,
         isActive = true,
         level = 88,
         zCost = 300,
@@ -501,7 +467,6 @@ class DestructionBook{
 
     private val void = Spell(
         name = R.string.voidSpell,
-        inBook = Element.Destruction,
         isActive = true,
         level = 90,
         zCost = 250,
@@ -515,7 +480,6 @@ class DestructionBook{
 
     private val greaterDestruction = Spell(
         name = R.string.greatDestruction,
-        inBook = Element.Destruction,
         isActive = true,
         level = 92,
         zCost = 350,
@@ -529,7 +493,6 @@ class DestructionBook{
 
     private val destroySouls = Spell(
         name = R.string.soulDestroy,
-        inBook = Element.Destruction,
         isActive = true,
         level = 96,
         zCost = 500,
@@ -543,7 +506,6 @@ class DestructionBook{
 
     private val chaos = Spell(
         name = R.string.chaos,
-        inBook = Element.Destruction,
         isActive = true,
         level = 98,
         zCost = 700,
@@ -557,7 +519,6 @@ class DestructionBook{
 
     private val uncreation = Spell(
         name = R.string.uncreation,
-        inBook = Element.Destruction,
         isActive = true,
         level = 100,
         zCost = 1000,
@@ -569,56 +530,58 @@ class DestructionBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        fragility,
-        null,
-        dismantle,
-        destroyIntensities,
-        minorDestruction,
-        destructionSphere,
-        null,
-        increaseWeakness,
-        magicDestruction,
-        aggravateDamage,
-        destructMatrices,
-        null,
-        woundSpell,
-        destroyKi,
-        produceDamage,
-        senseDestroy,
-        null,
-        mysticBolt,
-        unravelTies,
-        destroyResistances,
-        undoState,
-        null,
-        destructionDome,
-        decayZone,
-        destructionAura,
-        destroyMemories,
-        null,
-        blockLearning,
-        forbid,
-        destroyPowers,
-        greatMysticBolt,
-        null,
-        destroyWill,
-        weaknessZone,
-        destructionEssence,
-        deathSpell,
-        null,
-        devouringZone,
-        destroyCapabilities,
-        severExistence,
-        destructionRain,
-        null,
-        zeonDestruction,
-        heavenSweep,
-        void,
-        greaterDestruction,
-        null,
-        destroySouls,
-        chaos,
-        uncreation
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            fragility,
+            null,
+            dismantle,
+            destroyIntensities,
+            minorDestruction,
+            destructionSphere,
+            null,
+            increaseWeakness,
+            magicDestruction,
+            aggravateDamage,
+            destructMatrices,
+            null,
+            woundSpell,
+            destroyKi,
+            produceDamage,
+            senseDestroy,
+            null,
+            mysticBolt,
+            unravelTies,
+            destroyResistances,
+            undoState,
+            null,
+            destructionDome,
+            decayZone,
+            destructionAura,
+            destroyMemories,
+            null,
+            blockLearning,
+            forbid,
+            destroyPowers,
+            greatMysticBolt,
+            null,
+            destroyWill,
+            weaknessZone,
+            destructionEssence,
+            deathSpell,
+            null,
+            devouringZone,
+            destroyCapabilities,
+            severExistence,
+            destructionRain,
+            null,
+            zeonDestruction,
+            heavenSweep,
+            void,
+            greaterDestruction,
+            null,
+            destroySouls,
+            chaos,
+            uncreation
+        ))
+    }
 }

@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the dark element.
  */
-class DarkBook{
+class DarkBook: MagicBook(Element.Dark){
     private val createDark = Spell(
         name = R.string.createDark,
-        inBook = Element.Dark,
         isActive = true,
         level = 2,
         zCost = 20,
@@ -25,7 +25,6 @@ class DarkBook{
 
     private val induceFear = Spell(
         name = R.string.induceFear,
-        inBook = Element.Dark,
         isActive = true,
         level = 6,
         zCost = 40,
@@ -39,7 +38,6 @@ class DarkBook{
 
     private val seeInDarkness = Spell(
         name = R.string.seeInDark,
-        inBook = Element.Dark,
         isActive = true,
         level = 8,
         zCost = 40,
@@ -53,7 +51,6 @@ class DarkBook{
 
     private val darkShield = Spell(
         name = R.string.darkShield,
-        inBook = Element.Dark,
         isActive = false,
         level = 10,
         zCost = 50,
@@ -67,7 +64,6 @@ class DarkBook{
 
     private val shadow = Spell(
         name = R.string.shadow,
-        inBook = Element.Dark,
         isActive = false,
         level = 12,
         zCost = 50,
@@ -81,7 +77,6 @@ class DarkBook{
 
     private val darkArmor = Spell(
         name = R.string.darkArmor,
-        inBook = Element.Dark,
         isActive = true,
         level = 16,
         zCost = 60,
@@ -95,7 +90,6 @@ class DarkBook{
 
     private val banishLight = Spell(
         name = R.string.banLight,
-        inBook = Element.Dark,
         isActive = true,
         level = 18,
         zCost = 60,
@@ -109,7 +103,6 @@ class DarkBook{
 
     private val hideMagic = Spell(
         name = R.string.hideMag,
-        inBook = Element.Dark,
         isActive = false,
         level = 20,
         zCost = 50,
@@ -123,7 +116,6 @@ class DarkBook{
 
     private val darkBeam = Spell(
         name = R.string.darkBeam,
-        inBook = Element.Dark,
         isActive = true,
         level = 22,
         zCost = 50,
@@ -137,7 +129,6 @@ class DarkBook{
 
     private val darkzone = Spell(
         name = R.string.darkZone,
-        inBook = Element.Dark,
         isActive = true,
         level = 26,
         zCost = 60,
@@ -151,7 +142,6 @@ class DarkBook{
 
     private val darkBond = Spell(
         name = R.string.darkBond,
-        inBook = Element.Dark,
         isActive = true,
         level = 28,
         zCost = 60,
@@ -165,7 +155,6 @@ class DarkBook{
 
     private val controlDark = Spell(
         name = R.string.controlDark,
-        inBook = Element.Dark,
         isActive = true,
         level = 30,
         zCost = 50,
@@ -179,7 +168,6 @@ class DarkBook{
 
     private val concealment = Spell(
         name = R.string.concealment,
-        inBook = Element.Dark,
         isActive = false,
         level = 32,
         zCost = 60,
@@ -193,7 +181,6 @@ class DarkBook{
 
     private val obfuscate = Spell(
         name = R.string.obfuscate,
-        inBook = Element.Dark,
         isActive = true,
         level = 36,
         zCost = 100,
@@ -207,7 +194,6 @@ class DarkBook{
 
     private val enrage = Spell(
         name = R.string.enrage,
-        inBook = Element.Dark,
         isActive = true,
         level = 38,
         zCost = 60,
@@ -221,7 +207,6 @@ class DarkBook{
 
     private val banishPositiveEmotions = Spell(
         name = R.string.banPosEmote,
-        inBook = Element.Dark,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -235,7 +220,6 @@ class DarkBook{
 
     private val night = Spell(
         name = R.string.night,
-        inBook = Element.Dark,
         isActive = true,
         level = 42,
         zCost = 80,
@@ -249,7 +233,6 @@ class DarkBook{
 
     private val darkSphere = Spell(
         name = R.string.darkSphere,
-        inBook = Element.Dark,
         isActive = true,
         level = 46,
         zCost = 120,
@@ -263,7 +246,6 @@ class DarkBook{
 
     private val concealZone = Spell(
         name = R.string.concealZone,
-        inBook = Element.Dark,
         isActive = true,
         level = 48,
         zCost = 140,
@@ -277,7 +259,6 @@ class DarkBook{
 
     private val enterNightmare = Spell(
         name = R.string.enterNightmare,
-        inBook = Element.Dark,
         isActive = true,
         level = 50,
         zCost = 120,
@@ -291,7 +272,6 @@ class DarkBook{
 
     private val darkForm = Spell(
         name = R.string.darkForm,
-        inBook = Element.Dark,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -305,7 +285,6 @@ class DarkBook{
 
     private val perdition = Spell(
         name = R.string.perdition,
-        inBook = Element.Dark,
         isActive = true,
         level = 56,
         zCost = 100,
@@ -319,7 +298,6 @@ class DarkBook{
 
     private val createNegativeFeelings = Spell(
         name = R.string.createNegEmote,
-        inBook = Element.Dark,
         isActive = true,
         level = 58,
         zCost = 100,
@@ -333,7 +311,6 @@ class DarkBook{
 
     private val eliminateTraces = Spell(
         name = R.string.eliminateTrace,
-        inBook = Element.Dark,
         isActive = true,
         level = 60,
         zCost = 100,
@@ -347,7 +324,6 @@ class DarkBook{
 
     private val shieldFromPositive = Spell(
         name = R.string.shieldPositive,
-        inBook = Element.Dark,
         isActive = true,
         level = 62,
         zCost = 140,
@@ -361,7 +337,6 @@ class DarkBook{
 
     private val devouringDark = Spell(
         name = R.string.darkDevour,
-        inBook = Element.Dark,
         isActive = false,
         level = 66,
         zCost = 120,
@@ -375,7 +350,6 @@ class DarkBook{
 
     private val devastate = Spell(
         name = R.string.devastate,
-        inBook = Element.Dark,
         isActive = true,
         level = 68,
         zCost = 100,
@@ -389,7 +363,6 @@ class DarkBook{
 
     private val markOfFear = Spell(
         name = R.string.fearMark,
-        inBook = Element.Dark,
         isActive = true,
         level = 70,
         zCost = 140,
@@ -403,7 +376,6 @@ class DarkBook{
 
     private val catastrophicDarkness = Spell(
         name = R.string.darkCatastrophe,
-        inBook = Element.Dark,
         isActive = true,
         level = 72,
         zCost = 120,
@@ -417,7 +389,6 @@ class DarkBook{
 
     private val darkMaterialObjects = Spell(
         name = R.string.darkMatObj,
-        inBook = Element.Dark,
         isActive = true,
         level = 76,
         zCost = 150,
@@ -431,7 +402,6 @@ class DarkBook{
 
     private val shadowTravel = Spell(
         name = R.string.shadowTravel,
-        inBook = Element.Dark,
         isActive = true,
         level = 78,
         zCost = 250,
@@ -445,7 +415,6 @@ class DarkBook{
 
     private val nightmareLord = Spell(
         name = R.string.nightmareLord,
-        inBook = Element.Dark,
         isActive = true,
         level = 80,
         zCost = 300,
@@ -459,7 +428,6 @@ class DarkBook{
 
     private val createDarkBeing = Spell(
         name = R.string.darkBeing,
-        inBook = Element.Dark,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -473,7 +441,6 @@ class DarkBook{
 
     private val concealmentFromMagic = Spell(
         name = R.string.concealFromMag,
-        inBook = Element.Dark,
         isActive = false,
         level = 86,
         zCost = 200,
@@ -487,7 +454,6 @@ class DarkBook{
 
     private val darknessKingdom = Spell(
         name = R.string.darkKingdom,
-        inBook = Element.Dark,
         isActive = true,
         level = 88,
         zCost = 200,
@@ -501,7 +467,6 @@ class DarkBook{
 
     private val undetectable = Spell(
         name = R.string.undetectable,
-        inBook = Element.Dark,
         isActive = true,
         level = 90,
         zCost = 380,
@@ -515,7 +480,6 @@ class DarkBook{
 
     private val prisonOfDarkness = Spell(
         name = R.string.darkPrison,
-        inBook = Element.Dark,
         isActive = true,
         level = 92,
         zCost = 200,
@@ -529,7 +493,6 @@ class DarkBook{
 
     private val oneWithDarkness = Spell(
         name = R.string.darkOne,
-        inBook = Element.Dark,
         isActive = true,
         level = 96,
         zCost = 100,
@@ -543,7 +506,6 @@ class DarkBook{
 
     private val darkAscension = Spell(
         name = R.string.darkAscension,
-        inBook = Element.Dark,
         isActive = true,
         level = 98,
         zCost = 300,
@@ -557,7 +519,6 @@ class DarkBook{
 
     private val darkHolocaust = Spell(
         name = R.string.holoDark,
-        inBook = Element.Dark,
         isActive = true,
         level = 100,
         zCost = 600,
@@ -569,56 +530,58 @@ class DarkBook{
         type = listOf(SpellType.Attack, SpellType.Spiritual)
     )
 
-    val fullBook = listOf(
-        createDark,
-        null,
-        induceFear,
-        seeInDarkness,
-        darkShield,
-        shadow,
-        null,
-        darkArmor,
-        banishLight,
-        hideMagic,
-        darkBeam,
-        null,
-        darkzone,
-        darkBond,
-        controlDark,
-        concealment,
-        null,
-        obfuscate,
-        enrage,
-        banishPositiveEmotions,
-        night,
-        null,
-        darkSphere,
-        concealZone,
-        enterNightmare,
-        darkForm,
-        null,
-        perdition,
-        createNegativeFeelings,
-        eliminateTraces,
-        shieldFromPositive,
-        null,
-        devouringDark,
-        devastate,
-        markOfFear,
-        catastrophicDarkness,
-        null,
-        darkMaterialObjects,
-        shadowTravel,
-        nightmareLord,
-        createDarkBeing,
-        null,
-        concealmentFromMagic,
-        darknessKingdom,
-        undetectable,
-        prisonOfDarkness,
-        null,
-        oneWithDarkness,
-        darkAscension,
-        darkHolocaust
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            createDark,
+            null,
+            induceFear,
+            seeInDarkness,
+            darkShield,
+            shadow,
+            null,
+            darkArmor,
+            banishLight,
+            hideMagic,
+            darkBeam,
+            null,
+            darkzone,
+            darkBond,
+            controlDark,
+            concealment,
+            null,
+            obfuscate,
+            enrage,
+            banishPositiveEmotions,
+            night,
+            null,
+            darkSphere,
+            concealZone,
+            enterNightmare,
+            darkForm,
+            null,
+            perdition,
+            createNegativeFeelings,
+            eliminateTraces,
+            shieldFromPositive,
+            null,
+            devouringDark,
+            devastate,
+            markOfFear,
+            catastrophicDarkness,
+            null,
+            darkMaterialObjects,
+            shadowTravel,
+            nightmareLord,
+            createDarkBeing,
+            null,
+            concealmentFromMagic,
+            darknessKingdom,
+            undetectable,
+            prisonOfDarkness,
+            null,
+            oneWithDarkness,
+            darkAscension,
+            darkHolocaust
+        ))
+    }
 }

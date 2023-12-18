@@ -1,6 +1,8 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +10,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with necromancy.
  */
-class NecromancyBook{
+class NecromancyBook: MagicBook(Element.Necromancy){
     private val feelDeath = Spell(
         name = R.string.feelDeath,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +26,6 @@ class NecromancyBook{
 
     private val seeBeyond = Spell(
         name = R.string.seeBeyond,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +39,6 @@ class NecromancyBook{
 
     private val controlScavengers = Spell(
         name = R.string.controlScavenger,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 8,
         zCost = 40,
@@ -53,7 +52,6 @@ class NecromancyBook{
 
     private val spectralShield = Spell(
         name = R.string.spectralShield,
-        inBook = Element.Necromancy,
         isActive = false,
         level = 10,
         zCost = 40,
@@ -67,7 +65,6 @@ class NecromancyBook{
 
     private val drainLife = Spell(
         name = R.string.drainLife,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 12,
         zCost = 50,
@@ -81,7 +78,6 @@ class NecromancyBook{
 
     private val necromanticDetection = Spell(
         name = R.string.necroDetection,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 16,
         zCost = 50,
@@ -95,7 +91,6 @@ class NecromancyBook{
 
     private val talkToDead = Spell(
         name = R.string.talkToDead,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 18,
         zCost = 60,
@@ -109,7 +104,6 @@ class NecromancyBook{
 
     private val necromanticParalysis = Spell(
         name = R.string.necroParalyze,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 20,
         zCost = 60,
@@ -123,7 +117,6 @@ class NecromancyBook{
 
     private val necromitude = Spell(
         name = R.string.necromitude,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 22,
         zCost = 80,
@@ -137,7 +130,6 @@ class NecromancyBook{
 
     private val deathBeam = Spell(
         name = R.string.deathBeam,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 26,
         zCost = 60,
@@ -151,7 +143,6 @@ class NecromancyBook{
 
     private val raiseCorpses = Spell(
         name = R.string.raiseCorpse,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 28,
         zCost = 80,
@@ -165,7 +156,6 @@ class NecromancyBook{
 
     private val deadBody = Spell(
         name = R.string.deadBody,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 30,
         zCost = 80,
@@ -179,7 +169,6 @@ class NecromancyBook{
 
     private val drainMagic = Spell(
         name = R.string.drainMag,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -193,7 +182,6 @@ class NecromancyBook{
 
     private val destroyUndead = Spell(
         name = R.string.destroyUndead,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 36,
         zCost = 80,
@@ -207,7 +195,6 @@ class NecromancyBook{
 
     private val drainCharacteristic = Spell(
         name = R.string.drainChar,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 38,
         zCost = 80,
@@ -221,7 +208,6 @@ class NecromancyBook{
 
     private val controlDead = Spell(
         name = R.string.controlDead,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 40,
         zCost = 100,
@@ -235,7 +221,6 @@ class NecromancyBook{
 
     private val witherLife = Spell(
         name = R.string.witherLife,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 42,
         zCost = 80,
@@ -249,7 +234,6 @@ class NecromancyBook{
 
     private val necromanticShield = Spell(
         name = R.string.necroShield,
-        inBook = Element.Necromancy,
         isActive = false,
         level = 46,
         zCost = 80,
@@ -263,7 +247,6 @@ class NecromancyBook{
 
     private val dominateLife = Spell(
         name = R.string.dominateLife,
-        inBook = Element.Necromancy,
         isActive = false,
         level = 48,
         zCost = 140,
@@ -277,7 +260,6 @@ class NecromancyBook{
 
     private val vampireStigma = Spell(
         name = R.string.vampireStigma,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 50,
         zCost = 140,
@@ -291,7 +273,6 @@ class NecromancyBook{
 
     private val spectralForm = Spell(
         name = R.string.spectralForm,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -305,7 +286,6 @@ class NecromancyBook{
 
     private val necromanticModification = Spell(
         name = R.string.necroMod,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 56,
         zCost = 100,
@@ -319,7 +299,6 @@ class NecromancyBook{
 
     private val summonDead = Spell(
         name = R.string.deadSummon,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 58,
         zCost = 100,
@@ -333,7 +312,6 @@ class NecromancyBook{
 
     private val raiseSpecters = Spell(
         name = R.string.raiseSpecters,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 60,
         zCost = 200,
@@ -347,7 +325,6 @@ class NecromancyBook{
 
     private val drainLifeForce = Spell(
         name = R.string.drainLifeForce,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 62,
         zCost = 180,
@@ -361,7 +338,6 @@ class NecromancyBook{
 
     private val kill = Spell(
         name = R.string.kill,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 66,
         zCost = 100,
@@ -375,7 +351,6 @@ class NecromancyBook{
 
     private val soulBeam = Spell(
         name = R.string.soulBeam,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 68,
         zCost = 140,
@@ -389,7 +364,6 @@ class NecromancyBook{
 
     private val necromanticChimera = Spell(
         name = R.string.necroChimera,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 70,
         zCost = 250,
@@ -403,7 +377,6 @@ class NecromancyBook{
 
     private val lifePerversion = Spell(
         name = R.string.lifePerversion,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 72,
         zCost = 180,
@@ -417,7 +390,6 @@ class NecromancyBook{
 
     private val vassalage = Spell(
         name = R.string.vassalage,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 76,
         zCost = 250,
@@ -431,7 +403,6 @@ class NecromancyBook{
 
     private val drainSouls = Spell(
         name = R.string.drainSouls,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 78,
         zCost = 200,
@@ -445,7 +416,6 @@ class NecromancyBook{
 
     private val surpassDeath = Spell(
         name = R.string.surpassDeath,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 80,
         zCost = 300,
@@ -459,7 +429,6 @@ class NecromancyBook{
 
     private val trueRise = Spell(
         name = R.string.trueRise,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 82,
         zCost = 320,
@@ -473,7 +442,6 @@ class NecromancyBook{
 
     private val wellOfLife = Spell(
         name = R.string.lifeWell,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 86,
         zCost = 300,
@@ -487,7 +455,6 @@ class NecromancyBook{
 
     private val cursedLand = Spell(
         name = R.string.cursedLand,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 88,
         zCost = 350,
@@ -501,7 +468,6 @@ class NecromancyBook{
 
     private val sustenance = Spell(
         name = R.string.sustenance,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 90,
         zCost = 200,
@@ -515,7 +481,6 @@ class NecromancyBook{
 
     private val rawMaterial = Spell(
         name = R.string.rawMaterial,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 92,
         zCost = 350,
@@ -529,7 +494,6 @@ class NecromancyBook{
 
     private val lordOfTheDead = Spell(
         name = R.string.deadLord,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 96,
         zCost = 300,
@@ -543,7 +507,6 @@ class NecromancyBook{
 
     private val comeBackFromDead = Spell(
         name = R.string.comeBackFromDead,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 98,
         zCost = 400,
@@ -557,7 +520,6 @@ class NecromancyBook{
 
     private val awakening = Spell(
         name = R.string.awakening,
-        inBook = Element.Necromancy,
         isActive = true,
         level = 100,
         zCost = 900,
@@ -569,56 +531,116 @@ class NecromancyBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        feelDeath,
-        null,
-        seeBeyond,
-        controlScavengers,
-        spectralShield,
-        drainLife,
-        null,
-        necromanticDetection,
-        talkToDead,
-        necromanticParalysis,
-        necromitude,
-        null,
-        deathBeam,
-        raiseCorpses,
-        deadBody,
-        drainMagic,
-        null,
-        destroyUndead,
-        drainCharacteristic,
-        controlDead,
-        witherLife,
-        null,
-        necromanticShield,
-        dominateLife,
-        vampireStigma,
-        spectralForm,
-        null,
-        necromanticModification,
-        summonDead,
-        raiseSpecters,
-        drainLifeForce,
-        null,
-        kill,
-        soulBeam,
-        necromanticChimera,
-        lifePerversion,
-        null,
-        vassalage,
-        drainSouls,
-        surpassDeath,
-        trueRise,
-        null,
-        wellOfLife,
-        cursedLand,
-        sustenance,
-        rawMaterial,
-        null,
-        lordOfTheDead,
-        comeBackFromDead,
-        awakening
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            feelDeath,
+            null,
+            seeBeyond,
+            controlScavengers,
+            spectralShield,
+            drainLife,
+            null,
+            necromanticDetection,
+            talkToDead,
+            necromanticParalysis,
+            necromitude,
+            null,
+            deathBeam,
+            raiseCorpses,
+            deadBody,
+            drainMagic,
+            null,
+            destroyUndead,
+            drainCharacteristic,
+            controlDead,
+            witherLife,
+            null,
+            necromanticShield,
+            dominateLife,
+            vampireStigma,
+            spectralForm,
+            null,
+            necromanticModification,
+            summonDead,
+            raiseSpecters,
+            drainLifeForce,
+            null,
+            kill,
+            soulBeam,
+            necromanticChimera,
+            lifePerversion,
+            null,
+            vassalage,
+            drainSouls,
+            surpassDeath,
+            trueRise,
+            null,
+            wellOfLife,
+            cursedLand,
+            sustenance,
+            rawMaterial,
+            null,
+            lordOfTheDead,
+            comeBackFromDead,
+            awakening
+        ))
+    }
+
+    /**
+     * Sets the primary status of this book in ways unique to the necromancy book.
+     *
+     * @param isTaking value to set the primary status to
+     */
+    override fun changePrimary(isTaking: Boolean) {
+        //if making necromancy book primary element
+        if(hasInvestment() && isTaking){
+            //remove all other elements' primary statuses
+            opposingBooks.forEach{book ->
+                book.isPrimary.value = false
+            }
+
+            //apply primary status to this book
+            isPrimary.value = true
+        }
+        //if removing primary element status
+        else if (!isTaking && isPrimary.value){
+            //initialize opposing book pointer
+            var index = 0
+
+            while(index < 10){
+                //retrieve the two opposing books
+                val book1 = opposingBooks[index++]
+                val book2 = opposingBooks[index++]
+
+                //make the larger invested in book the primary one
+                if(book1.pointsIn.intValue > book2.pointsIn.intValue)
+                    book1.changePrimary(isTaking = true)
+                //make sure there are points invested in the other book
+                else if(book2.hasInvestment())
+                    book2.changePrimary(isTaking = true)
+            }
+        }
+    }
+
+    /**
+     * Check if the character has the indicated free spell.
+     *
+     * @param freeSpell spell to search for in the books
+     * @return magic book the free spell belongs to
+     */
+    override fun charHasFreeSpell(freeSpell: FreeSpell): MagicBook?{
+        //check all other books for the queried item
+        opposingBooks.forEach{opposing ->
+            opposing.freeSpells.forEach{spell ->
+                if(spell.saveName == freeSpell.saveName) return opposing
+            }
+        }
+
+        //check this book for the spell
+        freeSpells.forEach{spell ->
+            if(spell.saveName == freeSpell.saveName) return this
+        }
+
+        return null
+    }
 }

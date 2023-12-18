@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the essence element.
  */
-class EssenceBook{
+class EssenceBook: MagicBook(Element.Essence){
     private val naturalAffinity = Spell(
         name = R.string.natAffinity,
-        inBook = Element.Essence,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class EssenceBook{
 
     private val detectEssence = Spell(
         name = R.string.detectEssence,
-        inBook = Element.Essence,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +38,6 @@ class EssenceBook{
 
     private val essenceCommunicate = Spell(
         name = R.string.essenceCom,
-        inBook = Element.Essence,
         isActive = true,
         level = 10,
         zCost = 30,
@@ -53,7 +51,6 @@ class EssenceBook{
 
     private val naturalKnowledge = Spell(
         name = R.string.natKnowledge,
-        inBook = Element.Essence,
         isActive = true,
         level = 12,
         zCost = 40,
@@ -67,7 +64,6 @@ class EssenceBook{
 
     private val healing = Spell(
         name = R.string.healing,
-        inBook = Element.Essence,
         isActive = true,
         level = 16,
         zCost = 80,
@@ -81,7 +77,6 @@ class EssenceBook{
 
     private val soulBarrier = Spell(
         name = R.string.soulBarrier,
-        inBook = Element.Essence,
         isActive = true,
         level = 20,
         zCost = 60,
@@ -95,7 +90,6 @@ class EssenceBook{
 
     private val shareSenses = Spell(
         name = R.string.shareSense,
-        inBook = Element.Essence,
         isActive = true,
         level = 22,
         zCost = 60,
@@ -109,7 +103,6 @@ class EssenceBook{
 
     private val modifyEssence = Spell(
         name = R.string.essenceMod,
-        inBook = Element.Essence,
         isActive = true,
         level = 26,
         zCost = 50,
@@ -123,7 +116,6 @@ class EssenceBook{
 
     private val soulPoison = Spell(
         name = R.string.soulPoison,
-        inBook = Element.Essence,
         isActive = true,
         level = 30,
         zCost = 60,
@@ -137,7 +129,6 @@ class EssenceBook{
 
     private val analyzeSoul = Spell(
         name = R.string.analyzeSoul,
-        inBook = Element.Essence,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -151,7 +142,6 @@ class EssenceBook{
 
     private val acquireNaturalCapacities = Spell(
         name = R.string.acquireCapacities,
-        inBook = Element.Essence,
         isActive = true,
         level = 36,
         zCost = 120,
@@ -165,7 +155,6 @@ class EssenceBook{
 
     private val revitalize = Spell(
         name = R.string.revitalize,
-        inBook = Element.Essence,
         isActive = true,
         level = 40,
         zCost = 100,
@@ -179,7 +168,6 @@ class EssenceBook{
 
     private val lifeMind = Spell(
         name = R.string.lifeMind,
-        inBook = Element.Essence,
         isActive = true,
         level = 42,
         zCost = 120,
@@ -193,7 +181,6 @@ class EssenceBook{
 
     private val alterGrowth = Spell(
         name = R.string.alterGrowth,
-        inBook = Element.Essence,
         isActive = true,
         level = 46,
         zCost = 100,
@@ -207,7 +194,6 @@ class EssenceBook{
 
     private val naturalImitation = Spell(
         name = R.string.natImitation,
-        inBook = Element.Essence,
         isActive = true,
         level = 50,
         zCost = 60,
@@ -221,7 +207,6 @@ class EssenceBook{
 
     private val spiritualForm = Spell(
         name = R.string.spiritForm,
-        inBook = Element.Essence,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -235,7 +220,6 @@ class EssenceBook{
 
     private val naturalControl = Spell(
         name = R.string.natureControl,
-        inBook = Element.Essence,
         isActive = true,
         level = 56,
         zCost = 100,
@@ -249,7 +233,6 @@ class EssenceBook{
 
     private val stateInduction = Spell(
         name = R.string.stateInduce,
-        inBook = Element.Essence,
         isActive = true,
         level = 60,
         zCost = 100,
@@ -263,7 +246,6 @@ class EssenceBook{
 
     private val flowReturn = Spell(
         name = R.string.flowReturn,
-        inBook = Element.Essence,
         isActive = true,
         level = 62,
         zCost = 100,
@@ -277,7 +259,6 @@ class EssenceBook{
 
     private val shieldArea = Spell(
         name = R.string.shieldArea,
-        inBook = Element.Essence,
         isActive = true,
         level = 66,
         zCost = 120,
@@ -291,7 +272,6 @@ class EssenceBook{
 
     private val supernaturalControl = Spell(
         name = R.string.supernaturalControl,
-        inBook = Element.Essence,
         isActive = true,
         level = 70,
         zCost = 120,
@@ -305,7 +285,6 @@ class EssenceBook{
 
     private val shareEssence = Spell(
         name = R.string.shareEssence,
-        inBook = Element.Essence,
         isActive = true,
         level = 72,
         zCost = 140,
@@ -319,7 +298,6 @@ class EssenceBook{
 
     private val transmigrateSoul = Spell(
         name = R.string.transmigrateSoul,
-        inBook = Element.Essence,
         isActive = true,
         level = 76,
         zCost = 180,
@@ -333,7 +311,6 @@ class EssenceBook{
 
     private val spiritualExistence = Spell(
         name = R.string.spiritExist,
-        inBook = Element.Essence,
         isActive = true,
         level = 80,
         zCost = 200,
@@ -347,7 +324,6 @@ class EssenceBook{
 
     private val spiritCreation = Spell(
         name = R.string.spiritCreate,
-        inBook = Element.Essence,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -361,7 +337,6 @@ class EssenceBook{
 
     private val tieVitalEssence = Spell(
         name = R.string.tieVitalEssence,
-        inBook = Element.Essence,
         isActive = true,
         level = 86,
         zCost = 200,
@@ -375,7 +350,6 @@ class EssenceBook{
 
     private val greenness = Spell(
         name = R.string.greenness,
-        inBook = Element.Essence,
         isActive = true,
         level = 90,
         zCost = 250,
@@ -389,7 +363,6 @@ class EssenceBook{
 
     private val lifeDominion = Spell(
         name = R.string.lifeDominion,
-        inBook = Element.Essence,
         isActive = true,
         level = 92,
         zCost = 300,
@@ -403,7 +376,6 @@ class EssenceBook{
 
     private val resurrection = Spell(
         name = R.string.resurrect,
-        inBook = Element.Essence,
         isActive = true,
         level = 96,
         zCost = 400,
@@ -417,7 +389,6 @@ class EssenceBook{
 
     private val soulLord = Spell(
         name = R.string.soulLord,
-        inBook = Element.Essence,
         isActive = true,
         level = 100,
         zCost = 600,
@@ -429,56 +400,58 @@ class EssenceBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        naturalAffinity,
-        null,
-        detectEssence,
-        null,
-        essenceCommunicate,
-        naturalKnowledge,
-        null,
-        healing,
-        null,
-        soulBarrier,
-        shareSenses,
-        null,
-        modifyEssence,
-        null,
-        soulPoison,
-        analyzeSoul,
-        null,
-        acquireNaturalCapacities,
-        null,
-        revitalize,
-        lifeMind,
-        null,
-        alterGrowth,
-        null,
-        naturalImitation,
-        spiritualForm,
-        null,
-        naturalControl,
-        null,
-        stateInduction,
-        flowReturn,
-        null,
-        shieldArea,
-        null,
-        supernaturalControl,
-        shareEssence,
-        null,
-        transmigrateSoul,
-        null,
-        spiritualExistence,
-        spiritCreation,
-        null,
-        tieVitalEssence,
-        null,
-        greenness,
-        lifeDominion,
-        null,
-        resurrection,
-        null,
-        soulLord
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            naturalAffinity,
+            null,
+            detectEssence,
+            null,
+            essenceCommunicate,
+            naturalKnowledge,
+            null,
+            healing,
+            null,
+            soulBarrier,
+            shareSenses,
+            null,
+            modifyEssence,
+            null,
+            soulPoison,
+            analyzeSoul,
+            null,
+            acquireNaturalCapacities,
+            null,
+            revitalize,
+            lifeMind,
+            null,
+            alterGrowth,
+            null,
+            naturalImitation,
+            spiritualForm,
+            null,
+            naturalControl,
+            null,
+            stateInduction,
+            flowReturn,
+            null,
+            shieldArea,
+            null,
+            supernaturalControl,
+            shareEssence,
+            null,
+            transmigrateSoul,
+            null,
+            spiritualExistence,
+            spiritCreation,
+            null,
+            tieVitalEssence,
+            null,
+            greenness,
+            lifeDominion,
+            null,
+            resurrection,
+            null,
+            soulLord
+        ))
+    }
 }

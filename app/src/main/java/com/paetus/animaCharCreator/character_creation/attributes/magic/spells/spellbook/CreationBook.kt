@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the creation element.
  */
-class CreationBook{
+class CreationBook: MagicBook(Element.Creation){
     private val minorCreation = Spell(
         name = R.string.minorCreation,
-        inBook = Element.Creation,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class CreationBook{
 
     private val reconstruct = Spell(
         name = R.string.reconstruct,
-        inBook = Element.Creation,
         isActive = true,
         level = 6,
         zCost = 40,
@@ -39,7 +38,6 @@ class CreationBook{
 
     private val createEnergy = Spell(
         name = R.string.createEnergy,
-        inBook = Element.Creation,
         isActive = true,
         level = 8,
         zCost = 40,
@@ -53,7 +51,6 @@ class CreationBook{
 
     private val regeneration = Spell(
         name = R.string.regeneration,
-        inBook = Element.Creation,
         isActive = true,
         level = 10,
         zCost = 60,
@@ -67,7 +64,6 @@ class CreationBook{
 
     private val inorganicModification = Spell(
         name = R.string.inorgMod,
-        inBook = Element.Creation,
         isActive = true,
         level = 12,
         zCost = 60,
@@ -81,7 +77,6 @@ class CreationBook{
 
     private val increaseResistances = Spell(
         name = R.string.resIncrease,
-        inBook = Element.Creation,
         isActive = true,
         level = 16,
         zCost = 80,
@@ -95,7 +90,6 @@ class CreationBook{
 
     private val royalShield = Spell(
         name = R.string.royalShield,
-        inBook = Element.Creation,
         isActive = false,
         level = 18,
         zCost = 40,
@@ -109,7 +103,6 @@ class CreationBook{
 
     private val heal = Spell(
         name = R.string.heal,
-        inBook = Element.Creation,
         isActive = true,
         level = 20,
         zCost = 80,
@@ -123,7 +116,6 @@ class CreationBook{
 
     private val damageBarrier = Spell(
         name = R.string.damageBarrier,
-        inBook = Element.Creation,
         isActive = true,
         level = 22,
         zCost = 60,
@@ -137,7 +129,6 @@ class CreationBook{
 
     private val homunculus = Spell(
         name = R.string.homunculus,
-        inBook = Element.Creation,
         isActive = true,
         level = 26,
         zCost = 60,
@@ -151,7 +142,6 @@ class CreationBook{
 
     private val minorChange = Spell(
         name = R.string.minorChange,
-        inBook = Element.Creation,
         isActive = true,
         level = 28,
         zCost = 60,
@@ -165,7 +155,6 @@ class CreationBook{
 
     private val imitate = Spell(
         name = R.string.imitate,
-        inBook = Element.Creation,
         isActive = true,
         level = 30,
         zCost = 100,
@@ -179,7 +168,6 @@ class CreationBook{
 
     private val immunity = Spell(
         name = R.string.immunity,
-        inBook = Element.Creation,
         isActive = true,
         level = 32,
         zCost = 80,
@@ -193,7 +181,6 @@ class CreationBook{
 
     private val reduceDamage = Spell(
         name = R.string.reduceDamage,
-        inBook = Element.Creation,
         isActive = false,
         level = 36,
         zCost = 80,
@@ -207,7 +194,6 @@ class CreationBook{
 
     private val physicalControl = Spell(
         name = R.string.controlPhys,
-        inBook = Element.Creation,
         isActive = true,
         level = 38,
         zCost = 120,
@@ -221,7 +207,6 @@ class CreationBook{
 
     private val raiseAbilities = Spell(
         name = R.string.raiseAbilities,
-        inBook = Element.Creation,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -235,7 +220,6 @@ class CreationBook{
 
     private val fuse = Spell(
         name = R.string.fuse,
-        inBook = Element.Creation,
         isActive = true,
         level = 42,
         zCost = 140,
@@ -249,7 +233,6 @@ class CreationBook{
 
     private val createMemories = Spell(
         name = R.string.createMem,
-        inBook = Element.Creation,
         isActive = true,
         level = 46,
         zCost = 140,
@@ -263,7 +246,6 @@ class CreationBook{
 
     private val recover = Spell(
         name = R.string.recover,
-        inBook = Element.Creation,
         isActive = true,
         level = 48,
         zCost = 150,
@@ -277,7 +259,6 @@ class CreationBook{
 
     private val acquirePowers = Spell(
         name = R.string.acquirePowers,
-        inBook = Element.Creation,
         isActive = true,
         level = 50,
         zCost = 100,
@@ -291,7 +272,6 @@ class CreationBook{
 
     private val createMonstrosity = Spell(
         name = R.string.createMonster,
-        inBook = Element.Creation,
         isActive = true,
         level = 52,
         zCost = 80,
@@ -305,7 +285,6 @@ class CreationBook{
 
     private val protectiveAura = Spell(
         name = R.string.protectAura,
-        inBook = Element.Creation,
         isActive = false,
         level = 56,
         zCost = 120,
@@ -319,7 +298,6 @@ class CreationBook{
 
     private val spiritualStandstill = Spell(
         name = R.string.spiritStandstill,
-        inBook = Element.Creation,
         isActive = true,
         level = 58,
         zCost = 150,
@@ -333,7 +311,6 @@ class CreationBook{
 
     private val perfectShield = Spell(
         name = R.string.perfShield,
-        inBook = Element.Creation,
         isActive = true,
         level = 60,
         zCost = 150,
@@ -347,20 +324,18 @@ class CreationBook{
 
     private val vitality = Spell(
         name = R.string.vitality,
-        inBook = Element.Creation,
         isActive = true,
         level = 62,
         zCost = 150,
         effect = R.string.vitalityDesc,
-        addedEffect = R.string.vitalityEff, zMax = 20,
-        maintenance = 10,
+        addedEffect = R.string.vitalityEff,
+        zMax = 20, maintenance = 10,
         isDaily = true,
         type = listOf(SpellType.Effect)
     )
 
     private val completeCreation = Spell(
         name = R.string.completeCreation,
-        inBook = Element.Creation,
         isActive = true,
         level = 66,
         zCost = 150,
@@ -374,7 +349,6 @@ class CreationBook{
 
     private val reinforceMagic = Spell(
         name = R.string.magReinforce,
-        inBook = Element.Creation,
         isActive = false,
         level = 68,
         zCost = 100,
@@ -388,7 +362,6 @@ class CreationBook{
 
     private val transmute = Spell(
         name = R.string.transmute,
-        inBook = Element.Creation,
         isActive = true,
         level = 70,
         zCost = 250,
@@ -402,7 +375,6 @@ class CreationBook{
 
     private val metamorphism = Spell(
         name = R.string.metamorph,
-        inBook = Element.Creation,
         isActive = true,
         level = 72,
         zCost = 150,
@@ -416,7 +388,6 @@ class CreationBook{
 
     private val recreate = Spell(
         name = R.string.recreate,
-        inBook = Element.Creation,
         isActive = true,
         level = 76,
         zCost = 300,
@@ -430,7 +401,6 @@ class CreationBook{
 
     private val createBeing = Spell(
         name = R.string.createBeing,
-        inBook = Element.Creation,
         isActive = true,
         level = 78,
         zCost = 250,
@@ -444,7 +414,6 @@ class CreationBook{
 
     private val chimera = Spell(
         name = R.string.chimera,
-        inBook = Element.Creation,
         isActive = true,
         level = 80,
         zCost = 250,
@@ -458,7 +427,6 @@ class CreationBook{
 
     private val safetyZone = Spell(
         name = R.string.safeZone,
-        inBook = Element.Creation,
         isActive = true,
         level = 82,
         zCost = 350,
@@ -472,7 +440,6 @@ class CreationBook{
 
     private val maintainMagic = Spell(
         name = R.string.magMaintain,
-        inBook = Element.Creation,
         isActive = true,
         level = 86,
         zCost = 250,
@@ -486,7 +453,6 @@ class CreationBook{
 
     private val provideSoul = Spell(
         name = R.string.provideSoul,
-        inBook = Element.Creation,
         isActive = true,
         level = 88,
         zCost = 500,
@@ -500,7 +466,6 @@ class CreationBook{
 
     private val greaterCreation = Spell(
         name = R.string.greatCreation,
-        inBook = Element.Creation,
         isActive = true,
         level = 90,
         zCost = 400,
@@ -514,7 +479,6 @@ class CreationBook{
 
     private val eternalMagic = Spell(
         name = R.string.magEternal,
-        inBook = Element.Creation,
         isActive = true,
         level = 92,
         zCost = 600,
@@ -528,7 +492,6 @@ class CreationBook{
 
     private val barrierSpell = Spell(
         name = R.string.barrier,
-        inBook = Element.Creation,
         isActive = true,
         level = 96,
         zCost = 800,
@@ -542,7 +505,6 @@ class CreationBook{
 
     private val giftOfLife = Spell(
         name = R.string.lifeGift,
-        inBook = Element.Creation,
         isActive = true,
         level = 98,
         zCost = 800,
@@ -556,7 +518,6 @@ class CreationBook{
 
     private val createSpell = Spell(
         name = R.string.createSpell,
-        inBook = Element.Creation,
         isActive = true,
         level = 100,
         zCost = 1000,
@@ -568,56 +529,58 @@ class CreationBook{
         type = listOf(SpellType.Effect)
     )
 
-    val fullBook = listOf(
-        minorCreation,
-        null,
-        reconstruct,
-        createEnergy,
-        regeneration,
-        inorganicModification,
-        null,
-        increaseResistances,
-        royalShield,
-        heal,
-        damageBarrier,
-        null,
-        homunculus,
-        minorChange,
-        imitate,
-        immunity,
-        null,
-        reduceDamage,
-        physicalControl,
-        raiseAbilities,
-        fuse,
-        null,
-        createMemories,
-        recover,
-        acquirePowers,
-        createMonstrosity,
-        null,
-        protectiveAura,
-        spiritualStandstill,
-        perfectShield,
-        vitality,
-        null,
-        completeCreation,
-        reinforceMagic,
-        transmute,
-        metamorphism,
-        null,
-        recreate,
-        createBeing,
-        chimera,
-        safetyZone,
-        null,
-        maintainMagic,
-        provideSoul,
-        greaterCreation,
-        eternalMagic,
-        null,
-        barrierSpell,
-        giftOfLife,
-        createSpell
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            minorCreation,
+            null,
+            reconstruct,
+            createEnergy,
+            regeneration,
+            inorganicModification,
+            null,
+            increaseResistances,
+            royalShield,
+            heal,
+            damageBarrier,
+            null,
+            homunculus,
+            minorChange,
+            imitate,
+            immunity,
+            null,
+            reduceDamage,
+            physicalControl,
+            raiseAbilities,
+            fuse,
+            null,
+            createMemories,
+            recover,
+            acquirePowers,
+            createMonstrosity,
+            null,
+            protectiveAura,
+            spiritualStandstill,
+            perfectShield,
+            vitality,
+            null,
+            completeCreation,
+            reinforceMagic,
+            transmute,
+            metamorphism,
+            null,
+            recreate,
+            createBeing,
+            chimera,
+            safetyZone,
+            null,
+            maintainMagic,
+            provideSoul,
+            greaterCreation,
+            eternalMagic,
+            null,
+            barrierSpell,
+            giftOfLife,
+            createSpell
+        ))
+    }
 }

@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the air element.
  */
-class AirBook {
+class AirBook: MagicBook(Element.Air) {
     private val raiseWind = Spell(
         name = R.string.raiseWind,
-        inBook = Element.Air,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class AirBook {
 
     private val moveSpell = Spell(
         name = R.string.move,
-        inBook = Element.Air,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +38,6 @@ class AirBook {
 
     private val reduceWeight = Spell(
         name = R.string.reduceWeight,
-        inBook = Element.Air,
         isActive = true,
         level = 10,
         zCost = 40,
@@ -53,7 +51,6 @@ class AirBook {
 
     private val stopBreathing = Spell(
         name = R.string.stopBreathe,
-        inBook = Element.Air,
         isActive = false,
         level = 12,
         zCost = 40,
@@ -67,7 +64,6 @@ class AirBook {
 
     private val freeMotion = Spell(
         name = R.string.freeMotion,
-        inBook = Element.Air,
         isActive = true,
         level = 16,
         zCost = 50,
@@ -81,7 +77,6 @@ class AirBook {
 
     private val airBlow = Spell(
         name = R.string.airBlow,
-        inBook = Element.Air,
         isActive = true,
         level = 20,
         zCost = 40,
@@ -95,7 +90,6 @@ class AirBook {
 
     private val airScreen = Spell(
         name = R.string.airScreen,
-        inBook = Element.Air,
         isActive = false,
         level = 22,
         zCost = 50,
@@ -109,7 +103,6 @@ class AirBook {
 
     private val autoTransport = Spell(
         name = R.string.autoTransport,
-        inBook = Element.Air,
         isActive = true,
         level = 26,
         zCost = 50,
@@ -123,7 +116,6 @@ class AirBook {
 
     private val flight = Spell(
         name = R.string.flightSpell,
-        inBook = Element.Air,
         isActive = true,
         level = 30,
         zCost = 60,
@@ -137,7 +129,6 @@ class AirBook {
 
     private val reactionIncrease = Spell(
         name = R.string.increaseReaction,
-        inBook = Element.Air,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -151,7 +142,6 @@ class AirBook {
 
     private val electrify = Spell(
         name = R.string.electrify,
-        inBook = Element.Air,
         isActive = true,
         level = 36,
         zCost = 80,
@@ -165,7 +155,6 @@ class AirBook {
 
     private val airCut = Spell(
         name = R.string.airCut,
-        inBook = Element.Air,
         isActive = true,
         level = 40,
         zCost = 60,
@@ -179,7 +168,6 @@ class AirBook {
 
     private val speedSpell = Spell(
         name = R.string.speed,
-        inBook = Element.Air,
         isActive = true,
         level = 42,
         zCost = 80,
@@ -193,7 +181,6 @@ class AirBook {
 
     private val lightning = Spell(
         name = R.string.lightning,
-        inBook = Element.Air,
         isActive = true,
         level = 46,
         zCost = 80,
@@ -207,7 +194,6 @@ class AirBook {
 
     private val whirlwind = Spell(
         name = R.string.whirlwind,
-        inBook = Element.Air,
         isActive = true,
         level = 50,
         zCost = 140,
@@ -221,7 +207,6 @@ class AirBook {
 
     private val etherealForm = Spell(
         name = R.string.etherForm,
-        inBook = Element.Air,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -235,7 +220,6 @@ class AirBook {
 
     private val airControl = Spell(
         name = R.string.airControl,
-        inBook = Element.Air,
         isActive = true,
         level = 56,
         zCost = 80,
@@ -249,7 +233,6 @@ class AirBook {
 
     private val electricityControl = Spell(
         name = R.string.controlElec,
-        inBook = Element.Air,
         isActive = true,
         level = 60,
         zCost = 80,
@@ -263,7 +246,6 @@ class AirBook {
 
     private val defensiveMovement = Spell(
         name = R.string.defenseMove,
-        inBook = Element.Air,
         isActive = false,
         level = 62,
         zCost = 120,
@@ -277,7 +259,6 @@ class AirBook {
 
     private val teletransportation = Spell(
         name = R.string.teleTransport,
-        inBook = Element.Air,
         isActive = true,
         level = 66,
         zCost = 150,
@@ -291,7 +272,6 @@ class AirBook {
 
     private val immateriality = Spell(
         name = R.string.immaterial,
-        inBook = Element.Air,
         isActive = true,
         level = 70,
         zCost = 120,
@@ -305,7 +285,6 @@ class AirBook {
 
     private val hurricane = Spell(
         name = R.string.hurricane,
-        inBook = Element.Air,
         isActive = true,
         level = 72,
         zCost = 200,
@@ -319,7 +298,6 @@ class AirBook {
 
     private val solidAir = Spell(
         name = R.string.solidAir,
-        inBook = Element.Air,
         isActive = true,
         level = 76,
         zCost = 140,
@@ -333,7 +311,6 @@ class AirBook {
 
     private val weatherControl = Spell(
         name = R.string.weatherControl,
-        inBook = Element.Air,
         isActive = true,
         level = 80,
         zCost = 220,
@@ -347,7 +324,6 @@ class AirBook {
 
     private val createSylph = Spell(
         name = R.string.createSylph,
-        inBook = Element.Air,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -361,7 +337,6 @@ class AirBook {
 
     private val superiorPsychokinesis = Spell(
         name = R.string.superPsychokinesis,
-        inBook = Element.Air,
         isActive = true,
         level = 86,
         zCost = 160,
@@ -375,7 +350,6 @@ class AirBook {
 
     private val relocateMagic = Spell(
         name = R.string.magRelocate,
-        inBook = Element.Air,
         isActive = true,
         level = 90,
         zCost = 180,
@@ -389,7 +363,6 @@ class AirBook {
 
     private val passiveMagic = Spell(
         name = R.string.passiveMag,
-        inBook = Element.Air,
         isActive = true,
         level = 92,
         zCost = 300,
@@ -403,7 +376,6 @@ class AirBook {
 
     private val airLord = Spell(
         name = R.string.airLord,
-        inBook = Element.Air,
         isActive = true,
         level = 96,
         zCost = 300,
@@ -417,7 +389,6 @@ class AirBook {
 
     private val placeInTheWorld = Spell(
         name = R.string.placeInWorld,
-        inBook = Element.Air,
         isActive = true,
         level = 100,
         zCost = 450,
@@ -429,56 +400,58 @@ class AirBook {
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        raiseWind,
-        null,
-        moveSpell,
-        null,
-        reduceWeight,
-        stopBreathing,
-        null,
-        freeMotion,
-        null,
-        airBlow,
-        airScreen,
-        null,
-        autoTransport,
-        null,
-        flight,
-        reactionIncrease,
-        null,
-        electrify,
-        null,
-        airCut,
-        speedSpell,
-        null,
-        lightning,
-        null,
-        whirlwind,
-        etherealForm,
-        null,
-        airControl,
-        null,
-        electricityControl,
-        defensiveMovement,
-        null,
-        teletransportation,
-        null,
-        immateriality,
-        hurricane,
-        null,
-        solidAir,
-        null,
-        weatherControl,
-        createSylph,
-        null,
-        superiorPsychokinesis,
-        null,
-        relocateMagic,
-        passiveMagic,
-        null,
-        airLord,
-        null,
-        placeInTheWorld
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            raiseWind,
+            null,
+            moveSpell,
+            null,
+            reduceWeight,
+            stopBreathing,
+            null,
+            freeMotion,
+            null,
+            airBlow,
+            airScreen,
+            null,
+            autoTransport,
+            null,
+            flight,
+            reactionIncrease,
+            null,
+            electrify,
+            null,
+            airCut,
+            speedSpell,
+            null,
+            lightning,
+            null,
+            whirlwind,
+            etherealForm,
+            null,
+            airControl,
+            null,
+            electricityControl,
+            defensiveMovement,
+            null,
+            teletransportation,
+            null,
+            immateriality,
+            hurricane,
+            null,
+            solidAir,
+            null,
+            weatherControl,
+            createSylph,
+            null,
+            superiorPsychokinesis,
+            null,
+            relocateMagic,
+            passiveMagic,
+            null,
+            airLord,
+            null,
+            placeInTheWorld
+        ))
+    }
 }

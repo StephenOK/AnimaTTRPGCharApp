@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.character_creation.attributes.advantages.adv
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
-import com.paetus.animaCharCreator.enumerations.Element
 
 /**
  * List of magical advantages and disadvantages a character may take.
@@ -28,53 +27,26 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
     )
 
     private val naturalPath = Advantage(
-        "pathKnowledge",
-        R.string.pathKnowledge,
-        R.string.natPathDesc,
-        R.string.natPathEff,
-        null,
-        R.string.natPathSpec,
-        R.array.elementList,
-        0,
-        null,
-        listOf(1),
-        0,
-        {input, _ ->
+        saveTag = "pathKnowledge",
+        name = R.string.pathKnowledge,
+        description = R.string.natPathDesc,
+        effect = R.string.natPathEff,
+        restriction = null,
+        special = R.string.natPathSpec,
+        options = R.array.elementList,
+        picked = 0,
+        multPicked = null,
+        cost = listOf(1),
+        pickedCost = 0,
+        onTake = { input, _ ->
             //add the desired element as a natural path bonus
-            when(input){
-                0 -> charInstance.magic.naturalPaths.add(Element.Light)
-                1 -> charInstance.magic.naturalPaths.add(Element.Dark)
-                2 -> charInstance.magic.naturalPaths.add(Element.Creation)
-                3 -> charInstance.magic.naturalPaths.add(Element.Destruction)
-                4 -> charInstance.magic.naturalPaths.add(Element.Air)
-                5-> charInstance.magic.naturalPaths.add(Element.Earth)
-                6-> charInstance.magic.naturalPaths.add(Element.Water)
-                7-> charInstance.magic.naturalPaths.add(Element.Fire)
-                8-> charInstance.magic.naturalPaths.add(Element.Essence)
-                9-> charInstance.magic.naturalPaths.add(Element.Illusion)
-                10-> charInstance.magic.naturalPaths.add(Element.Necromancy)
-            }
-
-            charInstance.magic.updateSpellList()
+            charInstance.magic.allBooks[input!!].isNatural.value = true
+        },
+        onRemove = { input, _ ->
+            //remove the indicated natural path bonus
+            charInstance.magic.allBooks[input!!].isNatural.value = false
         }
-    ) {input, _ ->
-        //remove the indicated natural path bonus
-        when (input) {
-            0 -> charInstance.magic.naturalPaths.remove(Element.Light)
-            1 -> charInstance.magic.naturalPaths.remove(Element.Dark)
-            2 -> charInstance.magic.naturalPaths.remove(Element.Creation)
-            3 -> charInstance.magic.naturalPaths.remove(Element.Destruction)
-            4 -> charInstance.magic.naturalPaths.remove(Element.Air)
-            5 -> charInstance.magic.naturalPaths.remove(Element.Earth)
-            6 -> charInstance.magic.naturalPaths.remove(Element.Water)
-            7 -> charInstance.magic.naturalPaths.remove(Element.Fire)
-            8 -> charInstance.magic.naturalPaths.remove(Element.Essence)
-            9 -> charInstance.magic.naturalPaths.remove(Element.Illusion)
-            10 -> charInstance.magic.naturalPaths.remove(Element.Necromancy)
-        }
-
-        charInstance.magic.updateSpellList()
-    }
+    )
 
     private val contestedSpellMastery = Advantage(
         saveTag = "contestedMastery",

@@ -402,8 +402,10 @@ fun MagicFragment(
                         SpellRow(
                             spell = spell,
                             buyable = false,
-                            magFragVM = magFragVM
-                        ) {}
+                            spellData = magFragVM.getSpellData(spell = spell),
+                            magFragVM = magFragVM,
+                            updateList = {}
+                        )
 
                     Row{Spacer(modifier = Modifier.height(3.dp))}
                 }
@@ -567,20 +569,15 @@ private fun SpellBookInvestment(
         ){
             //primary element checkbox
             Checkbox(
-                checked = magFragVM.primaryElementBoxes[spellData.spellElement]!!.value,
-                onCheckedChange = {
-                    magFragVM.changePrimaryBook(
-                        element = spellData.spellElement,
-                        isPrimary = it
-                    )
-                },
+                checked = spellData.isPrimary.collectAsState().value,
+                onCheckedChange = {spellData.setPrimaryElement(isPrimary = it)},
                 modifier = Modifier
                     .weight(0.1f)
             )
 
             //display associated element
             Text(
-                text = spellData.spellElement.name,
+                text = spellData.magicBook.element.name,
                 modifier = Modifier
                     .weight(0.25f)
             )
@@ -637,17 +634,19 @@ private fun SpellBookInvestment(
                 var freeSpellLevel = 0
 
                 //for each of the element's spells
-                spellData.spellList.forEach {spell ->
+                spellData.magicBook.fullBook.forEach {spell ->
                     //display the given spell if one is given
                     if (spell != null) {
                         SpellRow(
                             spell = spell,
                             buyable = true,
-                            magFragVM = magFragVM
-                        ) {
-                            magFragVM.reflectPrimaryElement()
-                            magFragVM.setMagicLevelSpent()
-                        }
+                            spellData = spellData,
+                            magFragVM = magFragVM,
+                            updateList = {
+                                spellData.setPrimaryElement(isPrimary = spellData.magicBook.isPrimary.value)
+                                magFragVM.setMagicLevelSpent()
+                            }
+                        )
 
                         //increment free spell level
                         freeSpellLevel = spell.level + 2
@@ -657,12 +656,14 @@ private fun SpellBookInvestment(
                     else
                         FreeSpellRow(
                             spellLevel = freeSpellLevel,
-                            spellElement = spellData.spellElement,
-                            magFragVM = magFragVM
-                        ) {
-                            magFragVM.reflectPrimaryElement()
-                            magFragVM.setMagicLevelSpent()
-                        }
+                            spellElement = spellData.magicBook.element,
+                            spellData = spellData,
+                            magFragVM = magFragVM,
+                            updateList = {
+                                spellData.setPrimaryElement(isPrimary = spellData.isPrimary.value)
+                                magFragVM.setMagicLevelSpent()
+                            }
+                        )
 
                     Spacer(modifier = Modifier.height(3.dp))
                 }
@@ -676,6 +677,7 @@ private fun SpellBookInvestment(
  *
  * @param spell spell to display
  * @param buyable whether the row is a purchasable individual spell or just a display
+ * @param spellData spellbook data for this row's spell
  * @param magFragVM viewModel that manages the data for this page
  * @param updateList function to run on a button change
  */
@@ -683,6 +685,7 @@ private fun SpellBookInvestment(
 private fun SpellRow(
     spell: Spell,
     buyable: Boolean,
+    spellData: MagicFragmentViewModel.SpellRowData,
     magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
 ){
@@ -697,6 +700,7 @@ private fun SpellRow(
         ){
             BuySingleSpellButton(
                 spell = spell,
+                spellData = spellData,
                 modifier = Modifier
                     .weight(0.35f),
                 magFragVM = magFragVM,
@@ -734,6 +738,7 @@ private fun SpellRow(
  *
  * @param spellLevel level of the free spell
  * @param spellElement element of the free spell
+ * @param spellData spellbook data for this row's spell
  * @param magFragVM viewModel that manages the data for this page
  * @param updateList function to run on free spell purchase
  */
@@ -741,6 +746,7 @@ private fun SpellRow(
 private fun FreeSpellRow(
     spellLevel: Int,
     spellElement: Element,
+    spellData: MagicFragmentViewModel.SpellRowData,
     magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
 ){
@@ -755,7 +761,7 @@ private fun FreeSpellRow(
         ) {
             BuySingleFreeSpellButton(
                 spellLevel = spellLevel,
-                spellElement = spellElement,
+                spellData = spellData,
                 modifier = Modifier
                     .weight(0.35f),
                 magFragVM = magFragVM,
@@ -784,6 +790,7 @@ private fun FreeSpellRow(
  * Button to purchase a spell individually.
  *
  * @param spell spell to be purchased
+ * @param spellData spellbook data for this item's associated spell
  * @param modifier parameters for the button's style
  * @param magFragVM viewModel that manages the data for this page
  * @param updateList function to run after spell purchase
@@ -791,6 +798,7 @@ private fun FreeSpellRow(
 @Composable
 private fun BuySingleSpellButton(
     spell: Spell,
+    spellData: MagicFragmentViewModel.SpellRowData,
     modifier: Modifier,
     magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
@@ -802,7 +810,7 @@ private fun BuySingleSpellButton(
         onClick = {
             //attempt to purchase the spell
             if(magFragVM.isGifted()) {
-                magFragVM.changeIndividualSpell(spell = spell)
+                spellData.buySingleSpell(spellLevel = spell.level)
                 updateList()
             }
             else
@@ -828,7 +836,7 @@ private fun BuySingleSpellButton(
  * Button to purchase an individual free spell.
  *
  * @param spellLevel level of the free spell
- * @param spellElement element associated with the free spell
+ * @param spellData spellbook data for this row's associated spell
  * @param modifier parameters for the button style
  * @param magFragVM viewModel that manages the data on this page
  * @param updateList function to run after spell purchase
@@ -836,7 +844,7 @@ private fun BuySingleSpellButton(
 @Composable
 private fun BuySingleFreeSpellButton(
     spellLevel: Int,
-    spellElement: Element,
+    spellData: MagicFragmentViewModel.SpellRowData,
     modifier: Modifier,
     magFragVM: MagicFragmentViewModel,
     updateList: () -> Unit
@@ -848,10 +856,7 @@ private fun BuySingleFreeSpellButton(
     Button(
         onClick = {
             if(magFragVM.isGifted()) {
-                magFragVM.changeIndividualFreeSpell(
-                    level = spellLevel,
-                    element = spellElement
-                )
+                spellData.buySingleSpell(spellLevel = spellLevel)
                 updateList()
             }
             else
@@ -865,7 +870,7 @@ private fun BuySingleFreeSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getFreeSpellHeld(level = spellLevel, element = spellElement)) R.string.spellRemoval
+                if((spellLevel/2) - 1 in spellData.magicBook.individualSpells) R.string.spellRemoval
                 else R.string.spellPurchase
             )
         )
@@ -957,8 +962,8 @@ fun MagicPreview(){
     magFragVM.setProjectionImbalance(30)
 
     magFragVM.allBooks[0].toggleListOpen()
-    magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[2]!!)
-    magFragVM.changeIndividualSpell(magFragVM.allBooks[0].spellList[3]!!)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[2]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[3]!!.level)
 
     MagicFragment(magFragVM, homePageVM)
 }

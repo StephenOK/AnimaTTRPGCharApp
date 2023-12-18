@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -11,6 +10,7 @@ import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeBook
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,9 +105,6 @@ class MagicFragmentViewModel(
     private val _detailItem = MutableStateFlow<Spell?>(value = null)
     val detailItem = _detailItem.asStateFlow()
 
-    //initialize list of primary element checkboxes
-    val primaryElementBoxes = mutableMapOf<Element, MutableState<Boolean>>()
-
     //initialize character's learned spells
     val heldSpells = mutableStateListOf<Spell>()
 
@@ -165,7 +162,10 @@ class MagicFragmentViewModel(
     /**
      * Sets the spent magic level display to the character's held value.
      */
-    fun setMagicLevelSpent(){_magicLevelSpent.update{magic.magicLevelSpent.intValue}}
+    fun setMagicLevelSpent(){
+        magic.updateMagLevelSpent()
+        _magicLevelSpent.update{magic.magicLevelSpent.intValue}
+    }
 
     /**
      * Change the character's magic imbalance display.
@@ -196,6 +196,22 @@ class MagicFragmentViewModel(
     }
 
     /**
+     * Gets the spell data object associated with the inputted spell.
+     *
+     * @param spell item to find the data of
+     * @return row data to find for this spell
+     */
+    fun getSpellData(spell: Spell): SpellRowData{
+        //search for the spell in each book
+        allBooks.forEach{book ->
+            if(spell in book.magicBook.fullBook) return book
+        }
+
+        //return necromancy if nothing found
+        return necromancyBook
+    }
+
+    /**
      * Attempt to open the free spell exchange dialog.
      *
      * @param freeSpell spell to set for choosing the free spell of
@@ -209,8 +225,18 @@ class MagicFragmentViewModel(
             return true
 
         //set free spell values
-        setFreeElement(element = getFreeElement(freeSpell))
+        setFreeElement(element = getFreeElement(freeSpell = freeSpell))
         setFreeLevel(lvlInput = freeSpell.level)
+
+        //set the book the free spell will be added to
+        val book = magic.getFreeSpellBook(freeSpell = freeSpell)
+        allBooks.forEach{bookData ->
+            if(bookData.magicBook == book){
+                setFreeBookAddition(bookData = bookData)
+                return@forEach
+            }
+        }
+
         toggleFreeExchangeOpen()
 
         //terminate process
@@ -242,39 +268,9 @@ class MagicFragmentViewModel(
      * @param freeSpell free spell to check
      * @return element associated with this spell
      */
-    fun getFreeElement(freeSpell: FreeSpell): Element {return magic.findFreeSpellElement(freeSpell)}
-
-    /**
-     * Adds a primary element checkbox to the master list.
-     *
-     * @param element element to add to the master list
-     */
-    private fun addPrimaryElementBox(element: Element){
-        primaryElementBoxes += Pair(element, mutableStateOf(magic.primaryElementList.contains(element)))
-    }
-
-    /**
-     * Attempt to change the character's primary element as indicated by the user.
-     *
-     * @param element element to change the state of
-     * @param isPrimary value to attempt to change it to
-     */
-    fun changePrimaryBook(
-        element: Element,
-        isPrimary: Boolean
-    ){
-        magic.changePrimaryBook(primeElement = element, isPrimary = isPrimary)
-        reflectPrimaryElement()
-        setMagicLevelSpent()
-    }
-
-    /**
-     * Change the primary element checkboxes to reflect the character's primary element list.
-     */
-    fun reflectPrimaryElement(){
-        primaryElementBoxes.forEach{(element, isPrimary) ->
-            isPrimary.value = magic.primaryElementList.contains(element = element)
-        }
+    fun getFreeElement(freeSpell: FreeSpell): Element {
+        val book = magic.necromancyBook.charHasFreeSpell(freeSpell = freeSpell)
+        return book?.element ?: freeSpell.forbiddenElements[0]
     }
 
     /**
@@ -375,7 +371,8 @@ class MagicFragmentViewModel(
      * @return true if individually purchasable
      */
     fun spellIsRemovable(spell: Spell): Boolean{
-        return !magic.spellList.contains(element = spell) || magic.individualSpells.contains(element = spell)
+        return magic.getSpellBook(spell = spell)!!.getCap() < spell.level ||
+                (spell.level/2) - 1 in magic.getElementBook(element = magic.getSpellElement(spell = spell))!!.individualSpells
     }
 
     /**
@@ -389,8 +386,8 @@ class MagicFragmentViewModel(
         spellLevel: Int,
         element: Element
     ): Boolean{
-        return !getFreeSpellHeld(level = spellLevel, element = element) ||
-                magic.hasIndividualFreeCopyOf(level = spellLevel, type = element)
+        return magic.getElementBook(element = element)!!.pointsIn.intValue < spellLevel ||
+                spellLevel in magic.getElementBook(element = element)!!.individualSpells
     }
 
     /**
@@ -400,54 +397,6 @@ class MagicFragmentViewModel(
      * @return true if the character has learned this spell
      */
     fun getSpellHeld(spell: Spell): Boolean{return magic.hasCopyOf(check = spell)}
-
-    /**
-     * Determines if the character is holding the inputted free spell.
-     *
-     * @param level free spell's level
-     * @param element free spell's associated element
-     * @return true if the character has learned this spell
-     */
-    fun getFreeSpellHeld(
-        level: Int,
-        element: Element
-    ): Boolean{
-        return magic.hasCopyOf(check = magic.getFreeSpell(
-            inputLevel = level,
-            inputElement = element
-        ))
-    }
-
-    /**
-     * Add or remove the spell to the character's learned list.
-     *
-     * @param spell spell to change the learned state of
-     */
-    fun changeIndividualSpell(spell: Spell){
-        magic.changeIndividualSpell(
-            targetSpell = spell,
-            isBought = !magic.individualSpells.contains(element = spell)
-        )
-        updateHeldSpells()
-    }
-
-    /**
-     * Add or remove the free spell to the character's learned list.
-     *
-     * @param level free spell's level
-     * @param element free spell's associated element
-     */
-    fun changeIndividualFreeSpell(
-        level: Int,
-        element: Element
-    ){
-        magic.changeIndividualFreeSpell(
-            levelInput = level,
-            elementInput = element,
-            isBought = !getFreeSpellHeld(level = level, element = element)
-        )
-        updateHeldSpells()
-    }
 
     /**
      * Add the user's selected free spell item to the character.
@@ -471,7 +420,7 @@ class MagicFragmentViewModel(
             )
 
             //add it to the character
-            magic.addFreeSpell(addSpell = item, intoElement = freeElement.value)
+            freeBookAddition.value.magicBook.addFreeSpell(spell = item)
             updateHeldSpells()
 
             //close the free exchange dialog
@@ -484,7 +433,7 @@ class MagicFragmentViewModel(
      */
     fun updateHeldSpells(){
         heldSpells.clear()
-        heldSpells.addAll(elements = magic.spellList)
+        heldSpells.addAll(elements = magic.getAllSpells())
     }
 
     //create item to manage zeon accumulation
@@ -525,94 +474,94 @@ class MagicFragmentViewModel(
     private val lightBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInLightBook.intValue},
-        spellElement = Element.Light,
-        spellList = magic.lightBook.fullBook
+        pointsIn = {magic.lightBook.pointsIn.intValue},
+        magicBook = magic.lightBook
     )
 
     private val darkBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInDarkBook.intValue},
-        spellElement = Element.Dark,
-        spellList = magic.darkBook.fullBook
+        pointsIn = {magic.darkBook.pointsIn.intValue},
+        magicBook = magic.darkBook
     )
 
     private val creationBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInCreateBook.intValue},
-        spellElement = Element.Creation,
-        spellList = magic.creationBook.fullBook
+        pointsIn = {magic.creationBook.pointsIn.intValue},
+        magicBook = magic.creationBook
     )
 
     private val destructionBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInDestructBook.intValue},
-        spellElement = Element.Destruction,
-        spellList = magic.destructionBook.fullBook
+        pointsIn = {magic.destructionBook.pointsIn.intValue},
+        magicBook = magic.destructionBook
     )
 
     private val airBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInAirBook.intValue},
-        spellElement = Element.Air,
-        spellList = magic.airBook.fullBook
+        pointsIn = {magic.airBook.pointsIn.intValue},
+        magicBook = magic.airBook
     )
 
     private val earthBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInEarthBook.intValue},
-        spellElement = Element.Earth,
-        spellList = magic.earthBook.fullBook
+        pointsIn = {magic.earthBook.pointsIn.intValue},
+        magicBook = magic.earthBook
     )
 
     private val waterBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInWaterBook.intValue},
-        spellElement = Element.Water,
-        spellList = magic.waterBook.fullBook
+        pointsIn = {magic.waterBook.pointsIn.intValue},
+        magicBook = magic.waterBook
     )
 
     private val fireBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInFireBook.intValue},
-        spellElement = Element.Fire,
-        spellList = magic.fireBook.fullBook
+        pointsIn = {magic.fireBook.pointsIn.intValue},
+        magicBook = magic.fireBook
     )
 
     private val essenceBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInEssenceBook.intValue},
-        spellElement = Element.Essence,
-        spellList = magic.essenceBook.fullBook
+        pointsIn = {magic.essenceBook.pointsIn.intValue},
+        magicBook = magic.essenceBook
     )
 
     private val illusionBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInIllusionBook.intValue},
-        spellElement = Element.Illusion,
-        spellList = magic.illusionBook.fullBook
+        pointsIn = {magic.illusionBook.pointsIn.intValue},
+        magicBook = magic.illusionBook
     )
 
     private val necromancyBook = SpellRowData(
         magic = magic,
         magFragVM = this,
-        pointsIn = {magic.pointsInNecroBook.intValue},
-        spellElement = Element.Necromancy,
-        spellList = magic.necromancyBook.fullBook
+        pointsIn = {magic.necromancyBook.pointsIn.intValue},
+        magicBook = magic.necromancyBook
     )
 
     //gather all books in one place
     val allBooks = listOf(lightBook, darkBook, creationBook, destructionBook, airBook, earthBook,
         waterBook, fireBook, essenceBook, illusionBook, necromancyBook)
+
+    //initialize the book the free spell is being added to
+    private val _freeBookAddition = MutableStateFlow(value = necromancyBook)
+    val freeBookAddition = _freeBookAddition.asStateFlow()
+
+    /**
+     * Sets the book a free spell will be applied to.
+     *
+     * @param bookData book data item to change the addition item to
+     */
+    private fun setFreeBookAddition(bookData: SpellRowData){_freeBookAddition.update{bookData}}
 
     /**
      * Class that holds data on a zeon purchase item.
@@ -691,16 +640,18 @@ class MagicFragmentViewModel(
      * @param magic character's magic abilities
      * @param magFragVM magic view model this object is contained in
      * @param pointsIn initial investment in this book
-     * @param spellElement book element of this object
-     * @param spellList spells associated with this book
+     * @param magicBook magic book associated with this item
      */
     class SpellRowData(
         val magic: Magic,
         private val magFragVM: MagicFragmentViewModel,
         val pointsIn: () -> Int,
-        val spellElement: Element,
-        val spellList: List<Spell?>
+        val magicBook: MagicBook
     ){
+        //initialize primary checkbox value
+        private val _isPrimary = MutableStateFlow(value = false)
+        val isPrimary = _isPrimary.asStateFlow()
+
         //initialize value of investment levels
         private val _elementInvestment = MutableStateFlow(value = pointsIn().toString())
         val elementInvestment = _elementInvestment.asStateFlow()
@@ -710,15 +661,29 @@ class MagicFragmentViewModel(
         val listOpen = _listOpen.asStateFlow()
 
         /**
+         * Sets the primary checkbox for this item's display.
+         *
+         * @param isPrimary value to set the checkbox to
+         */
+        fun setPrimaryElement(isPrimary: Boolean){
+            //attempt to apply the change to the book
+            magicBook.changePrimary(isTaking = isPrimary)
+
+            //reflect the book's data
+            _isPrimary.update{magicBook.isPrimary.value}
+        }
+
+        /**
          * Sets the number of magic levels invested in this book.
          *
          * @param magLevels number of levels to invest
          */
         fun setElementInvestment(magLevels: Int){
-            magic.buyBookLevels(spent = magLevels, book = spellElement)
-            magic.updateSpellList()
+            magicBook.buyLevels(pointBuy = magLevels)
 
             setElementInvestment(display = magLevels.toString())
+            magFragVM.setMagicLevelSpent()
+            _isPrimary.update{magicBook.isPrimary.value}
             magFragVM.updateHeldSpells()
         }
 
@@ -727,10 +692,15 @@ class MagicFragmentViewModel(
          *
          * @param display string to display
          */
-        fun setElementInvestment(display: String){
-            _elementInvestment.update{display}
-            magFragVM.setMagicLevelSpent()
-            magFragVM.reflectPrimaryElement()
+        fun setElementInvestment(display: String){_elementInvestment.update{display}}
+
+        /**
+         * Buys a single spell item for the character.
+         *
+         * @param spellLevel slot level to individually purchase
+         */
+        fun buySingleSpell(spellLevel: Int){
+            magicBook.changeIndividualSpell(spellLevel = spellLevel)
         }
 
         /**
@@ -742,6 +712,7 @@ class MagicFragmentViewModel(
          * Refreshes this item on a page refresh.
          */
         fun refreshItem(){
+            _isPrimary.update{magicBook.isPrimary.value}
             _elementInvestment.update{pointsIn().toString()}
         }
     }
@@ -749,19 +720,6 @@ class MagicFragmentViewModel(
     init{
         //set the initial imbalance bias
         setImbalanceIsAttack(isOffense = magic.imbalanceIsAttack.value)
-
-        //initialize all book primary checkboxes
-        addPrimaryElementBox(element = Element.Light)
-        addPrimaryElementBox(element = Element.Dark)
-        addPrimaryElementBox(element = Element.Creation)
-        addPrimaryElementBox(element = Element.Destruction)
-        addPrimaryElementBox(element = Element.Air)
-        addPrimaryElementBox(element = Element.Earth)
-        addPrimaryElementBox(element = Element.Water)
-        addPrimaryElementBox(element = Element.Fire)
-        addPrimaryElementBox(element = Element.Essence)
-        addPrimaryElementBox(element = Element.Illusion)
-        addPrimaryElementBox(element = Element.Necromancy)
 
         updateHeldSpells()
     }
@@ -774,8 +732,10 @@ class MagicFragmentViewModel(
         allPurchaseData.forEach{purchaseData -> purchaseData.refreshItem()}
         setProjectionImbalance(magic.magProjImbalance.intValue.toString())
         setMagicLevelSpent()
-        allBooks.forEach{book -> book.refreshItem()}
-        reflectPrimaryElement()
+
+        if(!isGifted())
+            allBooks.forEach{book -> book.refreshItem()}
+
         updateHeldSpells()
     }
 }

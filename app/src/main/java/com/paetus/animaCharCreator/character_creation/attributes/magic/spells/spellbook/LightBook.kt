@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the light element.
  */
-class LightBook{
+class LightBook: MagicBook(Element.Light){
     private val createLight = Spell(
         name = R.string.createLight,
-        inBook = Element.Light,
         isActive = true,
         level = 2,
         zCost = 20,
@@ -25,7 +25,6 @@ class LightBook{
 
     private val induceCalm = Spell(
         name = R.string.calmInduce,
-        inBook = Element.Light,
         isActive = true,
         level = 6,
         zCost = 40,
@@ -39,7 +38,6 @@ class LightBook{
 
     private val blindingFlash = Spell(
         name = R.string.blindFlash,
-        inBook = Element.Light,
         isActive = true,
         level = 8,
         zCost = 50,
@@ -53,7 +51,6 @@ class LightBook{
 
     private val lightShield = Spell(
         name = R.string.lightShield,
-        inBook = Element.Light,
         isActive = false,
         level = 10,
         zCost = 50,
@@ -67,7 +64,6 @@ class LightBook{
 
     private val perceiveSpell = Spell(
         name = R.string.perceive,
-        inBook = Element.Light,
         isActive = true,
         level = 12,
         zCost = 50,
@@ -81,7 +77,6 @@ class LightBook{
 
     private val lightArmor = Spell(
         name = R.string.lightArmor,
-        inBook = Element.Light,
         isActive = true,
         level = 16,
         zCost = 60,
@@ -95,7 +90,6 @@ class LightBook{
 
     private val banishShadows = Spell(
         name = R.string.banShadows,
-        inBook = Element.Light,
         isActive = true,
         level = 18,
         zCost = 60,
@@ -109,7 +103,6 @@ class LightBook{
 
     private val detectNegativeEmotions = Spell(
         name = R.string.findNegEmote,
-        inBook = Element.Light,
         isActive = true,
         level = 20,
         zCost = 50,
@@ -123,7 +116,6 @@ class LightBook{
 
     private val lightBeam = Spell(
         name = R.string.lightBeam,
-        inBook = Element.Light,
         isActive = true,
         level = 22,
         zCost = 50,
@@ -137,7 +129,6 @@ class LightBook{
 
     private val hologram = Spell(
         name = R.string.hologram,
-        inBook = Element.Light,
         isActive = true,
         level = 26,
         zCost = 40,
@@ -151,7 +142,6 @@ class LightBook{
 
     private val lightBond = Spell(
         name = R.string.lightBond,
-        inBook = Element.Light,
         isActive = true,
         level = 28,
         zCost = 60,
@@ -165,7 +155,6 @@ class LightBook{
 
     private val controlLight = Spell(
         name = R.string.lightControl,
-        inBook = Element.Light,
         isActive = true,
         level = 30,
         zCost = 50,
@@ -179,7 +168,6 @@ class LightBook{
 
     private val detectLife = Spell(
         name = R.string.detectLife,
-        inBook = Element.Light,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -193,7 +181,6 @@ class LightBook{
 
     private val lightSpy = Spell(
         name = R.string.lightSpy,
-        inBook = Element.Light,
         isActive = true,
         level = 36,
         zCost = 100,
@@ -207,7 +194,6 @@ class LightBook{
 
     private val ecstasy = Spell(
         name = R.string.ecstasy,
-        inBook = Element.Light,
         isActive = true,
         level = 38,
         zCost = 60,
@@ -221,7 +207,6 @@ class LightBook{
 
     private val banishNegativeEmotions = Spell(
         name = R.string.banNegEmote,
-        inBook = Element.Light,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -235,7 +220,6 @@ class LightBook{
 
     private val healingLight = Spell(
         name = R.string.healingLight,
-        inBook = Element.Light,
         isActive = true,
         level = 42,
         zCost = 80,
@@ -249,7 +233,6 @@ class LightBook{
 
     private val seekingSphere = Spell(
         name = R.string.seekSphere,
-        inBook = Element.Light,
         isActive = true,
         level = 46,
         zCost = 120,
@@ -263,7 +246,6 @@ class LightBook{
 
     private val detectionZone = Spell(
         name = R.string.detectZone,
-        inBook = Element.Light,
         isActive = true,
         level = 48,
         zCost = 140,
@@ -277,7 +259,6 @@ class LightBook{
 
     private val enterDreams = Spell(
         name = R.string.enterDreams,
-        inBook = Element.Light,
         isActive = true,
         level = 50,
         zCost = 120,
@@ -291,7 +272,6 @@ class LightBook{
 
     private val lightForm = Spell(
         name = R.string.lightForm,
-        inBook = Element.Light,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -305,7 +285,6 @@ class LightBook{
 
     private val blessingSpell = Spell(
         name = R.string.blessing,
-        inBook = Element.Light,
         isActive = true,
         level = 56,
         zCost = 100,
@@ -319,7 +298,6 @@ class LightBook{
 
     private val createGoodFeelings = Spell(
         name = R.string.goodFeelings,
-        inBook = Element.Light,
         isActive = true,
         level = 58,
         zCost = 100,
@@ -333,7 +311,6 @@ class LightBook{
 
     private val seeTruth = Spell(
         name = R.string.seeTruth,
-        inBook = Element.Light,
         isActive = true,
         level = 60,
         zCost = 100,
@@ -347,7 +324,6 @@ class LightBook{
 
     private val shieldFromNegative = Spell(
         name = R.string.shieldNegative,
-        inBook = Element.Light,
         isActive = true,
         level = 62,
         zCost = 140,
@@ -361,7 +337,6 @@ class LightBook{
 
     private val findSpell = Spell(
         name = R.string.find,
-        inBook = Element.Light,
         isActive = true,
         level = 66,
         zCost = 160,
@@ -375,7 +350,6 @@ class LightBook{
 
     private val restoreSpell = Spell(
         name = R.string.restore,
-        inBook = Element.Light,
         isActive = true,
         level = 68,
         zCost = 160,
@@ -389,7 +363,6 @@ class LightBook{
 
     private val hypnoticDisplay = Spell(
         name = R.string.hypnoDisplay,
-        inBook = Element.Light,
         isActive = true,
         level = 70,
         zCost = 140,
@@ -403,7 +376,6 @@ class LightBook{
 
     private val catastrophicLight = Spell(
         name = R.string.catastrophicLight,
-        inBook = Element.Light,
         isActive = true,
         level = 72,
         zCost = 120,
@@ -417,7 +389,6 @@ class LightBook{
 
     private val luminousMaterial = Spell(
         name = R.string.lumMat,
-        inBook = Element.Light,
         isActive = true,
         level = 76,
         zCost = 150,
@@ -431,7 +402,6 @@ class LightBook{
 
     private val lightTravel = Spell(
         name = R.string.lightTravel,
-        inBook = Element.Light,
         isActive = true,
         level = 78,
         zCost = 250,
@@ -445,7 +415,6 @@ class LightBook{
 
     private val dreamLordship = Spell(
         name = R.string.dreamLord,
-        inBook = Element.Light,
         isActive = true,
         level = 80,
         zCost = 300,
@@ -459,7 +428,6 @@ class LightBook{
 
     private val createLightBeing = Spell(
         name = R.string.lightBeing,
-        inBook = Element.Light,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -473,7 +441,6 @@ class LightBook{
 
     private val reflectingPrism = Spell(
         name = R.string.reflectPrism,
-        inBook = Element.Light,
         isActive = false,
         level = 86,
         zCost = 160,
@@ -487,7 +454,6 @@ class LightBook{
 
     private val omniscienceRadius = Spell(
         name = R.string.omniscience,
-        inBook = Element.Light,
         isActive = true,
         level = 88,
         zCost = 200,
@@ -501,7 +467,6 @@ class LightBook{
 
     private val predict = Spell(
         name = R.string.predict,
-        inBook = Element.Light,
         isActive = true,
         level = 90,
         zCost = 200,
@@ -515,7 +480,6 @@ class LightBook{
 
     private val lightPrison = Spell(
         name = R.string.lightPrison,
-        inBook = Element.Light,
         isActive = true,
         level = 92,
         zCost = 200,
@@ -529,7 +493,6 @@ class LightBook{
 
     private val oneWithLight = Spell(
         name = R.string.oneLight,
-        inBook = Element.Light,
         isActive = true,
         level = 96,
         zCost = 100,
@@ -543,7 +506,6 @@ class LightBook{
 
     private val ascension = Spell(
         name = R.string.ascension,
-        inBook = Element.Light,
         isActive = true,
         level = 98,
         zCost = 300,
@@ -557,7 +519,6 @@ class LightBook{
 
     private val lightHolocaust = Spell(
         name = R.string.holoLight,
-        inBook = Element.Light,
         isActive = true,
         level = 100,
         zCost = 600,
@@ -569,56 +530,58 @@ class LightBook{
         type = listOf(SpellType.Attack, SpellType.Spiritual)
     )
 
-    val fullBook = listOf(
-        createLight,
-        null,
-        induceCalm,
-        blindingFlash,
-        lightShield,
-        perceiveSpell,
-        null,
-        lightArmor,
-        banishShadows,
-        detectNegativeEmotions,
-        lightBeam,
-        null,
-        hologram,
-        lightBond,
-        controlLight,
-        detectLife,
-        null,
-        lightSpy,
-        ecstasy,
-        banishNegativeEmotions,
-        healingLight,
-        null,
-        seekingSphere,
-        detectionZone,
-        enterDreams,
-        lightForm,
-        null,
-        blessingSpell,
-        createGoodFeelings,
-        seeTruth,
-        shieldFromNegative,
-        null,
-        findSpell,
-        restoreSpell,
-        hypnoticDisplay,
-        catastrophicLight,
-        null,
-        luminousMaterial,
-        lightTravel,
-        dreamLordship,
-        createLightBeing,
-        null,
-        reflectingPrism,
-        omniscienceRadius,
-        predict,
-        lightPrison,
-        null,
-        oneWithLight,
-        ascension,
-        lightHolocaust
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            createLight,
+            null,
+            induceCalm,
+            blindingFlash,
+            lightShield,
+            perceiveSpell,
+            null,
+            lightArmor,
+            banishShadows,
+            detectNegativeEmotions,
+            lightBeam,
+            null,
+            hologram,
+            lightBond,
+            controlLight,
+            detectLife,
+            null,
+            lightSpy,
+            ecstasy,
+            banishNegativeEmotions,
+            healingLight,
+            null,
+            seekingSphere,
+            detectionZone,
+            enterDreams,
+            lightForm,
+            null,
+            blessingSpell,
+            createGoodFeelings,
+            seeTruth,
+            shieldFromNegative,
+            null,
+            findSpell,
+            restoreSpell,
+            hypnoticDisplay,
+            catastrophicLight,
+            null,
+            luminousMaterial,
+            lightTravel,
+            dreamLordship,
+            createLightBeing,
+            null,
+            reflectingPrism,
+            omniscienceRadius,
+            predict,
+            lightPrison,
+            null,
+            oneWithLight,
+            ascension,
+            lightHolocaust
+        ))
+    }
 }

@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the earth element.
  */
-class EarthBook{
+class EarthBook: MagicBook(Element.Earth){
     private val detectMinerals = Spell(
         name = R.string.detectMinerals,
-        inBook = Element.Earth,
         isActive = true,
         level = 2,
         zCost = 20,
@@ -25,7 +25,6 @@ class EarthBook{
 
     private val mineralControl = Spell(
         name = R.string.controlMineral,
-        inBook = Element.Earth,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +38,6 @@ class EarthBook{
 
     private val weightIncrement = Spell(
         name = R.string.weightIncrement,
-        inBook = Element.Earth,
         isActive = true,
         level = 10,
         zCost = 40,
@@ -53,7 +51,6 @@ class EarthBook{
 
     private val transformMineral = Spell(
         name = R.string.transMineral,
-        inBook = Element.Earth,
         isActive = false,
         level = 12,
         zCost = 40,
@@ -67,7 +64,6 @@ class EarthBook{
 
     private val firmness = Spell(
         name = R.string.firmness,
-        inBook = Element.Earth,
         isActive = true,
         level = 16,
         zCost = 50,
@@ -81,7 +77,6 @@ class EarthBook{
 
     private val stoneBarrier = Spell(
         name = R.string.stoneBarrier,
-        inBook = Element.Earth,
         isActive = false,
         level = 20,
         zCost = 60,
@@ -95,7 +90,6 @@ class EarthBook{
 
     private val slowness = Spell(
         name = R.string.slowness,
-        inBook = Element.Earth,
         isActive = true,
         level = 22,
         zCost = 60,
@@ -109,7 +103,6 @@ class EarthBook{
 
     private val shell = Spell(
         name = R.string.shell,
-        inBook = Element.Earth,
         isActive = true,
         level = 26,
         zCost = 80,
@@ -123,7 +116,6 @@ class EarthBook{
 
     private val magneticShield = Spell(
         name = R.string.magnetShield,
-        inBook = Element.Earth,
         isActive = false,
         level = 30,
         zCost = 50,
@@ -137,7 +129,6 @@ class EarthBook{
 
     private val passThroughMatter = Spell(
         name = R.string.passMatter,
-        inBook = Element.Earth,
         isActive = true,
         level = 32,
         zCost = 80,
@@ -151,7 +142,6 @@ class EarthBook{
 
     private val earthSpike = Spell(
         name = R.string.earthSpike,
-        inBook = Element.Earth,
         isActive = true,
         level = 36,
         zCost = 80,
@@ -165,7 +155,6 @@ class EarthBook{
 
     private val breakage = Spell(
         name = R.string.breakage,
-        inBook = Element.Earth,
         isActive = true,
         level = 40,
         zCost = 60,
@@ -179,7 +168,6 @@ class EarthBook{
 
     private val telemetry = Spell(
         name = R.string.telemetry,
-        inBook = Element.Earth,
         isActive = true,
         level = 42,
         zCost = 120,
@@ -193,7 +181,6 @@ class EarthBook{
 
     private val magneticControl = Spell(
         name = R.string.magnetControl,
-        inBook = Element.Earth,
         isActive = true,
         level = 46,
         zCost = 100,
@@ -207,7 +194,6 @@ class EarthBook{
 
     private val forge = Spell(
         name = R.string.forge,
-        inBook = Element.Earth,
         isActive = true,
         level = 50,
         zCost = 160,
@@ -221,7 +207,6 @@ class EarthBook{
 
     private val solidBody = Spell(
         name = R.string.solidBody,
-        inBook = Element.Earth,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -235,7 +220,6 @@ class EarthBook{
 
     private val resistanceSpell = Spell(
         name = R.string.resistance,
-        inBook = Element.Earth,
         isActive = true,
         level = 56,
         zCost = 100,
@@ -249,7 +233,6 @@ class EarthBook{
 
     private val petrify = Spell(
         name = R.string.petrify,
-        inBook = Element.Earth,
         isActive = true,
         level = 60,
         zCost = 140,
@@ -263,7 +246,6 @@ class EarthBook{
 
     private val fissure = Spell(
         name = R.string.fissure,
-        inBook = Element.Earth,
         isActive = true,
         level = 62,
         zCost = 150,
@@ -277,7 +259,6 @@ class EarthBook{
 
     private val reverseGravity = Spell(
         name = R.string.gravReverse,
-        inBook = Element.Earth,
         isActive = true,
         level = 66,
         zCost = 200,
@@ -291,7 +272,6 @@ class EarthBook{
 
     private val mineralCreation = Spell(
         name = R.string.createMineral,
-        inBook = Element.Earth,
         isActive = true,
         level = 70,
         zCost = 120,
@@ -305,7 +285,6 @@ class EarthBook{
 
     private val terrainErudition = Spell(
         name = R.string.terraErudition,
-        inBook = Element.Earth,
         isActive = true,
         level = 72,
         zCost = 120,
@@ -319,7 +298,6 @@ class EarthBook{
 
     private val earthquake = Spell(
         name = R.string.earthquake,
-        inBook = Element.Earth,
         isActive = true,
         level = 76,
         zCost = 150,
@@ -333,7 +311,6 @@ class EarthBook{
 
     private val gravityDestruction = Spell(
         name = R.string.gravDestruct,
-        inBook = Element.Earth,
         isActive = true,
         level = 80,
         zCost = 180,
@@ -347,7 +324,6 @@ class EarthBook{
 
     private val createGolem = Spell(
         name = R.string.createGolem,
-        inBook = Element.Earth,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -361,7 +337,6 @@ class EarthBook{
 
     private val gravityIncrement = Spell(
         name = R.string.incrementGrav,
-        inBook = Element.Earth,
         isActive = true,
         level = 86,
         zCost = 200,
@@ -375,7 +350,6 @@ class EarthBook{
 
     private val meteor = Spell(
         name = R.string.meteor,
-        inBook = Element.Earth,
         isActive = true,
         level = 90,
         zCost = 200,
@@ -389,7 +363,6 @@ class EarthBook{
 
     private val gravityControl = Spell(
         name = R.string.controlGrav,
-        inBook = Element.Earth,
         isActive = true,
         level = 92,
         zCost = 350,
@@ -403,7 +376,6 @@ class EarthBook{
 
     private val oneWithEarth = Spell(
         name = R.string.oneWithEarth,
-        inBook = Element.Earth,
         isActive = true,
         level = 96,
         zCost = 300,
@@ -417,7 +389,6 @@ class EarthBook{
 
     private val atomicControl = Spell(
         name = R.string.atomicControl,
-        inBook = Element.Earth,
         isActive = true,
         level = 100,
         zCost = 450,
@@ -429,56 +400,58 @@ class EarthBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        detectMinerals,
-        null,
-        mineralControl,
-        null,
-        weightIncrement,
-        transformMineral,
-        null,
-        firmness,
-        null,
-        stoneBarrier,
-        slowness,
-        null,
-        shell,
-        null,
-        magneticShield,
-        passThroughMatter,
-        null,
-        earthSpike,
-        null,
-        breakage,
-        telemetry,
-        null,
-        magneticControl,
-        null,
-        forge,
-        solidBody,
-        null,
-        resistanceSpell,
-        null,
-        petrify,
-        fissure,
-        null,
-        reverseGravity,
-        null,
-        mineralCreation,
-        terrainErudition,
-        null,
-        earthquake,
-        null,
-        gravityDestruction,
-        createGolem,
-        null,
-        gravityIncrement,
-        null,
-        meteor,
-        gravityControl,
-        null,
-        oneWithEarth,
-        null,
-        atomicControl
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            detectMinerals,
+            null,
+            mineralControl,
+            null,
+            weightIncrement,
+            transformMineral,
+            null,
+            firmness,
+            null,
+            stoneBarrier,
+            slowness,
+            null,
+            shell,
+            null,
+            magneticShield,
+            passThroughMatter,
+            null,
+            earthSpike,
+            null,
+            breakage,
+            telemetry,
+            null,
+            magneticControl,
+            null,
+            forge,
+            solidBody,
+            null,
+            resistanceSpell,
+            null,
+            petrify,
+            fissure,
+            null,
+            reverseGravity,
+            null,
+            mineralCreation,
+            terrainErudition,
+            null,
+            earthquake,
+            null,
+            gravityDestruction,
+            createGolem,
+            null,
+            gravityIncrement,
+            null,
+            meteor,
+            gravityControl,
+            null,
+            oneWithEarth,
+            null,
+            atomicControl
+        ))
+    }
 }

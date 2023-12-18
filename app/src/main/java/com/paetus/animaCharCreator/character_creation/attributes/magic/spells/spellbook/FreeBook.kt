@@ -1957,4 +1957,52 @@ class FreeBook{
         innateMagic,
         predestination
     )
+
+    //compile all free spell books
+    val allFreeSpells = listOf(
+        firstBook,
+        secondBook,
+        thirdBook,
+        fourthBook,
+        fifthBook,
+        sixthBook,
+        seventhBook,
+        eighthBook,
+        ninthBook,
+        tenthBook
+    )
+
+    //create generic placeholder spell
+    val generic = FreeSpell(
+        saveName = "PlaceHolder",
+        name = R.string.emptyItem,
+        isActive = false,
+        level = 0,
+        zCost = 0,
+        effect = R.string.emptyItem,
+        addedEffect = R.string.emptyItem,
+        zMax = 0,
+        maintenance = null,
+        isDaily = false,
+        type = listOf(),
+        forbiddenElements = listOf()
+    )
+
+    /**
+     * Finds the free spell with the given save name.
+     *
+     * @param saveName queried name to find the spell
+     */
+    fun findFreeSpell(saveName: String): FreeSpell{
+        //search each free spell book
+        allFreeSpells.forEach{book ->
+            //return a match if found
+            book.forEach{spell ->
+                if(spell.saveName == saveName) return spell
+            }
+        }
+
+        //return generic item if no match found
+        return generic
+    }
 }

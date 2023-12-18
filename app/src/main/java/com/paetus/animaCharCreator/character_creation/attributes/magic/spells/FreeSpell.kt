@@ -35,7 +35,6 @@ class FreeSpell(
     val forbiddenElements: List<Element>
 ) : Spell(
     name = name,
-    inBook = Element.Free,
     isActive = isActive,
     level = level,
     zCost = zCost,

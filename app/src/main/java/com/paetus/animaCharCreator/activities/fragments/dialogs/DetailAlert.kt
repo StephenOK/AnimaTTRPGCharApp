@@ -648,16 +648,6 @@ fun SpellDetails(
             )
         }
 
-        //display spell's element
-        InfoRow(
-            label = stringResource(id = R.string.elementLabel)
-        ){modifier, _ ->
-            Text(
-                text = stringResource(id = Element.toAddress(spell.inBook)),
-                modifier = modifier
-            )
-        }
-
         //display spell's level
         InfoRow(
             label = stringResource(id = R.string.levelText)

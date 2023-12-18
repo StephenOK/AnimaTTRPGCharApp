@@ -533,7 +533,10 @@ class BaseCharacter {
         )
 
         //load character's magic abilities
-        magic.loadMagic(fileReader = fileReader)
+        magic.loadMagic(
+            fileReader = fileReader,
+            writeVersion = version
+        )
 
         //load character's summoning abilities
         summoning.loadSummoning(fileReader = fileReader)

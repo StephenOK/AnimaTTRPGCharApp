@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the fire element.
  */
-class FireBook{
+class FireBook: MagicBook(Element.Fire){
     private val createFire = Spell(
         name = R.string.createFire,
-        inBook = Element.Fire,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class FireBook{
 
     private val putOutFire = Spell(
         name = R.string.snuffFire,
-        inBook = Element.Fire,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +38,6 @@ class FireBook{
 
     private val fireImmunity = Spell(
         name = R.string.fireImmune,
-        inBook = Element.Fire,
         isActive = true,
         level = 10,
         zCost = 50,
@@ -53,7 +51,6 @@ class FireBook{
 
     private val detectHeat = Spell(
         name = R.string.heatDetect,
-        inBook = Element.Fire,
         isActive = true,
         level = 12,
         zCost = 60,
@@ -67,7 +64,6 @@ class FireBook{
 
     private val fireBall = Spell(
         name = R.string.fireball,
-        inBook = Element.Fire,
         isActive = true,
         level = 16,
         zCost = 50,
@@ -81,7 +77,6 @@ class FireBook{
 
     private val controlFire = Spell(
         name = R.string.controlFire,
-        inBook = Element.Fire,
         isActive = true,
         level = 20,
         zCost = 50,
@@ -95,7 +90,6 @@ class FireBook{
 
     private val fireBarrier = Spell(
         name = R.string.fireBarrier,
-        inBook = Element.Fire,
         isActive = true,
         level = 22,
         zCost = 50,
@@ -109,7 +103,6 @@ class FireBook{
 
     private val igneousWeapon = Spell(
         name = R.string.igneousWeapon,
-        inBook = Element.Fire,
         isActive = true,
         level = 26,
         zCost = 50,
@@ -123,7 +116,6 @@ class FireBook{
 
     private val heatWave = Spell(
         name = R.string.heatWave,
-        inBook = Element.Fire,
         isActive = true,
         level = 30,
         zCost = 60,
@@ -137,7 +129,6 @@ class FireBook{
 
     private val readAshes = Spell(
         name = R.string.readAsh,
-        inBook = Element.Fire,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -151,7 +142,6 @@ class FireBook{
 
     private val raiseTemperature = Spell(
         name = R.string.raiseTemp,
-        inBook = Element.Fire,
         isActive = true,
         level = 36,
         zCost = 60,
@@ -165,7 +155,6 @@ class FireBook{
 
     private val fireMine = Spell(
         name = R.string.fireMine,
-        inBook = Element.Fire,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -179,7 +168,6 @@ class FireBook{
 
     private val increaseCritical = Spell(
         name = R.string.increaseCrit,
-        inBook = Element.Fire,
         isActive = false,
         level = 42,
         zCost = 60,
@@ -193,7 +181,6 @@ class FireBook{
 
     private val dry = Spell(
         name = R.string.dry,
-        inBook = Element.Fire,
         isActive = true,
         level = 46,
         zCost = 80,
@@ -207,7 +194,6 @@ class FireBook{
 
     private val melt = Spell(
         name = R.string.melt,
-        inBook = Element.Fire,
         isActive = true,
         level = 50,
         zCost = 80,
@@ -221,7 +207,6 @@ class FireBook{
 
     private val fireBody = Spell(
         name = R.string.fireBody,
-        inBook = Element.Fire,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -235,7 +220,6 @@ class FireBook{
 
     private val vitalSacrifice = Spell(
         name = R.string.vitalSac,
-        inBook = Element.Fire,
         isActive = true,
         level = 56,
         zCost = 120,
@@ -249,7 +233,6 @@ class FireBook{
 
     private val incinerate = Spell(
         name = R.string.incinerate,
-        inBook = Element.Fire,
         isActive = true,
         level = 60,
         zCost = 100,
@@ -263,7 +246,6 @@ class FireBook{
 
     private val consumeEssence = Spell(
         name = R.string.consumeEssence,
-        inBook = Element.Fire,
         isActive = true,
         level = 62,
         zCost = 120,
@@ -277,7 +259,6 @@ class FireBook{
 
     private val powerSacrifice = Spell(
         name = R.string.powerSac,
-        inBook = Element.Fire,
         isActive = true,
         level = 66,
         zCost = 120,
@@ -291,7 +272,6 @@ class FireBook{
 
     private val directCritical = Spell(
         name = R.string.directCrit,
-        inBook = Element.Fire,
         isActive = true,
         level = 70,
         zCost = 100,
@@ -305,7 +285,6 @@ class FireBook{
 
     private val magicCapacities = Spell(
         name = R.string.magicCapacities,
-        inBook = Element.Fire,
         isActive = true,
         level = 72,
         zCost = 120,
@@ -319,7 +298,6 @@ class FireBook{
 
     private val fireStorm = Spell(
         name = R.string.fireStorm,
-        inBook = Element.Fire,
         isActive = true,
         level = 76,
         zCost = 150,
@@ -333,7 +311,6 @@ class FireBook{
 
     private val lifeForMagic = Spell(
         name = R.string.lifeMagic,
-        inBook = Element.Fire,
         isActive = true,
         level = 80,
         zCost = 120,
@@ -347,7 +324,6 @@ class FireBook{
 
     private val createIfreet = Spell(
         name = R.string.createIfreet,
-        inBook = Element.Fire,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -361,7 +337,6 @@ class FireBook{
 
     private val pyre = Spell(
         name = R.string.pyre,
-        inBook = Element.Fire,
         isActive = true,
         level = 86,
         zCost = 250,
@@ -375,7 +350,6 @@ class FireBook{
 
     private val devastation = Spell(
         name = R.string.devastation,
-        inBook = Element.Fire,
         isActive = true,
         level = 90,
         zCost = 200,
@@ -389,7 +363,6 @@ class FireBook{
 
     private val sacrificingOthers = Spell(
         name = R.string.sacOthers,
-        inBook = Element.Fire,
         isActive = true,
         level = 92,
         zCost = 250,
@@ -403,7 +376,6 @@ class FireBook{
 
     private val lordOfFire = Spell(
         name = R.string.fireLord,
-        inBook = Element.Fire,
         isActive = true,
         level = 96,
         zCost = 300,
@@ -417,7 +389,6 @@ class FireBook{
 
     private val armageddon = Spell(
         name = R.string.armageddon,
-        inBook = Element.Fire,
         isActive = true,
         level = 100,
         zCost = 450,
@@ -429,56 +400,58 @@ class FireBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        createFire,
-        null,
-        putOutFire,
-        null,
-        fireImmunity,
-        detectHeat,
-        null,
-        fireBall,
-        null,
-        controlFire,
-        fireBarrier,
-        null,
-        igneousWeapon,
-        null,
-        heatWave,
-        readAshes,
-        null,
-        raiseTemperature,
-        null,
-        fireMine,
-        increaseCritical,
-        null,
-        dry,
-        null,
-        melt,
-        fireBody,
-        null,
-        vitalSacrifice,
-        null,
-        incinerate,
-        consumeEssence,
-        null,
-        powerSacrifice,
-        null,
-        directCritical,
-        magicCapacities,
-        null,
-        fireStorm,
-        null,
-        lifeForMagic,
-        createIfreet,
-        null,
-        pyre,
-        null,
-        devastation,
-        sacrificingOthers,
-        null,
-        lordOfFire,
-        null,
-        armageddon
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            createFire,
+            null,
+            putOutFire,
+            null,
+            fireImmunity,
+            detectHeat,
+            null,
+            fireBall,
+            null,
+            controlFire,
+            fireBarrier,
+            null,
+            igneousWeapon,
+            null,
+            heatWave,
+            readAshes,
+            null,
+            raiseTemperature,
+            null,
+            fireMine,
+            increaseCritical,
+            null,
+            dry,
+            null,
+            melt,
+            fireBody,
+            null,
+            vitalSacrifice,
+            null,
+            incinerate,
+            consumeEssence,
+            null,
+            powerSacrifice,
+            null,
+            directCritical,
+            magicCapacities,
+            null,
+            fireStorm,
+            null,
+            lifeForMagic,
+            createIfreet,
+            null,
+            pyre,
+            null,
+            devastation,
+            sacrificingOthers,
+            null,
+            lordOfFire,
+            null,
+            armageddon
+        ))
+    }
 }

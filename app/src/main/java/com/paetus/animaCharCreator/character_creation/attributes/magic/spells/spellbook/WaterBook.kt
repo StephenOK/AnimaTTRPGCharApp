@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
@@ -8,10 +9,9 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with the water element.
  */
-class WaterBook{
+class WaterBook: MagicBook(Element.Water){
     private val spring = Spell(
         name = R.string.spring,
-        inBook = Element.Water,
         isActive = true,
         level = 2,
         zCost = 30,
@@ -25,7 +25,6 @@ class WaterBook{
 
     private val createChill = Spell(
         name = R.string.createChill,
-        inBook = Element.Water,
         isActive = true,
         level = 6,
         zCost = 30,
@@ -39,7 +38,6 @@ class WaterBook{
 
     private val aquaticCapability = Spell(
         name = R.string.aquaCapable,
-        inBook = Element.Water,
         isActive = true,
         level = 10,
         zCost = 50,
@@ -53,7 +51,6 @@ class WaterBook{
 
     private val coldImmunity = Spell(
         name = R.string.coldImmune,
-        inBook = Element.Water,
         isActive = true,
         level = 12,
         zCost = 50,
@@ -67,7 +64,6 @@ class WaterBook{
 
     private val protectionBubble = Spell(
         name = R.string.protectionBubble,
-        inBook = Element.Water,
         isActive = false,
         level = 16,
         zCost = 40,
@@ -81,7 +77,6 @@ class WaterBook{
 
     private val waterImpact = Spell(
         name = R.string.waterImpact,
-        inBook = Element.Water,
         isActive = true,
         level = 20,
         zCost = 50,
@@ -95,7 +90,6 @@ class WaterBook{
 
     private val liquidControl = Spell(
         name = R.string.controlLiquid,
-        inBook = Element.Water,
         isActive = true,
         level = 22,
         zCost = 60,
@@ -109,7 +103,6 @@ class WaterBook{
 
     private val freezeEmotions = Spell(
         name = R.string.freezeEmote,
-        inBook = Element.Water,
         isActive = true,
         level = 26,
         zCost = 60,
@@ -123,7 +116,6 @@ class WaterBook{
 
     private val controlCold = Spell(
         name = R.string.controlCold,
-        inBook = Element.Water,
         isActive = true,
         level = 30,
         zCost = 50,
@@ -137,7 +129,6 @@ class WaterBook{
 
     private val freeze = Spell(
         name = R.string.freeze,
-        inBook = Element.Water,
         isActive = true,
         level = 32,
         zCost = 60,
@@ -151,7 +142,6 @@ class WaterBook{
 
     private val iceScreen = Spell(
         name = R.string.iceScreen,
-        inBook = Element.Water,
         isActive = false,
         level = 36,
         zCost = 60,
@@ -165,7 +155,6 @@ class WaterBook{
 
     private val createLiquids = Spell(
         name = R.string.createLiquid,
-        inBook = Element.Water,
         isActive = true,
         level = 40,
         zCost = 80,
@@ -179,7 +168,6 @@ class WaterBook{
 
     private val iceAttack = Spell(
         name = R.string.iceAttack,
-        inBook = Element.Water,
         isActive = true,
         level = 42,
         zCost = 80,
@@ -193,7 +181,6 @@ class WaterBook{
 
     private val crystallization = Spell(
         name = R.string.crystallization,
-        inBook = Element.Water,
         isActive = true,
         level = 46,
         zCost = 80,
@@ -207,7 +194,6 @@ class WaterBook{
 
     private val reflectedControl = Spell(
         name = R.string.reflectedControl,
-        inBook = Element.Water,
         isActive = true,
         level = 50,
         zCost = 80,
@@ -221,7 +207,6 @@ class WaterBook{
 
     private val liquidBody = Spell(
         name = R.string.liquidBody,
-        inBook = Element.Water,
         isActive = true,
         level = 52,
         zCost = 100,
@@ -235,7 +220,6 @@ class WaterBook{
 
     private val reflectStates = Spell(
         name = R.string.stateReflect,
-        inBook = Element.Water,
         isActive = false,
         level = 56,
         zCost = 120,
@@ -249,7 +233,6 @@ class WaterBook{
 
     private val iceStorm = Spell(
         name = R.string.iceStorm,
-        inBook = Element.Water,
         isActive = true,
         level = 60,
         zCost = 120,
@@ -263,7 +246,6 @@ class WaterBook{
 
     private val tideControl = Spell(
         name = R.string.tideControl,
-        inBook = Element.Water,
         isActive = true,
         level = 62,
         zCost = 150,
@@ -277,7 +259,6 @@ class WaterBook{
 
     private val waterConfinement = Spell(
         name = R.string.waterConfine,
-        inBook = Element.Water,
         isActive = true,
         level = 66,
         zCost = 140,
@@ -291,7 +272,6 @@ class WaterBook{
 
     private val glacier = Spell(
         name = R.string.glacier,
-        inBook = Element.Water,
         isActive = true,
         level = 70,
         zCost = 200,
@@ -305,7 +285,6 @@ class WaterBook{
 
     private val tsunami = Spell(
         name = R.string.tsunami,
-        inBook = Element.Water,
         isActive = true,
         level = 72,
         zCost = 250,
@@ -319,7 +298,6 @@ class WaterBook{
 
     private val soulReflection = Spell(
         name = R.string.reflectSoul,
-        inBook = Element.Water,
         isActive = true,
         level = 76,
         zCost = 200,
@@ -333,7 +311,6 @@ class WaterBook{
 
     private val slowTime = Spell(
         name = R.string.slowTime,
-        inBook = Element.Water,
         isActive = true,
         level = 80,
         zCost = 200,
@@ -347,7 +324,6 @@ class WaterBook{
 
     private val createUndine = Spell(
         name = R.string.createUndine,
-        inBook = Element.Water,
         isActive = true,
         level = 82,
         zCost = 250,
@@ -361,7 +337,6 @@ class WaterBook{
 
     private val freezeMagic = Spell(
         name = R.string.freezeMag,
-        inBook = Element.Water,
         isActive = false,
         level = 86,
         zCost = 250,
@@ -375,7 +350,6 @@ class WaterBook{
 
     private val inTheMirror = Spell(
         name = R.string.inMirror,
-        inBook = Element.Water,
         isActive = true,
         level = 90,
         zCost = 300,
@@ -389,7 +363,6 @@ class WaterBook{
 
     private val lordOfIce = Spell(
         name = R.string.iceLord,
-        inBook = Element.Water,
         isActive = true,
         level = 92,
         zCost = 300,
@@ -403,7 +376,6 @@ class WaterBook{
 
     private val lordOfWater = Spell(
         name = R.string.waterLord,
-        inBook = Element.Water,
         isActive = true,
         level = 96,
         zCost = 300,
@@ -417,7 +389,6 @@ class WaterBook{
 
     private val perfectWorld = Spell(
         name = R.string.perfectWorld,
-        inBook = Element.Water,
         isActive = true,
         level = 100,
         zCost = 450,
@@ -429,56 +400,58 @@ class WaterBook{
         type = listOf(SpellType.Automatic)
     )
 
-    val fullBook = listOf(
-        spring,
-        null,
-        createChill,
-        null,
-        aquaticCapability,
-        coldImmunity,
-        null,
-        protectionBubble,
-        null,
-        waterImpact,
-        liquidControl,
-        null,
-        freezeEmotions,
-        null,
-        controlCold,
-        freeze,
-        null,
-        iceScreen,
-        null,
-        createLiquids,
-        iceAttack,
-        null,
-        crystallization,
-        null,
-        reflectedControl,
-        liquidBody,
-        null,
-        reflectStates,
-        null,
-        iceStorm,
-        tideControl,
-        null,
-        waterConfinement,
-        null,
-        glacier,
-        tsunami,
-        null,
-        soulReflection,
-        null,
-        slowTime,
-        createUndine,
-        null,
-        freezeMagic,
-        null,
-        inTheMirror,
-        lordOfIce,
-        null,
-        lordOfWater,
-        null,
-        perfectWorld
-    )
+    init{
+        fullBook.addAll(elements = listOf(
+            spring,
+            null,
+            createChill,
+            null,
+            aquaticCapability,
+            coldImmunity,
+            null,
+            protectionBubble,
+            null,
+            waterImpact,
+            liquidControl,
+            null,
+            freezeEmotions,
+            null,
+            controlCold,
+            freeze,
+            null,
+            iceScreen,
+            null,
+            createLiquids,
+            iceAttack,
+            null,
+            crystallization,
+            null,
+            reflectedControl,
+            liquidBody,
+            null,
+            reflectStates,
+            null,
+            iceStorm,
+            tideControl,
+            null,
+            waterConfinement,
+            null,
+            glacier,
+            tsunami,
+            null,
+            soulReflection,
+            null,
+            slowTime,
+            createUndine,
+            null,
+            freezeMagic,
+            null,
+            inTheMirror,
+            lordOfIce,
+            null,
+            lordOfWater,
+            null,
+            perfectWorld
+        ))
+    }
 }

@@ -60,7 +60,8 @@ fun FreeSpellPick(
                 //create selection item for each available spell
                 items(freeList){spell ->
                     //determine that spell is legal for the book and not already taken
-                    if(!spell.forbiddenElements.contains(magFragVM.freeElement.collectAsState().value) && !magFragVM.getSpellHeld(spell)){
+                    if(!spell.forbiddenElements.contains(element = magFragVM.freeElement.collectAsState().value) &&
+                        !magFragVM.getSpellHeld(spell = spell)){
                         PickFreeRow(
                             spell = spell,
                             magFragVM = magFragVM

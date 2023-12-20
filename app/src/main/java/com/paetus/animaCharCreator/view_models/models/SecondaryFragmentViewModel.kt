@@ -91,21 +91,33 @@ class SecondaryFragmentViewModel(
             vigor.fieldCharacteristics + subterfuge.fieldCharacteristics + creative.fieldCharacteristics
 
     //create a object for each freelancer bonus option
-    val firstSelection = FreelancerSelection(
+    private val firstSelection = FreelancerSelection(
         classes = charInstance.classes,
         selection = 0,
         allCharacteristics = allCharacteristics
     )
-    val secondSelection = FreelancerSelection(
+    private val secondSelection = FreelancerSelection(
         classes = charInstance.classes,
         selection = 1,
         allCharacteristics = allCharacteristics
     )
-    val thirdSelection = FreelancerSelection(
+    private val thirdSelection = FreelancerSelection(
         classes = charInstance.classes,
         selection = 2,
         allCharacteristics = allCharacteristics
     )
+    private val fourthSelection = FreelancerSelection(
+        classes = charInstance.classes,
+        selection = 3,
+        allCharacteristics = allCharacteristics
+    )
+    private val fifthSelection = FreelancerSelection(
+        classes = charInstance.classes,
+        selection = 4,
+        allCharacteristics = allCharacteristics
+    )
+
+    val allFreelancerSelections = listOf(firstSelection, secondSelection, thirdSelection, fourthSelection, fifthSelection)
 
     /**
      * Gets all secondary characteristics available to the character.

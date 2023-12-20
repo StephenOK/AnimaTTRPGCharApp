@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
  */
 class ClassInstances(private val charInstance: BaseCharacter){
     //initialize freelancer bonus selections
-    val freelancerSelection = mutableListOf(0, 0, 0)
+    val freelancerSelection = mutableListOf(0, 0, 0, 0, 0)
 
     private val warrior =
         CharClass(
@@ -1322,17 +1322,23 @@ class ClassInstances(private val charInstance: BaseCharacter){
      * Loads character class data from file.
      *
      * @param fileReader object that reads the file
+     * @param writeVersion app version the read file was written in
      */
     fun loadClassData(
-        fileReader: BufferedReader
+        fileReader: BufferedReader,
+        writeVersion: Int
     ){
         //get paladin's selection
         magPaladin.value = fileReader.readLine().toBoolean()
 
+        //get the correct number of loops for the app version
+        val loopNum =
+            if(writeVersion < 27) 3
+            else 5
+
         //get each freelancer selected characteristic
-        setSelection(selectionIndex = 0, secondarySelection = fileReader.readLine().toInt())
-        setSelection(selectionIndex = 1, secondarySelection = fileReader.readLine().toInt())
-        setSelection(selectionIndex = 2, secondarySelection = fileReader.readLine().toInt())
+        for(index in 0 until loopNum)
+            setSelection(selectionIndex = index, secondarySelection = fileReader.readLine().toInt())
     }
 
     /**

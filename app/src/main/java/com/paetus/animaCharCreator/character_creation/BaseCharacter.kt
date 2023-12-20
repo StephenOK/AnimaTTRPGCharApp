@@ -508,7 +508,10 @@ class BaseCharacter {
         setLvl(levNum = fileReader.readLine().toInt())
 
         //load paladin's chosen level boon
-        classes.loadClassData(fileReader = fileReader)
+        classes.loadClassData(
+            fileReader = fileReader,
+            writeVersion = version
+        )
 
         //load character's primary abilities
         primaryList.loadPrimaries(fileReader = fileReader)

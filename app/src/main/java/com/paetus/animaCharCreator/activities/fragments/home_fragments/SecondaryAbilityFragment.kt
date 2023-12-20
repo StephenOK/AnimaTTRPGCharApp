@@ -64,20 +64,13 @@ fun SecondaryAbilityFragment(
                     Text(text = stringResource(id = R.string.freelancerPrompt))
 
                     //freelancer bonus dropdowns
-                    FreelancerDropdown(
-                        selection = secondaryFragVM.firstSelection,
-                        secondaryFragVM = secondaryFragVM
-                    )
+                    secondaryFragVM.allFreelancerSelections.forEach{freeSelectionIten ->
+                        FreelancerDropdown(
+                            selection = freeSelectionIten,
+                            secondaryFragVM = secondaryFragVM
+                        )
+                    }
                     Spacer(modifier = Modifier.height(5.dp))
-                    FreelancerDropdown(
-                        selection =secondaryFragVM.secondSelection,
-                        secondaryFragVM = secondaryFragVM
-                    )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    FreelancerDropdown(
-                        selection = secondaryFragVM.thirdSelection,
-                        secondaryFragVM = secondaryFragVM
-                    )
                 }
             }
         }

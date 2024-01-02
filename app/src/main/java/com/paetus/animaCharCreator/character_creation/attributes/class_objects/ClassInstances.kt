@@ -1333,7 +1333,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
         //get the correct number of loops for the app version
         val loopNum =
-            if(writeVersion < 27) 3
+            if(writeVersion <= 27) 3
             else 5
 
         //get each freelancer selected characteristic

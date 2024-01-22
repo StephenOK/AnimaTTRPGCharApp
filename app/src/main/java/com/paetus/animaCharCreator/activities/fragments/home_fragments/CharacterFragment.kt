@@ -17,12 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
+import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
 import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.InfoRow
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.composables.DetailButton
 import com.paetus.animaCharCreator.composables.OutlinedDropdown
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
@@ -73,22 +74,23 @@ fun CharacterPageFragment(
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {dropdown ->
                     OutlinedDropdown(
-                        optionsRef = dropdown.options,
-                        index = dropdown.output.collectAsState().value,
-                        openState = dropdown.isOpen.collectAsState().value,
-                        labelRef = dropdown.nameRef,
-                        icon = dropdown.icon.collectAsState().value,
-                        size = dropdown.size.collectAsState().value,
-                        sizeSetter = {coordinates ->
-                            dropdown.setSize(coordinates.size.toSize())
-                        },
-                        itemSelection = {input ->
-                            dropdown.setOutput(input)
-                            maxNumVM.updateMaximums()
-                            maxNumVM.updateExpenditures()
-                        },
-                        openFunc = {dropdown.openToggle()}
-                    )
+                        data = dropdown
+                    ) {
+                        maxNumVM.updateMaximums()
+                        maxNumVM.updateExpenditures()
+                    }
+
+                    if(dropdown == charFragVM.classDropdown){
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ){
+                            DetailButton(
+                                onClick = {charFragVM.toggleDetailOpen()},
+                                modifier = Modifier
+                            )
+                        }
+                    }
                 }
 
                 //experience point input
@@ -128,7 +130,7 @@ fun CharacterPageFragment(
                             AnimatedContent(
                                 targetState = stringResource(id = charFragVM.genderString.collectAsState().value),
                                 modifier = Modifier
-                                    .clickable {charFragVM.toggleGender()}
+                                    .clickable { charFragVM.toggleGender() }
                                     .weight(0.5f),
                                 transitionSpec = textScrollUp,
                                 label = "genderDisplay"
@@ -160,7 +162,7 @@ fun CharacterPageFragment(
                             Text(
                                 text = stringResource(id = R.string.isMagPaladin),
                                 modifier = Modifier
-                                    .clickable {charFragVM.toggleMagPaladin()}
+                                    .clickable { charFragVM.toggleMagPaladin() }
                                     .weight(0.5f),
                                 textAlign = TextAlign.Center
                             )
@@ -329,6 +331,13 @@ fun CharacterPageFragment(
 
         item{Spacer(modifier = Modifier.height(15.dp))}
     }
+
+    if(charFragVM.classDetailOpen.collectAsState().value)
+        DetailAlert(
+            title = stringArrayResource(id = R.array.classArray)[charFragVM.classDropdown.output.collectAsState().value],
+            item = charFragVM,
+            closeFunc = {charFragVM.toggleDetailOpen()}
+        )
 }
 
 /**

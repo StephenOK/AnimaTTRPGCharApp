@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 
 import androidx.compose.runtime.mutableStateOf
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Archetype
 import com.paetus.animaCharCreator.writeDataTo
@@ -50,6 +51,15 @@ class ClassInstances(private val charInstance: BaseCharacter){
             vigGrowth = 2,
             subterGrowth = 2,
             createGrowth = 2,
+            reducedCosts = mapOf(Pair(24, 1)),
+            primaryBonus = mapOf(
+                Pair(R.string.attackLabel, 5),
+                Pair(R.string.blockLabel, 5),
+                Pair(R.string.wearLabel, 5)
+            ),
+            secondaryBonus = mapOf(Pair(24, 5)),
+            specialText = null,
+            charInstance = charInstance,
             onTake = {
                 //apply attack, block, and wear armor class bonuses
                 charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -61,20 +71,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
                 //set individual growth value for feats of strength
                 charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = 1)
-            },
-            onRemove = {
-                //remove class combat bonuses
-                charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-                charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-                charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
-
-                //remove feats of strength class bonus
-                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
-
-                //reset growth value from this class
-                charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = -1)
             }
-        )
+        ) {
+            //remove class combat bonuses
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+            //remove feats of strength class bonus
+            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
+
+            //reset growth value from this class
+            charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = -1)
+        }
 
     private val acroWarrior = CharClass(
         saveName = "acroWarrior",
@@ -109,6 +118,20 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.dodgeLabel, 5)
+        ),
+        secondaryBonus = mapOf(
+            Pair(0, 10),
+            Pair(3, 10),
+            Pair(1, 10),
+            Pair(37, 10),
+            Pair(9, 10)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -120,20 +143,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 10)
             charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
             charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 10)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary characteristic bonuses
-            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary characteristic bonuses
+        charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+    }
 
     val paladin = CharClass(
         saveName = "paladin",
@@ -168,6 +190,20 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 3,
         createGrowth = 2,
+        reducedCosts = mapOf(Pair(25, 1)),
+        primaryBonus = mapOf(
+            Pair(R.string.blockLabel, 5),
+            Pair(R.string.wearLabel, 10),
+            Pair(R.string.banishTitle, 10),
+            Pair(R.string.zeonLabel, 20)
+        ),
+        secondaryBonus = mapOf(
+            Pair(7, 10),
+            Pair(25, 10),
+            Pair(9, 5)
+        ),
+        specialText = R.string.paladinSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
@@ -188,29 +224,28 @@ class ClassInstances(private val charInstance: BaseCharacter){
             }
             //otherwise add composure class bonuses
             else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
-        },
-        onRemove = {
-            //remove combat class bonus
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
-
-            //remove cost reduction to withstand pain
-            charInstance.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
-
-            //remove any applied magic ability
-            if (magPaladin.value) {
-                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
-            }
-            //if no magic abilities, remove composure class bonus
-            else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonus
+        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+
+        //remove cost reduction to withstand pain
+        charInstance.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
+
+        //remove any applied magic ability
+        if (magPaladin.value) {
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+        }
+        //if no magic abilities, remove composure class bonus
+        else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+    }
 
     val darkPaladin = CharClass(
         saveName = "darkPaladin",
@@ -245,6 +280,21 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(Pair(23, 1)),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.wearLabel, 5),
+            Pair(R.string.controlTitle, 10),
+            Pair(R.string.zeonLabel, 20)
+        ),
+        secondaryBonus = mapOf(
+            Pair(6, 10),
+            Pair(23, 10),
+            Pair(9, 5),
+            Pair(8, 5)
+        ),
+        specialText = R.string.darkPaladinSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -266,30 +316,29 @@ class ClassInstances(private val charInstance: BaseCharacter){
             }
             //if not, apply withstand pain class bonus
             else charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
-
-            //remove composure cost reduction
-            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
-
-            //remove any applied magic abilities
-            if (magPaladin.value) {
-                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-            }
-            //otherwise, remove withstand pain class bonus
-            else charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
+
+        //remove composure cost reduction
+        charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+
+        //remove any applied magic abilities
+        if (magPaladin.value) {
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        }
+        //otherwise, remove withstand pain class bonus
+        else charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+    }
 
     val weaponMaster = CharClass(
         saveName = "weaponMaster",
@@ -324,6 +373,15 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 1,
         subterGrowth = 3,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.blockLabel, 5),
+            Pair(R.string.wearLabel, 10)
+        ),
+        secondaryBonus = mapOf(Pair(24, 5)),
+        specialText = R.string.weaponmasterSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -332,17 +390,16 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply feats of strength class bonus
             charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
-
-            //remove feats of strength class bonus
-            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+
+        //remove feats of strength class bonus
+        charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
+    }
 
     private val technician = CharClass(
         saveName = "technician",
@@ -377,14 +434,18 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(Pair(R.string.attackLabel, 5)),
+        secondaryBonus = mapOf(),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //set attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)},
-        onRemove = {
-            //remove attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        }
-    )
+            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)}
+    ) {
+        //remove attack class bonus
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+    }
 
     val tao = CharClass(
         saveName = "tao",
@@ -419,15 +480,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(),
+        secondaryBonus = mapOf(Pair(9, 5)),
+        specialText = R.string.taoSpecial,
+        charInstance = charInstance,
         onTake = {
             //set style class bonus
             charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
-        },
-        onRemove = {
-            //remove style class bonus
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove style class bonus
+        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+    }
 
     private val ranger = CharClass(
         saveName = "ranger",
@@ -462,6 +527,23 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(
+            Pair(32, 1),
+            Pair(15, 2),
+            Pair(13, 1),
+            Pair(19, 2)
+        ),
+        primaryBonus = mapOf(Pair(R.string.attackLabel, 5)),
+        secondaryBonus = mapOf(
+            Pair(10, 10),
+            Pair(11, 10),
+            Pair(12, 10),
+            Pair(32, 5),
+            Pair(13, 5),
+            Pair(15, 5)
+        ),
+        specialText = R.string.rangerSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply attack class bonus
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -479,26 +561,25 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = 1)
             charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = 2)
             charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = 1)
-        },
-        onRemove = {
-            //remove attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 0)
-
-            //remove secondary dp cost reductions
-            charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = -1)
-            charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = -1)
-            charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = -2)
-            charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = -1)
         }
-    )
+    ) {
+        //remove attack class bonus
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 0)
+
+        //remove secondary dp cost reductions
+        charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = -1)
+        charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = -1)
+        charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = -2)
+        charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = -1)
+    }
 
     private val shadow = CharClass(
         saveName = "shadow",
@@ -533,6 +614,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.dodgeLabel, 5)
+        ),
+        secondaryBonus = mapOf(
+            Pair(10, 10),
+            Pair(11, 10),
+            Pair(27, 10),
+            Pair(31, 10)
+        ),
+        specialText = R.string.kiConcealSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -543,19 +637,18 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
             charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
             charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+    }
 
     private val thief = CharClass(
         saveName = "thief",
@@ -590,6 +683,18 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 1,
         createGrowth = 2,
+        reducedCosts = mapOf(Pair(14, 1)),
+        primaryBonus = mapOf(Pair(R.string.dodgeLabel, 5)),
+        secondaryBonus = mapOf(
+            Pair(10, 5),
+            Pair(11, 5),
+            Pair(27, 5),
+            Pair(31, 5),
+            Pair(32, 5),
+            Pair(30, 10)
+        ),
+        specialText = R.string.kiConcealSpecial,
+        charInstance = charInstance,
         onTake = {
             //apply dodge class bonus
             charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
@@ -605,24 +710,23 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply appraisal cost reduction
             charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = 2)
-        },
-        onRemove = {
-            //remove dodge class bonus
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
-
-            //remove appraisal cost reduction
-            charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = -2)
         }
-    )
+    ) {
+        //remove dodge class bonus
+        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
+
+        //remove appraisal cost reduction
+        charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = -2)
+    }
 
     private val assassin = CharClass(
         saveName = "assassin",
@@ -657,6 +761,23 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(
+            Pair(31, 1),
+            Pair(23, 2),
+            Pair(17, 2)
+        ),
+        primaryBonus = mapOf(Pair(R.string.attackLabel, 5)),
+        secondaryBonus = mapOf(
+            Pair(10, 10),
+            Pair(11, 10),
+            Pair(27, 10),
+            Pair(31, 10),
+            Pair(29, 10),
+            Pair(23, 10),
+            Pair(32, 10)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply attack class bonus
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -674,26 +795,25 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = 1)
             charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
             charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = 1)
-        },
-        onRemove = {
-            //remove attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-
-            //remove secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
-
-            //remove secondary cost reductions
-            charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = -1)
-            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
-            charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = -1)
         }
-    )
+    ) {
+        //remove attack class bonus
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+
+        //remove secondary class bonuses
+        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+
+        //remove secondary cost reductions
+        charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = -1)
+        charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+        charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = -1)
+    }
 
     private val wizard = CharClass(
         saveName = "wizard",
@@ -728,6 +848,14 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(Pair(18, 1)),
+        primaryBonus = mapOf(Pair(R.string.zeonLabel, 100)),
+        secondaryBonus = mapOf(
+            Pair(18, 10),
+            Pair(21, 5)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
@@ -738,19 +866,18 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply max zeon gained per level
             charInstance.magic.setZeonPerLevel(lvlBonus = 100)
-        },
-        onRemove = {
-            //remove secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
-
-            //remove magic appraisal cost reduction
-            charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = -1)
-
-            //remove max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove secondary class bonuses
+        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+
+        //remove magic appraisal cost reduction
+        charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = -1)
+
+        //remove max zeon gained per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+    }
 
     private val warlock = CharClass(
         saveName = "warlock",
@@ -785,6 +912,16 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.blockLabel, 5),
+            Pair(R.string.dodgeLabel, 5),
+            Pair(R.string.zeonLabel, 20)
+        ),
+        secondaryBonus = mapOf(Pair(18, 5)),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -796,20 +933,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply zeon points per level
             charInstance.magic.setZeonPerLevel(lvlBonus = 20)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
-
-            //remove magic appraisal class bonus
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-
-            //remove zeon points per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+        //remove magic appraisal class bonus
+        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+
+        //remove zeon points per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+    }
 
     private val illusionist = CharClass(
         saveName = "illusionist",
@@ -844,6 +980,22 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(
+            Pair(37, 1),
+            Pair(8, 1)
+        ),
+        primaryBonus = mapOf(Pair(R.string.zeonLabel, 75)),
+        secondaryBonus = mapOf(
+            Pair(18, 5),
+            Pair(31, 10),
+            Pair(27, 10),
+            Pair(37, 10),
+            Pair(26, 5),
+            Pair(30, 5),
+            Pair(8, 5)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
@@ -860,25 +1012,24 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply zeon points gained per level
             charInstance.magic.setZeonPerLevel(lvlBonus = 75)
-        },
-        onRemove = {
-            //remove secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
-
-            //remove secondary cost reductions
-            charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = -1)
-            charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = -1)
-
-            //remove zeon points gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove secondary class bonuses
+        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
+
+        //remove secondary cost reductions
+        charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = -1)
+        charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = -1)
+
+        //remove zeon points gained per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+    }
 
     private val wizMentalist = CharClass(
         saveName = "wizMentalist",
@@ -913,6 +1064,14 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(Pair(R.string.zeonLabel, 100)),
+        secondaryBonus = mapOf(
+            Pair(18, 10),
+            Pair(21, 5)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
@@ -920,16 +1079,15 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply max zeon gained per level
             charInstance.magic.setZeonPerLevel(lvlBonus = 100)
-        },
-        onRemove = {
-            //remove secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
-
-            //remove max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove secondary class bonuses
+        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+
+        //remove max zeon gained per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+    }
 
     private val summoner = CharClass(
         saveName = "summoner",
@@ -964,6 +1122,20 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(Pair(21, 1)),
+        primaryBonus = mapOf(
+            Pair(R.string.zeonLabel, 50),
+            Pair(R.string.summonLabel, 10),
+            Pair(R.string.controlTitle, 10),
+            Pair(R.string.bindTitle, 10),
+            Pair(R.string.banishTitle, 10)
+        ),
+        secondaryBonus = mapOf(
+            Pair(18, 5),
+            Pair(21, 10)
+        ),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
@@ -980,25 +1152,24 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
             charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 10)
             charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
-        },
-        onRemove = {
-            //remove secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
-
-            //remove occult cost reduction
-            charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = -1)
-
-            //remove max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-
-            //remove summoning ability bonuses
-            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove secondary class bonuses
+        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+
+        //remove occult cost reduction
+        charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = -1)
+
+        //remove max zeon gained per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+
+        //remove summoning ability bonuses
+        charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+    }
 
     private val warSummoner = CharClass(
         saveName = "warSummoner",
@@ -1033,6 +1204,19 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.blockLabel, 5),
+            Pair(R.string.dodgeLabel, 5),
+            Pair(R.string.zeonLabel, 20),
+            Pair(R.string.summonLabel, 5),
+            Pair(R.string.controlTitle, 5),
+            Pair(R.string.bindTitle, 5)
+        ),
+        secondaryBonus = mapOf(Pair(21, 5)),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -1050,26 +1234,25 @@ class ClassInstances(private val charInstance: BaseCharacter){
             charInstance.summoning.control.setPointsPerLevel(lvlBonus = 5)
             charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 5)
             charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 5)
-        },
-        onRemove = {
-            //remove combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
-
-            //remove occult class bonus
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
-
-            //remove max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-
-            //remove summoning class bonuses
-            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
-            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
         }
-    )
+    ) {
+        //remove combat class bonuses
+        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
+        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+
+        //remove occult class bonus
+        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+
+        //remove max zeon gained per level
+        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+
+        //remove summoning class bonuses
+        charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+        charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+    }
 
     val mentalist = CharClass(
         saveName = "mentalist",
@@ -1104,9 +1287,13 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 3,
         subterGrowth = 2,
         createGrowth = 2,
-        onTake = {},
-        onRemove = {}
-    )
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(),
+        secondaryBonus = mapOf(),
+        specialText = null,
+        charInstance = charInstance,
+        onTake = {}
+    ) {}
 
     private val warMentalist = CharClass(
         saveName = "warMentalist",
@@ -1141,17 +1328,25 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(
+            Pair(R.string.attackLabel, 5),
+            Pair(R.string.blockLabel, 5),
+            Pair(R.string.dodgeLabel, 5)
+        ),
+        secondaryBonus = mapOf(),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             charInstance.combat.attack.setPointPerLevel(5)
             charInstance.combat.block.setPointPerLevel(5)
             charInstance.combat.dodge.setPointPerLevel(5)
-        },
-        onRemove = {
-            charInstance.combat.attack.setPointPerLevel(0)
-            charInstance.combat.block.setPointPerLevel(0)
-            charInstance.combat.dodge.setPointPerLevel(0)
         }
-    )
+    ) {
+        charInstance.combat.attack.setPointPerLevel(0)
+        charInstance.combat.block.setPointPerLevel(0)
+        charInstance.combat.dodge.setPointPerLevel(0)
+    }
 
     val freelancer = CharClass(
         saveName = "freelancer",
@@ -1186,6 +1381,11 @@ class ClassInstances(private val charInstance: BaseCharacter){
         vigGrowth = 2,
         subterGrowth = 2,
         createGrowth = 2,
+        reducedCosts = mapOf(),
+        primaryBonus = mapOf(Pair(R.string.zeonLabel, 10)),
+        secondaryBonus = mapOf(),
+        specialText = null,
+        charInstance = charInstance,
         onTake = {
             freelancerSelection.forEach{secondarySelected ->
                 //update characteristic's class value if a selection was made
@@ -1198,9 +1398,11 @@ class ClassInstances(private val charInstance: BaseCharacter){
         },
         onRemove = {
             //update characteristic's class value if a selection was made
-            freelancerSelection.forEach{secondarySelected ->
-                if(secondarySelected != 0)
-                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 0)
+            freelancerSelection.forEach { secondarySelected ->
+                if (secondarySelected != 0)
+                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
+                        classBonus = 0
+                    )
             }
 
             //remove max zeon gained per level

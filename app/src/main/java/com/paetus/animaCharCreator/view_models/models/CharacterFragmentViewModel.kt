@@ -1,10 +1,7 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
+import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
@@ -82,6 +79,14 @@ class CharacterFragmentViewModel(
     //initialize level bonus string color
     private val _bonusValid = MutableStateFlow(value = charInstance.primaryList.validLevelBonuses())
     val bonusValid = _bonusValid.asStateFlow()
+
+    //initialize open state of detail alert
+    private val _classDetailOpen = MutableStateFlow(value = false)
+    val classDetailOpen = _classDetailOpen.asStateFlow()
+
+    //initialize class shown in detail alert
+    private val _classDetailItem = MutableStateFlow(value = charInstance.classes.freelancer)
+    val classDetailItem = _classDetailItem.asStateFlow()
 
     /**
      * Sets the character's name to the user's input.
@@ -253,10 +258,20 @@ class CharacterFragmentViewModel(
      */
     private fun setBonusColor(){_bonusValid.update{charInstance.primaryList.validLevelBonuses()}}
 
+    /**
+     * Opens and closes the detail alert for class details.
+     */
+    fun toggleDetailOpen(){_classDetailOpen.update{!classDetailOpen.value}}
+
+    /**
+     * Sets the class to be shown in the detail alert to the currently held one.
+     */
+    private fun setClassDetail(){_classDetailItem.update{charInstance.ownClass.value}}
+
     //set race dropdown data
     val raceDropdown = DropdownData(
         nameRef = R.string.raceText,
-        options = R.array.raceArray,
+        optionsRef = R.array.raceArray,
         initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
         onChange = {
             //change the character's race
@@ -272,12 +287,13 @@ class CharacterFragmentViewModel(
     )
 
     //set class dropdown data
-    private val classDropdown = DropdownData(
+    val classDropdown = DropdownData(
         nameRef = R.string.classLabel,
-        options = R.array.classArray,
+        optionsRef = R.array.classArray,
         initialIndex = charInstance.classes.allClasses.indexOf(charInstance.ownClass.value),
         onChange = {
             charInstance.setOwnClass(classInt = it)
+            setClassDetail()
             setMagPaladinOpen()
         }
     )
@@ -285,7 +301,7 @@ class CharacterFragmentViewModel(
     //set level dropdown data
     private val levelDropdown = DropdownData(
         nameRef = R.string.levelText,
-        options = R.array.levelCountArray,
+        optionsRef = R.array.levelCountArray,
         initialIndex = charInstance.lvl.intValue,
         onChange = {
             charInstance.setLvl(levNum = it)
@@ -363,69 +379,13 @@ class CharacterFragmentViewModel(
     val primaryDataList = listOf(strengthData, dexterityData, agilityData, constitutionData,
         intelligenceData, powerData, willpowerData, perceptionData)
 
-    /**
-     * Object that holds data for the page's dropdown menus.
-     *
-     * @param nameRef reference to the title of the item
-     * @param options list of options to show in the dropdown
-     * @param initialIndex item to initially display
-     * @param onChange function to run on the option change
-     */
-    class DropdownData(
-        val nameRef: Int,
-        val options: Int,
-        initialIndex: Int,
-        val onChange: (Int) -> Unit
-    ){
-        //initialize the selected item
-        private val _output = MutableStateFlow(value = initialIndex)
-        val output = _output.asStateFlow()
-
-        //initialize box size
-        private val _size = MutableStateFlow(value = Size.Zero)
-        val size = _size.asStateFlow()
-
-        //initialize dropdown's open state
-        private val _isOpen = MutableStateFlow(value = false)
-        val isOpen = _isOpen.asStateFlow()
-
-        //initialize dropdown icon
-        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
-        val icon = _icon.asStateFlow()
-
-        /**
-         * Sets the item to the indicated index.
-         *
-         * @param dropdownIndex new string of the selection
-         */
-        fun setOutput(dropdownIndex: Int){
-            _output.update{dropdownIndex}
-
-            //perform the required change and close the dropdown
-            onChange(dropdownIndex)
-            openToggle()
-        }
-
-        /**
-         * Setter for the item's size.
-         *
-         * @param newSize size to define for this object
-         */
-        fun setSize(newSize: Size){_size.update{newSize}}
-
-        /**
-         * Changes the open state of the dropdown item.
-         */
-        fun openToggle() {
-            _isOpen.update{!isOpen.value}
-
-            //set icon to the appropriate value
-            _icon.update{
-                if(isOpen.value) Icons.Filled.KeyboardArrowUp
-                else Icons.Filled.KeyboardArrowDown
-            }
-        }
-    }
+    //initialize dropdown for the class detail dialog
+    val classDetailDropdown = DropdownData(
+        nameRef = R.string.categoryLabel,
+        optionsRef = R.array.classDescDropdown,
+        initialIndex = 0,
+        onChange = {}
+    )
 
     /**
      * Data regarding primary statistics and their related displays.

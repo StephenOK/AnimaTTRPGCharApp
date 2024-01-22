@@ -1,11 +1,8 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
+import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
@@ -176,85 +173,22 @@ class EditSecondaryViewModel(val context: Context): ViewModel() {
         }
 
         //dropdown item for this characteristic's associated field
-        private val fieldDropdown = ItemDropdown(
-            initialIndex = customChar.fieldIndex.intValue,
+        private val fieldDropdown = DropdownData(
+            nameRef = R.string.fieldLabel,
             optionsRef = R.array.secondaryFields,
-            labelRef = R.string.fieldLabel,
-            itemUpdate = {customChar.setFieldIndex(fieldIndex = it)}
+            initialIndex = customChar.fieldIndex.intValue,
+            onChange = {customChar.setFieldIndex(fieldIndex = it)}
         )
 
         //dropdown item for this characteristic's associated primary characteristic
-        private val primaryDropdown = ItemDropdown(
-            initialIndex = customChar.primaryCharIndex.intValue,
+        private val primaryDropdown = DropdownData(
+            nameRef = R.string.primeCharLabel,
             optionsRef = R.array.primaryCharArray,
-            labelRef = R.string.primeCharLabel,
-            itemUpdate = {customChar.setPrimaryCharIndex(primeIndex = it)}
+            initialIndex = customChar.primaryCharIndex.intValue,
+            onChange = {customChar.setPrimaryCharIndex(primeIndex = it)}
         )
 
         val allDropdowns = listOf(fieldDropdown, primaryDropdown)
-    }
-
-    /**
-     * Manages a dropdown for the editing panel.
-     *
-     * @param initialIndex sets the initial display for this item
-     * @param optionsRef reference to the list of items in the dropdown
-     * @param labelRef reference to this item's title
-     * @param itemUpdate function to run on changing this item
-     */
-    class ItemDropdown(
-        initialIndex: Int,
-        val optionsRef: Int,
-        val labelRef: Int,
-        val itemUpdate: (Int) -> Unit
-    ){
-        //selected index for this dropdown
-        private val _index = MutableStateFlow(value = initialIndex)
-        val index = _index.asStateFlow()
-
-        //current size of the dropdown
-        private val _size = MutableStateFlow(value = Size.Zero)
-        val size = _size.asStateFlow()
-
-        //open state of the dropdown
-        private val _isOpen = MutableStateFlow(value = false)
-        val isOpen = _isOpen.asStateFlow()
-
-        //displayed icon of the dropdown
-        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
-        val icon = _icon.asStateFlow()
-
-        /**
-         * Sets the currently selected index to this item.
-         *
-         * @param newIndex new index value to set
-         */
-        fun setIndex(newIndex: Int){
-            _index.update{newIndex}
-            itemUpdate(newIndex)
-            openToggle()
-        }
-
-        /**
-         * Sets the size to the indicated value.
-         *
-         * @param newSize size to set for the dropdown
-         */
-        fun setSize(newSize: Size){_size.update{newSize}}
-
-        /**
-         * Toggles the open state of the dropdown.
-         */
-        fun openToggle(){
-            //toggles the open state
-            _isOpen.update{!isOpen.value}
-
-            //sets the trailing icon to the appropriate item
-            _icon.update{
-                if(isOpen.value) Icons.Filled.KeyboardArrowUp
-                else Icons.Filled.KeyboardArrowDown
-            }
-        }
     }
 
     init{

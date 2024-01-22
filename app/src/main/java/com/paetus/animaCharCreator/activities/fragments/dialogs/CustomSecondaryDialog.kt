@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.composables.OutlinedDropdown
@@ -67,20 +66,8 @@ fun CustomSecondaryDialog(
                 //field and characteristic selection
                 items(customSecondVM.allDropdowns){dropdown ->
                     OutlinedDropdown(
-                        optionsRef = dropdown.optionsRef,
-                        index = dropdown.index.collectAsState().value,
-                        openState = dropdown.isOpen.collectAsState().value,
-                        labelRef = dropdown.labelRef,
-                        icon = dropdown.icon.collectAsState().value,
-                        size = dropdown.size.collectAsState().value,
-                        sizeSetter = {coordinates ->
-                            dropdown.setSize(newSize = coordinates.size.toSize())
-                        },
-                        itemSelection = {index ->
-                            dropdown.setIndex(selection = index)
-                        },
-                        openFunc = {dropdown.openToggle()}
-                    )
+                        data = dropdown
+                    ) {}
                 }
 
                 item{Spacer(modifier = Modifier.height(10.dp))}

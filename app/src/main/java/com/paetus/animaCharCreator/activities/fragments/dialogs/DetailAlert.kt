@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +48,10 @@ import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.composables.OutlinedDropdown
+import com.paetus.animaCharCreator.enumerations.Archetype
 import com.paetus.animaCharCreator.theme.psyTableLightColors
+import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.ModuleFragmentViewModel
 
 /**
@@ -74,16 +78,19 @@ fun DetailAlert(
                         //advantage or disadvantage
                         is Advantage -> AdvantageDetails(advantage = item)
 
+                        //character page
+                        is CharacterFragmentViewModel -> ClassDetails(charFragVM = item)
+
                         //weapon
                         is Weapon -> WeaponContents(weapon = item)
 
                         //archetype
-                        is ModuleFragmentViewModel.ArchetypeData -> ArchetypeContents(weaponList = item.weapons)
+                        is ModuleFragmentViewModel.ArchetypeData ->
+                            ArchetypeContents(weaponList = item.weapons)
 
                         //style module
-                        is StyleModule -> {
+                        is StyleModule ->
                             Text(text = stringResource(id = item.description))
-                        }
 
                         //martial art
                         is MartialArt -> MartialContents(martialArt = item)
@@ -224,6 +231,480 @@ private fun AdvantageDetails(
                     append(" $costString")
                 }
             )
+        }
+    }
+}
+
+@Composable
+fun ClassDetails(charFragVM: CharacterFragmentViewModel){
+    val charClass = charFragVM.classDetailItem.collectAsState().value
+
+    //retrieve all archetype strings
+    var archetypeList = ""
+    charClass.archetype.forEach{type ->
+        archetypeList += stringResource(id = Archetype.toAddress(archetype = type))
+
+        if(type != charClass.archetype.last()) archetypeList += ", "
+    }
+
+    //convert primary maximums to integer strings
+    val combatMax = (charClass.combatMax * 100).toInt()
+    val magMax = (charClass.magMax * 100).toInt()
+    val psyMax = (charClass.psyMax * 100).toInt()
+
+    Column{
+        OutlinedDropdown(
+            data = charFragVM.classDetailDropdown
+        ) {}
+
+        when(charFragVM.classDetailDropdown.output.collectAsState().value) {
+            0 -> {
+                //display class' archetype
+                InfoRow(
+                    label = stringResource(id = R.string.archetypeHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = archetypeList,
+                        modifier = modifier
+                    )
+                }
+
+                //display life point multiple
+                InfoRow(
+                    label = stringResource(id = R.string.lifePointMultHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = charClass.lifePointMultiple.toString(),
+                        modifier = modifier
+                    )
+                }
+
+                //display life points gained per level
+                InfoRow(
+                    label = stringResource(R.string.lifePointLevelHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.perLevel, charClass.lifePointsPerLevel),
+                        modifier = modifier
+                    )
+                }
+
+                //display initiative gained per level
+                InfoRow(
+                    label = stringResource(R.string.initiativeHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.perLevel, charClass.initiativePerLevel),
+                        modifier = modifier
+                    )
+                }
+
+                //display martial knowledge gained per level
+                InfoRow(
+                    label = stringResource(R.string.martialKnowledgeHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.perLevel, charClass.mkPerLevel),
+                        modifier = modifier
+                    )
+                }
+
+                //display innate psychic points gained per level
+                InfoRow(
+                    label = stringResource(id = R.string.innatePsyHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(
+                            id = R.string.innatePsyPerLevel,
+                            charClass.psyPerTurn
+                        ),
+                        modifier = modifier
+                    )
+                }
+            }
+
+            1 -> {
+                //display combat ability percentages
+                InfoRow(
+                    label = stringResource(id = R.string.combatAbilityHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.primaryLimit, combatMax),
+                        modifier = modifier
+                    )
+                }
+
+                //display cost of attack points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.attackLabel),
+                        charClass.atkGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of block points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.blockLabel),
+                        charClass.blockGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of dodge points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.dodgeLabel),
+                        charClass.dodgeGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of wear armor points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.wearLabel),
+                        charClass.armorGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of ki points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.kiLabel),
+                        charClass.kiGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of ki accumulation multiple
+                InfoRow(
+                    label = stringResource(id = R.string.accumulationHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = charClass.kiAccumMult.toString(),
+                        modifier = modifier
+                    )
+                }
+            }
+
+            2 -> {
+                //display magic ability percentages
+                InfoRow(
+                    label = stringResource(id = R.string.magicAbilityHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.primaryLimit, magMax),
+                        modifier = modifier
+                    )
+                }
+
+                //display cost of adding zeon points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        5,
+                        stringResource(R.string.zeonLabel),
+                        charClass.zeonGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of magic accumulation multiples
+                InfoRow(
+                    label = stringResource(id = R.string.maMultHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = charClass.maGrowth.toString(),
+                        modifier = modifier
+                    )
+                }
+
+                //display cost of magic projection addition
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(R.string.magProjectionLabel),
+                        charClass.maProjGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of summon points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(R.string.summonLabel),
+                        charClass.summonGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of control points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.controlTitle),
+                        charClass.controlGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of bind points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.bindTitle),
+                        charClass.bindGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of banish points
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(id = R.string.banishTitle),
+                        charClass.banishGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            3 -> {
+                //display psychic ability percentages
+                InfoRow(
+                    label = stringResource(R.string.psychicAbilityHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = stringResource(id = R.string.primaryLimit, psyMax),
+                        modifier = modifier
+                    )
+                }
+
+                //display cost of psychic points
+                InfoRow(
+                    label = stringResource(R.string.psyPointHead)
+                ) { modifier, _ ->
+                    Text(
+                        text = charClass.psyPointGrowth.toString(),
+                        modifier = modifier
+                    )
+                }
+
+                //display cost of psychic projection
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringResource(R.string.psyProjectionLabel),
+                        charClass.psyProjGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            4 -> {
+                //display cost of athletic secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[0],
+                        charClass.athGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of social secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[1],
+                        charClass.socGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of perceptive secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[2],
+                        charClass.percGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of intellectual secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[3],
+                        charClass.intellGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of vigor secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[4],
+                        charClass.vigGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of subterfuge secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[5],
+                        charClass.subterGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display cost of creative secondaries
+                Text(
+                    text = stringResource(
+                        id = R.string.plusItemCost,
+                        1,
+                        stringArrayResource(id = R.array.secondaryFields)[6],
+                        charClass.createGrowth
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display all cost reductions
+                Text(
+                    text = stringResource(id = R.string.reducedCostHead),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                charClass.reducedCosts.forEach { (secondaryIndex, cost) ->
+                    Text(
+                        text = stringResource(
+                            id = R.string.plusItemCost,
+                            1,
+                            stringArrayResource(id = R.array.secondaryCharacteristics)[secondaryIndex],
+                            cost
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
+            else -> {
+                Text(
+                    text = stringResource(id = R.string.innateBonusHead),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+
+                //display primary bonuses
+                charClass.primaryBonus.forEach { (name, amount) ->
+                    Text(
+                        text = stringResource(
+                            id = R.string.itemPerLevel,
+                            amount,
+                            stringResource(id = name)
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                //display secondary bonuses
+                charClass.secondaryBonus.forEach { (name, amount) ->
+                    Text(
+                        text = stringResource(
+                            id = R.string.itemPerLevel,
+                            amount,
+                            stringArrayResource(id = R.array.secondaryCharacteristics)[name]
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                //display special ability of class, if available
+                if (charClass.specialText != null)
+
+                    Text(
+                        text = stringResource(id = charClass.specialText),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+            }
         }
     }
 }
@@ -931,6 +1412,14 @@ fun EquipmentDetails(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun ClassDetailPreview(){
+    val charInstance = BaseCharacter()
+    val charClass = charInstance.classes.weaponMaster
+    DetailAlert("Weaponsmaster", charClass){}
 }
 
 @Preview

@@ -73,21 +73,25 @@ fun CharacterPageFragment(
 
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {dropdown ->
-                    OutlinedDropdown(
-                        data = dropdown
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        maxNumVM.updateMaximums()
-                        maxNumVM.updateExpenditures()
-                    }
+                        OutlinedDropdown(
+                            data = dropdown.data,
+                            modifier = Modifier.weight(dropdown.weight)
+                        ) {
+                            maxNumVM.updateMaximums()
+                            maxNumVM.updateExpenditures()
+                        }
 
-                    if(dropdown == charFragVM.classDropdown){
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ){
+                        if (dropdown.weight != 1f) {
                             DetailButton(
-                                onClick = {charFragVM.toggleDetailOpen()},
+                                onClick = {dropdown.detailOpen()},
                                 modifier = Modifier
+                                    .weight(1f - dropdown.weight)
                             )
                         }
                     }
@@ -110,10 +114,10 @@ fun CharacterPageFragment(
 
         //display gender bonus selection if the character is a duk'zarist
         item {
-            if(charFragVM.raceDropdown.output.collectAsState().value == 6 ||
+            if(charFragVM.raceDropdown.data.output.collectAsState().value == 6 ||
                 charFragVM.magPaladinOpen.collectAsState().value) {
                 GeneralCard {
-                    if (charFragVM.raceDropdown.output.collectAsState().value == 6) {
+                    if (charFragVM.raceDropdown.data.output.collectAsState().value == 6) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
@@ -334,9 +338,9 @@ fun CharacterPageFragment(
 
     if(charFragVM.classDetailOpen.collectAsState().value)
         DetailAlert(
-            title = stringArrayResource(id = R.array.classArray)[charFragVM.classDropdown.output.collectAsState().value],
+            title = stringArrayResource(id = R.array.classArray)[charFragVM.classDropdown.data.output.collectAsState().value],
             item = charFragVM,
-            closeFunc = {charFragVM.toggleDetailOpen()}
+            closeFunc = {charFragVM.toggleClassDetailOpen()}
         )
 }
 

@@ -632,9 +632,16 @@ class MainActivity : AppCompatActivity() {
 
                                     //input to change secondary's field and primary base and
                                     editPanel.allDropdowns.forEach {dropdown ->
-                                        OutlinedDropdown(
-                                            data = dropdown
-                                        ) {}
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(0.8f),
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = CenterVertically
+                                        ) {
+                                            OutlinedDropdown(
+                                                data = dropdown
+                                            ) {}
+                                        }
                                     }
                                 }
                             }

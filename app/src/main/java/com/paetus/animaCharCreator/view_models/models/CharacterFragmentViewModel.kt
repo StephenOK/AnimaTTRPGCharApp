@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
  * @param charInstance object that holds all of the character's stats
  */
 class CharacterFragmentViewModel(
-    private val charInstance: BaseCharacter
+    val charInstance: BaseCharacter
 ): ViewModel() {
     //initialize input for the character's name
     private val _nameInput = MutableStateFlow(value = charInstance.charName.value)
@@ -261,7 +261,7 @@ class CharacterFragmentViewModel(
     /**
      * Opens and closes the detail alert for class details.
      */
-    fun toggleDetailOpen(){_classDetailOpen.update{!classDetailOpen.value}}
+    fun toggleClassDetailOpen(){_classDetailOpen.update{!classDetailOpen.value}}
 
     /**
      * Sets the class to be shown in the detail alert to the currently held one.
@@ -269,44 +269,56 @@ class CharacterFragmentViewModel(
     private fun setClassDetail(){_classDetailItem.update{charInstance.ownClass.value}}
 
     //set race dropdown data
-    val raceDropdown = DropdownData(
-        nameRef = R.string.raceText,
-        optionsRef = R.array.raceArray,
-        initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
-        onChange = {
-            //change the character's race
-            charInstance.setOwnRace(raceNum = it)
+    val raceDropdown = DropdownRowData(
+        data = DropdownData(
+            nameRef = R.string.raceText,
+            optionsRef = R.array.raceArray,
+            initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+            onChange = {
+                //change the character's race
+                charInstance.setOwnRace(raceNum = it)
 
-            //update the strength value for this character
-            strengthData.setOutput()
-            setSizeInput()
+                //update the strength value for this character
+                strengthData.setOutput()
+                setSizeInput()
 
-            //update the appearance value for this character
-            setAppearInput(display = charInstance.appearance.intValue.toString())
-        }
+                //update the appearance value for this character
+                setAppearInput(display = charInstance.appearance.intValue.toString())
+            }
+        ),
+        weight = 1f,
+        detailOpen = {}
     )
 
     //set class dropdown data
-    val classDropdown = DropdownData(
-        nameRef = R.string.classLabel,
-        optionsRef = R.array.classArray,
-        initialIndex = charInstance.classes.allClasses.indexOf(charInstance.ownClass.value),
-        onChange = {
-            charInstance.setOwnClass(classInt = it)
-            setClassDetail()
-            setMagPaladinOpen()
-        }
+    val classDropdown = DropdownRowData(
+        data = DropdownData(
+            nameRef = R.string.classLabel,
+            optionsRef = R.array.classArray,
+            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.ownClass.value),
+            onChange = {
+                charInstance.setOwnClass(classInt = it)
+                setClassDetail()
+                setMagPaladinOpen()
+            }
+        ),
+        weight = 0.6f,
+        detailOpen = {toggleClassDetailOpen()}
     )
 
     //set level dropdown data
-    private val levelDropdown = DropdownData(
-        nameRef = R.string.levelText,
-        optionsRef = R.array.levelCountArray,
-        initialIndex = charInstance.lvl.intValue,
-        onChange = {
-            charInstance.setLvl(levNum = it)
-            setBonusColor()
-        }
+    private val levelDropdown = DropdownRowData(
+        data = DropdownData(
+            nameRef = R.string.levelText,
+            optionsRef = R.array.levelCountArray,
+            initialIndex = charInstance.lvl.intValue,
+            onChange = {
+                charInstance.setLvl(levNum = it)
+                setBonusColor()
+            }
+        ),
+        weight = 1f,
+        detailOpen = {}
     )
 
     //set all dropdown data
@@ -385,6 +397,19 @@ class CharacterFragmentViewModel(
         optionsRef = R.array.classDescDropdown,
         initialIndex = 0,
         onChange = {}
+    )
+
+    /**
+     * Object that manages a row with a dropdown object.
+     *
+     * @param data item that is used in the dropdown object
+     * @param weight size percentile of the dropdown object
+     * @param detailOpen function to run on opening this row's details
+     */
+    class DropdownRowData(
+        val data: DropdownData,
+        val weight: Float,
+        val detailOpen: () -> Unit
     )
 
     /**

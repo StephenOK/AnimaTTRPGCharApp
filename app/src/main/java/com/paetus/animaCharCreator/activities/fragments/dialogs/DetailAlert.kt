@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -253,9 +254,18 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
     val psyMax = (charClass.psyMax * 100).toInt()
 
     Column{
-        OutlinedDropdown(
-            data = charFragVM.classDetailDropdown
-        ) {}
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.8f),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedDropdown(
+                data = charFragVM.classDetailDropdown
+            ) {}
+        }
+
+        Spacer(modifier =  Modifier.height(20.dp))
 
         when(charFragVM.classDetailDropdown.output.collectAsState().value) {
             0 -> {
@@ -269,10 +279,12 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display life point multiple
                 InfoRow(
                     label = stringResource(id = R.string.lifePointMultHead)
-                ) { modifier, _ ->
+                ){modifier, _ ->
                     Text(
                         text = charClass.lifePointMultiple.toString(),
                         modifier = modifier
@@ -289,6 +301,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display initiative gained per level
                 InfoRow(
                     label = stringResource(R.string.initiativeHead)
@@ -299,6 +313,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display martial knowledge gained per level
                 InfoRow(
                     label = stringResource(R.string.martialKnowledgeHead)
@@ -308,6 +324,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         modifier = modifier
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display innate psychic points gained per level
                 InfoRow(
@@ -333,6 +351,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         modifier = modifier
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display cost of attack points
                 Text(
@@ -386,6 +406,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     textAlign = TextAlign.Center
                 )
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display cost of ki points
                 Text(
                     text = stringResource(
@@ -420,6 +442,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         modifier = modifier
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display cost of adding zeon points
                 Text(
@@ -456,6 +480,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display cost of summon points
                 Text(
@@ -520,6 +546,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         modifier = modifier
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 //display cost of psychic points
                 InfoRow(
@@ -637,6 +665,8 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     textAlign = TextAlign.Center
                 )
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display all cost reductions
                 Text(
                     text = stringResource(id = R.string.reducedCostHead),
@@ -661,13 +691,6 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
             }
 
             else -> {
-                Text(
-                    text = stringResource(id = R.string.innateBonusHead),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-
                 //display primary bonuses
                 charClass.primaryBonus.forEach { (name, amount) ->
                     Text(
@@ -682,8 +705,10 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display secondary bonuses
-                charClass.secondaryBonus.forEach { (name, amount) ->
+                charClass.secondaryBonus.forEach {(name, amount) ->
                     Text(
                         text = stringResource(
                             id = R.string.itemPerLevel,
@@ -696,9 +721,39 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
+                if(charClass == charFragVM.charInstance.classes.freelancer){
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    //display user's selected bonuses for their freelancer
+                    Text(
+                        text = stringResource(id = R.string.freelancerBonusHead),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+
+                    charFragVM.charInstance.classes.freelancerSelection.forEach{index ->
+                        Text(
+                            text =
+                                if(index > 0)
+                                    stringResource(
+                                        id = R.string.itemPerLevel,
+                                        10,
+                                        stringArrayResource(id = R.array.secondaryCharacteristics)[index - 1]
+                                    )
+                                else
+                                    stringResource(id = R.string.freelancerEmptySelectionDetail),
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
                 //display special ability of class, if available
                 if (charClass.specialText != null)
-
                     Text(
                         text = stringResource(id = charClass.specialText),
                         modifier = Modifier
@@ -1418,8 +1473,15 @@ fun EquipmentDetails(
 @Composable
 fun ClassDetailPreview(){
     val charInstance = BaseCharacter()
-    val charClass = charInstance.classes.weaponMaster
-    DetailAlert("Weaponsmaster", charClass){}
+    charInstance.setOwnClass(1)
+
+    val charFragVM = CharacterFragmentViewModel(charInstance)
+    charFragVM.classDetailDropdown.setOutput(2)
+
+    DetailAlert(
+        stringArrayResource(id = R.array.classArray)[charFragVM.classDropdown.data.output.collectAsState().value],
+        charFragVM
+    ){}
 }
 
 @Preview

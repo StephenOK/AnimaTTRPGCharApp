@@ -1,8 +1,10 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -65,9 +67,16 @@ fun CustomSecondaryDialog(
 
                 //field and characteristic selection
                 items(customSecondVM.allDropdowns){dropdown ->
-                    OutlinedDropdown(
-                        data = dropdown
-                    ) {}
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedDropdown(
+                            data = dropdown
+                        ) {}
+                    }
                 }
 
                 item{Spacer(modifier = Modifier.height(10.dp))}

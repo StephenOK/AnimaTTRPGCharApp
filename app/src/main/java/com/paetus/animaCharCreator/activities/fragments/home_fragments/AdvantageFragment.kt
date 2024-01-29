@@ -120,25 +120,6 @@ fun AdvantageFragment(
                     }
                 }
             }
-
-            item {Spacer(Modifier.height(20.dp))}
-
-            item{
-                GeneralCard{
-                    //display all advantages acquired from their race
-                    Text(text = stringResource(id = R.string.racialAdvantageLabel))
-
-                    advantageFragVM.getRacialAdvantages().forEach{advantage ->
-                        AdvantageRow(
-                            advantage = advantage,
-                            takenAddition = null,
-                            advantageFragVM = advantageFragVM,
-                            buttonIcon = {},
-                            buttonAction = null
-                        )
-                    }
-                }
-            }
         }
 
         Spacer(Modifier.height(15.dp))
@@ -204,8 +185,9 @@ fun AdvantageFragment(
         if(advantageFragVM.detailAlertOpen.collectAsState().value)
             DetailAlert(
                 title = stringResource(id = advantageFragVM.detailItem.collectAsState().value!!.name),
-                item = advantageFragVM.detailItem.collectAsState().value!!
-            ){advantageFragVM.toggleDetailAlertOn()}
+                item = advantageFragVM.detailItem.collectAsState().value!!,
+                closeFunc = {advantageFragVM.toggleDetailAlertOn()}
+            )
     }
 }
 

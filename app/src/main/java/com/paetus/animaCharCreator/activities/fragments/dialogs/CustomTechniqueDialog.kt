@@ -1288,5 +1288,5 @@ fun CustomTechniquePreview(){
     customTechVM.setCustomPageNum(1)
     customTechVM.setTechniqueIndex(5)
 
-    CustomTechniqueDialog("", kiFragVM, customTechVM){TechContents(it)}
+    CustomTechniqueDialog("", kiFragVM, customTechVM){TechniqueDetails(it)}
 }

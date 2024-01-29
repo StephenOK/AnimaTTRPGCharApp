@@ -30,6 +30,7 @@ import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
@@ -49,6 +50,7 @@ import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.ProjectileWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.composables.DetailButton
 import com.paetus.animaCharCreator.composables.OutlinedDropdown
 import com.paetus.animaCharCreator.enumerations.Archetype
 import com.paetus.animaCharCreator.theme.psyTableLightColors
@@ -80,33 +82,37 @@ fun DetailAlert(
                         is Advantage -> AdvantageDetails(advantage = item)
 
                         //character page
-                        is CharacterFragmentViewModel -> ClassDetails(charFragVM = item)
+                        is CharacterFragmentViewModel ->
+                            if(item.classDetailOpen.collectAsState().value)
+                                ClassDetails(charFragVM = item)
+                            else if(item.raceDetailOpen.collectAsState().value)
+                                RaceDetails(charFragVM = item)
 
                         //weapon
-                        is Weapon -> WeaponContents(weapon = item)
+                        is Weapon -> WeaponDetails(weapon = item)
 
                         //archetype
                         is ModuleFragmentViewModel.ArchetypeData ->
-                            ArchetypeContents(weaponList = item.weapons)
+                            ArchetypeDetails(weaponList = item.weapons)
 
                         //style module
                         is StyleModule ->
                             Text(text = stringResource(id = item.description))
 
                         //martial art
-                        is MartialArt -> MartialContents(martialArt = item)
+                        is MartialArt -> MartialDetails(martialArt = item)
 
                         //ki ability
-                        is KiAbility -> KiContents(ability = item)
+                        is KiAbility -> KiDetails(ability = item)
 
                         //dominion technique
-                        is TechniqueBase -> TechContents(technique = item)
+                        is TechniqueBase -> TechniqueDetails(technique = item)
 
                         //magical spell
                         is Spell -> SpellDetails(spell = item)
 
                         //psychic power
-                        is PsychicPower -> PowerDetails(power = item)
+                        is PsychicPower -> PsyPowerDetails(power = item)
 
                         //inventory item
                         is GeneralEquipment -> EquipmentDetails(equipment = item)
@@ -222,18 +228,19 @@ private fun AdvantageDetails(
 
         //display available costs
         Spacer(modifier = Modifier.height(10.dp))
-        Row{
-            Text(
-                buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
-                        append(stringResource(id = R.string.costLabel))
-                    }
+        if(advantage !is RacialAdvantage)
+            Row{
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                            append(stringResource(id = R.string.costLabel))
+                        }
 
-                    append(" $costString")
-                }
-            )
+                        append(" $costString")
+                    }
+                )
+            }
         }
-    }
 }
 
 @Composable
@@ -764,13 +771,42 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
     }
 }
 
+@Composable
+private fun RaceDetails(
+    charFragVM: CharacterFragmentViewModel
+){
+    charFragVM.charInstance.ownRace.value.forEach{racial ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = stringResource(racial.name),
+                modifier = Modifier
+                    .weight(0.75f),
+                textAlign = TextAlign.Center
+            )
+
+            DetailButton(
+                onClick = {
+                    charFragVM.setRacialAdvantage(racial = racial)
+                    charFragVM.toggleRacialAdvantageOpen()
+                },
+                modifier = Modifier
+                    .weight(0.75f)
+            )
+        }
+    }
+}
+
 /**
  * Shows details of the given weapon.
  *
  * @param weapon item to display the details of
  */
 @Composable
-private fun WeaponContents(
+private fun WeaponDetails(
     weapon: Weapon
 ) {
     Column {
@@ -966,7 +1002,7 @@ private fun WeaponContents(
  * @param weaponList items to display the details of
  */
 @Composable
-private fun ArchetypeContents(
+private fun ArchetypeDetails(
     weaponList: List<Weapon>
 ){
     Column(
@@ -987,7 +1023,7 @@ private fun ArchetypeContents(
  * @param martialArt item to display the details of
  */
 @Composable
-private fun MartialContents(
+private fun MartialDetails(
     martialArt: MartialArt
 ){
     Column{
@@ -1011,7 +1047,7 @@ private fun MartialContents(
  * @param ability ki ability to display the details of
  */
 @Composable
-private fun KiContents(
+private fun KiDetails(
     ability: KiAbility
 ){
     Column{
@@ -1044,7 +1080,7 @@ private fun KiContents(
  * @param technique dominion technique to display the details of
  */
 @Composable
-fun TechContents(
+fun TechniqueDetails(
     technique: TechniqueBase
 ){
     Column{
@@ -1281,7 +1317,7 @@ fun SpellDetails(
  * @param power psychic power to display the details of
  */
 @Composable
-fun PowerDetails(
+fun PsyPowerDetails(
     power: PsychicPower
 ){
     //retrieve level, if power is active, and if power is maintained

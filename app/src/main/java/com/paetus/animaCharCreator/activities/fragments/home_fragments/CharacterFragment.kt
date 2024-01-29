@@ -342,6 +342,22 @@ fun CharacterPageFragment(
             item = charFragVM,
             closeFunc = {charFragVM.toggleClassDetailOpen()}
         )
+
+    //display racial detail page
+    if(charFragVM.raceDetailOpen.collectAsState().value)
+        DetailAlert(
+            title = stringArrayResource(id = R.array.raceArray)[charFragVM.raceDropdown.data.output.collectAsState().value],
+            item = charFragVM,
+            closeFunc = {charFragVM.toggleRaceDetailOpen()}
+        )
+
+    //display specific racial advantage details
+    if(charFragVM.raceAdvantageOpen.collectAsState().value)
+        DetailAlert(
+            title = stringResource(id = charFragVM.racialDisplayed.collectAsState().value.name),
+            item = charFragVM.racialDisplayed.collectAsState().value,
+            closeFunc = {charFragVM.toggleRacialAdvantageOpen()}
+        )
 }
 
 /**

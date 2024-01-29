@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -80,7 +81,19 @@ class CharacterFragmentViewModel(
     private val _bonusValid = MutableStateFlow(value = charInstance.primaryList.validLevelBonuses())
     val bonusValid = _bonusValid.asStateFlow()
 
-    //initialize open state of detail alert
+    //initialize open state of race detail alert
+    private val _raceDetailOpen = MutableStateFlow(value = false)
+    val raceDetailOpen = _raceDetailOpen.asStateFlow()
+
+    //initialize race advantage detail open state
+    private val _raceAdvantageOpen = MutableStateFlow(value = false)
+    val raceAdvantageOpen = _raceAdvantageOpen.asStateFlow()
+
+    //initialize racial advantage displayed
+    private val _racialDisplayed = MutableStateFlow(value = charInstance.races.sylvainAdvantages[0])
+    val racialDisplayed = _racialDisplayed.asStateFlow()
+
+    //initialize open state of class detail alert
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
 
@@ -264,9 +277,21 @@ class CharacterFragmentViewModel(
     fun toggleClassDetailOpen(){_classDetailOpen.update{!classDetailOpen.value}}
 
     /**
+     * Opens and closes the detail alert for race details.
+     */
+    fun toggleRaceDetailOpen(){_raceDetailOpen.update{!raceDetailOpen.value}}
+
+    /**
+     * Opens and closes the detail alert for individual racial advantage details.
+     */
+    fun toggleRacialAdvantageOpen(){_raceAdvantageOpen.update{!raceAdvantageOpen.value}}
+
+    /**
      * Sets the class to be shown in the detail alert to the currently held one.
      */
     private fun setClassDetail(){_classDetailItem.update{charInstance.ownClass.value}}
+
+    fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
 
     //set race dropdown data
     val raceDropdown = DropdownRowData(
@@ -286,8 +311,8 @@ class CharacterFragmentViewModel(
                 setAppearInput(display = charInstance.appearance.intValue.toString())
             }
         ),
-        weight = 1f,
-        detailOpen = {}
+        weight = 0.6f,
+        detailOpen = {toggleRaceDetailOpen()}
     )
 
     //set class dropdown data

@@ -1,9 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.ui.geometry.Size
+import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,16 +26,18 @@ class CustomSecondaryViewModel(
     private val _secondaryIsPublic = MutableStateFlow(false)
     val secondaryIsPublic = _secondaryIsPublic.asStateFlow()
 
-    private val fieldDropdown = CustomDropdownItem(
+    private val fieldDropdown = DropdownData(
+        nameRef = R.string.fieldLabel,
         optionsRef = R.array.secondaryFields,
-        labelRef = R.string.fieldLabel,
-        customUpdate = {customSecondary.setFieldIndex(fieldIndex = it)}
+        initialIndex = 0,
+        onChange = {customSecondary.setFieldIndex(fieldIndex = it)}
     )
 
-    private val primaryDropdown = CustomDropdownItem(
+    private val primaryDropdown = DropdownData(
+        nameRef = R.string.primeCharLabel,
         optionsRef = R.array.primaryCharArray,
-        labelRef = R.string.primeCharLabel,
-        customUpdate = {customSecondary.setPrimaryCharIndex(primeIndex = it)}
+        initialIndex = 0,
+        onChange = {customSecondary.setPrimaryCharIndex(primeIndex = it)}
     )
 
     val allDropdowns = listOf(fieldDropdown, primaryDropdown)
@@ -63,64 +62,4 @@ class CustomSecondaryViewModel(
         customSecondary.setPublic(isPublic = isPublic)
     }
 
-    /**
-     * Manages a dropdown for the custom secondary dialog.
-     *
-     * @param optionsRef list of options for this dropdown
-     * @param labelRef string reference to this item's label
-     * @param customUpdate function to run on user selecting an option
-     */
-    class CustomDropdownItem(
-        val optionsRef: Int,
-        val labelRef: Int,
-        val customUpdate: (Int) -> Unit
-    ){
-        //initialize selected index
-        private val _index = MutableStateFlow(value = 0)
-        val index = _index.asStateFlow()
-
-        //initialize the size of the dropdown
-        private val _size = MutableStateFlow(value = Size.Zero)
-        val size = _size.asStateFlow()
-
-        //initialize open state of the dropdown
-        private val _isOpen = MutableStateFlow(value = false)
-        val isOpen = _isOpen.asStateFlow()
-
-        //initialize icon displayed on the dropdown
-        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
-        val icon = _icon.asStateFlow()
-
-        /**
-         * Sets the current selection for this dropdown.
-         *
-         * @param selection selected index to set
-         */
-        fun setIndex(selection: Int){
-            _index.update{selection}
-            customUpdate(selection)
-            openToggle()
-        }
-
-        /**
-         * Sets the size of the dropdown object.
-         *
-         * @param newSize new size to set
-         */
-        fun setSize(newSize: Size){_size.update{newSize}}
-
-        /**
-         * Toggles the open state of the dropdown menu.
-         */
-        fun openToggle(){
-            //toggles the open state
-            _isOpen.update{!isOpen.value}
-
-            //updates the trailing icon appropriately
-            _icon.update{
-                if(isOpen.value) Icons.Filled.KeyboardArrowUp
-                else Icons.Filled.KeyboardArrowDown
-            }
-        }
-    }
 }

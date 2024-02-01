@@ -36,6 +36,50 @@
         <item>Warrior Mentalist</item>
     </string-array>
 
+    <string name = "categoryLabel">Category</string>
+
+    <string-array name = "classDescDropdown">
+        <item>General</item>
+        <item>Combat</item>
+        <item>Magic</item>
+        <item>Psychic</item>
+        <item>Secondaries</item>
+        <item>Bonus</item>
+    </string-array>
+
+    <string name = "paladinSpecial">If the Paladin doesn\'t want to develop any supernatural ability, he can exchange the +10 Banish and +20 Zeon innate bonuses for a +10 Composure per level bonus.</string>
+    <string name = "darkPaladinSpecial">If the Dark Paladin doesn\'t want to develop any supernatural ability, he can exchange the +10 Control and +20 Zeon innate bonuses for a +10 Withstand Pain per level bonus.</string>
+    <string name = "weaponmasterSpecial">Purchasing General Weapon Modules, Archetype Modules, and Style Modules costs the Weaponmaster only half the usual DP.</string>
+    <string name = "taoSpecial">Martial arts have a cost of only 20 DP (10 for the first martial art learned).</string>
+    <string name = "rangerSpecial">+10 per level to Detect Ki (only if developed).</string>
+    <string name = "kiConcealSpecial">+5 per level to Ki Concealment (only if developed).</string>
+    <string name = "freelancerSpecial">
+        +10 to five different secondary abilities per level.\n
+        It costs the Freelancer only 20 DP to change class to any other Archetype, or vice versa (a fighter, for example could pay just 20 DP to become a Freelancer character).
+    </string>
+
+    <string name = "freelancerEmptySelectionDetail">(No selection yet made)</string>
+
+    <string name = "lifePointMultHead">Life Point Multiple:</string>
+    <string name = "lifePointLevelHead">Life Points:</string>
+    <string name = "initiativeHead">Initiative:</string>
+    <string name = "martialKnowledgeHead">Martial Knowledge:</string>
+    <string name = "innatePsyHead">Innate Psychic Points:</string>
+    <string name = "accumulationHead">Accumulation Multiple:</string>
+    <string name = "zeonHead">Zeon:</string>
+    <string name = "maMultHead">MA Multiple</string>
+    <string name = "psyPointHead">Psychic Points:</string>
+
+    <string name = "combatAbilityHead">Combat Ability:</string>
+    <string name = "magicAbilityHead">Supernatural Ability:</string>
+    <string name = "psychicAbilityHead">Psychic Ability:</string>
+
+    <string name = "perLevel">+%1d per level</string>
+    <string name = "itemPerLevel">+%1d %s per level</string>
+    <string name = "innatePsyPerLevel">+1 each %1d levels</string>
+    <string name = "primaryLimit">Limit %1d%%</string>
+    <string name = "plusItemCost">+%1d %s: %d</string>
+
     <string-array name = "levelCountArray">
         <item>0</item>
         <item>1</item>
@@ -70,4 +114,7 @@
     <string name = "movement">Movement Value:</string>
     <string name = "weightIndex">Weight Index:</string>
     <string name = "gnosisLabel">Gnosis:</string>
+
+    <string name = "zeonLabel">Zeon</string>
+    <string name = "reducedCostHead">Reduced Costs</string>
 </resources>

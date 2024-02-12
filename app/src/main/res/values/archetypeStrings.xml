@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name = "archetypeHead">Archetype:</string>
     <string name = "domineName">Domine</string>
     <string name = "fighterName">Fighter</string>
     <string name = "mysticName">Mystic</string>

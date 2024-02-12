@@ -8,5 +8,7 @@
     <string name = "intelligenceMultiplier">Intelligence x %1d</string>
     <string name = "maintenanceAmount">1 every %1d</string>
 
+    <string name = "freelancerBonusHead">Selected Freelancer Bonuses</string>
+
     <string name = "detailFailure">Failed to show object details.</string>
 </resources>

@@ -255,15 +255,6 @@ class AdvantageFragmentViewModel(
         _creationPoints.update{3 - advantageRecord.creationPointSpent.intValue}
     }
 
-    /**
-     * Gets the racial advantages the character currently possess.
-     *
-     * @return the list of racial advantages the character possesses
-     */
-    fun getRacialAdvantages(): List<Advantage>{
-        return charInstance.ownRace.value
-    }
-
     //initialize the data for all of the advantage and disadvantage categories
     private val commonAdv = AdvantageButtonData(
         category = R.string.commonAdv,

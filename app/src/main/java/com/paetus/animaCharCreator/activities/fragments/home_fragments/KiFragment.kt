@@ -23,7 +23,7 @@ import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.activities.fragments.dialogs.CustomTechniqueDialog
 import com.paetus.animaCharCreator.activities.fragments.dialogs.DetailAlert
-import com.paetus.animaCharCreator.activities.fragments.dialogs.TechContents
+import com.paetus.animaCharCreator.activities.fragments.dialogs.TechniqueDetails
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
@@ -288,7 +288,7 @@ fun KiFragment(
             filename = filename,
             kiFragVM = kiFragVM,
             customTechVM = customTechVM
-        ){TechContents(it)}
+        ){TechniqueDetails(it)}
 
     //dialog for an item's details
     if(kiFragVM.detailAlertOpen.collectAsState().value)

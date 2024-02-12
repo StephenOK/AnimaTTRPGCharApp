@@ -40,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -632,22 +631,17 @@ class MainActivity : AppCompatActivity() {
                                     }
 
                                     //input to change secondary's field and primary base and
-                                    editPanel.allDropdowns.forEach {item ->
-                                        OutlinedDropdown(
-                                            optionsRef = item.optionsRef,
-                                            index = item.index.collectAsState().value,
-                                            openState = item.isOpen.collectAsState().value,
-                                            labelRef = item.labelRef,
-                                            icon = item.icon.collectAsState().value,
-                                            size = item.size.collectAsState().value,
-                                            sizeSetter = { coordinates ->
-                                                item.setSize(coordinates.size.toSize())
-                                            },
-                                            itemSelection = { index ->
-                                                item.setIndex(index)
-                                            },
-                                            openFunc = { item.openToggle() }
-                                        )
+                                    editPanel.allDropdowns.forEach {dropdown ->
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(0.8f),
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = CenterVertically
+                                        ) {
+                                            OutlinedDropdown(
+                                                data = dropdown
+                                            ) {}
+                                        }
                                     }
                                 }
                             }

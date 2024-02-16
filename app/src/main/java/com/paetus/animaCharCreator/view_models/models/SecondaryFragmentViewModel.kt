@@ -27,7 +27,7 @@ class SecondaryFragmentViewModel(
     val secondaryList: SecondaryList
 ): ViewModel() {
     //initialize open state of the freelancer bonus options
-    private val _freelancerOptionsOpen = MutableStateFlow(value = charInstance.ownClass.value == charInstance.classes.freelancer)
+    private val _freelancerOptionsOpen = MutableStateFlow(value = charInstance.classes.ownClass.value == charInstance.classes.freelancer)
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
     //initialize open state of custom secondaries page
@@ -399,7 +399,7 @@ class SecondaryFragmentViewModel(
      */
     fun refreshPage(){
         //check if freelancer options are available to the character
-        _freelancerOptionsOpen.update{charInstance.ownClass.value == charInstance.classes.freelancer}
+        _freelancerOptionsOpen.update{charInstance.classes.ownClass.value == charInstance.classes.freelancer}
 
         //update the displayed secondary class points
         allCharacteristics.forEach{it.setClassPoints()}

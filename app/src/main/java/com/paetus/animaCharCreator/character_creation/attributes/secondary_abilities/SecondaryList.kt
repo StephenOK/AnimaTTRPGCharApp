@@ -478,7 +478,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customAthletics,
-                    newGrowth = charInstance.ownClass.value.athGrowth
+                    newGrowth = charInstance.classes.ownClass.value.athGrowth
                 )
             }
 
@@ -487,7 +487,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSocials,
-                    newGrowth = charInstance.ownClass.value.socGrowth
+                    newGrowth = charInstance.classes.ownClass.value.socGrowth
                 )
             }
 
@@ -496,7 +496,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customPercs,
-                    newGrowth = charInstance.ownClass.value.percGrowth
+                    newGrowth = charInstance.classes.ownClass.value.percGrowth
                 )
             }
 
@@ -505,7 +505,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customIntells,
-                    newGrowth = charInstance.ownClass.value.intellGrowth
+                    newGrowth = charInstance.classes.ownClass.value.intellGrowth
                 )
             }
 
@@ -514,7 +514,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customVigors,
-                    newGrowth = charInstance.ownClass.value.vigGrowth
+                    newGrowth = charInstance.classes.ownClass.value.vigGrowth
                 )
             }
 
@@ -523,7 +523,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSubs,
-                    newGrowth = charInstance.ownClass.value.subterGrowth
+                    newGrowth = charInstance.classes.ownClass.value.subterGrowth
                 )
             }
 
@@ -532,7 +532,7 @@ class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customCreates,
-                    newGrowth = charInstance.ownClass.value.createGrowth
+                    newGrowth = charInstance.classes.ownClass.value.createGrowth
                 )
             }
 

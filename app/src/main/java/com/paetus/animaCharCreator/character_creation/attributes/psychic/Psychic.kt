@@ -128,7 +128,7 @@ class Psychic(private val charInstance: BaseCharacter){
             //set points to 0 if at level 0
             if (charInstance.lvl.intValue == 0) 0
             //start character at 1 point and add more depending on additional levels
-            else 1 + (charInstance.lvl.intValue - 1)/charInstance.ownClass.value.psyPerTurn
+            else 1 + (charInstance.lvl.intValue - 1)/charInstance.classes.ownClass.value.psyPerTurn
 
         //update total
         updatePsyPointTotal()
@@ -181,7 +181,7 @@ class Psychic(private val charInstance: BaseCharacter){
      * @return true if valid
      */
     fun getValidProjection(): Boolean{
-        return psyProjectionBought.intValue * charInstance.ownClass.value.psyProjGrowth <= charInstance.maxPsyDP.intValue/2
+        return psyProjectionBought.intValue * charInstance.classes.ownClass.value.psyProjGrowth <= charInstance.maxPsyDP.intValue/2
     }
 
     /**
@@ -436,8 +436,8 @@ class Psychic(private val charInstance: BaseCharacter){
      * @return number of points spent in the psychic section
      */
     fun calculateSpent(): Int{
-        return (boughtPsyPoints.intValue * charInstance.ownClass.value.psyPointGrowth) +
-                (psyProjectionBought.intValue * charInstance.ownClass.value.psyProjGrowth)
+        return (boughtPsyPoints.intValue * charInstance.classes.ownClass.value.psyPointGrowth) +
+                (psyProjectionBought.intValue * charInstance.classes.ownClass.value.psyProjGrowth)
     }
 
     /**

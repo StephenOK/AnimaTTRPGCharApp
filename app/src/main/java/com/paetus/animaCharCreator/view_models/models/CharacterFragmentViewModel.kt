@@ -5,6 +5,7 @@ import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
+import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.update
  * @param charInstance object that holds all of the character's stats
  */
 class CharacterFragmentViewModel(
-    val charInstance: BaseCharacter
+    private val charInstance: BaseCharacter
 ): ViewModel() {
     //initialize input for the character's name
     private val _nameInput = MutableStateFlow(value = charInstance.charName.value)
@@ -162,9 +163,28 @@ class CharacterFragmentViewModel(
      * @return true if character is a paladin or dark paladin
      */
     private fun getPaladin(): Boolean{
-        return charInstance.ownClass.value == charInstance.classes.paladin ||
-                charInstance.ownClass.value == charInstance.classes.darkPaladin
+        return charInstance.classes.ownClass.value == charInstance.classes.paladin ||
+                charInstance.classes.ownClass.value == charInstance.classes.darkPaladin
     }
+
+    /**
+     * Retrieves the freelancer class from the character.
+     */
+    fun getFreelancer(): CharClass {return charInstance.classes.freelancer}
+
+    /**
+     * Retrieves the character's selections for their freelancer bonuses.
+     *
+     * @return secondary characteristics chosen for freelancer bonuses
+     */
+    fun getFreelancerBonuses(): MutableList<Int>{return charInstance.classes.freelancerSelection}
+
+    /**
+     * Retrieves the character's current list of racial advantages.
+     *
+     * @return list of character's racial advantages
+     */
+    fun getRace(): List<RacialAdvantage> {return charInstance.ownRace.value}
 
     /**
      * Sets the size category display to the character's value.
@@ -289,7 +309,7 @@ class CharacterFragmentViewModel(
     /**
      * Sets the class to be shown in the detail alert to the currently held one.
      */
-    private fun setClassDetail(){_classDetailItem.update{charInstance.ownClass.value}}
+    private fun setClassDetail(){_classDetailItem.update{charInstance.classes.ownClass.value}}
 
     fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
 
@@ -320,9 +340,9 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.classLabel,
             optionsRef = R.array.classArray,
-            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.ownClass.value),
+            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.classes.ownClass.value),
             onChange = {
-                charInstance.setOwnClass(classInt = it)
+                charInstance.classes.setOwnClass(classInt = it)
                 setClassDetail()
                 setMagPaladinOpen()
             }

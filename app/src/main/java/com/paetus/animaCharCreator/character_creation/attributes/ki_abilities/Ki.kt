@@ -113,9 +113,9 @@ class Ki(private val charInstance: BaseCharacter){
     fun updateMK(){
         //determine MK gained from class levels
         val classMK =
-            if(charInstance.lvl.intValue != 0) charInstance.ownClass.value.mkPerLevel * charInstance.lvl.intValue
+            if(charInstance.lvl.intValue != 0) charInstance.classes.ownClass.value.mkPerLevel * charInstance.lvl.intValue
             //give half from one level if level 0 character
-            else charInstance.ownClass.value.mkPerLevel/2
+            else charInstance.classes.ownClass.value.mkPerLevel/2
 
         martialKnowledgeMax.intValue = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.intValue
         updateMkSpent()
@@ -160,8 +160,8 @@ class Ki(private val charInstance: BaseCharacter){
         var total = 0
 
         //add bought ki points and accumulation values
-        total += totalPointBuy.intValue * charInstance.ownClass.value.kiGrowth
-        total += totalAccBuy.intValue * charInstance.ownClass.value.kiAccumMult
+        total += totalPointBuy.intValue * charInstance.classes.ownClass.value.kiGrowth
+        total += totalAccBuy.intValue * charInstance.classes.ownClass.value.kiAccumMult
 
         return total
     }

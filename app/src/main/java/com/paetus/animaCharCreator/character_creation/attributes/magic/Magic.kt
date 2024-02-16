@@ -285,7 +285,7 @@ class Magic(private val charInstance: BaseCharacter){
      * @return true if input is valid
      */
     fun getValidProjection(): Boolean{
-        return boughtMagProjection.intValue * charInstance.ownClass.value.maProjGrowth <= charInstance.maxMagDP.intValue/2
+        return boughtMagProjection.intValue * charInstance.classes.ownClass.value.maProjGrowth <= charInstance.maxMagDP.intValue/2
     }
 
     /**
@@ -447,9 +447,9 @@ class Magic(private val charInstance: BaseCharacter){
      * @return development points spent in this section
      */
     fun calculateSpent(): Int{
-        return (boughtZeon.intValue * charInstance.ownClass.value.zeonGrowth) +
-                ((zeonAccMult.intValue - 1) * charInstance.ownClass.value.maGrowth) +
-                (boughtMagProjection.intValue * charInstance.ownClass.value.maProjGrowth)
+        return (boughtZeon.intValue * charInstance.classes.ownClass.value.zeonGrowth) +
+                ((zeonAccMult.intValue - 1) * charInstance.classes.ownClass.value.maGrowth) +
+                (boughtMagProjection.intValue * charInstance.classes.ownClass.value.maProjGrowth)
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Archetype
 
 /**
@@ -48,8 +47,6 @@ import com.paetus.animaCharCreator.enumerations.Archetype
  * @param primaryBonus data to translate into primary stat bonuses
  * @param secondaryBonus data to translate into secondary stat bonuses
  *
- * @param charInstance character this data will apply to
- *
  * @param onTake function to run on class acquisition
  * @param onRemove function to run on class removal
  */
@@ -96,8 +93,6 @@ class CharClass(
     val primaryBonus: Map<Int, Int>,
     val secondaryBonus: Map<Int, Int>,
     val specialText: Int?,
-
-    val charInstance: BaseCharacter,
 
     val onTake: () -> Unit,
     val onRemove: () -> Unit

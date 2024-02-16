@@ -67,7 +67,7 @@ class CustomFactory(
                     return CombatFragViewModel(
                         combat = charInstance.combat,
                         primaryList = charInstance.primaryList,
-                        charClass = charInstance.ownClass
+                        charClass = charInstance.classes.ownClass
                     ) as T
                 }
 
@@ -99,7 +99,7 @@ class CustomFactory(
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
                         ki = charInstance.ki,
-                        charClass = charInstance.ownClass,
+                        charClass = charInstance.classes.ownClass,
                         context = context
                     ) as T
                 }
@@ -116,7 +116,7 @@ class CustomFactory(
                     return MagicFragmentViewModel(
                         magic = charInstance.magic,
                         charInstance = charInstance,
-                        charClass = charInstance.ownClass,
+                        charClass = charInstance.classes.ownClass,
                         context = context
                     ) as T
                 }
@@ -125,7 +125,7 @@ class CustomFactory(
                 SummoningFragmentViewModel::class.java ->{
                     return SummoningFragmentViewModel(
                         summoning = charInstance.summoning,
-                        charClass = charInstance.ownClass
+                        charClass = charInstance.classes.ownClass
                     ) as T
                 }
 
@@ -133,7 +133,7 @@ class CustomFactory(
                 PsychicFragmentViewModel::class.java ->{
                     return PsychicFragmentViewModel(
                         psychic = charInstance.psychic,
-                        charClass = charInstance.ownClass,
+                        charClass = charInstance.classes.ownClass,
                         dexMod = charInstance.primaryList.dex.outputMod.intValue,
                         context = context
                     ) as T

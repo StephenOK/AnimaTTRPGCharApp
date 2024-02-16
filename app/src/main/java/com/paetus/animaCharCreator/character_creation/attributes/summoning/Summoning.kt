@@ -26,10 +26,10 @@ class Summoning(private val charInstance: BaseCharacter){
      * @return total points spent in this section
      */
     fun calculateSpent(): Int{
-        return (summon.buyVal.intValue * charInstance.ownClass.value.summonGrowth) +
-                (control.buyVal.intValue * charInstance.ownClass.value.controlGrowth) +
-                (bind.buyVal.intValue * charInstance.ownClass.value.bindGrowth) +
-                (banish.buyVal.intValue * charInstance.ownClass.value.banishGrowth)
+        return (summon.buyVal.intValue * charInstance.classes.ownClass.value.summonGrowth) +
+                (control.buyVal.intValue * charInstance.classes.ownClass.value.controlGrowth) +
+                (bind.buyVal.intValue * charInstance.classes.ownClass.value.bindGrowth) +
+                (banish.buyVal.intValue * charInstance.classes.ownClass.value.banishGrowth)
     }
 
     /**

@@ -442,7 +442,7 @@ private fun PrimaryRow(
 @Composable
 fun CharacterPreview(){
     val charInstance = BaseCharacter()
-    charInstance.setOwnClass(3)
+    charInstance.classes.setOwnClass(3)
     charInstance.setOwnRace(6)
 
     val charFragVM = CharacterFragmentViewModel(charInstance)

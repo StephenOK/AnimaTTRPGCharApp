@@ -728,7 +728,7 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                     )
                 }
 
-                if(charClass == charFragVM.charInstance.classes.freelancer){
+                if(charClass == charFragVM.getFreelancer()){
                     Spacer(modifier = Modifier.height(10.dp))
 
                     //display user's selected bonuses for their freelancer
@@ -739,7 +739,7 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
                         textAlign = TextAlign.Center
                     )
 
-                    charFragVM.charInstance.classes.freelancerSelection.forEach{index ->
+                    charFragVM.getFreelancerBonuses().forEach{index ->
                         Text(
                             text =
                                 if(index > 0)
@@ -775,7 +775,7 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
 private fun RaceDetails(
     charFragVM: CharacterFragmentViewModel
 ){
-    charFragVM.charInstance.ownRace.value.forEach{racial ->
+    charFragVM.getRace().forEach{racial ->
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -1509,7 +1509,7 @@ fun EquipmentDetails(
 @Composable
 fun ClassDetailPreview(){
     val charInstance = BaseCharacter()
-    charInstance.setOwnClass(1)
+    charInstance.classes.setOwnClass(1)
 
     val charFragVM = CharacterFragmentViewModel(charInstance)
     charFragVM.classDetailDropdown.setOutput(2)

@@ -1282,7 +1282,7 @@ private fun getElementString(
 fun CustomTechniquePreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.ownClass, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.classes.ownClass, LocalContext.current)
 
     val customTechVM = CustomTechniqueViewModel(charInstance.ki, LocalContext.current)
     customTechVM.setCustomPageNum(1)

@@ -112,7 +112,8 @@ class HomeActivity : AppCompatActivity() {
         if(isNew)
             attemptSave(
                 charInstance = charInstance,
-                filename = filename
+                filename = filename,
+                showToast = false
             )
 
         //create viewModels for this activity
@@ -546,7 +547,8 @@ class HomeActivity : AppCompatActivity() {
                             scope.launch{drawerState.close()}
                             attemptSave(
                                 charInstance = charInstance,
-                                filename = filename
+                                filename = filename,
+                                showToast = true
                             )
                         }
                     )
@@ -726,7 +728,11 @@ class HomeActivity : AppCompatActivity() {
                 //attempt to save then leave page
                 TextButton(
                     onClick = {
-                        attemptSave(charInstance, filename)
+                        attemptSave(
+                            charInstance = charInstance,
+                            filename = filename,
+                            showToast = true
+                        )
                         finish()
                     }
                 ){
@@ -758,7 +764,8 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun attemptSave(
         charInstance: BaseCharacter,
-        filename: String
+        filename: String,
+        showToast: Boolean
     ){
         try{
             //create file writer
@@ -770,11 +777,12 @@ class HomeActivity : AppCompatActivity() {
             saveStream.close()
 
             //notify of action completion
-            Toast.makeText(
-                this@HomeActivity,
-                baseContext.resources.getString(R.string.saveMessage),
-                Toast.LENGTH_SHORT
-            ).show()
+            if(showToast)
+                Toast.makeText(
+                    this@HomeActivity,
+                    baseContext.resources.getString(R.string.saveMessage),
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         //notify that file not found
         catch(e: FileNotFoundException){

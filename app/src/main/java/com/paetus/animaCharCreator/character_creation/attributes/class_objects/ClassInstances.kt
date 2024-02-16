@@ -59,7 +59,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             ),
             secondaryBonus = mapOf(Pair(24, 5)),
             specialText = null,
-            charInstance = charInstance,
             onTake = {
                 //apply attack, block, and wear armor class bonuses
                 charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -131,7 +130,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(9, 10)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -203,7 +201,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(9, 5)
         ),
         specialText = R.string.paladinSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
@@ -294,7 +291,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(8, 5)
         ),
         specialText = R.string.darkPaladinSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -381,7 +377,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         ),
         secondaryBonus = mapOf(Pair(24, 5)),
         specialText = R.string.weaponmasterSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -438,7 +433,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         primaryBonus = mapOf(Pair(R.string.attackLabel, 5)),
         secondaryBonus = mapOf(),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //set attack class bonus
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)}
@@ -484,7 +478,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         primaryBonus = mapOf(),
         secondaryBonus = mapOf(Pair(9, 5)),
         specialText = R.string.taoSpecial,
-        charInstance = charInstance,
         onTake = {
             //set style class bonus
             charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
@@ -543,7 +536,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(15, 5)
         ),
         specialText = R.string.rangerSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply attack class bonus
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -626,7 +618,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(31, 10)
         ),
         specialText = R.string.kiConcealSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -694,7 +685,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(30, 10)
         ),
         specialText = R.string.kiConcealSpecial,
-        charInstance = charInstance,
         onTake = {
             //apply dodge class bonus
             charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
@@ -777,7 +767,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(32, 10)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply attack class bonus
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -855,7 +844,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(21, 5)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
@@ -921,7 +909,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         ),
         secondaryBonus = mapOf(Pair(18, 5)),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -995,7 +982,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(8, 5)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
@@ -1071,7 +1057,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(21, 5)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
@@ -1135,7 +1120,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
             Pair(21, 10)
         ),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply secondary class bonuses
             charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
@@ -1216,7 +1200,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         ),
         secondaryBonus = mapOf(Pair(21, 5)),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             //apply combat class bonuses
             charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
@@ -1291,7 +1274,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         primaryBonus = mapOf(),
         secondaryBonus = mapOf(),
         specialText = null,
-        charInstance = charInstance,
         onTake = {}
     ) {}
 
@@ -1336,7 +1318,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         ),
         secondaryBonus = mapOf(),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             charInstance.combat.attack.setPointPerLevel(5)
             charInstance.combat.block.setPointPerLevel(5)
@@ -1385,7 +1366,6 @@ class ClassInstances(private val charInstance: BaseCharacter){
         primaryBonus = mapOf(Pair(R.string.zeonLabel, 10)),
         secondaryBonus = mapOf(),
         specialText = null,
-        charInstance = charInstance,
         onTake = {
             freelancerSelection.forEach{secondarySelected ->
                 //update characteristic's class value if a selection was made
@@ -1395,20 +1375,21 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
             //apply max zeon gained per level
             charInstance.magic.setZeonPerLevel(10)
-        },
-        onRemove = {
-            //update characteristic's class value if a selection was made
-            freelancerSelection.forEach { secondarySelected ->
-                if (secondarySelected != 0)
-                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
-                        classBonus = 0
-                    )
-            }
-
-            //remove max zeon gained per level
-            charInstance.magic.setZeonPerLevel(0)
         }
-    )
+    ) {
+        //update characteristic's class value if a selection was made
+        freelancerSelection.forEach { secondarySelected ->
+            if (secondarySelected != 0)
+                charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
+                    classBonus = 0
+                )
+        }
+
+        //remove max zeon gained per level
+        charInstance.magic.setZeonPerLevel(0)
+    }
+
+    val ownClass = mutableStateOf(value = mentalist)
 
     //collect all available class items
     val allClasses = listOf(freelancer, warrior, acroWarrior, paladin, darkPaladin, weaponMaster, technician, tao,
@@ -1417,6 +1398,70 @@ class ClassInstances(private val charInstance: BaseCharacter){
 
     //initialize paladin's magic selection
     val magPaladin = mutableStateOf(value = true)
+
+    /**
+     * Setter for class with class input.
+     *
+     * @param newClass new class to set for this character
+     */
+    fun setOwnClass(newClass: CharClass){
+        //undo current class buffs
+        ownClass.value.onRemove()
+
+        //change class and apply new buffs
+        ownClass.value = newClass
+        ownClass.value.onTake()
+
+        //update class life points
+        charInstance.combat.updateClassLife()
+
+        //update initiative bonus
+        charInstance.combat.updateInitiative()
+
+        //update character's maximum point values
+        charInstance.percCombatDP.doubleValue = ownClass.value.combatMax
+        charInstance.percMagDP.doubleValue = ownClass.value.magMax
+        charInstance.percPsyDP.doubleValue = ownClass.value.psyMax
+        charInstance.dpAllotmentCalc()
+
+        //update secondary bonuses
+        charInstance.secondaryList.classUpdate(newClass = ownClass.value)
+
+        //update character's martial knowledge
+        charInstance.ki.updateMK()
+
+        //update innate psychic points
+        charInstance.psychic.setInnatePsy()
+
+        //update all spent value totals
+        charInstance.updateTotalSpent()
+    }
+
+    /**
+     * Setter for class with a string input.
+     *
+     * @param classString string to be converted into a class the character will take
+     */
+    fun setOwnClass(classString: String){
+        //search through all class objects
+        allClasses.forEach{charClass ->
+            //apply class if match found
+            if(charClass.saveName == classString){
+                setOwnClass(charClass)
+                return@forEach
+            }
+        }
+    }
+
+    /**
+     * Setter for class with Integer input.
+     *
+     * @param classInt number that references the class the character will take
+     */
+    fun setOwnClass(classInt: Int){
+        //apply the class indicated by the number
+        setOwnClass(allClasses[classInt])
+    }
 
     /**
      * Attempts to change the selection in the indicated record index.
@@ -1474,7 +1519,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         magPaladin.value = !magPaladin.value
 
         //boon items for paladins
-        if(charInstance.ownClass.value == paladin){
+        if(ownClass.value == paladin){
             //grant magic options
             if(magPaladin.value){
                 //remove composure bonus

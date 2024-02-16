@@ -431,7 +431,7 @@ fun CombatPreview(){
     val combatFragVM = CombatFragViewModel(
         charInstance.combat,
         charInstance.primaryList,
-        charInstance.ownClass
+        charInstance.classes.ownClass
     )
     val homePageFragVM = HomePageViewModel(charInstance)
 

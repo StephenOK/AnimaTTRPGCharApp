@@ -150,7 +150,7 @@ fun FreeSpellPreview(){
     val magFragVM = MagicFragmentViewModel(
         charInstance.magic,
         charInstance,
-        charInstance.ownClass,
+        charInstance.classes.ownClass,
         LocalContext.current
     )
     magFragVM.setFreeLevel(8)

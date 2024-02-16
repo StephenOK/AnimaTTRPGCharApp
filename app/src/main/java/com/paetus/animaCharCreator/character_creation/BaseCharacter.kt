@@ -57,9 +57,6 @@ class BaseCharacter {
     //list of all race advantages
     val races = RaceAdvantages(charInstance = this)
 
-    //set default class to one with empty onTake and onRemove functions
-    val ownClass = mutableStateOf(value = classes.mentalist)
-
     //initialize character's race
     val ownRace = mutableStateOf<List<RacialAdvantage>>(value = listOf())
 
@@ -72,15 +69,15 @@ class BaseCharacter {
 
     //maximum point allotments to combat, magic, and psychic abilities
     val maxCombatDP = mutableIntStateOf(value = 0)
-    private val percCombatDP = mutableDoubleStateOf(value = 0.0)
+    val percCombatDP = mutableDoubleStateOf(value = 0.0)
     val ptInCombat = mutableIntStateOf(value = 0)
 
     val maxMagDP = mutableIntStateOf(value = 0)
-    private val percMagDP = mutableDoubleStateOf(value = 0.0)
+    val percMagDP = mutableDoubleStateOf(value = 0.0)
     val ptInMag = mutableIntStateOf(value = 0)
 
     val maxPsyDP = mutableIntStateOf(value = 0)
-    private val percPsyDP = mutableDoubleStateOf(value = 0.0)
+    val percPsyDP = mutableDoubleStateOf(value = 0.0)
     val ptInPsy = mutableIntStateOf(value = 0)
 
     //character size items
@@ -119,70 +116,6 @@ class BaseCharacter {
             if(isMale.value) combat.physicalRes.setSpecial(specChange = 5)
             else combat.magicRes.setSpecial(specChange = 5)
         }
-    }
-
-    /**
-     * Setter for class with class input.
-     *
-     * @param newClass new class to set for this character
-     */
-    private fun setOwnClass(newClass: CharClass){
-        //undo current class buffs
-        ownClass.value.onRemove()
-
-        //change class and apply new buffs
-        ownClass.value = newClass
-        ownClass.value.onTake()
-
-        //update class life points
-        combat.updateClassLife()
-
-        //update initiative bonus
-        combat.updateInitiative()
-
-        //update character's maximum point values
-        percCombatDP.doubleValue = ownClass.value.combatMax
-        percMagDP.doubleValue = ownClass.value.magMax
-        percPsyDP.doubleValue = ownClass.value.psyMax
-        dpAllotmentCalc()
-
-        //update secondary bonuses
-        secondaryList.classUpdate(newClass = ownClass.value)
-
-        //update character's martial knowledge
-        ki.updateMK()
-
-        //update innate psychic points
-        psychic.setInnatePsy()
-
-        //update all spent value totals
-        updateTotalSpent()
-    }
-
-    /**
-     * Setter for class with a string input.
-     *
-     * @param classString string to be converted into a class the character will take
-     */
-    private fun setOwnClass(classString: String){
-        //search through all class objects
-        classes.allClasses.forEach{charClass ->
-            //apply class if match found
-            if(charClass.saveName == classString){
-                setOwnClass(charClass)
-                return@forEach
-            }
-        }
-    }
-
-    /**
-     * Setter for class with Integer input.
-     *
-     * @param classInt number that references the class the character will take
-     */
-    fun setOwnClass(classInt: Int){
-        //apply the class indicated by the number
-        setOwnClass(classes.allClasses[classInt])
     }
 
     /**
@@ -282,7 +215,7 @@ class BaseCharacter {
     /**
      * Calculates percentage allotments for each category.
      */
-    private fun dpAllotmentCalc() {
+    fun dpAllotmentCalc() {
         maxCombatDP.intValue = (devPT.intValue * percCombatDP.doubleValue).toInt()
         maxMagDP.intValue = (devPT.intValue * percMagDP.doubleValue).toInt()
         maxPsyDP.intValue = (devPT.intValue * percPsyDP.doubleValue).toInt()
@@ -313,7 +246,7 @@ class BaseCharacter {
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.intValue * ownClass.value.lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * classes.ownClass.value.lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -451,7 +384,7 @@ class BaseCharacter {
 
     private fun createDefaultChar(){
         //set default values for class, race, and level
-        setOwnClass(newClass = classes.freelancer)
+        classes.setOwnClass(newClass = classes.freelancer)
         setOwnRace(raceIn = listOf())
         setLvl(levNum = 0)
 
@@ -503,7 +436,7 @@ class BaseCharacter {
         setGender(gender = fileReader.readLine().toBoolean())
 
         //get the character's class, race, and level
-        setOwnClass(classString = fileReader.readLine())
+        classes.setOwnClass(classString = fileReader.readLine())
         setOwnRace(raceName = fileReader.readLine())
         setLvl(levNum = fileReader.readLine().toInt())
 
@@ -584,7 +517,7 @@ class BaseCharacter {
             writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(writer = byteArray, input = ownClass.value.saveName)
+            writeDataTo(writer = byteArray, input = classes.ownClass.value.saveName)
             writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
             writeDataTo(writer = byteArray, input = lvl.intValue)
 

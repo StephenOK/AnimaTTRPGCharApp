@@ -6,7 +6,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
  * @param alignment optional alignment for the input text
  * @param readOnly optional state of the text input
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun NumberInput(
     inputText: String,

@@ -157,7 +157,7 @@ class CombatAbilities(private val charInstance: BaseCharacter){
 
         //add together class level value, dexterity, agility, and special input
         totalInitiative.intValue =
-            classInitiative + charInstance.primaryList.dex.outputMod.intValue +
+            20 + classInitiative + charInstance.primaryList.dex.outputMod.intValue +
                     charInstance.primaryList.agi.outputMod.intValue + specInitiative.intValue
     }
 

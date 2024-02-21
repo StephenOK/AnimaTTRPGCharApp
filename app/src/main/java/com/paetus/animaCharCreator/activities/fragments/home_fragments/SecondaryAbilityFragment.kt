@@ -64,9 +64,9 @@ fun SecondaryAbilityFragment(
                     Text(text = stringResource(id = R.string.freelancerPrompt))
 
                     //freelancer bonus dropdowns
-                    secondaryFragVM.allFreelancerSelections.forEach{freeSelectionIten ->
+                    secondaryFragVM.allFreelancerSelections.forEach{freeSelectionItem ->
                         FreelancerDropdown(
-                            selection = freeSelectionIten,
+                            selection = freeSelectionItem,
                             secondaryFragVM = secondaryFragVM
                         )
                     }
@@ -325,7 +325,9 @@ private fun MakeRow(
                 }
                 .weight(0.15f),
             label = secondaryChar.dpDisplay.collectAsState().value,
-            postRun = {homePageVM.updateExpenditures()}
+            postRun = {homePageVM.updateExpenditures()},
+            isError = secondaryChar.pointInput.collectAsState().value != "" &&
+                    secondaryChar.pointInput.collectAsState().value.toInt() in 1..4
         )
 
         //display associated mod value

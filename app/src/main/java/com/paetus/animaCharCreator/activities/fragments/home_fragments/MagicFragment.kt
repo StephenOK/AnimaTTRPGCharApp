@@ -133,22 +133,12 @@ fun MagicFragment(
                     NumberInput(
                         inputText = magFragVM.boughtZeonString.collectAsState().value,
                         inputFunction = {
-                            if(magFragVM.isGifted() || it.contains('\n'))
+                            if(it.contains('\n'))
                                 magFragVM.setBoughtZeonString(zeonBought = it.toInt())
                         },
                         emptyFunction = {magFragVM.setBoughtZeonString(display = "")},
                         modifier = Modifier
                             .onFocusChanged {
-                                //display Gift not taken message
-                                if (it.isFocused && !magFragVM.isGifted())
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            context.getString(R.string.needGiftMessage),
-                                            Toast.LENGTH_LONG
-                                        )
-                                        .show()
-
                                 //change DP display to appropriate value
                                 if (it.isFocused)
                                     magFragVM.setBoughtZeonDP(dpCost = dpString)
@@ -194,7 +184,6 @@ fun MagicFragment(
                 //display magic accumulation
                 ZeonPurchaseItem(
                     tableItem = magFragVM.zeonAccumulation,
-                    magFragVM = magFragVM,
                     homePageVM = homePageVM
                 )
 
@@ -235,7 +224,6 @@ fun MagicFragment(
             GeneralCard {
                 ZeonPurchaseItem(
                     tableItem = magFragVM.zeonProjection,
-                    magFragVM = magFragVM,
                     homePageVM = homePageVM
                 )
 
@@ -433,18 +421,13 @@ fun MagicFragment(
  * Creates a table for inputs of the particular stat.
  *
  * @param tableItem data for the displayed table
- * @param magFragVM viewModel that manages this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun ZeonPurchaseItem(
     tableItem: MagicFragmentViewModel.ZeonPurchaseItemData,
-    magFragVM: MagicFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
-    //initialize context
-    val context = LocalContext.current
-
     Column{
         Row{Spacer(modifier = Modifier.height(20.dp))}
 
@@ -508,22 +491,12 @@ private fun ZeonPurchaseItem(
             NumberInput(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || it.contains(char = '\n'))
+                    if(it.contains(char = '\n'))
                         tableItem.setBoughtString(buyValue = it.toInt())
                 },
                 emptyFunction = {tableItem.setBoughtString(display = "")},
                 modifier = Modifier
                     .onFocusChanged {
-                        //display warning for not having The Gift
-                        if (it.isFocused && !magFragVM.isGifted())
-                            Toast
-                                .makeText(
-                                    context,
-                                    context.getString(R.string.needGiftMessage),
-                                    Toast.LENGTH_LONG
-                                )
-                                .show()
-
                         //update DP display
                         if (it.isFocused)
                             tableItem.setDPDisplay(dpDisplay = dpString)

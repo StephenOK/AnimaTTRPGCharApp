@@ -3,6 +3,7 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -553,15 +554,14 @@ class MagicFragmentViewModel(
         waterBook, fireBook, essenceBook, illusionBook, necromancyBook)
 
     //initialize the book the free spell is being added to
-    private val _freeBookAddition = MutableStateFlow(value = necromancyBook)
-    val freeBookAddition = _freeBookAddition.asStateFlow()
+    private val freeBookAddition = mutableStateOf(value = necromancyBook)
 
     /**
      * Sets the book a free spell will be applied to.
      *
      * @param bookData book data item to change the addition item to
      */
-    private fun setFreeBookAddition(bookData: SpellRowData){_freeBookAddition.update{bookData}}
+    private fun setFreeBookAddition(bookData: SpellRowData){freeBookAddition.value = bookData}
 
     /**
      * Class that holds data on a zeon purchase item.

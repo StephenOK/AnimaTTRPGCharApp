@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -89,6 +89,7 @@ class HomeActivity : AppCompatActivity() {
         //get new character flag and filename from intent
         val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
+        val isByLevel = intent.getBooleanExtra("isByLevel", false)
 
         //get custom item directories
         val customSecondaryFile = File(this.filesDir, "CustomSecondaryDIR")
@@ -113,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
             attemptSave(
                 charInstance = charInstance,
                 filename = filename,
+                isByLevel = isByLevel,
                 showToast = false
             )
 
@@ -131,6 +133,7 @@ class HomeActivity : AppCompatActivity() {
                 HomeContents(
                     charInstance = charInstance,
                     filename = filename,
+                    isByLevel = isByLevel,
                     homePageVM = homePageVM
                 )
             }
@@ -149,6 +152,7 @@ class HomeActivity : AppCompatActivity() {
     private fun HomeContents(
         charInstance: BaseCharacter,
         filename: String,
+        isByLevel: Boolean,
         homePageVM: HomePageViewModel
     ) {
         //prevent user from flipping app
@@ -261,6 +265,7 @@ class HomeActivity : AppCompatActivity() {
                     AppDrawer(
                         charInstance = charInstance,
                         filename = filename,
+                        isByLevel = isByLevel,
                         drawerState = drawerState,
                         scope = scope,
                         navController = navController,
@@ -392,7 +397,8 @@ class HomeActivity : AppCompatActivity() {
                     MaterialTheme(colorScheme = detailLightColors) {
                         ExitAlert(
                             charInstance = charInstance,
-                            filename = filename
+                            filename = filename,
+                            isByLevel
                         ) { homePageVM.toggleExitAlert() }
                     }
             }
@@ -497,6 +503,7 @@ class HomeActivity : AppCompatActivity() {
     private fun AppDrawer(
         charInstance: BaseCharacter,
         filename: String,
+        isByLevel: Boolean,
         drawerState: DrawerState,
         scope: CoroutineScope,
         navController: NavHostController,
@@ -533,7 +540,7 @@ class HomeActivity : AppCompatActivity() {
                 //divide page items from actions
                 item{
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider()
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
@@ -548,6 +555,7 @@ class HomeActivity : AppCompatActivity() {
                             attemptSave(
                                 charInstance = charInstance,
                                 filename = filename,
+                                isByLevel = isByLevel,
                                 showToast = true
                             )
                         }
@@ -714,6 +722,7 @@ class HomeActivity : AppCompatActivity() {
     private fun ExitAlert(
         charInstance: BaseCharacter,
         filename: String,
+        isByLevel: Boolean,
         closeDialog: () -> Unit
     ){
         AlertDialog(
@@ -731,6 +740,7 @@ class HomeActivity : AppCompatActivity() {
                         attemptSave(
                             charInstance = charInstance,
                             filename = filename,
+                            isByLevel = isByLevel,
                             showToast = true
                         )
                         finish()
@@ -765,11 +775,23 @@ class HomeActivity : AppCompatActivity() {
     private fun attemptSave(
         charInstance: BaseCharacter,
         filename: String,
+        isByLevel: Boolean,
         showToast: Boolean
     ){
         try{
+            //get file
+            val file = File("${this.filesDir}/AnimaChars", filename)
+
+            if(!file.isDirectory && isByLevel)
+                file.mkdir()
+
+            val writeFile = if(isByLevel)
+                File(file, "${charInstance.lvl.intValue}")
+            else
+                file
+
             //create file writer
-            val saveStream = FileOutputStream(File("${this.filesDir}/AnimaChars", filename))
+            val saveStream = FileOutputStream(writeFile)
 
             //get and write character's bytes
             val charData = charInstance.bytes

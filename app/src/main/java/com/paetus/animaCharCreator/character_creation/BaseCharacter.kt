@@ -7,7 +7,6 @@ import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.RaceAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances

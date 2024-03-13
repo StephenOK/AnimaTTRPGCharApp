@@ -102,6 +102,12 @@ class HomeActivity : AppCompatActivity() {
                 secondaryFile = customSecondaryFile,
                 techFile = customTechFile
             )
+        else if(isByLevel)
+            getHighestLevelChar(
+                directory = File("${this.filesDir}/AnimaChars", filename),
+                secondaryFile = customSecondaryFile,
+                techFile = customTechFile
+            )
         else
             BaseCharacter(
                 charFile = File("${this.filesDir}/AnimaChars", filename),
@@ -771,6 +777,8 @@ class HomeActivity : AppCompatActivity() {
      *
      * @param charInstance character object to be saved
      * @param filename name of the file to save to
+     * @param isByLevel true if the character is saved by level
+     * @param showToast true if the toast notification is shown
      */
     private fun attemptSave(
         charInstance: BaseCharacter,
@@ -782,9 +790,11 @@ class HomeActivity : AppCompatActivity() {
             //get file
             val file = File("${this.filesDir}/AnimaChars", filename)
 
+            //turn the file into a directory if it is save by level
             if(!file.isDirectory && isByLevel)
                 file.mkdir()
 
+            //get file's save location
             val writeFile = if(isByLevel)
                 File(file, "${charInstance.lvl.intValue}")
             else
@@ -822,6 +832,25 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun getHighestLevelChar(
+        directory: File,
+        secondaryFile: File,
+        techFile: File
+    ): BaseCharacter{
+        var max = 0
+
+        directory.listFiles()?.forEach{levelFile ->
+            if(levelFile.name.toInt() > max)
+                max = levelFile.name.toInt()
+        }
+
+        return BaseCharacter(
+            charFile = File(directory, "$max"),
+            secondaryFile = secondaryFile,
+            techFile = techFile
+        )
     }
 
     @Preview

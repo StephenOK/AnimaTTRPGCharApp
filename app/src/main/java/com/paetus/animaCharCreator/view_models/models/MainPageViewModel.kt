@@ -163,13 +163,14 @@ class MainPageViewModel: ViewModel() {
             //add file's name and notify of existing character
             toNextPage.putExtra("filename", name)
             toNextPage.putExtra("isNew", false)
+            toNextPage.putExtra("isByLevel", File("${context.filesDir}/AnimaChars", name).isDirectory)
 
             try{
                 //test for successful character building
                 BaseCharacter(
                     filename = name,
-                    secondaryFile = File("${context.filesDir}/AnimaChars", name),
-                    techFile = File(context.filesDir, "customSecondaries")
+                    secondaryFile = File("${context.filesDir}", "CustomSecondaryDIR"),
+                    techFile = File(context.filesDir, "CustomTechDIR")
                 )
 
                 //move to next intention
@@ -191,35 +192,32 @@ class MainPageViewModel: ViewModel() {
                 val dir = File("${context.filesDir}/AnimaChars")
 
                 //search through the character file directory
-                dir.walk().forEach{charFile ->
-                    //check if file is a character file
-                    if(charFile != dir && charFile.isFile) {
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = characterName.collectAsState().value == charFile.name,
-                                        onClick = {setCharacterName(charFile.name)}
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                //display selected item
-                                RadioButton(
-                                    selected = (charFile.name == characterName.collectAsState().value),
-                                    onClick = {setCharacterName(charFile.name)},
-                                    colors = RadioButtonDefaults.colors(
-                                        unselectedColor = MaterialTheme.colorScheme.onSurface
-                                    )
+                dir.listFiles()?.forEach{ charFile ->
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = characterName.collectAsState().value == charFile.name,
+                                    onClick = {setCharacterName(charFile.name)}
+                                ),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            //display selected item
+                            RadioButton(
+                                selected = (charFile.name == characterName.collectAsState().value),
+                                onClick = {setCharacterName(charFile.name)},
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
+                            )
 
-                                //display file name with relevant information
-                                Text(
-                                    text = charFile.name,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
+                            //display file name with relevant information
+                            Text(
+                                text = charFile.name,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         }
                     }
                 }
@@ -241,34 +239,32 @@ class MainPageViewModel: ViewModel() {
             val homeDir = File("${context.filesDir}/AnimaChars")
 
             LazyColumn{
-                homeDir.walk().forEach{ file ->
+                homeDir.listFiles()?.forEach{ file ->
                     //if the file is a character file
-                    if(file != homeDir){
-                        item{
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = characterName.collectAsState().value == file.name,
-                                        onClick = {setCharacterName(file.name)}
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                //display selection button
-                                RadioButton(
+                    item{
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
                                     selected = characterName.collectAsState().value == file.name,
-                                    onClick = {setCharacterName(file.name)},
-                                    colors = RadioButtonDefaults.colors(
-                                        unselectedColor = MaterialTheme.colorScheme.onSurface
-                                    )
+                                    onClick = {setCharacterName(file.name)}
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            //display selection button
+                            RadioButton(
+                                selected = characterName.collectAsState().value == file.name,
+                                onClick = {setCharacterName(file.name)},
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
+                            )
 
-                                //display the relevant file name
-                                Text(
-                                    text = file.name,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
+                            //display the relevant file name
+                            Text(
+                                text = file.name,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         }
                     }
                 }

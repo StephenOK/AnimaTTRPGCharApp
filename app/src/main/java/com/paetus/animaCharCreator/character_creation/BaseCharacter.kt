@@ -411,8 +411,15 @@ class BaseCharacter {
         techFile: File
     ) {
 
-        secondaryList.applySecondaryChars(input = secondaryFile, filename = charFile.name)
-        ki.applyCustomTechs(customTechDir = techFile, filename = charFile.name)
+        //get custom custom items for this character
+        secondaryList.applySecondaryChars(
+            input = secondaryFile,
+            filename = charFile.name
+        )
+        ki.applyCustomTechs(
+            customTechDir = techFile,
+            filename = charFile.name
+        )
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)

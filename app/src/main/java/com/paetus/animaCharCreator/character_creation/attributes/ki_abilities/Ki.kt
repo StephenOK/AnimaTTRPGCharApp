@@ -931,64 +931,62 @@ class Ki(private val charInstance: BaseCharacter){
         filename: String
     ){
         //for each file in the directory
-        customTechDir.walk().forEach{customTechFile ->
-            if(customTechFile != customTechDir){
-                //open file reader
-                val customInput = FileInputStream(customTechFile)
-                val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
-                val fileReader = BufferedReader(readCustom)
+        customTechDir.listFiles()?.forEach{customTechFile ->
+            //open file reader
+            val customInput = FileInputStream(customTechFile)
+            val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
+            val fileReader = BufferedReader(readCustom)
 
-                //get the name of the technique
-                val name = fileReader.readLine()
+            //get the name of the technique
+            val name = fileReader.readLine()
 
-                //get the public state of the technique
-                val public = fileReader.readLine().toBoolean()
+            //get the public state of the technique
+            val public = fileReader.readLine().toBoolean()
 
-                //get the file name of the character who created this technique
-                val fileOrigin = fileReader.readLine()
+            //get the file name of the character who created this technique
+            val fileOrigin = fileReader.readLine()
 
-                //get the description of the technique
-                val description = fileReader.readLine()
+            //get the description of the technique
+            val description = fileReader.readLine()
 
-                //get the level of the technique
-                val level = fileReader.readLine().toInt()
+            //get the level of the technique
+            val level = fileReader.readLine().toInt()
 
-                //get the maintenance array of the technique
-                val maintArray = mutableListOf(
-                    fileReader.readLine().toInt(),
-                    fileReader.readLine().toInt(),
-                    fileReader.readLine().toInt(),
-                    fileReader.readLine().toInt(),
-                    fileReader.readLine().toInt(),
-                    fileReader.readLine().toInt()
-                )
+            //get the maintenance array of the technique
+            val maintArray = mutableListOf(
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt(),
+                fileReader.readLine().toInt()
+            )
 
-                //get data on the technique's effects
-                val givenAbilities = mutableListOf<TechniqueEffect>()
-                for(techLoops in 0 until fileReader.readLine().toInt()){
-                    givenAbilities += loadEffect(fileReader = fileReader)
-                }
+            //get data on the technique's effects
+            val givenAbilities = mutableListOf<TechniqueEffect>()
+            for(techLoops in 0 until fileReader.readLine().toInt()){
+                givenAbilities += loadEffect(fileReader = fileReader)
+            }
 
-                //close file reader
-                customInput.close()
+            //close file reader
+            customInput.close()
 
-                //if character can access the technique
-                if(public || filename == fileOrigin){
-                    //add to the character's available list
-                    customTechniques +=
-                        Pair(
-                            CustomTechnique(
-                                name = name,
-                                isPublic = public,
-                                fileOrigin = fileOrigin,
-                                description = description,
-                                level = level,
-                                maintArray = maintArray,
-                                givenAbilities = givenAbilities
-                            ),
-                            mutableStateOf(value = false)
-                        )
-                }
+            //if character can access the technique
+            if(public || filename == fileOrigin){
+                //add to the character's available list
+                customTechniques +=
+                    Pair(
+                        CustomTechnique(
+                            name = name,
+                            isPublic = public,
+                            fileOrigin = fileOrigin,
+                            description = description,
+                            level = level,
+                            maintArray = maintArray,
+                            givenAbilities = givenAbilities
+                        ),
+                        mutableStateOf(value = false)
+                    )
             }
         }
     }

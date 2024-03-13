@@ -131,15 +131,13 @@ class MainActivity : AppCompatActivity() {
             customTechDIR.mkdir()
 
             //for each character file
-            charFileDIR.walk().forEach{charFile ->
+            charFileDIR.listFiles()?.forEach{charFile ->
                 //write its custom techniques to this directory
-                if(charFile != charFileDIR){
-                    BaseCharacter(
-                        charFile = charFile,
-                        secondaryFile = customSecondDIR,
-                        techFile = customTechDIR
-                    ).ki.saveOutCustoms(directory = customTechDIR)
-                }
+                BaseCharacter(
+                    charFile = charFile,
+                    secondaryFile = customSecondDIR,
+                    techFile = customTechDIR
+                ).ki.saveOutCustoms(directory = customTechDIR)
             }
         }
 

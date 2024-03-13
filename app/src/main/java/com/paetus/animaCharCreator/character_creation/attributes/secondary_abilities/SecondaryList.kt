@@ -425,41 +425,42 @@ class SecondaryList(
      * @param input directory for custom secondary characteristics
      * @param filename name of the character file that may be associated with private custom characteristics
      */
-    fun applySecondaryChars(input: File, filename: String){
+    fun applySecondaryChars(
+        input: File,
+        filename: String
+    ){
         //for each file in the directory
-        input.walk().forEach{
-            if(it != input) {
-                //initialize this file's reader
-                val customInput = FileInputStream(it)
-                val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
-                val fileReader = BufferedReader(readCustom)
+        input.listFiles()?.forEach{file ->
+            //initialize this file's reader
+            val customInput = FileInputStream(file)
+            val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
+            val fileReader = BufferedReader(readCustom)
 
-                //retrieve data about the custom secondary characteristic
-                val valid = fileReader.readLine().toBoolean()
-                val fileCheck = fileReader.readLine()
-                val name = fileReader.readLine()
-                val field = fileReader.readLine().toInt()
-                val primary = fileReader.readLine().toInt()
+            //retrieve data about the custom secondary characteristic
+            val valid = fileReader.readLine().toBoolean()
+            val fileCheck = fileReader.readLine()
+            val name = fileReader.readLine()
+            val field = fileReader.readLine().toInt()
+            val primary = fileReader.readLine().toInt()
 
-                //if characteristic is either public or private to this character
-                if (valid || fileCheck == filename) {
-                    //create custom characteristic item
-                    val newTech = CustomCharacteristic(
-                        parent = this,
-                        name = name,
-                        filename = filename,
-                        isPublic = valid,
-                        field = field,
-                        primary = primary
-                    )
+            //if characteristic is either public or private to this character
+            if (valid || fileCheck == filename) {
+                //create custom characteristic item
+                val newTech = CustomCharacteristic(
+                    parent = this,
+                    name = name,
+                    filename = filename,
+                    isPublic = valid,
+                    field = field,
+                    primary = primary
+                )
 
-                    //add characteristic to character
-                    addCustomSecondary(newSecondary = newTech)
-                }
-
-                //close reader
-                customInput.close()
+                //add characteristic to character
+                addCustomSecondary(newSecondary = newTech)
             }
+
+            //close reader
+            customInput.close()
         }
     }
 

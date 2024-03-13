@@ -60,41 +60,39 @@ class EditSecondaryViewModel(val context: Context): ViewModel() {
         //retrieve the custom secondary directory
         val mainFile = File("${context.filesDir}/CustomSecondaryDIR")
 
-        mainFile.walk().forEach{ secondaryFile ->
-            if(secondaryFile != mainFile) {
-                //initialize the file reader
-                val customInput = FileInputStream(secondaryFile)
-                val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
-                val fileReader = BufferedReader(readCustom)
+        mainFile.listFiles()?.forEach{ secondaryFile ->
+            //initialize the file reader
+            val customInput = FileInputStream(secondaryFile)
+            val readCustom = InputStreamReader(customInput, StandardCharsets.UTF_8)
+            val fileReader = BufferedReader(readCustom)
 
-                //retrieve the characteristic's data
-                val valid = fileReader.readLine().toBoolean()
-                val filename = fileReader.readLine()
-                val name = fileReader.readLine()
-                val field = fileReader.readLine().toInt()
-                val primary = fileReader.readLine().toInt()
+            //retrieve the characteristic's data
+            val valid = fileReader.readLine().toBoolean()
+            val filename = fileReader.readLine()
+            val name = fileReader.readLine()
+            val field = fileReader.readLine().toInt()
+            val primary = fileReader.readLine().toInt()
 
-                //apply it to a new character
-                val newTech = CustomCharacteristic(
-                    parent = SecondaryList(
-                        charInstance = dummyChar,
-                        primaryList = dummyChar.primaryList
-                    ),
-                    name = name,
-                    filename = filename,
-                    isPublic = valid,
-                    field = field,
-                    primary = primary
+            //apply it to a new character
+            val newTech = CustomCharacteristic(
+                parent = SecondaryList(
+                    charInstance = dummyChar,
+                    primaryList = dummyChar.primaryList
+                ),
+                name = name,
+                filename = filename,
+                isPublic = valid,
+                field = field,
+                primary = primary
+            )
+
+            //add the file's item
+            customList.add(
+                ItemPanel(
+                    customChar = newTech,
+                    updateDelete = {setDeletingItem(newTech.name.value)}
                 )
-
-                //add the file's item
-                customList.add(
-                    ItemPanel(
-                        customChar = newTech,
-                        updateDelete = {setDeletingItem(newTech.name.value)}
-                    )
-                )
-            }
+            )
         }
     }
 

@@ -35,9 +35,9 @@ class Ki(private val charInstance: BaseCharacter){
     val techniqueDatabase = TechniqueTableDataRecord()
 
     //initialize martial knowledge values
-    val martialKnowledgeMax = mutableIntStateOf(value = 0)
+    val martialKnowledgeMax = mutableIntStateOf(value = 10)
     private val martialKnowledgeSpec = mutableIntStateOf(value = 0)
-    val martialKnowledgeRemaining = mutableIntStateOf(value = 0)
+    val martialKnowledgeRemaining = mutableIntStateOf(value = 10)
 
     //initialize stat ki points and accumulation
     val strKi = KiStat(parent = this@Ki)
@@ -57,10 +57,10 @@ class Ki(private val charInstance: BaseCharacter){
     private val totalAccBuy = mutableIntStateOf(value = 0)
 
     //initialize total ki points
-    val totalKi = mutableIntStateOf(value = 0)
+    val totalKi = mutableIntStateOf(value = 30)
 
     //initialize total accumulation value
-    val totalAcc = mutableIntStateOf(value = 0)
+    val totalAcc = mutableIntStateOf(value = 6)
 
     //get data of ki techniques
     val kiRecord = KiRecord()

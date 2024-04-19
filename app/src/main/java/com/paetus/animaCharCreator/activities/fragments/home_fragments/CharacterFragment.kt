@@ -6,8 +6,11 @@ import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +46,7 @@ import com.paetus.animaCharCreator.view_models.models.HomePageViewModel
 fun CharacterPageFragment(
     charFragVM: CharacterFragmentViewModel,
     maxNumVM: HomePageViewModel
-){
+) {
     //get local context
     val context = LocalContext.current
 
@@ -73,6 +76,21 @@ fun CharacterPageFragment(
 
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {dropdown ->
+                    //get openable state of this dropdown
+                    val isOpenable =
+                        if(dropdown.data.nameRef == R.string.levelText)
+                            charFragVM.getLevelChangeable()
+                        else
+                            true
+
+                    //get which options qualify for dropdown display
+                    val qualifyOption =
+                        if(dropdown.data.nameRef == R.string.levelText)
+                            {levelString: String ->
+                                charFragVM.getExistingCharacter(levelString)
+                            }
+                        else {_: String -> true}
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
@@ -81,11 +99,16 @@ fun CharacterPageFragment(
                     ) {
                         OutlinedDropdown(
                             data = dropdown.data,
-                            modifier = Modifier.weight(dropdown.weight)
-                        ) {
-                            maxNumVM.updateMaximums()
-                            maxNumVM.updateExpenditures()
-                        }
+                            modifier = Modifier
+                                .weight(dropdown.weight),
+                            isOpenable = isOpenable,
+                            unopenFunc = {charFragVM.toggleFailedLevelChangeOpen()},
+                            qualifyOption = qualifyOption,
+                            itemSelection = {
+                                maxNumVM.updateMaximums()
+                                maxNumVM.updateExpenditures()
+                            }
+                        )
 
                         if (dropdown.weight != 1f) {
                             DetailButton(
@@ -358,6 +381,10 @@ fun CharacterPageFragment(
             item = charFragVM.racialDisplayed.collectAsState().value,
             closeFunc = {charFragVM.toggleRacialAdvantageOpen()}
         )
+
+    //displayed failed level change detail
+    if(charFragVM.failedLevelChangeOpen.collectAsState().value)
+        LevelChangeAlert(charFragVM = charFragVM)
 }
 
 /**
@@ -436,6 +463,30 @@ private fun PrimaryRow(
     }
 
     Spacer(modifier = Modifier.height(5.dp))
+}
+
+/**
+ * Notifies the user of insufficient DP expenditure for this level of an SBL character.
+ *
+ * @param charFragVM view model for this fragment
+ */
+@Composable
+fun LevelChangeAlert(
+    charFragVM: CharacterFragmentViewModel
+){
+    AlertDialog(
+        onDismissRequest = {charFragVM.toggleFailedLevelChangeOpen()},
+        title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
+        text = {Text(text = stringResource(id = R.string.failedLevelChangeText))},
+        confirmButton = {
+            TextButton(onClick = {charFragVM.toggleFailedLevelChangeOpen()}){
+                Text(
+                    text = stringResource(id = R.string.closeLabel),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    )
 }
 
 @Preview

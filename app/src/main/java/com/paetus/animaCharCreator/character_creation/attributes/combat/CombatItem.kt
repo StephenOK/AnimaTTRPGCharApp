@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of a character's data
  */
-class CombatItem(
+open class CombatItem(
     private val charInstance: BaseCharacter
 ){
     //initialize user input value for this stat
@@ -34,11 +34,11 @@ class CombatItem(
     val total = mutableIntStateOf(value = 0)
 
     /**
-     * Sets the user's input for this stat
+     * Sets the user's input for this stat.
      *
      * @param purchase value of user applied points
      */
-    fun setInputVal(purchase: Int){
+    open fun setInputVal(purchase: Int){
         inputVal.intValue = purchase
         charInstance.updateTotalSpent()
         updateTotal()

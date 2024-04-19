@@ -126,7 +126,7 @@ class MainPageViewModel: ViewModel() {
                 //display character name input
                 TextInput(
                     display = characterName.collectAsState().value,
-                    onValueChange = { setCharacterName(it) }
+                    onValueChange = {setCharacterName(it)}
                 )
 
                 //display save by level option

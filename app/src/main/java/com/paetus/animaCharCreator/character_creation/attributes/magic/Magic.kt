@@ -23,34 +23,34 @@ import java.io.ByteArrayOutputStream
  */
 class Magic(private val charInstance: BaseCharacter){
     //initialize base Zeon points
-    val baseZeon = mutableIntStateOf(value = 0)
+    val baseZeon = mutableIntStateOf(value = 70)
 
     //initialize bought Zeon points
     val boughtZeon = mutableIntStateOf(value = 0)
 
     //initialize Zeon points per level
-    private val zeonPerLevel = mutableIntStateOf(value = 0)
+    private val zeonPerLevel = mutableIntStateOf(value = 10)
 
     //initialize Zeon points from class levels
-    val zeonFromClass = mutableIntStateOf(value = 0)
+    val zeonFromClass = mutableIntStateOf(value = 5)
 
     //initialize total Zeon points
-    val zeonMax = mutableIntStateOf(value = 0)
+    val zeonMax = mutableIntStateOf(value = 75)
 
     //initialize base Zeon accumulation
-    val baseZeonAcc = mutableIntStateOf(value = 0)
+    val baseZeonAcc = mutableIntStateOf(value = 5)
 
     //initialize zeon accumulation multiple
     val zeonAccMult = mutableIntStateOf(value = 1)
 
     //initialize zeon accumulation total
-    val zeonAccTotal = mutableIntStateOf(value = 0)
+    val zeonAccTotal = mutableIntStateOf(value = 5)
 
     //initialize zeon recovery multiplier
     private val magicRecoveryMult = mutableDoubleStateOf(value = 1.0)
 
     //initialize zeon recovery total
-    val magicRecoveryTotal = mutableIntStateOf(value = 0)
+    val magicRecoveryTotal = mutableIntStateOf(value = 5)
 
     //initialize character's innate magic level
     val innateMagic = mutableIntStateOf(value = 0)

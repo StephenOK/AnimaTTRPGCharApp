@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets
  * Character being built by the user
  * Holder class of all other character creation objects
  */
-class BaseCharacter {
+open class BaseCharacter() {
     //character's name
     val charName = mutableStateOf(value = "")
 
@@ -38,10 +38,10 @@ class BaseCharacter {
     //character's rule settings
     val rules = RuleRecord()
 
-    //list of secondary abilities
-    val primaryList = PrimaryList(charInstance = this)
+    //list of character's other abilities
+    open val primaryList = PrimaryList(charInstance = this)
     val combat = CombatAbilities(charInstance = this)
-    val secondaryList = SecondaryList(charInstance = this, primaryList = primaryList)
+    open val secondaryList = SecondaryList(charInstance = this)
     val weaponProficiencies = WeaponProficiencies(charInstance = this)
     val ki = Ki(charInstance = this)
     val magic = Magic(charInstance = this)
@@ -63,34 +63,34 @@ class BaseCharacter {
     val lvl = mutableIntStateOf(value = 0)
 
     //character development points
-    val devPT = mutableIntStateOf(value = 0)
+    val devPT = mutableIntStateOf(value = 400)
     val spentTotal = mutableIntStateOf(value = 0)
 
     //maximum point allotments to combat, magic, and psychic abilities
-    val maxCombatDP = mutableIntStateOf(value = 0)
-    val percCombatDP = mutableDoubleStateOf(value = 0.0)
+    val maxCombatDP = mutableIntStateOf(value = 240)
+    val percCombatDP = mutableDoubleStateOf(value = 0.60)
     val ptInCombat = mutableIntStateOf(value = 0)
 
-    val maxMagDP = mutableIntStateOf(value = 0)
-    val percMagDP = mutableDoubleStateOf(value = 0.0)
+    val maxMagDP = mutableIntStateOf(value = 240)
+    val percMagDP = mutableDoubleStateOf(value = 0.60)
     val ptInMag = mutableIntStateOf(value = 0)
 
-    val maxPsyDP = mutableIntStateOf(value = 0)
-    val percPsyDP = mutableDoubleStateOf(value = 0.0)
+    val maxPsyDP = mutableIntStateOf(value = 240)
+    val percPsyDP = mutableDoubleStateOf(value = 0.60)
     val ptInPsy = mutableIntStateOf(value = 0)
 
     //character size items
     val sizeSpecial = mutableIntStateOf(value = 0)
-    val sizeCategory = mutableIntStateOf(value = 0)
+    val sizeCategory = mutableIntStateOf(value = 10)
 
     //character's appearance
     val appearance = mutableIntStateOf(value = 5)
 
     //character's movement value
-    val movement = mutableIntStateOf(value = 1)
+    val movement = mutableIntStateOf(value = 20)
 
     //character's weight index
-    val weightIndex = mutableIntStateOf(value = 1)
+    val weightIndex = mutableIntStateOf(value = 60)
 
     //character's gnosis value
     val gnosis = mutableIntStateOf(value = 0)
@@ -165,7 +165,7 @@ class BaseCharacter {
      *
      * @param levNum value to set the character's level to
      */
-    fun setLvl(levNum: Int) {
+    open fun setLvl(levNum: Int) {
         //set new level number
         lvl.intValue = levNum
 
@@ -214,7 +214,7 @@ class BaseCharacter {
     /**
      * Calculates percentage allotments for each category.
      */
-    fun dpAllotmentCalc() {
+    open fun dpAllotmentCalc() {
         maxCombatDP.intValue = (devPT.intValue * percCombatDP.doubleValue).toInt()
         maxMagDP.intValue = (devPT.intValue * percMagDP.doubleValue).toInt()
         maxPsyDP.intValue = (devPT.intValue * percPsyDP.doubleValue).toInt()
@@ -223,7 +223,7 @@ class BaseCharacter {
     /**
      * Updates the total development points spent.
      */
-    fun updateTotalSpent(){
+    open fun updateTotalSpent(){
         //make sure martial arts taken are still legal
         weaponProficiencies.doubleCheck()
 
@@ -355,10 +355,6 @@ class BaseCharacter {
         }
     }
 
-    constructor(){
-        createDefaultChar()
-    }
-
     /**
      * Default constructor for new character.
      *
@@ -370,32 +366,12 @@ class BaseCharacter {
         filename: String,
         secondaryFile: File,
         techFile: File
-    ) {
+    ) : this() {
         //retrieve custom secondaries for this character
         secondaryList.applySecondaryChars(input = secondaryFile, filename = filename)
 
         //retrieve custom techniques for this character
         ki.applyCustomTechs(customTechDir = techFile, filename = filename)
-
-        //construct the BaseCharacter object
-        createDefaultChar()
-    }
-
-    private fun createDefaultChar(){
-        //set default values for class, race, and level
-        classes.setOwnClass(newClass = classes.freelancer)
-        setOwnRace(raceIn = listOf())
-        setLvl(levNum = 0)
-
-        //set default values for primary characteristics
-        primaryList.str.setInput(baseIn = 5)
-        primaryList.dex.setInput(baseIn = 5)
-        primaryList.agi.setInput(baseIn = 5)
-        primaryList.con.setInput(baseIn = 5)
-        primaryList.int.setInput(baseIn = 5)
-        primaryList.pow.setInput(baseIn = 5)
-        primaryList.wp.setInput(baseIn = 5)
-        primaryList.per.setInput(baseIn = 5)
     }
 
     /**
@@ -409,7 +385,7 @@ class BaseCharacter {
         charFile: File,
         secondaryFile: File,
         techFile: File
-    ) {
+    ) : this() {
 
         //get custom custom items for this character
         secondaryList.applySecondaryChars(

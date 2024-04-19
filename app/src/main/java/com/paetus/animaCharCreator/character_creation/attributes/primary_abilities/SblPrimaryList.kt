@@ -1,16 +1,16 @@
 package com.paetus.animaCharCreator.character_creation.attributes.primary_abilities
 
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import java.io.BufferedReader
-import java.io.ByteArrayOutputStream
+import com.paetus.animaCharCreator.character_creation.SblChar
 
 /**
- * Record of all of a character's primary characteristic.
+ * Subclass of PrimaryList for use in a SBL character.
  *
  * @param charInstance object that contains all of the character's stats
  */
-open class PrimaryList(private val charInstance: BaseCharacter){
-    open val str = PrimaryCharacteristic(
+class SblPrimaryList(
+    private val charInstance: SblChar
+): PrimaryList(charInstance) {
+    override val str = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 11,
         charIndex = 0,
@@ -24,7 +24,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val dex = PrimaryCharacteristic(
+    override val dex = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 11,
         charIndex = 1,
@@ -39,7 +39,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val agi = PrimaryCharacteristic(
+    override val agi = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 11,
         charIndex = 2,
@@ -52,7 +52,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val con = PrimaryCharacteristic(
+    override val con = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 11,
         charIndex = 3,
@@ -71,7 +71,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val int = PrimaryCharacteristic(
+    override val int = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 13,
         charIndex = 4,
@@ -81,7 +81,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val pow = PrimaryCharacteristic(
+    override val pow = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 13,
         charIndex = 5,
@@ -97,7 +97,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val wp = PrimaryCharacteristic(
+    override val wp = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 13,
         charIndex = 6,
@@ -110,7 +110,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
         }
     )
 
-    open val per = PrimaryCharacteristic(
+    override val per = SblPrimaryChar(
         charInstance = charInstance,
         advantageCap = 13,
         charIndex = 7,
@@ -118,44 +118,4 @@ open class PrimaryList(private val charInstance: BaseCharacter){
             charInstance.secondaryList.updatePER()
         }
     )
-
-    /**
-     * Retrieves all primary characteristic items.
-     *
-     * @return list of primary characteristics
-     */
-    fun allPrimaries(): List<PrimaryCharacteristic>{
-        return listOf(str, dex, agi, con, int, pow, wp, per)
-    }
-
-    /**
-     * Determines if the total level bonuses applied are valid.
-     *
-     * @return true if bonus does not exceed half of the character's level
-     */
-    fun validLevelBonuses(): Boolean{
-        var total = 0
-
-        allPrimaries().forEach{primary -> total += primary.levelBonus.intValue}
-
-        return total <= charInstance.lvl.intValue/2
-    }
-
-    /**
-     * Get data for each of the primary characteristics.
-     *
-     * @param fileReader file to get the data from
-     */
-    fun loadPrimaries(fileReader: BufferedReader){
-        allPrimaries().forEach{primary -> primary.load(fileReader = fileReader)}
-    }
-
-    /**
-     * Save all primary characteristic data to file.
-     *
-     * @param byteArray output stream for the data
-     */
-    fun writePrimaries(byteArray: ByteArrayOutputStream) {
-        allPrimaries().forEach{primary -> primary.write(byteArray = byteArray) }
-    }
 }

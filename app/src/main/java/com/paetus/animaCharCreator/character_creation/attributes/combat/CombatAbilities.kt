@@ -18,10 +18,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     val presence = mutableIntStateOf(20)
 
     //character's health items
-    val lifeBase = mutableIntStateOf(0)
+    val lifeBase = mutableIntStateOf(70)
     val lifeMultsTaken = mutableIntStateOf(0)
-    val lifeClassTotal = mutableIntStateOf(0)
-    val lifeMax = mutableIntStateOf(0)
+    val lifeClassTotal = mutableIntStateOf(2)
+    val lifeMax = mutableIntStateOf(72)
 
     //initialize the character's combat data
     val attack = CombatItem(charInstance = charInstance)
@@ -44,16 +44,16 @@ class CombatAbilities(private val charInstance: BaseCharacter){
 
     //initialize initiative
     val specInitiative = mutableIntStateOf(0)
-    val totalInitiative = mutableIntStateOf(0)
+    val totalInitiative = mutableIntStateOf(22)
 
     //initialize fatigue
-    val fatigue = mutableIntStateOf(0)
+    val fatigue = mutableIntStateOf(5)
     val specFatigue = mutableIntStateOf(0)
 
     //initialize regeneration
-    private val baseRegen = mutableIntStateOf(0)
+    private val baseRegen = mutableIntStateOf(1)
     val specRegen = mutableIntStateOf(0)
-    val totalRegen = mutableIntStateOf(0)
+    val totalRegen = mutableIntStateOf(1)
 
     /**
      * Update the character's presence.

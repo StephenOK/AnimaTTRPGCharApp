@@ -2,9 +2,9 @@ package com.paetus.animaCharCreator.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,12 +22,18 @@ import com.paetus.animaCharCreator.DropdownData
  *
  * @param data item that holds state data for the dropdown
  * @param modifier modifier to define this object's weight
+ * @param isOpenable defines whether the outlined dropdown can be opened
+ * @param unopenFunc what to run if the dropdown isn't openable
+ * @param qualifyOption checks if the option input is valid for display
  * @param itemSelection function to run on the selection of a dropdown item
  */
 @Composable
 fun OutlinedDropdown(
     data: DropdownData,
     modifier: Modifier = Modifier,
+    isOpenable: Boolean = true,
+    unopenFunc: () -> Unit = {},
+    qualifyOption: (String) -> Boolean = {true},
     itemSelection: () -> Unit
 ){
     //retrieve list of options
@@ -48,7 +54,14 @@ fun OutlinedDropdown(
                 imageVector = data.icon.collectAsState().value,
                 contentDescription = "",
                 modifier = Modifier
-                    .clickable{data.openToggle()}
+                    .clickable{
+                        //toggle item if openable
+                        if(isOpenable)
+                            data.openToggle()
+                        //run other function if not
+                        else
+                            unopenFunc()
+                    }
             )
         }
     )
@@ -60,14 +73,15 @@ fun OutlinedDropdown(
             .width(with(LocalDensity.current){data.size.collectAsState().value.width.toDp()})
     ){
         optionsList.forEach{option ->
-            DropdownMenuItem(
-                onClick = {
-                    data.setOutput(dropdownIndex = optionsList.indexOf(element = option))
-                    itemSelection()
-                }
-            ) {
-                Text(text = option)
-            }
+            //hide option if not legal
+            if(qualifyOption(option))
+                DropdownMenuItem(
+                    text = {Text(text = option)},
+                    onClick = {
+                        data.setOutput(dropdownIndex = optionsList.indexOf(element = option))
+                        itemSelection()
+                    }
+                )
         }
     }
 }

@@ -117,4 +117,7 @@
 
     <string name = "zeonLabel">Zeon</string>
     <string name = "reducedCostHead">Reduced Costs</string>
+
+    <string name = "failedLevelChangeTitle">Could Not Change Level</string>
+    <string name = "failedLevelChangeText">Current level\'s DP have not been appropriately spent and changing level cannot happen until then.</string>
 </resources>

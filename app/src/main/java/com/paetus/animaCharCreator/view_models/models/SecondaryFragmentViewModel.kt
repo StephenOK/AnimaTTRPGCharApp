@@ -365,7 +365,7 @@ class SecondaryFragmentViewModel(
          * @return characteristic's name reference
          */
         fun getName(): Int{
-            return secondaryList.fullList.indexOf(element = secondaryItem)
+            return secondaryList.fullList().indexOf(element = secondaryItem)
         }
 
         /**

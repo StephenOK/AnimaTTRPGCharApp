@@ -52,6 +52,7 @@ import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.theme.detailLightColors
 import com.paetus.animaCharCreator.theme.drawerLightColors
@@ -96,31 +97,35 @@ class HomeActivity : AppCompatActivity() {
         val customTechFile = File(this.filesDir, "CustomTechDIR")
 
         //create character object
-        val charInstance = if(isNew)
-            BaseCharacter(
-                filename = filename,
-                secondaryFile = customSecondaryFile,
-                techFile = customTechFile
-            )
-        else if(isByLevel)
-            getHighestLevelChar(
-                directory = File("${this.filesDir}/AnimaChars", filename),
-                secondaryFile = customSecondaryFile,
-                techFile = customTechFile
-            )
-        else
-            BaseCharacter(
-                charFile = File("${this.filesDir}/AnimaChars", filename),
-                secondaryFile = customSecondaryFile,
-                techFile = customTechFile
-            )
+        val charInstance =
+            //character is not by level and is new
+            if(!isByLevel && isNew)
+                BaseCharacter(
+                    filename = filename,
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            //character is not by level and is loaded
+            else if(!isByLevel)
+                BaseCharacter(
+                    charFile = File("${this.filesDir}/AnimaChars", filename),
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            //character is save by level
+            else {
+                SblChar(
+                    sourceDIR = File("${this.filesDir}/AnimaChars", filename),
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            }
 
         //save file on new character creation
         if(isNew)
             attemptSave(
                 charInstance = charInstance,
                 filename = filename,
-                isByLevel = isByLevel,
                 showToast = false
             )
 
@@ -139,7 +144,6 @@ class HomeActivity : AppCompatActivity() {
                 HomeContents(
                     charInstance = charInstance,
                     filename = filename,
-                    isByLevel = isByLevel,
                     homePageVM = homePageVM
                 )
             }
@@ -158,7 +162,6 @@ class HomeActivity : AppCompatActivity() {
     private fun HomeContents(
         charInstance: BaseCharacter,
         filename: String,
-        isByLevel: Boolean,
         homePageVM: HomePageViewModel
     ) {
         //prevent user from flipping app
@@ -271,7 +274,6 @@ class HomeActivity : AppCompatActivity() {
                     AppDrawer(
                         charInstance = charInstance,
                         filename = filename,
-                        isByLevel = isByLevel,
                         drawerState = drawerState,
                         scope = scope,
                         navController = navController,
@@ -403,9 +405,8 @@ class HomeActivity : AppCompatActivity() {
                     MaterialTheme(colorScheme = detailLightColors) {
                         ExitAlert(
                             charInstance = charInstance,
-                            filename = filename,
-                            isByLevel
-                        ) { homePageVM.toggleExitAlert() }
+                            filename = filename
+                        ) {homePageVM.toggleExitAlert()}
                     }
             }
         }
@@ -509,7 +510,6 @@ class HomeActivity : AppCompatActivity() {
     private fun AppDrawer(
         charInstance: BaseCharacter,
         filename: String,
-        isByLevel: Boolean,
         drawerState: DrawerState,
         scope: CoroutineScope,
         navController: NavHostController,
@@ -561,7 +561,6 @@ class HomeActivity : AppCompatActivity() {
                             attemptSave(
                                 charInstance = charInstance,
                                 filename = filename,
-                                isByLevel = isByLevel,
                                 showToast = true
                             )
                         }
@@ -728,7 +727,6 @@ class HomeActivity : AppCompatActivity() {
     private fun ExitAlert(
         charInstance: BaseCharacter,
         filename: String,
-        isByLevel: Boolean,
         closeDialog: () -> Unit
     ){
         AlertDialog(
@@ -746,7 +744,6 @@ class HomeActivity : AppCompatActivity() {
                         attemptSave(
                             charInstance = charInstance,
                             filename = filename,
-                            isByLevel = isByLevel,
                             showToast = true
                         )
                         finish()
@@ -773,35 +770,39 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Attempts to save the character's data to its designated file.
+     * Runs the appropriate save function for the given character item type.
      *
-     * @param charInstance character object to be saved
+     * @param charInstance character object to save
      * @param filename name of the file to save to
-     * @param isByLevel true if the character is saved by level
-     * @param showToast true if the toast notification is shown
+     * @param showToast true if the toast notification in shown
      */
     private fun attemptSave(
         charInstance: BaseCharacter,
         filename: String,
-        isByLevel: Boolean,
+        showToast: Boolean
+    ){
+        if(charInstance is SblChar) sblSave(charInstance, filename, showToast)
+        else defaultSave(charInstance, filename, showToast)
+    }
+
+    /**
+     * Attempts to save a normal character's data to its designated file.
+     *
+     * @param charInstance character object to be saved
+     * @param filename name of the file to save to
+     * @param showToast true if the toast notification is shown
+     */
+    private fun defaultSave(
+        charInstance: BaseCharacter,
+        filename: String,
         showToast: Boolean
     ){
         try{
             //get file
             val file = File("${this.filesDir}/AnimaChars", filename)
 
-            //turn the file into a directory if it is save by level
-            if(!file.isDirectory && isByLevel)
-                file.mkdir()
-
-            //get file's save location
-            val writeFile = if(isByLevel)
-                File(file, "${charInstance.lvl.intValue}")
-            else
-                file
-
             //create file writer
-            val saveStream = FileOutputStream(writeFile)
+            val saveStream = FileOutputStream(file)
 
             //get and write character's bytes
             val charData = charInstance.bytes
@@ -834,23 +835,64 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHighestLevelChar(
-        directory: File,
-        secondaryFile: File,
-        techFile: File
-    ): BaseCharacter{
-        var max = 0
+    /**
+     * Attempts to save a by-level character's data to its designated file.
+     *
+     * @param charInstance character object to be saved
+     * @param filename name of the file to save to
+     * @param showToast true if the toast notification is shown
+     */
+    private fun sblSave(
+        charInstance: SblChar,
+        filename: String,
+        showToast: Boolean
+    ){
+        try {
+            //get file
+            val file = File("${this.filesDir}/AnimaChars", filename)
 
-        directory.listFiles()?.forEach{levelFile ->
-            if(levelFile.name.toInt() > max)
-                max = levelFile.name.toInt()
+            //turn the file into a directory if it is save by level
+            if (!file.isDirectory)
+                file.mkdir()
+
+            //write each character's individual levels to their own files
+            charInstance.charRefs.forEach {subChar ->
+                //get the individual file's location
+                val writeFile = File(file, "${charInstance.charRefs.indexOf(subChar)}")
+
+                //create file writer
+                val saveStream = FileOutputStream(writeFile)
+
+                //get and write character's bytes
+                val charData = charInstance.bytes
+                saveStream.write(charData)
+                saveStream.close()
+            }
+
+            //notify of action completion
+            if(showToast)
+                Toast.makeText(
+                    this@HomeActivity,
+                    baseContext.resources.getString(R.string.saveMessage),
+                    Toast.LENGTH_SHORT
+                ).show()
         }
-
-        return BaseCharacter(
-            charFile = File(directory, "$max"),
-            secondaryFile = secondaryFile,
-            techFile = techFile
-        )
+        //notify that file not found
+        catch(e: FileNotFoundException){
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileNotFound),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify for error in file writing
+        catch(e: IOException) {
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileError),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     @Preview

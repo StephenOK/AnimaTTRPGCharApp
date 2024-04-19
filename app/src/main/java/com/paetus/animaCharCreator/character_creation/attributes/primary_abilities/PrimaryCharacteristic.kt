@@ -15,14 +15,14 @@ import kotlin.math.ceil
  * @param charIndex index of this characteristic
  * @param setUpdate function to run on this stat's change
  */
-class PrimaryCharacteristic(
-    val charInstance: BaseCharacter,
+open class PrimaryCharacteristic(
+    open val charInstance: BaseCharacter,
     private val advantageCap: Int,
-    val charIndex: Int,
+    open val charIndex: Int,
     private val setUpdate: (mod: Int, total: Int) -> Unit
 ){
     //base value fo the stat
-    val inputValue = mutableIntStateOf(value = 0)
+    val inputValue = mutableIntStateOf(value = 5)
 
     //additional points in this stata
     val bonus = mutableIntStateOf(value = 0)
@@ -31,7 +31,7 @@ class PrimaryCharacteristic(
     val levelBonus = mutableIntStateOf(value = 0)
 
     //total value of the stat
-    val total = mutableIntStateOf(value = 0)
+    val total = mutableIntStateOf(value = 5)
 
     //modifier value for this stat
     val outputMod = mutableIntStateOf(value = 0)
@@ -83,7 +83,7 @@ class PrimaryCharacteristic(
      *
      * @param lvlBonus value to set as bonus
      */
-    fun setLevelBonus(lvlBonus: Int){
+    open fun setLevelBonus(lvlBonus: Int){
         levelBonus.intValue = lvlBonus
         updateValues()
     }
@@ -91,7 +91,7 @@ class PrimaryCharacteristic(
     /**
      * Updates the stat's total, modifier, and updates related character values.
      */
-    private fun updateValues(){
+    fun updateValues(){
         //change the total value
         total.intValue = inputValue.intValue + bonus.intValue + levelBonus.intValue
 

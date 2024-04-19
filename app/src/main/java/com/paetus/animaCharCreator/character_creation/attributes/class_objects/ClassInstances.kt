@@ -1389,7 +1389,7 @@ class ClassInstances(private val charInstance: BaseCharacter){
         charInstance.magic.setZeonPerLevel(0)
     }
 
-    val ownClass = mutableStateOf(value = mentalist)
+    val ownClass = mutableStateOf(value = freelancer)
 
     //collect all available class items
     val allClasses = listOf(freelancer, warrior, acroWarrior, paladin, darkPaladin, weaponMaster, technician, tao,

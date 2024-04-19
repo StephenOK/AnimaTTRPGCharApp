@@ -76,8 +76,7 @@ class EditSecondaryViewModel(val context: Context): ViewModel() {
             //apply it to a new character
             val newTech = CustomCharacteristic(
                 parent = SecondaryList(
-                    charInstance = dummyChar,
-                    primaryList = dummyChar.primaryList
+                    charInstance = dummyChar
                 ),
                 name = name,
                 filename = filename,

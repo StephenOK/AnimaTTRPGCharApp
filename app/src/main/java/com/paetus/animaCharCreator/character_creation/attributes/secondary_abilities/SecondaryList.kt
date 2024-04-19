@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.character_creation.attributes.secondary_abil
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
-import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
 import com.paetus.animaCharCreator.writeDataTo
 import kotlin.Throws
 import java.io.BufferedReader
@@ -19,67 +18,65 @@ import java.nio.charset.StandardCharsets
  * Keeps track of natural bonuses taken by the player.
  *
  * @param charInstance object that manages all of the character's stats
- * @param primaryList primary characteristics of the character
  */
-class SecondaryList(
-    val charInstance: BaseCharacter,
-    val primaryList: PrimaryList
+open class SecondaryList(
+    val charInstance: BaseCharacter
 ){
     //initialize held state of jack of all trades advantage
     val allTradesTaken = mutableStateOf(value = false)
 
     //Initialize all secondary characteristics in list
     //athletics
-    val acrobatics = SecondaryCharacteristic(parent = this)
-    val athletics = SecondaryCharacteristic(parent = this)
-    private val climb = SecondaryCharacteristic(parent = this)
-    val jump = SecondaryCharacteristic(parent = this)
-    private val ride = SecondaryCharacteristic(parent = this)
-    private val swim = SecondaryCharacteristic(parent = this)
+    open val acrobatics = SecondaryCharacteristic(parent = this)
+    open val athletics = SecondaryCharacteristic(parent = this)
+    open val climb = SecondaryCharacteristic(parent = this)
+    open  val jump = SecondaryCharacteristic(parent = this)
+    open val ride = SecondaryCharacteristic(parent = this)
+    open val swim = SecondaryCharacteristic(parent = this)
 
     //creative
-    val art = SecondaryCharacteristic(parent = this)
-    val dance = SecondaryCharacteristic(parent = this)
-    private val forging = SecondaryCharacteristic(parent = this)
-    private val music = SecondaryCharacteristic(parent = this)
-    val sleightHand = SecondaryCharacteristic(parent = this)
+    open val art = SecondaryCharacteristic(parent = this)
+    open val dance = SecondaryCharacteristic(parent = this)
+    open val forging = SecondaryCharacteristic(parent = this)
+    open val music = SecondaryCharacteristic(parent = this)
+    open val sleightHand = SecondaryCharacteristic(parent = this)
 
     //perceptive
-    val notice = SecondaryCharacteristic(parent = this)
-    val search = SecondaryCharacteristic(parent = this)
-    val track = SecondaryCharacteristic(parent = this)
+    open val notice = SecondaryCharacteristic(parent = this)
+    open val search = SecondaryCharacteristic(parent = this)
+    open val track = SecondaryCharacteristic(parent = this)
 
     //social
-    val intimidate = SecondaryCharacteristic(parent = this)
-    val leadership = SecondaryCharacteristic(parent = this)
-    val persuasion = SecondaryCharacteristic(parent = this)
-    val style = SecondaryCharacteristic(parent = this)
+    open val intimidate = SecondaryCharacteristic(parent = this)
+    open val leadership = SecondaryCharacteristic(parent = this)
+    open val persuasion = SecondaryCharacteristic(parent = this)
+    open val style = SecondaryCharacteristic(parent = this)
 
     //subterfuge
-    val disguise = SecondaryCharacteristic(parent = this)
-    val hide = SecondaryCharacteristic(parent = this)
-    private val lockPick = SecondaryCharacteristic(parent = this)
-    val poisons = SecondaryCharacteristic(parent = this)
-    val theft = SecondaryCharacteristic(parent = this)
-    val stealth = SecondaryCharacteristic(parent = this)
-    val trapLore = SecondaryCharacteristic(parent = this)
+    open val disguise = SecondaryCharacteristic(parent = this)
+    open val hide = SecondaryCharacteristic(parent = this)
+    open val lockPick = SecondaryCharacteristic(parent = this)
+    open val poisons = SecondaryCharacteristic(parent = this)
+    open val theft = SecondaryCharacteristic(parent = this)
+    open val stealth = SecondaryCharacteristic(parent = this)
+    open val trapLore = SecondaryCharacteristic(parent = this)
 
     //intellectual
-    val animals = SecondaryCharacteristic(parent = this)
-    val appraise = SecondaryCharacteristic(parent = this)
-    val herbalLore = SecondaryCharacteristic(parent = this)
-    private val history = SecondaryCharacteristic(parent = this)
-    val memorize = SecondaryCharacteristic(parent = this)
-    val magicAppraise = SecondaryCharacteristic(parent = this)
-    val medic = SecondaryCharacteristic(parent = this)
-    private val navigate = SecondaryCharacteristic(parent = this)
-    val occult = SecondaryCharacteristic(parent = this)
-    private val sciences = SecondaryCharacteristic(parent = this)
+    open val animals = SecondaryCharacteristic(parent = this)
+    open val appraise = SecondaryCharacteristic(parent = this)
+    open val herbalLore = SecondaryCharacteristic(parent = this)
+    open val history = SecondaryCharacteristic(parent = this)
+    open val memorize = SecondaryCharacteristic(parent = this)
+    open val magicAppraise = SecondaryCharacteristic(parent = this)
+    open val medic = SecondaryCharacteristic(parent = this)
+    open val navigate = SecondaryCharacteristic(parent = this)
+    open val occult = SecondaryCharacteristic(parent = this)
+    open val sciences = SecondaryCharacteristic(parent = this)
 
     //vigor
-    val composure = SecondaryCharacteristic(parent = this)
-    val strengthFeat = SecondaryCharacteristic(parent = this)
-    val resistPain = SecondaryCharacteristic(parent = this)
+    open val composure = SecondaryCharacteristic(parent = this)
+    open val strengthFeat = SecondaryCharacteristic(parent = this)
+    open val resistPain = SecondaryCharacteristic(parent = this)
 
     private val customAthletics = mutableListOf<CustomCharacteristic>()
     private val customSocials = mutableListOf<CustomCharacteristic>()
@@ -98,12 +95,18 @@ class SecondaryList(
     private val customWP = mutableListOf<CustomCharacteristic>()
     private val customPER = mutableListOf<CustomCharacteristic>()
 
-    //get all secondary characteristics
-    val fullList = listOf(acrobatics, athletics, climb, jump, ride, swim, intimidate, leadership,
-        persuasion, style, notice, search, track, animals, appraise, herbalLore, history, memorize,
-        magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain,
-        disguise, hide, lockPick, poisons, theft, stealth, trapLore, art, dance, forging, music,
-        sleightHand)
+    /**
+     * Retrives all secondary characteristic items in this list.
+     *
+     * @return list of default secondary characteristics
+     */
+    fun fullList(): List<SecondaryCharacteristic>{
+        return listOf(acrobatics, athletics, climb, jump, ride, swim, intimidate, leadership,
+            persuasion, style, notice, search, track, animals, appraise, herbalLore, history, memorize,
+            magicAppraise, medic, navigate, occult, sciences, composure, strengthFeat, resistPain,
+            disguise, hide, lockPick, poisons, theft, stealth, trapLore, art, dance, forging, music,
+            sleightHand)
+    }
 
     /**
      * Retrieves all custom characteristics available to this character.
@@ -143,7 +146,7 @@ class SecondaryList(
      * Retrieves all secondary characteristics this character has access to.
      */
     fun getAllSecondaries(): List<SecondaryCharacteristic>{
-        return fullList + getAllCustoms()
+        return fullList() + getAllCustoms()
     }
 
     /**
@@ -247,101 +250,101 @@ class SecondaryList(
      * Update needed values based on new strength modifier.
      */
     fun updateSTR() {
-        jump.setModVal(modValue = primaryList.str.outputMod.intValue)
-        strengthFeat.setModVal(modValue = primaryList.str.outputMod.intValue)
+        jump.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
+        strengthFeat.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
 
-        customSTR.forEach{customChar -> customChar.setModVal(primaryList.str.outputMod.intValue)}
+        customSTR.forEach{customChar -> customChar.setModVal(charInstance.primaryList.str.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new dexterity modifier.
      */
     fun updateDEX() {
-        forging.setModVal(modValue = primaryList.dex.outputMod.intValue)
-        sleightHand.setModVal(modValue = primaryList.dex.outputMod.intValue)
-        disguise.setModVal(modValue = primaryList.dex.outputMod.intValue)
-        lockPick.setModVal(modValue = primaryList.dex.outputMod.intValue)
-        theft.setModVal(modValue = primaryList.dex.outputMod.intValue)
-        trapLore.setModVal(modValue = primaryList.dex.outputMod.intValue)
+        forging.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
+        sleightHand.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
+        disguise.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
+        lockPick.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
+        theft.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
+        trapLore.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
 
-        customDEX.forEach{customChar -> customChar.setModVal(primaryList.dex.outputMod.intValue)}
+        customDEX.forEach{customChar -> customChar.setModVal(charInstance.primaryList.dex.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new agility modifier.
      */
     fun updateAGI() {
-        acrobatics.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        athletics.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        climb.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        ride.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        swim.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        dance.setModVal(modValue = primaryList.agi.outputMod.intValue)
-        stealth.setModVal(modValue = primaryList.agi.outputMod.intValue)
+        acrobatics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        athletics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        climb.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        ride.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        swim.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        dance.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
+        stealth.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
 
-        customAGI.forEach{customChar -> customChar.setModVal(primaryList.agi.outputMod.intValue)}
+        customAGI.forEach{customChar -> customChar.setModVal(charInstance.primaryList.agi.outputMod.intValue)}
     }
 
     /**
      * Updates needed values based on new constitution modifier.
      */
     fun updateCON(){
-        customCON.forEach{customChar -> customChar.setModVal(primaryList.con.outputMod.intValue)}
+        customCON.forEach{customChar -> customChar.setModVal(charInstance.primaryList.con.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new intelligence modifier.
      */
     fun updateINT() {
-        persuasion.setModVal(modValue = primaryList.int.outputMod.intValue)
-        poisons.setModVal(modValue = primaryList.int.outputMod.intValue)
-        animals.setModVal(modValue = primaryList.int.outputMod.intValue)
-        appraise.setModVal(modValue = primaryList.int.outputMod.intValue)
-        herbalLore.setModVal(modValue = primaryList.int.outputMod.intValue)
-        history.setModVal(modValue = primaryList.int.outputMod.intValue)
-        memorize.setModVal(modValue = primaryList.int.outputMod.intValue)
-        medic.setModVal(modValue = primaryList.int.outputMod.intValue)
-        navigate.setModVal(modValue = primaryList.int.outputMod.intValue)
-        occult.setModVal(modValue = primaryList.int.outputMod.intValue)
-        sciences.setModVal(modValue = primaryList.int.outputMod.intValue)
+        persuasion.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        poisons.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        animals.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        appraise.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        herbalLore.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        history.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        memorize.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        medic.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        navigate.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        occult.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
+        sciences.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
 
-        customINT.forEach{customChar -> customChar.setModVal(primaryList.int.outputMod.intValue)}
+        customINT.forEach{customChar -> customChar.setModVal(charInstance.primaryList.int.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new power modifier.
      */
     fun updatePOW() {
-        art.setModVal(modValue = primaryList.pow.outputMod.intValue)
-        music.setModVal(modValue = primaryList.pow.outputMod.intValue)
-        leadership.setModVal(modValue = primaryList.pow.outputMod.intValue)
-        style.setModVal(modValue = primaryList.pow.outputMod.intValue)
-        magicAppraise.setModVal(modValue = primaryList.pow.outputMod.intValue)
+        art.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
+        music.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
+        leadership.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
+        style.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
+        magicAppraise.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
 
-        customPOW.forEach{customChar -> customChar.setModVal(primaryList.pow.outputMod.intValue)}
+        customPOW.forEach{customChar -> customChar.setModVal(charInstance.primaryList.pow.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new willpower modifier.
      */
     fun updateWP() {
-        intimidate.setModVal(modValue = primaryList.wp.outputMod.intValue)
-        composure.setModVal(modValue = primaryList.wp.outputMod.intValue)
-        resistPain.setModVal(modValue = primaryList.wp.outputMod.intValue)
+        intimidate.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
+        composure.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
+        resistPain.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
 
-        customWP.forEach{customChar -> customChar.setModVal(primaryList.wp.outputMod.intValue)}
+        customWP.forEach{customChar -> customChar.setModVal(charInstance.primaryList.wp.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new perception modifier
      */
     fun updatePER() {
-        notice.setModVal(modValue = primaryList.per.outputMod.intValue)
-        search.setModVal(modValue = primaryList.per.outputMod.intValue)
-        track.setModVal(modValue = primaryList.per.outputMod.intValue)
-        hide.setModVal(modValue = primaryList.per.outputMod.intValue)
+        notice.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
+        search.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
+        track.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
+        hide.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
 
-        customPER.forEach{customChar -> customChar.setModVal(primaryList.per.outputMod.intValue)}
+        customPER.forEach{customChar -> customChar.setModVal(charInstance.primaryList.per.outputMod.intValue)}
     }
 
     /**
@@ -356,7 +359,7 @@ class SecondaryList(
         writeVersion: Int
     ) {
         //load values for each default secondary characteristic
-        fullList.forEach{characteristic -> characteristic.load(fileReader!!)}
+        fullList().forEach{characteristic -> characteristic.load(fileReader!!)}
 
         //for files created after custom secondaries were implemented
         if(writeVersion >= 22) {
@@ -394,7 +397,7 @@ class SecondaryList(
      */
     fun writeList(byteArray: ByteArrayOutputStream) {
         //write each default characteristic's data
-        fullList.forEach{secondary -> secondary.write(byteArray = byteArray)}
+        fullList().forEach{secondary -> secondary.write(byteArray = byteArray)}
 
         //write the number of custom characteristics available
         writeDataTo(writer = byteArray, input = getAllCustoms().size)

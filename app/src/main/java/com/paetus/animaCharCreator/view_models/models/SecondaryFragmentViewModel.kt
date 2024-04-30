@@ -401,10 +401,15 @@ class SecondaryFragmentViewModel(
         //check if freelancer options are available to the character
         _freelancerOptionsOpen.update{charInstance.classes.ownClass.value == charInstance.classes.freelancer}
 
-        //update the displayed secondary class points
-        allCharacteristics.forEach{it.setClassPoints()}
+        allCharacteristics.forEach{
+            //update the point input data for each secondary
+            it.setPointInput(it.secondaryItem.pointsApplied.intValue.toString())
 
-        //update the displayed secondary totals
-        allCharacteristics.forEach{it.updateTotal()}
+            //update the displayed secondary class points
+            it.setClassPoints()
+
+            //update the displayed secondary totals
+            it.updateTotal()
+        }
     }
 }

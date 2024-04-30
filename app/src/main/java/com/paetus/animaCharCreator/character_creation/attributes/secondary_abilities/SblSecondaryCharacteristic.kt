@@ -25,13 +25,17 @@ class SblSecondaryCharacteristic(
         }
 
         //set current level value
-        charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].pointsApplied.intValue = pointInput - preSecondaryValue
+        charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - preSecondaryValue)
 
         //get points applied from each level
         pointsApplied.intValue = 0
         parent.sblChar.levelLoop{character ->
             pointsApplied.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
         }
+
+        //remove natural bonus is no points applied to this stat
+        if(pointsApplied.intValue == 0 && bonusApplied.value)
+            setNatBonus(natBonus = false)
 
         //get new totals
         updateDevSpent()
@@ -51,5 +55,16 @@ class SblSecondaryCharacteristic(
         }
     }
 
+    fun levelUpdate(newLevel: Int){
+        //reset point value
+        pointsApplied.intValue = 0
 
+        //add points from levels up to this one
+        parent.sblChar.levelLoop(charLevel = newLevel){character ->
+            pointsApplied.intValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
+        }
+
+        updateDevSpent()
+        refreshTotal()
+    }
 }

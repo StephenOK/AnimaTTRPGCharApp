@@ -60,7 +60,11 @@ class SblChar(
             charRefs[levNum]!!.classes.setOwnClass(charRefs[levNum - 1]!!.classes.ownClass.value)
         }
 
+        secondaryList.levelUpdate(newLevel = levNum)
+
         super.setLvl(levNum)
+
+        updateTotalSpent()
     }
 
     /**
@@ -76,8 +80,11 @@ class SblChar(
         levelLoop(lvl.intValue){checkChar ->
             //determine the level's development points
             val dpSection =
-                if(checkChar == charRefs.first()) 400
-                else 100
+                when(checkChar) {
+                    charRefs.first() -> 400
+                    charRefs[1] -> 200
+                    else -> 100
+                }
 
             //split as needed for each section
             maxCombatDP.intValue += (dpSection * checkChar.percCombatDP.doubleValue).toInt()
@@ -100,7 +107,7 @@ class SblChar(
         weaponProficiencies.doubleCheck()
 
         //add DP spent in each level
-        levelLoop(lvl.intValue){checkChar ->
+        levelLoop{checkChar ->
             //add level's combat expenditures
             ptInCombat.intValue +=
                 checkChar.combat.calculateSpent() +
@@ -120,8 +127,8 @@ class SblChar(
 
             //add level's other items
             spentTotal.intValue +=
-                combat.lifeMultsTaken.intValue * classes.ownClass.value.lifePointMultiple +
-                        secondaryList.calculateSpent()
+                checkChar.combat.lifeMultsTaken.intValue * checkChar.classes.ownClass.value.lifePointMultiple +
+                        checkChar.secondaryList.calculateSpent()
         }
 
         spentTotal.intValue += ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue

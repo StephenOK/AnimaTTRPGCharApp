@@ -39,4 +39,16 @@ class SblPrimaryChar(
 
         updateValues()
     }
+
+    fun levelUpdate(newLevel: Int){
+        //reset level bonus
+        levelBonus.intValue = 0
+
+        //add bonus from each level to the current one
+        charInstance.levelLoop(charLevel = newLevel){character ->
+            levelBonus.intValue += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
+        }
+
+        updateValues()
+    }
 }

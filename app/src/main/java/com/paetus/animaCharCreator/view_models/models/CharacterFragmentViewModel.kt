@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
@@ -101,6 +102,10 @@ class CharacterFragmentViewModel(
     //initialize class shown in detail alert
     private val _classDetailItem = MutableStateFlow(value = charInstance.classes.freelancer)
     val classDetailItem = _classDetailItem.asStateFlow()
+
+    //initialize failed level change alert
+    private val _failedLevelChangeOpen = MutableStateFlow(value = false)
+    val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
 
     /**
      * Sets the character's name to the user's input.
@@ -311,6 +316,35 @@ class CharacterFragmentViewModel(
      */
     private fun setClassDetail(){_classDetailItem.update{charInstance.classes.ownClass.value}}
 
+    /**
+     * Determines if the user may change the level of the character.
+     *
+     * @return true when character is not SBL or has all DP at this level spent
+     */
+    fun getLevelChangeable(): Boolean{
+        return !(charInstance is SblChar &&
+                charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+    }
+
+    /**
+     * Determines if level is legal to display to the user
+     *
+     * @param levelString level to look for in the character
+     * @return true if not a SBL character or SBL character has access to the queried level
+     */
+    fun getExistingCharacter(levelString: String): Boolean{
+        //return level option is legal if not looking for 0 or character is SBL
+        return if(levelString.toInt() != 0 && charInstance is SblChar)
+            charInstance.charRefs[levelString.toInt() - 1] != null
+        //true if looking for level 0 or character is not SBL
+        else true
+    }
+
+    /**
+     * Opens and closes the failed level change alert.
+     */
+    fun toggleFailedLevelChangeOpen(){_failedLevelChangeOpen.update{!failedLevelChangeOpen.value}}
+
     fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
 
     //set race dropdown data
@@ -357,8 +391,8 @@ class CharacterFragmentViewModel(
             nameRef = R.string.levelText,
             optionsRef = R.array.levelCountArray,
             initialIndex = charInstance.lvl.intValue,
-            onChange = {
-                charInstance.setLvl(levNum = it)
+            onChange = {newLevel ->
+                charInstance.setLvl(levNum = newLevel)
                 setBonusColor()
             }
         ),

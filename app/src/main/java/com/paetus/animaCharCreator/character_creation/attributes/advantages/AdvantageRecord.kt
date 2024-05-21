@@ -170,7 +170,7 @@ class AdvantageRecord(
             commonAdvantages.subjectAptitude -> {
                 //get the indicated characteristic, be it default or custom
                 val secondary =
-                    if(taken!! < 38) charInstance.secondaryList.fullList[taken]
+                    if(taken!! < 38) charInstance.secondaryList.fullList()[taken]
                     else charInstance.secondaryList.getAllCustoms()[taken - 38]
 
                 //check that stat does not fall to or below zero

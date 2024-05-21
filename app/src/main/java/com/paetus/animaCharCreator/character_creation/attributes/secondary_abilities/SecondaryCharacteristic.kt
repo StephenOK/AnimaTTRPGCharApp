@@ -21,20 +21,20 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     val pointsApplied = mutableIntStateOf(0)
 
     //initialize development cost
-    val devPerPoint = mutableIntStateOf(value = 0)
+    val devPerPoint = mutableIntStateOf(value = 2)
 
     //initialize reduction in cost due to advantages
     val developmentDeduction = mutableIntStateOf(value = 0)
 
     //initialize points per level from class
-    private val classPointsPerLevel = mutableIntStateOf(value = 0)
+    val classPointsPerLevel = mutableIntStateOf(value = 0)
     val classPointTotal = mutableIntStateOf(value = 0)
 
     //initialize bonus points in this characteristic
     val special = mutableIntStateOf(value = 0)
 
     //initialize bonus points per level in this characteristic
-    private val specialPerLevel = mutableIntStateOf(value = 0)
+    val specialPerLevel = mutableIntStateOf(value = 0)
 
     //initialize natural bonus application
     val bonusApplied = mutableStateOf(value = false)
@@ -43,7 +43,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     val pointsIn = mutableIntStateOf(value = 0)
 
     //initialize final total
-    val total = mutableIntStateOf(value = 0)
+    val total = mutableIntStateOf(value = -30)
 
     /**
      * Setter for characteristic's modifier.
@@ -60,7 +60,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      *
      * @param pointInput amount to set the points applied to
      */
-    fun setPointsApplied(pointInput: Int) {
+    open fun setPointsApplied(pointInput: Int) {
         pointsApplied.intValue = pointInput
 
         //remove natural bonus if no points applied to this stat
@@ -154,20 +154,27 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     }
 
     /**
+     * Gets the initial total value for the secondary characteristic.
+     */
+    open fun getTotal(){
+        total.intValue = modVal.intValue + pointsApplied.intValue + special.intValue +
+                ((classPointsPerLevel.intValue + specialPerLevel.intValue) * parent.charInstance.lvl.intValue)
+    }
+
+    /**
      * Recalculates the total value after any other setter is called.
      */
     fun refreshTotal() {
         //add all invested and level points for this section
-        total.intValue = modVal.intValue + pointsApplied.intValue + special.intValue +
-                ((classPointsPerLevel.intValue + specialPerLevel.intValue) * parent.charInstance.lvl.intValue)
+        getTotal()
+
+        //add natural bonus points
+        if (bonusApplied.value) total.intValue += 5
 
         //add points for jack of all trades advantage
         if(parent.allTradesTaken.value) total.intValue += 10
         //remove points for no points and missing that advantage
         else if (pointsApplied.intValue == 0) total.intValue -= 30
-
-        //add natural bonus points
-        if (bonusApplied.value) total.intValue += 5
     }
 
     /**

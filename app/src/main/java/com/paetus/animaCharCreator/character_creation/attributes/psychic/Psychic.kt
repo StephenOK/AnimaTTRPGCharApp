@@ -16,14 +16,14 @@ import java.io.ByteArrayOutputStream
  */
 class Psychic(private val charInstance: BaseCharacter){
     //initialize value for Psychic Potential
-    val psyPotentialBase = mutableIntStateOf(value = 0)
+    val psyPotentialBase = mutableIntStateOf(value = 10)
 
     //initialize potential from Psychic Points
     val pointsInPotential = mutableIntStateOf(value = 0)
     private val potentialFromPoints = mutableIntStateOf(value = 0)
 
     //initialize total psychic potential
-    val psyPotentialTotal = mutableIntStateOf(value = 0)
+    val psyPotentialTotal = mutableIntStateOf(value = 10)
 
     //initialize values for Psychic Points
     val boughtPsyPoints = mutableIntStateOf(value = 0)

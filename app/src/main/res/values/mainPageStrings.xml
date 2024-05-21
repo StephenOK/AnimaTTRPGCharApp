@@ -4,6 +4,8 @@
     <string name = "loadCharacterTitle">LOAD CHARACTER</string>
     <string name = "deleteCharacterTitle">DELETE CHARACTER</string>
 
+    <string name = "saveByLevelPrompt">Save By Level</string>
+
     <string name = "editSecondariesTitle">Edit Custom Secondary Abilities</string>
     <string name = "deleteSecondaryPrompt">Are you sure you want to delete %s?</string>
 
@@ -12,6 +14,7 @@
     <string name = "newCharacterHeader">Save Character As:</string>
     <string name = "loadCharacterHeader">Load Character:</string>
     <string name = "deleteCharacterHeader">Choose Characters to Delete:</string>
+
     <string name = "sharingHeader">Share your crash and performance data?</string>
     <string name = "defaultShareNotice">Sharing is turned off by default. Any changes made are applied on restart.</string>
 

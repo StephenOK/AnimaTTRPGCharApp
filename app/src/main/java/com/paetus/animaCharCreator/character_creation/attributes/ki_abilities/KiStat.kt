@@ -11,22 +11,22 @@ class KiStat(
     val parent: Ki
 ){
     //initialize base ki points in this stat
-    val baseKiPoints = mutableIntStateOf(value = 0)
+    val baseKiPoints = mutableIntStateOf(value = 5)
 
     //initialise ki points bought for this stat
     val boughtKiPoints = mutableIntStateOf(value = 0)
 
     //initialize total ki points in this stat
-    val totalKiPoints = mutableIntStateOf(value = 0)
+    val totalKiPoints = mutableIntStateOf(value = 5)
 
     //initialize base accumulation in this stat
-    val baseAccumulation = mutableIntStateOf(value = 0)
+    val baseAccumulation = mutableIntStateOf(value = 1)
 
     //initialize accumulation bought for this stat
     val boughtAccumulation = mutableIntStateOf(value = 0)
 
     //initialize total accumulation in this stat
-    val totalAccumulation = mutableIntStateOf(value = 0)
+    val totalAccumulation = mutableIntStateOf(value = 1)
 
     /**
      * Set the bought ki points to the indicated value.

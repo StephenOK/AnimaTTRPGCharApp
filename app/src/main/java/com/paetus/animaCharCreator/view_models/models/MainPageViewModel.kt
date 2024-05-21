@@ -3,19 +3,23 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import com.google.firebase.crashlytics.ktx.crashlytics
@@ -53,6 +57,9 @@ class MainPageViewModel: ViewModel() {
     //initialize failed load alert
     private val _failedLoadOpen = MutableStateFlow(value = false)
     val failedLoadOpen = _failedLoadOpen.asStateFlow()
+
+    //initialize save by level checkbox value
+    private val isByLevel = mutableStateOf(value = false)
 
     /**
      * Opens and closes the data sharing alert.
@@ -109,16 +116,37 @@ class MainPageViewModel: ViewModel() {
             //add file's name and notify of new character
             toNextPage.putExtra("filename", filename)
             toNextPage.putExtra("isNew", true)
+            toNextPage.putExtra("isByLevel", isByLevel.value)
 
             //move to new intention
             startActivity(context, toNextPage, null)
         },
         display = {characterName, setCharacterName ->
-            //display character name input
-            TextInput(
-                display = characterName.collectAsState().value,
-                onValueChange = {setCharacterName(it)}
-            )
+            Column {
+                //display character name input
+                TextInput(
+                    display = characterName.collectAsState().value,
+                    onValueChange = {setCharacterName(it)}
+                )
+
+                //display save by level option
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    //display setter for the by level save option
+                    Checkbox(
+                        checked = isByLevel.value,
+                        onCheckedChange = {isByLevel.value = !isByLevel.value}
+                    )
+
+                    Text(
+                        text = stringResource(R.string.saveByLevelPrompt),
+                    )
+                }
+            }
         }
     )
 
@@ -135,13 +163,14 @@ class MainPageViewModel: ViewModel() {
             //add file's name and notify of existing character
             toNextPage.putExtra("filename", name)
             toNextPage.putExtra("isNew", false)
+            toNextPage.putExtra("isByLevel", File("${context.filesDir}/AnimaChars", name).isDirectory)
 
             try{
                 //test for successful character building
                 BaseCharacter(
                     filename = name,
-                    secondaryFile = File("${context.filesDir}/AnimaChars", name),
-                    techFile = File(context.filesDir, "customSecondaries")
+                    secondaryFile = File("${context.filesDir}", "CustomSecondaryDIR"),
+                    techFile = File(context.filesDir, "CustomTechDIR")
                 )
 
                 //move to next intention
@@ -163,35 +192,32 @@ class MainPageViewModel: ViewModel() {
                 val dir = File("${context.filesDir}/AnimaChars")
 
                 //search through the character file directory
-                dir.walk().forEach{charFile ->
-                    //check if file is a character file
-                    if(charFile != dir && charFile.isFile) {
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = characterName.collectAsState().value == charFile.name,
-                                        onClick = {setCharacterName(charFile.name)}
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                //display selected item
-                                RadioButton(
-                                    selected = (charFile.name == characterName.collectAsState().value),
-                                    onClick = {setCharacterName(charFile.name)},
-                                    colors = RadioButtonDefaults.colors(
-                                        unselectedColor = MaterialTheme.colorScheme.onSurface
-                                    )
+                dir.listFiles()?.forEach{ charFile ->
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = characterName.collectAsState().value == charFile.name,
+                                    onClick = {setCharacterName(charFile.name)}
+                                ),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            //display selected item
+                            RadioButton(
+                                selected = (charFile.name == characterName.collectAsState().value),
+                                onClick = {setCharacterName(charFile.name)},
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
+                            )
 
-                                //display file name with relevant information
-                                Text(
-                                    text = charFile.name,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
+                            //display file name with relevant information
+                            Text(
+                                text = charFile.name,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         }
                     }
                 }
@@ -213,34 +239,32 @@ class MainPageViewModel: ViewModel() {
             val homeDir = File("${context.filesDir}/AnimaChars")
 
             LazyColumn{
-                homeDir.walk().forEach{ file ->
+                homeDir.listFiles()?.forEach{ file ->
                     //if the file is a character file
-                    if(file != homeDir){
-                        item{
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = characterName.collectAsState().value == file.name,
-                                        onClick = {setCharacterName(file.name)}
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                //display selection button
-                                RadioButton(
+                    item{
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
                                     selected = characterName.collectAsState().value == file.name,
-                                    onClick = {setCharacterName(file.name)},
-                                    colors = RadioButtonDefaults.colors(
-                                        unselectedColor = MaterialTheme.colorScheme.onSurface
-                                    )
+                                    onClick = {setCharacterName(file.name)}
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            //display selection button
+                            RadioButton(
+                                selected = characterName.collectAsState().value == file.name,
+                                onClick = {setCharacterName(file.name)},
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
+                            )
 
-                                //display the relevant file name
-                                Text(
-                                    text = file.name,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
+                            //display the relevant file name
+                            Text(
+                                text = file.name,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         }
                     }
                 }

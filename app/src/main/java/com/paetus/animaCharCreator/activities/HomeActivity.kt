@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -52,6 +52,7 @@ import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.ScreenPage
 import com.paetus.animaCharCreator.activities.fragments.home_fragments.*
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.theme.detailLightColors
 import com.paetus.animaCharCreator.theme.drawerLightColors
@@ -89,24 +90,36 @@ class HomeActivity : AppCompatActivity() {
         //get new character flag and filename from intent
         val isNew = intent.getBooleanExtra("isNew", false)
         val filename = intent.getStringExtra("filename")!!
+        val isByLevel = intent.getBooleanExtra("isByLevel", false)
 
         //get custom item directories
         val customSecondaryFile = File(this.filesDir, "CustomSecondaryDIR")
         val customTechFile = File(this.filesDir, "CustomTechDIR")
 
         //create character object
-        val charInstance = if(isNew)
-            BaseCharacter(
-                filename = filename,
-                secondaryFile = customSecondaryFile,
-                techFile = customTechFile
-            )
-        else
-            BaseCharacter(
-                charFile = File("${this.filesDir}/AnimaChars", filename),
-                secondaryFile = customSecondaryFile,
-                techFile = customTechFile
-            )
+        val charInstance =
+            //character is not by level and is new
+            if(!isByLevel && isNew)
+                BaseCharacter(
+                    filename = filename,
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            //character is not by level and is loaded
+            else if(!isByLevel)
+                BaseCharacter(
+                    charFile = File("${this.filesDir}/AnimaChars", filename),
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            //character is save by level
+            else {
+                SblChar(
+                    sourceDIR = File("${this.filesDir}/AnimaChars", filename),
+                    secondaryFile = customSecondaryFile,
+                    techFile = customTechFile
+                )
+            }
 
         //save file on new character creation
         if(isNew)
@@ -393,7 +406,7 @@ class HomeActivity : AppCompatActivity() {
                         ExitAlert(
                             charInstance = charInstance,
                             filename = filename
-                        ) { homePageVM.toggleExitAlert() }
+                        ) {homePageVM.toggleExitAlert()}
                     }
             }
         }
@@ -533,7 +546,7 @@ class HomeActivity : AppCompatActivity() {
                 //divide page items from actions
                 item{
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider()
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
@@ -757,24 +770,104 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * Attempts to save the character's data to its designated file.
+     * Runs the appropriate save function for the given character item type.
      *
-     * @param charInstance character object to be saved
+     * @param charInstance character object to save
      * @param filename name of the file to save to
+     * @param showToast true if the toast notification in shown
      */
     private fun attemptSave(
         charInstance: BaseCharacter,
         filename: String,
         showToast: Boolean
     ){
+        if(charInstance is SblChar) sblSave(charInstance, filename, showToast)
+        else defaultSave(charInstance, filename, showToast)
+    }
+
+    /**
+     * Attempts to save a normal character's data to its designated file.
+     *
+     * @param charInstance character object to be saved
+     * @param filename name of the file to save to
+     * @param showToast true if the toast notification is shown
+     */
+    private fun defaultSave(
+        charInstance: BaseCharacter,
+        filename: String,
+        showToast: Boolean
+    ){
         try{
+            //get file
+            val file = File("${this.filesDir}/AnimaChars", filename)
+
             //create file writer
-            val saveStream = FileOutputStream(File("${this.filesDir}/AnimaChars", filename))
+            val saveStream = FileOutputStream(file)
 
             //get and write character's bytes
             val charData = charInstance.bytes
             saveStream.write(charData)
             saveStream.close()
+
+            //notify of action completion
+            if(showToast)
+                Toast.makeText(
+                    this@HomeActivity,
+                    baseContext.resources.getString(R.string.saveMessage),
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
+        //notify that file not found
+        catch(e: FileNotFoundException){
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileNotFound),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        //notify for error in file writing
+        catch(e: IOException) {
+            Toast.makeText(
+                this@HomeActivity,
+                baseContext.resources.getString(R.string.fileError),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /**
+     * Attempts to save a by-level character's data to its designated file.
+     *
+     * @param charInstance character object to be saved
+     * @param filename name of the file to save to
+     * @param showToast true if the toast notification is shown
+     */
+    private fun sblSave(
+        charInstance: SblChar,
+        filename: String,
+        showToast: Boolean
+    ){
+        try {
+            //get file
+            val file = File("${this.filesDir}/AnimaChars", filename)
+
+            //turn the file into a directory if it is save by level
+            if (!file.isDirectory)
+                file.mkdir()
+
+            //write each character's individual levels to their own files
+            charInstance.charRefs.forEach {subChar ->
+                //get the individual file's location
+                val writeFile = File(file, "${charInstance.charRefs.indexOf(subChar)}")
+
+                //create file writer
+                val saveStream = FileOutputStream(writeFile)
+
+                //get and write character's bytes
+                val charData = charInstance.bytes
+                saveStream.write(charData)
+                saveStream.close()
+            }
 
             //notify of action completion
             if(showToast)

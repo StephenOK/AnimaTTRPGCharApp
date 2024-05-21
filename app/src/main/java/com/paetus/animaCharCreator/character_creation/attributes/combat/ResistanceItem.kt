@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
  */
 class ResistanceItem{
     //initialize resistance's base
-    val base = mutableIntStateOf(0)
+    val base = mutableIntStateOf(20)
 
     //initialize resistance's modifier value
     val mod = mutableIntStateOf(0)
@@ -20,7 +20,7 @@ class ResistanceItem{
     val multiplier = mutableDoubleStateOf(1.0)
 
     //initialize resistance total
-    val total = mutableIntStateOf(0)
+    val total = mutableIntStateOf(20)
 
     /**
      * Sets the base resistance to the user's stat.

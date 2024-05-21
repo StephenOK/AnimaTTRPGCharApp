@@ -26,11 +26,11 @@ class CommonAdvantages(
         pickedCost = 0,
         onTake = {input, _ ->
             //increase characteristic by one point
-            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = 1)
+            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 1)
         },
         onRemove = {input, _ ->
             //remove characteristic bonus point
-            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = -1)
+            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -1)
         }
     )
 
@@ -104,7 +104,7 @@ class CommonAdvantages(
         pickedCost = 0,
         onTake = {input, _ ->
             //set the determined primary stat to 9
-            charInstance.primaryList.allPrimaries[input!!].setInput(baseIn = 9)
+            charInstance.primaryList.allPrimaries()[input!!].setInput(baseIn = 9)
         },
         onRemove = null
     )
@@ -227,7 +227,7 @@ class CommonAdvantages(
         onTake = {input, cost ->
             //reduce the cost of the indicated secondary characteristic
             if(input!! < 38)
-                charInstance.secondaryList.fullList[input].setDevelopmentDeduction(dpDeduction = cost)
+                charInstance.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost)
             else
                 charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost)
 
@@ -236,7 +236,7 @@ class CommonAdvantages(
         onRemove = {input, cost ->
             //restore the previous cost for this characteristic
             if(input!! < 38)
-                charInstance.secondaryList.fullList[input].setDevelopmentDeduction(dpDeduction = cost * -1)
+                charInstance.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost * -1)
             else
                 charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost * -1)
 
@@ -730,7 +730,7 @@ class CommonAdvantages(
         onTake = {input, cost ->
             //apply the desired bonus to the indicated characteristic
             val characteristic =
-                if(input!! < 38) charInstance.secondaryList.fullList[input]
+                if(input!! < 38) charInstance.secondaryList.fullList()[input]
                 else charInstance.secondaryList.getAllCustoms()[input - 38]
 
             when(cost){
@@ -742,7 +742,7 @@ class CommonAdvantages(
         onRemove = {input, cost ->
             //remove the bonus from the characteristic
             val characteristic =
-                if(input!! < 38) charInstance.secondaryList.fullList[input]
+                if(input!! < 38) charInstance.secondaryList.fullList()[input]
                 else charInstance.secondaryList.getAllCustoms()[input - 38]
 
             when (cost) {
@@ -1131,11 +1131,11 @@ class CommonAdvantages(
         pickedCost = 0,
         onTake = {input, _ ->
             //apply penalty to stat
-            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = -2)
+            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -2)
         },
         onRemove = {input, _ ->
             //remove penalty from stat
-            charInstance.primaryList.allPrimaries[input!!].setBonus(bonusInput = 2)
+            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 2)
         }
     )
 

@@ -133,7 +133,7 @@ fun MagicFragment(
                     NumberInput(
                         inputText = magFragVM.boughtZeonString.collectAsState().value,
                         inputFunction = {
-                            if(it.contains('\n'))
+                            if(magFragVM.isGifted() || it.contains('\n'))
                                 magFragVM.setBoughtZeonString(zeonBought = it.toInt())
                         },
                         emptyFunction = {magFragVM.setBoughtZeonString(display = "")},
@@ -184,7 +184,8 @@ fun MagicFragment(
                 //display magic accumulation
                 ZeonPurchaseItem(
                     tableItem = magFragVM.zeonAccumulation,
-                    homePageVM = homePageVM
+                    homePageVM = homePageVM,
+                    magFragVM = magFragVM
                 )
 
                 //display zeon recovery
@@ -224,7 +225,8 @@ fun MagicFragment(
             GeneralCard {
                 ZeonPurchaseItem(
                     tableItem = magFragVM.zeonProjection,
-                    homePageVM = homePageVM
+                    homePageVM = homePageVM,
+                    magFragVM = magFragVM
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -426,8 +428,11 @@ fun MagicFragment(
 @Composable
 private fun ZeonPurchaseItem(
     tableItem: MagicFragmentViewModel.ZeonPurchaseItemData,
-    homePageVM: HomePageViewModel
+    homePageVM: HomePageViewModel,
+    magFragVM: MagicFragmentViewModel
 ){
+    val context = LocalContext.current
+
     Column{
         Row{Spacer(modifier = Modifier.height(20.dp))}
 
@@ -491,14 +496,23 @@ private fun ZeonPurchaseItem(
             NumberInput(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {
-                    if(it.contains(char = '\n'))
+                    if(magFragVM.isGifted() || !it.contains(char = '\n'))
                         tableItem.setBoughtString(buyValue = it.toInt())
                 },
                 emptyFunction = {tableItem.setBoughtString(display = "")},
                 modifier = Modifier
                     .onFocusChanged {
+                        //display Gift not taken message
+                        if (it.isFocused && !magFragVM.isGifted())
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.needGiftMessage),
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
                         //update DP display
-                        if (it.isFocused)
+                        else if (it.isFocused)
                             tableItem.setDPDisplay(dpDisplay = dpString)
                         else
                             tableItem.setDPDisplay(dpDisplay = "")

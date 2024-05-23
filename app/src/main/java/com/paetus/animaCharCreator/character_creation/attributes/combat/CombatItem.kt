@@ -22,10 +22,10 @@ open class CombatItem(
     val modPoints = mutableIntStateOf(value = 0)
 
     //initialize points per level for this stat
-    private val pointPerLevel = mutableIntStateOf(value = 0)
+    val pointPerLevel = mutableIntStateOf(value = 0)
 
     //initialize additional points for this stat
-    private val classBonus = mutableIntStateOf(value = 0)
+    val classBonus = mutableIntStateOf(value = 0)
 
     //initialize class total for this stat
     val classTotal = mutableIntStateOf(value = 0)
@@ -59,7 +59,7 @@ open class CombatItem(
      *
      * @param lvlBonus points per level to set
      */
-    fun setPointPerLevel(lvlBonus: Int){
+    open fun setPointPerLevel(lvlBonus: Int){
         pointPerLevel.intValue = lvlBonus
         updateClassTotal()
     }
@@ -77,7 +77,7 @@ open class CombatItem(
     /**
      * Update the class total for the individual stat.
      */
-    fun updateClassTotal(){
+    open fun updateClassTotal(){
         //determine actual total
         classTotal.intValue =
             if(charInstance.lvl.intValue != 0) (pointPerLevel.intValue * charInstance.lvl.intValue) + classBonus.intValue
@@ -94,7 +94,7 @@ open class CombatItem(
     /**
      * Updates the total value for each contributing item.
      */
-    private fun updateTotal(){
+    fun updateTotal(){
         //determine total
         total.intValue = inputVal.intValue + modPoints.intValue + classTotal.intValue
 

@@ -192,7 +192,7 @@ open class BaseCharacter() {
         combat.updateClassLife()
 
         //recalculate the other combat abilities
-        combat.allAbilities.forEach{combatItem ->
+        combat.allAbilities().forEach{combatItem ->
             combatItem.updateClassTotal()
         }
 

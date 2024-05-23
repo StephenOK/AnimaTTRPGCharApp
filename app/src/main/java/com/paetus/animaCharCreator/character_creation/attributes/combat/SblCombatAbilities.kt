@@ -8,6 +8,11 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 class SblCombatAbilities(
     private val charInstance: SblChar
 ): CombatAbilities(charInstance) {
+    override val attack = SblCombatItem(charInstance = charInstance, combatIndex = 0)
+    override val block = SblCombatItem(charInstance = charInstance, combatIndex = 1)
+    override val dodge = SblCombatItem(charInstance = charInstance, combatIndex = 2)
+    override val wearArmor = SblCombatItem(charInstance = charInstance, combatIndex = 3)
+
     /**
      * Updates the number of life points gained from their class and level
      */

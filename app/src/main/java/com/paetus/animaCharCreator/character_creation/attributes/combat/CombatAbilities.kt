@@ -24,13 +24,15 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
     val lifeMax = mutableIntStateOf(72)
 
     //initialize the character's combat data
-    val attack = CombatItem(charInstance = charInstance)
-    val block = CombatItem(charInstance = charInstance)
-    val dodge = CombatItem(charInstance = charInstance)
-    val wearArmor = CombatItem(charInstance = charInstance)
+    open val attack = CombatItem(charInstance = charInstance)
+    open val block = CombatItem(charInstance = charInstance)
+    open val dodge = CombatItem(charInstance = charInstance)
+    open val wearArmor = CombatItem(charInstance = charInstance)
 
-    //gather all combat abilities
-    val allAbilities = listOf(attack, block, dodge, wearArmor)
+    /**
+     * Gets all combat abilities held in this section.
+     */
+    fun allAbilities(): List<CombatItem>{return listOf(attack, block, dodge, wearArmor)}
 
     //initialize the character's resistances
     val physicalRes = ResistanceItem()
@@ -239,7 +241,7 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
         takeLifeMult(multTake = fileReader.readLine().toInt())
 
         //retrieve data on attack, defenses, and wear armor
-        allAbilities.forEach{combatItem ->
+        allAbilities().forEach{combatItem ->
             combatItem.loadItem(fileReader = fileReader)
         }
     }
@@ -254,7 +256,7 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
         writeDataTo(writer = byteArray, input = lifeMultsTaken.intValue)
 
         //write data on attack, defenses, and wear armor
-        allAbilities.forEach{combatItem ->
+        allAbilities().forEach{combatItem ->
             combatItem.writeItem(byteArray = byteArray)
         }
     }

@@ -166,7 +166,7 @@ private fun WeaponListButton(
                     homePageVM = homePageVM
                 )
 
-                Divider()
+                HorizontalDivider()
             }
 
             //display all weapons from the given list

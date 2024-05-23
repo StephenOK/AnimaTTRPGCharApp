@@ -48,7 +48,9 @@ class DropdownData(
 
         //perform the required change and close the dropdown
         onChange(dropdownIndex)
-        openToggle()
+
+        //close dropdown if it's open
+        if(isOpen.value) openToggle()
     }
 
     /**

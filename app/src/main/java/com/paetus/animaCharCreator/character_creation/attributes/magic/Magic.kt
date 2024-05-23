@@ -131,6 +131,21 @@ class Magic(private val charInstance: BaseCharacter){
     val magicTies = mutableStateOf(value = false)
 
     /**
+     * Gets the class's zeon point DP cost.
+     */
+    fun getZeonPointCost(): Int{return charInstance.classes.getClass().zeonGrowth}
+
+    /**
+     * Gets the class's zeon accumulation DP cost.
+     */
+    fun getZeonAccCost(): Int{return charInstance.classes.getClass().maGrowth}
+
+    /**
+     * Gets the class's magic projection DP cost.
+     */
+    fun getMagProjCost(): Int{return charInstance.classes.getClass().maProjGrowth}
+
+    /**
      * Get the character's base Zeon based on the character's Power.
      */
     fun setBaseZeon() {
@@ -285,7 +300,7 @@ class Magic(private val charInstance: BaseCharacter){
      * @return true if input is valid
      */
     fun getValidProjection(): Boolean{
-        return boughtMagProjection.intValue * charInstance.classes.ownClass.value.maProjGrowth <= charInstance.maxMagDP.intValue/2
+        return boughtMagProjection.intValue * charInstance.classes.getClass().maProjGrowth <= charInstance.maxMagDP.intValue/2
     }
 
     /**
@@ -442,9 +457,9 @@ class Magic(private val charInstance: BaseCharacter){
      * @return development points spent in this section
      */
     fun calculateSpent(): Int{
-        return (boughtZeon.intValue * charInstance.classes.ownClass.value.zeonGrowth) +
-                ((zeonAccMult.intValue - 1) * charInstance.classes.ownClass.value.maGrowth) +
-                (boughtMagProjection.intValue * charInstance.classes.ownClass.value.maProjGrowth)
+        return (boughtZeon.intValue * charInstance.classes.getClass().zeonGrowth) +
+                ((zeonAccMult.intValue - 1) * charInstance.classes.getClass().maGrowth) +
+                (boughtMagProjection.intValue * charInstance.classes.getClass().maProjGrowth)
     }
 
     /**

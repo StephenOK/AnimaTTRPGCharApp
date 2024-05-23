@@ -20,7 +20,7 @@ class SblSecondaryCharacteristic(
 
         //get previous secondary total fromm levels
         var preSecondaryValue = 0
-        charInstance.levelLoop(charLevel = charInstance.lvl.intValue - 1){character ->
+        charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){ character ->
             preSecondaryValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
         }
 
@@ -60,7 +60,7 @@ class SblSecondaryCharacteristic(
         pointsApplied.intValue = 0
 
         //add points from levels up to this one
-        parent.sblChar.levelLoop(charLevel = newLevel){character ->
+        parent.sblChar.levelLoop(endLevel = newLevel){ character ->
             pointsApplied.intValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
         }
 

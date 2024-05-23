@@ -341,7 +341,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
 
         //create dividend for individual weapon module addition
         val classDividend =
-            if(charInstance.classes.ownClass.value != charInstance.classes.weaponMaster)
+            if(charInstance.classes.ownClass.intValue != 5)
                 1
             else
                 2
@@ -396,7 +396,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
             //determine cost of first art depending on
             total +=
                 //if character is a Tao
-                if(charInstance.classes.ownClass.value == charInstance.classes.tao)
+                if(charInstance.classes.ownClass.intValue == 7)
                     10
                 //if character is primarily unarmed
                 else if(primaryWeapon.value == unarmed)
@@ -407,7 +407,7 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
 
             //add 50 for every other martial art taken
             total +=
-                if(charInstance.classes.ownClass.value == charInstance.classes.tao) (takenMartialList.size - 1) * 20
+                if(charInstance.classes.ownClass.intValue == 7) (takenMartialList.size - 1) * 20
                 else (takenMartialList.size - 1) * 50
         }
 

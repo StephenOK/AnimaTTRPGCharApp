@@ -25,7 +25,7 @@ class SblPrimaryChar(
     override fun setLevelBonus(lvlBonus: Int) {
         //get value of level bonus from previous character levels
         var preBonusVal = 0
-        charInstance.levelLoop(charInstance.lvl.intValue - 1){character ->
+        charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){character ->
             preBonusVal += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
         }
 
@@ -33,7 +33,7 @@ class SblPrimaryChar(
         charInstance.getCharAtLevel().primaryList.allPrimaries()[charIndex].levelBonus.intValue = lvlBonus - preBonusVal
 
         //get new total
-        charInstance.levelLoop(charInstance.lvl.intValue){character ->
+        charInstance.levelLoop{character ->
             levelBonus.intValue += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
         }
 
@@ -45,7 +45,7 @@ class SblPrimaryChar(
         levelBonus.intValue = 0
 
         //add bonus from each level to the current one
-        charInstance.levelLoop(charLevel = newLevel){character ->
+        charInstance.levelLoop(endLevel = newLevel){ character ->
             levelBonus.intValue += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
         }
 

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.KiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -19,12 +18,10 @@ import kotlinx.coroutines.flow.update
  * View model that manages the character's ki data.
  * Works on variables in the corresponding ki fragment.
  *
- * @param ki character's ki ability data
- * @param charClass state of the character's current class
+ * @param ki character's ki ability data=
  */
 class KiFragmentViewModel(
     private val ki: Ki,
-    private val charClass: MutableState<CharClass>,
     private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
@@ -231,14 +228,14 @@ class KiFragmentViewModel(
      *
      * @return DP cost of ki points
      */
-    fun getKiPointDP(): Int{return charClass.value.kiGrowth}
+    fun getKiPointDP(): Int{return ki.getKiPointCost()}
 
     /**
      * Retrieves the DP cost of ki accumulation for this character.
      *
      * @return DP cost of ki accumulation
      */
-    fun getKiAccDP(): Int{return charClass.value.kiAccumMult}
+    fun getKiAccDP(): Int{return ki.getKiAccumulationCost()}
 
     /**
      * Retrieves a list of all possible ki abilities.

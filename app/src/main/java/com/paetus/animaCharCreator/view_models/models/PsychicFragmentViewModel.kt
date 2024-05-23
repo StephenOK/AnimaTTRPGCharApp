@@ -1,10 +1,8 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
@@ -17,13 +15,11 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding psychic fragment.
  *
  * @param psychic character's psychic abilities
- * @param charClass class record of the character
  * @param dexMod character's dexterity modifier
  * @param context source of the accessed resources
  */
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
-    private val charClass: MutableState<CharClass>,
     dexMod: Int,
     private val context: Context
 ): ViewModel() {
@@ -138,7 +134,7 @@ class PsychicFragmentViewModel(
         boughtVal = {psychic.boughtPsyPoints.intValue},
         totalVal = {psychic.totalPsychicPoints.intValue},
         getResource = {R.string.dpLabel},
-        getValue = {charClass.value.psyPointGrowth},
+        getValue = {psychic.psyPointCost()},
         getValid = {true},
         totalUpdate = {input, item ->
             psychic.buyPsyPoints(ppBuy = input)
@@ -154,7 +150,7 @@ class PsychicFragmentViewModel(
         boughtVal = {psychic.psyProjectionBought.intValue},
         totalVal = {psychic.psyProjectionTotal.intValue},
         getResource = {R.string.dpLabel},
-        getValue = {charClass.value.psyProjGrowth},
+        getValue = {psychic.psyProjCost()},
         getValid = {psychic.getValidProjection()},
         totalUpdate = {input, item ->
             psychic.buyPsyProjection(projBuy = input)

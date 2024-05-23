@@ -112,7 +112,7 @@ fun CombatFragment(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = combatFragVM.getClassLife(),
+                        text = combatFragVM.classLife.collectAsState().value.toString(),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -430,8 +430,7 @@ fun CombatPreview(){
     val charInstance = BaseCharacter()
     val combatFragVM = CombatFragViewModel(
         charInstance.combat,
-        charInstance.primaryList,
-        charInstance.classes.ownClass
+        charInstance.primaryList
     )
     val homePageFragVM = HomePageViewModel(charInstance)
 

@@ -99,10 +99,6 @@ class CharacterFragmentViewModel(
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
 
-    //initialize class shown in detail alert
-    private val _classDetailItem = MutableStateFlow(value = charInstance.classes.freelancer)
-    val classDetailItem = _classDetailItem.asStateFlow()
-
     //initialize failed level change alert
     private val _failedLevelChangeOpen = MutableStateFlow(value = false)
     val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
@@ -168,14 +164,14 @@ class CharacterFragmentViewModel(
      * @return true if character is a paladin or dark paladin
      */
     private fun getPaladin(): Boolean{
-        return charInstance.classes.ownClass.value == charInstance.classes.paladin ||
-                charInstance.classes.ownClass.value == charInstance.classes.darkPaladin
+        return charInstance.classes.ownClass.intValue == 3 ||
+                charInstance.classes.ownClass.intValue == 4
     }
 
     /**
      * Retrieves the freelancer class from the character.
      */
-    fun getFreelancer(): CharClass {return charInstance.classes.freelancer}
+    fun getFreelancer(): CharClass {return charInstance.classRecord.allClasses[0]}
 
     /**
      * Retrieves the character's selections for their freelancer bonuses.
@@ -312,9 +308,11 @@ class CharacterFragmentViewModel(
     fun toggleRacialAdvantageOpen(){_raceAdvantageOpen.update{!raceAdvantageOpen.value}}
 
     /**
-     * Sets the class to be shown in the detail alert to the currently held one.
+     * Retrieves the class displayed inn the class dropdown item.
      */
-    private fun setClassDetail(){_classDetailItem.update{charInstance.classes.ownClass.value}}
+    fun getDisplayedClass(): CharClass{
+        return charInstance.classRecord.allClasses[classDropdown.data.output.value]
+    }
 
     /**
      * Determines if the user may change the level of the character.
@@ -335,7 +333,7 @@ class CharacterFragmentViewModel(
     fun getExistingCharacter(levelString: String): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
         return if(levelString.toInt() != 0 && charInstance is SblChar)
-            charInstance.charRefs[levelString.toInt() - 1] != null
+            charInstance.charRefs[levelString.toInt()] != null
         //true if looking for level 0 or character is not SBL
         else true
     }
@@ -374,10 +372,9 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.classLabel,
             optionsRef = R.array.classArray,
-            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.classes.ownClass.value),
+            initialIndex = charInstance.classes.ownClass.intValue,
             onChange = {
-                charInstance.classes.setOwnClass(classInt = it)
-                setClassDetail()
+                charInstance.classes.setOwnClass(classIndex = it)
                 setMagPaladinOpen()
             }
         ),
@@ -394,6 +391,14 @@ class CharacterFragmentViewModel(
             onChange = {newLevel ->
                 charInstance.setLvl(levNum = newLevel)
                 setBonusColor()
+
+                //get the character's class at this level
+                classDropdown.data.setOutput(
+                    if(charInstance is SblChar)
+                        charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue
+                    else
+                        charInstance.classes.ownClass.intValue
+                )
             }
         ),
         weight = 1f,

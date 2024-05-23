@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-class CombatAbilities(private val charInstance: BaseCharacter){
+open class CombatAbilities(private val charInstance: BaseCharacter){
     //set default presence
     val presence = mutableIntStateOf(20)
 
@@ -56,6 +56,31 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     val totalRegen = mutableIntStateOf(1)
 
     /**
+     * Gets the class's cost for life point multiples.
+     */
+    fun getLifeCost(): Int{return charInstance.classes.getClass().lifePointMultiple}
+
+    /**
+     * Gets the class's cost for attack points.
+     */
+    fun getAtkCost(): Int{return charInstance.classes.getClass().atkGrowth}
+
+    /**
+     * Gets the class's cost for block points.
+     */
+    fun getBlockCost(): Int{return charInstance.classes.getClass().blockGrowth}
+
+    /**
+     * Gets the class's cost for dodge points.
+     */
+    fun getDodgeCost(): Int{return charInstance.classes.getClass().dodgeGrowth}
+
+    /**
+     * Gets the class's cost for wear armor points.
+     */
+    fun getWearCost(): Int{return charInstance.classes.getClass().armorGrowth}
+
+    /**
      * Update the character's presence.
      */
     fun updatePresence(){
@@ -96,11 +121,11 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     /**
      * Updates the number of life points gained from their class and level.
      */
-    fun updateClassLife(){
+    open fun updateClassLife(){
         lifeClassTotal.intValue =
             if(charInstance.lvl.intValue != 0)
-                charInstance.classes.ownClass.value.lifePointsPerLevel * charInstance.lvl.intValue
-            else charInstance.classes.ownClass.value.lifePointsPerLevel/2
+                charInstance.classes.getClass().lifePointsPerLevel * charInstance.lvl.intValue
+            else charInstance.classes.getClass().lifePointsPerLevel/2
 
         updateLifePoints()
     }
@@ -122,12 +147,12 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun validAttackDodgeBlock(): Boolean{
         //if only one stat developed, cannot exceed 25% of overall devPT
-        return ((block.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && attack.inputVal.intValue * charInstance.classes.ownClass.value.atkGrowth <= charInstance.devPT.intValue/4) ||
-                (attack.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && block.inputVal.intValue * charInstance.classes.ownClass.value.blockGrowth <= charInstance.devPT.intValue/4) ||
-                (attack.inputVal.intValue == 0 && block.inputVal.intValue == 0 && dodge.inputVal.intValue * charInstance.classes.ownClass.value.dodgeGrowth <= charInstance.devPT.intValue/4)) ||
+        return ((block.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth <= charInstance.devPT.intValue/4) ||
+                (attack.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && block.inputVal.intValue * charInstance.classes.getClass().blockGrowth <= charInstance.devPT.intValue/4) ||
+                (attack.inputVal.intValue == 0 && block.inputVal.intValue == 0 && dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth <= charInstance.devPT.intValue/4)) ||
 
                 //attack, dodge, and block cannot equate to over 50% of overall devPT
-                (((attack.inputVal.intValue * charInstance.classes.ownClass.value.atkGrowth) + (block.inputVal.intValue * charInstance.classes.ownClass.value.blockGrowth) + (dodge.inputVal.intValue * charInstance.classes.ownClass.value.dodgeGrowth) <= charInstance.devPT.intValue/2) &&
+                (((attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth) + (block.inputVal.intValue * charInstance.classes.getClass().blockGrowth) + (dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth) <= charInstance.devPT.intValue/2) &&
 
                         //attack can not be more than 50 of either one of block or dodge
                         (attack.total.intValue - block.total.intValue <= 50 || attack.total.intValue - dodge.total.intValue <= 50) &&
@@ -152,8 +177,8 @@ class CombatAbilities(private val charInstance: BaseCharacter){
     fun updateInitiative(){
         //only add half a level value if character is level 0
         val classInitiative =
-            if(charInstance.lvl.intValue != 0) charInstance.classes.ownClass.value.initiativePerLevel * charInstance.lvl.intValue
-            else charInstance.classes.ownClass.value.initiativePerLevel/2
+            if(charInstance.lvl.intValue != 0) charInstance.classes.getClass().initiativePerLevel * charInstance.lvl.intValue
+            else charInstance.classes.getClass().initiativePerLevel/2
 
         //add together class level value, dexterity, agility, and special input
         totalInitiative.intValue =
@@ -198,10 +223,10 @@ class CombatAbilities(private val charInstance: BaseCharacter){
      * @return development points spent
      */
     fun calculateSpent(): Int{
-        return attack.inputVal.intValue * charInstance.classes.ownClass.value.atkGrowth +
-                block.inputVal.intValue * charInstance.classes.ownClass.value.blockGrowth +
-                dodge.inputVal.intValue * charInstance.classes.ownClass.value.dodgeGrowth +
-                wearArmor.inputVal.intValue * charInstance.classes.ownClass.value.armorGrowth
+        return attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth +
+                block.inputVal.intValue * charInstance.classes.getClass().blockGrowth +
+                dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth +
+                wearArmor.inputVal.intValue * charInstance.classes.getClass().armorGrowth
     }
 
     /**

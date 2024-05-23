@@ -20,7 +20,7 @@ class SblCombatItem(
     override fun setInputVal(purchase: Int) {
         //get value of combat input from previous character levels
         var preInputVal = 0
-        charInstance.levelLoop(charInstance.lvl.intValue - 1){character ->
+        charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){character ->
             preInputVal += character.combat.allAbilities[combatIndex].inputVal.intValue
         }
 
@@ -28,7 +28,7 @@ class SblCombatItem(
         charInstance.getCharAtLevel().combat.allAbilities[combatIndex].inputVal.intValue = purchase - preInputVal
 
         //get new total
-        charInstance.levelLoop(charInstance.lvl.intValue){character ->
+        charInstance.levelLoop{character ->
             inputVal.intValue += character.combat.allAbilities[combatIndex].inputVal.intValue
         }
     }

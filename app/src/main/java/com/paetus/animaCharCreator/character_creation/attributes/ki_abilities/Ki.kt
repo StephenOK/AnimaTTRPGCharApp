@@ -80,6 +80,16 @@ class Ki(private val charInstance: BaseCharacter){
     val customTechniques = mutableMapOf<CustomTechnique, MutableState<Boolean>>()
 
     /**
+     * Gets the class's ki accumulation DP cost.
+     */
+    fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
+
+    /**
+     * Gets the class's ki point DP cost.
+     */
+    fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
+
+    /**
      * Sets martial knowledge to the appropriate amount for each taken item.
      */
     private fun updateMkSpent(){
@@ -113,9 +123,9 @@ class Ki(private val charInstance: BaseCharacter){
     fun updateMK(){
         //determine MK gained from class levels
         val classMK =
-            if(charInstance.lvl.intValue != 0) charInstance.classes.ownClass.value.mkPerLevel * charInstance.lvl.intValue
+            if(charInstance.lvl.intValue != 0) charInstance.classes.getClass().mkPerLevel * charInstance.lvl.intValue
             //give half from one level if level 0 character
-            else charInstance.classes.ownClass.value.mkPerLevel/2
+            else charInstance.classes.getClass().mkPerLevel/2
 
         martialKnowledgeMax.intValue = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.intValue
         updateMkSpent()
@@ -160,8 +170,8 @@ class Ki(private val charInstance: BaseCharacter){
         var total = 0
 
         //add bought ki points and accumulation values
-        total += totalPointBuy.intValue * charInstance.classes.ownClass.value.kiGrowth
-        total += totalAccBuy.intValue * charInstance.classes.ownClass.value.kiAccumMult
+        total += totalPointBuy.intValue * charInstance.classes.getClass().kiGrowth
+        total += totalAccBuy.intValue * charInstance.classes.getClass().kiAccumMult
 
         return total
     }

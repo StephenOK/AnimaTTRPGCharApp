@@ -21,15 +21,35 @@ class Summoning(private val charInstance: BaseCharacter){
     val allSummoning = listOf(summon, control, bind, banish)
 
     /**
+     * Gets the class's summoning DP cost.
+     */
+    fun summonCost(): Int{return charInstance.classes.getClass().summonGrowth}
+
+    /**
+     * Gets the class's control DP cost.
+     */
+    fun controlCost(): Int{return charInstance.classes.getClass().controlGrowth}
+
+    /**
+     * Gets the class's bind DP cost.
+     */
+    fun bindCost(): Int{return charInstance.classes.getClass().bindGrowth}
+
+    /**
+     * Gets the class's banish DP cost.
+     */
+    fun banishCost(): Int{return charInstance.classes.getClass().banishGrowth}
+
+    /**
      * Determines the development points spent in this section.
      *
      * @return total points spent in this section
      */
     fun calculateSpent(): Int{
-        return (summon.buyVal.intValue * charInstance.classes.ownClass.value.summonGrowth) +
-                (control.buyVal.intValue * charInstance.classes.ownClass.value.controlGrowth) +
-                (bind.buyVal.intValue * charInstance.classes.ownClass.value.bindGrowth) +
-                (banish.buyVal.intValue * charInstance.classes.ownClass.value.banishGrowth)
+        return (summon.buyVal.intValue * charInstance.classes.getClass().summonGrowth) +
+                (control.buyVal.intValue * charInstance.classes.getClass().controlGrowth) +
+                (bind.buyVal.intValue * charInstance.classes.getClass().bindGrowth) +
+                (banish.buyVal.intValue * charInstance.classes.getClass().banishGrowth)
     }
 
     /**

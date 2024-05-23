@@ -258,7 +258,7 @@ fun CustomTechniqueDialog(
                         LazyColumn {
                             //for each taken effect
                             customTechVM.editBuildList.forEach {effectAccBuild ->
-                                item {Divider()}
+                                item {HorizontalDivider()}
 
                                 //display the effect's name
                                 item {
@@ -1282,7 +1282,7 @@ private fun getElementString(
 fun CustomTechniquePreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.classes.ownClass, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki, LocalContext.current)
 
     val customTechVM = CustomTechniqueViewModel(charInstance.ki, LocalContext.current)
     customTechVM.setCustomPageNum(1)

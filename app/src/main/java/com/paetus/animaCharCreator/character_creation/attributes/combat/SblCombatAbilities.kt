@@ -35,4 +35,32 @@ class SblCombatAbilities(
         //update the life point total
         updateLifePoints()
     }
+
+    /**
+     * Function that updates the character's total initiative.
+     */
+    override fun updateInitiative() {
+        //get total from classes
+        val classInitiative =
+            //if character isn't level 0
+            if (charInstance.lvl.intValue != 0){
+                //initialize total
+                var output = 0
+
+                //get each level's individual class bonus
+                charInstance.levelLoop(startLevel = 1){
+                    output += it.classes.getClass().initiativePerLevel
+                }
+
+                //return total
+                output
+            }
+            //get half of this level's class bonus otherwise
+            else charInstance.charRefs[0]!!.classes.getClass().initiativePerLevel/2
+
+        //add together class level value, dexterity, agility, and special input
+        totalInitiative.intValue =
+            20 + classInitiative + charInstance.primaryList.dex.outputMod.intValue +
+                    charInstance.primaryList.agi.outputMod.intValue + specInitiative.intValue
+    }
 }

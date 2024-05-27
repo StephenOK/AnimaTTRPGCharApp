@@ -30,9 +30,6 @@ open class ClassInstances(
      * @param classIndex new class to set for this character
      */
     open fun setOwnClass(classIndex: Int){
-        //get the class item to apply
-        val newClass = charInstance.classRecord.allClasses[classIndex]
-
         //undo current class buffs
         getClass().onRemove()
 
@@ -47,13 +44,13 @@ open class ClassInstances(
         charInstance.combat.updateInitiative()
 
         //update character's maximum point values
-        charInstance.percCombatDP.doubleValue = newClass.combatMax
-        charInstance.percMagDP.doubleValue = newClass.magMax
-        charInstance.percPsyDP.doubleValue = newClass.psyMax
+        charInstance.percCombatDP.doubleValue = getClass().combatMax
+        charInstance.percMagDP.doubleValue = getClass().magMax
+        charInstance.percPsyDP.doubleValue = getClass().psyMax
         charInstance.dpAllotmentCalc()
 
         //update secondary bonuses
-        charInstance.secondaryList.classUpdate(newClass = newClass)
+        charInstance.secondaryList.classUpdate(newClass = getClass())
 
         //update character's martial knowledge
         charInstance.ki.updateMK()

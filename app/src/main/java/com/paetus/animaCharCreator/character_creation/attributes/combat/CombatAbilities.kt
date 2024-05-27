@@ -176,7 +176,7 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
     /**
      * Function that updates the character's total initiative.
      */
-    fun updateInitiative(){
+    open fun updateInitiative(){
         //only add half a level value if character is level 0
         val classInitiative =
             if(charInstance.lvl.intValue != 0) charInstance.classes.getClass().initiativePerLevel * charInstance.lvl.intValue

@@ -28,6 +28,7 @@ class SblClassInstances(
             charInstance.charRefs[levelCounter++]!!.classes.setOwnClass(classIndex)
 
         charInstance.combat.updateClassLife()
+        charInstance.combat.updateInitiative()
 
         charInstance.updateTotalSpent()
     }

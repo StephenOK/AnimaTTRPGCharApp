@@ -104,7 +104,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     /**
      * Updates the number of points gained from levels for this characteristic.
      */
-    fun classTotalRefresh(){
+    open fun classTotalRefresh(){
         classPointTotal.intValue =
             if(parent.charInstance.lvl.intValue != 0) classPointsPerLevel.intValue * parent.charInstance.lvl.intValue
             else classPointsPerLevel.intValue/2

@@ -28,15 +28,15 @@ import java.nio.charset.StandardCharsets
  * Component that manages a character's ki points and accumulation.
  * Also manages the character's ki abilities and dominion techniques.
  *
- * @param charInstance object that holds all of the character's data.
+ * @param charInstance object that holds all of the character's data
  */
-class Ki(private val charInstance: BaseCharacter){
+open class Ki(private val charInstance: BaseCharacter){
     //data table of technique effects
     val techniqueDatabase = TechniqueTableDataRecord()
 
     //initialize martial knowledge values
     val martialKnowledgeMax = mutableIntStateOf(value = 10)
-    private val martialKnowledgeSpec = mutableIntStateOf(value = 0)
+    val martialKnowledgeSpec = mutableIntStateOf(value = 0)
     val martialKnowledgeRemaining = mutableIntStateOf(value = 10)
 
     //initialize stat ki points and accumulation
@@ -92,7 +92,7 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Sets martial knowledge to the appropriate amount for each taken item.
      */
-    private fun updateMkSpent(){
+    fun updateMkSpent(){
         //reset martial knowledge remaining to its maximum value
         martialKnowledgeRemaining.intValue = martialKnowledgeMax.intValue
 
@@ -120,7 +120,7 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Recalculates the character's maximum martial knowledge
      */
-    fun updateMK(){
+    open fun updateMK(){
         //determine MK gained from class levels
         val classMK =
             if(charInstance.lvl.intValue != 0) charInstance.classes.getClass().mkPerLevel * charInstance.lvl.intValue

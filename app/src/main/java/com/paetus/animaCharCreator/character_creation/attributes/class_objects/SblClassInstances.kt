@@ -19,17 +19,30 @@ class SblClassInstances(
             if(charInstance.lvl.intValue == 0) 0
             else charInstance.lvl.intValue + 1
 
-        //get current class
-        val initClass = charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue
+        //get changed class
+        val initClass = charInstance.charRefs[levelCounter]!!.classes.ownClass.intValue
 
         //change all recorded level classes up to any change
         while(charInstance.charRefs[levelCounter] != null &&
               charInstance.charRefs[levelCounter]!!.classes.ownClass.intValue == initClass)
             charInstance.charRefs[levelCounter++]!!.classes.setOwnClass(classIndex)
 
+        //update combat items
         charInstance.combat.updateClassLife()
         charInstance.combat.updateInitiative()
+        charInstance.combat.allAbilities().forEach{it.updateClassTotal()}
 
+        //update total martial knowledge
+        charInstance.ki.updateMK()
+
+        //update secondary items' class totals
+        charInstance.secondaryList.getAllSecondaries().forEach{it.classTotalRefresh()}
+
+        //update magic item totals
+        charInstance.magic.updateZeonFromClass()
+        charInstance.summoning.allSummoning().forEach{it.updateLevelTotal()}
+
+        charInstance.dpAllotmentCalc()
         charInstance.updateTotalSpent()
     }
 

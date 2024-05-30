@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-class Magic(private val charInstance: BaseCharacter){
+open class Magic(private val charInstance: BaseCharacter){
     //initialize base Zeon points
     val baseZeon = mutableIntStateOf(value = 70)
 
@@ -29,7 +29,7 @@ class Magic(private val charInstance: BaseCharacter){
     val boughtZeon = mutableIntStateOf(value = 0)
 
     //initialize Zeon points per level
-    private val zeonPerLevel = mutableIntStateOf(value = 10)
+    val zeonPerLevel = mutableIntStateOf(value = 10)
 
     //initialize Zeon points from class levels
     val zeonFromClass = mutableIntStateOf(value = 5)
@@ -185,7 +185,7 @@ class Magic(private val charInstance: BaseCharacter){
     /**
      * Update the total number of Zeon points gained from levels.
      */
-    fun updateZeonFromClass(){
+    open fun updateZeonFromClass(){
         zeonFromClass.intValue =
             if(charInstance.lvl.intValue != 0) zeonPerLevel.intValue * charInstance.lvl.intValue
             else zeonPerLevel.intValue/2
@@ -196,7 +196,7 @@ class Magic(private val charInstance: BaseCharacter){
     /**
      * Recalculate the character's maximum Zeon.
      */
-    private fun calcMaxZeon(){
+    fun calcMaxZeon(){
         zeonMax.intValue = baseZeon.intValue + (boughtZeon.intValue * 5) + zeonFromClass.intValue
     }
 

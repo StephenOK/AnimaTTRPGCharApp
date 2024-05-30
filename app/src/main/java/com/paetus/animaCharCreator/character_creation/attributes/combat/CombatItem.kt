@@ -59,7 +59,7 @@ open class CombatItem(
      *
      * @param lvlBonus points per level to set
      */
-    open fun setPointPerLevel(lvlBonus: Int){
+    fun setPointPerLevel(lvlBonus: Int){
         pointPerLevel.intValue = lvlBonus
         updateClassTotal()
     }

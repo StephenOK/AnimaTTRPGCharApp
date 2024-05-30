@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities
 
+import com.paetus.animaCharCreator.character_creation.SblChar
+
 /**
  * Subclass of SecondaryCharacteristic for use in a SBL character.
  *
@@ -39,6 +41,29 @@ class SblSecondaryCharacteristic(
 
         //get new totals
         updateDevSpent()
+        refreshTotal()
+    }
+
+    /**
+     * Updates the number of points gained from levels for this characteristic.
+     */
+    override fun classTotalRefresh() {
+        //get new class point value
+        classPointTotal.intValue =
+            //get each level's individual value and apply to output
+            if(parent.charInstance.lvl.intValue != 0){
+                var output = 0
+
+                (parent.charInstance as SblChar).levelLoop {
+                    output += it.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue
+                }
+
+                output
+            }
+            //get half of the first level's class bonus
+            else (parent.charInstance as SblChar).charRefs[0]!!.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue/2
+
+        //update secondary total
         refreshTotal()
     }
 

@@ -34,16 +34,6 @@ class SblCombatItem(
     }
 
     /**
-     * Sets the points per level for this stat.
-     *
-     * @param lvlBonus points per level to set
-     */
-    override fun setPointPerLevel(lvlBonus: Int) {
-        charInstance.charRefs[charInstance.lvl.intValue]!!.combat.allAbilities()[combatIndex].setPointPerLevel(lvlBonus = lvlBonus)
-        updateClassTotal()
-    }
-
-    /**
      * Update the class total for the individual stat.
      */
     override fun updateClassTotal() {

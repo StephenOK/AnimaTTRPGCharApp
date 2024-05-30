@@ -1,15 +1,12 @@
 package com.paetus.animaCharCreator.character_creation.attributes.class_objects
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Archetype
 
 /**
  * Object that holds class data to be used by the character.
  */
-class ClassRecord(
-    val charInstance: BaseCharacter
-) {
+class ClassRecord{
     private val warrior =
         CharClass(
             saveName = "warrior",
@@ -52,29 +49,29 @@ class ClassRecord(
             ),
             secondaryBonus = mapOf(Pair(24, 5)),
             specialText = null,
-            onTake = {
+            onTake = { character ->
                 //apply attack, block, and wear armor class bonuses
-                charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-                charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
-                charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
+                character.combat.attack.setPointPerLevel(lvlBonus = 5)
+                character.combat.block.setPointPerLevel(lvlBonus = 5)
+                character.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
 
                 //give bonus for feats of strength
-                charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
+                character.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
 
                 //set individual growth value for feats of strength
-                charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = 1)
+                character.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = 1)
             }
-        ) {
+        ) { character ->
             //remove class combat bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+            character.combat.attack.setPointPerLevel(lvlBonus = 0)
+            character.combat.block.setPointPerLevel(lvlBonus = 0)
+            character.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
 
             //remove feats of strength class bonus
-            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
+            character.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
 
             //reset growth value from this class
-            charInstance.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = -1)
+            character.secondaryList.strengthFeat.setDevelopmentDeduction(dpDeduction = -1)
         }
 
     private val acroWarrior = CharClass(
@@ -123,29 +120,29 @@ class ClassRecord(
             Pair(9, 10)
         ),
         specialText = null,
-        onTake = {
+        onTake = { character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary characteristic bonuses
-            charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.jump.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.athletics.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.style.setClassPointsPerLevel(classBonus = 10)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary characteristic bonuses
-        charInstance.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.jump.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.athletics.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.acrobatics.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.jump.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.athletics.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val paladin = CharClass(
@@ -194,47 +191,47 @@ class ClassRecord(
             Pair(9, 5)
         ),
         specialText = R.string.paladinSpecial,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
+            character.combat.block.setPointPerLevel(lvlBonus = 5)
+            character.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.leadership.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
 
             //apply cost reduction to withstand pain
-            charInstance.secondaryList.resistPain.setDevelopmentDeduction(1)
+            character.secondaryList.resistPain.setDevelopmentDeduction(1)
 
             //apply magic abilities if chosen
-            if(charInstance.classes.magPaladin.value){
-                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
-                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
+            if(character.classes.magPaladin.value){
+                character.magic.setZeonPerLevel(lvlBonus = 20)
+                character.summoning.banish.setPointsPerLevel(lvlBonus = 10)
             }
             //otherwise add composure class bonuses
-            else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            else character.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
         }
-    ) {
+    ) {character ->
         //remove combat class bonus
-        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+        character.combat.block.setPointPerLevel(lvlBonus = 0)
+        character.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.leadership.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.leadership.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
 
         //remove cost reduction to withstand pain
-        charInstance.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
 
         //remove any applied magic ability
-        if (charInstance.classes.magPaladin.value) {
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+        if (character.classes.magPaladin.value) {
+            character.magic.setZeonPerLevel(lvlBonus = 0)
+            character.summoning.banish.setPointsPerLevel(lvlBonus = 0)
         }
         //if no magic abilities, remove composure class bonus
-        else charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        else character.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val darkPaladin = CharClass(
@@ -284,51 +281,51 @@ class ClassRecord(
             Pair(8, 5)
         ),
         specialText = R.string.darkPaladinSpecial,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.wearArmor.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
 
             //reduce composure's cost
-            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
 
             //apply class magic abilities, if chosen
-            if(charInstance.classes.magPaladin.value){
-                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
-                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
+            if(character.classes.magPaladin.value){
+                character.magic.setZeonPerLevel(lvlBonus = 20)
+                character.summoning.control.setPointsPerLevel(lvlBonus = 10)
             }
             //if not, apply withstand pain class bonus
             else
-                charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+                character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.intimidate.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
 
         //remove composure cost reduction
-        charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
 
         //remove any applied magic abilities
-        if (charInstance.classes.magPaladin.value) {
-            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        if (character.classes.magPaladin.value) {
+            character.magic.setZeonPerLevel(lvlBonus = 0)
+            character.summoning.control.setPointsPerLevel(lvlBonus = 0)
         }
         //otherwise, remove withstand pain class bonus
         else
-            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+            character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val weaponMaster = CharClass(
@@ -372,23 +369,23 @@ class ClassRecord(
         ),
         secondaryBonus = mapOf(Pair(24, 5)),
         specialText = R.string.weaponmasterSpecial,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.block.setPointPerLevel(lvlBonus = 5)
+            character.combat.wearArmor.setPointPerLevel(lvlBonus = 10)
 
             //apply feats of strength class bonus
-            charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 5)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.block.setPointPerLevel(lvlBonus = 0)
+        character.combat.wearArmor.setPointPerLevel(lvlBonus = 0)
 
         //remove feats of strength class bonus
-        charInstance.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.strengthFeat.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val technician = CharClass(
@@ -428,12 +425,12 @@ class ClassRecord(
         primaryBonus = mapOf(Pair(R.string.attackLabel, 5)),
         secondaryBonus = mapOf(),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //set attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)}
-    ) {
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)}
+    ) {character ->
         //remove attack class bonus
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
     }
 
     private val tao = CharClass(
@@ -473,13 +470,13 @@ class ClassRecord(
         primaryBonus = mapOf(),
         secondaryBonus = mapOf(Pair(9, 5)),
         specialText = R.string.taoSpecial,
-        onTake = {
+        onTake = {character ->
             //set style class bonus
-            charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.style.setClassPointsPerLevel(classBonus = 5)
         }
-    ) {
+    ) {character ->
         //remove style class bonus
-        charInstance.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.style.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val ranger = CharClass(
@@ -531,41 +528,41 @@ class ClassRecord(
             Pair(15, 5)
         ),
         specialText = R.string.rangerSpecial,
-        onTake = {
+        onTake = {character ->
             //apply attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.track.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.animals.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 5)
 
             //apply secondary dp cost reductions
-            charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = 1)
-            charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = 1)
-            charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = 2)
-            charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.animals.setDevelopmentDeduction(dpDeduction = 2)
+            character.secondaryList.medic.setDevelopmentDeduction(dpDeduction = 1)
         }
-    ) {
+    ) {character ->
         //remove attack class bonus
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+        character.combat.attack.setPointPerLevel(lvlBonus = 5)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.track.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.animals.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.track.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.animals.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.herbalLore.setClassPointsPerLevel(classBonus = 0)
 
         //remove secondary dp cost reductions
-        charInstance.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = -1)
-        charInstance.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = -1)
-        charInstance.secondaryList.animals.setDevelopmentDeduction(dpDeduction = -2)
-        charInstance.secondaryList.medic.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.trapLore.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.herbalLore.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.animals.setDevelopmentDeduction(dpDeduction = -2)
+        character.secondaryList.medic.setDevelopmentDeduction(dpDeduction = -1)
     }
 
     private val shadow = CharClass(
@@ -613,27 +610,27 @@ class ClassRecord(
             Pair(31, 10)
         ),
         specialText = R.string.kiConcealSpecial,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
     }
 
     private val thief = CharClass(
@@ -680,37 +677,37 @@ class ClassRecord(
             Pair(30, 10)
         ),
         specialText = R.string.kiConcealSpecial,
-        onTake = {
+        onTake = {character ->
             //apply dodge class bonus
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
+            character.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.notice.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.search.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.hide.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.theft.setClassPointsPerLevel(classBonus = 10)
 
             //apply appraisal cost reduction
-            charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = 2)
+            character.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = 2)
         }
-    ) {
+    ) {character ->
         //remove dodge class bonus
-        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+        character.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
 
         //remove appraisal cost reduction
-        charInstance.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = -2)
+        character.secondaryList.appraise.setDevelopmentDeduction(dpDeduction = -2)
     }
 
     private val assassin = CharClass(
@@ -762,41 +759,41 @@ class ClassRecord(
             Pair(32, 10)
         ),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply attack class bonus
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
 
             //apply secondary class bonuses
-            charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.notice.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.search.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.poisons.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 10)
 
             //apply secondary cost reductions
-            charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = 1)
-            charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
-            charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = 1)
         }
-    ) {
+    ) {character ->
         //remove attack class bonus
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
 
         //remove secondary class bonuses
-        charInstance.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.poisons.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.notice.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.search.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.poisons.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.trapLore.setClassPointsPerLevel(classBonus = 0)
 
         //remove secondary cost reductions
-        charInstance.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = -1)
-        charInstance.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
-        charInstance.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.stealth.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.memorize.setDevelopmentDeduction(dpDeduction = -1)
     }
 
     private val wizard = CharClass(
@@ -839,27 +836,27 @@ class ClassRecord(
             Pair(21, 5)
         ),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
             //apply reduced magic appraisal cost reduction
-            charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = 1)
 
             //apply max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 100)
+            character.magic.setZeonPerLevel(lvlBonus = 100)
         }
-    ) {
+    ) {character ->
         //remove secondary class bonuses
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
         //remove magic appraisal cost reduction
-        charInstance.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.magicAppraise.setDevelopmentDeduction(dpDeduction = -1)
 
         //remove max zeon gained per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
     }
 
     private val warlock = CharClass(
@@ -904,29 +901,29 @@ class ClassRecord(
         ),
         secondaryBonus = mapOf(Pair(18, 5)),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.block.setPointPerLevel(lvlBonus = 5)
+            character.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
             //apply magic appraisal class bonus
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
 
             //apply zeon points per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+            character.magic.setZeonPerLevel(lvlBonus = 20)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.block.setPointPerLevel(lvlBonus = 0)
+        character.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
         //remove magic appraisal class bonus
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
 
         //remove zeon points per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
     }
 
     private val illusionist = CharClass(
@@ -977,39 +974,39 @@ class ClassRecord(
             Pair(8, 5)
         ),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.hide.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.disguise.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.theft.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 5)
 
             //apply secondary cost reductions
-            charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = 1)
-            charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = 1)
 
             //apply zeon points gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 75)
+            character.magic.setZeonPerLevel(lvlBonus = 75)
         }
-    ) {
+    ) {character ->
         //remove secondary class bonuses
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.disguise.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.stealth.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.hide.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.sleightHand.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.disguise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.theft.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.persuasion.setClassPointsPerLevel(classBonus = 0)
 
         //remove secondary cost reductions
-        charInstance.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = -1)
-        charInstance.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.sleightHand.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.persuasion.setDevelopmentDeduction(dpDeduction = -1)
 
         //remove zeon points gained per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
     }
 
     private val wizMentalist = CharClass(
@@ -1052,21 +1049,21 @@ class ClassRecord(
             Pair(21, 5)
         ),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
             //apply max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 100)
+            character.magic.setZeonPerLevel(lvlBonus = 100)
         }
-    ) {
+    ) {character ->
         //remove secondary class bonuses
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
         //remove max zeon gained per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
     }
 
     private val summoner = CharClass(
@@ -1115,39 +1112,39 @@ class ClassRecord(
             Pair(21, 10)
         ),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply secondary class bonuses
-            charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 10)
+            character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.occult.setClassPointsPerLevel(classBonus = 10)
 
             //apply reduced cost to occult
-            charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = 1)
+            character.secondaryList.occult.setDevelopmentDeduction(dpDeduction = 1)
 
             //apply max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 50)
+            character.magic.setZeonPerLevel(lvlBonus = 50)
 
             //apply summoning ability bonuses
-            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 10)
-            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
-            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 10)
-            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
+            character.summoning.summon.setPointsPerLevel(lvlBonus = 10)
+            character.summoning.control.setPointsPerLevel(lvlBonus = 10)
+            character.summoning.bind.setPointsPerLevel(lvlBonus = 10)
+            character.summoning.banish.setPointsPerLevel(lvlBonus = 10)
         }
-    ) {
+    ) {character ->
         //remove secondary class bonuses
-        charInstance.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
-        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.magicAppraise.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
         //remove occult cost reduction
-        charInstance.secondaryList.occult.setDevelopmentDeduction(dpDeduction = -1)
+        character.secondaryList.occult.setDevelopmentDeduction(dpDeduction = -1)
 
         //remove max zeon gained per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
 
         //remove summoning ability bonuses
-        charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.banish.setPointsPerLevel(lvlBonus = 0)
     }
 
     private val warSummoner = CharClass(
@@ -1195,41 +1192,41 @@ class ClassRecord(
         ),
         secondaryBonus = mapOf(Pair(21, 5)),
         specialText = null,
-        onTake = {
+        onTake = {character ->
             //apply combat class bonuses
-            charInstance.combat.attack.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.block.setPointPerLevel(lvlBonus = 5)
-            charInstance.combat.dodge.setPointPerLevel(lvlBonus = 5)
+            character.combat.attack.setPointPerLevel(lvlBonus = 5)
+            character.combat.block.setPointPerLevel(lvlBonus = 5)
+            character.combat.dodge.setPointPerLevel(lvlBonus = 5)
 
             //apply occult class bonus
-            charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
+            character.secondaryList.occult.setClassPointsPerLevel(classBonus = 5)
 
             //apply max zeon gained per level
-            charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+            character.magic.setZeonPerLevel(lvlBonus = 20)
 
             //apply summoning class bonuses
-            charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 5)
-            charInstance.summoning.control.setPointsPerLevel(lvlBonus = 5)
-            charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 5)
-            charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 5)
+            character.summoning.summon.setPointsPerLevel(lvlBonus = 5)
+            character.summoning.control.setPointsPerLevel(lvlBonus = 5)
+            character.summoning.bind.setPointsPerLevel(lvlBonus = 5)
+            character.summoning.banish.setPointsPerLevel(lvlBonus = 5)
         }
-    ) {
+    ) {character ->
         //remove combat class bonuses
-        charInstance.combat.attack.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.block.setPointPerLevel(lvlBonus = 0)
-        charInstance.combat.dodge.setPointPerLevel(lvlBonus = 0)
+        character.combat.attack.setPointPerLevel(lvlBonus = 0)
+        character.combat.block.setPointPerLevel(lvlBonus = 0)
+        character.combat.dodge.setPointPerLevel(lvlBonus = 0)
 
         //remove occult class bonus
-        charInstance.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
+        character.secondaryList.occult.setClassPointsPerLevel(classBonus = 0)
 
         //remove max zeon gained per level
-        charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+        character.magic.setZeonPerLevel(lvlBonus = 0)
 
         //remove summoning class bonuses
-        charInstance.summoning.summon.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.bind.setPointsPerLevel(lvlBonus = 0)
-        charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.summon.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.bind.setPointsPerLevel(lvlBonus = 0)
+        character.summoning.banish.setPointsPerLevel(lvlBonus = 0)
     }
 
     private val mentalist = CharClass(
@@ -1313,15 +1310,15 @@ class ClassRecord(
         ),
         secondaryBonus = mapOf(),
         specialText = null,
-        onTake = {
-            charInstance.combat.attack.setPointPerLevel(5)
-            charInstance.combat.block.setPointPerLevel(5)
-            charInstance.combat.dodge.setPointPerLevel(5)
+        onTake = {character ->
+            character.combat.attack.setPointPerLevel(5)
+            character.combat.block.setPointPerLevel(5)
+            character.combat.dodge.setPointPerLevel(5)
         }
-    ) {
-        charInstance.combat.attack.setPointPerLevel(0)
-        charInstance.combat.block.setPointPerLevel(0)
-        charInstance.combat.dodge.setPointPerLevel(0)
+    ) {character ->
+        character.combat.attack.setPointPerLevel(0)
+        character.combat.block.setPointPerLevel(0)
+        character.combat.dodge.setPointPerLevel(0)
     }
 
     private val freelancer = CharClass(
@@ -1361,27 +1358,27 @@ class ClassRecord(
         primaryBonus = mapOf(Pair(R.string.zeonLabel, 10)),
         secondaryBonus = mapOf(),
         specialText = null,
-        onTake = {
-            charInstance.classes.freelancerSelection.forEach{secondarySelected ->
+        onTake = {character ->
+            character.classes.freelancerSelection.forEach{secondarySelected ->
                 //update characteristic's class value if a selection was made
                 if(secondarySelected != 0)
-                    charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 10)
+                    character.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 10)
             }
 
             //apply max zeon gained per level
-            charInstance.magic.setZeonPerLevel(10)
+            character.magic.setZeonPerLevel(10)
         }
-    ) {
+    ) {character ->
         //update characteristic's class value if a selection was made
-        charInstance.classes.freelancerSelection.forEach { secondarySelected ->
+        character.classes.freelancerSelection.forEach { secondarySelected ->
             if (secondarySelected != 0)
-                charInstance.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
+                character.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
                     classBonus = 0
                 )
         }
 
         //remove max zeon gained per level
-        charInstance.magic.setZeonPerLevel(0)
+        character.magic.setZeonPerLevel(0)
     }
 
     //collect all available class items

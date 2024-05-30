@@ -47,16 +47,16 @@ open class BaseCharacter() {
     open val combat = CombatAbilities(charInstance = this)
     open val secondaryList = SecondaryList(charInstance = this)
     val weaponProficiencies = WeaponProficiencies(charInstance = this)
-    val ki = Ki(charInstance = this)
-    val magic = Magic(charInstance = this)
-    val summoning = Summoning(charInstance = this)
-    val psychic = Psychic(charInstance = this)
+    open val ki = Ki(charInstance = this)
+    open val magic = Magic(charInstance = this)
+    open val summoning = Summoning(charInstance = this)
+    open val psychic = Psychic(charInstance = this)
     val advantageRecord = AdvantageRecord(charInstance = this)
     val inventory = Inventory(charInstance = this)
 
     //list of all classes available
     val classRecord: ClassRecord by lazy{
-        if (host.value == null) ClassRecord(charInstance = this)
+        if (host.value == null) ClassRecord()
         else host.value!!.classRecord
     }
     open val classes = ClassInstances(charInstance = this)
@@ -206,7 +206,7 @@ open class BaseCharacter() {
         magic.updateZeonFromClass()
 
         //recalculate summoning abilities
-        summoning.allSummoning.forEach{summonItem ->
+        summoning.allSummoning().forEach{summonItem ->
             summonItem.updateLevelTotal()
         }
 

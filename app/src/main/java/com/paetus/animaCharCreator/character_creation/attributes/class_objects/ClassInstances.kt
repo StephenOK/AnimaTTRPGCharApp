@@ -31,11 +31,11 @@ open class ClassInstances(
      */
     open fun setOwnClass(classIndex: Int){
         //undo current class buffs
-        getClass().onRemove()
+        getClass().onRemove(charInstance)
 
         //change class and apply new buffs
         ownClass.intValue = classIndex
-        getClass().onTake()
+        getClass().onTake(charInstance)
 
         //update class life points
         charInstance.combat.updateClassLife()

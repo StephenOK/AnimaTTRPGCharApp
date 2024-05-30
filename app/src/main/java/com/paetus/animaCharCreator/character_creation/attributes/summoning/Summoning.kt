@@ -10,15 +10,17 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-class Summoning(private val charInstance: BaseCharacter){
+open class Summoning(private val charInstance: BaseCharacter){
     //initialize each summoning ability
-    val summon = SummonAbility(charInstance = charInstance)
-    val control = SummonAbility(charInstance = charInstance)
-    val bind = SummonAbility(charInstance = charInstance)
-    val banish = SummonAbility(charInstance = charInstance)
+    open val summon = SummonAbility(charInstance = charInstance)
+    open val control = SummonAbility(charInstance = charInstance)
+    open val bind = SummonAbility(charInstance = charInstance)
+    open val banish = SummonAbility(charInstance = charInstance)
 
-    //gather all abilities
-    val allSummoning = listOf(summon, control, bind, banish)
+    /**
+     * Gathers all summoning ability items.
+     */
+    fun allSummoning(): List<SummonAbility>{return listOf(summon, control, bind, banish)}
 
     /**
      * Gets the class's summoning DP cost.
@@ -58,7 +60,7 @@ class Summoning(private val charInstance: BaseCharacter){
      * @param fileReader file to get the data from
      */
     fun loadSummoning(fileReader: BufferedReader){
-        allSummoning.forEach{summonAbility -> summonAbility.loadAbility(fileReader = fileReader)}
+        allSummoning().forEach{summonAbility -> summonAbility.loadAbility(fileReader = fileReader)}
     }
 
     /**
@@ -67,6 +69,6 @@ class Summoning(private val charInstance: BaseCharacter){
      * @param byteArray output stream for this section's data
      */
     fun writeSummoning(byteArray: ByteArrayOutputStream) {
-        allSummoning.forEach{summonAbility -> summonAbility.writeAbility(byteArray = byteArray) }
+        allSummoning().forEach{summonAbility -> summonAbility.writeAbility(byteArray = byteArray) }
     }
 }

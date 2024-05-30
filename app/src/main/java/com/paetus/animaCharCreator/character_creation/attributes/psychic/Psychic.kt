@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of a character's data
  */
-class Psychic(private val charInstance: BaseCharacter){
+open class Psychic(private val charInstance: BaseCharacter){
     //initialize value for Psychic Potential
     val psyPotentialBase = mutableIntStateOf(value = 10)
 
@@ -133,7 +133,7 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Set the amount of base Psychic Points for the character.
      */
-    fun setInnatePsy(){
+    open fun setInnatePsy(){
         innatePsyPoints.intValue =
             //set points to 0 if at level 0
             if (charInstance.lvl.intValue == 0) 0
@@ -147,7 +147,7 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Recalculates the total amount of Psychic Points the character can utilize.
      */
-    private fun updatePsyPointTotal(){
+    fun updatePsyPointTotal(){
         totalPsychicPoints.intValue = boughtPsyPoints.intValue + innatePsyPoints.intValue
 
         //sets pyrokinesis as set if character is duk'zarist and does not have pyrokinesis

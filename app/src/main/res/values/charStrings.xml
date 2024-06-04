@@ -69,6 +69,7 @@
     <string name = "zeonHead">Zeon:</string>
     <string name = "maMultHead">MA Multiple</string>
     <string name = "psyPointHead">Psychic Points:</string>
+    <string name = "classChangedNotice">Next Level\'s Class:</string>
 
     <string name = "combatAbilityHead">Combat Ability:</string>
     <string name = "magicAbilityHead">Supernatural Ability:</string>

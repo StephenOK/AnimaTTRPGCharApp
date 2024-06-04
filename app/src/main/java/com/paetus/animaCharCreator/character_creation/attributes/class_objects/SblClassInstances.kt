@@ -20,7 +20,11 @@ class SblClassInstances(
             else charInstance.lvl.intValue + 1
 
         //get changed class
-        val initClass = charInstance.charRefs[levelCounter]!!.classes.ownClass.intValue
+        val initClass =
+            if(charInstance.lvl.intValue == 0)
+                charInstance.charRefs[0]!!.classes.ownClass.intValue
+            else
+                charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
 
         //change all recorded level classes up to any change
         while(charInstance.charRefs[levelCounter] != null &&

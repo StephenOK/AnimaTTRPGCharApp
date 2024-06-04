@@ -118,6 +118,19 @@ fun CharacterPageFragment(
                             )
                         }
                     }
+
+                    //display if at class object and if next level's class is different
+                    if(dropdown.data.nameRef == R.string.classLabel &&
+                        charFragVM.getClassChanged()){
+                        //notify of changing class
+                        InfoRow(label = stringResource(R.string.classChangedNotice)){modifier, _ ->
+                            //display next level's class name
+                            Text(
+                                text = stringArrayResource(id = R.array.classArray)[charFragVM.getNextLevelClass()],
+                                modifier = modifier
+                            )
+                        }
+                    }
                 }
 
                 //experience point input

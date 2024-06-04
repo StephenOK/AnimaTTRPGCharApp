@@ -339,6 +339,28 @@ class CharacterFragmentViewModel(
     }
 
     /**
+     * Gets whether the character's class changes next level.
+     *
+     * @return true if a change is found
+     */
+    fun getClassChanged(): Boolean{
+        //only needs to check if SblChar
+        return if(charInstance is SblChar)
+            charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue != charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+            //otherwise, always false
+            else false
+    }
+
+    /**
+     * Gets the recorded class of the next level for the chharacter.
+     *
+     * @return class pointer in the next level
+     */
+    fun getNextLevelClass(): Int{
+        return (charInstance as SblChar).charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+    }
+
+    /**
      * Opens and closes the failed level change alert.
      */
     fun toggleFailedLevelChangeOpen(){_failedLevelChangeOpen.update{!failedLevelChangeOpen.value}}
@@ -376,6 +398,13 @@ class CharacterFragmentViewModel(
             onChange = {
                 charInstance.classes.setOwnClass(classIndex = it)
                 setMagPaladinOpen()
+            },
+            refreshFunc = {
+                //get current level's class pointer
+                if (charInstance is SblChar)
+                    charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue
+                else
+                    charInstance.classes.ownClass.intValue
             }
         ),
         weight = 0.6f,
@@ -393,12 +422,9 @@ class CharacterFragmentViewModel(
                 setBonusColor()
 
                 //get the character's class at this level
-                classDropdown.data.setOutput(
-                    if(charInstance is SblChar)
-                        charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue
-                    else
-                        charInstance.classes.ownClass.intValue
-                )
+                if(charInstance is SblChar)
+                    classDropdown.data.refreshDisplay()
+
             }
         ),
         weight = 1f,

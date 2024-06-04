@@ -269,7 +269,7 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
         ) {
             OutlinedDropdown(
                 data = charFragVM.classDetailDropdown
-            ) {}
+            )
         }
 
         Spacer(modifier =  Modifier.height(20.dp))

@@ -4,6 +4,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.class_objects.S
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
+import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
@@ -78,6 +79,11 @@ class SblChar(
         secondaryList.levelUpdate(newLevel = levNum)
 
         super.setLvl(levNum)
+
+        //update primary bonus amounts
+        primaryList.allPrimaries().forEach{
+            (it as SblPrimaryChar).refreshBonusTotal()
+        }
 
         //update dev points spent
         updateTotalSpent()

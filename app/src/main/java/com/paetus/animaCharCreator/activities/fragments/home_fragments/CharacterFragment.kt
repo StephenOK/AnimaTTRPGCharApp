@@ -79,7 +79,7 @@ fun CharacterPageFragment(
                     //get openable state of this dropdown
                     val isOpenable =
                         if(dropdown.data.nameRef == R.string.levelText)
-                            charFragVM.getLevelChangeable()
+                            charFragVM.getLevelChangeable() == null
                         else
                             true
 
@@ -490,7 +490,17 @@ fun LevelChangeAlert(
     AlertDialog(
         onDismissRequest = {charFragVM.toggleFailedLevelChangeOpen()},
         title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
-        text = {Text(text = stringResource(id = R.string.failedLevelChangeText))},
+        text = {
+            Column {
+                //display dialog head
+                Row { Text(text = stringResource(R.string.failedLevelChangeBody)) }
+
+                //display all errors found
+                charFragVM.getLevelChangeable()!!.forEach {
+                    Row {Text(text = it())}
+                }
+            }
+        },
         confirmButton = {
             TextButton(onClick = {charFragVM.toggleFailedLevelChangeOpen()}){
                 Text(

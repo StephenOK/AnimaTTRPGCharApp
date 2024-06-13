@@ -120,5 +120,10 @@
     <string name = "reducedCostHead">Reduced Costs</string>
 
     <string name = "failedLevelChangeTitle">Could Not Change Level</string>
-    <string name = "failedLevelChangeText">Current level\'s DP have not been appropriately spent and changing level cannot happen until then.</string>
+    <string name = "failedLevelChangeBody">Change failed for the following reason(s):</string>
+    <string name = "underDpFailure">-all DP have not been spent</string>
+    <string name = "overDpFailure">-too many DP have been spent</string>
+    <string name = "invalidPrimaryBonus">-too many points added as bonus to primary characteristics</string>
+    <string name = "primaryBonusPointReduction">-a primary characteristic\'s bonus (%s) is smaller than in a previous level</string>
+
 </resources>

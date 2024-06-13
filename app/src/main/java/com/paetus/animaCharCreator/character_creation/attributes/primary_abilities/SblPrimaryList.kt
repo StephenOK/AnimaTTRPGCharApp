@@ -118,4 +118,19 @@ class SblPrimaryList(
             charInstance.secondaryList.updatePER()
         }
     )
+
+    /**
+     * Determines if the total level bonuses applied are valid.
+     *
+     * @return true if bonus does not exceed half of the character's level
+     */
+    override fun validLevelBonuses(): Boolean {
+        //notify of bad characteristic bonus growth if one found
+        allPrimaries().forEach{primary ->
+            if(!(primary as SblPrimaryChar).validGrowth()) return false
+        }
+
+        //run the normal check
+        return super.validLevelBonuses()
+    }
 }

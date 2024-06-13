@@ -1,5 +1,9 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
@@ -8,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -317,11 +322,50 @@ class CharacterFragmentViewModel(
     /**
      * Determines if the user may change the level of the character.
      *
-     * @return true when character is not SBL or has all DP at this level spent
+     * @return list of error string outputs if errors are found; null if no errors found
      */
-    fun getLevelChangeable(): Boolean{
-        return !(charInstance is SblChar &&
-                charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+    @Composable
+    fun getLevelChangeable(): List<@Composable () -> String>?{
+        //no need to run if character is not save by level
+        if (charInstance !is SblChar) return null
+
+        //initialize error list
+        val output = mutableListOf<@Composable () -> String>()
+
+        //determine if DP spent appropriately
+        if(charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+            output.add{
+                //add either indicator of overspent DP
+                if (charInstance.spentTotal.intValue > charInstance.devPT.intValue) {
+                    stringResource(R.string.overDpFailure)
+                }
+                //or indicator of underspent DP
+                else {
+                    stringResource(R.string.underDpFailure)
+                }
+            }
+
+        //determine if any error in primary bonus distribution
+        if(!bonusValid.collectAsState().value){
+            //check each primary characteristic
+            charInstance.primaryList.allPrimaries().forEach{
+                if(!(it as SblPrimaryChar).validGrowth())
+                    //if growth is not logical, notify of error in this stat
+                    output.add {
+                        stringResource(
+                            R.string.primaryBonusPointReduction,
+                            stringArrayResource(id = R.array.primaryCharArray)[it.charIndex]
+                        )
+                    }
+            }
+
+            //notify of too many primary bonus points added
+            if(charInstance.primaryList.getPrimaryBonusTotal() > charInstance.lvl.intValue/2)
+                output.add{stringResource(R.string.invalidPrimaryBonus)}
+        }
+
+        //give final output list
+        return if(output.isEmpty()) null else output.toList()
     }
 
     /**
@@ -346,13 +390,13 @@ class CharacterFragmentViewModel(
     fun getClassChanged(): Boolean{
         //only needs to check if SblChar
         return if(charInstance is SblChar)
-            charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue != charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+            charInstance.getCharAtLevel().classes.ownClass.intValue != charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
             //otherwise, always false
             else false
     }
 
     /**
-     * Gets the recorded class of the next level for the chharacter.
+     * Gets the recorded class of the next level for the character.
      *
      * @return class pointer in the next level
      */
@@ -402,7 +446,7 @@ class CharacterFragmentViewModel(
             refreshFunc = {
                 //get current level's class pointer
                 if (charInstance is SblChar)
-                    charInstance.charRefs[charInstance.lvl.intValue]!!.classes.ownClass.intValue
+                    charInstance.getCharAtLevel().classes.ownClass.intValue
                 else
                     charInstance.classes.ownClass.intValue
             }

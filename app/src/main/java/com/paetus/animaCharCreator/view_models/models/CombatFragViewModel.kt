@@ -166,7 +166,6 @@ class CombatFragViewModel(
     //initialize all combat items
     private val attack = CombatItemData(
         combat = combat,
-        label = R.string.attackLabel,
         combatItem = combat.attack,
         growthGetter = {combat.getAtkCost()},
         setPointValid = {setPointColor(isValid = it)}
@@ -174,7 +173,6 @@ class CombatFragViewModel(
 
     private val block = CombatItemData(
         combat = combat,
-        label = R.string.blockLabel,
         combatItem = combat.block,
         growthGetter = {combat.getBlockCost()},
         setPointValid = {setPointColor(isValid = it)}
@@ -182,7 +180,6 @@ class CombatFragViewModel(
 
     private val dodge = CombatItemData(
         combat = combat,
-        label = R.string.dodgeLabel,
         combatItem = combat.dodge,
         growthGetter = {combat.getDodgeCost()},
         setPointValid = {setPointColor(isValid = it)}
@@ -190,7 +187,6 @@ class CombatFragViewModel(
 
     private val wearArmor = CombatItemData(
         combat = combat,
-        label = R.string.wearLabel,
         combatItem = combat.wearArmor,
         growthGetter = {combat.getWearCost()},
         setPointValid = {}
@@ -216,14 +212,12 @@ class CombatFragViewModel(
      * Object that holds data on one of the character's combat abilities.
      *
      * @param combat section of the character to work on
-     * @param label name of the item in question
      * @param combatItem data regarding this individual item
      * @param growthGetter function to run to get the stat's associated DP amount
      * @param setPointValid changes the point color in the combat fragment's view model
      */
     class CombatItemData(
         private val combat: CombatAbilities,
-        val label: Int,
         val combatItem: CombatItem,
         val growthGetter: () -> Int,
         val setPointValid: (Boolean) -> Unit

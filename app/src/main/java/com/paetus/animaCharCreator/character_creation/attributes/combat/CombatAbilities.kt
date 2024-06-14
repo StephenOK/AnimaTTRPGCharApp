@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.combat
 
 import androidx.compose.runtime.mutableIntStateOf
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
@@ -24,10 +25,10 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
     val lifeMax = mutableIntStateOf(72)
 
     //initialize the character's combat data
-    open val attack = CombatItem(charInstance = charInstance)
-    open val block = CombatItem(charInstance = charInstance)
-    open val dodge = CombatItem(charInstance = charInstance)
-    open val wearArmor = CombatItem(charInstance = charInstance)
+    open val attack = CombatItem(charInstance = charInstance, itemLabel = R.string.attackLabel)
+    open val block = CombatItem(charInstance = charInstance, itemLabel = R.string.blockLabel)
+    open val dodge = CombatItem(charInstance = charInstance, itemLabel = R.string.dodgeLabel)
+    open val wearArmor = CombatItem(charInstance = charInstance, itemLabel = R.string.wearLabel)
 
     /**
      * Gets all combat abilities held in this section.

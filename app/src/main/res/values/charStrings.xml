@@ -123,7 +123,10 @@
     <string name = "failedLevelChangeBody">Change failed for the following reason(s):</string>
     <string name = "underDpFailure">-all DP have not been spent</string>
     <string name = "overDpFailure">-too many DP have been spent</string>
+    <string name = "sectionCapBreach">-limit for the character\'s %s Abilities has been passed</string>
     <string name = "invalidPrimaryBonus">-too many points added as bonus to primary characteristics</string>
     <string name = "primaryBonusPointReduction">-a primary characteristic\'s bonus (%s) is smaller than in a previous level</string>
+    <string name = "combatPointMisuse">-points in combat abilities have not been appropriately spent</string>
+    <string name = "combatInputPointReduction">-a combat item\'s value (%s) is smaller than in a previous level</string>
 
 </resources>

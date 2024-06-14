@@ -58,19 +58,6 @@ class SblPrimaryChar(
      * @return true if inputs are valid
      */
     fun validGrowth(): Boolean{
-        //initialize output as valid
-        var output = true
-
-        //check each level for a negative input
-        charInstance.levelLoop{
-            //update to false if one found
-            if(it.primaryList.allPrimaries()[charIndex].levelBonus.intValue < 0) {
-                output = false
-                return@levelLoop
-            }
-        }
-
-        //give final output
-        return output
+        return charInstance.getCharAtLevel().primaryList.allPrimaries()[charIndex].levelBonus.intValue >= 0
     }
 }

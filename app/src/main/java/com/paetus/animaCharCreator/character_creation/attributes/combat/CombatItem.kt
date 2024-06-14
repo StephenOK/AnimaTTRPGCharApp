@@ -11,9 +11,11 @@ import java.io.ByteArrayOutputStream
  * Utilized for the character's attack, block, dodge, and wear armor.
  *
  * @param charInstance object that holds all of a character's data
+ * @param itemLabel reference to the string to label this object
  */
 open class CombatItem(
-    private val charInstance: BaseCharacter
+    private val charInstance: BaseCharacter,
+    val itemLabel: Int
 ){
     //initialize user input value for this stat
     val inputVal = mutableIntStateOf(value = 0)

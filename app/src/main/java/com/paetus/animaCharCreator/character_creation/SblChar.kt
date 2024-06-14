@@ -2,6 +2,7 @@ package com.paetus.animaCharCreator.character_creation
 
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
+import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
@@ -83,6 +84,11 @@ class SblChar(
         //update primary bonus amounts
         primaryList.allPrimaries().forEach{
             (it as SblPrimaryChar).refreshBonusTotal()
+        }
+
+        //update combat item input values
+        combat.allAbilities().forEach{
+            (it as SblCombatItem).updateInput()
         }
 
         //update dev points spent

@@ -6,12 +6,14 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  * Subclass of CombatItem for use in a SBL character.
  *
  * @param charInstance object that holds all of a character's data
+ * @param label reference to the string to label this object
  * @param combatIndex index of the matching combat items in BaseCharacters
  */
 class SblCombatItem(
     val charInstance: SblChar,
+    val label: Int,
     val combatIndex: Int
-): CombatItem(charInstance = charInstance){
+): CombatItem(charInstance = charInstance, itemLabel = label){
     /**
      * Sets the user's input for this stat.
      *
@@ -28,9 +30,24 @@ class SblCombatItem(
         charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].inputVal.intValue = purchase - preInputVal
 
         //get new total
+        updateInput()
+    }
+
+    /**
+     * Refresh the input total for this item.
+     */
+    fun updateInput(){
+        //reset input value
+        inputVal.intValue = 0
+
+        //add each level's inputted value
         charInstance.levelLoop{character ->
             inputVal.intValue += character.combat.allAbilities()[combatIndex].inputVal.intValue
         }
+
+        //update the item total and points spent
+        charInstance.updateTotalSpent()
+        updateTotal()
     }
 
     /**
@@ -59,5 +76,12 @@ class SblCombatItem(
 
         //update overall total
         updateTotal()
+    }
+
+    /**
+     * Checks if the item does not remove points over the levels.
+     */
+    fun validGrowth(): Boolean{
+        return charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].inputVal.intValue >= 0
     }
 }

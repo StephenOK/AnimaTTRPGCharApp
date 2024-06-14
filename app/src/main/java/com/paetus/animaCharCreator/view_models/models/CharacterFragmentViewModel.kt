@@ -11,6 +11,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
+import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -345,6 +346,33 @@ class CharacterFragmentViewModel(
                 }
             }
 
+        //determine if combat max maintained
+        if(charInstance.ptInCombat.intValue > charInstance.maxCombatDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.combatLabel)
+                )
+            }
+
+        //determine if magic max maintained
+        if(charInstance.ptInMag.intValue > charInstance.maxMagDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.magicLabel)
+                )
+            }
+
+        //determine if psychic max maintained
+        if(charInstance.ptInPsy.intValue > charInstance.maxPsyDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.psychicLabel)
+                )
+            }
+
         //determine if any error in primary bonus distribution
         if(!bonusValid.collectAsState().value){
             //check each primary characteristic
@@ -362,6 +390,21 @@ class CharacterFragmentViewModel(
             //notify of too many primary bonus points added
             if(charInstance.primaryList.getPrimaryBonusTotal() > charInstance.lvl.intValue/2)
                 output.add{stringResource(R.string.invalidPrimaryBonus)}
+        }
+
+        //notify of bad combat ability point distribution
+        if(!charInstance.combat.validAttackDodgeBlock())
+            output.add{stringResource(id = R.string.combatPointMisuse)}
+
+        //determine if points removed from combat items
+        charInstance.combat.allAbilities().forEach{
+            if(!(it as SblCombatItem).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.combatInputPointReduction,
+                        stringResource(it.itemLabel)
+                    )
+                }
         }
 
         //give final output list

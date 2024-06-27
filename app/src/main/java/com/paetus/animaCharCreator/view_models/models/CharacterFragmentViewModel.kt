@@ -14,6 +14,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.class_objects.C
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -403,6 +404,17 @@ class CharacterFragmentViewModel(
                     stringResource(
                         R.string.combatInputPointReduction,
                         stringResource(it.itemLabel)
+                    )
+                }
+        }
+
+        //determine that no points have been removed from secondary items
+        charInstance.secondaryList.getAllSecondaries().forEach{
+            if(!(it as SblSecondaryCharacteristic).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputPointReduction,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
                     )
                 }
         }

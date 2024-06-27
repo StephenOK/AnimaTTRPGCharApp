@@ -76,9 +76,6 @@ class SblChar(
             charRefs[levNum + 1]!!.classes.setOwnClass(charRefs[levNum]!!.classes.ownClass.intValue)
         }
 
-        //update secondary items
-        secondaryList.levelUpdate(newLevel = levNum)
-
         super.setLvl(levNum)
 
         //update primary bonus amounts
@@ -90,6 +87,9 @@ class SblChar(
         combat.allAbilities().forEach{
             (it as SblCombatItem).updateInput()
         }
+
+        //update secondary items
+        secondaryList.levelUpdate()
 
         //update dev points spent
         updateTotalSpent()

@@ -1370,7 +1370,7 @@ class ClassRecord{
         }
     ) {character ->
         //update characteristic's class value if a selection was made
-        character.classes.freelancerSelection.forEach { secondarySelected ->
+        character.classes.freelancerSelection.forEach {secondarySelected ->
             if (secondarySelected != 0)
                 character.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
                     classBonus = 0

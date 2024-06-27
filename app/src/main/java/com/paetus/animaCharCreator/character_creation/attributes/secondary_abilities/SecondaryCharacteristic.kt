@@ -96,7 +96,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      *
      * @param classBonus amount to set the points per level to
      */
-    fun setClassPointsPerLevel(classBonus: Int) {
+    open fun setClassPointsPerLevel(classBonus: Int) {
         classPointsPerLevel.intValue = classBonus
         classTotalRefresh()
     }

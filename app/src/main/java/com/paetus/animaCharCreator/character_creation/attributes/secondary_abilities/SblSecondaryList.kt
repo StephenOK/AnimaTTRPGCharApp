@@ -55,9 +55,10 @@ class SblSecondaryList(
     override val music = SblSecondaryCharacteristic(parent = this, secondaryIndex = 36)
     override val sleightHand = SblSecondaryCharacteristic(parent = this, secondaryIndex = 37)
 
-    fun levelUpdate(newLevel: Int){
+    fun levelUpdate() {
         fullList().forEach{secondary ->
-            (secondary as SblSecondaryCharacteristic).levelUpdate(newLevel)
+            (secondary as SblSecondaryCharacteristic).pointsAppliedUpdate()
+            secondary.classTotalRefresh()
         }
     }
 }

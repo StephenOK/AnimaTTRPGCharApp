@@ -69,7 +69,7 @@ open class ClassInstances(
      */
     fun setOwnClass(classString: String){
         //search through all class objects
-        charInstance.classRecord.allClasses.forEach{ charClass ->
+        charInstance.classRecord.allClasses.forEach{charClass ->
             //apply class if match found
             if(charClass.saveName == classString){
                 setOwnClass(charInstance.classRecord.allClasses.indexOf(charClass))

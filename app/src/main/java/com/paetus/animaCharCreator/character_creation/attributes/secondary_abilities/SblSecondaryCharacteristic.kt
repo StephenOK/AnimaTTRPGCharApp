@@ -29,19 +29,17 @@ class SblSecondaryCharacteristic(
         //set current level value
         charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - preSecondaryValue)
 
-        //get points applied from each level
-        pointsApplied.intValue = 0
-        parent.sblChar.levelLoop{character ->
-            pointsApplied.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
-        }
+        pointsAppliedUpdate()
+    }
 
-        //remove natural bonus is no points applied to this stat
-        if(pointsApplied.intValue == 0 && bonusApplied.value)
-            setNatBonus(natBonus = false)
-
-        //get new totals
-        updateDevSpent()
-        refreshTotal()
+    /**
+     * Set the class points obtained for this characteristic.
+     *
+     * @param classBonus value to set the class points to
+     */
+    override fun setClassPointsPerLevel(classBonus: Int) {
+        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setClassPointsPerLevel(classBonus)
+        classTotalRefresh()
     }
 
     /**
@@ -54,7 +52,7 @@ class SblSecondaryCharacteristic(
             if(parent.charInstance.lvl.intValue != 0){
                 var output = 0
 
-                (parent.charInstance as SblChar).levelLoop {
+                (parent.charInstance as SblChar).levelLoop(startLevel = 1){
                     output += it.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue
                 }
 
@@ -71,25 +69,36 @@ class SblSecondaryCharacteristic(
      * Gets the initial total value for the secondary characteristic.
      */
     override fun getTotal(){
-        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue
-
-        //get class points from each level
-        parent.sblChar.levelLoop{character ->
-            val levelItem = character.secondaryList.getAllSecondaries()[secondaryIndex]
-            total.intValue += levelItem.classPointsPerLevel.intValue + levelItem.specialPerLevel.intValue
-        }
+        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue
     }
 
-    fun levelUpdate(newLevel: Int){
+    fun pointsAppliedUpdate() {
         //reset point value
         pointsApplied.intValue = 0
 
         //add points from levels up to this one
-        parent.sblChar.levelLoop(endLevel = newLevel){ character ->
+        parent.sblChar.levelLoop{character ->
             pointsApplied.intValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
         }
 
         updateDevSpent()
         refreshTotal()
+    }
+
+    /**
+     * Determines if the character's growth in this characteristic has valid growth through levels.
+     */
+    fun validGrowth(): Boolean{
+        //initialize output
+        var output = true
+
+        //determine whether the level has any points removed in that level
+        parent.sblChar.levelLoop{
+            if(it.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue < 0)
+                output = false
+        }
+
+        //return valid status
+        return output
     }
 }

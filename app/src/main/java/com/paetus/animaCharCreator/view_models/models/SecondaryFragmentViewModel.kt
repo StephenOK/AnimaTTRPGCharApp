@@ -7,6 +7,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
@@ -27,12 +28,26 @@ class SecondaryFragmentViewModel(
     val secondaryList: SecondaryList
 ): ViewModel() {
     //initialize open state of the freelancer bonus options
-    private val _freelancerOptionsOpen = MutableStateFlow(value = charInstance.classes.ownClass.intValue == 0)
+    private val _freelancerOptionsOpen = MutableStateFlow(isFreelancer())
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
     //initialize open state of custom secondaries page
     private val _customIsOpen = MutableStateFlow(value = false)
     val customIsOpen = _customIsOpen.asStateFlow()
+
+    /**
+     * Determines if the character's current class is freelancer.
+     *
+     * @return true if the character is currently a freelancer
+     */
+    private fun isFreelancer(): Boolean{
+        //if SBL, check the character's current level's class
+        return if(charInstance is SblChar)
+            charInstance.getCharAtLevel().classes.ownClass.intValue == 0
+        //check the character's current class
+        else
+            charInstance.classes.ownClass.intValue == 0
+    }
 
     /**
      * Toggles the open state of the custom secondary characteristic creation dialog.
@@ -399,7 +414,7 @@ class SecondaryFragmentViewModel(
      */
     fun refreshPage(){
         //check if freelancer options are available to the character
-        _freelancerOptionsOpen.update{charInstance.classes.ownClass.intValue == 0}
+        _freelancerOptionsOpen.update{isFreelancer()}
 
         allCharacteristics.forEach{
             //update the point input data for each secondary

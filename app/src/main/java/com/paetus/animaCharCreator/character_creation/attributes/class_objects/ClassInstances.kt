@@ -90,7 +90,7 @@ open class ClassInstances(
      * @param secondarySelection value to set the selection to
      * @return value recorded after operation
      */
-    fun setSelection(
+    open fun setSelection(
         selectionIndex: Int,
         secondarySelection: Int
     ): Int{

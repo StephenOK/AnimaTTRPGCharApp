@@ -74,6 +74,15 @@ class SblChar(
 
             charRefs[levNum + 1]!!.setLvl(levNum = 1)
             charRefs[levNum + 1]!!.classes.setOwnClass(charRefs[levNum]!!.classes.ownClass.intValue)
+
+            //set each of the new character's freelancer selections
+            var counter = 0
+            classes.freelancerSelection.forEach{
+                charRefs[levNum + 1]!!.classes.setSelection(
+                    selectionIndex = counter++,
+                    secondarySelection = it
+                )
+            }
         }
 
         super.setLvl(levNum)

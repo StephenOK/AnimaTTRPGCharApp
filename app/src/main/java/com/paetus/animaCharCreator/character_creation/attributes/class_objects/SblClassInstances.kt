@@ -50,6 +50,60 @@ class SblClassInstances(
         charInstance.updateTotalSpent()
     }
 
+    override fun setSelection(
+        selectionIndex: Int,
+        secondarySelection: Int
+    ): Int {
+        //record current selected value
+        val prevIndex = freelancerSelection[selectionIndex] - 1
+
+        //if user is clearing selection
+        if(secondarySelection == 0){
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.levelLoop(endLevel = 20){
+                    if(it.classes.ownClass.intValue == 0) {
+                        it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
+                        it.classes.freelancerSelection[selectionIndex] = 0
+                    }
+                }
+
+            //set new input
+            freelancerSelection[selectionIndex] = 0
+        }
+
+        //user is making a selection
+        else{
+            //determine that this input is not taken in another record index
+            freelancerSelection.forEach{secondary->
+                //return current value if match found
+                if(secondary == secondarySelection)
+                    return freelancerSelection[selectionIndex]
+            }
+
+            //remove previous bonus if one taken
+            if(prevIndex >= 0)
+                charInstance.levelLoop(endLevel = 20){
+                    it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
+                }
+
+            //set new input
+            freelancerSelection[selectionIndex] = secondarySelection
+
+            //add new bonus
+            charInstance.levelLoop(endLevel = 20){
+                it.classes.freelancerSelection[selectionIndex] = secondarySelection
+                it.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(classBonus = 10)
+            }
+        }
+
+        //update class totals
+        charInstance.secondaryList.getAllSecondaries().forEach{it.classTotalRefresh()}
+
+        //return changed value
+        return freelancerSelection[selectionIndex]
+    }
+
     /**
      * Gets the DP spent in this section.
      */

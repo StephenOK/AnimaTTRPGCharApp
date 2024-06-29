@@ -8,6 +8,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
 import java.io.File
@@ -82,6 +83,12 @@ class SblChar(
                     selectionIndex = counter++,
                     secondarySelection = it
                 )
+            }
+
+            //apply natural bonus values to new character record
+            secondaryList.getAllSecondaries().forEach{
+                it as SblSecondaryCharacteristic
+                charRefs[levNum + 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
             }
         }
 

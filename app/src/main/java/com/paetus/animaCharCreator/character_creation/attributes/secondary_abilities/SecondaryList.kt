@@ -176,7 +176,7 @@ open class SecondaryList(
      *
      * @param characteristic secondary characteristic to toggle the bonus of
      */
-    fun toggleNatBonus(characteristic: SecondaryCharacteristic){
+    open fun toggleNatBonus(characteristic: SecondaryCharacteristic){
         //if natural bonus is currently off
         if(!characteristic.bonusApplied.value){
             //make true if characteristic is invested in and there are bonuses available
@@ -194,7 +194,7 @@ open class SecondaryList(
      *
      * @return number of natural bonuses held
      */
-    private fun countNatBonuses(): Int{
+    fun countNatBonuses(): Int{
         //initialize counter
         var total = 0
 

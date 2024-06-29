@@ -419,6 +419,12 @@ class CharacterFragmentViewModel(
                 }
         }
 
+        //determine that all natural bonuses have been distributed
+        if(charInstance.secondaryList.countNatBonuses() < charInstance.lvl.intValue)
+            output.add{
+                stringResource(R.string.natBonusNotDistributed)
+            }
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }

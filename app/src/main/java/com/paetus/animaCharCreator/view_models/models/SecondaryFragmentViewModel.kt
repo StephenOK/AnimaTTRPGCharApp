@@ -315,6 +315,13 @@ class SecondaryFragmentViewModel(
             secondaryList.toggleNatBonus(characteristic = secondaryItem)
 
             //update the appropriate values
+            updateNaturalBonus()
+        }
+
+        /**
+         * Updates the natural bonus checkbox and associated text.
+         */
+        fun updateNaturalBonus(){
             _natBonusCheck.update{secondaryItem.bonusApplied.value}
             updateTotal()
             _checkedText.update{updateCheckedText()}
@@ -422,6 +429,9 @@ class SecondaryFragmentViewModel(
 
             //update the displayed secondary class points
             it.setClassPoints()
+
+            //update the displayed natural bonus taken
+            it.updateNaturalBonus()
 
             //update the displayed secondary totals
             it.updateTotal()

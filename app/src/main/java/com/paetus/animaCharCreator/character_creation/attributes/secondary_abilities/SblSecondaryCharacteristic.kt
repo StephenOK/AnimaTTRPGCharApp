@@ -66,12 +66,40 @@ class SblSecondaryCharacteristic(
     }
 
     /**
-     * Gets the initial total value for the secondary characteristic.
+     * Setter for natural bonus.
+     *
+     * @param natBonus true if applying a natural bonus to the characteristic
      */
-    override fun getTotal(){
-        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue
+    override fun setNatBonus(natBonus: Boolean) {
+        (parent.charInstance as SblChar).levelLoop(
+            startLevel = parent.charInstance.lvl.intValue,
+            endLevel = 20
+        ){
+            it.secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
+        }
+
+        super.setNatBonus(natBonus = natBonus)
     }
 
+    /**
+     * Recalculates the total value after any other setter is called.
+     */
+    override fun refreshTotal() {
+        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue
+
+        //add natural bonus points
+        if (parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
+            total.intValue += 5
+
+        //add points for jack of all trades advantage
+        if(parent.allTradesTaken.value) total.intValue += 10
+        //remove points for no points and missing that advantage
+        else if (pointsApplied.intValue == 0) total.intValue -= 30
+    }
+
+    /**
+     * Recalculates the points applied to this characteristic.
+     */
     fun pointsAppliedUpdate() {
         //reset point value
         pointsApplied.intValue = 0

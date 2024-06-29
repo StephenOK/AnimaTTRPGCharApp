@@ -137,7 +137,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      *
      * @param natBonus true if applying a natural bonus to the characteristic
      */
-    fun setNatBonus(natBonus: Boolean) {
+    open fun setNatBonus(natBonus: Boolean) {
         bonusApplied.value = natBonus
         refreshTotal()
     }
@@ -154,19 +154,12 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     }
 
     /**
-     * Gets the initial total value for the secondary characteristic.
-     */
-    open fun getTotal(){
-        total.intValue = modVal.intValue + pointsApplied.intValue + special.intValue +
-                ((classPointsPerLevel.intValue + specialPerLevel.intValue) * parent.charInstance.lvl.intValue)
-    }
-
-    /**
      * Recalculates the total value after any other setter is called.
      */
-    fun refreshTotal() {
+    open fun refreshTotal() {
         //add all invested and level points for this section
-        getTotal()
+        total.intValue = modVal.intValue + pointsApplied.intValue + special.intValue +
+                ((classPointsPerLevel.intValue + specialPerLevel.intValue) * parent.charInstance.lvl.intValue)
 
         //add natural bonus points
         if (bonusApplied.value) total.intValue += 5

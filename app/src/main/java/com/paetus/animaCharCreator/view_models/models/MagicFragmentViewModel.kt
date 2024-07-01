@@ -720,7 +720,7 @@ class MagicFragmentViewModel(
     init{
         //set the initial imbalance bias
         setImbalanceIsAttack(isOffense = magic.imbalanceIsAttack.value)
-
+        allBooks.forEach{it.refreshItem()}
         updateHeldSpells()
     }
 
@@ -733,8 +733,7 @@ class MagicFragmentViewModel(
         setProjectionImbalance(magic.magProjImbalance.intValue.toString())
         setMagicLevelSpent()
 
-        if(!isGifted())
-            allBooks.forEach{book -> book.refreshItem()}
+        allBooks.forEach{book -> book.refreshItem()}
 
         updateHeldSpells()
     }

@@ -40,11 +40,11 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         pickedCost = 0,
         onTake = { input, _ ->
             //add the desired element as a natural path bonus
-            charInstance.magic.allBooks[input!!].isNatural.value = true
+            charInstance.magic.allBooks[input!!].setNatural(isNat = true)
         },
         onRemove = { input, _ ->
             //remove the indicated natural path bonus
-            charInstance.magic.allBooks[input!!].isNatural.value = false
+            charInstance.magic.allBooks[input!!].setNatural(isNat = false)
         }
     )
 

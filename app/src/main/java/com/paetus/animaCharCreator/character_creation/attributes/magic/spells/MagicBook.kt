@@ -144,13 +144,17 @@ open class MagicBook(
         //if the character does not already possess this free spell
         if(charHasFreeSpell(freeSpell = spell) == null){
             //search for a freespell in this book of equivalent level
+            var removedSpell: FreeSpell? = null
             freeSpells.forEach{freeSpell ->
-                //remove it if found
+                //record spell to remove
                 if(freeSpell.level == spell.level){
-                    freeSpells.remove(element = freeSpell)
+                    removedSpell = freeSpell
                     return@forEach
                 }
             }
+
+            //remove it if found
+            if(removedSpell != null) freeSpells.remove(removedSpell)
 
             //add this spell to the book
             freeSpells.add(element = spell)

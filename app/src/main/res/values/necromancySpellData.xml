@@ -78,7 +78,7 @@
 
     <string name = "vampireStigma">Vampire Stigma</string>
     <string name = "vampireStigmaDesc">The target of this spell automatically absorbs 10%% of the damage he deals to any opponent. Vampire Stigma will work both on physical attacks and direct damage spells, as well as similar supernatural powers. Attacks against creatures with Damage Resistance give the caster only 2%% of the dealt damage.</string>
-    <string name = "vampireStigmaEff">+5%% additional damage absorption (+1%% against creatures with Damage Resistance)</string>
+    <string name = "vampireStigmaEff">+5% additional damage absorption (+1% against creatures with Damage Resistance)</string>
 
     <string name = "spectralForm">Spectral Form</string>
     <string name = "spectralFormDesc">The necromancer\'s physical body becomes a burning, spectral mass that damages the essence of all living beings that comes into contact with it. Anyone touching its body feels the chill of death and is forced to make a PhR or MR Check with a Difficulty equal to twice the necromancer\'s Presence. If the affected character fails the check, he suffers an All Action Penalty and loses a number of Life Points equal to half the number by which he failed the check. The necromancer can only be hit by Energy damaging attacks for as long as he remains in this condition. The maximum Presence affected by this spell is 100.</string>

@@ -28,7 +28,7 @@ class EssenceBook: MagicBook(Element.Essence){
         isActive = true,
         level = 6,
         zCost = 30,
-        effect = R.string.detectEssenceEff,
+        effect = R.string.detectEssenceDesc,
         addedEffect = R.string.detectEssenceEff,
         zMax = 10,
         maintenance = 10,

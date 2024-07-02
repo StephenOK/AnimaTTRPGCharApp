@@ -144,18 +144,45 @@ open class MagicBook(
         //if the character does not already possess this free spell
         if(charHasFreeSpell(freeSpell = spell) == null){
             //search for a freespell in this book of equivalent level
+            var removedSpell: FreeSpell? = null
             freeSpells.forEach{freeSpell ->
-                //remove it if found
+                //record spell to remove
                 if(freeSpell.level == spell.level){
-                    freeSpells.remove(element = freeSpell)
+                    removedSpell = freeSpell
                     return@forEach
                 }
             }
+
+            //remove it if found
+            if(removedSpell != null) freeSpells.remove(removedSpell)
 
             //add this spell to the book
             freeSpells.add(element = spell)
         }
 
+    }
+
+    /**
+     * Sets the natural path status of this book.
+     *
+     * @param isNat what value to set the natural path
+     */
+    fun setNatural(isNat: Boolean){
+        //set the natural value
+        isNatural.value = isNat
+
+        //initialize opposing elements' primary status
+        var hasOpposing = false
+
+        //check if any opposing book is a primary element
+        opposingBooks.forEach{
+            if(it.isPrimary.value) hasOpposing = true
+        }
+
+        //add primary element status if needed
+        if(isNat && !hasOpposing) isPrimary.value = true
+        //remove primary element status if needed
+        else if(!hasInvestment() && isPrimary.value) isPrimary.value = false
     }
 
     /**
@@ -165,13 +192,14 @@ open class MagicBook(
      */
     fun hasInvestment(): Boolean{
         //return true for points in book or individual spells purchased
-        return pointsIn.intValue > 0 || individualSpells.isNotEmpty()
+        return pointsIn.intValue > 0 || individualSpells.isNotEmpty() || isNatural.value
     }
 
     /**
-     * Determine if the character possesses this spell.
+     * Check if the character has the indicated free spell.
      *
      * @param freeSpell spell to check for character's ownership of
+     * @return magic book the free spell belongs to
      */
     open fun charHasFreeSpell(freeSpell: FreeSpell): MagicBook?{
         return opposingBooks[1].charHasFreeSpell(freeSpell = freeSpell)

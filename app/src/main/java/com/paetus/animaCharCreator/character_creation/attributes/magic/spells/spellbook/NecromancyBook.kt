@@ -604,6 +604,8 @@ class NecromancyBook: MagicBook(Element.Necromancy){
         }
         //if removing primary element status
         else if (!isTaking && isPrimary.value){
+            isPrimary.value = false
+
             //initialize opposing book pointer
             var index = 0
 
@@ -612,12 +614,24 @@ class NecromancyBook: MagicBook(Element.Necromancy){
                 val book1 = opposingBooks[index++]
                 val book2 = opposingBooks[index++]
 
-                //make the larger invested in book the primary one
-                if(book1.pointsIn.intValue > book2.pointsIn.intValue)
-                    book1.changePrimary(isTaking = true)
-                //make sure there are points invested in the other book
-                else if(book2.hasInvestment())
-                    book2.changePrimary(isTaking = true)
+                //if only first book invested in, set first book as primary element
+                if(book1.hasInvestment() && !book2.hasInvestment())
+                    book1.changePrimary(true)
+
+                //if only second book invested in, set second book as primary element
+                else if(book2.hasInvestment() && !book1.hasInvestment())
+                    book2.changePrimary(true)
+                //if both books invested in
+                else if(book1.hasInvestment() && book2.hasInvestment()){
+                    //set second book as primary if it has more points, more individual spells, or if the only one with a natural bonus
+                    if(book2.pointsIn.intValue > book1.pointsIn.intValue ||
+                        book2.individualSpells.size > book1.individualSpells.size ||
+                        book2.isNatural.value && !book1.isNatural.value)
+                        book2.changePrimary(true)
+                    //otherwise, set first book as primary
+                    else
+                        book1.changePrimary(true)
+                }
             }
         }
     }

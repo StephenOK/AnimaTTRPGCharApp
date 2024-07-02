@@ -17,8 +17,8 @@
     <string name = "natKnowledgeEff">+5 to the maximum Presence affected</string>
 
     <string name = "healing">Healing</string>
-    <string name = "healingDesc">This spell instantly heals one target creature by restoring up to 30%% of lost LP. The spell cannot recover lost limbs, nor can it eliminate critical-based penalties, but it does stop all types of bleeding. Damage Resistance beings only recover half that percentage.</string>
-    <string name = "healingEff">+5%% Life Points</string>
+    <string name = "healingDesc">This spell instantly heals one target creature by restoring up to 30% of lost LP. The spell cannot recover lost limbs, nor can it eliminate critical-based penalties, but it does stop all types of bleeding. Damage Resistance beings only recover half that percentage.</string>
+    <string name = "healingEff">+5% Life Points</string>
 
     <string name = "soulBarrier">Soul Barrier</string>
     <string name = "soulBarrierDesc">This spell creates a barrier that stops all Spiritual attacks affecting supernatural Resistances. In other words, the shield can be used to stop attacks that would force the caster to roll for MR or PhR. It is not capable of stopping attacks that cause damage with added effects, such as Rain of Destruction. The shield itself does not have Life Points, since it does not protect against damaging impacts. The barrier cannot stop attacks that require a Resistance Check of 120 or higher.</string>

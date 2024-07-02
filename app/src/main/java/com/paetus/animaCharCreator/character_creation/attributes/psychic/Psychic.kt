@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of a character's data
  */
-class Psychic(private val charInstance: BaseCharacter){
+open class Psychic(private val charInstance: BaseCharacter){
     //initialize value for Psychic Potential
     val psyPotentialBase = mutableIntStateOf(value = 10)
 
@@ -57,6 +57,16 @@ class Psychic(private val charInstance: BaseCharacter){
     //collect all disciplines into a list
     val allDisciplines = listOf(telepathy, psychokinesis, pyrokinesis, cryokinesis,
         physicalIncrease, energyPowers, sentiencePowers, telemetry, matrixPowers)
+
+    /**
+     * Gets the class's psychic point DP cost.
+     */
+    fun psyPointCost(): Int{return charInstance.classes.getClass().psyPointGrowth}
+
+    /**
+     * Gets the class's psychic projection DP cost.
+     */
+    fun psyProjCost(): Int{return charInstance.classes.getClass().psyProjGrowth}
 
     /**
      * Determines the value for the character's Psychic Potential.
@@ -123,12 +133,12 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Set the amount of base Psychic Points for the character.
      */
-    fun setInnatePsy(){
+    open fun setInnatePsy(){
         innatePsyPoints.intValue =
             //set points to 0 if at level 0
             if (charInstance.lvl.intValue == 0) 0
             //start character at 1 point and add more depending on additional levels
-            else 1 + (charInstance.lvl.intValue - 1)/charInstance.classes.ownClass.value.psyPerTurn
+            else 1 + (charInstance.lvl.intValue - 1)/charInstance.classes.getClass().psyPerTurn
 
         //update total
         updatePsyPointTotal()
@@ -137,7 +147,7 @@ class Psychic(private val charInstance: BaseCharacter){
     /**
      * Recalculates the total amount of Psychic Points the character can utilize.
      */
-    private fun updatePsyPointTotal(){
+    fun updatePsyPointTotal(){
         totalPsychicPoints.intValue = boughtPsyPoints.intValue + innatePsyPoints.intValue
 
         //sets pyrokinesis as set if character is duk'zarist and does not have pyrokinesis
@@ -181,7 +191,7 @@ class Psychic(private val charInstance: BaseCharacter){
      * @return true if valid
      */
     fun getValidProjection(): Boolean{
-        return psyProjectionBought.intValue * charInstance.classes.ownClass.value.psyProjGrowth <= charInstance.maxPsyDP.intValue/2
+        return psyProjectionBought.intValue * charInstance.classes.getClass().psyProjGrowth <= charInstance.maxPsyDP.intValue/2
     }
 
     /**
@@ -436,8 +446,8 @@ class Psychic(private val charInstance: BaseCharacter){
      * @return number of points spent in the psychic section
      */
     fun calculateSpent(): Int{
-        return (boughtPsyPoints.intValue * charInstance.classes.ownClass.value.psyPointGrowth) +
-                (psyProjectionBought.intValue * charInstance.classes.ownClass.value.psyProjGrowth)
+        return (boughtPsyPoints.intValue * charInstance.classes.getClass().psyPointGrowth) +
+                (psyProjectionBought.intValue * charInstance.classes.getClass().psyProjGrowth)
     }
 
     /**

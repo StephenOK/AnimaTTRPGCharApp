@@ -176,7 +176,7 @@ open class SecondaryList(
      *
      * @param characteristic secondary characteristic to toggle the bonus of
      */
-    fun toggleNatBonus(characteristic: SecondaryCharacteristic){
+    open fun toggleNatBonus(characteristic: SecondaryCharacteristic){
         //if natural bonus is currently off
         if(!characteristic.bonusApplied.value){
             //make true if characteristic is invested in and there are bonuses available
@@ -194,7 +194,7 @@ open class SecondaryList(
      *
      * @return number of natural bonuses held
      */
-    private fun countNatBonuses(): Int{
+    fun countNatBonuses(): Int{
         //initialize counter
         var total = 0
 
@@ -482,7 +482,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customAthletics,
-                    newGrowth = charInstance.classes.ownClass.value.athGrowth
+                    newGrowth = charInstance.classes.getClass().athGrowth
                 )
             }
 
@@ -491,7 +491,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSocials,
-                    newGrowth = charInstance.classes.ownClass.value.socGrowth
+                    newGrowth = charInstance.classes.getClass().socGrowth
                 )
             }
 
@@ -500,7 +500,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customPercs,
-                    newGrowth = charInstance.classes.ownClass.value.percGrowth
+                    newGrowth = charInstance.classes.getClass().percGrowth
                 )
             }
 
@@ -509,7 +509,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customIntells,
-                    newGrowth = charInstance.classes.ownClass.value.intellGrowth
+                    newGrowth = charInstance.classes.getClass().intellGrowth
                 )
             }
 
@@ -518,7 +518,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customVigors,
-                    newGrowth = charInstance.classes.ownClass.value.vigGrowth
+                    newGrowth = charInstance.classes.getClass().vigGrowth
                 )
             }
 
@@ -527,7 +527,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSubs,
-                    newGrowth = charInstance.classes.ownClass.value.subterGrowth
+                    newGrowth = charInstance.classes.getClass().subterGrowth
                 )
             }
 
@@ -536,7 +536,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customCreates,
-                    newGrowth = charInstance.classes.ownClass.value.createGrowth
+                    newGrowth = charInstance.classes.getClass().createGrowth
                 )
             }
 

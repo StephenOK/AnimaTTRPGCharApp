@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that manages all of the character's stats
  */
-class SummonAbility(private val charInstance: BaseCharacter){
+open class SummonAbility(private val charInstance: BaseCharacter){
     //initialize points spent in this item
     val buyVal = mutableIntStateOf(value = 0)
 
@@ -19,7 +19,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
     val modVal = mutableIntStateOf(value = 0)
 
     //initialize points gained in this item per level
-    private val pointsPerLevel = mutableIntStateOf(value = 0)
+    val pointsPerLevel = mutableIntStateOf(value = 0)
 
     //initialize total class points in this item
     val levelTotal = mutableIntStateOf(value = 0)
@@ -61,7 +61,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
     /**
      * Refresh the number of points in this stat from levels.
      */
-    fun updateLevelTotal(){
+    open fun updateLevelTotal(){
         levelTotal.intValue =
             if(charInstance.lvl.intValue != 0) pointsPerLevel.intValue * charInstance.lvl.intValue
             else pointsPerLevel.intValue/2
@@ -72,7 +72,7 @@ class SummonAbility(private val charInstance: BaseCharacter){
     /**
      * Refresh the total value for this item.
      */
-    private fun updateTotal(){
+    fun updateTotal(){
         abilityTotal.intValue = buyVal.intValue + modVal.intValue + levelTotal.intValue
     }
 

@@ -179,7 +179,7 @@ private fun SummoningAbilityRow(
 @Composable
 fun SummoningPreview(){
     val charInstance = BaseCharacter()
-    val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning, charInstance.classes.ownClass)
+    val summoningFragVM = SummoningFragmentViewModel(charInstance.summoning)
     val homePageVM = HomePageViewModel(charInstance)
 
     SummoningFragment(summoningFragVM, homePageVM)

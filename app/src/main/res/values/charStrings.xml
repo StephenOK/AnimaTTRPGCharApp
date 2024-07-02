@@ -69,6 +69,7 @@
     <string name = "zeonHead">Zeon:</string>
     <string name = "maMultHead">MA Multiple</string>
     <string name = "psyPointHead">Psychic Points:</string>
+    <string name = "classChangedNotice">Next Level\'s Class:</string>
 
     <string name = "combatAbilityHead">Combat Ability:</string>
     <string name = "magicAbilityHead">Supernatural Ability:</string>
@@ -119,5 +120,14 @@
     <string name = "reducedCostHead">Reduced Costs</string>
 
     <string name = "failedLevelChangeTitle">Could Not Change Level</string>
-    <string name = "failedLevelChangeText">Current level\'s DP have not been appropriately spent and changing level cannot happen until then.</string>
+    <string name = "failedLevelChangeBody">Change failed for the following reason(s):</string>
+    <string name = "underDpFailure">-all DP have not been spent</string>
+    <string name = "overDpFailure">-too many DP have been spent</string>
+    <string name = "sectionCapBreach">-limit for the character\'s %s Abilities has been passed</string>
+    <string name = "invalidPrimaryBonus">-too many points added as bonus to primary characteristics</string>
+    <string name = "primaryBonusPointReduction">-a primary characteristic\'s bonus (%s) is smaller than in a previous level</string>
+    <string name = "combatPointMisuse">-points in combat abilities have not been appropriately spent</string>
+    <string name = "combatInputPointReduction">-a combat item\'s value (%s) is smaller than in a previous level</string>
+    <string name = "secondaryInputPointReduction">-a secondary item\'s value (%s) is smaller than in a previous level</string>
+    <string name = "natBonusNotDistributed">-all secondary natural bonuses have not been distributed</string>
 </resources>

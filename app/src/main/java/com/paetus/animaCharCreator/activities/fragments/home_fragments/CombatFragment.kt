@@ -112,7 +112,7 @@ fun CombatFragment(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = combatFragVM.getClassLife(),
+                        text = combatFragVM.classLife.collectAsState().value.toString(),
                         modifier = Modifier
                             .weight(0.2f),
                         textAlign = TextAlign.Center
@@ -198,7 +198,7 @@ fun CombatFragment(
                 //create table row for each combat item
                 combatFragVM.allCombatItems.forEach{combatItem ->
                     CombatItemRow(
-                        combatItem = combatItem,
+                        combatData = combatItem,
                         combatFragVM = combatFragVM,
                         homePageVM = homePageVM
                     )
@@ -302,13 +302,13 @@ fun CombatFragment(
 /**
  * Creates a table row for the combat items and allows input and total display.
  *
- * @param combatItem character's combat stat to display
+ * @param combatData character's combat stat to display
  * @param combatFragVM viewModel that manages this fragment
  * @param homePageVM viewModel that manages the bottom bar display
  */
 @Composable
 private fun CombatItemRow(
-    combatItem: CombatFragViewModel.CombatItemData,
+    combatData: CombatFragViewModel.CombatItemData,
     combatFragVM: CombatFragViewModel,
     homePageVM: HomePageViewModel
 ){
@@ -316,53 +316,53 @@ private fun CombatItemRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         //initialize dp cost of this item
-        val focusString = stringResource(id = R.string.dpLabel, combatItem.growthGetter())
+        val focusString = stringResource(id = R.string.dpLabel, combatData.growthGetter())
 
         //row label
         Text(
-            text = stringResource(id = combatItem.label),
+            text = stringResource(id = combatData.combatItem.itemLabel),
             modifier = Modifier.weight(0.2f)
         )
 
         //stat input field
         NumberInput(
-            inputText = combatItem.pointsIn.collectAsState().value,
+            inputText = combatData.pointsIn.collectAsState().value,
             inputFunction = {
-                combatItem.setPointsIn(it.toInt())
+                combatData.setPointsIn(it.toInt())
                 homePageVM.updateExpenditures()
             },
-            emptyFunction = {combatItem.setPointsIn(display = "")},
+            emptyFunction = {combatData.setPointsIn(display = "")},
             modifier = Modifier
                 .onFocusChanged {
-                    if (it.isFocused) combatItem.setLabelDisplay(dpDisplay = focusString)
-                    else combatItem.setLabelDisplay(dpDisplay = "")
+                    if (it.isFocused) combatData.setLabelDisplay(dpDisplay = focusString)
+                    else combatData.setLabelDisplay(dpDisplay = "")
                 }
                 .weight(0.2f),
-            label = combatItem.labelDisplay.collectAsState().value,
-            isError = combatItem.label != R.string.wearLabel && !combatFragVM.pointValid.collectAsState().value
+            label = combatData.labelDisplay.collectAsState().value,
+            isError = combatData.combatItem.itemLabel != R.string.wearLabel && !combatFragVM.pointValid.collectAsState().value
         )
 
         //display stat's modifier
         Text(
-            text = combatItem.combatItem.modPoints.intValue.toString(),
+            text = combatData.combatItem.modPoints.intValue.toString(),
             modifier = Modifier.weight(0.2f),
             textAlign = TextAlign.Center
         )
 
         //display stat's class bonus
         Text(
-            text = combatItem.combatItem.classTotal.intValue.toString(),
+            text = combatData.combatItem.classTotal.intValue.toString(),
             modifier = Modifier.weight(0.2f),
             textAlign = TextAlign.Center
         )
 
         //display stat's total
         AnimatedContent(
-            targetState = combatItem.totalVal.collectAsState().value,
+            targetState = combatData.totalVal.collectAsState().value,
             modifier = Modifier
                 .weight(0.2f),
             transitionSpec = numberScroll,
-            label = "${stringResource(id = combatItem.label)}Total"
+            label = "${stringResource(id = combatData.combatItem.itemLabel)}Total"
         ){
             Text(
                 text = "$it",
@@ -430,8 +430,7 @@ fun CombatPreview(){
     val charInstance = BaseCharacter()
     val combatFragVM = CombatFragViewModel(
         charInstance.combat,
-        charInstance.primaryList,
-        charInstance.classes.ownClass
+        charInstance.primaryList
     )
     val homePageFragVM = HomePageViewModel(charInstance)
 

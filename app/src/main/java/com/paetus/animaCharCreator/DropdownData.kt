@@ -15,12 +15,14 @@ import kotlinx.coroutines.flow.update
  * @param optionsRef reference to list of dropdown items
  * @param initialIndex starting item index to first display
  * @param onChange function to run on changing selected item
+ * @param refreshFunc function that refreshes the displayed item
  */
 class DropdownData(
     val nameRef: Int,
     val optionsRef: Int,
     initialIndex: Int,
-    val onChange: (Int) -> Unit
+    val onChange: (Int) -> Unit,
+    val refreshFunc: (() -> Int)? = null
 ){
     //initialize the selected item
     private val _output = MutableStateFlow(value = initialIndex)
@@ -48,7 +50,9 @@ class DropdownData(
 
         //perform the required change and close the dropdown
         onChange(dropdownIndex)
-        openToggle()
+
+        //close dropdown if it's open
+        if(isOpen.value) openToggle()
     }
 
     /**
@@ -69,5 +73,13 @@ class DropdownData(
             if(isOpen.value) Icons.Filled.KeyboardArrowUp
             else Icons.Filled.KeyboardArrowDown
         }
+    }
+
+    /**
+     * Changes the displayed item as indicated by the refreshFunc input.
+     */
+    fun refreshDisplay(){
+        if(refreshFunc != null)
+            _output.update{refreshFunc!!()}
     }
 }

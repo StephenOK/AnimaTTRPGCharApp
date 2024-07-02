@@ -28,15 +28,15 @@ import java.nio.charset.StandardCharsets
  * Component that manages a character's ki points and accumulation.
  * Also manages the character's ki abilities and dominion techniques.
  *
- * @param charInstance object that holds all of the character's data.
+ * @param charInstance object that holds all of the character's data
  */
-class Ki(private val charInstance: BaseCharacter){
+open class Ki(private val charInstance: BaseCharacter){
     //data table of technique effects
     val techniqueDatabase = TechniqueTableDataRecord()
 
     //initialize martial knowledge values
     val martialKnowledgeMax = mutableIntStateOf(value = 10)
-    private val martialKnowledgeSpec = mutableIntStateOf(value = 0)
+    val martialKnowledgeSpec = mutableIntStateOf(value = 0)
     val martialKnowledgeRemaining = mutableIntStateOf(value = 10)
 
     //initialize stat ki points and accumulation
@@ -80,9 +80,19 @@ class Ki(private val charInstance: BaseCharacter){
     val customTechniques = mutableMapOf<CustomTechnique, MutableState<Boolean>>()
 
     /**
+     * Gets the class's ki accumulation DP cost.
+     */
+    fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
+
+    /**
+     * Gets the class's ki point DP cost.
+     */
+    fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
+
+    /**
      * Sets martial knowledge to the appropriate amount for each taken item.
      */
-    private fun updateMkSpent(){
+    fun updateMkSpent(){
         //reset martial knowledge remaining to its maximum value
         martialKnowledgeRemaining.intValue = martialKnowledgeMax.intValue
 
@@ -110,12 +120,12 @@ class Ki(private val charInstance: BaseCharacter){
     /**
      * Recalculates the character's maximum martial knowledge
      */
-    fun updateMK(){
+    open fun updateMK(){
         //determine MK gained from class levels
         val classMK =
-            if(charInstance.lvl.intValue != 0) charInstance.classes.ownClass.value.mkPerLevel * charInstance.lvl.intValue
+            if(charInstance.lvl.intValue != 0) charInstance.classes.getClass().mkPerLevel * charInstance.lvl.intValue
             //give half from one level if level 0 character
-            else charInstance.classes.ownClass.value.mkPerLevel/2
+            else charInstance.classes.getClass().mkPerLevel/2
 
         martialKnowledgeMax.intValue = classMK + charInstance.weaponProficiencies.mkFromArts() + martialKnowledgeSpec.intValue
         updateMkSpent()
@@ -160,8 +170,8 @@ class Ki(private val charInstance: BaseCharacter){
         var total = 0
 
         //add bought ki points and accumulation values
-        total += totalPointBuy.intValue * charInstance.classes.ownClass.value.kiGrowth
-        total += totalAccBuy.intValue * charInstance.classes.ownClass.value.kiAccumMult
+        total += totalPointBuy.intValue * charInstance.classes.getClass().kiGrowth
+        total += totalAccBuy.intValue * charInstance.classes.getClass().kiAccumMult
 
         return total
     }

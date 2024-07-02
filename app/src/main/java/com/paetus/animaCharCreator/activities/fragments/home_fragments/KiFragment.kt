@@ -542,7 +542,10 @@ private fun TechniqueRow(
 fun KiPreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.classes.ownClass, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(
+        charInstance.ki,
+        LocalContext.current
+    )
     kiFragVM.toggleTechOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

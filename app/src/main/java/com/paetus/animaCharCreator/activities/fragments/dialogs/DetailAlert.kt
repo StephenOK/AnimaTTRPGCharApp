@@ -245,7 +245,7 @@ private fun AdvantageDetails(
 
 @Composable
 fun ClassDetails(charFragVM: CharacterFragmentViewModel){
-    val charClass = charFragVM.classDetailItem.collectAsState().value
+    val charClass = charFragVM.getDisplayedClass()
 
     //retrieve all archetype strings
     var archetypeList = ""
@@ -269,7 +269,7 @@ fun ClassDetails(charFragVM: CharacterFragmentViewModel){
         ) {
             OutlinedDropdown(
                 data = charFragVM.classDetailDropdown
-            ) {}
+            )
         }
 
         Spacer(modifier =  Modifier.height(20.dp))

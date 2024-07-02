@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
+import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
@@ -26,6 +28,8 @@ import java.nio.charset.StandardCharsets
  * Holder class of all other character creation objects
  */
 open class BaseCharacter() {
+    val host: MutableState<SblChar?> = mutableStateOf(null)
+
     //character's name
     val charName = mutableStateOf(value = "")
 
@@ -40,18 +44,22 @@ open class BaseCharacter() {
 
     //list of character's other abilities
     open val primaryList = PrimaryList(charInstance = this)
-    val combat = CombatAbilities(charInstance = this)
+    open val combat = CombatAbilities(charInstance = this)
     open val secondaryList = SecondaryList(charInstance = this)
     val weaponProficiencies = WeaponProficiencies(charInstance = this)
-    val ki = Ki(charInstance = this)
-    val magic = Magic(charInstance = this)
-    val summoning = Summoning(charInstance = this)
-    val psychic = Psychic(charInstance = this)
+    open val ki = Ki(charInstance = this)
+    open val magic = Magic(charInstance = this)
+    open val summoning = Summoning(charInstance = this)
+    open val psychic = Psychic(charInstance = this)
     val advantageRecord = AdvantageRecord(charInstance = this)
     val inventory = Inventory(charInstance = this)
 
     //list of all classes available
-    val classes = ClassInstances(charInstance = this)
+    val classRecord: ClassRecord by lazy{
+        if (host.value == null) ClassRecord()
+        else host.value!!.classRecord
+    }
+    open val classes = ClassInstances(charInstance = this)
 
     //list of all race advantages
     val races = RaceAdvantages(charInstance = this)
@@ -184,7 +192,7 @@ open class BaseCharacter() {
         combat.updateClassLife()
 
         //recalculate the other combat abilities
-        combat.allAbilities.forEach{combatItem ->
+        combat.allAbilities().forEach{combatItem ->
             combatItem.updateClassTotal()
         }
 
@@ -198,7 +206,7 @@ open class BaseCharacter() {
         magic.updateZeonFromClass()
 
         //recalculate summoning abilities
-        summoning.allSummoning.forEach{summonItem ->
+        summoning.allSummoning().forEach{summonItem ->
             summonItem.updateLevelTotal()
         }
 
@@ -245,7 +253,7 @@ open class BaseCharacter() {
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.intValue * classes.ownClass.value.lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -476,6 +484,13 @@ open class BaseCharacter() {
     }
 
     /**
+     * Creates a character for use in a SBL character's level record.
+     */
+    constructor(newHost: SblChar): this(){
+        host.value = newHost
+    }
+
+    /**
      * Retrieve byte information for the character.
      */
     val bytes: ByteArray
@@ -499,7 +514,7 @@ open class BaseCharacter() {
             writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(writer = byteArray, input = classes.ownClass.value.saveName)
+            writeDataTo(writer = byteArray, input = classRecord.allClasses[classes.ownClass.intValue].saveName)
             writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
             writeDataTo(writer = byteArray, input = lvl.intValue)
 

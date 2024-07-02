@@ -25,7 +25,7 @@ class SblPrimaryChar(
     override fun setLevelBonus(lvlBonus: Int) {
         //get value of level bonus from previous character levels
         var preBonusVal = 0
-        charInstance.levelLoop(charInstance.lvl.intValue - 1){character ->
+        charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){character ->
             preBonusVal += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
         }
 
@@ -33,22 +33,31 @@ class SblPrimaryChar(
         charInstance.getCharAtLevel().primaryList.allPrimaries()[charIndex].levelBonus.intValue = lvlBonus - preBonusVal
 
         //get new total
-        charInstance.levelLoop(charInstance.lvl.intValue){character ->
+        refreshBonusTotal()
+    }
+
+    /**
+     * Updates the level bonus applied to this item.
+     */
+    fun refreshBonusTotal(){
+        //reset bonus amount
+        levelBonus.intValue = 0
+
+        //add each level's bonus to this total
+        charInstance.levelLoop{character ->
             levelBonus.intValue += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
         }
 
+        //update all relevant items
         updateValues()
     }
 
-    fun levelUpdate(newLevel: Int){
-        //reset level bonus
-        levelBonus.intValue = 0
-
-        //add bonus from each level to the current one
-        charInstance.levelLoop(charLevel = newLevel){character ->
-            levelBonus.intValue += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
-        }
-
-        updateValues()
+    /**
+     * Determines if all inputs for this item are valid.
+     *
+     * @return true if inputs are valid
+     */
+    fun validGrowth(): Boolean{
+        return charInstance.getCharAtLevel().primaryList.allPrimaries()[charIndex].levelBonus.intValue >= 0
     }
 }

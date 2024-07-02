@@ -1,9 +1,7 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SummonAbility
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,39 +13,37 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding fragment.
  *
  * @param summoning character's summoning abilities
- * @param charClass current class that the character is
  */
 class SummoningFragmentViewModel(
-    val summoning: Summoning,
-    val charClass: MutableState<CharClass>
+    val summoning: Summoning
 ): ViewModel() {
     //initialize all summoning ability data
     private val summon =
         SummonItemData(
             nameRef = R.string.summonTitle,
             summonAbility = summoning.summon,
-            dpGetter = {charClass.value.summonGrowth}
+            dpGetter = {summoning.summonCost()}
         )
 
     private val control =
         SummonItemData(
             nameRef = R.string.controlTitle,
             summonAbility = summoning.control,
-            dpGetter = {charClass.value.controlGrowth}
+            dpGetter = {summoning.controlCost()}
         )
 
     private val bind =
         SummonItemData(
             nameRef = R.string.bindTitle,
             summonAbility = summoning.bind,
-            dpGetter = {charClass.value.bindGrowth}
+            dpGetter = {summoning.bindCost()}
         )
 
     private val banish =
         SummonItemData(
             nameRef = R.string.banishTitle,
             summonAbility = summoning.banish,
-            dpGetter = {charClass.value.banishGrowth}
+            dpGetter = {summoning.banishCost()}
         )
 
     //gather all summoning items

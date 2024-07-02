@@ -79,7 +79,7 @@ fun CharacterPageFragment(
                     //get openable state of this dropdown
                     val isOpenable =
                         if(dropdown.data.nameRef == R.string.levelText)
-                            charFragVM.getLevelChangeable()
+                            charFragVM.getLevelChangeable() == null
                         else
                             true
 
@@ -115,6 +115,19 @@ fun CharacterPageFragment(
                                 onClick = {dropdown.detailOpen()},
                                 modifier = Modifier
                                     .weight(1f - dropdown.weight)
+                            )
+                        }
+                    }
+
+                    //display if at class object and if next level's class is different
+                    if(dropdown.data.nameRef == R.string.classLabel &&
+                        charFragVM.getClassChanged()){
+                        //notify of changing class
+                        InfoRow(label = stringResource(R.string.classChangedNotice)){modifier, _ ->
+                            //display next level's class name
+                            Text(
+                                text = stringArrayResource(id = R.array.classArray)[charFragVM.getNextLevelClass()],
+                                modifier = modifier
                             )
                         }
                     }
@@ -477,7 +490,17 @@ fun LevelChangeAlert(
     AlertDialog(
         onDismissRequest = {charFragVM.toggleFailedLevelChangeOpen()},
         title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
-        text = {Text(text = stringResource(id = R.string.failedLevelChangeText))},
+        text = {
+            Column {
+                //display dialog head
+                Row { Text(text = stringResource(R.string.failedLevelChangeBody)) }
+
+                //display all errors found
+                charFragVM.getLevelChangeable()!!.forEach {
+                    Row {Text(text = it())}
+                }
+            }
+        },
         confirmButton = {
             TextButton(onClick = {charFragVM.toggleFailedLevelChangeOpen()}){
                 Text(

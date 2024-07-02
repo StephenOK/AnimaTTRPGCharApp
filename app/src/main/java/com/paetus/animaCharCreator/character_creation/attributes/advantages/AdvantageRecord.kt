@@ -182,13 +182,13 @@ class AdvantageRecord(
                 //get current growth value that will be changed by this advantage
                 val prevGrowth =
                     when(taken){
-                        0 -> charInstance.classes.ownClass.value.athGrowth
-                        1 -> charInstance.classes.ownClass.value.createGrowth
-                        2 -> charInstance.classes.ownClass.value.percGrowth
-                        3 -> charInstance.classes.ownClass.value.socGrowth
-                        4 -> charInstance.classes.ownClass.value.subterGrowth
-                        5 -> charInstance.classes.ownClass.value.intellGrowth
-                        6 -> charInstance.classes.ownClass.value.vigGrowth
+                        0 -> charInstance.classes.getClass().athGrowth
+                        1 -> charInstance.classes.getClass().createGrowth
+                        2 -> charInstance.classes.getClass().percGrowth
+                        3 -> charInstance.classes.getClass().socGrowth
+                        4 -> charInstance.classes.getClass().subterGrowth
+                        5 -> charInstance.classes.getClass().intellGrowth
+                        6 -> charInstance.classes.getClass().vigGrowth
                         else -> 0
                     }
 
@@ -205,10 +205,10 @@ class AdvantageRecord(
 
             //character's class archetype must be one of the indicated types
             commonAdvantages.exclusiveWeapon -> {
-                if(!charInstance.classes.ownClass.value.archetype.contains(Archetype.Fighter) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Domine) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Prowler) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Novel))
+                if(!charInstance.classes.getClass().archetype.contains(Archetype.Fighter) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Domine) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Prowler) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Novel))
                     return R.string.classRestriction
             }
 

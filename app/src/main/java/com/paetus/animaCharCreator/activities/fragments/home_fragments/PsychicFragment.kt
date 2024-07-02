@@ -438,7 +438,6 @@ fun PsychicPreview(){
     val charInstance = BaseCharacter()
     val psyFragVM = PsychicFragmentViewModel(
         charInstance.psychic,
-        charInstance.classes.ownClass,
         charInstance.primaryList.dex.outputMod.intValue,
         LocalContext.current
     )

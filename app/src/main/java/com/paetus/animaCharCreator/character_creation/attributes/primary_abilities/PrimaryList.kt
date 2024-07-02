@@ -133,12 +133,24 @@ open class PrimaryList(private val charInstance: BaseCharacter){
      *
      * @return true if bonus does not exceed half of the character's level
      */
-    fun validLevelBonuses(): Boolean{
+    open fun validLevelBonuses(): Boolean{
+        return getPrimaryBonusTotal() <= charInstance.lvl.intValue/2
+    }
+
+    /**
+     * Gets the total amount of primary bonus points applied to the character.
+     *
+     * @return number of primary bonus points spent
+     */
+    fun getPrimaryBonusTotal(): Int{
+        //initialize counter
         var total = 0
 
+        //add points from each primary characteristic
         allPrimaries().forEach{primary -> total += primary.levelBonus.intValue}
 
-        return total <= charInstance.lvl.intValue/2
+        //give final total
+        return total
     }
 
     /**

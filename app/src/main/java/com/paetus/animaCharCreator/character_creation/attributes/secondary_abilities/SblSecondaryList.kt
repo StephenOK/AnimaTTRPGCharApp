@@ -55,9 +55,35 @@ class SblSecondaryList(
     override val music = SblSecondaryCharacteristic(parent = this, secondaryIndex = 36)
     override val sleightHand = SblSecondaryCharacteristic(parent = this, secondaryIndex = 37)
 
-    fun levelUpdate(newLevel: Int){
+    /**
+     * Attempts to toggle the natural bonus of the inputted characteristic.
+     *
+     * @param characteristic secondary characteristic to toggle the bonus of
+     */
+    override fun toggleNatBonus(characteristic: SecondaryCharacteristic) {
+        //if natural bonus is currently off
+        if(!characteristic.bonusApplied.value){
+            //make true if characteristic is invested in and there are bonuses available
+            if(countNatBonuses() < charInstance.lvl.intValue && characteristic.pointsApplied.intValue > 0)
+                characteristic.setNatBonus(natBonus = true)
+        }
+
+        //if natural bonus is currently on
+        else{
+            //toggle off if not applied in a previous level
+            if(!(charInstance as SblChar).charRefs[charInstance.lvl.intValue - 1]!!.secondaryList.getAllSecondaries()[(characteristic as SblSecondaryCharacteristic).secondaryIndex].bonusApplied.value)
+                characteristic.setNatBonus(natBonus = false)
+        }
+    }
+
+    /**
+     * Updates the relevant values of secondary characteristics when the character changes level.
+     */
+    fun levelUpdate() {
         fullList().forEach{secondary ->
-            (secondary as SblSecondaryCharacteristic).levelUpdate(newLevel)
+            (secondary as SblSecondaryCharacteristic).pointsAppliedUpdate()
+            secondary.bonusApplied.value = sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondary.secondaryIndex].bonusApplied.value
+            secondary.classTotalRefresh()
         }
     }
 }

@@ -46,7 +46,7 @@ open class BaseCharacter() {
     open val primaryList = PrimaryList(charInstance = this)
     open val combat = CombatAbilities(charInstance = this)
     open val secondaryList = SecondaryList(charInstance = this)
-    val weaponProficiencies = WeaponProficiencies(charInstance = this)
+    open val weaponProficiencies = WeaponProficiencies(charInstance = this)
     open val ki = Ki(charInstance = this)
     open val magic = Magic(charInstance = this)
     open val summoning = Summoning(charInstance = this)

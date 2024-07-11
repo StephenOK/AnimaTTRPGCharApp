@@ -5,6 +5,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.SblComba
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
+import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
@@ -55,7 +56,7 @@ class SblChar(
     override val primaryList = SblPrimaryList(charInstance = this)
     override val combat = SblCombatAbilities(charInstance = this)
     override val secondaryList = SblSecondaryList(sblChar = this)
-
+    override val weaponProficiencies = SblProficiencies(charInstance = this)
     override val ki = SblKi(charInstance = this)
     override val magic = SblMagic(charInstance = this)
 
@@ -90,6 +91,9 @@ class SblChar(
                 it as SblSecondaryCharacteristic
                 charRefs[levNum + 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
             }
+
+            //apply primary weapon to new character record
+            charRefs[levNum + 1]!!.weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.value)
         }
 
         super.setLvl(levNum)
@@ -106,6 +110,9 @@ class SblChar(
 
         //update secondary items
         secondaryList.levelUpdate()
+
+        //update weapon proficiencies
+        weaponProficiencies.levelUpdate()
 
         //update dev points spent
         updateTotalSpent()

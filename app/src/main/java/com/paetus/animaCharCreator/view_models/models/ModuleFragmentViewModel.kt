@@ -70,7 +70,7 @@ class ModuleFragmentViewModel(
      */
     fun setPrimaryWeapon(primeWeapon: Weapon){
         weaponProficiencies.setPrimaryWeapon(weaponName = primeWeapon.saveName)
-        _primaryWeapon.update{primeWeapon}
+        _primaryWeapon.update{weaponProficiencies.primaryWeapon.value}
     }
 
     /**
@@ -516,22 +516,9 @@ class ModuleFragmentViewModel(
      * Function to run on opening the module fragment.
      */
     fun refreshPage(){
-        //close any open weapon lists
-        allWeapons.forEach{weaponList ->
-            if(weaponList.listOpen.value)
-                weaponList.toggleListOpen()
+        //update weapon rows' individually taken checkboxes
+        allSecondaryWeapons.keys.forEach{weapon ->
+            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weapon)
         }
-
-        //close the archetype section
-        if(archetypeOpen.value)
-            toggleArchetypeOpen()
-
-        //close the martial art section
-        if(martialOpen.value)
-            toggleMartialOpen()
-
-        //close the style module section
-        if(styleOpen.value)
-            toggleStyleOpen()
     }
 }

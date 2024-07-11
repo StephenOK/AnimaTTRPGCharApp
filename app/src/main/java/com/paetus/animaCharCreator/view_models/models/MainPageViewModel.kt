@@ -130,22 +130,22 @@ class MainPageViewModel: ViewModel() {
                 )
 
                 //display save by level option
-                //Row(
-                //    modifier = Modifier
-                //        .fillMaxWidth(),
-                //    verticalAlignment = Alignment.CenterVertically,
-                //    horizontalArrangement = Arrangement.Center
-                //){
-                //    //display setter for the by level save option
-                //    Checkbox(
-                //        checked = isByLevel.value,
-                //        onCheckedChange = {isByLevel.value = !isByLevel.value}
-                //    )
-//
-                //    Text(
-                //        text = stringResource(R.string.saveByLevelPrompt),
-                //    )
-                //}
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    //display setter for the by level save option
+                    Checkbox(
+                        checked = isByLevel.value,
+                        onCheckedChange = {isByLevel.value = !isByLevel.value}
+                    )
+
+                    Text(
+                        text = stringResource(R.string.saveByLevelPrompt),
+                    )
+                }
             }
         }
     )

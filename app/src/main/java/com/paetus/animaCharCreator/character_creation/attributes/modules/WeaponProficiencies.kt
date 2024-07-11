@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream
  * @param charInstance object that holds all data on the character
  */
 
-class WeaponProficiencies(private val charInstance: BaseCharacter){
+open class WeaponProficiencies(private val charInstance: BaseCharacter){
     //get all weapon instances
     val shortArms = ShortArms()
     val axes = Axes()
@@ -149,11 +149,21 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
     /**
      * Set the character's primary weapon to the inputted string.
      *
-     * @param weaponName item to set as the primary weapon
+     * @param weaponName reference to item to set as the primary weapon
      */
-    fun setPrimaryWeapon(weaponName: String){
-        //retrieve the weapon item associated with the input
-        primaryWeapon.value = findWeapon(weaponName = weaponName)
+    open fun setPrimaryWeapon(weaponName: String){
+        //retrieve the weapon item associated with the input and apply it as the primary weapon
+        setPrimaryWeapon(findWeapon(weaponName = weaponName))
+    }
+
+    /**
+     * Set the character's primary weapon to the inputted weapon.
+     *
+     * @param weapon item to set as the primary weapon
+     */
+    fun setPrimaryWeapon(weapon: Weapon){
+        //set new primary weapon
+        primaryWeapon.value = weapon
 
         //potentially remove the weapon from the purchase list
         individualModules -= primaryWeapon.value
@@ -164,9 +174,9 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
      * Give or remove an individual weapon module as indicated by the input.
      *
      * @param weapon weapon module to alter
-     * @param toAdd whether to add or remove the module
+     * @param toAdd true if adding module; false if removing
      */
-    fun changeIndividualModule(
+    open fun changeIndividualModule(
         weapon: Weapon,
         toAdd: Boolean
     ){

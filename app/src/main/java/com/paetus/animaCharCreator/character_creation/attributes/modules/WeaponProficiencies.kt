@@ -120,7 +120,6 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
 
     //list of modules the character has taken
     val takenModules = mutableListOf<List<Weapon>>()
-    val fullModWeapons = mutableListOf<Weapon>()
 
     //initialize taken martial arts and maximum martial art quantity
     val takenMartialList = mutableListOf<MartialArt>()
@@ -181,7 +180,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         toAdd: Boolean
     ){
         //add module if requested and not taken by archetype
-        if(toAdd && !fullModWeapons.contains(element = weapon))
+        if(toAdd && !weaponsFromArchetypes().contains(element = weapon))
             individualModules += weapon
         //remove module if requested
         else if(!toAdd)
@@ -197,30 +196,40 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @param weaponCheck archetype module to add or remove
      * @param isAdded whether to add weaponCheck or remove it
      */
-    fun updateModulesTaken(
+    open fun updateModulesTaken(
         weaponCheck: List<Weapon>,
         isAdded: Boolean
     ){
-        //empty individual weapons from modules list
-        fullModWeapons.clear()
-
         //add or remove module list
         if(isAdded)
             takenModules += listOf(weaponCheck)
         else
             takenModules -= listOf(weaponCheck).toSet()
 
-        //apply weapons to individual weapon list
+        //remove any individual weapon modules from added archetype weapons
+        individualModules -= weaponsFromArchetypes().toSet()
+
+        charInstance.updateTotalSpent()
+    }
+
+    /**
+     * Get all weapons the character has proficiency in via archetype modules.
+     *
+     * @return list of weapons from taken archetypes
+     */
+    fun weaponsFromArchetypes(): List<Weapon>{
+        //initialize the outputted list
+        val output = mutableListOf<Weapon>()
+
+        //add every weapon from the taken archetypes
         takenModules.forEach{list ->
-            list.forEach{weapon ->
-                fullModWeapons += weapon
+            list.forEach{
+                output += it
             }
         }
 
-        //remove any individual weapon modules from added archetype weapons
-        individualModules -= fullModWeapons.toSet()
-
-        charInstance.updateTotalSpent()
+        //output the final list
+        return output.toList()
     }
 
     /**
@@ -360,7 +369,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         total /= classDividend
 
         //retrieve list of individual weapons
-        val toCheck = individualModules.toMutableList() - fullModWeapons.toSet()
+        val toCheck = individualModules.toMutableList() - weaponsFromArchetypes().toSet()
 
         //for each individual module taken
         toCheck.forEach{weapon ->

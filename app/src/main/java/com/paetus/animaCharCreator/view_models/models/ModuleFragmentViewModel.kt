@@ -163,7 +163,7 @@ class ModuleFragmentViewModel(
     ){
         weaponProficiencies.changeIndividualModule(weapon = weapon, toAdd = isTaking)
         allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(element = weapon) ||
-                weaponProficiencies.fullModWeapons.contains(element = weapon)
+                weaponProficiencies.weaponsFromArchetypes().contains(element = weapon)
     }
 
     /**
@@ -485,7 +485,7 @@ class ModuleFragmentViewModel(
 
             //update individually taken weapons
             modFragVM.allSecondaryWeapons.forEach{(weapon, isTaken) ->
-                isTaken.value = weaponProficiencies.fullModWeapons.contains(element = weapon)
+                isTaken.value = weaponProficiencies.weaponsFromArchetypes().contains(element = weapon) || weaponProficiencies.individualModules.contains(weapon)
             }
         }
     }
@@ -518,7 +518,7 @@ class ModuleFragmentViewModel(
     fun refreshPage(){
         //update weapon rows' individually taken checkboxes
         allSecondaryWeapons.keys.forEach{weapon ->
-            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weapon)
+            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weapon) || weaponProficiencies.weaponsFromArchetypes().contains(weapon)
         }
     }
 }

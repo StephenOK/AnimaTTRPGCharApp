@@ -64,6 +64,23 @@ class SblProficiencies(
     }
 
     /**
+     * Changes the character's taken archetype modules as desired.
+     *
+     * @param weaponCheck archetype module to add or remove
+     * @param isAdded whether to add weaponCheck or remove it
+     */
+    override fun updateModulesTaken(
+        weaponCheck: List<Weapon>,
+        isAdded: Boolean
+    ) {
+        //update the archetype's taken state in the level record
+        charInstance.getCharAtLevel().weaponProficiencies.updateModulesTaken(weaponCheck, isAdded)
+
+        //update the archetypes taken
+        archetypeUpdate()
+    }
+
+    /**
      * Updates this item's weapon list.
      */
     private fun weaponUpdate(){
@@ -82,9 +99,30 @@ class SblProficiencies(
     }
 
     /**
+     * Updates this item's archetype list.
+     */
+    private fun archetypeUpdate(){
+        //clear current archetype modules taken
+        takenModules.clear()
+
+        //get archetype modules taken from each level
+        charInstance.levelLoop{character ->
+            character.weaponProficiencies.takenModules.forEach{
+                if(!takenModules.contains(it)) takenModules.add(it)
+            }
+        }
+
+        //update individual weapons taken
+        weaponUpdate()
+
+        //update total DP spent
+        charInstance.updateTotalSpent()
+    }
+
+    /**
      * Update this item on a character's level change.
      */
     fun levelUpdate(){
-        weaponUpdate()
+        archetypeUpdate()
     }
 }

@@ -81,6 +81,23 @@ class SblProficiencies(
     }
 
     /**
+     * Acquire or remove the indicated style.
+     *
+     * @param style style to alter with this action
+     * @param toAdd whether the style is being added or removed
+     */
+    override fun changeStyle(
+        style: StyleModule,
+        toAdd: Boolean
+    ){
+        //add or remove the style from the character at that level
+        charInstance.getCharAtLevel().weaponProficiencies.changeStyle(style, toAdd)
+
+        //update styles taken by this character
+        styleUpdate()
+    }
+
+    /**
      * Updates this item's weapon list.
      */
     private fun weaponUpdate(){
@@ -120,9 +137,28 @@ class SblProficiencies(
     }
 
     /**
+     * Updates this item's style list.
+     */
+    private fun styleUpdate(){
+        //clear current style modules taken
+        styleMods.clear()
+
+        //get style modules taken from each level
+        charInstance.levelLoop{character ->
+            character.weaponProficiencies.styleMods.forEach{
+                if(!styleMods.contains(it)) styleMods.add(it)
+            }
+        }
+
+        //update total DP spent
+        charInstance.updateTotalSpent()
+    }
+
+    /**
      * Update this item on a character's level change.
      */
     fun levelUpdate(){
         archetypeUpdate()
+        styleUpdate()
     }
 }

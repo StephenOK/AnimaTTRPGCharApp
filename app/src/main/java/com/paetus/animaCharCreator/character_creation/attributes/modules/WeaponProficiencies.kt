@@ -329,7 +329,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @param style style to alter with this action
      * @param toAdd whether the style is being added or removed
      */
-    fun changeStyle(
+    open fun changeStyle(
         style: StyleModule,
         toAdd: Boolean)
     {

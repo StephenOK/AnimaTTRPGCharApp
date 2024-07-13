@@ -191,7 +191,7 @@ class ModuleFragmentViewModel(
         isTaking: Boolean
     ){
         weaponProficiencies.changeStyle(style = style, toAdd = isTaking)
-        allStyles[style]!!.value = isTaking
+        allStyles[style]!!.value = weaponProficiencies.styleMods.contains(style)
     }
 
     /**
@@ -488,6 +488,15 @@ class ModuleFragmentViewModel(
                 isTaken.value = weaponProficiencies.weaponsFromArchetypes().contains(element = weapon) || weaponProficiencies.individualModules.contains(weapon)
             }
         }
+
+        /**
+         * Sets the checked state to the indicated value.
+         *
+         * @param isTaken boolean to set the checkbox to
+         */
+        fun setChecked(isTaken: Boolean){
+            _takenCheck.update{isTaken}
+        }
     }
 
     init{
@@ -519,6 +528,22 @@ class ModuleFragmentViewModel(
         //update weapon rows' individually taken checkboxes
         allSecondaryWeapons.keys.forEach{weapon ->
             allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weapon) || weaponProficiencies.weaponsFromArchetypes().contains(weapon)
+        }
+
+        //update weapon archetype rows' taken statuses
+        allWeapons.forEach{
+            if(it.weaponArchetype != null)
+                it.weaponArchetype.setChecked(weaponProficiencies.takenModules.contains(it.weaponArchetype.weapons))
+        }
+
+        //update archetype rows' individually taken checkboxes
+        allArchetypeData.forEach{
+            it.setChecked(weaponProficiencies.takenModules.contains(it.weapons))
+        }
+
+        //update style rows' individually taken checkboxes
+        allStyles.keys.forEach{
+            allStyles[it]!!.value = weaponProficiencies.styleMods.contains(it)
         }
     }
 }

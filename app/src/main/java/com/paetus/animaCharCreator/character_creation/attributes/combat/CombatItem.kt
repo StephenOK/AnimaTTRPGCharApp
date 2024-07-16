@@ -71,7 +71,7 @@ open class CombatItem(
      *
      * @param classBonus amount to increment the bonus by
      */
-    fun setClassBonus(classBonus: Int){
+    open fun setClassBonus(classBonus: Int){
         this.classBonus.intValue += classBonus
         updateClassTotal()
     }

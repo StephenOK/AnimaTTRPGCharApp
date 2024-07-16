@@ -541,6 +541,11 @@ class ModuleFragmentViewModel(
             it.setChecked(weaponProficiencies.takenModules.contains(it.weapons))
         }
 
+        //update martial art rows' individually taken checkboxes
+        allMartials.keys.forEach{
+            allMartials[it]!!.value = weaponProficiencies.takenMartialList.contains(it)
+        }
+
         //update style rows' individually taken checkboxes
         allStyles.keys.forEach{
             allStyles[it]!!.value = weaponProficiencies.styleMods.contains(it)

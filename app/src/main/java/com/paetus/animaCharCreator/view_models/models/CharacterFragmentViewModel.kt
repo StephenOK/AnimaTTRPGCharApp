@@ -417,6 +417,15 @@ class CharacterFragmentViewModel(
                         stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
                     )
                 }
+
+            //determine that the secondary item has a legal minimum input
+            if(it.pointsApplied.intValue in 1..4)
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputTooFewPoints,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
         }
 
         //determine that all natural bonuses have been distributed

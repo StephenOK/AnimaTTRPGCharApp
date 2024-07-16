@@ -239,7 +239,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @param isAdded whether to add or remove the inputted martial art
      * @return true if martial art has been successfully added
      */
-    fun changeMartial(
+    open fun changeMartial(
         changeItem: MartialArt,
         isAdded: Boolean
     ): Boolean{
@@ -331,8 +331,8 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      */
     open fun changeStyle(
         style: StyleModule,
-        toAdd: Boolean)
-    {
+        toAdd: Boolean
+    ){
         //add or remove the style as indicated
         if(toAdd)
             styleMods += style

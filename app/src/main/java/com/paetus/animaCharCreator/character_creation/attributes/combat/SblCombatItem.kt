@@ -51,6 +51,16 @@ class SblCombatItem(
     }
 
     /**
+     * Sets additional bonuses that apply to class maximum cap.
+     *
+     * @param classBonus amount to increment the bonus by
+     */
+    override fun setClassBonus(classBonus: Int) {
+        charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].setClassBonus(classBonus)
+        updateClassTotal()
+    }
+
+    /**
      * Update the class total for the individual stat.
      */
     override fun updateClassTotal() {
@@ -68,7 +78,12 @@ class SblCombatItem(
                 //return total value
                 output
             }
-            else (charInstance.charRefs[0]!!.combat.allAbilities()[combatIndex].pointPerLevel.intValue/2) + classBonus.intValue
+            else
+                charInstance.charRefs[0]!!.combat.allAbilities()[combatIndex].pointPerLevel.intValue/2
+
+        charInstance.levelLoop{
+            classTotal.intValue += it.combat.allAbilities()[combatIndex].classBonus.intValue
+        }
 
         //set class cap if it is exceeded
         if(classTotal.intValue > 50)

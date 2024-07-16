@@ -81,6 +81,44 @@ class SblProficiencies(
     }
 
     /**
+     * Attempts to add or remove a martial art from the character's taken martial arts.
+     *
+     * @param changeItem martial art to add or remove
+     * @param isAdded whether to add or remove the inputted martial art
+     * @return true if martial art has been successfully added
+     */
+    override fun changeMartial(
+        changeItem: MartialArt,
+        isAdded: Boolean
+    ): Boolean{
+        if(isAdded && //if adding the martial art
+            takenMartialList.size < martialMax.intValue && //if character has the capacity for it
+            changeItem.qualification() //if character has met the required qualifications
+        ){
+            //add the art to the level record
+            charInstance.getCharAtLevel().weaponProficiencies.takenMartialList += changeItem
+
+            //apply capoeira's dodge bonus
+            if(changeItem == martials.capoeira)
+                charInstance.combat.dodge.setClassBonus(10)
+        }
+        //if character is removing the art and they took it at this level
+        else if(charInstance.getCharAtLevel().weaponProficiencies.takenMartialList.contains(changeItem)){
+            //remove it from this level's record
+            charInstance.getCharAtLevel().weaponProficiencies.takenMartialList -= changeItem
+
+            //remove capoeira's dodge bonus
+            if(changeItem == martials.capoeira)
+                charInstance.combat.dodge.setClassBonus(-10)
+        }
+
+        //update the character's martial arts
+        martialUpdate()
+
+        return takenMartialList.contains(changeItem)
+    }
+
+    /**
      * Acquire or remove the indicated style.
      *
      * @param style style to alter with this action
@@ -137,6 +175,27 @@ class SblProficiencies(
     }
 
     /**
+     * Updates this item's martial arts list.
+     */
+    private fun martialUpdate(){
+        //clear full list
+        takenMartialList.clear()
+
+        //add items per level record
+        charInstance.levelLoop{character ->
+            character.weaponProficiencies.takenMartialList.forEach{
+                if(!takenMartialList.contains(it)) takenMartialList.add(it)
+            }
+        }
+
+        //update the character's martial knowledge total
+        charInstance.ki.updateMK()
+
+        //update the spent DP
+        charInstance.updateTotalSpent()
+    }
+
+    /**
      * Updates this item's style list.
      */
     private fun styleUpdate(){
@@ -159,6 +218,7 @@ class SblProficiencies(
      */
     fun levelUpdate(){
         archetypeUpdate()
+        martialUpdate()
         styleUpdate()
     }
 }

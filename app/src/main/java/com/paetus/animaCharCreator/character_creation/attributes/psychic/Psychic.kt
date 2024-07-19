@@ -61,12 +61,12 @@ open class Psychic(private val charInstance: BaseCharacter){
     /**
      * Gets the class's psychic point DP cost.
      */
-    fun psyPointCost(): Int{return charInstance.classes.getClass().psyPointGrowth}
+    open fun psyPointCost(): Int{return charInstance.classes.getClass().psyPointGrowth}
 
     /**
      * Gets the class's psychic projection DP cost.
      */
-    fun psyProjCost(): Int{return charInstance.classes.getClass().psyProjGrowth}
+    open fun psyProjCost(): Int{return charInstance.classes.getClass().psyProjGrowth}
 
     /**
      * Determines the value for the character's Psychic Potential.

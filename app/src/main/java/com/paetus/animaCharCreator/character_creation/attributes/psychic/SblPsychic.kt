@@ -11,6 +11,20 @@ class SblPsychic(
     val charInstance: SblChar
 ): Psychic(charInstance = charInstance) {
     /**
+     * Gets the class's psychic point DP cost.
+     */
+    override fun psyPointCost(): Int {
+        return charInstance.getCharAtLevel().psychic.psyPointCost()
+    }
+
+    /**
+     * Gets the class's psychic projection DP cost.
+     */
+    override fun psyProjCost(): Int {
+        return charInstance.getCharAtLevel().psychic.psyProjCost()
+    }
+
+    /**
      * Set the amount of base Psychic Points for the character.
      */
     override fun setInnatePsy() {

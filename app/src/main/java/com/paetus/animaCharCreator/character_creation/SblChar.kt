@@ -104,6 +104,7 @@ class SblChar(
         }
 
         //update combat item input values
+        combat.updateLifeMults()
         combat.allAbilities().forEach{
             (it as SblCombatItem).updateInput()
         }

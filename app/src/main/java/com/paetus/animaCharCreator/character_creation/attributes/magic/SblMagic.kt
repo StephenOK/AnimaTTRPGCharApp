@@ -9,6 +9,27 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  */
 class SblMagic(val charInstance: SblChar): Magic(charInstance) {
     /**
+     * Gets the class's zeon point DP cost.
+     */
+    override fun getZeonPointCost(): Int {
+        return charInstance.getCharAtLevel().magic.getZeonPointCost()
+    }
+
+    /**
+     * Gets the class's zeon accumulation DP cost.
+     */
+    override fun getZeonAccCost(): Int {
+        return charInstance.getCharAtLevel().magic.getZeonAccCost()
+    }
+
+    /**
+     * Gets the class's magic projection DP cost.
+     */
+    override fun getMagProjCost(): Int {
+        return charInstance.getCharAtLevel().magic.getMagProjCost()
+    }
+
+    /**
      * Update the total number of Zeon points gained from levels.
      */
     override fun updateZeonFromClass() {

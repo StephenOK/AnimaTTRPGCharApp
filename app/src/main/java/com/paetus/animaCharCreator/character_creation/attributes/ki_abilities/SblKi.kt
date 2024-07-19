@@ -8,7 +8,23 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  *
  * @param charInstance object that holds all of the character's data
  */
-class SblKi(val charInstance: SblChar): Ki(charInstance = charInstance) {
+class SblKi(
+    val charInstance: SblChar
+): Ki(charInstance = charInstance) {
+    /**
+     * Gets the class's ki accumulation DP cost.
+     */
+    override fun getKiAccumulationCost(): Int {
+        return charInstance.getCharAtLevel().ki.getKiAccumulationCost()
+    }
+
+    /**
+     * Gets the class's ki point DP cost.
+     */
+    override fun getKiPointCost(): Int {
+        return charInstance.getCharAtLevel().ki.getKiPointCost()
+    }
+
     /**
      * Recalculates the character's maximum martial knowledge.
      */

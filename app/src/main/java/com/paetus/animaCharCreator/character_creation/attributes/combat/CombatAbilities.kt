@@ -61,27 +61,27 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
     /**
      * Gets the class's cost for life point multiples.
      */
-    fun getLifeCost(): Int{return charInstance.classes.getClass().lifePointMultiple}
+    open fun getLifeCost(): Int{return charInstance.classes.getClass().lifePointMultiple}
 
     /**
      * Gets the class's cost for attack points.
      */
-    fun getAtkCost(): Int{return charInstance.classes.getClass().atkGrowth}
+    open fun getAtkCost(): Int{return charInstance.classes.getClass().atkGrowth}
 
     /**
      * Gets the class's cost for block points.
      */
-    fun getBlockCost(): Int{return charInstance.classes.getClass().blockGrowth}
+    open fun getBlockCost(): Int{return charInstance.classes.getClass().blockGrowth}
 
     /**
      * Gets the class's cost for dodge points.
      */
-    fun getDodgeCost(): Int{return charInstance.classes.getClass().dodgeGrowth}
+    open fun getDodgeCost(): Int{return charInstance.classes.getClass().dodgeGrowth}
 
     /**
      * Gets the class's cost for wear armor points.
      */
-    fun getWearCost(): Int{return charInstance.classes.getClass().armorGrowth}
+    open fun getWearCost(): Int{return charInstance.classes.getClass().armorGrowth}
 
     /**
      * Update the character's presence.
@@ -113,7 +113,7 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
      *
      * @param multTake number of multiples the user intends to take
      */
-    fun takeLifeMult(
+    open fun takeLifeMult(
         multTake: Int
     ){
         lifeMultsTaken.intValue = multTake

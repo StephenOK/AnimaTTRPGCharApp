@@ -25,22 +25,22 @@ open class Summoning(private val charInstance: BaseCharacter){
     /**
      * Gets the class's summoning DP cost.
      */
-    fun summonCost(): Int{return charInstance.classes.getClass().summonGrowth}
+    open fun summonCost(): Int{return charInstance.classes.getClass().summonGrowth}
 
     /**
      * Gets the class's control DP cost.
      */
-    fun controlCost(): Int{return charInstance.classes.getClass().controlGrowth}
+    open fun controlCost(): Int{return charInstance.classes.getClass().controlGrowth}
 
     /**
      * Gets the class's bind DP cost.
      */
-    fun bindCost(): Int{return charInstance.classes.getClass().bindGrowth}
+    open fun bindCost(): Int{return charInstance.classes.getClass().bindGrowth}
 
     /**
      * Gets the class's banish DP cost.
      */
-    fun banishCost(): Int{return charInstance.classes.getClass().banishGrowth}
+    open fun banishCost(): Int{return charInstance.classes.getClass().banishGrowth}
 
     /**
      * Determines the development points spent in this section.

@@ -82,12 +82,12 @@ open class Ki(private val charInstance: BaseCharacter){
     /**
      * Gets the class's ki accumulation DP cost.
      */
-    fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
+    open fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
 
     /**
      * Gets the class's ki point DP cost.
      */
-    fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
+    open fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
 
     /**
      * Sets martial knowledge to the appropriate amount for each taken item.

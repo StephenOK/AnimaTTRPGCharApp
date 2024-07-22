@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableIntStateOf
  *
  * @param parent ki object that manages this item
  */
-class KiStat(
+open class KiStat(
     val parent: Ki
 ){
     //initialize base ki points in this stat
@@ -33,7 +33,7 @@ class KiStat(
      *
      * @param kiPurchase amount of points to buy in this stat
      */
-    fun setBoughtKiPoints(kiPurchase: Int){
+    open fun setBoughtKiPoints(kiPurchase: Int){
         boughtKiPoints.intValue = kiPurchase
         parent.updateBoughtPoints()
         updateTotalPoints()
@@ -42,7 +42,7 @@ class KiStat(
     /**
      * Updates the total ki points held in this stat as well as the overall total points.
      */
-    private fun updateTotalPoints(){
+    fun updateTotalPoints(){
         totalKiPoints.intValue = baseKiPoints.intValue + boughtKiPoints.intValue
         parent.updateTotalPoints()
     }
@@ -52,7 +52,7 @@ class KiStat(
      *
      * @param accPurchase amount of accumulation to buy in this stat
      */
-    fun setBoughtAccumulation(accPurchase: Int){
+    open fun setBoughtAccumulation(accPurchase: Int){
         boughtAccumulation.intValue = accPurchase
         parent.updateBoughtAcc()
         updateAccumulation()
@@ -61,7 +61,7 @@ class KiStat(
     /**
      * Updates the total accumulation held in this stat as well as the overall total accumulation.
      */
-    private fun updateAccumulation(){
+    fun updateAccumulation(){
         totalAccumulation.intValue = baseAccumulation.intValue + boughtAccumulation.intValue
         parent.updateTotalAcc()
     }

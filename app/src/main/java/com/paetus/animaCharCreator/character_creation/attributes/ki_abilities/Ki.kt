@@ -40,15 +40,19 @@ open class Ki(private val charInstance: BaseCharacter){
     val martialKnowledgeRemaining = mutableIntStateOf(value = 10)
 
     //initialize stat ki points and accumulation
-    val strKi = KiStat(parent = this@Ki)
-    val dexKi = KiStat(parent = this@Ki)
-    val agiKi = KiStat(parent = this@Ki)
-    val conKi = KiStat(parent = this@Ki)
-    val powKi = KiStat(parent = this@Ki)
-    val wpKi = KiStat(parent = this@Ki)
+    open val strKi = KiStat(parent = this@Ki)
+    open val dexKi = KiStat(parent = this@Ki)
+    open val agiKi = KiStat(parent = this@Ki)
+    open val conKi = KiStat(parent = this@Ki)
+    open val powKi = KiStat(parent = this@Ki)
+    open val wpKi = KiStat(parent = this@Ki)
 
-    //gather all ki stat items
-    private val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+    /**
+     * Gather all ki stat items.
+     */
+    fun allKiStats(): List<KiStat>{
+        return listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+    }
 
     //initialize value for total ki points bought
     private val totalPointBuy = mutableIntStateOf(value = 0)
@@ -136,7 +140,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateBoughtPoints(){
         totalPointBuy.intValue = 0
-        allKiStats.forEach{kiStat -> totalPointBuy.intValue += kiStat.boughtKiPoints.intValue}
+        allKiStats().forEach{kiStat -> totalPointBuy.intValue += kiStat.boughtKiPoints.intValue}
     }
 
     /**
@@ -144,7 +148,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateBoughtAcc(){
         totalAccBuy.intValue = 0
-        allKiStats.forEach{kiStat -> totalAccBuy.intValue += kiStat.boughtAccumulation.intValue}
+        allKiStats().forEach{kiStat -> totalAccBuy.intValue += kiStat.boughtAccumulation.intValue}
     }
 
     /**
@@ -152,7 +156,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateTotalPoints(){
         totalKi.intValue = 0
-        allKiStats.forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
+        allKiStats().forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
         charInstance.updateTotalSpent()
     }
 
@@ -161,7 +165,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateTotalAcc(){
         totalAcc.intValue = 0
-        allKiStats.forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
+        allKiStats().forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
         charInstance.updateTotalSpent()
     }
 
@@ -439,7 +443,7 @@ open class Ki(private val charInstance: BaseCharacter){
         filename: String
     ){
         //set bought ki points and accumulation for each KiStat item
-        allKiStats.forEach{kiStat ->
+        allKiStats().forEach{kiStat ->
             kiStat.setBoughtKiPoints(kiPurchase = fileReader.readLine().toInt())
             kiStat.setBoughtAccumulation(accPurchase = fileReader.readLine().toInt())
         }
@@ -900,7 +904,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun writeKiAttributes(byteArray: ByteArrayOutputStream) {
         //write data from KiStats
-        allKiStats.forEach{kiStat ->
+        allKiStats().forEach{kiStat ->
             writeDataTo(writer = byteArray, input = kiStat.boughtKiPoints.intValue)
             writeDataTo(writer = byteArray, input = kiStat.boughtAccumulation.intValue)
         }

@@ -115,6 +115,9 @@ class SblChar(
         //update weapon proficiencies
         weaponProficiencies.levelUpdate()
 
+        //update ki abilities
+        ki.levelUpdate()
+
         //update dev points spent
         updateTotalSpent()
     }

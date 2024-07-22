@@ -398,10 +398,12 @@ class KiFragmentViewModel(
         fun refreshItem(){
             //update the point values for this item
             setPointInputString(kiStat.boughtKiPoints.intValue.toString())
+            _pointTotalString.update{kiStat.totalKiPoints.intValue}
             setTotalPoints()
 
             //update the accumulation value for this item
             setAccInputString(kiStat.boughtAccumulation.intValue.toString())
+            _accTotalString.update{kiStat.totalAccumulation.intValue}
             setTotalAcc()
         }
     }

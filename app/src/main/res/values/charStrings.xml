@@ -131,4 +131,6 @@
     <string name = "secondaryInputPointReduction">-a secondary item\'s value (%s) is smaller than in a previous level</string>
     <string name = "secondaryInputTooFewPoints">-a secondary item\'s input (%s) is too small to be a valid input</string>
     <string name = "natBonusNotDistributed">-all secondary natural bonuses have not been distributed</string>
+    <string name = "kiPointReduction">-a ki point\'s value (%s) is smaller than in a previous level</string>
+    <string name = "kiAccReduction">-a ki accumulation\'s value (%s) is smaller than in a previous level</string>
 </resources>

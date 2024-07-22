@@ -12,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
@@ -433,6 +434,38 @@ class CharacterFragmentViewModel(
             output.add{
                 stringResource(R.string.natBonusNotDistributed)
             }
+
+        //look through each ki stat
+        charInstance.ki.allKiStats().forEach{
+            //get the stat's name
+            val kiString =
+                stringArrayResource(id = R.array.primaryCharArray)[
+                    //get exact index number if not POW or WP
+                    if((it as SblKiStat).kiIndex <  4)
+                        it.kiIndex
+                    //correct index to get proper name
+                    else
+                        it.kiIndex + 1
+                ]
+
+            //check for valid point growth
+            if(!it.validPointGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiPointReduction,
+                        kiString
+                    )
+                }
+
+            //check for valid accumulation growth
+            if(!it.validAccGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiAccReduction,
+                        kiString
+                    )
+                }
+        }
 
         //give final output list
         return if(output.isEmpty()) null else output.toList()

@@ -10,7 +10,14 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  */
 class SblKi(
     val charInstance: SblChar
-): Ki(charInstance = charInstance) {
+): Ki(charInstance = charInstance){
+    override val strKi = SblKiStat(kiParent = this, 0)
+    override val dexKi = SblKiStat(kiParent = this, 1)
+    override val agiKi = SblKiStat(kiParent = this, 2)
+    override val conKi = SblKiStat(kiParent = this, 3)
+    override val powKi = SblKiStat(kiParent = this, 4)
+    override val wpKi = SblKiStat(kiParent = this, 5)
+
     /**
      * Gets the class's ki accumulation DP cost.
      */
@@ -49,5 +56,19 @@ class SblKi(
 
         //update spent amount of martial knowledge
         updateMkSpent()
+    }
+
+    /**
+     * Function to run when the character changes level.
+     */
+    fun levelUpdate(){
+        //update all points and accumulations for ki stats
+        allKiStats().forEach{
+            (it as SblKiStat).updateInput()
+            it.accUpdate()
+        }
+
+        //update martial knowledge
+        updateMK()
     }
 }

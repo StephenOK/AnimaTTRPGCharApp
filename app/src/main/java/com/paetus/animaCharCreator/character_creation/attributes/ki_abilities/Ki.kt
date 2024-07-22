@@ -143,6 +143,7 @@ class Ki(private val charInstance: BaseCharacter){
     fun updateTotalPoints(){
         totalKi.intValue = 0
         allKiStats.forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
+        charInstance.updateTotalSpent()
     }
 
     /**
@@ -151,6 +152,7 @@ class Ki(private val charInstance: BaseCharacter){
     fun updateTotalAcc(){
         totalAcc.intValue = 0
         allKiStats.forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
+        charInstance.updateTotalSpent()
     }
 
     /**

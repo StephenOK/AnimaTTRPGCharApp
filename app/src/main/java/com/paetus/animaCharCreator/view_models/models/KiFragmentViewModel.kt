@@ -425,6 +425,13 @@ class KiFragmentViewModel(
         allRowData.forEach{kiRowData ->
             kiRowData.refreshItem()
         }
+
+        //update the ki ability taken checkboxes
+        allKiAbilities.forEach{(ability, taken) ->
+            taken.value = ki.takenAbilities.contains(ability)
+        }
+
+        //refresh the martial knowledge items
         setRemainingMK()
     }
 }

@@ -188,18 +188,17 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param newAbility Ki Ability to attempt to add
      * @return true if ability has been successfully added
      */
-    fun attemptAbilityAdd(
+    open fun attemptAbilityAdd(
         newAbility: KiAbility
     ): Boolean{
         //check if character has the necessary martial knowledge for the ability
         if(martialKnowledgeRemaining.intValue - newAbility.mkCost >= 0) {
             takenAbilities += newAbility
             updateMkSpent()
-            return true
         }
 
-        //indicate failed addition
-        return false
+        //return current taken state
+        return takenAbilities.contains(newAbility)
     }
 
     /**
@@ -207,23 +206,18 @@ open class Ki(private val charInstance: BaseCharacter){
      *
      * @param ability Ki Ability to remove
      */
-    fun removeAbility(ability: KiAbility){
+    open fun removeAbility(ability: KiAbility){
         //remove the item from the list
         takenAbilities -= ability
 
         //make sure any other ability is not disqualified by this one's removal
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            takenAbilities.removeIf{!isQualified(ability = it)}
-        }
-        else{
-            val removeList = mutableListOf<KiAbility>()
+        val removeList = mutableListOf<KiAbility>()
 
-            takenAbilities.forEach{kiAbility ->
-                if(!isQualified(ability = kiAbility)) removeList += kiAbility
-            }
-
-            takenAbilities.removeAll(elements = removeList)
+        takenAbilities.forEach{kiAbility ->
+            if(!isQualified(ability = kiAbility)) removeList += kiAbility
         }
+
+        takenAbilities.removeAll(elements = removeList)
 
         //remove techniques if Ki Control removed
         if(!takenAbilities.contains(kiRecord.kiControl)) {
@@ -241,7 +235,7 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param ability Ki Ability to check
      * @return true if ability is a valid addition
      */
-    private fun isQualified(ability: KiAbility): Boolean{
+    fun isQualified(ability: KiAbility): Boolean{
         //return true for no prerequisites or all prerequisites met
         return ability.prerequisite == null ||
                 (takenAbilities.contains(element = ability.prerequisite) &&

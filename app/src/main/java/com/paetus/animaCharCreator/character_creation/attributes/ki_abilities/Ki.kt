@@ -212,8 +212,10 @@ class Ki(private val charInstance: BaseCharacter){
         }
 
         //remove techniques if Ki Control removed
-        allPrebuilts.forEach{prebuilts -> prebuilts.value.value = false}
-        customTechniques.forEach{customs -> customs.value.value = false}
+        if(!takenAbilities.contains(kiRecord.kiControl)) {
+            allPrebuilts.forEach { prebuilts -> prebuilts.value.value = false }
+            customTechniques.forEach { customs -> customs.value.value = false }
+        }
 
         //update martial knowledge expenditure
         updateMkSpent()

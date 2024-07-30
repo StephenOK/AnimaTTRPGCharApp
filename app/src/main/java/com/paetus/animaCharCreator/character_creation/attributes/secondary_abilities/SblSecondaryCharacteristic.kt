@@ -23,6 +23,12 @@ class SblSecondaryCharacteristic(
         //set current level value
         charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
 
+        if(charInstance.lvl.intValue != 0) {
+            val previousLevel = charInstance.charRefs[charInstance.lvl.intValue - 1]
+            if (pointInput - getPreviousPoints() == 0 && previousLevel!!.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
+                setNatBonus(true)
+        }
+
         if(pointInput + getPreviousPoints() == 0)
             parent.sblChar.levelLoop(
                 startLevel = parent.charInstance.lvl.intValue + 1,

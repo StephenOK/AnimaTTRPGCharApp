@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation
 
+import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
@@ -29,8 +30,8 @@ class SblChar(
 ): BaseCharacter() {
     //initialize level data for this character
     val charRefs = mutableListOf(
-        BaseCharacter(newHost = this),
-        BaseCharacter(newHost = this),
+        BaseCharacter(newHost = this, prevIndex = -1, isAdded = false),
+        BaseCharacter(newHost = this, prevIndex = 0, isAdded = false),
         null,
         null,
         null,
@@ -71,30 +72,8 @@ class SblChar(
      */
     override fun setLvl(levNum: Int) {
         //initialize character if no record at that level
-        if(charRefs[levNum + 1] == null) {
-            charRefs[levNum + 1] = BaseCharacter(newHost = this)
-
-            charRefs[levNum + 1]!!.setLvl(levNum = 1)
-            charRefs[levNum + 1]!!.classes.setOwnClass(charRefs[levNum]!!.classes.ownClass.intValue)
-
-            //set each of the new character's freelancer selections
-            var counter = 0
-            classes.freelancerSelection.forEach{
-                charRefs[levNum + 1]!!.classes.setSelection(
-                    selectionIndex = counter++,
-                    secondarySelection = it
-                )
-            }
-
-            //apply natural bonus values to new character record
-            secondaryList.getAllSecondaries().forEach{
-                it as SblSecondaryCharacteristic
-                charRefs[levNum + 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
-            }
-
-            //apply primary weapon to new character record
-            charRefs[levNum + 1]!!.weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.value)
-        }
+        if(charRefs[levNum + 1] == null)
+            charRefs[levNum + 1] = BaseCharacter(newHost = this, prevIndex = levNum, isAdded = true)
 
         super.setLvl(levNum)
 
@@ -229,7 +208,8 @@ class SblChar(
             val levelChar = BaseCharacter(
                 charFile = file,
                 secondaryFile = secondaryFile,
-                techFile = techFile
+                techFile = techFile,
+                classRecord = classRecord
             )
 
             //set character at the indicated index

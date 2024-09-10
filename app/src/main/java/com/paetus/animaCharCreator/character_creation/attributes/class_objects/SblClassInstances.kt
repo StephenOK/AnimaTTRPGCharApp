@@ -50,6 +50,13 @@ class SblClassInstances(
         charInstance.updateTotalSpent()
     }
 
+    /**
+     * Attempts to change the selection in the indicated record index.
+     *
+     * @param selectionIndex record location to set the selection to
+     * @param secondarySelection value to set the selection to
+     * @return value recorded after operation
+     */
     override fun setSelection(
         selectionIndex: Int,
         secondarySelection: Int
@@ -61,7 +68,7 @@ class SblClassInstances(
         if(secondarySelection == 0){
             //remove previous bonus if one taken
             if(prevIndex >= 0)
-                charInstance.levelLoop(endLevel = 20){
+                charInstance.levelLoop(startLevel = 0, endLevel = 20){
                     if(it.classes.ownClass.intValue == 0) {
                         it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
                         it.classes.freelancerSelection[selectionIndex] = 0
@@ -83,17 +90,22 @@ class SblClassInstances(
 
             //remove previous bonus if one taken
             if(prevIndex >= 0)
-                charInstance.levelLoop(endLevel = 20){
-                    it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
+                charInstance.levelLoop(startLevel = 0, endLevel = 20){
+                    if(it.classes.ownClass.intValue == 0)
+                        it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
                 }
 
             //set new input
             freelancerSelection[selectionIndex] = secondarySelection
 
             //add new bonus
-            charInstance.levelLoop(endLevel = 20){
-                it.classes.freelancerSelection[selectionIndex] = secondarySelection
-                it.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(classBonus = 10)
+            charInstance.levelLoop(startLevel= 0, endLevel = 20){
+                if(it.classes.ownClass.intValue == 0) {
+                    it.classes.freelancerSelection[selectionIndex] = secondarySelection
+                    it.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(
+                        classBonus = 10
+                    )
+                }
             }
         }
 

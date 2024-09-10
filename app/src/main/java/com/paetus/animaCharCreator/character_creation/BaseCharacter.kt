@@ -18,6 +18,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
@@ -27,9 +28,7 @@ import java.nio.charset.StandardCharsets
  * Character being built by the user
  * Holder class of all other character creation objects
  */
-open class BaseCharacter() {
-    val host: MutableState<SblChar?> = mutableStateOf(null)
-
+open class BaseCharacter{
     //character's name
     val charName = mutableStateOf(value = "")
 
@@ -55,10 +54,7 @@ open class BaseCharacter() {
     val inventory = Inventory(charInstance = this)
 
     //list of all classes available
-    val classRecord: ClassRecord by lazy{
-        if (host.value == null) ClassRecord()
-        else host.value!!.classRecord
-    }
+    lateinit var classRecord: ClassRecord
     open val classes = ClassInstances(charInstance = this)
 
     //list of all race advantages
@@ -364,6 +360,13 @@ open class BaseCharacter() {
     }
 
     /**
+     * Default constructor for a new chracter.
+     */
+    constructor(){
+        classRecord = ClassRecord()
+    }
+
+    /**
      * Default constructor for new character.
      *
      * @param filename file associated with this character
@@ -374,7 +377,7 @@ open class BaseCharacter() {
         filename: String,
         secondaryFile: File,
         techFile: File
-    ) : this() {
+    ): this(){
         //retrieve custom secondaries for this character
         secondaryList.applySecondaryChars(input = secondaryFile, filename = filename)
 
@@ -392,8 +395,9 @@ open class BaseCharacter() {
     constructor(
         charFile: File,
         secondaryFile: File,
-        techFile: File
-    ) : this() {
+        techFile: File,
+        classRecord: ClassRecord = ClassRecord()
+    ){
 
         //get custom custom items for this character
         secondaryList.applySecondaryChars(
@@ -404,6 +408,8 @@ open class BaseCharacter() {
             customTechDir = techFile,
             filename = charFile.name
         )
+
+        this.classRecord = classRecord
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)
@@ -486,8 +492,36 @@ open class BaseCharacter() {
     /**
      * Creates a character for use in a SBL character's level record.
      */
-    constructor(newHost: SblChar): this(){
-        host.value = newHost
+    constructor(
+        newHost: SblChar,
+        prevIndex: Int,
+        isAdded: Boolean
+    ): this(){
+        //set class record of host
+        classRecord = newHost.classRecord
+
+        //set level to not zero if not the zeroth level
+        if(prevIndex >= 0)
+            setLvl(levNum = 1)
+
+        //if character is a new level added to the record
+        if(isAdded) {
+            //set class to the previous level's class
+            classes.setOwnClass(newHost.charRefs[prevIndex]!!.classes.ownClass.intValue)
+
+            //apply freelancer selections
+            for (index in 0..4)
+                classes.freelancerSelection[index] = newHost.classes.freelancerSelection[index]
+
+            //apply secondary natural bonuses
+            newHost.secondaryList.getAllSecondaries().forEach {
+                it as SblSecondaryCharacteristic
+                secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
+            }
+
+            //apply primary weapon choice
+            weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.value)
+        }
     }
 
     /**

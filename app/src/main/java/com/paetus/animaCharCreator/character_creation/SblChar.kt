@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.character_creation
 
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
@@ -10,7 +9,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProf
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
-import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
 import java.io.File
@@ -161,7 +159,7 @@ class SblChar(
 
             //add level's other items
             spentTotal.intValue +=
-                checkChar.combat.lifeMultsTaken.intValue * classRecord.allClasses[checkChar.classes.ownClass.intValue].lifePointMultiple +
+                checkChar.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[checkChar.classes.ownClass.intValue].lifePointMultiple +
                         checkChar.secondaryList.calculateSpent()
         }
 
@@ -209,7 +207,7 @@ class SblChar(
                 charFile = file,
                 secondaryFile = secondaryFile,
                 techFile = techFile,
-                classRecord = classRecord
+                objectDB = objectDB
             )
 
             //set character at the indicated index

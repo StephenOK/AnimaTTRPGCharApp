@@ -136,8 +136,8 @@ class SblClassInstances(
 
                 //if freelancer not involved
                 else {
-                    val prevClass = charInstance.classRecord.allClasses[prevClassIndex]
-                    val newClass = charInstance.classRecord.allClasses[character.classes.ownClass.intValue]
+                    val prevClass = getClassRecord().allClasses[prevClassIndex]
+                    val newClass = getClassRecord().allClasses[character.classes.ownClass.intValue]
 
                     //initialize all archetypes match flag to true
                     var allMatch = true

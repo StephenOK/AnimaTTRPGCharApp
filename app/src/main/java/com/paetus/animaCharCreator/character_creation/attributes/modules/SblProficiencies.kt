@@ -93,13 +93,13 @@ class SblProficiencies(
     ): Boolean{
         if(isAdded && //if adding the martial art
             takenMartialList.size < martialMax.intValue && //if character has the capacity for it
-            changeItem.qualification() //if character has met the required qualifications
+            changeItem.qualification(charInstance) //if character has met the required qualifications
         ){
             //add the art to the level record
             charInstance.getCharAtLevel().weaponProficiencies.takenMartialList += changeItem
 
             //apply capoeira's dodge bonus
-            if(changeItem == martials.capoeira)
+            if(changeItem == getMartials().capoeira)
                 charInstance.combat.dodge.setClassBonus(10)
         }
         //if character is removing the art and they took it at this level
@@ -108,7 +108,7 @@ class SblProficiencies(
             charInstance.getCharAtLevel().weaponProficiencies.takenMartialList -= changeItem
 
             //remove capoeira's dodge bonus
-            if(changeItem == martials.capoeira)
+            if(changeItem == getMartials().capoeira)
                 charInstance.combat.dodge.setClassBonus(-10)
         }
 

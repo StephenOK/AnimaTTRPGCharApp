@@ -564,7 +564,7 @@ private fun SpellBookInvestment(
 
             //display associated element
             Text(
-                text = spellData.magicBook.element.name,
+                text = spellData.magicBook.spells.element.name,
                 modifier = Modifier
                     .weight(0.25f)
             )
@@ -621,7 +621,7 @@ private fun SpellBookInvestment(
                 var freeSpellLevel = 0
 
                 //for each of the element's spells
-                spellData.magicBook.fullBook.forEach {spell ->
+                spellData.magicBook.spells.fullBook.forEach {spell ->
                     //display the given spell if one is given
                     if (spell != null) {
                         SpellRow(
@@ -643,7 +643,7 @@ private fun SpellBookInvestment(
                     else
                         FreeSpellRow(
                             spellLevel = freeSpellLevel,
-                            spellElement = spellData.magicBook.element,
+                            spellElement = spellData.magicBook.spells.element,
                             spellData = spellData,
                             magFragVM = magFragVM,
                             updateList = {
@@ -948,8 +948,8 @@ fun MagicPreview(){
     magFragVM.setProjectionImbalance(30)
 
     magFragVM.allBooks[0].toggleListOpen()
-    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[2]!!.level)
-    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[3]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.spells.fullBook[2]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.spells.fullBook[3]!!.level)
 
     MagicFragment(magFragVM, homePageVM)
 }

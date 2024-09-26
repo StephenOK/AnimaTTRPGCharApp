@@ -13,6 +13,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.secondary_abili
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
@@ -40,6 +41,7 @@ open class BaseCharacter{
 
     //character's rule settings
     val rules = RuleRecord()
+    var objectDB = ObjectDatabase()
 
     //list of character's other abilities
     open val primaryList = PrimaryList(charInstance = this)
@@ -53,12 +55,7 @@ open class BaseCharacter{
     val advantageRecord = AdvantageRecord(charInstance = this)
     val inventory = Inventory(charInstance = this)
 
-    //list of all classes available
-    lateinit var classRecord: ClassRecord
     open val classes = ClassInstances(charInstance = this)
-
-    //list of all race advantages
-    val races = RaceAdvantages(charInstance = this)
 
     //initialize character's race
     val ownRace = mutableStateOf<List<RacialAdvantage>>(value = listOf())
@@ -106,7 +103,7 @@ open class BaseCharacter{
      */
     fun setGender(gender: Boolean){
         //remove previous buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = -5)
             else combat.magicRes.setSpecial(specChange = -5)
         }
@@ -115,7 +112,7 @@ open class BaseCharacter{
         isMale.value = gender
 
         //apply gendered buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = 5)
             else combat.magicRes.setSpecial(specChange = 5)
         }
@@ -131,7 +128,11 @@ open class BaseCharacter{
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
             if(advantage.onRemove != null)
-                advantage.onRemove!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onRemove!!(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
 
         //apply new race and buffs
@@ -140,7 +141,11 @@ open class BaseCharacter{
         ownRace.value.forEach{advantage ->
             //if the advantage has an onTake effect, run it
             if(advantage.onTake != null)
-                advantage.onTake!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onTake!!(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
     }
 
@@ -151,7 +156,7 @@ open class BaseCharacter{
      */
     private fun setOwnRace(raceName: String) {
         //set the character's race to the indicated item
-        setOwnRace(races.getFromString(raceName))
+        setOwnRace(objectDB.races.getFromString(raceName))
     }
 
     /**
@@ -161,7 +166,7 @@ open class BaseCharacter{
      */
     fun setOwnRace(raceNum: Int){
         //apply the indicated race to the character
-        setOwnRace(races.allAdvantageLists[raceNum])
+        setOwnRace(objectDB.races.allAdvantageLists[raceNum])
     }
 
     /**
@@ -249,7 +254,7 @@ open class BaseCharacter{
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.intValue * classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -295,7 +300,7 @@ open class BaseCharacter{
             appearance.intValue = 2
 
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace.value != races.danjayniAdvantages || newAppearance in 3..7)
+        else if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
             appearance.intValue = newAppearance
     }
 
@@ -363,7 +368,8 @@ open class BaseCharacter{
      * Default constructor for a new chracter.
      */
     constructor(){
-        classRecord = ClassRecord()
+        objectDB = ObjectDatabase()
+        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
     }
 
     /**
@@ -396,8 +402,10 @@ open class BaseCharacter{
         charFile: File,
         secondaryFile: File,
         techFile: File,
-        classRecord: ClassRecord = ClassRecord()
+        objectDB: ObjectDatabase = ObjectDatabase()
     ){
+        this.objectDB = objectDB
+        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
 
         //get custom custom items for this character
         secondaryList.applySecondaryChars(
@@ -408,8 +416,6 @@ open class BaseCharacter{
             customTechDir = techFile,
             filename = charFile.name
         )
-
-        this.classRecord = classRecord
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)
@@ -496,9 +502,10 @@ open class BaseCharacter{
         newHost: SblChar,
         prevIndex: Int,
         isAdded: Boolean
-    ): this(){
+    ){
         //set class record of host
-        classRecord = newHost.classRecord
+        objectDB = newHost.objectDB
+        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
 
         //set level to not zero if not the zeroth level
         if(prevIndex >= 0)
@@ -548,8 +555,8 @@ open class BaseCharacter{
             writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(writer = byteArray, input = classRecord.allClasses[classes.ownClass.intValue].saveName)
-            writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
+            writeDataTo(writer = byteArray, input = objectDB.classRecord.allClasses[classes.ownClass.intValue].saveName)
+            writeDataTo(writer = byteArray, input = objectDB.races.getNameOfList(ownRace.value))
             writeDataTo(writer = byteArray, input = lvl.intValue)
 
             //write paladin's chosen level boon

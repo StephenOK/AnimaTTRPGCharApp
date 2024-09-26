@@ -8,8 +8,9 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicLibrary
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.NecromancyBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.*
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
@@ -22,6 +23,8 @@ import java.io.ByteArrayOutputStream
  * @param charInstance object that holds all of the character's data
  */
 open class Magic(private val charInstance: BaseCharacter){
+    fun getMagLibrary(): MagicLibrary {return charInstance.objectDB.magicLibrary}
+
     //initialize base Zeon points
     val baseZeon = mutableIntStateOf(value = 70)
 
@@ -74,18 +77,18 @@ open class Magic(private val charInstance: BaseCharacter){
     val magicLevelSpent = mutableIntStateOf(value = 0)
 
     //retrieve all available spells
-    val lightBook = LightBook()
-    val darkBook = DarkBook()
-    val creationBook = CreationBook()
-    val destructionBook = DestructionBook()
-    val airBook = AirBook()
-    val earthBook = EarthBook()
-    val waterBook = WaterBook()
-    val fireBook = FireBook()
-    val essenceBook = EssenceBook()
-    val illusionBook = IllusionBook()
-    val necromancyBook = NecromancyBook()
-    val freeBook = FreeBook()
+    val lightBook = MagicBook(getMagLibrary().lightSpells)
+    val darkBook = MagicBook(getMagLibrary().darkSpells)
+    val creationBook = MagicBook(getMagLibrary().creationSpells)
+    val destructionBook = MagicBook(getMagLibrary().destructionSpells)
+    val airBook = MagicBook(getMagLibrary().airSpells)
+    val earthBook = MagicBook(getMagLibrary().earthSpells)
+    val waterBook = MagicBook(getMagLibrary().waterSpells)
+    val fireBook = MagicBook(getMagLibrary().fireSpells)
+    val essenceBook = MagicBook(getMagLibrary().essenceSpells)
+    val illusionBook = MagicBook(getMagLibrary().illusionSpells)
+    val necromancyBook = NecromancyBook(getMagLibrary().necromancySpells)
+    val freeBook = getMagLibrary().freeSpells
 
     val allBooks = listOf(
         lightBook,
@@ -356,7 +359,7 @@ open class Magic(private val charInstance: BaseCharacter){
     fun getSpellElement(spell: Spell): Element{
         //check if the spell is part of an elemental book
         allBooks.forEach{book ->
-            if(spell in book.fullBook) return book.element
+            if(spell in book.spells.fullBook) return book.spells.element
         }
 
         //return that spell has no element
@@ -372,7 +375,7 @@ open class Magic(private val charInstance: BaseCharacter){
     fun getSpellBook(spell: Spell): MagicBook?{
         //search each book for the spell
         allBooks.forEach{book ->
-            if(spell in book.fullBook) return book
+            if(spell in book.spells.fullBook) return book
         }
 
         //no book associated with this spell
@@ -388,7 +391,7 @@ open class Magic(private val charInstance: BaseCharacter){
     fun getElementBook(element: Element): MagicBook?{
         //search each book for the associated element
         allBooks.forEach{book ->
-            if(book.element == element) return book
+            if(book.spells.element == element) return book
         }
 
         //elemental book not found
@@ -547,7 +550,7 @@ open class Magic(private val charInstance: BaseCharacter){
             }
         }
         else{
-            allBooks.forEach{book -> book.load(fileReader = fileReader, freeBook = freeBook)}
+            allBooks.forEach{book -> book.load(fileReader = fileReader, freeSpells = freeBook)}
         }
     }
 

@@ -168,7 +168,7 @@ fun PurchasePreview(){
     val charInstance = BaseCharacter()
 
     val equipFragVM = EquipmentFragmentViewModel(charInstance.inventory)
-    equipFragVM.setPurchasedItem(charInstance.inventory.weapons.arquebus)
+    equipFragVM.setPurchasedItem(charInstance.inventory.weapons.itemsAvailable[57])
     equipFragVM.setPurchasingCategory(charInstance.inventory.weapons)
 
     EquipmentItemPurchase(equipFragVM)

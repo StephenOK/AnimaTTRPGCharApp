@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities
 
-import android.os.Build
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,11 +8,11 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import com.paetus.animaCharCreator.writeDataTo
@@ -31,8 +30,9 @@ import java.nio.charset.StandardCharsets
  * @param charInstance object that holds all of the character's data
  */
 open class Ki(private val charInstance: BaseCharacter){
-    //data table of technique effects
-    val techniqueDatabase = TechniqueTableDataRecord()
+    fun getKiRecord(): KiRecord {return charInstance.objectDB.kiRecord}
+    fun getTechData(): TechniqueTableDataRecord {return charInstance.objectDB.techniqueDatabase}
+    fun getPrebuiltTechs(): TechniquePrebuilts {return charInstance.objectDB.prebuiltTechs}
 
     //initialize martial knowledge values
     val martialKnowledgeMax = mutableIntStateOf(value = 10)
@@ -66,15 +66,12 @@ open class Ki(private val charInstance: BaseCharacter){
     //initialize total accumulation value
     val totalAcc = mutableIntStateOf(value = 6)
 
-    //get data of ki techniques
-    val kiRecord = KiRecord()
-
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
 
     //create of map of prebuilt techniques and their taken states
     val allPrebuilts =
-        TechniquePrebuilts(techniqueDataRecord = techniqueDatabase)
+        getPrebuiltTechs()
             .allTechniques.associateBy(
                 keySelector = {it},
                 valueTransform = {mutableStateOf(false)}
@@ -220,7 +217,7 @@ open class Ki(private val charInstance: BaseCharacter){
         takenAbilities.removeAll(elements = removeList)
 
         //remove techniques if Ki Control removed
-        if(!takenAbilities.contains(kiRecord.kiControl)) {
+        if(!takenAbilities.contains(getKiRecord().kiControl)) {
             allPrebuilts.forEach { prebuilts -> prebuilts.value.value = false }
             customTechniques.forEach { customs -> customs.value.value = false }
         }
@@ -249,7 +246,7 @@ open class Ki(private val charInstance: BaseCharacter){
      * @return ki ability of the search if available
      */
     private fun getAbility(findAbility: String): KiAbility?{
-        kiRecord.allKiAbilities.forEach{ability ->
+        getKiRecord().allKiAbilities.forEach{ ability ->
             if(ability.saveTag == findAbility)
                 return ability
         }
@@ -576,14 +573,14 @@ open class Ki(private val charInstance: BaseCharacter){
         //retrieve the appropriate technique table data
         val tableData =
             //retrieve data based on the saved values
-            if(name != 14) techniqueDatabase.findData(
+            if(name != 14) getTechData().findData(
                 name = name,
                 primary = fileReader.readLine().toInt(),
                 secondary = fileReader.readLine().toInt(),
                 mkCost = fileReader.readLine().toInt()
             )
             //retrieve data for a saved state effect
-            else techniqueDatabase.stateEffect(
+            else getTechData().stateEffect(
                 stateRef = fileReader.readLine().toInt(),
                 costRemain = fileReader.readLine().toInt(),
                 primary = fileReader.readLine().toInt()

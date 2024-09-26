@@ -2,14 +2,10 @@ package com.paetus.animaCharCreator.character_creation.attributes.modules
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
-import com.paetus.animaCharCreator.enumerations.AttackType
-import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponAbility
-import com.paetus.animaCharCreator.enumerations.weaponEnums.WeaponType
+import com.paetus.animaCharCreator.character_creation.equipment.Armory
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
-import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_instances.*
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
@@ -24,96 +20,12 @@ import java.io.ByteArrayOutputStream
  */
 
 open class WeaponProficiencies(private val charInstance: BaseCharacter){
-    //get all weapon instances
-    val shortArms = ShortArms()
-    val axes = Axes()
-    val maces = Maces()
-    val swords = Swords()
-    val twoHanded = TwoHanded()
-    val poles = Poles()
-    val cords = Cords()
-    val mixed = Mixed()
-    val shields = Shields()
-    val projectiles = Projectiles()
-    val thrown = Thrown()
-
-    //create data on the unarmed weapon
-    val unarmed = Weapon(
-        saveName = "unarmed",
-        name = R.string.unarmed,
-        damage = 10,
-        speed = 20,
-        oneHandStr = 0, twoHandStr = null,
-        primaryType = AttackType.Impact, secondaryType = null, type = WeaponType.Unarmed,
-        fortitude = null, breakage = null, presence = null,
-        ability = listOf(WeaponAbility.Precision), ownStrength = null,
-        description = R.string.unarmedDesc
-    )
-
-    //make list of every weapon
-    val allWeapons = shortArms.shortArms + axes.axes + maces.maces + swords.swords + twoHanded.twoHanded +
-            poles.poles + cords.cords + mixed.mixed + shields.shields + projectiles.projectiles + thrown.thrown + unarmed
-
-    //gather all archetype modules
-    private val improvised = listOf(shortArms.brokenBottle, twoHanded.chair, shortArms.kitchenKnife,
-        maces.hammer, axes.hoe, maces.metalBar, shortArms.pick, shortArms.sickle, maces.torch,
-        maces.vase, maces.woodenPole, axes.woodAxe)
-    private val barbarianWeapons = listOf(mixed.twoHandAxe, axes.battleAxe, twoHanded.twoHandSword,
-        mixed.bastardSword, mixed.heavyBattleMace)
-    private val ninjaWeapons = listOf(swords.katana, shortArms.tanto, shortArms.claws, shortArms.shuriken,
-        mixed.kusariGama)
-    private val duelWeapons = listOf(swords.rapier, mixed.foil, shortArms.parryDagger, shortArms.dagger,
-        swords.saber, swords.longSword)
-    private val pirateWeapons = listOf(poles.harpoon, cords.gladNet, shortArms.hook, swords.saber, axes.handAxe)
-    private val nomadWeapons = listOf(shortArms.dagger, thrown.chakram, projectiles.longBow,
-        swords.scimitar, poles.lance)
-    private val huntWeapons = listOf(poles.javelin, projectiles.shortBow, shortArms.shortSword, poles.lance,
-        thrown.bolas)
-    private val knightWeapons = listOf(swords.longSword, poles.cavLance, maces.mace, mixed.bastardSword, shields.shield)
-    private val gladiatorWeapons = listOf(shortArms.shortSword, cords.gladNet, shields.buckler,
-        poles.trident, cords.whip)
-    private val assassinWeapons = listOf(shortArms.shortSword, projectiles.miniCrossbow, maces.club,
-        projectiles.blowgun, shortArms.stiletto)
-    private val soldierWeapons = listOf(projectiles.crossbow, swords.longSword, mixed.halberd, poles.lance,
-        shields.shield)
-    private val indigenousWeapons = listOf(poles.javelin, poles.lance, shields.fullShield,
-        projectiles.shortBow, projectiles.blowgun)
-    private val banditWeapons = listOf(shortArms.dagger, projectiles.crossbow, shortArms.shortSword,
-        maces.mace, maces.club)
-
-    val allArchetypes = mapOf(
-        "barbarian" to barbarianWeapons,
-        "ninja" to ninjaWeapons,
-        "duel" to duelWeapons,
-        "pirate" to pirateWeapons,
-        "nomad" to nomadWeapons,
-        "hunter" to huntWeapons,
-        "knight" to knightWeapons,
-        "gladiator" to gladiatorWeapons,
-        "assassin" to assassinWeapons,
-        "soldier" to soldierWeapons,
-        "indigenous" to indigenousWeapons,
-        "bandit" to banditWeapons,
-        "improvised" to improvised,
-
-        "short" to shortArms.shortArms + mixed.shortAdditions,
-        "axe" to axes.axes + mixed.axeAdditions,
-        "mace" to maces.maces + mixed.maceAdditions,
-        "sword" to swords.swords + mixed.swordAdditions,
-        "twoHanded" to twoHanded.twoHanded + mixed.twoHandedAdditions,
-        "pole" to poles.poles + mixed.poleAdditions,
-        "cord" to cords.cords + mixed.cordAdditions,
-        "shield" to shields.shields,
-        "projectile" to projectiles.projectiles,
-        "thrown" to thrown.thrown
-    )
-
-    //get martial arts and style modules
-    val martials = MartialArts(charInstance = charInstance)
-    val styles = StyleInstances()
+    fun getArmory(): Armory {return charInstance.objectDB.armory}
+    fun getMartials(): MartialArts {return charInstance.objectDB.martials}
+    fun getStyles(): StyleInstances {return charInstance.objectDB.styles}
 
     //initialize character's primary weapon
-    val primaryWeapon = mutableStateOf(value = unarmed)
+    val primaryWeapon = mutableStateOf(value = getArmory().unarmed)
 
     //initialize weapons individually taken and given from group modules
     val individualModules = mutableListOf<Weapon>()
@@ -136,13 +48,13 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      */
     private fun findWeapon(weaponName: String): Weapon {
         //search through all weapons until a match is found
-        allWeapons.forEach{ weapon ->
+        getArmory().allWeapons.forEach{weapon ->
             if(weapon.saveName == weaponName)
                 return weapon
         }
 
         //return unarmed if not found
-        return unarmed
+        return getArmory().unarmed
     }
 
     /**
@@ -246,12 +158,12 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         //if user tries to add the item
         if(isAdded){
             //check that character qualifies for this addition
-            if(takenMartialList.size < martialMax.intValue && changeItem.qualification()){
+            if(takenMartialList.size < martialMax.intValue && changeItem.qualification(charInstance)){
                 //add martial art to record
                 takenMartialList += changeItem
 
                 //apply capoeira's dodge bonus
-                if(changeItem == martials.capoeira)
+                if(changeItem == getMartials().capoeira)
                     charInstance.combat.dodge.setClassBonus(10)
 
                 //update spelt total
@@ -266,7 +178,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
             takenMartialList -= changeItem
 
             //remove capoeira's dodge bonus
-            if(changeItem == martials.capoeira)
+            if(changeItem == getMartials().capoeira)
                 charInstance.combat.dodge.setClassBonus(-10)
         }
 
@@ -283,7 +195,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      */
     fun doubleCheck() {
         takenMartialList.forEach{martial ->
-            if(!martial.qualification())
+            if(!martial.qualification(charInstance))
                 takenMartialList -= martial
         }
     }
@@ -354,7 +266,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
 
         //add amount for different style modules
         styleMods.forEach{style ->
-            if(!styles.exceptions.contains(element = style))
+            if(!getStyles().exceptions.contains(element = style))
                 total += style.cost
         }
 
@@ -418,7 +330,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
                 if(charInstance.classes.ownClass.intValue == 7)
                     10
                 //if character is primarily unarmed
-                else if(primaryWeapon.value == unarmed)
+                else if(primaryWeapon.value == getArmory().unarmed)
                     25
                 //if neither are factors
                 else
@@ -442,8 +354,8 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         var output = 0
 
         //add style costs for each one taken
-        if(styleMods.contains(element = styles.magAsAttack)) output += 75
-        if(styleMods.contains(element = styles.magAsDefense)) output += 75
+        if(styleMods.contains(element = getStyles().magAsAttack)) output += 75
+        if(styleMods.contains(element = getStyles().magAsDefense)) output += 75
 
         return output
     }
@@ -454,7 +366,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @return value of psychic points in this section
      */
     fun calcPointsInPsy(): Int{
-        return if (styleMods.contains(element = styles.psyProjection)) 100
+        return if (styleMods.contains(element = getStyles().psyProjection)) 100
             else 0
     }
 
@@ -473,11 +385,11 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
 
         //get any archetype modules saved
         for(loopNum in 0 until fileReader.readLine().toInt())
-            updateModulesTaken(weaponCheck = allArchetypes[fileReader.readLine()]!!, isAdded = true)
+            updateModulesTaken(weaponCheck = getArmory().allArchetypes[fileReader.readLine()]!!, isAdded = true)
 
         //get any style modules saved
         for(loopNum in 0 until fileReader.readLine().toInt())
-            styleMods += styles.getStyle(styleName = fileReader.readLine())!!
+            styleMods += getStyles().getStyle(styleName = fileReader.readLine())!!
 
         //get any martial arts saved
         for(loopNum in 0 until fileReader.readLine().toInt())
@@ -501,7 +413,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
 
         //record all archetype modules
         writeDataTo(writer = byteArray, input = takenModules.size)
-        allArchetypes.forEach{(archName, list) ->
+        getArmory().allArchetypes.forEach{(archName, list) ->
             if(takenModules.contains(element = list)) writeDataTo(writer = byteArray, input = archName)
         }
 
@@ -525,7 +437,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @return the desired martial art if found
      */
     private fun loadMartial(martialName: String): MartialArt?{
-        martials.allMartialArts.forEach{martial ->
+        getMartials().allMartialArts.forEach{martial ->
             if(martialName == martial.saveName)
                 return martial
         }

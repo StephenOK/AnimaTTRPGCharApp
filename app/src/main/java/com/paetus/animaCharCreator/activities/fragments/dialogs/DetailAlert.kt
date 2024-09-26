@@ -1524,7 +1524,7 @@ fun ClassDetailPreview(){
 @Composable
 fun AdvantageDetailPreview(){
     val charInstance = BaseCharacter()
-    val advantage = charInstance.advantageRecord.commonAdvantages.characteristicPoint
+    val advantage = charInstance.objectDB.commonAdvantages.characteristicPoint
     DetailAlert(stringResource(id = advantage.name), advantage){}
 }
 
@@ -1532,7 +1532,7 @@ fun AdvantageDetailPreview(){
 @Composable
 fun WeaponDetailPreview(){
     val charInstance = BaseCharacter()
-    val weapon = charInstance.weaponProficiencies.projectiles.crossbow
+    val weapon = charInstance.objectDB.armory.projectiles.crossbow
 
     DetailAlert(stringResource(id = weapon.name), weapon){}
 }
@@ -1551,7 +1551,7 @@ fun ModuleDetailPreview(){
 @Composable
 fun MartialDetailPreview(){
     val charInstance = BaseCharacter()
-    val martialArt = charInstance.weaponProficiencies.martials.aikido
+    val martialArt = charInstance.objectDB.martials.aikido
 
     DetailAlert(stringResource(id = martialArt.name), martialArt){}
 }
@@ -1560,7 +1560,7 @@ fun MartialDetailPreview(){
 @Composable
 fun KiDetailPreview(){
     val charInstance = BaseCharacter()
-    val kiAbility = charInstance.ki.kiRecord.kiControl
+    val kiAbility = charInstance.objectDB.kiRecord.kiControl
 
     DetailAlert(stringResource(id = kiAbility.name), kiAbility){}
 }
@@ -1588,7 +1588,7 @@ fun SpellDetailPreview(){
 @Composable
 fun PowerDetailPreview(){
     val charInstance = BaseCharacter()
-    val power = charInstance.psychic.matrixPowers.linkMatrices
+    val power = charInstance.psychic.matrixPowers.allPowers[3]
 
     DetailAlert(stringArrayResource(R.array.powerNames)[power.name], power){}
 }
@@ -1597,7 +1597,7 @@ fun PowerDetailPreview(){
 @Composable
 fun EquipmentDetailPreview(){
     val charInstance = BaseCharacter()
-    val item = charInstance.inventory.miscellaneous.excellentLock
+    val item = charInstance.inventory.miscellaneous.itemsAvailable[21]
 
     DetailAlert(stringResource(id = item.name), item){}
 }

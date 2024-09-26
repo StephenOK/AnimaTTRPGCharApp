@@ -100,7 +100,7 @@ class CharacterFragmentViewModel(
     val raceAdvantageOpen = _raceAdvantageOpen.asStateFlow()
 
     //initialize racial advantage displayed
-    private val _racialDisplayed = MutableStateFlow(value = charInstance.races.sylvainAdvantages[0])
+    private val _racialDisplayed = MutableStateFlow(value = charInstance.objectDB.races.sylvainAdvantages[0])
     val racialDisplayed = _racialDisplayed.asStateFlow()
 
     //initialize open state of class detail alert
@@ -179,7 +179,7 @@ class CharacterFragmentViewModel(
     /**
      * Retrieves the freelancer class from the character.
      */
-    fun getFreelancer(): CharClass {return charInstance.classRecord.allClasses[0]}
+    fun getFreelancer(): CharClass {return charInstance.objectDB.classRecord.allClasses[0]}
 
     /**
      * Retrieves the character's selections for their freelancer bonuses.
@@ -319,7 +319,7 @@ class CharacterFragmentViewModel(
      * Retrieves the class displayed inn the class dropdown item.
      */
     fun getDisplayedClass(): CharClass{
-        return charInstance.classRecord.allClasses[classDropdown.data.output.value]
+        return charInstance.objectDB.classRecord.allClasses[classDropdown.data.output.value]
     }
 
     /**
@@ -519,7 +519,7 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.raceText,
             optionsRef = R.array.raceArray,
-            initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+            initialIndex = charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
             onChange = {
                 //change the character's race
                 charInstance.setOwnRace(raceNum = it)

@@ -15,6 +15,8 @@ import java.io.ByteArrayOutputStream
 open class ClassInstances(
     open val charInstance: BaseCharacter
 ){
+    fun getClassRecord(): ClassRecord{return charInstance.objectDB.classRecord}
+
     //initialize freelancer bonus selections
     val freelancerSelection = mutableListOf(0, 0, 0, 0, 0)
 
@@ -69,10 +71,10 @@ open class ClassInstances(
      */
     fun setOwnClass(classString: String){
         //search through all class objects
-        charInstance.classRecord.allClasses.forEach{charClass ->
+        getClassRecord().allClasses.forEach{charClass ->
             //apply class if match found
             if(charClass.saveName == classString){
-                setOwnClass(charInstance.classRecord.allClasses.indexOf(charClass))
+                setOwnClass(getClassRecord().allClasses.indexOf(charClass))
                 return@forEach
             }
         }
@@ -81,7 +83,7 @@ open class ClassInstances(
     /**
      * Retrieves the class associated with the current pointer state.
      */
-    fun getClass(): CharClass{return charInstance.classRecord.allClasses[ownClass.intValue]}
+    fun getClass(): CharClass{return getClassRecord().allClasses[ownClass.intValue]}
 
     /**
      * Attempts to change the selection in the indicated record index.

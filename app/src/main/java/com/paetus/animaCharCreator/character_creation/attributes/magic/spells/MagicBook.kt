@@ -3,15 +3,14 @@ package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeBook
-import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeSpells
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 
 open class MagicBook(
-    val element: Element
-) {
+    val spells: SpellList
+){
     //initialize points in this book
     val pointsIn = mutableIntStateOf(value = 0)
 
@@ -26,9 +25,6 @@ open class MagicBook(
 
     //initialize natural path taken for this element
     val isNatural = mutableStateOf(false)
-
-    //initialize spell book
-    val fullBook = mutableListOf<Spell?>()
 
     //initialize free spells associated with this element
     val freeSpells = mutableListOf<FreeSpell>()
@@ -282,7 +278,7 @@ open class MagicBook(
             maintenance = null,
             isDaily = false,
             type = listOf(),
-            forbiddenElements = listOf(element)
+            forbiddenElements = listOf(spells.element)
         )
     }
 
@@ -298,7 +294,7 @@ open class MagicBook(
         //retrieve spells from point investment and natural bonus
         for(index in 0 until getCap()/2){
             //add elemental spell
-            if(fullBook[index] != null) output += fullBook[index]!!
+            if(spells.fullBook[index] != null) output += spells.fullBook[index]!!
             //add free spell
             else output += getFreeSpell(level = (index + 1) * 2)
         }
@@ -306,7 +302,7 @@ open class MagicBook(
         //retrieve individually purchased spells
         individualSpells.forEach{index ->
             //add elemental spell
-            if(fullBook[index] != null) output += fullBook[index]!!
+            if(spells.fullBook[index] != null) output += spells.fullBook[index]!!
             //add free spell
             else output += getFreeSpell(level = (index + 1) * 2)
         }
@@ -327,11 +323,11 @@ open class MagicBook(
      * Loads data from file into this item.
      *
      * @param fileReader file input reader to get data from
-     * @param freeBook reference to free spell data
+     * @param freeSpells reference to free spell data
      */
     fun load(
         fileReader: BufferedReader,
-        freeBook: FreeBook
+        freeSpells: FreeSpells
     ){
         //set the magic level investment
         buyLevels(pointBuy = fileReader.readLine().toInt())
@@ -344,7 +340,7 @@ open class MagicBook(
         //apply recorded free spells to this book
         for(item in 0 until fileReader.readLine().toInt()){
             //get the free spell base from this data
-            val spellBase = freeBook.findFreeSpell(saveName = fileReader.readLine())
+            val spellBase = freeSpells.findFreeSpell(saveName = fileReader.readLine())
 
             //add the free spell base with the appropriate level
             addFreeSpell(spell = FreeSpell(

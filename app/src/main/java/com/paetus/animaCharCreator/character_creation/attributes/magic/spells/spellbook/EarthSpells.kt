@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the earth element.
  */
-class EarthBook: MagicBook(Element.Earth){
+class EarthSpells: SpellList(Element.Earth){
     private val detectMinerals = Spell(
         name = R.string.detectMinerals,
         isActive = true,

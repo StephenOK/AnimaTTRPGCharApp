@@ -369,7 +369,6 @@ open class BaseCharacter{
      */
     constructor(){
         objectDB = ObjectDatabase()
-        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
     }
 
     /**
@@ -405,7 +404,6 @@ open class BaseCharacter{
         objectDB: ObjectDatabase = ObjectDatabase()
     ){
         this.objectDB = objectDB
-        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
 
         //get custom custom items for this character
         secondaryList.applySecondaryChars(
@@ -461,7 +459,7 @@ open class BaseCharacter{
         secondaryList.loadList(fileReader = fileReader, writeVersion = version)
 
         //load character's combat modules
-        weaponProficiencies.loadProficiencies(fileReader = fileReader)
+        weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
 
         //load character's ki abilities
         ki.loadKiAttributes(
@@ -505,7 +503,6 @@ open class BaseCharacter{
     ){
         //set class record of host
         objectDB = newHost.objectDB
-        weaponProficiencies.setPrimaryWeapon(objectDB.armory.unarmed)
 
         //set level to not zero if not the zeroth level
         if(prevIndex >= 0)

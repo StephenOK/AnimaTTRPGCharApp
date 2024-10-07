@@ -46,7 +46,7 @@ class SblProficiencies(
         toAdd: Boolean
     ){
         //add module if requested and not taken by archetype
-        if(toAdd && !individualModules.contains(weapon)) {
+        if(toAdd && !weaponsFromArchetypes().contains(element = getArmory().allWeapons.indexOf(weapon))) {
             //update this level record's individual module
             charInstance.getCharAtLevel().weaponProficiencies.changeIndividualModule(weapon, true)
 
@@ -56,7 +56,7 @@ class SblProficiencies(
             }
         }
         //remove module if requested
-        else if (!toAdd && individualModules.contains(weapon))
+        else if (!toAdd && individualModules.contains(getArmory().allWeapons.indexOf(weapon)))
             charInstance.getCharAtLevel().weaponProficiencies.changeIndividualModule(weapon, false)
 
         //update character's held weapons

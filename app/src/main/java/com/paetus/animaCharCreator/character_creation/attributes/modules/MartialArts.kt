@@ -110,7 +110,7 @@ class MartialArts{
             (it.weaponProficiencies.takenMartialList.contains(grappling) || it.weaponProficiencies.takenMartialList.contains(sambo)) &&
                     it.ki.takenAbilities.contains(it.objectDB.kiRecord.inhumanity) &&
                     it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -124,7 +124,7 @@ class MartialArts{
             (it.weaponProficiencies.takenMartialList.contains(shotokan) || it.weaponProficiencies.takenMartialList.contains(kempo)) &&
                     it.ki.takenAbilities.contains(it.objectDB.kiRecord.presenceExtrusion) &&
                     it.combat.attack.total.intValue >= 180 &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -149,7 +149,7 @@ class MartialArts{
         qualification = {
             (it.weaponProficiencies.takenMartialList.contains(kempo) || it.weaponProficiencies.takenMartialList.contains(taekwondo)) &&
                     it.combat.attack.total.intValue >= 200 &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -162,7 +162,7 @@ class MartialArts{
         qualification = {
             (it.weaponProficiencies.takenMartialList.contains(sambo) || it.weaponProficiencies.takenMartialList.contains(shotokan)) &&
                     it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -176,7 +176,7 @@ class MartialArts{
             it.weaponProficiencies.takenMartialList.contains(aikido) && it.weaponProficiencies.takenMartialList.contains(kungFu) &&
                     it.ki.takenAbilities.contains(it.objectDB.kiRecord.kiControl) &&
                     (it.combat.block.total.intValue >= 200 || it.combat.dodge.total.intValue >= 200) &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -189,7 +189,7 @@ class MartialArts{
         qualification = {
             it.weaponProficiencies.takenMartialList.contains(kungFu) &&
                     it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -214,7 +214,7 @@ class MartialArts{
         qualification = {
             it.weaponProficiencies.takenMartialList.contains(aikido) &&
                     (it.combat.block.total.intValue >= 200 || it.combat.dodge.total.intValue >= 200) &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -228,7 +228,7 @@ class MartialArts{
             (it.weaponProficiencies.takenMartialList.contains(shotokan) || it.weaponProficiencies.takenMartialList.contains(muayThai)) &&
                     it.ki.takenAbilities.contains(it.objectDB.kiRecord.useOfNecessaryEnergy) &&
                     it.combat.attack.total.intValue >= 200 &&
-                    (it.weaponProficiencies.primaryWeapon.value == it.objectDB.armory.unarmed || it.weaponProficiencies.individualModules.contains(it.objectDB.armory.unarmed))
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 

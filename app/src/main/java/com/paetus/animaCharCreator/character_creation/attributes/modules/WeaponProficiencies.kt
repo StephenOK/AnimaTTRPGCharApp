@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.modules
 
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.equipment.Armory
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.MixedWeapon
@@ -25,10 +24,10 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
     fun getStyles(): StyleInstances {return charInstance.objectDB.styles}
 
     //initialize character's primary weapon
-    val primaryWeapon = mutableStateOf(value = getArmory().unarmed)
+    val primaryWeapon = mutableIntStateOf(value = 0)
 
     //initialize weapons individually taken and given from group modules
-    val individualModules = mutableListOf<Weapon>()
+    val individualModules = mutableListOf<Int>()
 
     //list of modules the character has taken
     val takenModules = mutableListOf<List<Weapon>>()
@@ -46,15 +45,15 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * @param weaponName name of the weapon the caller is looking for
      * @return the weapon with the searched for name
      */
-    private fun findWeapon(weaponName: String): Weapon {
+    fun findWeapon(weaponName: String): Int {
         //search through all weapons until a match is found
         getArmory().allWeapons.forEach{weapon ->
             if(weapon.saveName == weaponName)
-                return weapon
+                return getArmory().allWeapons.indexOf(weapon)
         }
 
         //return unarmed if not found
-        return getArmory().unarmed
+        return 0
     }
 
     /**
@@ -70,14 +69,14 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
     /**
      * Set the character's primary weapon to the inputted weapon.
      *
-     * @param weapon item to set as the primary weapon
+     * @param weaponIndex value to set as the primary weapon
      */
-    fun setPrimaryWeapon(weapon: Weapon){
+    fun setPrimaryWeapon(weaponIndex: Int){
         //set new primary weapon
-        primaryWeapon.value = weapon
+        primaryWeapon.intValue = weaponIndex
 
         //potentially remove the weapon from the purchase list
-        individualModules -= primaryWeapon.value
+        individualModules -= primaryWeapon.intValue
         charInstance.updateTotalSpent()
     }
 
@@ -92,11 +91,11 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         toAdd: Boolean
     ){
         //add module if requested and not taken by archetype
-        if(toAdd && !weaponsFromArchetypes().contains(element = weapon))
-            individualModules += weapon
+        if(toAdd && !weaponsFromArchetypes().contains(element = getArmory().allWeapons.indexOf(weapon)))
+            individualModules += getArmory().allWeapons.indexOf(weapon)
         //remove module if requested
         else if(!toAdd)
-            individualModules -= weapon
+            individualModules -= getArmory().allWeapons.indexOf(weapon)
 
         //update the points spent by the character
         charInstance.updateTotalSpent()
@@ -129,14 +128,14 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      *
      * @return list of weapons from taken archetypes
      */
-    fun weaponsFromArchetypes(): List<Weapon>{
+    fun weaponsFromArchetypes(): List<Int>{
         //initialize the outputted list
-        val output = mutableListOf<Weapon>()
+        val output = mutableListOf<Int>()
 
         //add every weapon from the taken archetypes
         takenModules.forEach{list ->
             list.forEach{
-                output += it
+                output += getArmory().allWeapons.indexOf(it)
             }
         }
 
@@ -284,10 +283,12 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         val toCheck = individualModules.toMutableList() - weaponsFromArchetypes().toSet()
 
         //for each individual module taken
-        toCheck.forEach{weapon ->
+        toCheck.forEach{
+            val weapon = getArmory().allWeapons[it]
+
             //if primary weapon is mixed
-            if(primaryWeapon.value is MixedWeapon){
-                val copyPrime = primaryWeapon.value as MixedWeapon
+            if(getArmory().allWeapons[primaryWeapon.intValue] is MixedWeapon){
+                val copyPrime = getArmory().allWeapons[primaryWeapon.intValue] as MixedWeapon
 
                 //apply same type for exactly matching weapons
                 if(weapon is MixedWeapon) {
@@ -311,10 +312,10 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
 
             //if primary weapon is not mixed
             //add mixed cost if secondary is mixed with one matching type
-            else if(weapon is MixedWeapon && weapon.mixedType.contains(primaryWeapon.value.type))
+            else if(weapon is MixedWeapon && weapon.mixedType.contains(getArmory().allWeapons[primaryWeapon.intValue].type))
                 total += 15/classDividend
             //add identical cost for identical type
-            else if(weapon.type == primaryWeapon.value.type)
+            else if(weapon.type == getArmory().allWeapons[primaryWeapon.intValue].type)
                 total += 10/classDividend
 
             //add no matching type amount
@@ -330,7 +331,7 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
                 if(charInstance.classes.ownClass.intValue == 7)
                     10
                 //if character is primarily unarmed
-                else if(primaryWeapon.value == getArmory().unarmed)
+                else if(primaryWeapon.intValue == 0)
                     25
                 //if neither are factors
                 else
@@ -374,14 +375,37 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * Retrieves save data to apply to the character for this category.
      *
      * @param fileReader reader of the input for this item
+     * @param writeVersion version of the last save for the loaded character
      */
-    fun loadProficiencies(fileReader: BufferedReader){
+    fun loadProficiencies(
+        fileReader: BufferedReader,
+        writeVersion: Int
+    ){
         //get primary weapon
-        primaryWeapon.value = findWeapon(weaponName = fileReader.readLine())
+        if(writeVersion < 44){
+            //convert save name to index pointer
+            val findWeapon = fileReader.readLine()
+            getArmory().allWeapons.forEach{
+                if(it.saveName == findWeapon) primaryWeapon.intValue = getArmory().allWeapons.indexOf(it)
+                return@forEach
+            }
+        }
+        //retrieve index pointer
+        else
+            primaryWeapon.intValue = fileReader.readLine().toInt()
 
         //get each individual weapon module
-        for(loopNum in 0 until fileReader.readLine().toInt())
-            individualModules += findWeapon(weaponName = fileReader.readLine())
+        for(loopNum in 0 until fileReader.readLine().toInt()) {
+            if(writeVersion < 44){
+                val findWeapon = fileReader.readLine()
+                getArmory().allWeapons.forEach{
+                    if(it.saveName == findWeapon) individualModules += getArmory().allWeapons.indexOf(it)
+                    return@forEach
+                }
+            }
+            else
+                individualModules += fileReader.readLine().toInt()
+        }
 
         //get any archetype modules saved
         for(loopNum in 0 until fileReader.readLine().toInt())
@@ -403,12 +427,12 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      */
     fun writeProficiencies(byteArray: ByteArrayOutputStream) {
         //save primary weapon data
-        writeDataTo(writer = byteArray, input = primaryWeapon.value.saveName)
+        writeDataTo(writer = byteArray, input = primaryWeapon.intValue)
 
         //record all individual weapon modules
         writeDataTo(writer = byteArray, input = individualModules.size.toString())
         individualModules.forEach{
-            writeDataTo(writer = byteArray, input = it.saveName)
+            writeDataTo(writer = byteArray, input = it)
         }
 
         //record all archetype modules

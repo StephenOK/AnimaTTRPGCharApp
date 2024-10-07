@@ -24,7 +24,7 @@ class ModuleFragmentViewModel(
     val context: Context
 ) : ViewModel() {
     //initialize character's current primary weapon selection
-    private val _primaryWeapon = MutableStateFlow(value = weaponProficiencies.primaryWeapon.value)
+    private val _primaryWeapon = MutableStateFlow(value = weaponProficiencies.primaryWeapon.intValue)
     val primaryWeapon = _primaryWeapon.asStateFlow()
 
     //initialize open state of the archetype module menu
@@ -64,13 +64,18 @@ class ModuleFragmentViewModel(
     val allStyles = mutableMapOf<StyleModule, MutableState<Boolean>>()
 
     /**
+     * Retrieves the primary weapon item taken by the character at this moment.
+     */
+    fun getPrimaryWeapon(): Weapon{return weaponProficiencies.getArmory().allWeapons[primaryWeapon.value]}
+
+    /**
      * Sets the character's primary weapon to the inputted item.
      *
      * @param primeWeapon weapon to set as the primary one
      */
     fun setPrimaryWeapon(primeWeapon: Weapon){
         weaponProficiencies.setPrimaryWeapon(weaponName = primeWeapon.saveName)
-        _primaryWeapon.update{weaponProficiencies.primaryWeapon.value}
+        _primaryWeapon.update{weaponProficiencies.primaryWeapon.intValue}
     }
 
     /**
@@ -162,8 +167,8 @@ class ModuleFragmentViewModel(
         isTaking: Boolean
     ){
         weaponProficiencies.changeIndividualModule(weapon = weapon, toAdd = isTaking)
-        allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(element = weapon) ||
-                weaponProficiencies.weaponsFromArchetypes().contains(element = weapon)
+        allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                weaponProficiencies.weaponsFromArchetypes().contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
     }
 
     /**
@@ -485,7 +490,8 @@ class ModuleFragmentViewModel(
 
             //update individually taken weapons
             modFragVM.allSecondaryWeapons.forEach{(weapon, isTaken) ->
-                isTaken.value = weaponProficiencies.weaponsFromArchetypes().contains(element = weapon) || weaponProficiencies.individualModules.contains(weapon)
+                isTaken.value = weaponProficiencies.weaponsFromArchetypes().contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                        weaponProficiencies.individualModules.contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
             }
         }
 
@@ -502,7 +508,7 @@ class ModuleFragmentViewModel(
     init{
         //create checkboxes for each individual weapon
         weaponProficiencies.getArmory().allWeapons.forEach{weapon ->
-            allSecondaryWeapons += Pair(weapon, mutableStateOf(weaponProficiencies.individualModules.contains(element = weapon)))
+            allSecondaryWeapons += Pair(weapon, mutableStateOf(weaponProficiencies.individualModules.contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon))))
         }
 
         //create checkboxes for each archetype module
@@ -527,7 +533,8 @@ class ModuleFragmentViewModel(
     fun refreshPage(){
         //update weapon rows' individually taken checkboxes
         allSecondaryWeapons.keys.forEach{weapon ->
-            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weapon) || weaponProficiencies.weaponsFromArchetypes().contains(weapon)
+            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                    weaponProficiencies.weaponsFromArchetypes().contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
         }
 
         //update weapon archetype rows' taken statuses

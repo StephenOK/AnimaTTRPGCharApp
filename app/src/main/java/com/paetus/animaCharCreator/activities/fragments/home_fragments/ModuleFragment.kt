@@ -67,7 +67,7 @@ fun ModuleFragment(
 
                 //display currently selected primary weapon
                 AnimatedContent(
-                    targetState = stringResource(id = modFragVM.primaryWeapon.collectAsState().value.name),
+                    targetState = stringResource(id = modFragVM.getPrimaryWeapon().name),
                     modifier = Modifier
                         .fillMaxWidth(),
                     transitionSpec = textScrollUp,
@@ -201,7 +201,7 @@ private fun WeaponRow(
     ){
         //primary checkbox item
         Checkbox(
-            checked = weapon == modFragVM.primaryWeapon.collectAsState().value,
+            checked = weapon == modFragVM.getPrimaryWeapon(),
             onCheckedChange = {
                 //update character's primary weapon
                 modFragVM.setPrimaryWeapon(primeWeapon = weapon)
@@ -219,7 +219,7 @@ private fun WeaponRow(
                     modFragVM.archetypesHasWeapon(weapon = weapon),
             onCheckedChange = {
                 //if primary check is not taken
-                if(weapon != modFragVM.primaryWeapon.value)
+                if(weapon != modFragVM.getPrimaryWeapon())
                 //perform appropriate action for input
                     modFragVM.changeIndividualModule(weapon = weapon, isTaking = it)
 

@@ -23,17 +23,24 @@ class SblSecondaryCharacteristic(
         //set current level value
         charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
 
+        //if character is not level 0
         if(charInstance.lvl.intValue != 0) {
+            //get previous level's record
             val previousLevel = charInstance.charRefs[charInstance.lvl.intValue - 1]
+
+            //set natural bonus if points applied aren't zero and previous level has a natural bonus
             if (pointInput - getPreviousPoints() == 0 && previousLevel!!.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
                 setNatBonus(true)
         }
 
+        //if no points applied to stat
         if(pointInput + getPreviousPoints() == 0)
+            //go through all level records
             parent.sblChar.levelLoop(
                 startLevel = parent.charInstance.lvl.intValue + 1,
                 endLevel = 20
             ){
+                //remove any applied natural bonus
                 val secondary = it.secondaryList.getAllSecondaries()[secondaryIndex]
                 if(secondary.bonusApplied.value && getPreviousPoints(level = parent.sblChar.charRefs.indexOf(it)) == 0)
                     secondary.setNatBonus(false)

@@ -50,7 +50,7 @@ open class Magic(private val charInstance: BaseCharacter){
     val zeonAccTotal = mutableIntStateOf(value = 5)
 
     //initialize zeon recovery multiplier
-    private val magicRecoveryMult = mutableDoubleStateOf(value = 1.0)
+    val magicRecoveryMult = mutableDoubleStateOf(value = 1.0)
 
     //initialize zeon recovery total
     val magicRecoveryTotal = mutableIntStateOf(value = 5)
@@ -168,7 +168,7 @@ open class Magic(private val charInstance: BaseCharacter){
      *
      * @param zeonBuy the number of Zeon points bought for the character
      */
-    fun buyZeon(zeonBuy: Int){
+    open fun buyZeon(zeonBuy: Int){
         //change zeon bought and update appropriate figures
         boughtZeon.intValue = zeonBuy
         calcMaxZeon()
@@ -199,7 +199,7 @@ open class Magic(private val charInstance: BaseCharacter){
     /**
      * Recalculate the character's maximum Zeon.
      */
-    fun calcMaxZeon(){
+    open fun calcMaxZeon(){
         zeonMax.intValue = baseZeon.intValue + (boughtZeon.intValue * 5) + zeonFromClass.intValue
     }
 
@@ -228,7 +228,7 @@ open class Magic(private val charInstance: BaseCharacter){
      *
      * @param accBuy the accumulation amount bought for the character
      */
-    fun buyZeonAcc(accBuy: Int){
+    open fun buyZeonAcc(accBuy: Int){
         //change the accumulation bought and update the appropriate figures
         zeonAccMult.intValue = accBuy
         charInstance.updateTotalSpent()
@@ -238,7 +238,7 @@ open class Magic(private val charInstance: BaseCharacter){
     /**
      * Recalculate the character's Zeon accumulation.
      */
-    private fun calcZeonAcc(){
+    fun calcZeonAcc(){
         zeonAccTotal.intValue = baseZeonAcc.intValue * zeonAccMult.intValue
         calcZeonRecovery()
         setInnateMagic()
@@ -257,14 +257,14 @@ open class Magic(private val charInstance: BaseCharacter){
     /**
      * Reevaluate the zeon recovery rate.
      */
-    private fun calcZeonRecovery(){
+    fun calcZeonRecovery(){
         magicRecoveryTotal.intValue = (zeonAccTotal.intValue * magicRecoveryMult.doubleValue).toInt()
     }
 
     /**
      * Sets the value for the minimum zeon cost of spells cast innately.
      */
-    private fun setInnateMagic(){
+    fun setInnateMagic(){
         innateMagic.intValue = when(zeonAccTotal.intValue){
             in 0..9 -> 0
             in 10 .. 50 -> 10
@@ -284,7 +284,7 @@ open class Magic(private val charInstance: BaseCharacter){
      *
      * @param projBuy the projection amount bought for the character
      */
-    fun buyMagProj(projBuy: Int){
+    open fun buyMagProj(projBuy: Int){
         boughtMagProjection.intValue = projBuy
         charInstance.updateTotalSpent()
         calcMagProj()

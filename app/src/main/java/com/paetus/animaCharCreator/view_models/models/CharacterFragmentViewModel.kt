@@ -467,6 +467,18 @@ class CharacterFragmentViewModel(
                 }
         }
 
+        //catch invalid zeon point growth
+        if(!charInstance.magic.validPointGrowth())
+            output.add{stringResource(R.string.zeonPointReduction)}
+
+        //catch invalid zeon accumulation growth
+        if(!charInstance.magic.validAccGrowth())
+            output.add{stringResource(R.string.zeonAccReduction)}
+
+        //catch invalid magic projection growth
+        if(!charInstance.magic.validProjGrowth())
+            output.add{stringResource(R.string.zeonProjReduction)}
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }

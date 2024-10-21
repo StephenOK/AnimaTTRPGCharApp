@@ -67,7 +67,7 @@ fun ModuleFragment(
 
                 //display currently selected primary weapon
                 AnimatedContent(
-                    targetState = stringResource(id = modFragVM.getPrimaryWeapon().name),
+                    targetState = stringResource(id = modFragVM.primaryWeapon.collectAsState().value.name),
                     modifier = Modifier
                         .fillMaxWidth(),
                     transitionSpec = textScrollUp,

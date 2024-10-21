@@ -95,6 +95,9 @@ class SblChar(
         //update ki abilities
         ki.levelUpdate()
 
+        //update magic abilities
+        magic.levelUpdate()
+
         //update dev points spent
         updateTotalSpent()
     }

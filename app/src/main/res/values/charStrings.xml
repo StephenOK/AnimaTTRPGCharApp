@@ -133,4 +133,7 @@
     <string name = "natBonusNotDistributed">-all secondary natural bonuses have not been distributed</string>
     <string name = "kiPointReduction">-a ki point\'s value (%s) is smaller than in a previous level</string>
     <string name = "kiAccReduction">-a ki accumulation\'s value (%s) is smaller than in a previous level</string>
+    <string name = "zeonPointReduction">-points in Zeon Points is smaller than in a previous level</string>
+    <string name = "zeonAccReduction">-points in Magic Accumulation is smaller than in a previous level</string>
+    <string name = "zeonProjReduction">-points in Magic Projection is smaller than in a previous level</string>
 </resources>

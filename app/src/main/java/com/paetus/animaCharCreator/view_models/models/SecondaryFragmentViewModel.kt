@@ -416,11 +416,19 @@ class SecondaryFragmentViewModel(
             val devPerPoint =
                 if(secondaryList is SblSecondaryList)
                     (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].devPerPoint.intValue
-                else secondaryItem.devPerPoint.intValue
+                else
+                    secondaryItem.devPerPoint.intValue
+
+            //get reduction level for this character's level
+            val pointReduction =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].developmentDeduction.intValue
+                else
+                    secondaryItem.developmentDeduction.intValue
 
             //return default cost minus any deductions
-            return if(devPerPoint > secondaryItem.developmentDeduction.intValue)
-                devPerPoint - secondaryItem.developmentDeduction.intValue
+            return if(devPerPoint > pointReduction)
+                devPerPoint - pointReduction
             else 1
         }
     }

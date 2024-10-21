@@ -24,7 +24,7 @@ class ModuleFragmentViewModel(
     val context: Context
 ) : ViewModel() {
     //initialize character's current primary weapon selection
-    private val _primaryWeapon = MutableStateFlow(value = weaponProficiencies.primaryWeapon.intValue)
+    private val _primaryWeapon = MutableStateFlow(value = getPrimaryWeapon())
     val primaryWeapon = _primaryWeapon.asStateFlow()
 
     //initialize open state of the archetype module menu
@@ -66,7 +66,7 @@ class ModuleFragmentViewModel(
     /**
      * Retrieves the primary weapon item taken by the character at this moment.
      */
-    fun getPrimaryWeapon(): Weapon{return weaponProficiencies.getArmory().allWeapons[primaryWeapon.value]}
+    fun getPrimaryWeapon(): Weapon{return weaponProficiencies.getArmory().allWeapons[weaponProficiencies.primaryWeapon.intValue]}
 
     /**
      * Sets the character's primary weapon to the inputted item.
@@ -75,7 +75,7 @@ class ModuleFragmentViewModel(
      */
     fun setPrimaryWeapon(primeWeapon: Weapon){
         weaponProficiencies.setPrimaryWeapon(weaponName = primeWeapon.saveName)
-        _primaryWeapon.update{weaponProficiencies.primaryWeapon.intValue}
+        _primaryWeapon.update{getPrimaryWeapon()}
     }
 
     /**

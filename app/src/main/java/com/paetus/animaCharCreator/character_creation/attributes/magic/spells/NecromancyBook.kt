@@ -1,13 +1,18 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 
+import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.NecromancySpells
 
 /**
  * List of spells associated with necromancy.
+ *
+ * @param necroSpells list of spells in necromancy
+ * @param mag magic section of the character profile
  */
-class NecromancyBook(
-    necroSpells: NecromancySpells
-): MagicBook(necroSpells){
+open class NecromancyBook(
+    necroSpells: NecromancySpells,
+    mag: Magic
+): MagicBook(necroSpells, mag, -1){
     /**
      * Sets the primary status of this book in ways unique to the necromancy book.
      *
@@ -17,9 +22,8 @@ class NecromancyBook(
         //if making necromancy book primary element
         if(hasInvestment() && isTaking){
             //remove all other elements' primary statuses
-            opposingBooks.forEach{book ->
-                book.isPrimary.value = false
-            }
+            for(index in 0..9)
+                magic.retrieveBooks()[index].isPrimary.value = false
 
             //apply primary status to this book
             isPrimary.value = true
@@ -33,8 +37,8 @@ class NecromancyBook(
 
             while(index < 10){
                 //retrieve the two opposing books
-                val book1 = opposingBooks[index++]
-                val book2 = opposingBooks[index++]
+                val book1 = magic.retrieveBooks()[index++]
+                val book2 = magic.retrieveBooks()[index++]
 
                 //if only first book invested in, set first book as primary element
                 if(book1.hasInvestment() && !book2.hasInvestment())
@@ -66,7 +70,7 @@ class NecromancyBook(
      */
     override fun charHasFreeSpell(freeSpell: FreeSpell): MagicBook?{
         //check all other books for the queried item
-        opposingBooks.forEach{opposing ->
+        magic.retrieveBooks().forEach{opposing ->
             opposing.freeSpells.forEach{spell ->
                 if(spell.saveName == freeSpell.saveName) return opposing
             }
@@ -78,5 +82,18 @@ class NecromancyBook(
         }
 
         return null
+    }
+
+    /**
+     * Gets if the opposite element has any points invested in it.
+     *
+     * @return true if points in opposite element's book
+     */
+    override fun getOpposedInvestment(): Boolean {
+        for(index in 0..9)
+            if(magic.retrieveBooks()[index].isPrimary.value)
+                return true
+
+        return false
     }
 }

@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-open class Magic(private val charInstance: BaseCharacter){
+open class Magic(val charInstance: BaseCharacter){
     fun getMagLibrary(): MagicLibrary {return charInstance.objectDB.magicLibrary}
 
     //initialize base Zeon points
@@ -77,46 +77,26 @@ open class Magic(private val charInstance: BaseCharacter){
     val magicLevelSpent = mutableIntStateOf(value = 0)
 
     //retrieve all available spells
-    val lightBook = MagicBook(getMagLibrary().lightSpells)
-    val darkBook = MagicBook(getMagLibrary().darkSpells)
-    val creationBook = MagicBook(getMagLibrary().creationSpells)
-    val destructionBook = MagicBook(getMagLibrary().destructionSpells)
-    val airBook = MagicBook(getMagLibrary().airSpells)
-    val earthBook = MagicBook(getMagLibrary().earthSpells)
-    val waterBook = MagicBook(getMagLibrary().waterSpells)
-    val fireBook = MagicBook(getMagLibrary().fireSpells)
-    val essenceBook = MagicBook(getMagLibrary().essenceSpells)
-    val illusionBook = MagicBook(getMagLibrary().illusionSpells)
-    val necromancyBook = NecromancyBook(getMagLibrary().necromancySpells)
+    open val lightBook = MagicBook(getMagLibrary().lightSpells, this, 1)
+    open val darkBook = MagicBook(getMagLibrary().darkSpells, this, 0)
+    open val creationBook = MagicBook(getMagLibrary().creationSpells, this, 3)
+    open val destructionBook = MagicBook(getMagLibrary().destructionSpells, this, 2)
+    open val airBook = MagicBook(getMagLibrary().airSpells, this, 5)
+    open val earthBook = MagicBook(getMagLibrary().earthSpells,this, 4)
+    open val waterBook = MagicBook(getMagLibrary().waterSpells, this, 7)
+    open val fireBook = MagicBook(getMagLibrary().fireSpells, this, 6)
+    open val essenceBook = MagicBook(getMagLibrary().essenceSpells, this, 9)
+    open val illusionBook = MagicBook(getMagLibrary().illusionSpells, this, 8)
+    open val necromancyBook = NecromancyBook(getMagLibrary().necromancySpells, this)
     val freeBook = getMagLibrary().freeSpells
 
-    val allBooks = listOf(
-        lightBook,
-        darkBook,
-        creationBook,
-        destructionBook,
-        airBook,
-        earthBook,
-        waterBook,
-        fireBook,
-        essenceBook,
-        illusionBook,
-        necromancyBook
-    )
-
-    init{
-        //apply opposing books to the appropriate spell books
-        lightBook.opposingBooks.addAll(elements = listOf(darkBook, necromancyBook))
-        darkBook.opposingBooks.addAll(elements = listOf(lightBook, necromancyBook))
-        creationBook.opposingBooks.addAll(elements = listOf(destructionBook, necromancyBook))
-        destructionBook.opposingBooks.addAll(elements = listOf(creationBook, necromancyBook))
-        airBook.opposingBooks.addAll(elements = listOf(earthBook, necromancyBook))
-        earthBook.opposingBooks.addAll(elements = listOf(airBook, necromancyBook))
-        waterBook.opposingBooks.addAll(elements = listOf(fireBook, necromancyBook))
-        fireBook.opposingBooks.addAll(elements = listOf(waterBook, necromancyBook))
-        essenceBook.opposingBooks.addAll(elements = listOf(illusionBook, necromancyBook))
-        illusionBook.opposingBooks.addAll(elements = listOf(essenceBook, necromancyBook))
-        necromancyBook.opposingBooks.addAll(elements = listOf(
+    /**
+     * Gets all magic books available to the character.
+     *
+     * @return list of all magic books
+     */
+    fun retrieveBooks(): List<MagicBook>{
+        return listOf(
             lightBook,
             darkBook,
             creationBook,
@@ -126,8 +106,9 @@ open class Magic(private val charInstance: BaseCharacter){
             waterBook,
             fireBook,
             essenceBook,
-            illusionBook
-        ))
+            illusionBook,
+            necromancyBook
+        )
     }
 
     //initialize if magic ties has been taken
@@ -328,7 +309,7 @@ open class Magic(private val charInstance: BaseCharacter){
         magicLevelSpent.intValue = 0
 
         //add each individual book's spent value to the total
-        allBooks.forEach{book ->
+        retrieveBooks().forEach{book ->
             magicLevelSpent.intValue += book.getMagLevels()
         }
     }
@@ -358,7 +339,7 @@ open class Magic(private val charInstance: BaseCharacter){
      */
     fun getSpellElement(spell: Spell): Element{
         //check if the spell is part of an elemental book
-        allBooks.forEach{book ->
+        retrieveBooks().forEach{book ->
             if(spell in book.spells.fullBook) return book.spells.element
         }
 
@@ -374,7 +355,7 @@ open class Magic(private val charInstance: BaseCharacter){
      */
     fun getSpellBook(spell: Spell): MagicBook?{
         //search each book for the spell
-        allBooks.forEach{book ->
+        retrieveBooks().forEach{book ->
             if(spell in book.spells.fullBook) return book
         }
 
@@ -390,7 +371,7 @@ open class Magic(private val charInstance: BaseCharacter){
      */
     fun getElementBook(element: Element): MagicBook?{
         //search each book for the associated element
-        allBooks.forEach{book ->
+        retrieveBooks().forEach{book ->
             if(book.spells.element == element) return book
         }
 
@@ -421,7 +402,7 @@ open class Magic(private val charInstance: BaseCharacter){
     fun getAllSpells(): List<Spell>{
         val output = mutableListOf<Spell>()
 
-        allBooks.forEach{book ->
+        retrieveBooks().forEach{book ->
             output.addAll(elements = book.getSpells())
         }
 
@@ -436,7 +417,7 @@ open class Magic(private val charInstance: BaseCharacter){
     fun setMagicTies(hasTies: Boolean){
         if(hasTies){
             //clear all individually purchased and free spells
-            allBooks.forEach{book ->
+            retrieveBooks().forEach{book ->
                 book.magicTiesClear()
             }
         }
@@ -450,7 +431,7 @@ open class Magic(private val charInstance: BaseCharacter){
      */
     fun loseMagic(){
         //clear spellbook
-        allBooks.forEach{book -> book.clear()}
+        retrieveBooks().forEach{book -> book.clear()}
     }
 
 
@@ -499,7 +480,7 @@ open class Magic(private val charInstance: BaseCharacter){
             }
 
             //get all points invested in each element book
-            allBooks.forEach{book ->
+            retrieveBooks().forEach{book ->
                 book.buyLevels(fileReader.readLine().toInt())
             }
 
@@ -521,7 +502,7 @@ open class Magic(private val charInstance: BaseCharacter){
             }
 
             //load free spells for each element
-            allBooks.forEach{book ->
+            retrieveBooks().forEach{book ->
                 for(count in 0 until fileReader.readLine().toInt()) {
                     val level = fileReader.readLine().toInt()
                     val freeBase = freeBook.findFreeSpell(fileReader.readLine())
@@ -550,7 +531,7 @@ open class Magic(private val charInstance: BaseCharacter){
             }
         }
         else{
-            allBooks.forEach{book -> book.load(fileReader = fileReader, freeSpells = freeBook)}
+            retrieveBooks().forEach{book -> book.load(fileReader = fileReader, freeSpells = freeBook)}
         }
     }
 
@@ -576,6 +557,6 @@ open class Magic(private val charInstance: BaseCharacter){
         writeDataTo(writer = byteArray, input = imbalanceIsAttack.value.toString())
 
         //write all book data
-        allBooks.forEach{book -> book.write(byteArray = byteArray)}
+        retrieveBooks().forEach{book -> book.write(byteArray = byteArray)}
     }
 }

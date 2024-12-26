@@ -38,11 +38,11 @@ class MagicAdvantages{
         pickedCost = 0,
         onTake = {character, input, _ ->
             //add the desired element as a natural path bonus
-            character.magic.allBooks[input!!].setNatural(isNat = true)
+            character.magic.retrieveBooks()[input!!].setNatural(isNat = true)
         },
         onRemove = {character, input, _ ->
             //remove the indicated natural path bonus
-            character.magic.allBooks[input!!].setNatural(isNat = false)
+            character.magic.retrieveBooks()[input!!].setNatural(isNat = false)
         }
     )
 

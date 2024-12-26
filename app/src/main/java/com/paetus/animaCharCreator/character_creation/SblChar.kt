@@ -57,7 +57,7 @@ class SblChar(
     override val secondaryList = SblSecondaryList(sblChar = this)
     override val weaponProficiencies = SblProficiencies(charInstance = this)
     override val ki = SblKi(charInstance = this)
-    override val magic = SblMagic(charInstance = this)
+    override val magic = SblMagic(sblChar = this)
 
     override val psychic = SblPsychic(charInstance = this)
     override val summoning = SblSummoning(charInstance = this)

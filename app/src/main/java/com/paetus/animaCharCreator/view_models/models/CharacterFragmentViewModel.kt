@@ -479,6 +479,17 @@ class CharacterFragmentViewModel(
         if(!charInstance.magic.validProjGrowth())
             output.add{stringResource(R.string.zeonProjReduction)}
 
+        //catch invalid book level growth
+        charInstance.magic.retrieveBooks().forEach{
+            if(!it.validBookGrowth())
+                output.add{
+                    stringResource(
+                        R.string.bookLevelReduction,
+                        stringArrayResource(R.array.elementList)[charInstance.magic.retrieveBooks().indexOf(it)]
+                    )
+            }
+        }
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }

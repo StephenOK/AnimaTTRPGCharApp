@@ -21,7 +21,7 @@ open class Psychic(private val charInstance: BaseCharacter){
 
     //initialize potential from Psychic Points
     val pointsInPotential = mutableIntStateOf(value = 0)
-    private val potentialFromPoints = mutableIntStateOf(value = 0)
+    val potentialFromPoints = mutableIntStateOf(value = 0)
 
     //initialize total psychic potential
     val psyPotentialTotal = mutableIntStateOf(value = 10)
@@ -30,7 +30,7 @@ open class Psychic(private val charInstance: BaseCharacter){
     val boughtPsyPoints = mutableIntStateOf(value = 0)
     val innatePsyPoints = mutableIntStateOf(value = 0)
     val totalPsychicPoints = mutableIntStateOf(value = 0)
-    private val spentPsychicPoints = mutableIntStateOf(value = 0)
+    val spentPsychicPoints = mutableIntStateOf(value = 0)
 
     //initialize number of innate slots available
     val innateSlotCount = mutableIntStateOf(value = 0)
@@ -84,7 +84,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      *
      * @param potentialBuy number of psychic points invested
      */
-    fun setPointPotential(potentialBuy: Int){
+    open fun setPointPotential(potentialBuy: Int){
         //set number of points invested
         pointsInPotential.intValue = potentialBuy
 
@@ -111,7 +111,7 @@ open class Psychic(private val charInstance: BaseCharacter){
     /**
      * Gets the total psychic potential for the character.
      */
-    private fun updateTotalPotential(){
+    fun updateTotalPotential(){
         psyPotentialTotal.intValue = psyPotentialBase.intValue + potentialFromPoints.intValue
     }
 
@@ -120,7 +120,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      *
      * @param ppBuy number of points the user is buying for their character
      */
-    fun buyPsyPoints(ppBuy: Int){
+    open fun buyPsyPoints(ppBuy: Int){
         //set bought amount and update psychic point total
         boughtPsyPoints.intValue = ppBuy
         charInstance.updateTotalSpent()
@@ -156,7 +156,7 @@ open class Psychic(private val charInstance: BaseCharacter){
     /**
      * Determine the number of psychic points spent by the user.
      */
-    private fun recalcPsyPointsSpent(){
+    fun recalcPsyPointsSpent(){
         var reinforcement = 0
         masteredPowers.forEach{power -> reinforcement += power.value}
 
@@ -168,7 +168,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      *
      * @param projBuy number of Psychic Projection points to buy for the character
      */
-    fun buyPsyProjection(projBuy: Int){
+    open fun buyPsyProjection(projBuy: Int){
         //set bought amount and update Psychic Projection
         psyProjectionBought.intValue = projBuy
         charInstance.updateTotalSpent()
@@ -205,7 +205,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      *
      * @param slotBuy number of innate slots to purchase
      */
-    fun buyInnateSlots(slotBuy: Int){
+    open fun buyInnateSlots(slotBuy: Int){
         innateSlotCount.intValue = slotBuy
         recalcPsyPointsSpent()
     }

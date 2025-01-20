@@ -98,6 +98,9 @@ class SblChar(
         //update magic abilities
         magic.levelUpdate()
 
+        //update psychic abilities
+        psychic.levelUpdate()
+
         //update dev points spent
         updateTotalSpent()
     }

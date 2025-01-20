@@ -137,4 +137,9 @@
     <string name = "zeonAccReduction">-points in Magic Accumulation is smaller than in a previous level</string>
     <string name = "zeonProjReduction">-points in Magic Projection is smaller than in a previous level</string>
     <string name = "bookLevelReduction">-levels of %s Book are smaller than in a previous level</string>
+    <string name = "psychicPotentialReduction">-points in Psychic Potential are smaller than in a previous level</string>
+    <string name = "psychicPointReduction">-points for Psychic Points are smaller than in a previous level</string>
+    <string name = "psychicProjectionReduction">-points in Psychic Projection are smaller than in a previous level</string>
+    <string name = "psyInnateSlotReduction">-points in Psychic Innate Slots are smaller than in a previous level</string>
+    <string name = "overPsyPointFailure">-too many Psychic Points have been spent</string>
 </resources>

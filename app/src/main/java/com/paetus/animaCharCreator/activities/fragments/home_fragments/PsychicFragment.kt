@@ -146,7 +146,7 @@ fun PsychicFragment(
                         if (psyFragVM.freePointValid.collectAsState().value)
                             MaterialTheme.colorScheme.secondary
                         else
-                            MaterialTheme.colorScheme.onError
+                            MaterialTheme.colorScheme.error
                 ){modifier, color ->
                     AnimatedContent(
                         targetState = psyFragVM.freePsyPoints.collectAsState().value,

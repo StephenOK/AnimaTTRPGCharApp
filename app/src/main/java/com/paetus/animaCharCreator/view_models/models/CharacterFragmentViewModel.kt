@@ -490,6 +490,26 @@ class CharacterFragmentViewModel(
             }
         }
 
+        //catch invalid psychic potential growth
+        if(!charInstance.psychic.validPsyPotentialGrowth())
+            output.add{stringResource(R.string.psychicPotentialReduction)}
+
+        //catch invalid psychic point growth
+        if(!charInstance.psychic.validPsyPointGrowth())
+            output.add{stringResource(R.string.psychicPointReduction)}
+
+        //catch invalid psychic projection growth
+        if(!charInstance.psychic.validPsyProjGrowth())
+            output.add{stringResource(R.string.psychicProjectionReduction)}
+
+        //catch invalid psychic innate slot growth
+        if(!charInstance.psychic.validInnateSlots())
+            output.add{stringResource(R.string.psyInnateSlotReduction)}
+
+        //catch invalid psychic points spent
+        if(charInstance.psychic.getFreePsyPoints() < 0)
+            output.add{stringResource(R.string.overPsyPointFailure)}
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }

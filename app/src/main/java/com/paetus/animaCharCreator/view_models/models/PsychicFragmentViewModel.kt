@@ -315,7 +315,8 @@ class PsychicFragmentViewModel(
          * Refreshes the item value on loading this page.
          */
         fun refreshItem(){
-            setPurchaseAmount(buyVal = boughtVal())
+            if(purchaseAmount.value != "")
+                setPurchaseAmount(buyVal = boughtVal())
         }
     }
 

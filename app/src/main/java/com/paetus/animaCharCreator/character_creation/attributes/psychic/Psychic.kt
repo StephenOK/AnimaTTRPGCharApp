@@ -244,7 +244,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * @param isTaken true if adding the item; false if removing
      * @return true if discipline has been successfully added
      */
-    fun updateInvestment(
+    open fun updateInvestment(
         discipline: Discipline,
         isTaken: Boolean
     ): Boolean{
@@ -275,7 +275,7 @@ open class Psychic(private val charInstance: BaseCharacter){
                 while(disciplineInvestment.size > 0){
                     val current = disciplineInvestment[0]
                     disciplineInvestment.remove(current)
-                    removeIllegal(current)
+                    removeIllegal(discipline = current)
                 }
         }
 
@@ -289,7 +289,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * @param addingDiscipline discipline the character is intending to add
      * @return true if addition of this item is legal
      */
-    private fun dukzaristAvailable(
+    fun dukzaristAvailable(
         addingDiscipline: Discipline
     ): Boolean{
         //return true if the character is not a duk'zarist
@@ -423,7 +423,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      *
      * @param discipline Psychic Discipline to check for legality of
      */
-    private fun removeIllegal(discipline: Discipline){
+    open fun removeIllegal(discipline: Discipline){
         //initialize removing list
         val toRemove = mutableListOf<PsychicPower>()
 

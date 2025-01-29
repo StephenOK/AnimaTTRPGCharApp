@@ -233,6 +233,125 @@ class SblPsychic(
     }
 
     /**
+     * Attempt to add or remove a Psychic Discipline from the character's taken list.
+     *
+     * @param discipline discipline that is a target of the action
+     * @param isTaken true if adding the item; false if removing
+     * @return true if discipline has been successfully added
+     */
+    override fun updateInvestment(
+        discipline: Discipline,
+        isTaken: Boolean
+    ): Boolean {
+        //if attempting to acquire and points are available
+        if(isTaken && dukzaristAvailable(addingDiscipline = discipline) &&
+            getFreePsyPoints() > 0 && legalDisciplines.contains(element = discipline)){
+
+            //add item to the level record
+            charInstance.getCharAtLevel().psychic.disciplineInvestment.add(element = discipline)
+
+            //remove potential duplicate acquisition
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                character.psychic.disciplineInvestment.remove(element = discipline)
+            }
+        }
+
+        //if attempting to remove the discipline and it was taken at this level
+        else if(!isTaken &&
+            charInstance.getCharAtLevel().psychic.disciplineInvestment.contains(element = discipline)){
+
+            //if character isn't duk'zarist or pyrokinesis isn't removed
+            if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages || discipline != pyrokinesis){
+                //remove the discipline from this and the level record
+                disciplineInvestment.remove(element = discipline)
+                charInstance.getCharAtLevel().psychic.disciplineInvestment.remove(element = discipline)
+
+                //remove associated powers
+                removeIllegal(discipline = discipline)
+            }
+            else{
+                //clear all disciplines from all level records
+                charInstance.levelLoop(
+                    startLevel = charInstance.lvl.intValue,
+                    endLevel = 20
+                ){character ->
+                    while(character.psychic.disciplineInvestment.size > 0){
+                        val current = character.psychic.disciplineInvestment[0]
+                        character.psychic.disciplineInvestment.remove(element = current)
+                        removeIllegal(discipline = current)
+                    }
+                }
+            }
+        }
+
+        //update current disciplines
+        updateDisciplines()
+
+        //return held state of the inputted discipline
+        return disciplineInvestment.contains(element = discipline)
+    }
+
+    /**
+     * Removes any taken Psychic Powers that are no longer legally bought.
+     *
+     * @param discipline Psychic Discipline to check for legality of
+     */
+    override fun removeIllegal(discipline: Discipline) {
+        //remove powers from this discipline from this and proceeding level records
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue,
+            endLevel = 20
+        ){character ->
+            character.psychic.removeIllegal(discipline = discipline)
+        }
+
+        //update current powers
+        updatePowers()
+    }
+
+    /**
+     * Update current disciplines available to the character.
+     */
+    private fun updateDisciplines(){
+        //clear disciplines list
+        disciplineInvestment.clear()
+
+        //retrieve disciplines
+        charInstance.levelLoop{character ->
+            disciplineInvestment.addAll(character.psychic.disciplineInvestment)
+        }
+
+        //recalculate psychic points spent
+        recalcPsyPointsSpent()
+    }
+
+    /**
+     * Update current powers available to the character.
+     */
+    private fun updatePowers(){
+        //clear powers list
+        masteredPowers.clear()
+
+        //get power data from each level record
+        charInstance.levelLoop{character ->
+            character.psychic.masteredPowers.keys.forEach{power ->
+                //add enhancements if gained power from a previous level
+                if(masteredPowers.contains(power))
+                    masteredPowers[power]!!.plus(character.psychic.masteredPowers[power]!!)
+                //add power to record
+                else
+                    masteredPowers += Pair(power, character.psychic.masteredPowers[power]!!)
+            }
+        }
+
+        //recalculate psychic points spent
+        recalcPsyPointsSpent()
+    }
+
+    /**
      * Updates the level based values for the character's psychic attributes.
      */
     fun levelUpdate(){
@@ -240,5 +359,7 @@ class SblPsychic(
         updatePsyPointsBought()
         updatePsyProjectionBought()
         updateInnateSlots()
+        updateDisciplines()
+        updatePowers()
     }
 }

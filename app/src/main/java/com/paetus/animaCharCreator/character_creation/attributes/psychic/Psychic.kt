@@ -313,7 +313,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * @param isMastering whether the power is being added or removed
      * @return true if the power has successfully been added
      */
-    fun masterPower(
+    open fun masterPower(
         power: PsychicPower,
         discipline: Discipline,
         isMastering: Boolean
@@ -347,7 +347,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * @param power psychic power to enhance
      * @param applyPoints psychic points invested in this power
      */
-    fun enhancePower(
+    open fun enhancePower(
         power: PsychicPower,
         applyPoints: Int
     ){
@@ -362,7 +362,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * @param discipline Power's associated Psychic Discipline
      * @return true if power is legally acquired
      */
-    private fun legalBuy(
+    fun legalBuy(
         power: PsychicPower,
         discipline: Discipline
     ): Boolean{

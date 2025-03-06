@@ -510,6 +510,16 @@ class CharacterFragmentViewModel(
         if(charInstance.psychic.getFreePsyPoints() < 0)
             output.add{stringResource(R.string.overPsyPointFailure)}
 
+        //catch all invalid psychic power enhancement growth
+        charInstance.psychic.findIllegalEnhancement().forEach{power ->
+            output.add{
+                stringResource(
+                    R.string.psyPowerEnhancementReduction,
+                    stringArrayResource(R.array.powerNames)[power.name]
+                )
+            }
+        }
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }

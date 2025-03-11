@@ -195,6 +195,20 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
     }
 
     /**
+     * Function to run on confirmed removal of The Gift advantage.
+     */
+    override fun loseMagic() {
+        //remove magic abilities from each level record
+        sblChar.levelLoop(
+            endLevel = 20
+        ){character ->
+            character.magic.loseMagic()
+        }
+
+        levelUpdate()
+    }
+
+    /**
      * Updates the character's values relevant to level changes.
      */
     fun levelUpdate(){

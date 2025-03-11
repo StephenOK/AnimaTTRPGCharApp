@@ -87,7 +87,7 @@ fun CharacterPageFragment(
                     val qualifyOption =
                         if(dropdown.data.nameRef == R.string.levelText)
                             {levelString: String ->
-                                charFragVM.getExistingCharacter(levelString)
+                                charFragVM.getValidLevel(levelString)
                             }
                         else {_: String -> true}
 

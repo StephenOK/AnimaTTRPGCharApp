@@ -173,6 +173,31 @@ class SblChar(
     }
 
     /**
+     * Calculates the DP spent in the indicated level.
+     *
+     * @param level record index to check
+     * @return the DP spent in that level
+     */
+    fun getLevelPoints(
+        level: Int
+    ): Int{
+        //retrieve the record to check
+        val record = charRefs[level]
+
+        //if there is an existing record
+        return if(record != null)
+            //determine all points spent in this level
+            record.combat.calculateSpent() + record.weaponProficiencies.calculateSpent() +
+                    record.ki.calculateSpent() + record.magic.calculateSpent() +
+                    record.summoning.calculateSpent() + record.weaponProficiencies.calcPointsInMag() +
+                    record.psychic.calculateSpent() + record.weaponProficiencies.calcPointsInPsy() +
+                    (record.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[record.classes.ownClass.intValue].lifePointMultiple) +
+                    record.secondaryList.calculateSpent()
+        //otherwise return 0
+        else 0
+    }
+
+    /**
      * Get the character record for the current level.
      *
      * @return held character for the level

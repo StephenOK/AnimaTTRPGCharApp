@@ -530,10 +530,19 @@ class CharacterFragmentViewModel(
      * @param levelString level to look for in the character
      * @return true if not a SBL character or SBL character has access to the queried level
      */
-    fun getExistingCharacter(levelString: String): Boolean{
+    fun getValidLevel(levelString: String): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
-        return if(levelString.toInt() != 0 && charInstance is SblChar)
-            charInstance.charRefs[levelString.toInt()] != null
+        return if(levelString.toInt() != 0 && charInstance is SblChar) {
+            if(charInstance.charRefs[levelString.toInt()] == null)
+                false
+            else{
+                when(levelString.toInt()){
+                    1 -> {charInstance.getLevelPoints(level = 0) == 400}
+                    2 -> {charInstance.getLevelPoints(level = 1) == 200 && getValidLevel((levelString.toInt() - 1).toString())}
+                    else -> {charInstance.getLevelPoints(levelString.toInt() - 1) == 100 && getValidLevel((levelString.toInt() - 1).toString())}
+                }
+            }
+        }
         //true if looking for level 0 or character is not SBL
         else true
     }

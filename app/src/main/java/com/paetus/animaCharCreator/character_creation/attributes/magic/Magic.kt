@@ -446,6 +446,11 @@ open class Magic(private val charInstance: BaseCharacter){
      * Function to run on confirmed removal of The Gift advantage.
      */
     fun loseMagic(){
+        buyZeon(zeonBuy = 0)
+        buyZeonAcc(accBuy = 1)
+        buyMagProj(projBuy = 0)
+        magProjImbalance.intValue = 0
+
         //clear spellbook
         allBooks.forEach{book -> book.clear()}
     }

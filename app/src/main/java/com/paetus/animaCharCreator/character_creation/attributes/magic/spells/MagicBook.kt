@@ -319,7 +319,10 @@ open class MagicBook(
      * Clears all data in this item.
      */
     fun clear(){
-        pointsIn.intValue = 0
+        changePrimary(isTaking = false)
+        buyLevels(pointBuy = 0)
+        individualSpells.clear()
+        freeSpells.clear()
         magicTiesClear()
     }
 

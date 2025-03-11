@@ -315,7 +315,8 @@ class PsychicFragmentViewModel(
          * Refreshes the item value on loading this page.
          */
         fun refreshItem(){
-            setPurchaseAmount(buyVal = boughtVal())
+            if(purchaseAmount.value != "")
+                setPurchaseAmount(buyVal = boughtVal())
         }
     }
 
@@ -499,6 +500,21 @@ class PsychicFragmentViewModel(
                 else 0
             }
         }
+
+        /**
+         * Refresh the power enhancement value for this psychic power.
+         */
+        fun refreshItem(){
+            //if power input is not empty
+            if(_pointInvestment.value != ""){
+                //display enhancement value
+                if(psychic.masteredPowers.contains(key = psyPower))
+                    setPointInvestment(ppInvest = psychic.masteredPowers[psyPower]!!)
+                //otherwise display 0
+                else
+                    setPointInvestment(display = "0")
+            }
+        }
     }
 
     /**
@@ -509,17 +525,13 @@ class PsychicFragmentViewModel(
         buyItems.forEach{power -> power.refreshItem()}
 
         //refresh innate slots purchased
-        setInnateSlotDisplay(display = psychic.innateSlotCount.intValue.toString())
+        if(_innateSlotDisplay.value != "")
+            setInnateSlotDisplay(display = psychic.innateSlotCount.intValue.toString())
 
         //refresh all power and discipline data
         setAllPowers()
         allDisciplines.forEach{discipline ->
-            discipline.powerList.forEach{power ->
-                if(psychic.masteredPowers.contains(key = power.psyPower))
-                    power.setPointInvestment(ppInvest = psychic.masteredPowers[power.psyPower]!!)
-                else
-                    power.setPointInvestment(display = "0")
-            }
+            discipline.powerList.forEach{power -> power.refreshItem()}
         }
     }
 }

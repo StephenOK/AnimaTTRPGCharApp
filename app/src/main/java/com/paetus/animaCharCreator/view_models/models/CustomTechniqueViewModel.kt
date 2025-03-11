@@ -41,7 +41,7 @@ class CustomTechniqueViewModel(
     private val elementBindList = elementAttackList + listOf(Element.Light, Element.Dark)
 
     //data table of technique effects
-    private val techniqueDatabase = ki.techniqueDatabase
+    private val techniqueDatabase = ki.getTechData()
 
     //initialize the page tracker of the custom technique
     private val _customPageNum = MutableStateFlow(value = 1)

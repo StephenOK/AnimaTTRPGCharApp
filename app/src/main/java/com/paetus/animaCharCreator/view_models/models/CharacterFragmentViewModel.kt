@@ -12,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
@@ -99,7 +100,7 @@ class CharacterFragmentViewModel(
     val raceAdvantageOpen = _raceAdvantageOpen.asStateFlow()
 
     //initialize racial advantage displayed
-    private val _racialDisplayed = MutableStateFlow(value = charInstance.races.sylvainAdvantages[0])
+    private val _racialDisplayed = MutableStateFlow(value = charInstance.objectDB.races.sylvainAdvantages[0])
     val racialDisplayed = _racialDisplayed.asStateFlow()
 
     //initialize open state of class detail alert
@@ -178,7 +179,7 @@ class CharacterFragmentViewModel(
     /**
      * Retrieves the freelancer class from the character.
      */
-    fun getFreelancer(): CharClass {return charInstance.classRecord.allClasses[0]}
+    fun getFreelancer(): CharClass {return charInstance.objectDB.classRecord.allClasses[0]}
 
     /**
      * Retrieves the character's selections for their freelancer bonuses.
@@ -318,7 +319,7 @@ class CharacterFragmentViewModel(
      * Retrieves the class displayed inn the class dropdown item.
      */
     fun getDisplayedClass(): CharClass{
-        return charInstance.classRecord.allClasses[classDropdown.data.output.value]
+        return charInstance.objectDB.classRecord.allClasses[classDropdown.data.output.value]
     }
 
     /**
@@ -417,6 +418,15 @@ class CharacterFragmentViewModel(
                         stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
                     )
                 }
+
+            //determine that the secondary item has a legal minimum input
+            if(it.pointsApplied.intValue in 1..4)
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputTooFewPoints,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
         }
 
         //determine that all natural bonuses have been distributed
@@ -424,6 +434,91 @@ class CharacterFragmentViewModel(
             output.add{
                 stringResource(R.string.natBonusNotDistributed)
             }
+
+        //look through each ki stat
+        charInstance.ki.allKiStats().forEach{
+            //get the stat's name
+            val kiString =
+                stringArrayResource(id = R.array.primaryCharArray)[
+                    //get exact index number if not POW or WP
+                    if((it as SblKiStat).kiIndex <  4)
+                        it.kiIndex
+                    //correct index to get proper name
+                    else
+                        it.kiIndex + 1
+                ]
+
+            //check for valid point growth
+            if(!it.validPointGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiPointReduction,
+                        kiString
+                    )
+                }
+
+            //check for valid accumulation growth
+            if(!it.validAccGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiAccReduction,
+                        kiString
+                    )
+                }
+        }
+
+        //catch invalid zeon point growth
+        if(!charInstance.magic.validPointGrowth())
+            output.add{stringResource(R.string.zeonPointReduction)}
+
+        //catch invalid zeon accumulation growth
+        if(!charInstance.magic.validAccGrowth())
+            output.add{stringResource(R.string.zeonAccReduction)}
+
+        //catch invalid magic projection growth
+        if(!charInstance.magic.validProjGrowth())
+            output.add{stringResource(R.string.zeonProjReduction)}
+
+        //catch invalid book level growth
+        charInstance.magic.retrieveBooks().forEach{
+            if(!it.validBookGrowth())
+                output.add{
+                    stringResource(
+                        R.string.bookLevelReduction,
+                        stringArrayResource(R.array.elementList)[charInstance.magic.retrieveBooks().indexOf(it)]
+                    )
+            }
+        }
+
+        //catch invalid psychic potential growth
+        if(!charInstance.psychic.validPsyPotentialGrowth())
+            output.add{stringResource(R.string.psychicPotentialReduction)}
+
+        //catch invalid psychic point growth
+        if(!charInstance.psychic.validPsyPointGrowth())
+            output.add{stringResource(R.string.psychicPointReduction)}
+
+        //catch invalid psychic projection growth
+        if(!charInstance.psychic.validPsyProjGrowth())
+            output.add{stringResource(R.string.psychicProjectionReduction)}
+
+        //catch invalid psychic innate slot growth
+        if(!charInstance.psychic.validInnateSlots())
+            output.add{stringResource(R.string.psyInnateSlotReduction)}
+
+        //catch invalid psychic points spent
+        if(charInstance.psychic.getFreePsyPoints() < 0)
+            output.add{stringResource(R.string.overPsyPointFailure)}
+
+        //catch all invalid psychic power enhancement growth
+        charInstance.psychic.findIllegalEnhancement().forEach{power ->
+            output.add{
+                stringResource(
+                    R.string.psyPowerEnhancementReduction,
+                    stringArrayResource(R.array.powerNames)[power.name]
+                )
+            }
+        }
 
         //give final output list
         return if(output.isEmpty()) null else output.toList()
@@ -477,7 +572,7 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.raceText,
             optionsRef = R.array.raceArray,
-            initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+            initialIndex = charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
             onChange = {
                 //change the character's race
                 charInstance.setOwnRace(raceNum = it)

@@ -13,11 +13,13 @@ import com.paetus.animaCharCreator.character_creation.attributes.secondary_abili
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
@@ -27,9 +29,7 @@ import java.nio.charset.StandardCharsets
  * Character being built by the user
  * Holder class of all other character creation objects
  */
-open class BaseCharacter() {
-    val host: MutableState<SblChar?> = mutableStateOf(null)
-
+open class BaseCharacter{
     //character's name
     val charName = mutableStateOf(value = "")
 
@@ -41,12 +41,13 @@ open class BaseCharacter() {
 
     //character's rule settings
     val rules = RuleRecord()
+    var objectDB = ObjectDatabase()
 
     //list of character's other abilities
     open val primaryList = PrimaryList(charInstance = this)
     open val combat = CombatAbilities(charInstance = this)
     open val secondaryList = SecondaryList(charInstance = this)
-    val weaponProficiencies = WeaponProficiencies(charInstance = this)
+    open val weaponProficiencies = WeaponProficiencies(charInstance = this)
     open val ki = Ki(charInstance = this)
     open val magic = Magic(charInstance = this)
     open val summoning = Summoning(charInstance = this)
@@ -54,15 +55,7 @@ open class BaseCharacter() {
     val advantageRecord = AdvantageRecord(charInstance = this)
     val inventory = Inventory(charInstance = this)
 
-    //list of all classes available
-    val classRecord: ClassRecord by lazy{
-        if (host.value == null) ClassRecord()
-        else host.value!!.classRecord
-    }
     open val classes = ClassInstances(charInstance = this)
-
-    //list of all race advantages
-    val races = RaceAdvantages(charInstance = this)
 
     //initialize character's race
     val ownRace = mutableStateOf<List<RacialAdvantage>>(value = listOf())
@@ -110,7 +103,7 @@ open class BaseCharacter() {
      */
     fun setGender(gender: Boolean){
         //remove previous buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = -5)
             else combat.magicRes.setSpecial(specChange = -5)
         }
@@ -119,7 +112,7 @@ open class BaseCharacter() {
         isMale.value = gender
 
         //apply gendered buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = 5)
             else combat.magicRes.setSpecial(specChange = 5)
         }
@@ -135,7 +128,11 @@ open class BaseCharacter() {
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
             if(advantage.onRemove != null)
-                advantage.onRemove!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onRemove!!(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
 
         //apply new race and buffs
@@ -144,7 +141,11 @@ open class BaseCharacter() {
         ownRace.value.forEach{advantage ->
             //if the advantage has an onTake effect, run it
             if(advantage.onTake != null)
-                advantage.onTake!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onTake!!(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
     }
 
@@ -155,7 +156,7 @@ open class BaseCharacter() {
      */
     private fun setOwnRace(raceName: String) {
         //set the character's race to the indicated item
-        setOwnRace(races.getFromString(raceName))
+        setOwnRace(objectDB.races.getFromString(raceName))
     }
 
     /**
@@ -165,7 +166,7 @@ open class BaseCharacter() {
      */
     fun setOwnRace(raceNum: Int){
         //apply the indicated race to the character
-        setOwnRace(races.allAdvantageLists[raceNum])
+        setOwnRace(objectDB.races.allAdvantageLists[raceNum])
     }
 
     /**
@@ -253,7 +254,7 @@ open class BaseCharacter() {
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.intValue * classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -299,7 +300,7 @@ open class BaseCharacter() {
             appearance.intValue = 2
 
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace.value != races.danjayniAdvantages || newAppearance in 3..7)
+        else if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
             appearance.intValue = newAppearance
     }
 
@@ -364,6 +365,13 @@ open class BaseCharacter() {
     }
 
     /**
+     * Default constructor for a new chracter.
+     */
+    constructor(){
+        objectDB = ObjectDatabase()
+    }
+
+    /**
      * Default constructor for new character.
      *
      * @param filename file associated with this character
@@ -374,7 +382,7 @@ open class BaseCharacter() {
         filename: String,
         secondaryFile: File,
         techFile: File
-    ) : this() {
+    ): this(){
         //retrieve custom secondaries for this character
         secondaryList.applySecondaryChars(input = secondaryFile, filename = filename)
 
@@ -392,8 +400,10 @@ open class BaseCharacter() {
     constructor(
         charFile: File,
         secondaryFile: File,
-        techFile: File
-    ) : this() {
+        techFile: File,
+        objectDB: ObjectDatabase = ObjectDatabase()
+    ){
+        this.objectDB = objectDB
 
         //get custom custom items for this character
         secondaryList.applySecondaryChars(
@@ -449,7 +459,7 @@ open class BaseCharacter() {
         secondaryList.loadList(fileReader = fileReader, writeVersion = version)
 
         //load character's combat modules
-        weaponProficiencies.loadProficiencies(fileReader = fileReader)
+        weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
 
         //load character's ki abilities
         ki.loadKiAttributes(
@@ -486,8 +496,36 @@ open class BaseCharacter() {
     /**
      * Creates a character for use in a SBL character's level record.
      */
-    constructor(newHost: SblChar): this(){
-        host.value = newHost
+    constructor(
+        newHost: SblChar,
+        prevIndex: Int,
+        isAdded: Boolean
+    ){
+        //set class record of host
+        objectDB = newHost.objectDB
+
+        //set level to not zero if not the zeroth level
+        if(prevIndex >= 0)
+            setLvl(levNum = 1)
+
+        //if character is a new level added to the record
+        if(isAdded) {
+            //set class to the previous level's class
+            classes.setOwnClass(newHost.charRefs[prevIndex]!!.classes.ownClass.intValue)
+
+            //apply freelancer selections
+            for (index in 0..4)
+                classes.freelancerSelection[index] = newHost.classes.freelancerSelection[index]
+
+            //apply secondary natural bonuses
+            newHost.secondaryList.getAllSecondaries().forEach {
+                it as SblSecondaryCharacteristic
+                secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
+            }
+
+            //apply primary weapon choice
+            weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.value)
+        }
     }
 
     /**
@@ -514,8 +552,8 @@ open class BaseCharacter() {
             writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(writer = byteArray, input = classRecord.allClasses[classes.ownClass.intValue].saveName)
-            writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
+            writeDataTo(writer = byteArray, input = objectDB.classRecord.allClasses[classes.ownClass.intValue].saveName)
+            writeDataTo(writer = byteArray, input = objectDB.races.getNameOfList(ownRace.value))
             writeDataTo(writer = byteArray, input = lvl.intValue)
 
             //write paladin's chosen level boon

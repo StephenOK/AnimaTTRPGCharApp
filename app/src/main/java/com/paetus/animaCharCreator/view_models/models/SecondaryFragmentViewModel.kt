@@ -10,6 +10,8 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -410,8 +412,23 @@ class SecondaryFragmentViewModel(
          * @return string of the characteristic's development point cost
          */
         fun getMultiplier(): Int{
-            return if(secondaryItem.devPerPoint.intValue > secondaryItem.developmentDeduction.intValue)
-                secondaryItem.devPerPoint.intValue - secondaryItem.developmentDeduction.intValue
+            //get default cost for buying points in this item
+            val devPerPoint =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].devPerPoint.intValue
+                else
+                    secondaryItem.devPerPoint.intValue
+
+            //get reduction level for this character's level
+            val pointReduction =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].developmentDeduction.intValue
+                else
+                    secondaryItem.developmentDeduction.intValue
+
+            //return default cost minus any deductions
+            return if(devPerPoint > pointReduction)
+                devPerPoint - pointReduction
             else 1
         }
     }

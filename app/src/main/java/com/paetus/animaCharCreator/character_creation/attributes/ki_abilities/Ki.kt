@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities
 
-import android.os.Build
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,11 +8,11 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueEffect
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableData
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import com.paetus.animaCharCreator.writeDataTo
@@ -31,8 +30,9 @@ import java.nio.charset.StandardCharsets
  * @param charInstance object that holds all of the character's data
  */
 open class Ki(private val charInstance: BaseCharacter){
-    //data table of technique effects
-    val techniqueDatabase = TechniqueTableDataRecord()
+    fun getKiRecord(): KiRecord {return charInstance.objectDB.kiRecord}
+    fun getTechData(): TechniqueTableDataRecord {return charInstance.objectDB.techniqueDatabase}
+    fun getPrebuiltTechs(): TechniquePrebuilts {return charInstance.objectDB.prebuiltTechs}
 
     //initialize martial knowledge values
     val martialKnowledgeMax = mutableIntStateOf(value = 10)
@@ -40,15 +40,19 @@ open class Ki(private val charInstance: BaseCharacter){
     val martialKnowledgeRemaining = mutableIntStateOf(value = 10)
 
     //initialize stat ki points and accumulation
-    val strKi = KiStat(parent = this@Ki)
-    val dexKi = KiStat(parent = this@Ki)
-    val agiKi = KiStat(parent = this@Ki)
-    val conKi = KiStat(parent = this@Ki)
-    val powKi = KiStat(parent = this@Ki)
-    val wpKi = KiStat(parent = this@Ki)
+    open val strKi = KiStat(parent = this@Ki)
+    open val dexKi = KiStat(parent = this@Ki)
+    open val agiKi = KiStat(parent = this@Ki)
+    open val conKi = KiStat(parent = this@Ki)
+    open val powKi = KiStat(parent = this@Ki)
+    open val wpKi = KiStat(parent = this@Ki)
 
-    //gather all ki stat items
-    private val allKiStats = listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+    /**
+     * Gather all ki stat items.
+     */
+    fun allKiStats(): List<KiStat>{
+        return listOf(strKi, dexKi, agiKi, conKi, powKi, wpKi)
+    }
 
     //initialize value for total ki points bought
     private val totalPointBuy = mutableIntStateOf(value = 0)
@@ -62,15 +66,12 @@ open class Ki(private val charInstance: BaseCharacter){
     //initialize total accumulation value
     val totalAcc = mutableIntStateOf(value = 6)
 
-    //get data of ki techniques
-    val kiRecord = KiRecord()
-
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
 
     //create of map of prebuilt techniques and their taken states
     val allPrebuilts =
-        TechniquePrebuilts(techniqueDataRecord = techniqueDatabase)
+        getPrebuiltTechs()
             .allTechniques.associateBy(
                 keySelector = {it},
                 valueTransform = {mutableStateOf(false)}
@@ -82,12 +83,12 @@ open class Ki(private val charInstance: BaseCharacter){
     /**
      * Gets the class's ki accumulation DP cost.
      */
-    fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
+    open fun getKiAccumulationCost(): Int{return charInstance.classes.getClass().kiAccumMult}
 
     /**
      * Gets the class's ki point DP cost.
      */
-    fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
+    open fun getKiPointCost(): Int{return charInstance.classes.getClass().kiGrowth}
 
     /**
      * Sets martial knowledge to the appropriate amount for each taken item.
@@ -136,7 +137,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateBoughtPoints(){
         totalPointBuy.intValue = 0
-        allKiStats.forEach{kiStat -> totalPointBuy.intValue += kiStat.boughtKiPoints.intValue}
+        allKiStats().forEach{kiStat -> totalPointBuy.intValue += kiStat.boughtKiPoints.intValue}
     }
 
     /**
@@ -144,7 +145,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateBoughtAcc(){
         totalAccBuy.intValue = 0
-        allKiStats.forEach{kiStat -> totalAccBuy.intValue += kiStat.boughtAccumulation.intValue}
+        allKiStats().forEach{kiStat -> totalAccBuy.intValue += kiStat.boughtAccumulation.intValue}
     }
 
     /**
@@ -152,7 +153,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateTotalPoints(){
         totalKi.intValue = 0
-        allKiStats.forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
+        allKiStats().forEach{kiStat -> totalKi.intValue += kiStat.totalKiPoints.intValue}
         charInstance.updateTotalSpent()
     }
 
@@ -161,7 +162,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun updateTotalAcc(){
         totalAcc.intValue = 0
-        allKiStats.forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
+        allKiStats().forEach{kiStat -> totalAcc.intValue += kiStat.totalAccumulation.intValue}
         charInstance.updateTotalSpent()
     }
 
@@ -184,18 +185,17 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param newAbility Ki Ability to attempt to add
      * @return true if ability has been successfully added
      */
-    fun attemptAbilityAdd(
+    open fun attemptAbilityAdd(
         newAbility: KiAbility
     ): Boolean{
         //check if character has the necessary martial knowledge for the ability
         if(martialKnowledgeRemaining.intValue - newAbility.mkCost >= 0) {
             takenAbilities += newAbility
             updateMkSpent()
-            return true
         }
 
-        //indicate failed addition
-        return false
+        //return current taken state
+        return takenAbilities.contains(newAbility)
     }
 
     /**
@@ -203,26 +203,21 @@ open class Ki(private val charInstance: BaseCharacter){
      *
      * @param ability Ki Ability to remove
      */
-    fun removeAbility(ability: KiAbility){
+    open fun removeAbility(ability: KiAbility){
         //remove the item from the list
         takenAbilities -= ability
 
         //make sure any other ability is not disqualified by this one's removal
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            takenAbilities.removeIf{!isQualified(ability = it)}
-        }
-        else{
-            val removeList = mutableListOf<KiAbility>()
+        val removeList = mutableListOf<KiAbility>()
 
-            takenAbilities.forEach{kiAbility ->
-                if(!isQualified(ability = kiAbility)) removeList += kiAbility
-            }
-
-            takenAbilities.removeAll(elements = removeList)
+        takenAbilities.forEach{kiAbility ->
+            if(!isQualified(ability = kiAbility)) removeList += kiAbility
         }
+
+        takenAbilities.removeAll(elements = removeList)
 
         //remove techniques if Ki Control removed
-        if(!takenAbilities.contains(kiRecord.kiControl)) {
+        if(!takenAbilities.contains(getKiRecord().kiControl)) {
             allPrebuilts.forEach { prebuilts -> prebuilts.value.value = false }
             customTechniques.forEach { customs -> customs.value.value = false }
         }
@@ -237,7 +232,7 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param ability Ki Ability to check
      * @return true if ability is a valid addition
      */
-    private fun isQualified(ability: KiAbility): Boolean{
+    fun isQualified(ability: KiAbility): Boolean{
         //return true for no prerequisites or all prerequisites met
         return ability.prerequisite == null ||
                 (takenAbilities.contains(element = ability.prerequisite) &&
@@ -251,7 +246,7 @@ open class Ki(private val charInstance: BaseCharacter){
      * @return ki ability of the search if available
      */
     private fun getAbility(findAbility: String): KiAbility?{
-        kiRecord.allKiAbilities.forEach{ability ->
+        getKiRecord().allKiAbilities.forEach{ ability ->
             if(ability.saveTag == findAbility)
                 return ability
         }
@@ -441,7 +436,7 @@ open class Ki(private val charInstance: BaseCharacter){
         filename: String
     ){
         //set bought ki points and accumulation for each KiStat item
-        allKiStats.forEach{kiStat ->
+        allKiStats().forEach{kiStat ->
             kiStat.setBoughtKiPoints(kiPurchase = fileReader.readLine().toInt())
             kiStat.setBoughtAccumulation(accPurchase = fileReader.readLine().toInt())
         }
@@ -578,14 +573,14 @@ open class Ki(private val charInstance: BaseCharacter){
         //retrieve the appropriate technique table data
         val tableData =
             //retrieve data based on the saved values
-            if(name != 14) techniqueDatabase.findData(
+            if(name != 14) getTechData().findData(
                 name = name,
                 primary = fileReader.readLine().toInt(),
                 secondary = fileReader.readLine().toInt(),
                 mkCost = fileReader.readLine().toInt()
             )
             //retrieve data for a saved state effect
-            else techniqueDatabase.stateEffect(
+            else getTechData().stateEffect(
                 stateRef = fileReader.readLine().toInt(),
                 costRemain = fileReader.readLine().toInt(),
                 primary = fileReader.readLine().toInt()
@@ -902,7 +897,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun writeKiAttributes(byteArray: ByteArrayOutputStream) {
         //write data from KiStats
-        allKiStats.forEach{kiStat ->
+        allKiStats().forEach{kiStat ->
             writeDataTo(writer = byteArray, input = kiStat.boughtKiPoints.intValue)
             writeDataTo(writer = byteArray, input = kiStat.boughtAccumulation.intValue)
         }

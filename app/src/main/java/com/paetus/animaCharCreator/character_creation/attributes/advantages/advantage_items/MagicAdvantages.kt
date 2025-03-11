@@ -6,10 +6,8 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 
 /**
  * List of magical advantages and disadvantages a character may take.
- *
- * @param charInstance object holding the character's stats
  */
-class MagicAdvantages(private val charInstance: BaseCharacter){
+class MagicAdvantages{
     val elementalCompatibility = Advantage(
         saveTag = "elementalCompatibility",
         name = R.string.elementCompatibility,
@@ -38,13 +36,13 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        onTake = { input, _ ->
+        onTake = {character, input, _ ->
             //add the desired element as a natural path bonus
-            charInstance.magic.allBooks[input!!].setNatural(isNat = true)
+            character.magic.retrieveBooks()[input!!].setNatural(isNat = true)
         },
-        onRemove = { input, _ ->
+        onRemove = {character, input, _ ->
             //remove the indicated natural path bonus
-            charInstance.magic.allBooks[input!!].setNatural(isNat = false)
+            character.magic.retrieveBooks()[input!!].setNatural(isNat = false)
         }
     )
 
@@ -156,17 +154,17 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //apply the desired zeon recovery bonus
             when(cost){
-                1 -> charInstance.magic.changeRecoveryMult(2.0)
-                2 -> charInstance.magic.changeRecoveryMult(3.0)
-                3 -> charInstance.magic.changeRecoveryMult(4.0)
+                1 -> character.magic.changeRecoveryMult(2.0)
+                2 -> character.magic.changeRecoveryMult(3.0)
+                3 -> character.magic.changeRecoveryMult(4.0)
             }
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //reset to basic zeon recovery bonus
-            charInstance.magic.changeRecoveryMult(1.0)
+            character.magic.changeRecoveryMult(1.0)
         }
     )
 
@@ -255,11 +253,11 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
-            charInstance.magic.setMagicTies(true)
+        onTake = {character, _, _ ->
+            character.magic.setMagicTies(true)
         },
-        onRemove = {_, _ ->
-            charInstance.magic.setMagicTies(false)
+        onRemove = {character, _, _ ->
+            character.magic.setMagicTies(false)
         }
     )
 
@@ -275,13 +273,13 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply zeon recovery penalty
-            charInstance.magic.changeRecoveryMult(0.5)
+            character.magic.changeRecoveryMult(0.5)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove zeon recovery penalty
-            charInstance.magic.changeRecoveryMult(1.0)
+            character.magic.changeRecoveryMult(1.0)
         }
     )
 
@@ -297,13 +295,13 @@ class MagicAdvantages(private val charInstance: BaseCharacter){
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //remove any ability to recover zeon
-            charInstance.magic.changeRecoveryMult(0.0)
+            character.magic.changeRecoveryMult(0.0)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //reacquire zeon recovery ability
-            charInstance.magic.changeRecoveryMult(1.0)
+            character.magic.changeRecoveryMult(1.0)
         }
     )
 

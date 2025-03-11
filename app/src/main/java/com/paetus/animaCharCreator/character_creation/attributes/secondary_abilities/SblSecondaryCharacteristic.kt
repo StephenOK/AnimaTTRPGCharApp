@@ -20,14 +20,31 @@ class SblSecondaryCharacteristic(
     override fun setPointsApplied(pointInput: Int) {
         val charInstance = parent.sblChar
 
-        //get previous secondary total fromm levels
-        var preSecondaryValue = 0
-        charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){ character ->
-            preSecondaryValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
+        //set current level value
+        charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
+
+        //if character is not level 0
+        if(charInstance.lvl.intValue != 0) {
+            //get previous level's record
+            val previousLevel = charInstance.charRefs[charInstance.lvl.intValue - 1]
+
+            //set natural bonus if points applied aren't zero and previous level has a natural bonus
+            if (pointInput - getPreviousPoints() == 0 && previousLevel!!.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
+                setNatBonus(true)
         }
 
-        //set current level value
-        charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - preSecondaryValue)
+        //if no points applied to stat
+        if(pointInput + getPreviousPoints() == 0)
+            //go through all level records
+            parent.sblChar.levelLoop(
+                startLevel = parent.charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){
+                //remove any applied natural bonus
+                val secondary = it.secondaryList.getAllSecondaries()[secondaryIndex]
+                if(secondary.bonusApplied.value && getPreviousPoints(level = parent.sblChar.charRefs.indexOf(it)) == 0)
+                    secondary.setNatBonus(false)
+            }
 
         pointsAppliedUpdate()
     }
@@ -111,6 +128,25 @@ class SblSecondaryCharacteristic(
 
         updateDevSpent()
         refreshTotal()
+    }
+
+    /**
+     * Get all applied points applied to the character before the given level.
+     *
+     * @param level last character reference to check before outputting total
+     * @return point total up to the indicated level
+     */
+    private fun getPreviousPoints(level: Int = parent.sblChar.lvl.intValue - 1): Int{
+        //initialize point counter
+        var output = 0
+
+        //count points applied per level
+        parent.sblChar.levelLoop(endLevel = level){
+            output += it.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
+        }
+
+        //give result
+        return output
     }
 
     /**

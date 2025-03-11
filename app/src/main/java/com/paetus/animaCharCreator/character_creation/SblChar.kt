@@ -5,10 +5,10 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.SblComba
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
+import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
-import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
 import java.io.File
@@ -28,8 +28,8 @@ class SblChar(
 ): BaseCharacter() {
     //initialize level data for this character
     val charRefs = mutableListOf(
-        BaseCharacter(newHost = this),
-        BaseCharacter(newHost = this),
+        BaseCharacter(newHost = this, prevIndex = -1, isAdded = false),
+        BaseCharacter(newHost = this, prevIndex = 0, isAdded = false),
         null,
         null,
         null,
@@ -55,9 +55,9 @@ class SblChar(
     override val primaryList = SblPrimaryList(charInstance = this)
     override val combat = SblCombatAbilities(charInstance = this)
     override val secondaryList = SblSecondaryList(sblChar = this)
-
+    override val weaponProficiencies = SblProficiencies(charInstance = this)
     override val ki = SblKi(charInstance = this)
-    override val magic = SblMagic(charInstance = this)
+    override val magic = SblMagic(sblChar = this)
 
     override val psychic = SblPsychic(charInstance = this)
     override val summoning = SblSummoning(charInstance = this)
@@ -70,27 +70,8 @@ class SblChar(
      */
     override fun setLvl(levNum: Int) {
         //initialize character if no record at that level
-        if(charRefs[levNum + 1] == null) {
-            charRefs[levNum + 1] = BaseCharacter(newHost = this)
-
-            charRefs[levNum + 1]!!.setLvl(levNum = 1)
-            charRefs[levNum + 1]!!.classes.setOwnClass(charRefs[levNum]!!.classes.ownClass.intValue)
-
-            //set each of the new character's freelancer selections
-            var counter = 0
-            classes.freelancerSelection.forEach{
-                charRefs[levNum + 1]!!.classes.setSelection(
-                    selectionIndex = counter++,
-                    secondarySelection = it
-                )
-            }
-
-            //apply natural bonus values to new character record
-            secondaryList.getAllSecondaries().forEach{
-                it as SblSecondaryCharacteristic
-                charRefs[levNum + 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
-            }
-        }
+        if(charRefs[levNum + 1] == null)
+            charRefs[levNum + 1] = BaseCharacter(newHost = this, prevIndex = levNum, isAdded = true)
 
         super.setLvl(levNum)
 
@@ -100,12 +81,25 @@ class SblChar(
         }
 
         //update combat item input values
+        combat.updateLifeMults()
         combat.allAbilities().forEach{
             (it as SblCombatItem).updateInput()
         }
 
         //update secondary items
         secondaryList.levelUpdate()
+
+        //update weapon proficiencies
+        weaponProficiencies.levelUpdate()
+
+        //update ki abilities
+        ki.levelUpdate()
+
+        //update magic abilities
+        magic.levelUpdate()
+
+        //update psychic abilities
+        psychic.levelUpdate()
 
         //update dev points spent
         updateTotalSpent()
@@ -171,7 +165,7 @@ class SblChar(
 
             //add level's other items
             spentTotal.intValue +=
-                checkChar.combat.lifeMultsTaken.intValue * classRecord.allClasses[checkChar.classes.ownClass.intValue].lifePointMultiple +
+                checkChar.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[checkChar.classes.ownClass.intValue].lifePointMultiple +
                         checkChar.secondaryList.calculateSpent()
         }
 
@@ -218,7 +212,8 @@ class SblChar(
             val levelChar = BaseCharacter(
                 charFile = file,
                 secondaryFile = secondaryFile,
-                techFile = techFile
+                techFile = techFile,
+                objectDB = objectDB
             )
 
             //set character at the indicated index

@@ -57,7 +57,7 @@ fun NumberInput(
                 inputFunction(it)
             }
             //catch non-numerical input
-            catch(e: NumberFormatException){
+            catch(_: NumberFormatException){
                 //display and run empty input
                 if(it == "")
                     emptyFunction()

@@ -630,7 +630,8 @@ class MagicFragmentViewModel(
          * Refreshes the input and total for this item's data.
          */
         fun refreshItem(){
-            setBoughtString(buyValue = boughtInput())
+            if(_boughtString.value != "")
+                setBoughtString(buyValue = boughtInput())
         }
     }
 
@@ -713,7 +714,8 @@ class MagicFragmentViewModel(
          */
         fun refreshItem(){
             _isPrimary.update{magicBook.isPrimary.value}
-            _elementInvestment.update{pointsIn().toString()}
+            if(_elementInvestment.value != "")
+                _elementInvestment.update{pointsIn().toString()}
         }
     }
 
@@ -728,9 +730,16 @@ class MagicFragmentViewModel(
      * Refreshes all items on this page when it is loaded.
      */
     fun refreshPage(){
-        setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
-        allPurchaseData.forEach{purchaseData -> purchaseData.refreshItem()}
-        setProjectionImbalance(magic.magProjImbalance.intValue.toString())
+        if(_boughtZeonString.value != "")
+            setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
+
+        allPurchaseData.forEach{purchaseData ->
+            purchaseData.refreshItem()
+        }
+
+        if(_projectionImbalance.value != "")
+            setProjectionImbalance(magic.magProjImbalance.intValue.toString())
+
         setMagicLevelSpent()
 
         allBooks.forEach{book -> book.refreshItem()}

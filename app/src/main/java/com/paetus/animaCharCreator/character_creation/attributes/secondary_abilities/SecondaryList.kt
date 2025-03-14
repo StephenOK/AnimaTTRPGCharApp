@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.writeDataTo
-import kotlin.Throws
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -96,7 +95,7 @@ open class SecondaryList(
     private val customPER = mutableListOf<CustomCharacteristic>()
 
     /**
-     * Retrives all secondary characteristic items in this list.
+     * Retrieves all secondary characteristic items in this list.
      *
      * @return list of default secondary characteristics
      */
@@ -363,7 +362,7 @@ open class SecondaryList(
 
         //for files created after custom secondaries were implemented
         if(writeVersion >= 22) {
-            for (count in 0 until fileReader!!.readLine().toInt()) {
+            (0 until fileReader!!.readLine().toInt()).forEach{
 
                 //get the custom characteristic's name
                 val customName = fileReader.readLine()

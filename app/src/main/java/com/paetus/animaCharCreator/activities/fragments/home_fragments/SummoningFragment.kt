@@ -147,6 +147,7 @@ private fun SummoningAbilityRow(
             inputText = summonData.boughtVal.collectAsState().value,
             inputFunction = {summonData.setBoughtVal(it.toInt())},
             emptyFunction = {summonData.setBoughtVal("")},
+            refill = {summonData.getCurrent()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)

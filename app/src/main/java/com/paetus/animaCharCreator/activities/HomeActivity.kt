@@ -818,7 +818,7 @@ class HomeActivity : AppCompatActivity() {
                 ).show()
         }
         //notify that file not found
-        catch(e: FileNotFoundException){
+        catch(_: FileNotFoundException){
             Toast.makeText(
                 this@HomeActivity,
                 baseContext.resources.getString(R.string.fileNotFound),
@@ -826,7 +826,7 @@ class HomeActivity : AppCompatActivity() {
             ).show()
         }
         //notify for error in file writing
-        catch(e: IOException) {
+        catch(_: IOException) {
             Toast.makeText(
                 this@HomeActivity,
                 baseContext.resources.getString(R.string.fileError),
@@ -878,7 +878,7 @@ class HomeActivity : AppCompatActivity() {
                 ).show()
         }
         //notify that file not found
-        catch(e: FileNotFoundException){
+        catch(_: FileNotFoundException){
             Toast.makeText(
                 this@HomeActivity,
                 baseContext.resources.getString(R.string.fileNotFound),
@@ -886,7 +886,7 @@ class HomeActivity : AppCompatActivity() {
             ).show()
         }
         //notify for error in file writing
-        catch(e: IOException) {
+        catch(_: IOException) {
             Toast.makeText(
                 this@HomeActivity,
                 baseContext.resources.getString(R.string.fileError),

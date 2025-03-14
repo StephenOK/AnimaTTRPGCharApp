@@ -71,7 +71,7 @@ class SblChar(
      * Calculates percentage allotments for each category.
      */
     override fun dpAllotmentCalc() {
-        //reinitialize DP caps for each categoryy
+        //reinitialize DP caps for each category
         maxCombatDP.intValue = 0
         maxMagDP.intValue= 0
         maxPsyDP.intValue = 0
@@ -183,11 +183,8 @@ class SblChar(
 
         //for each character level record
         charRefs.forEach{character ->
-            if(character != null){
-                //apply primary bonus values
-                character.primaryList.allPrimaries().forEach{primeChar ->
-                    primaryList.allPrimaries()[primeChar.charIndex].setLevelBonus(primeChar.levelBonus.intValue)
-                }
+            character?.primaryList?.allPrimaries()?.forEach{primeChar ->
+                primaryList.allPrimaries()[primeChar.charIndex].setLevelBonus(primeChar.levelBonus.intValue)
             }
         }
     }

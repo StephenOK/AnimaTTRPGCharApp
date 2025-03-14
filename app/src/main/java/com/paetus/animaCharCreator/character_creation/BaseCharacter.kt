@@ -127,7 +127,7 @@ open class BaseCharacter() {
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
             if(advantage.onRemove != null)
-                advantage.onRemove!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onRemove(advantage.picked, advantage.cost[advantage.pickedCost])
         }
 
         //apply new race and buffs
@@ -136,7 +136,7 @@ open class BaseCharacter() {
         ownRace.value.forEach{advantage ->
             //if the advantage has an onTake effect, run it
             if(advantage.onTake != null)
-                advantage.onTake!!(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onTake(advantage.picked, advantage.cost[advantage.pickedCost])
         }
     }
 

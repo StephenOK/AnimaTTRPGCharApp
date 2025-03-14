@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
@@ -159,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         //initialize current context
-        val context = LocalContext.current as Activity
+        val context = LocalActivity.current!!
         val dummyCharacter = BaseCharacter()
 
         //start up main page's viewModel

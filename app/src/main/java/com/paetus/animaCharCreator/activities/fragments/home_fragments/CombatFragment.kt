@@ -126,6 +126,7 @@ fun CombatFragment(
                             homePageVM.updateExpenditures()
                         },
                         emptyFunction = {combatFragVM.setLifeMults(display = "")},
+                        refill = {combatFragVM.currentLifeMults()},
                         modifier = Modifier
                             .onFocusChanged {
                                 if (it.isFocused)
@@ -332,6 +333,7 @@ private fun CombatItemRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {combatItem.setPointsIn(display = "")},
+            refill = {combatItem.getCurrent()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused) combatItem.setLabelDisplay(dpDisplay = focusString)

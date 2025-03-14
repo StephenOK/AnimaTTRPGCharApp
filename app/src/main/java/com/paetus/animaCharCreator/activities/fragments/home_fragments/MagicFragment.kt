@@ -137,6 +137,7 @@ fun MagicFragment(
                                 magFragVM.setBoughtZeonString(zeonBought = it.toInt())
                         },
                         emptyFunction = {magFragVM.setBoughtZeonString(display = "")},
+                        refill = {magFragVM.currentZeonPoints()},
                         modifier = Modifier
                             .onFocusChanged {
                                 //change DP display to appropriate value
@@ -257,6 +258,7 @@ fun MagicFragment(
                         emptyFunction = {
                             magFragVM.setProjectionImbalance(display = "")
                         },
+                        refill = {magFragVM.currentImbalance()},
                         modifier = Modifier
                             .onFocusChanged {
                                 if (it.isFocused && !magFragVM.isGifted())
@@ -500,6 +502,7 @@ private fun ZeonPurchaseItem(
                         tableItem.setBoughtString(buyValue = it.toInt())
                 },
                 emptyFunction = {tableItem.setBoughtString(display = "")},
+                refill = {tableItem.boughtInput()},
                 modifier = Modifier
                     .onFocusChanged {
                         //display Gift not taken message
@@ -577,6 +580,7 @@ private fun SpellBookInvestment(
                         spellData.setElementInvestment(magLevels = it.toInt())
                 },
                 emptyFunction = {spellData.setElementInvestment(display = "")},
+                refill = {spellData.getCurrent()},
                 modifier = Modifier
                     .onFocusChanged {
                         if (it.isFocused && !magFragVM.isGifted())

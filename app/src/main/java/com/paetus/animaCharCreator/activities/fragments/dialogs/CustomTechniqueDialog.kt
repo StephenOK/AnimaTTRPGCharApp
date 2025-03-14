@@ -794,14 +794,20 @@ private fun TechniqueAbilityDropdown(
         Spacer(modifier = Modifier.height(5.dp))
 
         MaterialTheme(colorScheme = techEffectLightColors) {
+            //retrieve state items
+            val header = customTechVM.header.collectAsState().value
+            val tableItems = customTechVM.useTable.collectAsState().value
+            val optionsTable1 = customTechVM.optTable1.collectAsState().value
+            val optionsTable2 = customTechVM.optTable2.collectAsState().value
+
             LazyColumn {
                 //display header if one given
-                if (customTechVM.header.value != null)
+                if (header != null)
                     item {TechniqueTableHeader(description = customTechVM.header.collectAsState().value!!)}
 
                 //display effect table if one given
-                if (customTechVM.useTable.value != null) {
-                    items(customTechVM.useTable.value!!) {data ->
+                if (tableItems != null) {
+                    items(tableItems) {data ->
                         val index = customTechVM.useTable.collectAsState().value!!.indexOf(element = data)
 
                         TechniqueTableRow(
@@ -815,12 +821,12 @@ private fun TechniqueAbilityDropdown(
                 }
 
                 //display optional effect table if one given
-                if (customTechVM.optTable1.value != null) {
+                if (optionsTable1 != null) {
                     item {Spacer(modifier = Modifier.height(5.dp))}
                     item {Text(text = customTechVM.optHeader1.collectAsState().value!!)}
 
-                    items(customTechVM.optTable1.value!!) {data ->
-                        val index = customTechVM.optTable1.collectAsState().value!!.indexOf(element = data)
+                    items(optionsTable1) {data ->
+                        val index = optionsTable1.indexOf(element = data)
 
                         TechniqueTableRow(
                             input = data,
@@ -833,11 +839,11 @@ private fun TechniqueAbilityDropdown(
                 }
 
                 //display second optional effect table if one given
-                if (customTechVM.optTable2.value != null) {
+                if (optionsTable2 != null) {
                     item {Spacer(modifier = Modifier.height(5.dp))}
                     item {Text(text = customTechVM.optHeader2.collectAsState().value!!)}
 
-                    items(customTechVM.optTable2.value!!) {data ->
+                    items(optionsTable2) {data ->
                         val index = customTechVM.optTable2.collectAsState().value!!.indexOf(element = data)
 
                         TechniqueTableRow(
@@ -882,8 +888,9 @@ private fun TechniqueAbilityDropdown(
                             //input for condition's cost
                             NumberInput(
                                 inputText = customTechVM.predeterminedCost.collectAsState().value,
-                                inputFunction = {customTechVM.setPredeterminedCost(cost = it.toInt())},
+                                inputFunction = {customTechVM.setPredeterminedCost(it)},
                                 emptyFunction = {customTechVM.setPredeterminedCost("")},
+                                refill = {20},
                                 modifier = Modifier
                                     .weight(0.4f)
                             )
@@ -1208,6 +1215,7 @@ private fun EditBuildRow(
             inputText = buildItem.display.collectAsState().value,
             inputFunction = {buildItem.setDisplay(kiValue = it.toInt())},
             emptyFunction = {buildItem.setDisplay(display = "")},
+            refill = {buildItem.getCurrent()},
             modifier = Modifier.weight(0.3f)
         )
 
@@ -1248,6 +1256,7 @@ private fun MaintenanceInput(
             inputText = maintInput.displayValue.collectAsState().value,
             inputFunction = {maintInput.setDisplayValue(maintValue = it.toInt())},
             emptyFunction = {maintInput.setDisplayValue(display = "")},
+            refill = {maintInput.getCurrent()},
             modifier = Modifier.weight(0.5f)
         )
     }

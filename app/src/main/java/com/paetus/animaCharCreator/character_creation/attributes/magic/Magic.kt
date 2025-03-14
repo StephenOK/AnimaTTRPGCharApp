@@ -480,7 +480,7 @@ open class Magic(val charInstance: BaseCharacter){
         if(writeVersion <= 26){
             //get each saved primary element
             val tempPrimeList = mutableListOf<Element>()
-            for(index in 0 until fileReader.readLine().toInt()){
+            (0 until fileReader.readLine().toInt()).forEach{
                 tempPrimeList.add(Element.fromString(elementName = fileReader.readLine()))
             }
 
@@ -490,7 +490,7 @@ open class Magic(val charInstance: BaseCharacter){
             }
 
             //get each individual spell saved
-            for(index in 0 until fileReader.readLine().toInt()){
+            (0 until fileReader.readLine().toInt()).forEach{
                 //construct placeholder spell if indicated by spellName
                 if(fileReader.readLine().toBoolean()){
                     val level = fileReader.readLine().toInt()
@@ -508,7 +508,8 @@ open class Magic(val charInstance: BaseCharacter){
 
             //load free spells for each element
             retrieveBooks().forEach{book ->
-                for(count in 0 until fileReader.readLine().toInt()) {
+                (0 until fileReader.readLine().toInt()).forEach{
+
                     val level = fileReader.readLine().toInt()
                     val freeBase = freeBook.findFreeSpell(fileReader.readLine())
                     book.addFreeSpell(

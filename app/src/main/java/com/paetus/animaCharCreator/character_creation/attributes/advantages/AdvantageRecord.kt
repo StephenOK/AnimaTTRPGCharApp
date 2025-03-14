@@ -270,7 +270,7 @@ class AdvantageRecord(
 
             //apply effect
             if(copyAdvantage.onTake != null)
-                copyAdvantage.onTake!!(
+                copyAdvantage.onTake(
                     charInstance,
                     taken,
                     copyAdvantage.cost[takenCost]
@@ -300,7 +300,7 @@ class AdvantageRecord(
 
                 //undo its effect
                 if(heldCopy.onRemove != null)
-                    heldCopy.onRemove!!(
+                    heldCopy.onRemove(
                         charInstance,
                         heldCopy.picked,
                         heldCopy.cost[heldCopy.pickedCost]
@@ -401,7 +401,7 @@ class AdvantageRecord(
         version: Int
     ){
         //retrieve number of taken advantages
-        for(index in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             if(version <= 13) {
                 //apply recorded advantage data
                 acquireAdvantage(

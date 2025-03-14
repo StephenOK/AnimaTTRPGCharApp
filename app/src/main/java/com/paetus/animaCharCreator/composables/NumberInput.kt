@@ -7,6 +7,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
  * @param inputText String to display in the TextField
  * @param inputFunction function to run for user's numerical input
  * @param emptyFunction function to run for no input
+ * @param refill function to retrieve string for unfocused and empty input
  *
  * @param modifier optional design properties of the input object
  * @param label optional label for the input field
@@ -32,6 +34,7 @@ fun NumberInput(
     inputText: String,
     inputFunction: (String) -> Unit,
     emptyFunction: () -> Unit,
+    refill: () -> Int,
 
     modifier: Modifier = Modifier,
     label: String = "",
@@ -57,7 +60,7 @@ fun NumberInput(
                 inputFunction(it)
             }
             //catch non-numerical input
-            catch(e: NumberFormatException){
+            catch(_: NumberFormatException){
                 //display and run empty input
                 if(it == "")
                     emptyFunction()
@@ -74,7 +77,13 @@ fun NumberInput(
         },
 
         //set other modifiers
-        modifier = modifier,
+        modifier = modifier
+            //add unfocused function to put in a value if it's currently empty
+            .onFocusChanged{
+                if(!it.isFocused && inputText == ""){
+                    inputFunction(refill().toString())
+                }
+            },
 
         //set text color
         textStyle = LocalTextStyle.current.copy(

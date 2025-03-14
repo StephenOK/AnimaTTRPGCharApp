@@ -133,6 +133,11 @@ class MagicFragmentViewModel(
     }
 
     /**
+     * Get current value input for the character's zeon points.
+     */
+    fun currentZeonPoints(): Int{return magic.boughtZeon.intValue}
+
+    /**
      * Change the character's magic imbalance input.
      *
      * @param imbalance value to set the magic imbalance to
@@ -142,6 +147,11 @@ class MagicFragmentViewModel(
         setProjectionImbalance(imbalance.toString())
         refreshImbalance(imbalanceIsAttack.value)
     }
+
+    /**
+     * Get current value input for the character's magic projection imbalance.
+     */
+    fun currentImbalance(): Int{return magic.magProjImbalance.intValue}
 
     /**
      * Calculates the character's imbalance value depending on the projection bias.
@@ -626,7 +636,8 @@ class MagicFragmentViewModel(
          * Refreshes the input and total for this item's data.
          */
         fun refreshItem(){
-            setBoughtString(buyValue = boughtInput())
+            if(_boughtString.value != "")
+                setBoughtString(buyValue = boughtInput())
         }
     }
 
@@ -691,6 +702,11 @@ class MagicFragmentViewModel(
         fun setElementInvestment(display: String){_elementInvestment.update{display}}
 
         /**
+         * Get current value input for the book's current investment.
+         */
+        fun getCurrent(): Int{return magicBook.pointsIn.intValue}
+
+        /**
          * Buys a single spell item for the character.
          *
          * @param spellLevel slot level to individually purchase
@@ -709,7 +725,8 @@ class MagicFragmentViewModel(
          */
         fun refreshItem(){
             _isPrimary.update{magicBook.isPrimary.value}
-            _elementInvestment.update{pointsIn().toString()}
+            if(_elementInvestment.value != "")
+                _elementInvestment.update{pointsIn().toString()}
         }
     }
 
@@ -724,9 +741,16 @@ class MagicFragmentViewModel(
      * Refreshes all items on this page when it is loaded.
      */
     fun refreshPage(){
-        setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
-        allPurchaseData.forEach{purchaseData -> purchaseData.refreshItem()}
-        setProjectionImbalance(magic.magProjImbalance.intValue.toString())
+        if(_boughtZeonString.value != "")
+            setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
+
+        allPurchaseData.forEach{purchaseData ->
+            purchaseData.refreshItem()
+        }
+
+        if(_projectionImbalance.value != "")
+            setProjectionImbalance(magic.magProjImbalance.intValue.toString())
+
         setMagicLevelSpent()
 
         allBooks.forEach{book -> book.refreshItem()}

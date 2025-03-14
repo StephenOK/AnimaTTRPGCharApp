@@ -99,6 +99,11 @@ class SummoningFragmentViewModel(
         fun setDPLabel(dpLabel: String){_dpLabel.update{dpLabel}}
 
         /**
+         * Get current value input for the ability's bought value.
+         */
+        fun getCurrent(): Int{return summonAbility.buyVal.intValue}
+
+        /**
          * Refreshes the item on page loading.
          */
         fun refreshItem(){

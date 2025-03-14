@@ -364,6 +364,11 @@ class SecondaryFragmentViewModel(
         fun setPointInput(display: String){_pointInput.update{display}}
 
         /**
+         * Get current value input for the characteristic's point value.
+         */
+        fun getCurrent(): Int{return secondaryItem.pointsApplied.intValue}
+
+        /**
          * Refreshes the class point display for the characteristic.
          */
         fun setClassPoints(){

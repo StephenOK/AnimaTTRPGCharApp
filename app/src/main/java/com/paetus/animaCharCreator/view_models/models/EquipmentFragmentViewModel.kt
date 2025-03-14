@@ -146,6 +146,9 @@ class EquipmentFragmentViewModel(
      * Updates the cost displays for the current purchase being made.
      */
     private fun updatePurchaseTotals(){
+        //catch empty quantity inputs
+        if(purchasedNumber.value == "") return
+
         //retrieve the current cost for the item
         val initialCost =
             if(currentQuality.value != null)
@@ -267,7 +270,7 @@ class EquipmentFragmentViewModel(
      */
     fun purchaseItems(){
         //terminate process if purchased number input is empty
-        if(purchasedNumber.value == "")
+        if(purchasedNumber.value == "" || purchasedNumber.value.toInt() <= 0)
             return
 
         //determine the quality multiplier for the item

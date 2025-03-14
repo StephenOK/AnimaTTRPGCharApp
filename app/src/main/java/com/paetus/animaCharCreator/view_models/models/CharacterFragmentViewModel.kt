@@ -139,6 +139,11 @@ class CharacterFragmentViewModel(
     fun setExp(display: String){_experiencePoints.update{display}}
 
     /**
+     * Get current value input for the character's experience points.
+     */
+    fun currentExp(): Int{return charInstance.experiencePoints.intValue}
+
+    /**
      * Swaps the character's gender to the other one.
      */
     fun toggleGender(){
@@ -229,6 +234,11 @@ class CharacterFragmentViewModel(
     fun setAppearInput(display: String){_appearInput.update{display}}
 
     /**
+     * Get current value input for the character's appearance value.
+     */
+    fun currentAppearance(): Int{return charInstance.appearance.intValue}
+
+    /**
      * Checks if the character has the Unattractive disadvantage.
      *
      * @return true if character has the Unattractive disadvantage
@@ -270,6 +280,11 @@ class CharacterFragmentViewModel(
      * @param display new value to display
      */
     fun setGnosisDisplay(display: String){_gnosisDisplay.update{display}}
+
+    /**
+     * Get current value input for the character's Gnosis.
+     */
+    fun currentGnosis(): Int{return charInstance.gnosis.intValue}
 
     /**
      * Sets the display for the character's movement value as defined in the character.
@@ -784,6 +799,11 @@ class CharacterFragmentViewModel(
         }
 
         /**
+         * Get current value input for the primary stat's inputted amount.
+         */
+        fun currentInput(): Int{return primaryStat.inputValue.intValue}
+
+        /**
          * Sets the level bonus for this characteristic.
          *
          * @param lvlBonus value to set the level bonus to
@@ -802,6 +822,11 @@ class CharacterFragmentViewModel(
          * @param display new string to display
          */
         fun setBonusInput(display: String){_bonusInput.update{display}}
+
+        /**
+         * Get current value input for the primary stat's level bonus input.
+         */
+        fun currentBonus(): Int{return primaryStat.levelBonus.intValue}
 
         /**
          * Update the bonus and total displays of this string item.

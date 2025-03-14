@@ -1,7 +1,7 @@
 package com.paetus.animaCharCreator.activities.fragments.dialogs
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,7 +28,7 @@ fun DialogFrame(
     buttonContent: @Composable () -> Unit
 ){
     MaterialTheme(colorScheme = detailLightColors) {
-        AlertDialog(
+        BasicAlertDialog(
             //prevent user from dismissing dialog
             onDismissRequest = {},
             content = {

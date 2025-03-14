@@ -128,7 +128,7 @@ open class BaseCharacter{
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
             if(advantage.onRemove != null)
-                advantage.onRemove!!(
+                advantage.onRemove(
                     this@BaseCharacter,
                     advantage.picked,
                     advantage.cost[advantage.pickedCost]
@@ -141,7 +141,7 @@ open class BaseCharacter{
         ownRace.value.forEach{advantage ->
             //if the advantage has an onTake effect, run it
             if(advantage.onTake != null)
-                advantage.onTake!!(
+                advantage.onTake(
                     this@BaseCharacter,
                     advantage.picked,
                     advantage.cost[advantage.pickedCost]

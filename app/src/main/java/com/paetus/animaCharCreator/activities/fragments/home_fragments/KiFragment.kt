@@ -342,6 +342,7 @@ private fun KiFromStatRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setPointInputString(display = "")},
+            refill = {kiRowData.currentPoints()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)
@@ -383,6 +384,7 @@ private fun KiFromStatRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {kiRowData.setAccInputString(display = "")},
+            refill = {kiRowData.currentAcc()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)

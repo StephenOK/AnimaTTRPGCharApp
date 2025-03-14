@@ -444,7 +444,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
                     }
                     else{
                         //remove most recently added discipline, if available
-                        if(charInstance.psychic.disciplineInvestment.size > 0)
+                        if(charInstance.psychic.disciplineInvestment.isNotEmpty())
                             charInstance.psychic.updateInvestment(
                                 discipline = charInstance.psychic.disciplineInvestment.last(),
                                 isTaken = false

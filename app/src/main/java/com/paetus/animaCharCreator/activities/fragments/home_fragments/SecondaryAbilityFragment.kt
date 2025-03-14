@@ -316,6 +316,7 @@ private fun MakeRow(
             inputText = secondaryChar.pointInput.collectAsState().value,
             inputFunction = {secondaryChar.setPointInput(purchase = it.toInt())},
             emptyFunction = {secondaryChar.setPointInput(display = "")},
+            refill = {secondaryChar.getCurrent()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)

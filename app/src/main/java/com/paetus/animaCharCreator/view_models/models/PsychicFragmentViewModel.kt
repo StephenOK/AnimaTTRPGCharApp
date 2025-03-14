@@ -84,6 +84,11 @@ class PsychicFragmentViewModel(
     fun setInnateSlotDisplay(display: String){_innateSlotDisplay.update{display}}
 
     /**
+     * Get current value input for the character's innate slot count.
+     */
+    fun currentInnateSlots(): Int{return psychic.innateSlotCount.intValue}
+
+    /**
      * Sets the label for the innate slot input.
      *
      * @param dpLabel new label to set
@@ -491,6 +496,11 @@ class PsychicFragmentViewModel(
          * @param display string to display
          */
         fun setPointInvestment(display: String){_pointInvestment.update{display}}
+
+        /**
+         * Get current value input for the power's enhancement amount.
+         */
+        fun getCurrent(): Int{return psychic.masteredPowers[psyPower]!!}
 
         /**
          * Updates the displayed potential gained from psychic point investment.

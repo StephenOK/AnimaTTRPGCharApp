@@ -292,7 +292,7 @@ class Inventory(val charInstance: BaseCharacter) {
         setMaxCopper(maxVal = fileReader.readLine().toInt())
 
         //restore previous equipment
-        for(loop in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             buyItem(
                 equipment = findItem(
                     name = fileReader.readLine(),

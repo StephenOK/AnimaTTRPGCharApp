@@ -449,20 +449,24 @@ class WeaponProficiencies(private val charInstance: BaseCharacter){
         primaryWeapon.value = findWeapon(weaponName = fileReader.readLine())
 
         //get each individual weapon module
-        for(loopNum in 0 until fileReader.readLine().toInt())
+        (0 until fileReader.readLine().toInt()).forEach {
             individualModules += findWeapon(weaponName = fileReader.readLine())
+        }
 
         //get any archetype modules saved
-        for(loopNum in 0 until fileReader.readLine().toInt())
+        (0 until fileReader.readLine().toInt()).forEach {
             updateModulesTaken(weaponCheck = allArchetypes[fileReader.readLine()]!!, isAdded = true)
+        }
 
         //get any style modules saved
-        for(loopNum in 0 until fileReader.readLine().toInt())
+        (0 until fileReader.readLine().toInt()).forEach{
             styleMods += styles.getStyle(styleName = fileReader.readLine())!!
+        }
 
         //get any martial arts saved
-        for(loopNum in 0 until fileReader.readLine().toInt())
+        (0 until fileReader.readLine().toInt()).forEach {
             takenMartialList += listOf(loadMartial(martialName = fileReader.readLine())!!)
+        }
     }
 
     /**

@@ -121,6 +121,7 @@ fun PsychicFragment(
                         inputText = psyFragVM.innateSlotDisplay.collectAsState().value,
                         inputFunction = {psyFragVM.setInnateSlotDisplay(slotBuy = it.toInt())},
                         emptyFunction = {psyFragVM.setInnateSlotDisplay(display = "")},
+                        refill = {psyFragVM.currentInnateSlots()},
                         modifier = Modifier
                             .weight(0.2f)
                             .onFocusChanged {
@@ -221,6 +222,7 @@ private fun PsychicPurchaseTable(
             inputText = tableData.purchaseAmount.collectAsState().value,
             inputFunction = {tableData.setPurchaseAmount(buyVal = it.toInt())},
             emptyFunction = {tableData.setPurchaseAmount(display = "")},
+            refill = {tableData.boughtVal()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused)
@@ -374,6 +376,7 @@ private fun PsyPowerRow(
             inputText = power.pointInvestment.collectAsState().value,
             inputFunction = {power.setPointInvestment(ppInvest = it.toInt())},
             emptyFunction = {power.setPointInvestment(display = "")},
+            refill = {power.getCurrent()},
             modifier = Modifier
                 .weight(0.18f)
                 .onFocusChanged {

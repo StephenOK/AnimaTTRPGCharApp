@@ -298,17 +298,19 @@ open class MagicBook(
         //retrieve spells from point investment and natural bonus
         for(index in 0 until getCap()/2){
             //add elemental spell
-            if(fullBook[index] != null) output += fullBook[index]!!
-            //add free spell
-            else output += getFreeSpell(level = (index + 1) * 2)
+            output +=
+                if(fullBook[index] != null) fullBook[index]!!
+                //add free spell
+                else getFreeSpell(level = (index + 1) * 2)
         }
 
         //retrieve individually purchased spells
         individualSpells.forEach{index ->
             //add elemental spell
-            if(fullBook[index] != null) output += fullBook[index]!!
-            //add free spell
-            else output += getFreeSpell(level = (index + 1) * 2)
+            output +=
+                if(fullBook[index] != null) fullBook[index]!!
+                //add free spell
+                else getFreeSpell(level = (index + 1) * 2)
         }
 
         //produce final output
@@ -340,12 +342,12 @@ open class MagicBook(
         buyLevels(pointBuy = fileReader.readLine().toInt())
 
         //apply individual spells purchased
-        for(item in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             changeIndividualSpell(spellLevel = (fileReader.readLine().toInt() + 1) * 2)
         }
 
         //apply recorded free spells to this book
-        for(item in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             //get the free spell base from this data
             val spellBase = freeBook.findFreeSpell(saveName = fileReader.readLine())
 

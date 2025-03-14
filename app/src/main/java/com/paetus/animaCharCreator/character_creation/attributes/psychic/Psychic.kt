@@ -265,7 +265,7 @@ class Psychic(private val charInstance: BaseCharacter){
             }
             else
                 //clear all disciplines from the record
-                while(disciplineInvestment.size > 0){
+                while(disciplineInvestment.isNotEmpty()){
                     val current = disciplineInvestment[0]
                     disciplineInvestment.remove(current)
                     removeIllegal(current)
@@ -360,7 +360,7 @@ class Psychic(private val charInstance: BaseCharacter){
         discipline: Discipline
     ): Boolean{
         if(disciplineInvestment.contains(element = discipline) ||
-            (discipline == matrixPowers && legalDisciplines.size > 0)
+            (discipline == matrixPowers && legalDisciplines.isNotEmpty())
         ){
             //add no matter what if it is level 1 or 0
             if (power.level <= 1)
@@ -452,7 +452,7 @@ class Psychic(private val charInstance: BaseCharacter){
         buyPsyProjection(projBuy = fileReader.readLine().toInt())
 
         //load discipline investment data
-        for(index in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             val searchName = fileReader.readLine()
             allDisciplines.forEach search@{discipline ->
                 if(discipline.saveName == searchName) {
@@ -463,7 +463,7 @@ class Psychic(private val charInstance: BaseCharacter){
         }
 
         //load mastered powers
-        for(index in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             //retrieve power name
             val spellName = fileReader.readLine()
 

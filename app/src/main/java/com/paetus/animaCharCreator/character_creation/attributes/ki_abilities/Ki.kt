@@ -437,7 +437,7 @@ class Ki(private val charInstance: BaseCharacter){
         }
 
         //acquire saved data for ki abilities
-        for(index in 0 until fileReader.readLine().toInt()){
+        (0 until fileReader.readLine().toInt()).forEach{
             takenAbilities += listOf(getAbility(findAbility = fileReader.readLine())!!)
         }
 
@@ -453,8 +453,9 @@ class Ki(private val charInstance: BaseCharacter){
             //version before custom techniques were in their own file
             in 10 .. 24 -> {
                 //retrieve each applied prebuilt
-                for(index in 0 until fileReader.readLine().toInt())
+                (0 until fileReader.readLine().toInt()).forEach {
                     allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
+                }
 
                 //load all custom techniques
                 loadCustomTech(
@@ -466,11 +467,12 @@ class Ki(private val charInstance: BaseCharacter){
 
             else -> {
                 //retrieve each applied prebuilt
-                for(index in 0 until fileReader.readLine().toInt())
+                (0 until fileReader.readLine().toInt()).forEach{
                     allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
+                }
 
                 //for each indicated custom technique held
-                for(index in 0 until fileReader.readLine().toInt()){
+                (0 until fileReader.readLine().toInt()).forEach{
                     //get the custom technique's name and held state
                     val techName = fileReader.readLine()
                     val hasFile = fileReader.readLine().toBoolean()
@@ -501,7 +503,7 @@ class Ki(private val charInstance: BaseCharacter){
         fileReader: BufferedReader
     ){
         //acquire saved data for dominion techniques
-        for (index in 0 until fileReader.readLine().toInt()) {
+        (0 until fileReader.readLine().toInt()).forEach{
             //get technique's name
             val techName = fileReader.readLine()
 
@@ -524,7 +526,7 @@ class Ki(private val charInstance: BaseCharacter){
             //initialize list of technique's effects
             val techEffects: MutableList<TechniqueEffect> = mutableListOf()
 
-            for (techLoops in 0 until fileReader.readLine().toInt()) {
+            (0 until fileReader.readLine().toInt()).forEach{
                 techEffects +=
                     if(writeVersion <= 10) loadEffectOld(fileReader = fileReader)
                     else loadEffect(fileReader = fileReader)
@@ -605,7 +607,7 @@ class Ki(private val charInstance: BaseCharacter){
         val teElements = mutableListOf<Element>()
 
         //get all saved elements
-        for (effectLoops in 0 until fileReader.readLine().toInt()) {
+        (0 until fileReader.readLine().toInt()).forEach {
             teElements += Element.fromString(fileReader.readLine())
         }
 
@@ -666,7 +668,7 @@ class Ki(private val charInstance: BaseCharacter){
         val teElements = mutableListOf<Element>()
 
         //get effect elements
-        for (effectLoops in 0 until fileReader.readLine().toInt()) {
+        (0 until fileReader.readLine().toInt()).forEach{
             teElements += Element.fromString(elementName = fileReader.readLine())
         }
 
@@ -769,19 +771,19 @@ class Ki(private val charInstance: BaseCharacter){
             return Pair(R.string.justNum, effectString.toInt())
         }
         //if more values present in input
-        catch(e: Exception) {
+        catch(_: Exception) {
             return when (effectString.first()) {
                 //with addition input
                 '+' -> {
                     //attempt putting in integer with no other alterations
                     try{Pair(R.string.addNumber, effectString.drop(1).toInt())}
-                    catch(e: Exception){
+                    catch(_: Exception){
                         //attempt to remove only last character
                         try {
                             Pair(R.string.distanceLabelM, effectString.dropLast(1).toInt())
                         }
                         //remove last two characters
-                        catch (e: Exception) {
+                        catch (_: Exception) {
                             Pair(R.string.distanceLabelKM, effectString.dropLast(2).toInt())
                         }
                     }
@@ -797,7 +799,7 @@ class Ki(private val charInstance: BaseCharacter){
                         Pair(R.string.subtractNumber, effectString.drop(1).toInt())
                     }
                     //remove the last three characters
-                    catch (e: Exception) {
+                    catch (_: Exception) {
                         Pair(R.string.subtractAT, (effectString.drop(1)).dropLast(3).toInt())
                     }
                 }
@@ -828,7 +830,7 @@ class Ki(private val charInstance: BaseCharacter){
                     }
 
                     //item has been determined to not be a state effect
-                    catch(e: Exception) {
+                    catch(_: Exception) {
                         //attempt to return string with no addition
                         when (effectString) {
                             "Vital Sacrifice" -> Pair(R.string.vitalSacData, null)
@@ -874,7 +876,7 @@ class Ki(private val charInstance: BaseCharacter){
                                     Pair(R.string.distanceLabelM, effectString.dropLast(1).toInt())
                                 }
                                 //get input for distance in kilometers
-                                catch (e: Exception) {
+                                catch (_: Exception) {
                                     Pair(R.string.distanceLabelKM, effectString.dropLast(2).toInt())
                                 }
                             }
@@ -968,7 +970,7 @@ class Ki(private val charInstance: BaseCharacter){
 
             //get data on the technique's effects
             val givenAbilities = mutableListOf<TechniqueEffect>()
-            for(techLoops in 0 until fileReader.readLine().toInt()){
+            (0 until fileReader.readLine().toInt()).forEach{
                 givenAbilities += loadEffect(fileReader = fileReader)
             }
 

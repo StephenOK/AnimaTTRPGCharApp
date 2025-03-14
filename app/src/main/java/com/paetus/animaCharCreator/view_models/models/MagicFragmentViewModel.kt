@@ -137,6 +137,11 @@ class MagicFragmentViewModel(
     }
 
     /**
+     * Get current value input for the character's zeon points.
+     */
+    fun currentZeonPoints(): Int{return magic.boughtZeon.intValue}
+
+    /**
      * Change the character's magic imbalance input.
      *
      * @param imbalance value to set the magic imbalance to
@@ -146,6 +151,11 @@ class MagicFragmentViewModel(
         setProjectionImbalance(imbalance.toString())
         refreshImbalance(imbalanceIsAttack.value)
     }
+
+    /**
+     * Get current value input for the character's magic projection imbalance.
+     */
+    fun currentImbalance(): Int{return magic.magProjImbalance.intValue}
 
     /**
      * Calculates the character's imbalance value depending on the projection bias.
@@ -694,6 +704,11 @@ class MagicFragmentViewModel(
          * @param display string to display
          */
         fun setElementInvestment(display: String){_elementInvestment.update{display}}
+
+        /**
+         * Get current value input for the book's current investment.
+         */
+        fun getCurrent(): Int{return magicBook.pointsIn.intValue}
 
         /**
          * Buys a single spell item for the character.

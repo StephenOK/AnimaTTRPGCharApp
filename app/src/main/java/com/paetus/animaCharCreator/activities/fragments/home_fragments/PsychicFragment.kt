@@ -147,7 +147,7 @@ fun PsychicFragment(
                         if (psyFragVM.freePointValid.collectAsState().value)
                             MaterialTheme.colorScheme.secondary
                         else
-                            MaterialTheme.colorScheme.onError
+                            MaterialTheme.colorScheme.error
                 ){modifier, color ->
                     AnimatedContent(
                         targetState = psyFragVM.freePsyPoints.collectAsState().value,
@@ -441,7 +441,6 @@ fun PsychicPreview(){
     val charInstance = BaseCharacter()
     val psyFragVM = PsychicFragmentViewModel(
         charInstance.psychic,
-        charInstance.classes.ownClass,
         charInstance.primaryList.dex.outputMod.intValue,
         LocalContext.current
     )

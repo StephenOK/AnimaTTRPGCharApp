@@ -395,7 +395,7 @@ fun AdvantagePreview(){
     val charInstance = BaseCharacter()
     charInstance.setOwnRace(1)
 
-    charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0, null)
+    charInstance.advantageRecord.acquireAdvantage(charInstance.objectDB.commonAdvantages.gift, null, 0, null)
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
     advantageFragVM.advantageButtons[4].toggleOpen()

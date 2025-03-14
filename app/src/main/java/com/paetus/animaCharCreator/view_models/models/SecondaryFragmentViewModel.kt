@@ -7,8 +7,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +30,26 @@ class SecondaryFragmentViewModel(
     val secondaryList: SecondaryList
 ): ViewModel() {
     //initialize open state of the freelancer bonus options
-    private val _freelancerOptionsOpen = MutableStateFlow(value = charInstance.classes.ownClass.value == charInstance.classes.freelancer)
+    private val _freelancerOptionsOpen = MutableStateFlow(isFreelancer())
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
     //initialize open state of custom secondaries page
     private val _customIsOpen = MutableStateFlow(value = false)
     val customIsOpen = _customIsOpen.asStateFlow()
+
+    /**
+     * Determines if the character's current class is freelancer.
+     *
+     * @return true if the character is currently a freelancer
+     */
+    private fun isFreelancer(): Boolean{
+        //if SBL, check the character's current level's class
+        return if(charInstance is SblChar)
+            charInstance.getCharAtLevel().classes.ownClass.intValue == 0
+        //check the character's current class
+        else
+            charInstance.classes.ownClass.intValue == 0
+    }
 
     /**
      * Toggles the open state of the custom secondary characteristic creation dialog.
@@ -300,6 +317,13 @@ class SecondaryFragmentViewModel(
             secondaryList.toggleNatBonus(characteristic = secondaryItem)
 
             //update the appropriate values
+            updateNaturalBonus()
+        }
+
+        /**
+         * Updates the natural bonus checkbox and associated text.
+         */
+        fun updateNaturalBonus(){
             _natBonusCheck.update{secondaryItem.bonusApplied.value}
             updateTotal()
             _checkedText.update{updateCheckedText()}
@@ -393,8 +417,23 @@ class SecondaryFragmentViewModel(
          * @return string of the characteristic's development point cost
          */
         fun getMultiplier(): Int{
-            return if(secondaryItem.devPerPoint.intValue > secondaryItem.developmentDeduction.intValue)
-                secondaryItem.devPerPoint.intValue - secondaryItem.developmentDeduction.intValue
+            //get default cost for buying points in this item
+            val devPerPoint =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].devPerPoint.intValue
+                else
+                    secondaryItem.devPerPoint.intValue
+
+            //get reduction level for this character's level
+            val pointReduction =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].developmentDeduction.intValue
+                else
+                    secondaryItem.developmentDeduction.intValue
+
+            //return default cost minus any deductions
+            return if(devPerPoint > pointReduction)
+                devPerPoint - pointReduction
             else 1
         }
     }
@@ -404,7 +443,7 @@ class SecondaryFragmentViewModel(
      */
     fun refreshPage(){
         //check if freelancer options are available to the character
-        _freelancerOptionsOpen.update{charInstance.classes.ownClass.value == charInstance.classes.freelancer}
+        _freelancerOptionsOpen.update{isFreelancer()}
 
         allCharacteristics.forEach{
             //update the point input data for each secondary
@@ -412,6 +451,9 @@ class SecondaryFragmentViewModel(
 
             //update the displayed secondary class points
             it.setClassPoints()
+
+            //update the displayed natural bonus taken
+            it.updateNaturalBonus()
 
             //update the displayed secondary totals
             it.updateTotal()

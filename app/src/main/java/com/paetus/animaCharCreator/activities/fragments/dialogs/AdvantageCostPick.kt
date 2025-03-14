@@ -339,7 +339,7 @@ fun AdvantageCostPreview(){
     val charInstance = BaseCharacter()
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
-    advantageFragVM.setAdjustedAdvantage(charInstance.advantageRecord.commonAdvantages.naturalPsychicPower)
+    advantageFragVM.setAdjustedAdvantage(charInstance.objectDB.commonAdvantages.naturalPsychicPower)
     //advantageFragVM.setAdjustingPage(2)
 
     AdvantageCostPick(charInstance.secondaryList, advantageFragVM){}

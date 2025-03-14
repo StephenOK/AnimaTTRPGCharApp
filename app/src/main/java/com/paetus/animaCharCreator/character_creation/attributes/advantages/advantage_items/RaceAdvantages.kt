@@ -7,42 +7,40 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 
 /**
  * Lists of advantages for every race available to a character.
- *
- * @param charInstance object holding a character's stats
  */
-class RaceAdvantages(private val charInstance: BaseCharacter){
+class RaceAdvantages{
     private val exceptionalResistancesSylvain = RacialAdvantage(
         name = R.string.sylvainResistances,
         description = R.string.sylvResDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //set special resistance values for this race
-            charInstance.combat.physicalRes.setSpecial(specChange = 5)
-            charInstance.combat.diseaseRes.setSpecial(specChange = 20)
-            charInstance.combat.venomRes.setSpecial(specChange = 5)
-            charInstance.combat.magicRes.setSpecial(specChange = 10)
-            charInstance.combat.psychicRes.setSpecial(specChange = 10)
+            character.combat.physicalRes.setSpecial(specChange = 5)
+            character.combat.diseaseRes.setSpecial(specChange = 20)
+            character.combat.venomRes.setSpecial(specChange = 5)
+            character.combat.magicRes.setSpecial(specChange = 10)
+            character.combat.psychicRes.setSpecial(specChange = 10)
 
             //remove any restricted disadvantages for Sylvain
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.sickly)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.seriousIllness)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.magicSusceptibility)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.sickly)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.seriousIllness)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.magicSusceptibility)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove resistance bonuses from this race
-            charInstance.combat.physicalRes.setSpecial(specChange = -5)
-            charInstance.combat.diseaseRes.setSpecial(specChange = -20)
-            charInstance.combat.venomRes.setSpecial(specChange = -5)
-            charInstance.combat.magicRes.setSpecial(specChange = -10)
-            charInstance.combat.psychicRes.setSpecial(specChange = -10)
+            character.combat.physicalRes.setSpecial(specChange = -5)
+            character.combat.diseaseRes.setSpecial(specChange = -20)
+            character.combat.venomRes.setSpecial(specChange = -5)
+            character.combat.magicRes.setSpecial(specChange = -10)
+            character.combat.psychicRes.setSpecial(specChange = -10)
         }
     )
 
     private val inclinationLight = RacialAdvantage(
         name = R.string.lightInclination,
         description = R.string.lightInclineDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //obtain base version of the elemental compatibility advantage
-            val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
+            val reference = character.objectDB.magicAdvantages.elementalCompatibility
 
             //create advantage for compatibility with Dark
             val dummyAdvantage = Advantage(
@@ -62,7 +60,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
             )
 
             //remove any dark compatibility from the character
-            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
+            character.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
         onRemove = null
     )
@@ -70,15 +68,15 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val quickHealingSylvain = RacialAdvantage(
         name = R.string.sylvainHealing,
         description = R.string.sylvainHealingDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply sylvain's regeneration bonus
-            charInstance.combat.specRegen.intValue += 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue += 1
+            character.combat.updateRegeneration()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove sylvain's regeneration bonus
-            charInstance.combat.specRegen.intValue -= 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue -= 1
+            character.combat.updateRegeneration()
         }
     )
 
@@ -99,60 +97,60 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val giant = RacialAdvantage(
         name = R.string.giant,
         description = R.string.giantDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //check for uncommon size advantage
-            val uncommonSizeHeld = charInstance.advantageRecord.getAdvantage(advantageString = "uncommonSize")
+            val uncommonSizeHeld = character.advantageRecord.getAdvantage(advantageString = "uncommonSize")
 
             //remove advantage if it reduces their size
             if(uncommonSizeHeld != null && uncommonSizeHeld.picked!! < 5)
-                charInstance.advantageRecord.removeAdvantage(advantage = uncommonSizeHeld)
+                character.advantageRecord.removeAdvantage(advantage = uncommonSizeHeld)
 
             //increase size of character
-            charInstance.changeSize(sizeInput = 6)
+            character.changeSize(sizeInput = 6)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //restore character's size from their race
-            charInstance.changeSize(sizeInput = 3)
+            character.changeSize(sizeInput = 3)
         }
     )
 
     private val withstandFatigue = RacialAdvantage(
         name = R.string.jayanFatigue,
         description = R.string.standFatigueDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //grant racial fatigue bonus
-            charInstance.combat.specFatigue.intValue += 1
-            charInstance.combat.updateFatigue()
+            character.combat.specFatigue.intValue += 1
+            character.combat.updateFatigue()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove racial fatigue bonus
-            charInstance.combat.specFatigue.intValue -= 1
-            charInstance.combat.updateFatigue()
+            character.combat.specFatigue.intValue -= 1
+            character.combat.updateFatigue()
         }
     )
 
     private val damageResistance = RacialAdvantage(
         name = R.string.resDamage,
         description = R.string.damageResDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //grant physical resistance bonus
-            charInstance.combat.physicalRes.setSpecial(specChange = 15)
+            character.combat.physicalRes.setSpecial(specChange = 15)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove physical resistance bonus
-            charInstance.combat.physicalRes.setSpecial(specChange = -15)
+            character.combat.physicalRes.setSpecial(specChange = -15)
         }
     )
 
     private val uncommonStrength = RacialAdvantage(
         name = R.string.uncommonStr,
         description = R.string.uncommonStrDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //set new racial bonus value
-            charInstance.primaryList.str.setBonus(bonusInput = 1)
+            character.primaryList.str.setBonus(bonusInput = 1)
 
             //check for reduction in strength stat
-            val reference = charInstance.advantageRecord.commonAdvantages.deductCharacteristic
+            val reference = character.objectDB.commonAdvantages.deductCharacteristic
             val dummyAdvantage = Advantage(
                 saveTag = reference.saveTag,
                 name = reference.name,
@@ -170,11 +168,11 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
             )
 
             //remove if present
-            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
+            character.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove strength bonus
-            charInstance.primaryList.str.setBonus(bonusInput = -1)
+            character.primaryList.str.setBonus(bonusInput = -1)
         }
     )
 
@@ -188,13 +186,13 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val magicSusceptibility = RacialAdvantage(
         name = R.string.jayanMagSusceptibility,
         description = R.string.jayanMagSusDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //reduce the Jayan's magic resistance
-            charInstance.combat.magicRes.setSpecial(specChange = -10)
+            character.combat.magicRes.setSpecial(specChange = -10)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove magic resistance penalty
-            charInstance.combat.magicRes.setSpecial(specChange = 10)
+            character.combat.magicRes.setSpecial(specChange = 10)
         }
     )
 
@@ -222,10 +220,10 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val commonAppearance = RacialAdvantage(
         name = R.string.commonAppearance,
         description = R.string.commonAppearDesc,
-        onTake = { _, _ ->
+        onTake = {character, _, _ ->
             //set D'Anjayni's appearance value if current appearance is illegal
-            if(charInstance.appearance.intValue !in 3..7)
-                charInstance.setAppearance(newAppearance = 5)
+            if(character.appearance.intValue !in 3..7)
+                character.setAppearance(newAppearance = 5)
         },
         onRemove = null
     )
@@ -310,15 +308,15 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val smallSize = RacialAdvantage(
         name = R.string.smallSize,
         description = R.string.smallSizeDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //reduce the Daimah's size
-            charInstance.sizeSpecial.intValue -= 1
-            charInstance.updateSize()
+            character.sizeSpecial.intValue -= 1
+            character.updateSize()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove the Daimah's size reduction
-            charInstance.sizeSpecial.intValue += 1
-            charInstance.updateSize()
+            character.sizeSpecial.intValue += 1
+            character.updateSize()
         }
     )
 
@@ -332,34 +330,34 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val exceptionalResistancesDukzarist = RacialAdvantage(
         name = R.string.dukzaristResistances,
         description = R.string.dukResDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //increase all of the character's resistances
-            charInstance.combat.allResistances.forEach{resistance ->
+            character.combat.allResistances.forEach{resistance ->
                 resistance.setSpecial(specChange = 15)
             }
 
             //apply the gender specific bonus
-            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(specChange = 5)
-            else charInstance.combat.magicRes.setSpecial(specChange = 5)
+            if(character.isMale.value) character.combat.physicalRes.setSpecial(specChange = 5)
+            else character.combat.magicRes.setSpecial(specChange = 5)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove bonuses from resistances
-            charInstance.combat.allResistances.forEach{resistance ->
+            character.combat.allResistances.forEach{resistance ->
                 resistance.setSpecial(specChange = -15)
             }
 
             //remove the gender specific bonus
-            if(charInstance.isMale.value) charInstance.combat.physicalRes.setSpecial(specChange = -5)
-            else charInstance.combat.magicRes.setSpecial(specChange = -5)
+            if(character.isMale.value) character.combat.physicalRes.setSpecial(specChange = -5)
+            else character.combat.magicRes.setSpecial(specChange = -5)
         }
     )
 
     private val inclinationDark = RacialAdvantage(
         name = R.string.inclinationDark,
         description = R.string.darkInclineDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //construct elemental compatibility with light advantage
-            val reference = charInstance.advantageRecord.magicAdvantages.elementalCompatibility
+            val reference = character.objectDB.magicAdvantages.elementalCompatibility
             val dummyAdvantage = Advantage(
                 saveTag = reference.saveTag,
                 name = reference.name,
@@ -377,7 +375,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
             )
 
             //remove any elemental compatibility with light advantage held
-            charInstance.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
+            character.advantageRecord.removeAdvantage(advantage = dummyAdvantage)
         },
         onRemove = null
     )
@@ -392,15 +390,15 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val quickHealingDukzarist = RacialAdvantage(
         name = R.string.dukzaristHealing,
         description = R.string.dukRegenDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //increase the character's regeneration
-            charInstance.combat.specRegen.intValue += 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue += 1
+            character.combat.updateRegeneration()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove the character's regeneration bonus
-            charInstance.combat.specRegen.intValue -= 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue -= 1
+            character.combat.updateRegeneration()
         }
     )
 
@@ -428,17 +426,17 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val fireDevotion = RacialAdvantage(
         name = R.string.fireDevotion,
         description = R.string.devoteFireDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //if the character has any psychic points to work with
-            if(charInstance.psychic.totalPsychicPoints.intValue > 0) {
+            if(character.psychic.totalPsychicPoints.intValue > 0) {
                 //if character currently has no free psychic points
-                if (charInstance.psychic.getFreePsyPoints() == 0) {
+                if (character.psychic.getFreePsyPoints() == 0) {
                     //remove the most recently acquired power, if available
-                    if(charInstance.psychic.masteredPowers.isNotEmpty()) {
-                        val power = charInstance.psychic.masteredPowers.keys.last()
-                        charInstance.psychic.masterPower(
+                    if(character.psychic.masteredPowers.isNotEmpty()) {
+                        val power = character.psychic.masteredPowers.keys.last()
+                        character.psychic.masterPower(
                             power = power,
-                            discipline = charInstance.psychic.getPowerDiscipline(power = power)!!,
+                            discipline = character.psychic.getPowerDiscipline(power = power)!!,
                             isMastering = false
                         )
                     }
@@ -453,7 +451,7 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
                 }
 
                 //attempt to add pyrokinesis to the character's accessible disciplines
-                charInstance.psychic.updateInvestment(charInstance.psychic.pyrokinesis, true)
+                character.psychic.updateInvestment(character.psychic.pyrokinesis, true)
             }
         },
         onRemove = null
@@ -462,17 +460,17 @@ class RaceAdvantages(private val charInstance: BaseCharacter){
     private val perfectBodies = RacialAdvantage(
         name = R.string.perfectBodies,
         description = R.string.perfectBodDesc,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //remove any disadvantage forbidden by this race
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.atrophiedLimb)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.blind)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.deafness)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.mute)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.nearsighted)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.physicalWeakness)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.seriousIllness)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.sickly)
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.commonAdvantages.poisonSusceptibility)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.atrophiedLimb)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.blind)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.deafness)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.mute)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.nearsighted)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.physicalWeakness)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.seriousIllness)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.sickly)
+            character.advantageRecord.removeAdvantage(advantage = character.objectDB.commonAdvantages.poisonSusceptibility)
         },
         onRemove = null
     )

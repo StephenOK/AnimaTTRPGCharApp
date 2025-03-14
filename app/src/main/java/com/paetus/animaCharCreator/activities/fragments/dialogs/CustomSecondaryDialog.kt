@@ -75,7 +75,7 @@ fun CustomSecondaryDialog(
                     ) {
                         OutlinedDropdown(
                             data = dropdown
-                        ) {}
+                        )
                     }
                 }
 

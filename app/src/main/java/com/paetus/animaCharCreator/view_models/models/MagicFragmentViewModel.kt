@@ -1,19 +1,17 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.enumerations.Element
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeBook
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeSpells
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,12 +22,10 @@ import kotlinx.coroutines.flow.update
  *
  * @param magic character's magic abilities section
  * @param charInstance full character object
- * @param charClass state of this character's class
  */
 class MagicFragmentViewModel(
     private val magic: Magic,
     private val charInstance: BaseCharacter,
-    private val charClass: MutableState<CharClass>,
     val context: Context
 ): ViewModel() {
     //initialize the character's bought zeon input
@@ -215,7 +211,7 @@ class MagicFragmentViewModel(
     fun getSpellData(spell: Spell): SpellRowData{
         //search for the spell in each book
         allBooks.forEach{book ->
-            if(spell in book.magicBook.fullBook) return book
+            if(spell in book.magicBook.spells.fullBook) return book
         }
 
         //return necromancy if nothing found
@@ -281,7 +277,7 @@ class MagicFragmentViewModel(
      */
     fun getFreeElement(freeSpell: FreeSpell): Element {
         val book = magic.necromancyBook.charHasFreeSpell(freeSpell = freeSpell)
-        return book?.element ?: freeSpell.forbiddenElements[0]
+        return book?.spells?.element ?: freeSpell.forbiddenElements[0]
     }
 
     /**
@@ -345,21 +341,21 @@ class MagicFragmentViewModel(
      *
      * @return the DP cost of zeon points
      */
-    fun getBoughtZeonDP(): Int{return charClass.value.zeonGrowth}
+    fun getBoughtZeonDP(): Int{return magic.getZeonPointCost()}
 
     /**
      * Gets the DP cost of the character's magic accumulation.
      *
      * @return the DP cost of magic accumulation
      */
-    private fun getZeonAccDP(): Int{return charClass.value.maGrowth}
+    private fun getZeonAccDP(): Int{return magic.getZeonAccCost()}
 
     /**
      * Gets the DP cost of the character's magic projection.
      *
      * @return the DP cost of magic projection
      */
-    private fun getMagProjDP(): Int{return charClass.value.maProjGrowth}
+    private fun getMagProjDP(): Int{return magic.getMagProjCost()}
 
     /**
      * Retrieve the maximum magic level the character can spend.
@@ -373,7 +369,7 @@ class MagicFragmentViewModel(
      *
      * @return free spell record
      */
-    fun getFreeSpellbook(): FreeBook{return magic.freeBook}
+    fun getFreeSpellbook(): FreeSpells{return magic.freeBook}
 
     /**
      * Determines if the indicated spell can be individually bought or removed from the character.

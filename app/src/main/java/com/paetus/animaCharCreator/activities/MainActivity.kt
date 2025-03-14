@@ -639,7 +639,7 @@ class MainActivity : AppCompatActivity() {
                                         ) {
                                             OutlinedDropdown(
                                                 data = dropdown
-                                            ) {}
+                                            )
                                         }
                                     }
                                 }

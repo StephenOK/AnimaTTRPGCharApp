@@ -6,12 +6,8 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 
 /**
  * List of common advantages and disadvantages a character may acquire.
- *
- * @param charInstance object holding the character's stats
  */
-class CommonAdvantages(
-    private val charInstance: BaseCharacter
-){
+class CommonAdvantages{
     val characteristicPoint = Advantage(
         saveTag = "characteristicPoint",
         name = R.string.addCharPoint,
@@ -24,13 +20,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        onTake = {input, _ ->
+        onTake = {character, input, _ ->
             //increase characteristic by one point
-            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 1)
+            character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 1)
         },
-        onRemove = {input, _ ->
+        onRemove = {character, input, _ ->
             //remove characteristic bonus point
-            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -1)
+            character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -1)
         }
     )
 
@@ -46,15 +42,15 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply bonuses to perception and search
-            charInstance.secondaryList.notice.setSpecial(specBonus = 30)
-            charInstance.secondaryList.search.setSpecial(specBonus = 30)
+            character.secondaryList.notice.setSpecial(specBonus = 30)
+            character.secondaryList.search.setSpecial(specBonus = 30)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove perception and search bonuses
-            charInstance.secondaryList.notice.setSpecial(specBonus = -30)
-            charInstance.secondaryList.search.setSpecial(specBonus = -30)
+            character.secondaryList.notice.setSpecial(specBonus = -30)
+            character.secondaryList.search.setSpecial(specBonus = -30)
         }
     )
 
@@ -102,9 +98,9 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        onTake = {input, _ ->
+        onTake = {character, input, _ ->
             //set the determined primary stat to 9
-            charInstance.primaryList.allPrimaries()[input!!].setInput(baseIn = 9)
+            character.primaryList.allPrimaries()[input!!].setInput(baseIn = 9)
         },
         onRemove = null
     )
@@ -121,14 +117,14 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        onTake = {input, _ ->
+        onTake = {character, input, _ ->
             //add access to the indicated psychic discipline and matrix powers
-            charInstance.psychic.legalDisciplines.add(element = charInstance.psychic.allDisciplines[input!!])
-            charInstance.psychic.legalDisciplines.add(element = charInstance.psychic.matrixPowers)
+            character.psychic.legalDisciplines.add(element = character.objectDB.psyLibrary.allDisciplines[input!!])
+            character.psychic.legalDisciplines.add(element = character.psychic.matrixPowers)
         },
-        onRemove = {input, _ ->
+        onRemove = {character, input, _ ->
             //remove the indicated psychic discipline from accessibility
-            charInstance.psychic.removeLegalDisciplineFromInt(discIndex = input!!)
+            character.psychic.removeLegalDisciplineFromInt(discIndex = input!!)
         }
     )
 
@@ -224,23 +220,23 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
-        onTake = {input, cost ->
+        onTake = {character, input, cost ->
             //reduce the cost of the indicated secondary characteristic
             if(input!! < 38)
-                charInstance.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost)
+                character.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost)
             else
-                charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost)
+                character.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost)
 
-            charInstance.updateTotalSpent()
+            character.updateTotalSpent()
         },
-        onRemove = {input, cost ->
+        onRemove = {character, input, cost ->
             //restore the previous cost for this characteristic
             if(input!! < 38)
-                charInstance.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost * -1)
+                character.secondaryList.fullList()[input].setDevelopmentDeduction(dpDeduction = cost * -1)
             else
-                charInstance.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost * -1)
+                character.secondaryList.getAllCustoms()[input - 38].setDevelopmentDeduction(dpDeduction = cost * -1)
 
-            charInstance.updateTotalSpent()
+            character.updateTotalSpent()
         }
     )
 
@@ -272,21 +268,21 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        onTake = {input, _ ->
+        onTake = {character, input, _ ->
             //reduce the cost of each item in the indicated field
-            val field = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            val field = character.secondaryList.intToField(fieldInteger = input!!)
             field.forEach{secondaryChar ->
                 secondaryChar.setDevelopmentDeduction(dpDeduction = 1)
             }
-            charInstance.updateTotalSpent()
+            character.updateTotalSpent()
         },
-        onRemove = {input, _ ->
+        onRemove = {character, input, _ ->
             //remove the bonus to the indicated field's cost
-            val field = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            val field = character.secondaryList.intToField(fieldInteger = input!!)
             field.forEach{secondaryChar ->
                 secondaryChar.setDevelopmentDeduction(dpDeduction = -1)
             }
-            charInstance.updateTotalSpent()
+            character.updateTotalSpent()
         }
     )
 
@@ -318,20 +314,20 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //add the desired amount of martial knowledge
             when(cost){
-                1 -> charInstance.ki.updateMKSpec(40)
-                2 -> charInstance.ki.updateMKSpec(80)
-                3 -> charInstance.ki.updateMKSpec(120)
+                1 -> character.ki.updateMKSpec(40)
+                2 -> character.ki.updateMKSpec(80)
+                3 -> character.ki.updateMKSpec(120)
             }
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove the granted martial knowledge bonus
             when (cost) {
-                1 -> charInstance.ki.updateMKSpec(-40)
-                2 -> charInstance.ki.updateMKSpec(-80)
-                3 -> charInstance.ki.updateMKSpec(-120)
+                1 -> character.ki.updateMKSpec(-40)
+                2 -> character.ki.updateMKSpec(-80)
+                3 -> character.ki.updateMKSpec(-120)
             }
         }
     )
@@ -380,17 +376,17 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //let secondary list know of the change and update characteristics accordingly
-            charInstance.secondaryList.allTradesTaken.value = true
-            charInstance.secondaryList.getAllSecondaries().forEach{secondary ->
+            character.secondaryList.allTradesTaken.value = true
+            character.secondaryList.getAllSecondaries().forEach{secondary ->
                 secondary.refreshTotal()
             }
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //let secondary list know of the change and restore characteristics to normal
-            charInstance.secondaryList.allTradesTaken.value = false
-            charInstance.secondaryList.getAllSecondaries().forEach{secondary ->
+            character.secondaryList.allTradesTaken.value = false
+            character.secondaryList.getAllSecondaries().forEach{secondary ->
                 secondary.refreshTotal()
             }
         }
@@ -440,25 +436,25 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //update fatigue points as desired
             when(cost){
-                1 -> charInstance.combat.specFatigue.intValue += 3
-                2 -> charInstance.combat.specFatigue.intValue += 6
-                3 -> charInstance.combat.specFatigue.intValue += 9
+                1 -> character.combat.specFatigue.intValue += 3
+                2 -> character.combat.specFatigue.intValue += 6
+                3 -> character.combat.specFatigue.intValue += 9
             }
 
-            charInstance.combat.updateFatigue()
+            character.combat.updateFatigue()
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove bonus to fatigue points
             when (cost) {
-                1 -> charInstance.combat.specFatigue.intValue -= 3
-                2 -> charInstance.combat.specFatigue.intValue -= 6
-                3 -> charInstance.combat.specFatigue.intValue -= 9
+                1 -> character.combat.specFatigue.intValue -= 3
+                2 -> character.combat.specFatigue.intValue -= 6
+                3 -> character.combat.specFatigue.intValue -= 9
             }
 
-            charInstance.combat.updateFatigue()
+            character.combat.updateFatigue()
         }
     )
 
@@ -474,11 +470,11 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        onTake = {input, _ ->
-            charInstance.changeSize(sizeInput = input!!)
+        onTake = {character, input, _ ->
+            character.changeSize(sizeInput = input!!)
         },
-        onRemove = {input, _ ->
-            charInstance.changeSize(sizeInput = 9 - input!!)
+        onRemove = {character, input, _ ->
+            character.changeSize(sizeInput = 9 - input!!)
         }
     )
 
@@ -494,17 +490,17 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = { _, cost ->
+        onTake = {character, _, cost ->
             //set bonus wealth to the indicated value
             when(cost){
-                1 -> charInstance.inventory.setWealthBonus(bonusWealth = 2000)
-                2 -> charInstance.inventory.setWealthBonus(bonusWealth = 5000)
-                3 -> charInstance.inventory.setWealthBonus(bonusWealth = 10000)
+                1 -> character.inventory.setWealthBonus(bonusWealth = 2000)
+                2 -> character.inventory.setWealthBonus(bonusWealth = 5000)
+                3 -> character.inventory.setWealthBonus(bonusWealth = 10000)
             }
         },
-        onRemove = { _, _ ->
+        onRemove = {character, _, _ ->
             //remove all bonus wealth
-            charInstance.inventory.setWealthBonus(bonusWealth = 0)
+            character.inventory.setWealthBonus(bonusWealth = 0)
         }
     )
 
@@ -520,25 +516,25 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //set regeneration bonus value
             when(cost){
-                1 -> charInstance.combat.specRegen.intValue += 2
-                2 -> charInstance.combat.specRegen.intValue += 4
-                3 -> charInstance.combat.specRegen.intValue += 6
+                1 -> character.combat.specRegen.intValue += 2
+                2 -> character.combat.specRegen.intValue += 4
+                3 -> character.combat.specRegen.intValue += 6
             }
 
-            charInstance.combat.updateRegeneration()
+            character.combat.updateRegeneration()
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove regeneration bonus
             when (cost) {
-                1 -> charInstance.combat.specRegen.intValue -= 2
-                2 -> charInstance.combat.specRegen.intValue -= 4
-                3 -> charInstance.combat.specRegen.intValue -= 6
+                1 -> character.combat.specRegen.intValue -= 2
+                2 -> character.combat.specRegen.intValue -= 4
+                3 -> character.combat.specRegen.intValue -= 6
             }
 
-            charInstance.combat.updateRegeneration()
+            character.combat.updateRegeneration()
         }
     )
 
@@ -587,8 +583,8 @@ class CommonAdvantages(
         cost = listOf(2),
         pickedCost = 0,
         onTake = null,
-        onRemove = {_, _ ->
-            charInstance.magic.loseMagic()
+        onRemove = {character, _, _ ->
+            character.magic.loseMagic()
         }
     )
 
@@ -652,19 +648,19 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //remove any individual discipline access acquired
-            val removable = charInstance.advantageRecord.getAdvantage(advantageString = "psyDisciplineAccess")
+            val removable = character.advantageRecord.getAdvantage(advantageString = "psyDisciplineAccess")
             if(removable != null)
-                charInstance.advantageRecord.removeAdvantage(advantage = removable)
+                character.advantageRecord.removeAdvantage(advantage = removable)
 
             //add all disciplines to character's access
-            charInstance.psychic.legalDisciplines.addAll(elements = charInstance.psychic.allDisciplines)
+            character.psychic.legalDisciplines.addAll(elements = character.objectDB.psyLibrary.allDisciplines)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove all disciplines from character's access
-            charInstance.psychic.allDisciplines.forEach {discipline ->
-                charInstance.psychic.removeLegalDiscipline(discipline = discipline)
+            character.objectDB.psyLibrary.allDisciplines.forEach {discipline ->
+                character.psychic.removeLegalDiscipline(discipline = discipline)
             }
         }
     )
@@ -681,20 +677,20 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //apply desired initiative bonus to the character
             when(cost){
-                1 -> charInstance.combat.changeSpecInitiative(initSpecial = 25)
-                2 -> charInstance.combat.changeSpecInitiative(initSpecial = 45)
-                3 -> charInstance.combat.changeSpecInitiative(initSpecial = 60)
+                1 -> character.combat.changeSpecInitiative(initSpecial = 25)
+                2 -> character.combat.changeSpecInitiative(initSpecial = 45)
+                3 -> character.combat.changeSpecInitiative(initSpecial = 60)
             }
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove bonus from the character's initiative
             when (cost) {
-                1 -> charInstance.combat.changeSpecInitiative(initSpecial = -25)
-                2 -> charInstance.combat.changeSpecInitiative(initSpecial = -45)
-                3 -> charInstance.combat.changeSpecInitiative(initSpecial = -60)
+                1 -> character.combat.changeSpecInitiative(initSpecial = -25)
+                2 -> character.combat.changeSpecInitiative(initSpecial = -45)
+                3 -> character.combat.changeSpecInitiative(initSpecial = -60)
             }
         }
     )
@@ -727,11 +723,11 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        onTake = {input, cost ->
+        onTake = {character, input, cost ->
             //apply the desired bonus to the indicated characteristic
             val characteristic =
-                if(input!! < 38) charInstance.secondaryList.fullList()[input]
-                else charInstance.secondaryList.getAllCustoms()[input - 38]
+                if(input!! < 38) character.secondaryList.fullList()[input]
+                else character.secondaryList.getAllCustoms()[input - 38]
 
             when(cost){
                 1 -> characteristic.setSpecialPerLevel(lvlBonus = 10)
@@ -739,11 +735,11 @@ class CommonAdvantages(
                 3 -> characteristic.setSpecialPerLevel(lvlBonus = 30)
             }
         },
-        onRemove = {input, cost ->
+        onRemove = {character, input, cost ->
             //remove the bonus from the characteristic
             val characteristic =
-                if(input!! < 38) charInstance.secondaryList.fullList()[input]
-                else charInstance.secondaryList.getAllCustoms()[input - 38]
+                if(input!! < 38) character.secondaryList.fullList()[input]
+                else character.secondaryList.getAllCustoms()[input - 38]
 
             when (cost) {
                 1 -> characteristic.setSpecialPerLevel(lvlBonus = -10)
@@ -765,9 +761,9 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(2, 3),
         pickedCost = 0,
-        onTake = {input, cost ->
+        onTake = {character, input, cost ->
             //add level bonuses to the indicated field characteristics
-            val charList = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            val charList = character.secondaryList.intToField(fieldInteger = input!!)
             charList.forEach{secondary ->
                 when(cost){
                     2 -> secondary.setSpecialPerLevel(lvlBonus = 5)
@@ -775,9 +771,9 @@ class CommonAdvantages(
                 }
             }
         },
-        onRemove = {input, cost ->
+        onRemove = {character, input, cost ->
             //remove level bonuses to the indicated field characteristics
-            val charList = charInstance.secondaryList.intToField(fieldInteger = input!!)
+            val charList = character.secondaryList.intToField(fieldInteger = input!!)
             charList.forEach {secondary ->
                 when (cost) {
                     2 -> secondary.setSpecialPerLevel(lvlBonus = -5)
@@ -799,18 +795,18 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //add desired bonus to magic resistance
             when(cost){
-                1 -> charInstance.combat.magicRes.setSpecial(specChange = 25)
-                2 -> charInstance.combat.magicRes.setSpecial(specChange = 50)
+                1 -> character.combat.magicRes.setSpecial(specChange = 25)
+                2 -> character.combat.magicRes.setSpecial(specChange = 50)
             }
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove previous bonus to magic resistance
             when (cost) {
-                1 -> charInstance.combat.magicRes.setSpecial(specChange = -25)
-                2 -> charInstance.combat.magicRes.setSpecial(specChange = -50)
+                1 -> character.combat.magicRes.setSpecial(specChange = -25)
+                2 -> character.combat.magicRes.setSpecial(specChange = -50)
             }
         }
     )
@@ -827,35 +823,35 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             when(cost){
                 //set bonuses for the appropriate resistances
                 1 -> {
-                    charInstance.combat.physicalRes.setSpecial(specChange = 25)
-                    charInstance.combat.venomRes.setSpecial(specChange = 25)
-                    charInstance.combat.diseaseRes.setSpecial(specChange = 25)
+                    character.combat.physicalRes.setSpecial(specChange = 25)
+                    character.combat.venomRes.setSpecial(specChange = 25)
+                    character.combat.diseaseRes.setSpecial(specChange = 25)
                 }
 
                 2 -> {
-                    charInstance.combat.physicalRes.setSpecial(specChange = 50)
-                    charInstance.combat.venomRes.setSpecial(specChange = 50)
-                    charInstance.combat.diseaseRes.setSpecial(specChange = 50)
+                    character.combat.physicalRes.setSpecial(specChange = 50)
+                    character.combat.venomRes.setSpecial(specChange = 50)
+                    character.combat.diseaseRes.setSpecial(specChange = 50)
                 }
             }
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             when (cost) {
                 //remove bonuses from the appropriate resistances
                 1 -> {
-                    charInstance.combat.physicalRes.setSpecial(specChange = -25)
-                    charInstance.combat.venomRes.setSpecial(specChange = -25)
-                    charInstance.combat.diseaseRes.setSpecial(specChange = -25)
+                    character.combat.physicalRes.setSpecial(specChange = -25)
+                    character.combat.venomRes.setSpecial(specChange = -25)
+                    character.combat.diseaseRes.setSpecial(specChange = -25)
                 }
 
                 2 -> {
-                    charInstance.combat.physicalRes.setSpecial(specChange = -50)
-                    charInstance.combat.venomRes.setSpecial(specChange = -50)
-                    charInstance.combat.diseaseRes.setSpecial(specChange = -50)
+                    character.combat.physicalRes.setSpecial(specChange = -50)
+                    character.combat.venomRes.setSpecial(specChange = -50)
+                    character.combat.diseaseRes.setSpecial(specChange = -50)
                 }
             }
         }
@@ -873,18 +869,18 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //give bonus points to psychic resistance
             when(cost){
-                1 -> charInstance.combat.psychicRes.setSpecial(specChange = 25)
-                2 -> charInstance.combat.psychicRes.setSpecial(specChange = 50)
+                1 -> character.combat.psychicRes.setSpecial(specChange = 25)
+                2 -> character.combat.psychicRes.setSpecial(specChange = 50)
             }
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove bonus points to psychic resistance
             when (cost) {
-                1 -> charInstance.combat.psychicRes.setSpecial(specChange = -25)
-                2 -> charInstance.combat.psychicRes.setSpecial(specChange = -50)
+                1 -> character.combat.psychicRes.setSpecial(specChange = -25)
+                2 -> character.combat.psychicRes.setSpecial(specChange = -50)
             }
         }
     )
@@ -1091,13 +1087,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply penalty to physical resistance
-            charInstance.combat.physicalRes.setMultiplier(multVal = 0.5)
+            character.combat.physicalRes.setMultiplier(multVal = 0.5)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove penalty to physical resistance
-            charInstance.combat.physicalRes.setMultiplier(multVal = 1.0)
+            character.combat.physicalRes.setMultiplier(multVal = 1.0)
         }
     )
 
@@ -1129,13 +1125,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {input, _ ->
+        onTake = {character, input, _ ->
             //apply penalty to stat
-            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -2)
+            character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -2)
         },
-        onRemove = {input, _ ->
+        onRemove = {character, input, _ ->
             //remove penalty from stat
-            charInstance.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 2)
+            character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 2)
         }
     )
 
@@ -1183,15 +1179,15 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply fatigue penalty
-            charInstance.combat.specFatigue.intValue -= 1
-            charInstance.combat.updateFatigue()
+            character.combat.specFatigue.intValue -= 1
+            character.combat.updateFatigue()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove fatigue penalty
-            charInstance.combat.specFatigue.intValue += 1
-            charInstance.combat.updateFatigue()
+            character.combat.specFatigue.intValue += 1
+            character.combat.updateFatigue()
         }
     )
 
@@ -1239,13 +1235,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply penalty to disease resistance
-            charInstance.combat.diseaseRes.setMultiplier(multVal = 0.5)
-                 },
-        onRemove = {_, _ ->
+            character.combat.diseaseRes.setMultiplier(multVal = 0.5)
+        },
+        onRemove = {character, _, _ ->
             //remove penalty from disease resistance
-            charInstance.combat.diseaseRes.setMultiplier(multVal = 1.0)
+            character.combat.diseaseRes.setMultiplier(multVal = 1.0)
         }
     )
 
@@ -1261,15 +1257,15 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply regeneration penalty
-            charInstance.combat.specRegen.intValue -= 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue -= 1
+            character.combat.updateRegeneration()
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove regeneration penalty
-            charInstance.combat.specRegen.intValue += 1
-            charInstance.combat.updateRegeneration()
+            character.combat.specRegen.intValue += 1
+            character.combat.updateRegeneration()
         }
     )
 
@@ -1301,23 +1297,23 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1, -2),
         pickedCost = 0,
-        onTake = {_, cost ->
+        onTake = {character, _, cost ->
             //apply desired initiative penalty
             when(cost){
-                -1 -> charInstance.combat.specInitiative.intValue -= 30
-                -2 -> charInstance.combat.specInitiative.intValue -= 60
+                -1 -> character.combat.specInitiative.intValue -= 30
+                -2 -> character.combat.specInitiative.intValue -= 60
             }
 
-            charInstance.combat.updateInitiative()
+            character.combat.updateInitiative()
         },
-        onRemove = {_, cost ->
+        onRemove = {character, _, cost ->
             //remove desired initiative penalty
             when (cost) {
-                -1 -> charInstance.combat.specInitiative.intValue += 30
-                -2 -> charInstance.combat.specInitiative.intValue += 60
+                -1 -> character.combat.specInitiative.intValue += 30
+                -2 -> character.combat.specInitiative.intValue += 60
             }
 
-            charInstance.combat.updateInitiative()
+            character.combat.updateInitiative()
         }
     )
 
@@ -1333,13 +1329,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply magic resistance penalty
-            charInstance.combat.magicRes.setMultiplier(multVal = 0.5)
+            character.combat.magicRes.setMultiplier(multVal = 0.5)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove magic resistance penalty
-            charInstance.combat.magicRes.setMultiplier(multVal = 1.0)
+            character.combat.magicRes.setMultiplier(multVal = 1.0)
         }
     )
 
@@ -1355,13 +1351,13 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = {_, _ ->
+        onTake = {character, _, _ ->
             //apply poison resistance penalty
-            charInstance.combat.venomRes.setMultiplier(multVal = 0.5)
+            character.combat.venomRes.setMultiplier(multVal = 0.5)
         },
-        onRemove = {_, _ ->
+        onRemove = {character, _, _ ->
             //remove poison resistance penalty
-            charInstance.combat.venomRes.setMultiplier(multVal = 1.0)
+            character.combat.venomRes.setMultiplier(multVal = 1.0)
         }
     )
 
@@ -1377,8 +1373,8 @@ class CommonAdvantages(
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        onTake = { _, _ ->
-            charInstance.setAppearance(newAppearance = 2)
+        onTake = {character, _, _ ->
+            character.setAppearance(newAppearance = 2)
         },
         onRemove = null
     )

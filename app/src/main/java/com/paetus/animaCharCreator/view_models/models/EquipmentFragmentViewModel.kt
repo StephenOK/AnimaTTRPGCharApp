@@ -338,7 +338,7 @@ class EquipmentFragmentViewModel(
     fun getCategory(
         equipment: GeneralEquipment
     ): GeneralCategory?{
-        inventory.allCategories.forEach{category ->
+        inventory.getAllCategories().forEach{category ->
             if(category.findEquipment(
                     equipName = equipment.saveName,
                     quality = equipment.currentQuality

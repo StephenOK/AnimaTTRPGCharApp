@@ -66,8 +66,7 @@ class CustomFactory(
                 CombatFragViewModel::class.java ->{
                     return CombatFragViewModel(
                         combat = charInstance.combat,
-                        primaryList = charInstance.primaryList,
-                        charClass = charInstance.classes.ownClass
+                        primaryList = charInstance.primaryList
                     ) as T
                 }
 
@@ -99,7 +98,6 @@ class CustomFactory(
                 KiFragmentViewModel::class.java ->{
                     return KiFragmentViewModel(
                         ki = charInstance.ki,
-                        charClass = charInstance.classes.ownClass,
                         context = context
                     ) as T
                 }
@@ -116,7 +114,6 @@ class CustomFactory(
                     return MagicFragmentViewModel(
                         magic = charInstance.magic,
                         charInstance = charInstance,
-                        charClass = charInstance.classes.ownClass,
                         context = context
                     ) as T
                 }
@@ -124,8 +121,7 @@ class CustomFactory(
                 //creating summoning viewModel
                 SummoningFragmentViewModel::class.java ->{
                     return SummoningFragmentViewModel(
-                        summoning = charInstance.summoning,
-                        charClass = charInstance.classes.ownClass
+                        summoning = charInstance.summoning
                     ) as T
                 }
 
@@ -133,7 +129,6 @@ class CustomFactory(
                 PsychicFragmentViewModel::class.java ->{
                     return PsychicFragmentViewModel(
                         psychic = charInstance.psychic,
-                        charClass = charInstance.classes.ownClass,
                         dexMod = charInstance.primaryList.dex.outputMod.intValue,
                         context = context
                     ) as T

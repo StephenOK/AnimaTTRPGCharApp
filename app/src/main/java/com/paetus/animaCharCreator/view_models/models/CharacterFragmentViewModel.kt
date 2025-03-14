@@ -1,5 +1,9 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
@@ -7,7 +11,11 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
+import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -92,16 +100,12 @@ class CharacterFragmentViewModel(
     val raceAdvantageOpen = _raceAdvantageOpen.asStateFlow()
 
     //initialize racial advantage displayed
-    private val _racialDisplayed = MutableStateFlow(value = charInstance.races.sylvainAdvantages[0])
+    private val _racialDisplayed = MutableStateFlow(value = charInstance.objectDB.races.sylvainAdvantages[0])
     val racialDisplayed = _racialDisplayed.asStateFlow()
 
     //initialize open state of class detail alert
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
-
-    //initialize class shown in detail alert
-    private val _classDetailItem = MutableStateFlow(value = charInstance.classes.freelancer)
-    val classDetailItem = _classDetailItem.asStateFlow()
 
     //initialize failed level change alert
     private val _failedLevelChangeOpen = MutableStateFlow(value = false)
@@ -173,14 +177,14 @@ class CharacterFragmentViewModel(
      * @return true if character is a paladin or dark paladin
      */
     private fun getPaladin(): Boolean{
-        return charInstance.classes.ownClass.value == charInstance.classes.paladin ||
-                charInstance.classes.ownClass.value == charInstance.classes.darkPaladin
+        return charInstance.classes.ownClass.intValue == 3 ||
+                charInstance.classes.ownClass.intValue == 4
     }
 
     /**
      * Retrieves the freelancer class from the character.
      */
-    fun getFreelancer(): CharClass {return charInstance.classes.freelancer}
+    fun getFreelancer(): CharClass {return charInstance.objectDB.classRecord.allClasses[0]}
 
     /**
      * Retrieves the character's selections for their freelancer bonuses.
@@ -327,18 +331,212 @@ class CharacterFragmentViewModel(
     fun toggleRacialAdvantageOpen(){_raceAdvantageOpen.update{!raceAdvantageOpen.value}}
 
     /**
-     * Sets the class to be shown in the detail alert to the currently held one.
+     * Retrieves the class displayed inn the class dropdown item.
      */
-    private fun setClassDetail(){_classDetailItem.update{charInstance.classes.ownClass.value}}
+    fun getDisplayedClass(): CharClass{
+        return charInstance.objectDB.classRecord.allClasses[classDropdown.data.output.value]
+    }
 
     /**
      * Determines if the user may change the level of the character.
      *
-     * @return true when character is not SBL or has all DP at this level spent
+     * @return list of error string outputs if errors are found; null if no errors found
      */
-    fun getLevelChangeable(): Boolean{
-        return !(charInstance is SblChar &&
-                charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+    @Composable
+    fun getLevelChangeable(): List<@Composable () -> String>?{
+        //no need to run if character is not save by level
+        if (charInstance !is SblChar) return null
+
+        //initialize error list
+        val output = mutableListOf<@Composable () -> String>()
+
+        //determine if DP spent appropriately
+        if(charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+            output.add{
+                //add either indicator of overspent DP
+                if (charInstance.spentTotal.intValue > charInstance.devPT.intValue) {
+                    stringResource(R.string.overDpFailure)
+                }
+                //or indicator of underspent DP
+                else {
+                    stringResource(R.string.underDpFailure)
+                }
+            }
+
+        //determine if combat max maintained
+        if(charInstance.ptInCombat.intValue > charInstance.maxCombatDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.combatLabel)
+                )
+            }
+
+        //determine if magic max maintained
+        if(charInstance.ptInMag.intValue > charInstance.maxMagDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.magicLabel)
+                )
+            }
+
+        //determine if psychic max maintained
+        if(charInstance.ptInPsy.intValue > charInstance.maxPsyDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.psychicLabel)
+                )
+            }
+
+        //determine if any error in primary bonus distribution
+        if(!bonusValid.collectAsState().value){
+            //check each primary characteristic
+            charInstance.primaryList.allPrimaries().forEach{
+                if(!(it as SblPrimaryChar).validGrowth())
+                    //if growth is not logical, notify of error in this stat
+                    output.add {
+                        stringResource(
+                            R.string.primaryBonusPointReduction,
+                            stringArrayResource(id = R.array.primaryCharArray)[it.charIndex]
+                        )
+                    }
+            }
+
+            //notify of too many primary bonus points added
+            if(charInstance.primaryList.getPrimaryBonusTotal() > charInstance.lvl.intValue/2)
+                output.add{stringResource(R.string.invalidPrimaryBonus)}
+        }
+
+        //notify of bad combat ability point distribution
+        if(!charInstance.combat.validAttackDodgeBlock())
+            output.add{stringResource(id = R.string.combatPointMisuse)}
+
+        //determine if points removed from combat items
+        charInstance.combat.allAbilities().forEach{
+            if(!(it as SblCombatItem).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.combatInputPointReduction,
+                        stringResource(it.itemLabel)
+                    )
+                }
+        }
+
+        //determine that no points have been removed from secondary items
+        charInstance.secondaryList.getAllSecondaries().forEach{
+            if(!(it as SblSecondaryCharacteristic).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputPointReduction,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
+
+            //determine that the secondary item has a legal minimum input
+            if(it.pointsApplied.intValue in 1..4)
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputTooFewPoints,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
+        }
+
+        //determine that all natural bonuses have been distributed
+        if(charInstance.secondaryList.countNatBonuses() < charInstance.lvl.intValue)
+            output.add{
+                stringResource(R.string.natBonusNotDistributed)
+            }
+
+        //look through each ki stat
+        charInstance.ki.allKiStats().forEach{
+            //get the stat's name
+            val kiString =
+                stringArrayResource(id = R.array.primaryCharArray)[
+                    //get exact index number if not POW or WP
+                    if((it as SblKiStat).kiIndex <  4)
+                        it.kiIndex
+                    //correct index to get proper name
+                    else
+                        it.kiIndex + 1
+                ]
+
+            //check for valid point growth
+            if(!it.validPointGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiPointReduction,
+                        kiString
+                    )
+                }
+
+            //check for valid accumulation growth
+            if(!it.validAccGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiAccReduction,
+                        kiString
+                    )
+                }
+        }
+
+        //catch invalid zeon point growth
+        if(!charInstance.magic.validPointGrowth())
+            output.add{stringResource(R.string.zeonPointReduction)}
+
+        //catch invalid zeon accumulation growth
+        if(!charInstance.magic.validAccGrowth())
+            output.add{stringResource(R.string.zeonAccReduction)}
+
+        //catch invalid magic projection growth
+        if(!charInstance.magic.validProjGrowth())
+            output.add{stringResource(R.string.zeonProjReduction)}
+
+        //catch invalid book level growth
+        charInstance.magic.retrieveBooks().forEach{
+            if(!it.validBookGrowth())
+                output.add{
+                    stringResource(
+                        R.string.bookLevelReduction,
+                        stringArrayResource(R.array.elementList)[charInstance.magic.retrieveBooks().indexOf(it)]
+                    )
+            }
+        }
+
+        //catch invalid psychic potential growth
+        if(!charInstance.psychic.validPsyPotentialGrowth())
+            output.add{stringResource(R.string.psychicPotentialReduction)}
+
+        //catch invalid psychic point growth
+        if(!charInstance.psychic.validPsyPointGrowth())
+            output.add{stringResource(R.string.psychicPointReduction)}
+
+        //catch invalid psychic projection growth
+        if(!charInstance.psychic.validPsyProjGrowth())
+            output.add{stringResource(R.string.psychicProjectionReduction)}
+
+        //catch invalid psychic innate slot growth
+        if(!charInstance.psychic.validInnateSlots())
+            output.add{stringResource(R.string.psyInnateSlotReduction)}
+
+        //catch invalid psychic points spent
+        if(charInstance.psychic.getFreePsyPoints() < 0)
+            output.add{stringResource(R.string.overPsyPointFailure)}
+
+        //catch all invalid psychic power enhancement growth
+        charInstance.psychic.findIllegalEnhancement().forEach{power ->
+            output.add{
+                stringResource(
+                    R.string.psyPowerEnhancementReduction,
+                    stringArrayResource(R.array.powerNames)[power.name]
+                )
+            }
+        }
+
+        //give final output list
+        return if(output.isEmpty()) null else output.toList()
     }
 
     /**
@@ -350,9 +548,31 @@ class CharacterFragmentViewModel(
     fun getExistingCharacter(levelString: String): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
         return if(levelString.toInt() != 0 && charInstance is SblChar)
-            charInstance.charRefs[levelString.toInt() - 1] != null
+            charInstance.charRefs[levelString.toInt()] != null
         //true if looking for level 0 or character is not SBL
         else true
+    }
+
+    /**
+     * Gets whether the character's class changes next level.
+     *
+     * @return true if a change is found
+     */
+    fun getClassChanged(): Boolean{
+        //only needs to check if SblChar
+        return if(charInstance is SblChar)
+            charInstance.getCharAtLevel().classes.ownClass.intValue != charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+            //otherwise, always false
+            else false
+    }
+
+    /**
+     * Gets the recorded class of the next level for the character.
+     *
+     * @return class pointer in the next level
+     */
+    fun getNextLevelClass(): Int{
+        return (charInstance as SblChar).charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
     }
 
     /**
@@ -367,7 +587,7 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.raceText,
             optionsRef = R.array.raceArray,
-            initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+            initialIndex = charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
             onChange = {
                 //change the character's race
                 charInstance.setOwnRace(raceNum = it)
@@ -389,11 +609,17 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.classLabel,
             optionsRef = R.array.classArray,
-            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.classes.ownClass.value),
+            initialIndex = charInstance.classes.ownClass.intValue,
             onChange = {
-                charInstance.classes.setOwnClass(classInt = it)
-                setClassDetail()
+                charInstance.classes.setOwnClass(classIndex = it)
                 setMagPaladinOpen()
+            },
+            refreshFunc = {
+                //get current level's class pointer
+                if (charInstance is SblChar)
+                    charInstance.getCharAtLevel().classes.ownClass.intValue
+                else
+                    charInstance.classes.ownClass.intValue
             }
         ),
         weight = 0.6f,
@@ -409,6 +635,11 @@ class CharacterFragmentViewModel(
             onChange = {newLevel ->
                 charInstance.setLvl(levNum = newLevel)
                 setBonusColor()
+
+                //get the character's class at this level
+                if(charInstance is SblChar)
+                    classDropdown.data.refreshDisplay()
+
             }
         ),
         weight = 1f,

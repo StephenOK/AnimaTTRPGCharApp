@@ -1,7 +1,16 @@
 package com.paetus.animaCharCreator.character_creation
 
+import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
+import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
+import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
+import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
+import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
+import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
+import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
 import java.io.File
 
 /**
@@ -18,9 +27,9 @@ class SblChar(
     techFile: File
 ): BaseCharacter() {
     //initialize level data for this character
-    val charRefs = mutableListOf<BaseCharacter?>(
-        BaseCharacter(),
-        null,
+    val charRefs = mutableListOf(
+        BaseCharacter(newHost = this, prevIndex = -1, isAdded = false),
+        BaseCharacter(newHost = this, prevIndex = 0, isAdded = false),
         null,
         null,
         null,
@@ -44,8 +53,15 @@ class SblChar(
 
     //initialize character's other item data
     override val primaryList = SblPrimaryList(charInstance = this)
-
+    override val combat = SblCombatAbilities(charInstance = this)
     override val secondaryList = SblSecondaryList(sblChar = this)
+    override val weaponProficiencies = SblProficiencies(charInstance = this)
+    override val ki = SblKi(charInstance = this)
+    override val magic = SblMagic(sblChar = this)
+
+    override val psychic = SblPsychic(charInstance = this)
+    override val summoning = SblSummoning(charInstance = this)
+    override val classes = SblClassInstances(charInstance = this)
 
     /**
      * Updates the character's level and any associated values.
@@ -54,16 +70,38 @@ class SblChar(
      */
     override fun setLvl(levNum: Int) {
         //initialize character if no record at that level
-        if(charRefs[levNum] == null) {
-            charRefs[levNum] = BaseCharacter()
-
-            charRefs[levNum]!!.classes.setOwnClass(charRefs[levNum - 1]!!.classes.ownClass.value)
-        }
-
-        secondaryList.levelUpdate(newLevel = levNum)
+        if(charRefs[levNum + 1] == null)
+            charRefs[levNum + 1] = BaseCharacter(newHost = this, prevIndex = levNum, isAdded = true)
 
         super.setLvl(levNum)
 
+        //update primary bonus amounts
+        primaryList.allPrimaries().forEach{
+            (it as SblPrimaryChar).refreshBonusTotal()
+        }
+
+        //update combat item input values
+        combat.updateLifeMults()
+        combat.allAbilities().forEach{
+            (it as SblCombatItem).updateInput()
+        }
+
+        //update secondary items
+        secondaryList.levelUpdate()
+
+        //update weapon proficiencies
+        weaponProficiencies.levelUpdate()
+
+        //update ki abilities
+        ki.levelUpdate()
+
+        //update magic abilities
+        magic.levelUpdate()
+
+        //update psychic abilities
+        psychic.levelUpdate()
+
+        //update dev points spent
         updateTotalSpent()
     }
 
@@ -77,7 +115,7 @@ class SblChar(
         maxPsyDP.intValue = 0
 
         //get each character's dp amount for each category
-        levelLoop(lvl.intValue){checkChar ->
+        levelLoop{checkChar ->
             //determine the level's development points
             val dpSection =
                 when(checkChar) {
@@ -127,11 +165,11 @@ class SblChar(
 
             //add level's other items
             spentTotal.intValue +=
-                checkChar.combat.lifeMultsTaken.intValue * checkChar.classes.ownClass.value.lifePointMultiple +
+                checkChar.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[checkChar.classes.ownClass.intValue].lifePointMultiple +
                         checkChar.secondaryList.calculateSpent()
         }
 
-        spentTotal.intValue += ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
+        spentTotal.intValue += classes.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
     /**
@@ -146,20 +184,20 @@ class SblChar(
     /**
      * Loop through each character record up to the indicated level.
      *
-     * @param charLevel level to loop to (defaults to current level)
+     * @param startLevel level to start
+     * @param endLevel level to loop to (defaults to current level)
      * @param runFunc what function to run for each character level
      */
     fun levelLoop(
-        charLevel: Int = lvl.intValue,
+        startLevel: Int = 0,
+        endLevel: Int = lvl.intValue,
         runFunc: (BaseCharacter) -> Unit
     ){
         //catch potential negative level input
-        if(charLevel >= 0) {
-            for (index in 0..charLevel) {
+        if(endLevel >= 0) {
+            for (index in startLevel..endLevel) {
                 if (charRefs[index] != null)
                     runFunc(charRefs[index]!!)
-                //else
-                //    runFunc(BaseCharacter())
             }
         }
     }
@@ -174,17 +212,26 @@ class SblChar(
             val levelChar = BaseCharacter(
                 charFile = file,
                 secondaryFile = secondaryFile,
-                techFile = techFile
+                techFile = techFile,
+                objectDB = objectDB
             )
 
             //set character at the indicated index
             charRefs[levelChar.lvl.intValue] = levelChar
         }
 
+
+
         //for each character level record
         charRefs.forEach{character ->
-            character?.primaryList?.allPrimaries()?.forEach{primeChar ->
-                primaryList.allPrimaries()[primeChar.charIndex].setLevelBonus(primeChar.levelBonus.intValue)
+            if(character != null){
+                if(character != charRefs[0])
+                    character.setLvl(levNum = 1)
+
+                //apply primary bonus values
+                character.primaryList.allPrimaries().forEach{primeChar ->
+                    primaryList.allPrimaries()[primeChar.charIndex].setLevelBonus(primeChar.levelBonus.intValue)
+                }
             }
         }
     }

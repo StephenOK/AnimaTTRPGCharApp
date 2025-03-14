@@ -11,9 +11,11 @@ import java.io.ByteArrayOutputStream
  * Utilized for the character's attack, block, dodge, and wear armor.
  *
  * @param charInstance object that holds all of a character's data
+ * @param itemLabel reference to the string to label this object
  */
 open class CombatItem(
-    private val charInstance: BaseCharacter
+    private val charInstance: BaseCharacter,
+    val itemLabel: Int
 ){
     //initialize user input value for this stat
     val inputVal = mutableIntStateOf(value = 0)
@@ -22,10 +24,10 @@ open class CombatItem(
     val modPoints = mutableIntStateOf(value = 0)
 
     //initialize points per level for this stat
-    private val pointPerLevel = mutableIntStateOf(value = 0)
+    val pointPerLevel = mutableIntStateOf(value = 0)
 
     //initialize additional points for this stat
-    private val classBonus = mutableIntStateOf(value = 0)
+    val classBonus = mutableIntStateOf(value = 0)
 
     //initialize class total for this stat
     val classTotal = mutableIntStateOf(value = 0)
@@ -69,7 +71,7 @@ open class CombatItem(
      *
      * @param classBonus amount to increment the bonus by
      */
-    fun setClassBonus(classBonus: Int){
+    open fun setClassBonus(classBonus: Int){
         this.classBonus.intValue += classBonus
         updateClassTotal()
     }
@@ -77,7 +79,7 @@ open class CombatItem(
     /**
      * Update the class total for the individual stat.
      */
-    fun updateClassTotal(){
+    open fun updateClassTotal(){
         //determine actual total
         classTotal.intValue =
             if(charInstance.lvl.intValue != 0) (pointPerLevel.intValue * charInstance.lvl.intValue) + classBonus.intValue
@@ -94,7 +96,7 @@ open class CombatItem(
     /**
      * Updates the total value for each contributing item.
      */
-    private fun updateTotal(){
+    fun updateTotal(){
         //determine total
         total.intValue = inputVal.intValue + modPoints.intValue + classTotal.intValue
 

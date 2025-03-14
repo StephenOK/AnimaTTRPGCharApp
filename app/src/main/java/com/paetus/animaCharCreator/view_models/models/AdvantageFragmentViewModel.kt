@@ -258,27 +258,27 @@ class AdvantageFragmentViewModel(
     //initialize the data for all of the advantage and disadvantage categories
     private val commonAdv = AdvantageButtonData(
         category = R.string.commonAdv,
-        advList = advantageRecord.commonAdvantages.advantages
+        advList = advantageRecord.commonAdvantages().advantages
     )
     private val commonDisadv = AdvantageButtonData(
         category = R.string.commonDisadv,
-        advList = advantageRecord.commonAdvantages.disadvantages
+        advList = advantageRecord.commonAdvantages().disadvantages
     )
     private val magicAdv = AdvantageButtonData(
         category = R.string.magicAdv,
-        advList = advantageRecord.magicAdvantages.advantages
+        advList = advantageRecord.magicAdvantages().advantages
     )
     private val magicDisadv = AdvantageButtonData(
         category = R.string.magicDisadv,
-        advList = advantageRecord.magicAdvantages.disadvantages
+        advList = advantageRecord.magicAdvantages().disadvantages
     )
     private val psychicAdv = AdvantageButtonData(
         category = R.string.psychicAdv,
-        advList = advantageRecord.psychicAdvantages.advantages
+        advList = advantageRecord.psyAdvantages().advantages
     )
     private val psychicDisadv = AdvantageButtonData(
         category = R.string.psychicDisadv,
-        advList = advantageRecord.psychicAdvantages.disadvantages
+        advList = advantageRecord.psyAdvantages().disadvantages
     )
 
     //gather all advantage items

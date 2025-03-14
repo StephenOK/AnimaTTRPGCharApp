@@ -24,7 +24,7 @@ class ModuleFragmentViewModel(
     val context: Context
 ) : ViewModel() {
     //initialize character's current primary weapon selection
-    private val _primaryWeapon = MutableStateFlow(value = weaponProficiencies.primaryWeapon.value)
+    private val _primaryWeapon = MutableStateFlow(value = getPrimaryWeapon())
     val primaryWeapon = _primaryWeapon.asStateFlow()
 
     //initialize open state of the archetype module menu
@@ -64,13 +64,18 @@ class ModuleFragmentViewModel(
     val allStyles = mutableMapOf<StyleModule, MutableState<Boolean>>()
 
     /**
+     * Retrieves the primary weapon item taken by the character at this moment.
+     */
+    fun getPrimaryWeapon(): Weapon{return weaponProficiencies.getArmory().allWeapons[weaponProficiencies.primaryWeapon.intValue]}
+
+    /**
      * Sets the character's primary weapon to the inputted item.
      *
      * @param primeWeapon weapon to set as the primary one
      */
     fun setPrimaryWeapon(primeWeapon: Weapon){
         weaponProficiencies.setPrimaryWeapon(weaponName = primeWeapon.saveName)
-        _primaryWeapon.update{primeWeapon}
+        _primaryWeapon.update{getPrimaryWeapon()}
     }
 
     /**
@@ -162,8 +167,8 @@ class ModuleFragmentViewModel(
         isTaking: Boolean
     ){
         weaponProficiencies.changeIndividualModule(weapon = weapon, toAdd = isTaking)
-        allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(element = weapon) ||
-                weaponProficiencies.fullModWeapons.contains(element = weapon)
+        allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                weaponProficiencies.weaponsFromArchetypes().contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
     }
 
     /**
@@ -191,7 +196,7 @@ class ModuleFragmentViewModel(
         isTaking: Boolean
     ){
         weaponProficiencies.changeStyle(style = style, toAdd = isTaking)
-        allStyles[style]!!.value = isTaking
+        allStyles[style]!!.value = weaponProficiencies.styleMods.contains(style)
     }
 
     /**
@@ -199,7 +204,7 @@ class ModuleFragmentViewModel(
      *
      * @return the stats for unarmed combat
      */
-    fun getUnarmed(): Weapon{return weaponProficiencies.unarmed}
+    fun getUnarmed(): Weapon{return weaponProficiencies.getArmory().unarmed}
 
     /**
      * Retrieves the character's maximum number of martial arts they can take.
@@ -213,83 +218,83 @@ class ModuleFragmentViewModel(
      *
      * @return all martial art data
      */
-    fun getAllMartials(): List<MartialArt>{return weaponProficiencies.martials.allMartialArts}
+    fun getAllMartials(): List<MartialArt>{return weaponProficiencies.getMartials().allMartialArts}
 
     /**
      * Retrieves information on all style modules.
      *
      * @return all style module data
      */
-    fun getAllStyles(): List<StyleModule>{return weaponProficiencies.styles.allStyles}
+    fun getAllStyles(): List<StyleModule>{return weaponProficiencies.getStyles().allStyles}
 
     //initialize all weapon data for each weapon category
     private val shorts = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.shortLabel,
-        weaponList = weaponProficiencies.shortArms.shortArms,
+        weaponList = weaponProficiencies.getArmory().shortArms.shortArms,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["short"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["short"]!!,
         modFragVM = this
     )
 
     private val axes = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.axeLabel,
-        weaponList = weaponProficiencies.axes.axes,
+        weaponList = weaponProficiencies.getArmory().axes.axes,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["axe"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["axe"]!!,
         modFragVM = this
     )
 
     private val maces = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.maceLabel,
-        weaponList = weaponProficiencies.maces.maces,
+        weaponList = weaponProficiencies.getArmory().maces.maces,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["mace"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["mace"]!!,
         modFragVM = this
     )
 
     private val swords = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.swordLabel,
-        weaponList = weaponProficiencies.swords.swords,
+        weaponList = weaponProficiencies.getArmory().swords.swords,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["sword"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["sword"]!!,
         modFragVM = this
     )
 
     private val twoHandeds = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.twoHandLabel,
-        weaponList = weaponProficiencies.twoHanded.twoHanded,
+        weaponList = weaponProficiencies.getArmory().twoHanded.twoHanded,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["twoHanded"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["twoHanded"]!!,
         modFragVM = this
     )
 
     private val poles = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.poleLabel,
-        weaponList = weaponProficiencies.poles.poles,
+        weaponList = weaponProficiencies.getArmory().poles.poles,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["pole"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["pole"]!!,
         modFragVM = this
     )
 
     private val cords = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.cordLabel,
-        weaponList = weaponProficiencies.cords.cords,
+        weaponList = weaponProficiencies.getArmory().cords.cords,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["cord"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["cord"]!!,
         modFragVM = this
     )
 
     private val mixed = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.mixedLabel,
-        weaponList = weaponProficiencies.mixed.mixed,
+        weaponList = weaponProficiencies.getArmory().mixed.mixed,
         wholeClass = false,
         archetypeItems = null,
         modFragVM = this
@@ -298,27 +303,27 @@ class ModuleFragmentViewModel(
     private val shields = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.shieldLabel,
-        weaponList = weaponProficiencies.shields.shields,
+        weaponList = weaponProficiencies.getArmory().shields.shields,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["shield"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["shield"]!!,
         modFragVM = this
     )
 
     private val projectiles = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.projectileLabel,
-        weaponList = weaponProficiencies.projectiles.projectiles,
+        weaponList = weaponProficiencies.getArmory().projectiles.projectiles,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["projectile"]!!,
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["projectile"]!!,
         modFragVM = this
     )
 
     private val thrown = WeaponListData(
         weaponProficiencies = weaponProficiencies,
         nameRef = R.string.thrownLabel,
-        weaponList = weaponProficiencies.thrown.thrown,
+        weaponList = weaponProficiencies.getArmory().thrown.thrown,
         wholeClass = true,
-        archetypeItems = weaponProficiencies.allArchetypes["thrown"],
+        archetypeItems = weaponProficiencies.getArmory().allArchetypes["thrown"],
         modFragVM = this
     )
 
@@ -328,91 +333,91 @@ class ModuleFragmentViewModel(
     //initialize all archetype data for each archetype module
     private val barbarianArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["barbarian"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["barbarian"]!!,
         name = R.string.barbarianLabel,
         modFragVM = this
     )
 
     private val ninjaArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["ninja"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["ninja"]!!,
         name = R.string.ninjaLabel,
         modFragVM = this
     )
 
     private val duelArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["duel"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["duel"]!!,
         name = R.string.duelLabel,
         modFragVM = this
     )
 
     private val pirateArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["pirate"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["pirate"]!!,
         name = R.string.pirateLabel,
         modFragVM = this
     )
 
     private val nomadArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["nomad"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["nomad"]!!,
         name = R.string.nomadLabel,
         modFragVM = this
     )
 
     private val hunterArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["hunter"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["hunter"]!!,
         name = R.string.hunterLabel,
         modFragVM = this
     )
 
     private val knightArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["knight"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["knight"]!!,
         name = R.string.knightLabel,
         modFragVM = this
     )
 
     private val gladiatorArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["gladiator"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["gladiator"]!!,
         name = R.string.gladiatorLabel,
         modFragVM = this
     )
 
     private val assassinArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["assassin"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["assassin"]!!,
         name = R.string.assassinLabel,
         modFragVM = this
     )
 
     private val soldierArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["soldier"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["soldier"]!!,
         name = R.string.soldierLabel,
         modFragVM = this
     )
 
     private val indigenousArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["indigenous"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["indigenous"]!!,
         name = R.string.indigenousLabel,
         modFragVM = this
     )
 
     private val banditArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["bandit"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["bandit"]!!,
         name = R.string.banditLabel,
         modFragVM = this
     )
 
     private val improvisedArchetype = ArchetypeData(
         weaponProficiencies = weaponProficiencies,
-        weapons = weaponProficiencies.allArchetypes["improvised"]!!,
+        weapons = weaponProficiencies.getArmory().allArchetypes["improvised"]!!,
         name = R.string.improvisedLabel,
         modFragVM = this
     )
@@ -485,29 +490,39 @@ class ModuleFragmentViewModel(
 
             //update individually taken weapons
             modFragVM.allSecondaryWeapons.forEach{(weapon, isTaken) ->
-                isTaken.value = weaponProficiencies.fullModWeapons.contains(element = weapon)
+                isTaken.value = weaponProficiencies.weaponsFromArchetypes().contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                        weaponProficiencies.individualModules.contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
             }
+        }
+
+        /**
+         * Sets the checked state to the indicated value.
+         *
+         * @param isTaken boolean to set the checkbox to
+         */
+        fun setChecked(isTaken: Boolean){
+            _takenCheck.update{isTaken}
         }
     }
 
     init{
         //create checkboxes for each individual weapon
-        weaponProficiencies.allWeapons.forEach{weapon ->
-            allSecondaryWeapons += Pair(weapon, mutableStateOf(weaponProficiencies.individualModules.contains(element = weapon)))
+        weaponProficiencies.getArmory().allWeapons.forEach{weapon ->
+            allSecondaryWeapons += Pair(weapon, mutableStateOf(weaponProficiencies.individualModules.contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon))))
         }
 
         //create checkboxes for each archetype module
-        weaponProficiencies.allArchetypes.values.forEach{archetype ->
+        weaponProficiencies.getArmory().allArchetypes.values.forEach{archetype ->
             allArchetypes += Pair(archetype, mutableStateOf(weaponProficiencies.takenModules.contains(element = archetype)))
         }
 
         //create checkboxes for each martial art
-        weaponProficiencies.martials.allMartialArts.forEach{martialArt ->
+        weaponProficiencies.getMartials().allMartialArts.forEach{martialArt ->
             allMartials += Pair(martialArt, mutableStateOf(weaponProficiencies.takenMartialList.contains(element = martialArt)))
         }
 
         //create checkboxes for each style module
-        weaponProficiencies.styles.allStyles.forEach{style ->
+        weaponProficiencies.getStyles().allStyles.forEach{style ->
             allStyles += Pair(style, mutableStateOf(weaponProficiencies.styleMods.contains(element = style)))
         }
     }
@@ -516,22 +531,31 @@ class ModuleFragmentViewModel(
      * Function to run on opening the module fragment.
      */
     fun refreshPage(){
-        //close any open weapon lists
-        allWeapons.forEach{weaponList ->
-            if(weaponList.listOpen.value)
-                weaponList.toggleListOpen()
+        //update weapon rows' individually taken checkboxes
+        allSecondaryWeapons.keys.forEach{weapon ->
+            allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||
+                    weaponProficiencies.weaponsFromArchetypes().contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon))
         }
 
-        //close the archetype section
-        if(archetypeOpen.value)
-            toggleArchetypeOpen()
+        //update weapon archetype rows' taken statuses
+        allWeapons.forEach{
+            if(it.weaponArchetype != null)
+                it.weaponArchetype.setChecked(weaponProficiencies.takenModules.contains(it.weaponArchetype.weapons))
+        }
 
-        //close the martial art section
-        if(martialOpen.value)
-            toggleMartialOpen()
+        //update archetype rows' individually taken checkboxes
+        allArchetypeData.forEach{
+            it.setChecked(weaponProficiencies.takenModules.contains(it.weapons))
+        }
 
-        //close the style module section
-        if(styleOpen.value)
-            toggleStyleOpen()
+        //update martial art rows' individually taken checkboxes
+        allMartials.keys.forEach{
+            allMartials[it]!!.value = weaponProficiencies.takenMartialList.contains(it)
+        }
+
+        //update style rows' individually taken checkboxes
+        allStyles.keys.forEach{
+            allStyles[it]!!.value = weaponProficiencies.styleMods.contains(it)
+        }
     }
 }

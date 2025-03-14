@@ -34,7 +34,7 @@ fun OutlinedDropdown(
     isOpenable: Boolean = true,
     unopenFunc: () -> Unit = {},
     qualifyOption: (String) -> Boolean = {true},
-    itemSelection: () -> Unit
+    itemSelection: () -> Unit = {}
 ){
     //retrieve list of options
     val optionsList = stringArrayResource(id = data.optionsRef)
@@ -79,6 +79,7 @@ fun OutlinedDropdown(
                     text = {Text(text = option)},
                     onClick = {
                         data.setOutput(dropdownIndex = optionsList.indexOf(element = option))
+                        data.refreshDisplay()
                         itemSelection()
                     }
                 )

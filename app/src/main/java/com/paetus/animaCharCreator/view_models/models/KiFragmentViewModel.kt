@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.KiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -19,12 +18,10 @@ import kotlinx.coroutines.flow.update
  * View model that manages the character's ki data.
  * Works on variables in the corresponding ki fragment.
  *
- * @param ki character's ki ability data
- * @param charClass state of the character's current class
+ * @param ki character's ki ability data=
  */
 class KiFragmentViewModel(
     private val ki: Ki,
-    private val charClass: MutableState<CharClass>,
     private val context: Context
 ): ViewModel() {
     //initialize remaining martial knowledge display
@@ -84,7 +81,7 @@ class KiFragmentViewModel(
      */
     fun checkIfToggle(): Boolean{
         //return true if character has ki control ability or if list is already open
-        return techListOpen.value || ki.takenAbilities.contains(ki.kiRecord.kiControl)
+        return techListOpen.value || ki.takenAbilities.contains(ki.getKiRecord().kiControl)
     }
 
     /**
@@ -163,7 +160,7 @@ class KiFragmentViewModel(
         }
 
         //close the technique list if it is open and the character no longer has ki control
-        if(techListOpen.value && !allKiAbilities[ki.kiRecord.kiControl]!!.value)
+        if(techListOpen.value && !allKiAbilities[ki.getKiRecord().kiControl]!!.value)
             toggleTechOpen()
     }
 
@@ -231,21 +228,21 @@ class KiFragmentViewModel(
      *
      * @return DP cost of ki points
      */
-    fun getKiPointDP(): Int{return charClass.value.kiGrowth}
+    fun getKiPointDP(): Int{return ki.getKiPointCost()}
 
     /**
      * Retrieves the DP cost of ki accumulation for this character.
      *
      * @return DP cost of ki accumulation
      */
-    fun getKiAccDP(): Int{return charClass.value.kiAccumMult}
+    fun getKiAccDP(): Int{return ki.getKiAccumulationCost()}
 
     /**
      * Retrieves a list of all possible ki abilities.
      *
      * @return the full list of ki abilities the character may take
      */
-    fun getAllKiAbilities(): List<KiAbility>{return ki.kiRecord.allKiAbilities}
+    fun getAllKiAbilities(): List<KiAbility>{return ki.getKiRecord().allKiAbilities}
 
     /**
      * Retrieves the list of prebuilt techniques available to the character.
@@ -411,17 +408,19 @@ class KiFragmentViewModel(
         fun refreshItem(){
             //update the point values for this item
             setPointInputString(kiStat.boughtKiPoints.intValue.toString())
+            _pointTotalString.update{kiStat.totalKiPoints.intValue}
             setTotalPoints()
 
             //update the accumulation value for this item
             setAccInputString(kiStat.boughtAccumulation.intValue.toString())
+            _accTotalString.update{kiStat.totalAccumulation.intValue}
             setTotalAcc()
         }
     }
 
     init{
         //get each ki ability and designate a checkbox to it
-        ki.kiRecord.allKiAbilities.forEach{kiAbility ->
+        ki.getKiRecord().allKiAbilities.forEach{kiAbility ->
             allKiAbilities += Pair(kiAbility, mutableStateOf(value = ki.takenAbilities.contains(element = kiAbility)))
         }
         updateKiTaken()
@@ -436,6 +435,13 @@ class KiFragmentViewModel(
         allRowData.forEach{kiRowData ->
             kiRowData.refreshItem()
         }
+
+        //update the ki ability taken checkboxes
+        allKiAbilities.forEach{(ability, taken) ->
+            taken.value = ki.takenAbilities.contains(ability)
+        }
+
+        //refresh the martial knowledge items
         setRemainingMK()
     }
 }

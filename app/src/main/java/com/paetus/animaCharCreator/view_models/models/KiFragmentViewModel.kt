@@ -360,6 +360,11 @@ class KiFragmentViewModel(
         fun setPointInputString(display: String){_pointInputString.update{display}}
 
         /**
+         * Get current value input for the ki stat's current point input.
+         */
+        fun currentPoints(): Int{return kiStat.boughtKiPoints.intValue}
+
+        /**
          * Sets the DP cost display to the indicated value.
          *
          * @param dpDisplay dp cost to show
@@ -384,6 +389,11 @@ class KiFragmentViewModel(
          * @param display value to now show
          */
         fun setAccInputString(display: String){_accInputString.update{display}}
+
+        /**
+         * Get current value input for the ki stat's current accumulation.
+         */
+        fun currentAcc(): Int{return kiStat.boughtAccumulation.intValue}
 
         /**
          * Defines the dp label for this item's accumulation input.

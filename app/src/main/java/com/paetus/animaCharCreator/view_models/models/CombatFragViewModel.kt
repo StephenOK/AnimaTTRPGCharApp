@@ -60,6 +60,11 @@ class CombatFragViewModel(
     fun setLifeMults(display: String){_lifeMults.update{display}}
 
     /**
+     * Get current value input for the character's life point multiples taken.
+     */
+    fun currentLifeMults(): Int{return combat.lifeMultsTaken.intValue}
+
+    /**
      * Changes the display of life point total.
      *
      * @param totalDisplay new string to display
@@ -257,6 +262,11 @@ class CombatFragViewModel(
          * @param display value to set this to
          */
         fun setPointsIn(display: String){_pointsIn.update{display}}
+
+        /**
+         * Get current value input for the combat item's current input.
+         */
+        fun getCurrent(): Int{return combatItem.inputVal.intValue}
 
         /**
          * Sets the displayed total to the appropriate value.

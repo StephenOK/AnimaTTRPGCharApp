@@ -1004,13 +1004,6 @@ class CustomTechniqueViewModel(
     }
 
     /**
-     * Sets the displayed value for the predetermination cost with an integer check.
-     *
-     * @param cost integer to convert to string
-     */
-    fun setPredeterminedCost(cost: Int){setPredeterminedCost(display = cost.toString())}
-
-    /**
      * Sets the displayed value for the predetermination cost.
      *
      * @param display new item to display
@@ -1321,6 +1314,11 @@ class CustomTechniqueViewModel(
         fun setDisplay(display: String){
             _display.update{display}
         }
+
+        /**
+         * Get current value input for the item's current ki build value.
+         */
+        fun getCurrent(): Int{return home.kiBuild[index]}
     }
 
     /**
@@ -1375,5 +1373,10 @@ class CustomTechniqueViewModel(
          * @param display new value to display
          */
         fun setDisplayValue(display: String){_displayValue.update{display}}
+
+        /**
+         * Get current value input for the technique's current maintenance value.
+         */
+        fun getCurrent(): Int{return customTechnique.maintArray[index]}
     }
 }

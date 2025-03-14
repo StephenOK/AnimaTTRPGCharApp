@@ -138,6 +138,7 @@ fun CharacterPageFragment(
                     inputText = charFragVM.experiencePoints.collectAsState().value,
                     inputFunction = {charFragVM.setExp(expVal = it.toInt())},
                     emptyFunction = {charFragVM.setExp(display = "")},
+                    refill = {charFragVM.currentExp()},
                     modifier = Modifier
                         .fillMaxWidth(0.8f),
                     alignment = TextAlign.Left,
@@ -293,6 +294,7 @@ fun CharacterPageFragment(
                             if (charFragVM.isNotUnattractive())
                                 charFragVM.setAppearInput(display = "")
                         },
+                        refill = {charFragVM.currentAppearance()},
                         modifier = Modifier
                             .weight(0.5f),
                         label = stringResource(id = R.string.appearance)
@@ -305,6 +307,7 @@ fun CharacterPageFragment(
                         inputText = charFragVM.gnosisDisplay.collectAsState().value,
                         inputFunction = {charFragVM.setGnosisDisplay(gnosisInput = it.toInt())},
                         emptyFunction = {charFragVM.setGnosisDisplay(display = "")},
+                        refill = {charFragVM.currentGnosis()},
                         modifier = Modifier
                             .weight(0.5f),
                         label = stringResource(id = R.string.gnosisLabel)
@@ -430,6 +433,7 @@ private fun PrimaryRow(
                     primeItem.setInput(statVal = it.toInt())
             },
             emptyFunction = {primeItem.setInput(display = "")},
+            refill = {primeItem.currentInput()},
             modifier = Modifier
                 .weight(0.2f)
         )
@@ -441,6 +445,7 @@ private fun PrimaryRow(
             inputText = primeItem.bonusInput.collectAsState().value,
             inputFunction = {primeItem.setBonusInput(lvlBonus = it.toInt())},
             emptyFunction = {primeItem.setBonusInput(display = "")},
+            refill = {primeItem.currentBonus()},
             modifier = Modifier
                 .weight(0.2f),
             isError = !charFragVM.bonusValid.collectAsState().value,

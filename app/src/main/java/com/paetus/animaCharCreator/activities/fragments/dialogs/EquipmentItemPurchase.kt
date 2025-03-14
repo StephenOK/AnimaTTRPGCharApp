@@ -52,6 +52,7 @@ fun EquipmentItemPurchase(
                         inputText = equipFragVM.purchasedNumber.collectAsState().value,
                         inputFunction = {equipFragVM.setPurchasedNumber(quantity = it.toInt())},
                         emptyFunction = {equipFragVM.setPurchasedNumber(display = "")},
+                        refill = {1},
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                     )

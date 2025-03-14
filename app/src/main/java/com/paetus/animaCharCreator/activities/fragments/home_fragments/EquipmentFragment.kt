@@ -197,6 +197,7 @@ fun MaximumDisplay(
             inputText = maxData.maxValue.collectAsState().value,
             inputFunction = {maxData.setMaxValue(maxCoin = it.toInt())},
             emptyFunction = {maxData.setMaxValue(display = "")},
+            refill = {maxData.maxInput()},
             modifier = Modifier
                 .weight(0.45f)
         )

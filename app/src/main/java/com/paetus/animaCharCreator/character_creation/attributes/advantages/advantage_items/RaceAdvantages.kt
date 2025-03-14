@@ -442,9 +442,9 @@ class RaceAdvantages{
                     }
                     else{
                         //remove most recently added discipline, if available
-                        if(character.psychic.disciplineInvestment.size > 0)
-                            character.psychic.updateInvestment(
-                                discipline = character.psychic.disciplineInvestment.last(),
+                        if(charInstance.psychic.disciplineInvestment.isNotEmpty())
+                            charInstance.psychic.updateInvestment(
+                                discipline = charInstance.psychic.disciplineInvestment.last(),
                                 isTaken = false
                             )
                     }

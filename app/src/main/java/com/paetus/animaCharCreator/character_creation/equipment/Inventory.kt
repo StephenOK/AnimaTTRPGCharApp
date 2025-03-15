@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-class Inventory(val charInstance: BaseCharacter) {
+open class Inventory(val charInstance: BaseCharacter) {
     fun getAllCategories(): List<GeneralCategory>{return charInstance.objectDB.goods.allCategories}
 
     //instantiate all equipment category objects
@@ -56,28 +56,28 @@ class Inventory(val charInstance: BaseCharacter) {
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxGold(maxVal: Int){maxGold.intValue = maxVal}
+    open fun setMaxGold(maxVal: Int){maxGold.intValue = maxVal}
 
     /**
      * Setter for the character's maximum silver limit.
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxSilver(maxVal: Int){maxSilver.intValue = maxVal}
+    open fun setMaxSilver(maxVal: Int){maxSilver.intValue = maxVal}
 
     /**
      * Setter for the character's maximum copper limit.
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxCopper(maxVal: Int){maxCopper.intValue = maxVal}
+    open fun setMaxCopper(maxVal: Int){maxCopper.intValue = maxVal}
 
     /**
      * Setter for the character's bonus wealth from the advantage Starting Wealth.
      *
      * @param bonusWealth value to set the bonus to
      */
-    fun setWealthBonus(bonusWealth: Int){wealthBonus.intValue = bonusWealth}
+    open fun setWealthBonus(bonusWealth: Int){wealthBonus.intValue = bonusWealth}
 
     /**
      * Function to run when the user purchases an amount of items for their character.
@@ -85,7 +85,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param equipment piece of equipment to acquire
      * @param quantity amount of the given item to purchase
      */
-    fun buyItem(
+    open fun buyItem(
         equipment: GeneralEquipment,
         quantity: Int
     ){
@@ -122,7 +122,7 @@ class Inventory(val charInstance: BaseCharacter) {
      *
      * @param equipment piece of equipment to remove from the character
      */
-    fun removeItem(equipment: GeneralEquipment){
+    open fun removeItem(equipment: GeneralEquipment){
         //initialize equipment removed
         var checkedItem: GeneralEquipment? = null
 

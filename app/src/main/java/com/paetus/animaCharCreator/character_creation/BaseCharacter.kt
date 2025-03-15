@@ -1,19 +1,15 @@
 package com.paetus.animaCharCreator.character_creation
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
-import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.RaceAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
@@ -52,8 +48,8 @@ open class BaseCharacter{
     open val magic = Magic(charInstance = this)
     open val summoning = Summoning(charInstance = this)
     open val psychic = Psychic(charInstance = this)
-    val advantageRecord = AdvantageRecord(charInstance = this)
-    val inventory = Inventory(charInstance = this)
+    open val advantageRecord = AdvantageRecord(charInstance = this)
+    open val inventory = Inventory(charInstance = this)
 
     open val classes = ClassInstances(charInstance = this)
 
@@ -365,7 +361,7 @@ open class BaseCharacter{
     }
 
     /**
-     * Default constructor for a new chracter.
+     * Default constructor for a new character.
      */
     constructor(){
         objectDB = ObjectDatabase()
@@ -524,7 +520,7 @@ open class BaseCharacter{
             }
 
             //apply primary weapon choice
-            weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.value)
+            weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.intValue)
         }
     }
 

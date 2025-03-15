@@ -153,7 +153,7 @@ class SblPsychic(
         //reset psychic points acquired
         boughtPsyPoints.intValue = 0
 
-        //add psychic points from each levevl
+        //add psychic points from each level
         charInstance.levelLoop{character ->
             boughtPsyPoints.intValue += character.psychic.boughtPsyPoints.intValue
         }
@@ -278,7 +278,7 @@ class SblPsychic(
                     startLevel = charInstance.lvl.intValue,
                     endLevel = 20
                 ){character ->
-                    while(character.psychic.disciplineInvestment.size > 0){
+                    while(character.psychic.disciplineInvestment.isNotEmpty()){
                         val current = character.psychic.disciplineInvestment[0]
                         character.psychic.disciplineInvestment.remove(element = current)
                         removeIllegal(discipline = current)

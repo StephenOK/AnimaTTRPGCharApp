@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance head character object that holds this section
  */
-class AdvantageRecord(
+open class AdvantageRecord(
     private val charInstance: BaseCharacter
 ){
     fun commonAdvantages(): CommonAdvantages{return charInstance.objectDB.commonAdvantages}
@@ -82,7 +82,7 @@ class AdvantageRecord(
      * @param multTaken list of taken options if applicable to the advantage
      * @return either an error message for a failed addition or a null item for a successful addition
      */
-    fun acquireAdvantage(
+    open fun acquireAdvantage(
         advantageBase: Advantage,
         taken: Int?,
         takenCost: Int,
@@ -289,7 +289,7 @@ class AdvantageRecord(
      *
      * @param advantage item to be removed
      */
-    fun removeAdvantage(
+    open fun removeAdvantage(
         advantage: Advantage
     ){
         //search for copy of inputted advantage

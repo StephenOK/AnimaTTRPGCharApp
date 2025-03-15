@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation
 
+import com.paetus.animaCharCreator.character_creation.attributes.advantages.SblAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
@@ -11,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.primary_abiliti
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
+import com.paetus.animaCharCreator.character_creation.equipment.SblInventory
 import java.io.File
 
 /**
@@ -58,9 +60,11 @@ class SblChar(
     override val weaponProficiencies = SblProficiencies(charInstance = this)
     override val ki = SblKi(charInstance = this)
     override val magic = SblMagic(sblChar = this)
-
-    override val psychic = SblPsychic(charInstance = this)
     override val summoning = SblSummoning(charInstance = this)
+    override val psychic = SblPsychic(charInstance = this)
+    override val advantageRecord = SblAdvantages(sblChar = this)
+    override val inventory = SblInventory(sblChar = this)
+
     override val classes = SblClassInstances(charInstance = this)
 
     /**

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import com.google.firebase.crashlytics.ktx.crashlytics
@@ -229,8 +231,15 @@ class MainPageViewModel: ViewModel() {
         buttonName = R.string.deleteLabel,
         failedText = R.string.noCharSelected,
         clickAct = {context, name ->
+            //retrieve the indicated file
+            val file = File("${context.filesDir}/AnimaChars/$name")
+
+            //delete file held in SBL directories
+            if(file.isDirectory)
+                file.listFiles()?.forEach{it.delete()}
+
             //delete the selected file
-            File("${context.filesDir}/AnimaChars/$name").delete()
+            file.delete()
         },
         display = {characterName, setCharacterName ->
             val context = LocalContext.current

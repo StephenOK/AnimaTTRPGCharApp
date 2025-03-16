@@ -237,6 +237,8 @@ class SblChar(
     init{
         //look through each file in the directory
         sourceDIR.listFiles()?.forEach{file ->
+            val level = file.nameWithoutExtension.toInt()
+
             //create a character based on that file data
             val levelChar = BaseCharacter(
                 charFile = file,
@@ -246,7 +248,7 @@ class SblChar(
             )
 
             //set character at the indicated index
-            charRefs[levelChar.lvl.intValue] = levelChar
+            charRefs[level] = levelChar
         }
 
 

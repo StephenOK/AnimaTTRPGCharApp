@@ -333,7 +333,7 @@ private fun CombatItemRow(
                 homePageVM.updateExpenditures()
             },
             emptyFunction = {combatData.setPointsIn(display = "")},
-            refill = {combatItem.getCurrent()},
+            refill = {combatData.getCurrent()},
             modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused) combatData.setLabelDisplay(dpDisplay = focusString)

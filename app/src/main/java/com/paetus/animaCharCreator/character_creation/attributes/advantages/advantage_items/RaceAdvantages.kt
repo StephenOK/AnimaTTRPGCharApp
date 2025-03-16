@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 
@@ -442,9 +441,9 @@ class RaceAdvantages{
                     }
                     else{
                         //remove most recently added discipline, if available
-                        if(charInstance.psychic.disciplineInvestment.isNotEmpty())
-                            charInstance.psychic.updateInvestment(
-                                discipline = charInstance.psychic.disciplineInvestment.last(),
+                        if(character.psychic.disciplineInvestment.isNotEmpty())
+                            character.psychic.updateInvestment(
+                                discipline = character.psychic.disciplineInvestment.last(),
                                 isTaken = false
                             )
                     }

@@ -143,4 +143,5 @@
     <string name = "psyInnateSlotReduction">-points in Psychic Innate Slots are smaller than in a previous level</string>
     <string name = "overPsyPointFailure">-too many Psychic Points have been spent</string>
     <string name = "psyPowerEnhancementReduction">-psychic points spent for enhancing the %s power is smaller than in a previous level</string>
+    <string name = "summoningAbilityReduction">-points spent for Summoning Ability (%s) is smaller than in a previous level</string>
 </resources>

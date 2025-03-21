@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringArrayResource
@@ -16,6 +18,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Sb
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummonAbility
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -117,7 +120,7 @@ class CharacterFragmentViewModel(
      * @param nameIn name to set for the character
      */
     fun setNameInput(nameIn: String){
-        charInstance.charName.value = nameIn
+        charInstance.setName(nameIn)
         _nameInput.update{nameIn}
     }
 
@@ -127,7 +130,7 @@ class CharacterFragmentViewModel(
      * @param expVal number of points to set
      */
     fun setExp(expVal: Int){
-        charInstance.experiencePoints.intValue = expVal
+        charInstance.setExp(newExp = expVal)
         setExp(display = expVal.toString())
     }
 
@@ -270,7 +273,7 @@ class CharacterFragmentViewModel(
      * @param gnosisInput value to set the gnosis to
      */
     fun setGnosisDisplay(gnosisInput: Int){
-        charInstance.gnosis.intValue = gnosisInput
+        charInstance.setGnosis(gnosisInput)
         setGnosisDisplay(display = gnosisInput.toString())
     }
 
@@ -309,6 +312,16 @@ class CharacterFragmentViewModel(
      * @return the character's weight
      */
     fun getCharWeight(): Int{return charInstance.weightIndex.intValue}
+
+    /**
+     * Determines if the character can change their primary characteristic.
+     *
+     * @return true if item is changeable
+     */
+    fun getChangeable(): Boolean{
+        //return true if non-SBL character or SBL character is level 0
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
 
     /**
      * Updates the validation flag for the characteristic bonus.
@@ -535,6 +548,18 @@ class CharacterFragmentViewModel(
             }
         }
 
+        //catch all invalid summoning ability growth
+        charInstance.summoning.allSummoning().forEach{ability ->
+            if(!(ability as SblSummonAbility).legalGrowth()){
+                output.add{
+                    stringResource(
+                        R.string.summoningAbilityReduction,
+                        stringResource(ability.stringRef)
+                    )
+                }
+            }
+        }
+
         //give final output list
         return if(output.isEmpty()) null else output.toList()
     }
@@ -610,7 +635,9 @@ class CharacterFragmentViewModel(
             }
         ),
         weight = 0.6f,
-        detailOpen = {toggleRaceDetailOpen()}
+        detailOpen = {toggleRaceDetailOpen()},
+        isOpenable = {getChangeable()},
+        failedOpen = {context -> Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()}
     )
 
     //set class dropdown data
@@ -652,7 +679,9 @@ class CharacterFragmentViewModel(
             }
         ),
         weight = 1f,
-        detailOpen = {}
+        detailOpen = {},
+        isOpenable = {getLevelChangeable() == null},
+        failedOpen = {toggleFailedLevelChangeOpen()}
     )
 
     //set all dropdown data
@@ -739,11 +768,14 @@ class CharacterFragmentViewModel(
      * @param data item that is used in the dropdown object
      * @param weight size percentile of the dropdown object
      * @param detailOpen function to run on opening this row's details
+     * @param isOpenable determines if the dropdown can be accessed
      */
     class DropdownRowData(
         val data: DropdownData,
         val weight: Float,
-        val detailOpen: () -> Unit
+        val detailOpen: () -> Unit,
+        val isOpenable: @Composable () -> Boolean = {true},
+        val failedOpen: (Context) -> Unit = {}
     )
 
     /**

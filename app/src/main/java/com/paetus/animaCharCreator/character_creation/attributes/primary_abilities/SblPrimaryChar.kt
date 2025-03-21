@@ -17,6 +17,17 @@ class SblPrimaryChar(
     override val charIndex: Int,
     setUpdate: (mod: Int, total: Int) -> Unit
 ): PrimaryCharacteristic(charInstance, advantageCap, charIndex, setUpdate) {
+
+    /**
+     * Sets the base value of the stat.
+     *
+     * @param baseIn value to set the base to
+     */
+    override fun setInput(baseIn: Int) {
+        super.setInput(baseIn)
+        charInstance.charRefs[0]!!.primaryList.allPrimaries()[charIndex].setInput(baseIn)
+    }
+
     /**
      * Sets the character's bonus in this stat from levels.
      *

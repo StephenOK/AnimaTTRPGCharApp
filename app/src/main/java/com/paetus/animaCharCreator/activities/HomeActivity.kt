@@ -856,7 +856,7 @@ class HomeActivity : AppCompatActivity() {
                 file.mkdir()
 
             //write each character's individual levels to their own files
-            charInstance.charRefs.forEach {subChar ->
+            charInstance.levelLoop{subChar ->
                 //get the individual file's location
                 val writeFile = File(file, "${charInstance.charRefs.indexOf(subChar)}")
 
@@ -864,7 +864,7 @@ class HomeActivity : AppCompatActivity() {
                 val saveStream = FileOutputStream(writeFile)
 
                 //get and write character's bytes
-                val charData = charInstance.bytes
+                val charData = subChar.bytes
                 saveStream.write(charData)
                 saveStream.close()
             }

@@ -41,7 +41,7 @@ open class PrimaryCharacteristic(
      *
      * @param baseIn value to set the base to
      */
-    fun setInput(baseIn: Int){
+    open fun setInput(baseIn: Int){
         //set base to 9 if advantage requires it
         if(charInstance.advantageRecord.getAdvantage(
                 "Increase One Characteristic to Nine",

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -173,6 +174,16 @@ class AdvantageFragmentViewModel(
      * @param advantage advantage to display
      */
     fun setDetailItem(advantage: Advantage){_detailItem.update{advantage}}
+
+    /**
+     * Determine whether the character can currently acquire or remove advantages.
+     *
+     * return true if changeable
+     */
+    fun getAdvantageChangeable(): Boolean{
+        //return true for non-SBL characters or level 0 SBL characters
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
 
     /**
      * Attempts to give an advantage to the character.

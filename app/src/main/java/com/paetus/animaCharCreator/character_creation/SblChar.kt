@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation
 
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.SblAdvantages
+import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
@@ -11,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.primary_abiliti
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
+import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummonAbility
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
 import com.paetus.animaCharCreator.character_creation.equipment.SblInventory
 import java.io.File
@@ -68,6 +70,58 @@ class SblChar(
     override val classes = SblClassInstances(charInstance = this)
 
     /**
+     * Sets the character's name value.
+     *
+     * @param newName string to set as the character's name
+     */
+    override fun setName(newName: String) {
+        //set name as normal
+        super.setName(newName)
+
+        //record name in level 0 record
+        charRefs[0]!!.setName(charName.value)
+    }
+
+    /**
+     * Sets the character's experience point value.
+     *
+     * @param newExp value to set as the character's experience points
+     */
+    override fun setExp(newExp: Int) {
+        //set exp as normal
+        super.setExp(newExp)
+
+        //record exp in level 0 record
+        charRefs[0]!!.setExp(experiencePoints.intValue)
+    }
+
+    /**
+     * Changes the character's gender depending on the input
+     *
+     * @param gender true if male, false if female
+     */
+    override fun setGender(gender: Boolean) {
+        //set gender as normal
+        super.setGender(gender)
+
+        //record gender in level 0 record
+        charRefs[0]!!.setGender(isMale.value)
+    }
+
+    /**
+     * Sets the character's race to the inputted item.
+     *
+     * @param raceIn new race to set the character to
+     */
+    override fun setOwnRace(raceIn: List<RacialAdvantage>) {
+        //set race as normal
+        super.setOwnRace(raceIn)
+
+        //record race in level 0 record
+        charRefs[0]!!.setOwnRace(ownRace.value)
+    }
+
+    /**
      * Updates the character's level and any associated values.
      *
      * @param levNum value to set the character's level to
@@ -104,6 +158,9 @@ class SblChar(
 
         //update psychic abilities
         psychic.levelUpdate()
+
+        //update summoning abilities
+        summoning.allSummoning().forEach{(it as SblSummonAbility).levelUpdate()}
 
         //update dev points spent
         updateTotalSpent()
@@ -174,6 +231,32 @@ class SblChar(
         }
 
         spentTotal.intValue += classes.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
+    }
+
+    /**
+     * Sets the character's appearance to the inputted item, if able.
+     *
+     * @param newAppearance value to attempt to set the character's appearance to
+     */
+    override fun setAppearance(newAppearance: Int) {
+        //set appearance as normal
+        super.setAppearance(newAppearance)
+
+        //record appearance in level 0 record
+        charRefs[0]!!.setAppearance(appearance.intValue)
+    }
+
+    /**
+     * Set the character's gnosis value.
+     *
+     * @param newGnosis value to set to the character's gnosis
+     */
+    override fun setGnosis(newGnosis: Int) {
+        //set gnosis as normal
+        super.setGnosis(newGnosis)
+
+        //record gnosis in level 0 record
+        charRefs[0]!!.setGnosis(gnosis.intValue)
     }
 
     /**
@@ -251,8 +334,6 @@ class SblChar(
             charRefs[level] = levelChar
         }
 
-
-
         //for each character level record
         charRefs.forEach{character ->
             if(character != null){
@@ -265,5 +346,58 @@ class SblChar(
                 }
             }
         }
+
+        //set name, exp, race, gender, appearance, and gnosis
+        super.setName(charRefs[0]!!.charName.value)
+        super.setExp(charRefs[0]!!.experiencePoints.intValue)
+        super.setOwnRace(charRefs[0]!!.ownRace.value)
+        super.setGender(charRefs[0]!!.isMale.value)
+        super.setAppearance(charRefs[0]!!.appearance.intValue)
+        super.setGnosis(charRefs[0]!!.gnosis.intValue)
+
+        //set primary items
+        charRefs[0]!!.primaryList.allPrimaries().forEach{primary ->
+            primaryList.allPrimaries()[primary.charIndex].setInput(primary.inputValue.intValue)
+        }
+
+        //set primary weapon
+        weaponProficiencies.setPrimaryWeapon(charRefs[0]!!.weaponProficiencies.primaryWeapon.intValue)
+
+        //set advantages
+        charRefs[0]!!.advantageRecord.takenAdvantages.forEach{
+            advantageRecord.takenAdvantages.add(it)
+        }
+
+        //set inventory items
+        charRefs[0]!!.inventory.boughtGoods.forEach{(item, amount) ->
+            inventory.boughtGoods.plus(Pair(item, amount))
+        }
+
+        //set the level the character is starting at
+        setLvl(startLevel())
+    }
+
+    /**
+     * Determine the starting level for a loaded character.
+     *
+     * @return level to open the character at
+     */
+    private fun startLevel(): Int{
+        //run through characters up to 18
+        for(index in 0..19){
+            //return index if no level record two levels higher
+            if(charRefs[index + 1] == null)
+                return index
+
+            //return index if all points in this level are not spent
+            when(index){
+                0 -> {if(getLevelPoints(0) < 400) return 0}
+                1 -> {if(getLevelPoints(1) < 200) return 1}
+                else -> {if(getLevelPoints(index) < 100) return index}
+            }
+        }
+
+        //return final level option
+        return 20
     }
 }

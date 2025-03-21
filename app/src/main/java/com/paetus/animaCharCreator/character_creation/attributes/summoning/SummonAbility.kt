@@ -32,7 +32,7 @@ open class SummonAbility(private val charInstance: BaseCharacter){
      *
      * @param pointPurchase number of points to buy for this section
      */
-    fun setBuyVal(pointPurchase: Int){
+    open fun setBuyVal(pointPurchase: Int){
         buyVal.intValue = pointPurchase
         charInstance.updateTotalSpent()
         updateTotal()

@@ -539,8 +539,7 @@ class ModuleFragmentViewModel(
 
         //update weapon archetype rows' taken statuses
         allWeapons.forEach{
-            if(it.weaponArchetype != null)
-                it.weaponArchetype.setChecked(weaponProficiencies.takenModules.contains(it.weaponArchetype.weapons))
+            it.weaponArchetype?.setChecked(weaponProficiencies.takenModules.contains(it.weaponArchetype.weapons))
         }
 
         //update archetype rows' individually taken checkboxes

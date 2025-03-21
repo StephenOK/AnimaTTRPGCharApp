@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.character_creation.attributes.summoning
 
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.SblChar
 
 /**
@@ -8,36 +9,52 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  * @param charInstance object that holds all of the character's data
  */
 class SblSummoning(val charInstance: SblChar): Summoning(charInstance){
-    override val summon = SblSummonAbility(charInstance = charInstance, summoningIndex = 0)
-    override val control = SblSummonAbility(charInstance = charInstance, summoningIndex = 1)
-    override val bind = SblSummonAbility(charInstance = charInstance, summoningIndex = 2)
-    override val banish = SblSummonAbility(charInstance = charInstance, summoningIndex = 3)
+    override val summon = SblSummonAbility(
+        charInstance = charInstance,
+        summoningIndex = 0,
+        stringRef = R.string.summonTitle
+    )
+    override val control = SblSummonAbility(
+        charInstance = charInstance,
+        summoningIndex = 1,
+        stringRef = R.string.controlTitle
+    )
+    override val bind = SblSummonAbility(
+        charInstance = charInstance,
+        summoningIndex = 2,
+        stringRef = R.string.bindTitle
+    )
+    override val banish = SblSummonAbility(
+        charInstance = charInstance,
+        summoningIndex = 3,
+        stringRef = R.string.banishTitle
+    )
 
     /**
      * Gets the class's summoning DP cost.
      */
     override fun summonCost(): Int {
-        return charInstance.summoning.summonCost()
+        return charInstance.getCharAtLevel().summoning.summonCost()
     }
 
     /**
      * Gets the class's control DP cost.
      */
     override fun controlCost(): Int {
-        return charInstance.summoning.controlCost()
+        return charInstance.getCharAtLevel().summoning.controlCost()
     }
 
     /**
      * Gets the class's bind DP cost.
      */
     override fun bindCost(): Int {
-        return charInstance.summoning.bindCost()
+        return charInstance.getCharAtLevel().summoning.bindCost()
     }
 
     /**
      * Gets the class's banish DP cost.
      */
     override fun banishCost(): Int {
-        return charInstance.summoning.banishCost()
+        return charInstance.getCharAtLevel().summoning.banishCost()
     }
 }

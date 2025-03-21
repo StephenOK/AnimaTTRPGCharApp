@@ -76,13 +76,6 @@ fun CharacterPageFragment(
 
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {dropdown ->
-                    //get openable state of this dropdown
-                    val isOpenable =
-                        if(dropdown.data.nameRef == R.string.levelText)
-                            charFragVM.getLevelChangeable() == null
-                        else
-                            true
-
                     //get which options qualify for dropdown display
                     val qualifyOption =
                         if(dropdown.data.nameRef == R.string.levelText)
@@ -101,8 +94,8 @@ fun CharacterPageFragment(
                             data = dropdown.data,
                             modifier = Modifier
                                 .weight(dropdown.weight),
-                            isOpenable = isOpenable,
-                            unopenFunc = {charFragVM.toggleFailedLevelChangeOpen()},
+                            isOpenable = dropdown.isOpenable(),
+                            unopenFunc = {dropdown.failedOpen(context)},
                             qualifyOption = qualifyOption,
                             itemSelection = {
                                 maxNumVM.updateMaximums()
@@ -171,7 +164,7 @@ fun CharacterPageFragment(
                             AnimatedContent(
                                 targetState = stringResource(id = charFragVM.genderString.collectAsState().value),
                                 modifier = Modifier
-                                    .clickable { charFragVM.toggleGender() }
+                                    .clickable {charFragVM.toggleGender()}
                                     .weight(0.5f),
                                 transitionSpec = textScrollUp,
                                 label = "genderDisplay"
@@ -414,6 +407,9 @@ private fun PrimaryRow(
     primeItem: CharacterFragmentViewModel.PrimeCharacteristicData,
     charFragVM: CharacterFragmentViewModel
 ){
+    //get current context
+    val context = LocalContext.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -428,9 +424,12 @@ private fun PrimaryRow(
         NumberInput(
             inputText = primeItem.input.collectAsState().value,
             inputFunction = {
-                //change input and other necessary items if in legal range
-                if(it.toInt() in 1..20)
+                //change input and other necessary items if able and in legal range
+                if(charFragVM.getChangeable() && it.toInt() in 1..20)
                     primeItem.setInput(statVal = it.toInt())
+                //notify user of failure do to not currently changeable
+                else if(!charFragVM.getChangeable())
+                    Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
             },
             emptyFunction = {primeItem.setInput(display = "")},
             refill = {primeItem.currentInput()},

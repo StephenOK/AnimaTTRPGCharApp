@@ -70,4 +70,6 @@
 
     <string name = "nameCustomSecondary">Please name your Secondary Ability!</string>
     <string name = "duplicateCustomSecondary">There already exists a custom Secondary Ability with that name!</string>
+
+    <string name = "changeAtZero">Can only change this item at Level 0!</string>
 </resources>

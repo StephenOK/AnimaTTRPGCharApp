@@ -93,11 +93,25 @@ open class BaseCharacter{
     val gnosis = mutableIntStateOf(value = 0)
 
     /**
+     * Sets the character's name value.
+     *
+     * @param newName string to set as the character's name
+     */
+    open fun setName(newName: String){charName.value = newName}
+
+    /**
+     * Sets the character's experience point value.
+     *
+     * @param newExp value to set as the character's experience points
+     */
+    open fun setExp(newExp: Int){experiencePoints.intValue = newExp}
+
+    /**
      * Changes the character's gender depending on the input
      *
      * @param gender true if male, false if female
      */
-    fun setGender(gender: Boolean){
+    open fun setGender(gender: Boolean){
         //remove previous buff if character is a duk'zarist
         if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = -5)
@@ -119,7 +133,7 @@ open class BaseCharacter{
      *
      * @param raceIn new race to set the character to
      */
-    private fun setOwnRace(raceIn: List<RacialAdvantage>) {
+    open fun setOwnRace(raceIn: List<RacialAdvantage>) {
         //remove previous race buffs
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
@@ -290,7 +304,7 @@ open class BaseCharacter{
      *
      * @param newAppearance value to attempt to set the character's appearance to
      */
-    fun setAppearance(newAppearance: Int){
+    open fun setAppearance(newAppearance: Int){
         //set appearance to 2 if character has unattractive disadvantage
         if(advantageRecord.getAdvantage(advantageString = "unattractive") != null)
             appearance.intValue = 2
@@ -299,6 +313,13 @@ open class BaseCharacter{
         else if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
             appearance.intValue = newAppearance
     }
+
+    /**
+     * Set the character's gnosis value.
+     *
+     * @param newGnosis value to set to the character's gnosis
+     */
+    open fun setGnosis(newGnosis: Int){gnosis.intValue = newGnosis}
 
     /**
      * Sets the character's movement distance depending on the inputted value.
@@ -423,10 +444,10 @@ open class BaseCharacter{
         rules.loadRules(fileReader = fileReader)
 
         //get the character's name
-        charName.value = fileReader.readLine()
+        setName(fileReader.readLine())
 
         //get the character's experience point amount
-        experiencePoints.intValue = fileReader.readLine().toInt()
+        setExp(fileReader.readLine().toInt())
 
         //get the character's gender
         setGender(gender = fileReader.readLine().toBoolean())
@@ -481,6 +502,9 @@ open class BaseCharacter{
 
         //load character's inventory
         inventory.loadInventory(fileReader = fileReader)
+
+        //load character's gnosis
+        setGnosis(newGnosis = fileReader.readLine().toInt())
 
         //end file reading
         restoreChar.close()
@@ -587,6 +611,9 @@ open class BaseCharacter{
 
             //write inventory data
             inventory.writeInventory(byteArray = byteArray)
+
+            //write gnosis data
+            writeDataTo(writer = byteArray, input = gnosis.intValue)
 
             //end writing data
             byteArray.close()

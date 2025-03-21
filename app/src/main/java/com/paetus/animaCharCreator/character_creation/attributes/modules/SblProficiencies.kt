@@ -26,8 +26,8 @@ class SblProficiencies(
             super.setPrimaryWeapon(weaponName = weaponName)
 
             //apply change to all available character level records
-            charInstance.levelLoop(endLevel = 20) {
-                it.weaponProficiencies.setPrimaryWeapon(weaponName = weaponName)
+            charInstance.levelLoop(endLevel = 20) {character ->
+                character.weaponProficiencies.setPrimaryWeapon(weaponName = weaponName)
             }
         }
 

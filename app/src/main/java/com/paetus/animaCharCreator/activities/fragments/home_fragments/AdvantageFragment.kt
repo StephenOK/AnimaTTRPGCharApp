@@ -299,6 +299,9 @@ private fun AdvantageRow(
     buttonIcon: @Composable () -> Unit,
     buttonAction: (() -> Unit)?,
 ){
+    //get current context
+    val context = LocalContext.current
+
     //initialize the advantage's name with potential additional information
     val nameString =
         if(takenAddition != null) stringResource(id = advantage.name) + takenAddition
@@ -312,7 +315,14 @@ private fun AdvantageRow(
         if(buttonAction != null) {
             //implement button with given image and function
             Button(
-                onClick = {buttonAction()},
+                onClick = {
+                    //perform action if can change ability list
+                    if(advantageFragVM.getAdvantageChangeable())
+                        buttonAction()
+                    //notify user of failed change
+                    else
+                        Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
+                },
                 modifier = Modifier
                     .weight(0.25f)
             ){buttonIcon()}

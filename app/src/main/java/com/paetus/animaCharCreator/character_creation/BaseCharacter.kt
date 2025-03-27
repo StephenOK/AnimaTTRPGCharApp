@@ -537,6 +537,12 @@ open class BaseCharacter{
             for (index in 0..4)
                 classes.freelancerSelection[index] = newHost.classes.freelancerSelection[index]
 
+            //apply paladin magic selection
+            if(!newHost.classes.magPaladin.value)
+                classes.toggleMagPaladin()
+            if(classes.ownClass.intValue !in 3..4)
+                classes.paladinDeactivate()
+
             //apply secondary natural bonuses
             newHost.secondaryList.getAllSecondaries().forEach {
                 it as SblSecondaryCharacteristic
@@ -544,7 +550,7 @@ open class BaseCharacter{
             }
 
             //apply primary weapon choice
-            weaponProficiencies.setPrimaryWeapon(weaponProficiencies.primaryWeapon.intValue)
+            weaponProficiencies.setPrimaryWeapon(newHost.weaponProficiencies.primaryWeapon.intValue)
         }
     }
 

@@ -279,7 +279,7 @@ class SblChar(
                     record.summoning.calculateSpent() + record.weaponProficiencies.calcPointsInMag() +
                     record.psychic.calculateSpent() + record.weaponProficiencies.calcPointsInPsy() +
                     (record.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[record.classes.ownClass.intValue].lifePointMultiple) +
-                    record.secondaryList.calculateSpent()
+                    record.secondaryList.calculateSpent() + classes.getClassPointsByLevel(baseLevel = level)
         //otherwise return 0
         else 0
     }
@@ -355,6 +355,17 @@ class SblChar(
         super.setAppearance(charRefs[0]!!.appearance.intValue)
         super.setGnosis(charRefs[0]!!.gnosis.intValue)
 
+        //set initial class
+        classes.setOwnClass(charRefs[0]!!.classes.ownClass.intValue)
+
+        //set freelancer selection options
+        for(index in 0..4){
+            classes.setSelection(
+                selectionIndex = index,
+                secondarySelection = charRefs[0]!!.classes.freelancerSelection[index]
+            )
+        }
+
         //set primary items
         charRefs[0]!!.primaryList.allPrimaries().forEach{primary ->
             primaryList.allPrimaries()[primary.charIndex].setInput(primary.inputValue.intValue)
@@ -391,9 +402,9 @@ class SblChar(
 
             //return index if all points in this level are not spent
             when(index){
-                0 -> {if(getLevelPoints(0) < 400) return 0}
-                1 -> {if(getLevelPoints(1) < 200) return 1}
-                else -> {if(getLevelPoints(index) < 100) return index}
+                0 -> {if(getLevelPoints(0) != 400) return 0}
+                1 -> {if(getLevelPoints(1) != 200) return 1}
+                else -> {if(getLevelPoints(index) != 100) return index}
             }
         }
 

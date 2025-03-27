@@ -57,7 +57,13 @@ class CharacterFragmentViewModel(
     val magPaladinOpen = _magPaladinOpen.asStateFlow()
 
     //initialize magic paladin checkbox input
-    private val _magPaladin = MutableStateFlow(value = charInstance.classes.magPaladin.value)
+    private val _magPaladin = MutableStateFlow(
+        value =
+            if(charInstance is SblChar)
+                charInstance.getCharAtLevel().classes.magPaladin.value
+            else
+                charInstance.classes.magPaladin.value
+    )
     val magPaladin = _magPaladin.asStateFlow()
 
     //initialize the character's size category display
@@ -180,8 +186,13 @@ class CharacterFragmentViewModel(
      * @return true if character is a paladin or dark paladin
      */
     private fun getPaladin(): Boolean{
-        return charInstance.classes.ownClass.intValue == 3 ||
-                charInstance.classes.ownClass.intValue == 4
+        //get the class to check
+        val checkedClass = if(charInstance is SblChar) charInstance.getCharAtLevel().classes
+            else charInstance.classes
+
+        //determine that the class is a paladin class
+        return checkedClass.ownClass.intValue == 3 ||
+                checkedClass.ownClass.intValue == 4
     }
 
     /**
@@ -422,6 +433,10 @@ class CharacterFragmentViewModel(
                 output.add{stringResource(R.string.invalidPrimaryBonus)}
         }
 
+        //notify of illegal life multiple growth
+        if(!charInstance.combat.validLifeGrowth())
+            output.add{stringResource(R.string.lifeMultReduction)}
+
         //notify of bad combat ability point distribution
         if(!charInstance.combat.validAttackDodgeBlock())
             output.add{stringResource(id = R.string.combatPointMisuse)}
@@ -645,7 +660,11 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.classLabel,
             optionsRef = R.array.classArray,
-            initialIndex = charInstance.classes.ownClass.intValue,
+            initialIndex =
+                if(charInstance is SblChar)
+                    charInstance.getCharAtLevel().classes.ownClass.intValue
+                else
+                    charInstance.classes.ownClass.intValue,
             onChange = {
                 charInstance.classes.setOwnClass(classIndex = it)
                 setMagPaladinOpen()
@@ -891,6 +910,7 @@ class CharacterFragmentViewModel(
      * Refreshes items on returning to this page.
      */
     fun refreshPage(){
+        setMagPaladinOpen()
         setExp(display = charInstance.experiencePoints.intValue.toString())
         primaryDataList.forEach{primary -> primary.refreshItem()}
         setSizeInput()

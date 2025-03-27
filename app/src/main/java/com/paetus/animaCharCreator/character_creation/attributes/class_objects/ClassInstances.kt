@@ -136,55 +136,63 @@ open class ClassInstances(
     /**
      * Toggles the user's selection for their paladin boon.
      */
-    fun toggleMagPaladin(){
-        //swap character's selection
+    open fun toggleMagPaladin(){
+        //remove paladin bonus
+        paladinDeactivate()
+
+        //swap paladin magic selection
         magPaladin.value = !magPaladin.value
 
-        //boon items for paladins
-        if(ownClass.intValue == 3){
-            //grant magic options
-            if(magPaladin.value){
-                //remove composure bonus
-                charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        //add paladin bonus
+        paladinActivate()
+    }
 
-                //grant zeon and banish points
-                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+    /**
+     * Function to run when the character takes a paladin level.
+     */
+    fun paladinActivate(){
+        //if character is taking magic abilities
+        if(magPaladin.value){
+            //add 20 zeon points no matter the specific class
+            charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+
+            //add banish for paladins
+            if(ownClass.intValue == 3)
                 charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 10)
-            }
-
-            //grant secondary boon
-            else {
-                //remove zeon and banish points
-                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
-
-                //grant composure bonus
-                charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
-            }
-        }
-
-        //boon items for dark paladins
-        else{
-            //grant magic options
-            if(magPaladin.value){
-                //remove withstand pain bonus
-                charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
-
-                //grant zeon and control points
-                charInstance.magic.setZeonPerLevel(lvlBonus = 20)
+            //add control for dark paladins
+            else if (ownClass.intValue == 4)
                 charInstance.summoning.control.setPointsPerLevel(lvlBonus = 10)
-            }
-
-            //grant secondary boon
-            else {
-                //remove zeon and control points
-                charInstance.magic.setZeonPerLevel(lvlBonus = 0)
-                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
-
-                //grant withstand pain bonus
-                charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
-            }
         }
+        //add composure for paladins
+        else if(ownClass.intValue == 3)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+        //add withstand pain for dark paladins
+        else if (ownClass.intValue == 4)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+    }
+
+    /**
+     * Function to run when the character removes a paladin level.
+     */
+    fun paladinDeactivate(){
+        //if the character had magic abilities
+        if(magPaladin.value){
+            //remove zeon points from class
+            charInstance.magic.setZeonPerLevel(lvlBonus = 0)
+
+            //remove banish points from paladins
+            if(ownClass.intValue == 3)
+                charInstance.summoning.banish.setPointsPerLevel(lvlBonus = 0)
+            //remove control points from dark paladins
+            else if (ownClass.intValue == 4)
+                charInstance.summoning.control.setPointsPerLevel(lvlBonus = 0)
+        }
+        //remove composure points from paladins
+        else if(ownClass.intValue == 3)
+            charInstance.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        //remove withstand points from dark paladins
+        else if (ownClass.intValue == 4)
+            charInstance.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
     }
 
     /**
@@ -198,7 +206,8 @@ open class ClassInstances(
         writeVersion: Int
     ){
         //get paladin's selection
-        magPaladin.value = fileReader.readLine().toBoolean()
+        if(!fileReader.readLine().toBoolean())
+            toggleMagPaladin()
 
         //get the correct number of loops for the app version
         val loopNum =

@@ -126,6 +126,7 @@
     <string name = "sectionCapBreach">-limit for the character\'s %s Abilities has been passed</string>
     <string name = "invalidPrimaryBonus">-too many points added as bonus to primary characteristics</string>
     <string name = "primaryBonusPointReduction">-a primary characteristic\'s bonus (%s) is smaller than in a previous level</string>
+    <string name = "lifeMultReduction">-life multiples taken are reduced in this level</string>
     <string name = "combatPointMisuse">-points in combat abilities have not been appropriately spent</string>
     <string name = "combatInputPointReduction">-a combat item\'s value (%s) is smaller than in a previous level</string>
     <string name = "secondaryInputPointReduction">-a secondary item\'s value (%s) is smaller than in a previous level</string>

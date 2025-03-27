@@ -135,4 +135,13 @@ class SblCombatAbilities(
             20 + classInitiative + charInstance.primaryList.dex.outputMod.intValue +
                     charInstance.primaryList.agi.outputMod.intValue + specInitiative.intValue
     }
+
+    /**
+     * Get whether life point multiples have been acquired legally.
+     *
+     * @return true if valid expenditure made
+     */
+    fun validLifeGrowth(): Boolean{
+        return charInstance.getCharAtLevel().combat.lifeMultsTaken.intValue >= 0
+    }
 }

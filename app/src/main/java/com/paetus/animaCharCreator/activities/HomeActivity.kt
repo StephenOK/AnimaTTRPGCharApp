@@ -856,7 +856,9 @@ class HomeActivity : AppCompatActivity() {
                 file.mkdir()
 
             //write each character's individual levels to their own files
-            charInstance.levelLoop{subChar ->
+            charInstance.levelLoop(
+                endLevel = 20
+            ){subChar ->
                 //get the individual file's location
                 val writeFile = File(file, "${charInstance.charRefs.indexOf(subChar)}")
 

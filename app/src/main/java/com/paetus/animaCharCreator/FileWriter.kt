@@ -13,12 +13,22 @@ fun writeDataTo(
     writer: ByteArrayOutputStream,
     input: Any?
 ){
-    //write the data to the output stream
-    writer.write(
-        """$input""".toByteArray(StandardCharsets.UTF_8),
-        0,
-        """$input""".toByteArray(StandardCharsets.UTF_8).size
-    )
+    //catch negative inputs and record them as 0s instead
+    if(input is Int && input < 0){
+        writer.write(
+            """0""".toByteArray(StandardCharsets.UTF_8),
+            0,
+            """0""".toByteArray(StandardCharsets.UTF_8).size
+        )
+    }
+    else {
+        //write the data to the output stream
+        writer.write(
+            """$input""".toByteArray(StandardCharsets.UTF_8),
+            0,
+            """$input""".toByteArray(StandardCharsets.UTF_8).size
+        )
+    }
 
     //delineate data with a newline character
     writer.write(

@@ -204,13 +204,8 @@ class ClassRecord{
             //apply cost reduction to withstand pain
             character.secondaryList.resistPain.setDevelopmentDeduction(1)
 
-            //apply magic abilities if chosen
-            if(character.classes.magPaladin.value){
-                character.magic.setZeonPerLevel(lvlBonus = 20)
-                character.summoning.banish.setPointsPerLevel(lvlBonus = 10)
-            }
-            //otherwise add composure class bonuses
-            else character.secondaryList.composure.setClassPointsPerLevel(classBonus = 10)
+            //apply paladin buffs
+            character.classes.paladinActivate()
         }
     ) {character ->
         //remove combat class bonus
@@ -225,13 +220,8 @@ class ClassRecord{
         //remove cost reduction to withstand pain
         character.secondaryList.resistPain.setDevelopmentDeduction(dpDeduction = -1)
 
-        //remove any applied magic ability
-        if (character.classes.magPaladin.value) {
-            character.magic.setZeonPerLevel(lvlBonus = 0)
-            character.summoning.banish.setPointsPerLevel(lvlBonus = 0)
-        }
-        //if no magic abilities, remove composure class bonus
-        else character.secondaryList.composure.setClassPointsPerLevel(classBonus = 0)
+        //remove paladin buffs
+        character.classes.paladinDeactivate()
     }
 
     private val darkPaladin = CharClass(
@@ -295,14 +285,8 @@ class ClassRecord{
             //reduce composure's cost
             character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = 1)
 
-            //apply class magic abilities, if chosen
-            if(character.classes.magPaladin.value){
-                character.magic.setZeonPerLevel(lvlBonus = 20)
-                character.summoning.control.setPointsPerLevel(lvlBonus = 10)
-            }
-            //if not, apply withstand pain class bonus
-            else
-                character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 10)
+            //apply dark paladin bonuses
+            character.classes.paladinActivate()
         }
     ) {character ->
         //remove combat class bonuses
@@ -318,14 +302,8 @@ class ClassRecord{
         //remove composure cost reduction
         character.secondaryList.composure.setDevelopmentDeduction(dpDeduction = -1)
 
-        //remove any applied magic abilities
-        if (character.classes.magPaladin.value) {
-            character.magic.setZeonPerLevel(lvlBonus = 0)
-            character.summoning.control.setPointsPerLevel(lvlBonus = 0)
-        }
-        //otherwise, remove withstand pain class bonus
-        else
-            character.secondaryList.resistPain.setClassPointsPerLevel(classBonus = 0)
+        //remove dark paladin abilities
+        character.classes.paladinDeactivate()
     }
 
     private val weaponMaster = CharClass(

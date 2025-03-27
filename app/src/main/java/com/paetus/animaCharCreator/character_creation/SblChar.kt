@@ -1,16 +1,22 @@
 package com.paetus.animaCharCreator.character_creation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.SblAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummonAbility
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummoning
@@ -315,6 +321,219 @@ class SblChar(
     }
 
     /**
+     * Determine that the character is allowed to change its level.
+     *
+     * @return list of error strings that would prevent a change in level
+     */
+    fun levelChangeLegal(): List<@Composable () -> String>{
+        //initialize final result
+        val output = mutableListOf<@Composable () -> String>()
+
+        //determine if DP spent appropriately
+        if(spentTotal.intValue != devPT.intValue)
+            output.add{
+                //add either indicator of overspent DP
+                if (spentTotal.intValue > devPT.intValue) {
+                    stringResource(R.string.overDpFailure)
+                }
+                //or indicator of underspent DP
+                else {
+                    stringResource(R.string.underDpFailure)
+                }
+            }
+
+        //determine if combat max maintained
+        if(ptInCombat.intValue > maxCombatDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.combatLabel)
+                )
+            }
+
+        //determine if magic max maintained
+        if(ptInMag.intValue > maxMagDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.magicLabel)
+                )
+            }
+
+        //determine if psychic max maintained
+        if(ptInPsy.intValue > maxPsyDP.intValue)
+            output.add{
+                stringResource(
+                    R.string.sectionCapBreach,
+                    stringResource(R.string.psychicLabel)
+                )
+            }
+
+        //check each primary characteristic
+        primaryList.allPrimaries().forEach{
+            if(!(it as SblPrimaryChar).validGrowth())
+                //if growth is not logical, notify of error in this stat
+                output.add {
+                    stringResource(
+                        R.string.primaryBonusPointReduction,
+                        stringArrayResource(id = R.array.primaryCharArray)[it.charIndex]
+                    )
+                }
+        }
+
+        //notify of too many primary bonus points added
+        if(primaryList.getPrimaryBonusTotal() > lvl.intValue/2)
+            output.add{stringResource(R.string.invalidPrimaryBonus)}
+
+        //notify of illegal life multiple growth
+        if(!combat.validLifeGrowth())
+            output.add{stringResource(R.string.lifeMultReduction)}
+
+        //notify of bad combat ability point distribution
+        if(!combat.validAttackDodgeBlock())
+            output.add{stringResource(id = R.string.combatPointMisuse)}
+
+        //determine if points removed from combat items
+        combat.allAbilities().forEach{
+            if(!(it as SblCombatItem).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.combatInputPointReduction,
+                        stringResource(it.itemLabel)
+                    )
+                }
+        }
+
+        //determine that no points have been removed from secondary items
+        secondaryList.getAllSecondaries().forEach{
+            if(!(it as SblSecondaryCharacteristic).validGrowth())
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputPointReduction,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
+
+            //determine that the secondary item has a legal minimum input
+            if(it.pointsApplied.intValue in 1..4)
+                output.add{
+                    stringResource(
+                        R.string.secondaryInputTooFewPoints,
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                    )
+                }
+        }
+
+        //determine that all natural bonuses have been distributed
+        if(secondaryList.countNatBonuses() < lvl.intValue)
+            output.add{
+                stringResource(R.string.natBonusNotDistributed)
+            }
+
+        //look through each ki stat
+        ki.allKiStats().forEach{kiStat ->
+            //check for valid point growth
+            if(!(kiStat as SblKiStat).validPointGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiPointReduction,
+                        stringArrayResource(id = R.array.primaryCharArray)[
+                            //get exact index number if not POW or WP
+                            if(kiStat.kiIndex <  4)
+                                kiStat.kiIndex
+                            //correct index to get proper name
+                            else
+                                kiStat.kiIndex + 1
+                        ]
+                    )
+                }
+
+            //check for valid accumulation growth
+            if(!kiStat.validAccGrowth())
+                output.add{
+                    stringResource(
+                        R.string.kiAccReduction,
+                        stringArrayResource(id = R.array.primaryCharArray)[
+                            //get exact index number if not POW or WP
+                            if(kiStat.kiIndex <  4)
+                                kiStat.kiIndex
+                            //correct index to get proper name
+                            else
+                                kiStat.kiIndex + 1
+                        ]
+                    )
+                }
+        }
+
+        //catch invalid zeon point growth
+        if(!magic.validPointGrowth())
+            output.add{stringResource(R.string.zeonPointReduction)}
+
+        //catch invalid zeon accumulation growth
+        if(!magic.validAccGrowth())
+            output.add{stringResource(R.string.zeonAccReduction)}
+
+        //catch invalid magic projection growth
+        if(!magic.validProjGrowth())
+            output.add{stringResource(R.string.zeonProjReduction)}
+
+        //catch invalid book level growth
+        magic.retrieveBooks().forEach{
+            if(!it.validBookGrowth())
+                output.add{
+                    stringResource(
+                        R.string.bookLevelReduction,
+                        stringArrayResource(R.array.elementList)[magic.retrieveBooks().indexOf(it)]
+                    )
+                }
+        }
+
+        //catch invalid psychic potential growth
+        if(!psychic.validPsyPotentialGrowth())
+            output.add{stringResource(R.string.psychicPotentialReduction)}
+
+        //catch invalid psychic point growth
+        if(!psychic.validPsyPointGrowth())
+            output.add{stringResource(R.string.psychicPointReduction)}
+
+        //catch invalid psychic projection growth
+        if(!psychic.validPsyProjGrowth())
+            output.add{stringResource(R.string.psychicProjectionReduction)}
+
+        //catch invalid psychic innate slot growth
+        if(!psychic.validInnateSlots())
+            output.add{stringResource(R.string.psyInnateSlotReduction)}
+
+        //catch invalid psychic points spent
+        if(psychic.getFreePsyPoints() < 0)
+            output.add{stringResource(R.string.overPsyPointFailure)}
+
+        //catch all invalid psychic power enhancement growth
+        psychic.findIllegalEnhancement().forEach{power ->
+            output.add{
+                stringResource(
+                    R.string.psyPowerEnhancementReduction,
+                    stringArrayResource(R.array.powerNames)[power.name]
+                )
+            }
+        }
+
+        //catch all invalid summoning ability growth
+        summoning.allSummoning().forEach{ability ->
+            if(!(ability as SblSummonAbility).legalGrowth()){
+                output.add{
+                    stringResource(
+                        R.string.summoningAbilityReduction,
+                        stringResource(ability.stringRef)
+                    )
+                }
+            }
+        }
+
+        return output
+    }
+
+    /**
      * Initialize the SBL character.
      */
     init{
@@ -400,11 +619,14 @@ class SblChar(
             if(charRefs[index + 1] == null)
                 return index
 
+            //set to the indicated level for validation
+            setLvl(index)
+
             //return index if all points in this level are not spent
             when(index){
-                0 -> {if(getLevelPoints(0) != 400) return 0}
-                1 -> {if(getLevelPoints(1) != 200) return 1}
-                else -> {if(getLevelPoints(index) != 100) return index}
+                0 -> {if(getLevelPoints(0) != 400 && !levelChangeLegal().isEmpty()) return 0}
+                1 -> {if(getLevelPoints(1) != 200 && !levelChangeLegal().isEmpty()) return 1}
+                else -> {if(getLevelPoints(index) != 100 && !levelChangeLegal().isEmpty()) return index}
             }
         }
 

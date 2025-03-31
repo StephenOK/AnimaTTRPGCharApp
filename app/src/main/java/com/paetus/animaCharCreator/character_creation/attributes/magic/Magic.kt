@@ -292,12 +292,12 @@ open class Magic(val charInstance: BaseCharacter){
      */
     fun setMagicLevelMax(){
         magicLevelMax.intValue = when(charInstance.primaryList.int.total.intValue) {
+            in 1..6 -> 0
             in 6..10 -> (charInstance.primaryList.int.total.intValue - 5) * 10
             11 -> 75
             12 -> 100
             13 -> 150
-            in 14..20 -> (charInstance.primaryList.int.total.intValue - 12)* 100
-            else -> 0
+            else -> (charInstance.primaryList.int.total.intValue - 12)* 100
         }
     }
 
@@ -313,6 +313,13 @@ open class Magic(val charInstance: BaseCharacter){
             magicLevelSpent.intValue += book.getMagLevels()
         }
     }
+
+    /**
+     * Check that magic levels spent have not exceeded the maximum cap.
+     *
+     * @return true if levels spent less than or equal to maximum levels
+     */
+    fun legalMagLevels(): Boolean{return magicLevelSpent.intValue <= magicLevelMax.intValue}
 
     /**
      * Determines if the character possesses the given spell or a free spell of equivalent element

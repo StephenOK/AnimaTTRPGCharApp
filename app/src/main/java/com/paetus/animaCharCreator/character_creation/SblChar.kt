@@ -488,6 +488,10 @@ class SblChar(
                 }
         }
 
+        //catch book levels spent maximum exceeded
+        if(!magic.legalMagLevels())
+            output.add{stringResource(R.string.bookLevelsExceeded)}
+
         //catch invalid psychic potential growth
         if(!psychic.validPsyPotentialGrowth())
             output.add{stringResource(R.string.psychicPotentialReduction)}
@@ -539,8 +543,6 @@ class SblChar(
     init{
         //look through each file in the directory
         sourceDIR.listFiles()?.forEach{file ->
-            val level = file.nameWithoutExtension.toInt()
-
             //create a character based on that file data
             val levelChar = BaseCharacter(
                 charFile = file,
@@ -550,7 +552,7 @@ class SblChar(
             )
 
             //set character at the indicated index
-            charRefs[level] = levelChar
+            charRefs[file.nameWithoutExtension.toInt()] = levelChar
         }
 
         //for each character level record
@@ -623,11 +625,7 @@ class SblChar(
             setLvl(index)
 
             //return index if all points in this level are not spent
-            when(index){
-                0 -> {if(getLevelPoints(0) != 400 && !levelChangeLegal().isEmpty()) return 0}
-                1 -> {if(getLevelPoints(1) != 200 && !levelChangeLegal().isEmpty()) return 1}
-                else -> {if(getLevelPoints(index) != 100 && !levelChangeLegal().isEmpty()) return index}
-            }
+            if(!levelChangeLegal().isEmpty()) return index
         }
 
         //return final level option

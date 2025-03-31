@@ -227,6 +227,8 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
             else
                 (it as SblMagBook).levelUpdate()
         }
+
+        updateMagLevelSpent()
     }
 
     /**

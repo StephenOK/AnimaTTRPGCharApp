@@ -119,8 +119,9 @@
     <string name = "zeonLabel">Zeon</string>
     <string name = "reducedCostHead">Reduced Costs</string>
 
-    <string name = "failedLevelChangeTitle">Could Not Change Level</string>
-    <string name = "failedLevelChangeBody">Change failed for the following reason(s):</string>
+    <string name = "failedLevelChangeTitle">Level Audit Results:</string>
+    <string name = "allGood">No problems with level found.</string>
+    <string name = "failedLevelChangeBody">Cannot increase level for the following reason(s):</string>
     <string name = "underDpFailure">-all DP have not been spent</string>
     <string name = "overDpFailure">-too many DP have been spent</string>
     <string name = "sectionCapBreach">-limit for the character\'s %s Abilities has been passed</string>

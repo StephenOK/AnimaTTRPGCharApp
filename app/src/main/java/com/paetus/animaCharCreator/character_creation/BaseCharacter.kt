@@ -546,7 +546,7 @@ open class BaseCharacter{
             //apply secondary natural bonuses
             newHost.secondaryList.getAllSecondaries().forEach {
                 it as SblSecondaryCharacteristic
-                secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(it.bonusApplied.value)
+                secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value)
             }
 
             //apply primary weapon choice

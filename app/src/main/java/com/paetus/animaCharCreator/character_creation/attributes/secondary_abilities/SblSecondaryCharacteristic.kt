@@ -91,8 +91,8 @@ class SblSecondaryCharacteristic(
         (parent.charInstance as SblChar).levelLoop(
             startLevel = parent.charInstance.lvl.intValue,
             endLevel = 20
-        ){
-            it.secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
+        ){character ->
+            character.secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
         }
 
         super.setNatBonus(natBonus = natBonus)

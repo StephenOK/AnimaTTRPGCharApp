@@ -6,11 +6,8 @@ import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,7 +77,10 @@ fun CharacterPageFragment(
                     val qualifyOption =
                         if(dropdown.data.nameRef == R.string.levelText)
                             {levelString: String ->
-                                charFragVM.getValidLevel(levelString)
+                                charFragVM.getValidLevel(
+                                    levelString = levelString,
+                                    firstLoop = true
+                                )
                             }
                         else {_: String -> true}
 
@@ -390,10 +390,6 @@ fun CharacterPageFragment(
             item = charFragVM.racialDisplayed.collectAsState().value,
             closeFunc = {charFragVM.toggleRacialAdvantageOpen()}
         )
-
-    //displayed failed level change detail
-    if(charFragVM.failedLevelChangeOpen.collectAsState().value)
-        LevelChangeAlert(charFragVM = charFragVM)
 }
 
 /**
@@ -480,40 +476,6 @@ private fun PrimaryRow(
     }
 
     Spacer(modifier = Modifier.height(5.dp))
-}
-
-/**
- * Notifies the user of insufficient DP expenditure for this level of an SBL character.
- *
- * @param charFragVM view model for this fragment
- */
-@Composable
-fun LevelChangeAlert(
-    charFragVM: CharacterFragmentViewModel
-){
-    AlertDialog(
-        onDismissRequest = {charFragVM.toggleFailedLevelChangeOpen()},
-        title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
-        text = {
-            Column {
-                //display dialog head
-                Row { Text(text = stringResource(R.string.failedLevelChangeBody)) }
-
-                //display all errors found
-                charFragVM.getLevelChangeable()!!.forEach {
-                    Row {Text(text = it())}
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = {charFragVM.toggleFailedLevelChangeOpen()}){
-                Text(
-                    text = stringResource(id = R.string.closeLabel),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    )
 }
 
 @Preview

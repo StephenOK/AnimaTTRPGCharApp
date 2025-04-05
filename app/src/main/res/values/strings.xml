@@ -116,6 +116,7 @@
     <string name = "lightMode">Light Mode</string>
     <string name = "darkMode">Dark Mode</string>
 
+    <string name = "clearLevelTitle">Reset this level?</string>
     <string name = "exitTitle">Save before exiting?</string>
 
     <string name = "publicLabel">Public</string>

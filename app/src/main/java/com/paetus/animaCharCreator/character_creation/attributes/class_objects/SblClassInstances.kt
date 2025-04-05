@@ -14,22 +14,13 @@ class SblClassInstances(
      * @param classIndex new class to set for this character
      */
     override fun setOwnClass(classIndex: Int) {
-        //get starting level for class change
-        var levelCounter =
-            if(charInstance.lvl.intValue == 0) 0
-            else charInstance.lvl.intValue + 1
-
-        //get changed class
-        val initClass =
-            if(charInstance.lvl.intValue == 0)
-                charInstance.charRefs[0]!!.classes.ownClass.intValue
-            else
-                charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
-
-        //change all recorded level classes up to any change
-        while(charInstance.charRefs[levelCounter] != null &&
-              charInstance.charRefs[levelCounter]!!.classes.ownClass.intValue == initClass)
-            charInstance.charRefs[levelCounter++]!!.classes.setOwnClass(classIndex)
+        //apply class change to the record
+        changeClasses(
+            startLevel =
+                if (charInstance.lvl.intValue == 0) charInstance.lvl.intValue
+                else charInstance.lvl.intValue + 1,
+            classIndex = classIndex
+        )
 
         //update combat items
         charInstance.combat.updateClassLife()
@@ -48,6 +39,35 @@ class SblClassInstances(
 
         charInstance.dpAllotmentCalc()
         charInstance.updateTotalSpent()
+    }
+
+    /**
+     * Function to change the necessary class records as requested.
+     *
+     * @param startLevel level record to begin the change at
+     * @param classIndex class to change the record to
+     */
+    fun changeClasses(
+        startLevel: Int,
+        classIndex: Int
+    ){
+        //get changed class
+        val initClass = charInstance.charRefs[startLevel]!!.classes.ownClass.intValue
+
+        //initialize class changed again flag
+        var changed = false
+
+        //change all recorded level classes up to any change
+        charInstance.levelLoop(
+            startLevel = startLevel,
+            endLevel = 20
+        ){character ->
+            //change class if no additional class change and classes match
+            if(!changed && character.classes.ownClass.intValue == initClass)
+                character.classes.setOwnClass(classIndex = classIndex)
+            //notify of another class change
+            else changed = true
+        }
     }
 
     /**

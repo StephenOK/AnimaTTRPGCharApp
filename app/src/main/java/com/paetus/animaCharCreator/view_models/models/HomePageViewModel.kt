@@ -20,6 +20,14 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     private val _currentFragment = MutableStateFlow(value = ScreenPage.Character)
     val currentFragment = _currentFragment.asStateFlow()
 
+    //initialize open state of level clear dialog
+    private val _levelClearOpen = MutableStateFlow(value = false)
+    val levelClearOpen = _levelClearOpen.asStateFlow()
+
+    //initialize failed level change alert
+    private val _failedLevelChangeOpen = MutableStateFlow(value = false)
+    val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
+
     //initialize open state of exit dialog
     private val _exitOpen = MutableStateFlow(value = false)
     val exitOpen = _exitOpen.asStateFlow()
@@ -32,11 +40,21 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     fun setCurrentFragment(input: ScreenPage){_currentFragment.update{input}}
 
     /**
+     * Toggles the open state of the level clear alert.
+     */
+    fun toggleLevelClear(){_levelClearOpen.update{!levelClearOpen.value}}
+
+    /**
+     * Opens and closes the failed level change alert.
+     */
+    fun toggleFailedLevelChangeOpen(){
+        _failedLevelChangeOpen.update{!failedLevelChangeOpen.value}
+    }
+
+    /**
      * Toggles the open state of the exit alert.
      */
-    fun toggleExitAlert() {
-        _exitOpen.update{!exitOpen.value}
-    }
+    fun toggleExitAlert() {_exitOpen.update{!exitOpen.value}}
 
     //initialize bottom bar maximum values
     val maximums = BottomBarRowData(

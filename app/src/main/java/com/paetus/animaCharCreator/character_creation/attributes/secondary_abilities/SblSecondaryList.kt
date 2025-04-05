@@ -81,8 +81,8 @@ class SblSecondaryList(
      */
     fun levelUpdate() {
         fullList().forEach{secondary ->
-            (secondary as SblSecondaryCharacteristic).pointsAppliedUpdate()
-            secondary.bonusApplied.value = sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondary.secondaryIndex].bonusApplied.value
+            (secondary as SblSecondaryCharacteristic).bonusApplied.value = sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondary.secondaryIndex].bonusApplied.value
+            secondary.pointsAppliedUpdate()
             secondary.classTotalRefresh()
         }
     }

@@ -400,6 +400,21 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
 
+                //displayed failed level change detail
+                if(homePageVM.failedLevelChangeOpen.collectAsState().value)
+                    LevelChangeAlert(homeFragVM = homePageVM)
+
+                //show level clear alert if user opens it
+                if(homePageVM.levelClearOpen.collectAsState().value)
+                    MaterialTheme(colorScheme = detailLightColors){
+                        LevelClearAlert(
+                            charInstance = (charInstance as SblChar),
+                            homePageVM = homePageVM,
+                            charFragVM = charFragVM,
+                            closeDialog = {homePageVM.toggleLevelClear()}
+                        )
+                    }
+
                 //show exit alert if user opens it
                 if (homePageVM.exitOpen.collectAsState().value)
                     MaterialTheme(colorScheme = detailLightColors) {
@@ -541,6 +556,39 @@ class HomeActivity : AppCompatActivity() {
                         ),
                         shape = RectangleShape
                     )
+                }
+
+                //display SBL character features
+                if(charInstance is SblChar){
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider()
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+
+                    //button for character level audit
+                    item{
+                        NavigationDrawerItem(
+                            label = {Text(text = stringResource(id = R.string.auditLevelLabel))},
+                            selected = false,
+                            onClick = {
+                                scope.launch{drawerState.close()}
+                                homePageVM.toggleFailedLevelChangeOpen()
+                            }
+                        )
+                    }
+
+                    //button for character level clear
+                    item{
+                        NavigationDrawerItem(
+                            label = {Text(text = stringResource(id = R.string.resetLevelLabel))},
+                            selected = false,
+                            onClick = {
+                                scope.launch{drawerState.close()}
+                                homePageVM.toggleLevelClear()
+                            }
+                        )
+                    }
                 }
 
                 //divide page items from actions
@@ -717,6 +765,89 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
+     * Notifies the user of any problems with the current level.
+     *
+     * @param homeFragVM view model for this fragment
+     */
+    @Composable
+    fun LevelChangeAlert(
+        homeFragVM: HomePageViewModel
+    ){
+        AlertDialog(
+            onDismissRequest = {homeFragVM.toggleFailedLevelChangeOpen()},
+            title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
+            text = {
+                Column {
+                    //get level errors
+                    val display = (homeFragVM.charInstance as SblChar).levelChangeLegal()
+
+                    //notify user of no errors found
+                    if(display.isEmpty()){
+                        Row{Text(text = stringResource(R.string.allGood))}
+                    }
+                    else {
+                        //display dialog head
+                        Row {Text(text = stringResource(R.string.failedLevelChangeBody)) }
+
+                        //display all errors found
+                        display.forEach {
+                            Row {Text(text = it())}
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                //button to close dialog
+                TextButton(onClick = {homeFragVM.toggleFailedLevelChangeOpen()}){
+                    Text(
+                        text = stringResource(id = R.string.closeLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        )
+    }
+
+    /**
+     * Dialog that give the user the option to clear the current level record.
+     *
+     * @param charInstance character object to affect
+     * @param homePageVM viewModel for the home page
+     * @param charFragVM viewModel for the character page
+     * @param closeDialog function to run on option chosen
+     */
+    @Composable
+    private fun LevelClearAlert(
+        charInstance: SblChar,
+        homePageVM: HomePageViewModel,
+        charFragVM: CharacterFragmentViewModel,
+        closeDialog: () -> Unit
+    ){
+        AlertDialog(
+            onDismissRequest = {},
+            title = {Text(text = stringResource(id = R.string.clearLevelTitle))},
+            confirmButton = {
+                //button to confirm reset action
+                TextButton(
+                    onClick = {
+                        //reset the level and update the required items
+                        charInstance.resetLevel()
+                        homePageVM.updateExpenditures()
+                        charFragVM.refreshPage()
+                        closeDialog()
+                    }
+                ){Text(text = stringResource(R.string.confirmLabel))}
+            },
+            dismissButton = {
+                //close the dialog without running anything
+                TextButton(
+                    onClick = {closeDialog()}
+                ){Text(text = stringResource(R.string.cancelLabel))}
+            }
+        )
+    }
+
+    /**
      * Alert for when user wishes to leave the current activity.
      *
      * @param charInstance character object for save option
@@ -732,11 +863,7 @@ class HomeActivity : AppCompatActivity() {
         AlertDialog(
             //close alert on dismissal
             onDismissRequest = {closeDialog()},
-            title = {
-                Text(
-                    text = stringResource(id = R.string.exitTitle)
-                )
-            },
+            title = {Text(text = stringResource(id = R.string.exitTitle))},
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(

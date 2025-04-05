@@ -108,9 +108,14 @@ class CharacterFragmentViewModel(
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
 
-    //initialize failed level change alert
-    private val _failedLevelChangeOpen = MutableStateFlow(value = false)
-    val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
+    //initialize level checking character obect
+    val validator =
+        if(charInstance is SblChar)
+            SblChar(
+                startLevel = 0,
+                reference = charInstance.charRefs
+            )
+        else null
 
     /**
      * Sets the character's name to the user's input.
@@ -354,39 +359,34 @@ class CharacterFragmentViewModel(
     }
 
     /**
-     * Determines if the user may change the level of the character.
-     *
-     * @return list of error string outputs if errors are found; null if no errors found
-     */
-    @Composable
-    fun getLevelChangeable(): List<@Composable () -> String>?{
-        //no need to run if character is not save by level
-        if (charInstance !is SblChar) return null
-
-        //initialize error list
-        val output = charInstance.levelChangeLegal()
-
-        //give final output list
-        return if(output.isEmpty()) null else output.toList()
-    }
-
-    /**
      * Determines if level is legal to display to the user
      *
      * @param levelString level to look for in the character
+     * @param firstLoop flag for whether the validator needs to be updated
      * @return true if not a SBL character or SBL character has access to the queried level
      */
-    fun getValidLevel(levelString: String): Boolean{
+    fun getValidLevel(
+        levelString: String,
+        firstLoop: Boolean
+    ): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
         return if(levelString.toInt() != 0 && charInstance is SblChar) {
             if(charInstance.charRefs[levelString.toInt()] == null)
                 false
             else{
-                when(levelString.toInt()){
-                    1 -> {charInstance.getLevelPoints(level = 0) == 400}
-                    2 -> {charInstance.getLevelPoints(level = 1) == 200 && getValidLevel((levelString.toInt() - 1).toString())}
-                    else -> {charInstance.getLevelPoints(levelString.toInt() - 1) == 100 && getValidLevel((levelString.toInt() - 1).toString())}
-                }
+                //update validator if inputted flag notifies for such
+                if(firstLoop)
+                    validator!!.updateReference(charInstance.charRefs)
+
+                //set the validator to the indicated level
+                validator!!.setLvl(levelString.toInt() - 1)
+
+                //return legal validator and validation for the previous level
+                validator.levelChangeLegal().isEmpty() &&
+                        getValidLevel(
+                            levelString = (levelString.toInt() - 1).toString(),
+                            firstLoop = false
+                        )
             }
         }
         //true if looking for level 0 or character is not SBL
@@ -415,11 +415,6 @@ class CharacterFragmentViewModel(
         return (charInstance as SblChar).charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
     }
 
-    /**
-     * Opens and closes the failed level change alert.
-     */
-    fun toggleFailedLevelChangeOpen(){_failedLevelChangeOpen.update{!failedLevelChangeOpen.value}}
-
     fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
 
     //set race dropdown data
@@ -438,7 +433,8 @@ class CharacterFragmentViewModel(
 
                 //update the appearance value for this character
                 setAppearInput(display = charInstance.appearance.intValue.toString())
-            }
+            },
+            refreshFunc = {charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value)}
         ),
         weight = 0.6f,
         detailOpen = {toggleRaceDetailOpen()},
@@ -489,9 +485,7 @@ class CharacterFragmentViewModel(
             }
         ),
         weight = 1f,
-        detailOpen = {},
-        isOpenable = {getLevelChangeable() == null},
-        failedOpen = {toggleFailedLevelChangeOpen()}
+        detailOpen = {}
     )
 
     //set all dropdown data
@@ -701,6 +695,9 @@ class CharacterFragmentViewModel(
      * Refreshes items on returning to this page.
      */
     fun refreshPage(){
+        dropdownList[0].data.refreshDisplay()
+        dropdownList[1].data.refreshDisplay()
+
         setMagPaladinOpen()
         setExp(display = charInstance.experiencePoints.intValue.toString())
         primaryDataList.forEach{primary -> primary.refreshItem()}

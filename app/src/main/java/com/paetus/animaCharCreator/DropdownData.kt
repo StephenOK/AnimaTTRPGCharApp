@@ -80,6 +80,6 @@ class DropdownData(
      */
     fun refreshDisplay(){
         if(refreshFunc != null)
-            _output.update{refreshFunc!!()}
+            _output.update{refreshFunc()}
     }
 }

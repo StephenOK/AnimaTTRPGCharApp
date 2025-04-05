@@ -26,16 +26,8 @@ import java.io.File
 /**
  * Subclass of BaseCharacter which works on characters that are saved in individual levels.
  * Each level is saved as its own BaseCharacter and recompiled in this item.
- *
- * @param sourceDIR home directory of the character's level files
- * @param secondaryFile location of custom secondary characteristic items
- * @param techFile location of custom dominion technique items
  */
-class SblChar(
-    sourceDIR: File,
-    secondaryFile: File,
-    techFile: File
-): BaseCharacter() {
+class SblChar(): BaseCharacter() {
     //initialize level data for this character
     val charRefs = mutableListOf(
         BaseCharacter(newHost = this, prevIndex = -1, isAdded = false),
@@ -266,31 +258,6 @@ class SblChar(
     }
 
     /**
-     * Calculates the DP spent in the indicated level.
-     *
-     * @param level record index to check
-     * @return the DP spent in that level
-     */
-    fun getLevelPoints(
-        level: Int
-    ): Int{
-        //retrieve the record to check
-        val record = charRefs[level]
-
-        //if there is an existing record
-        return if(record != null)
-            //determine all points spent in this level
-            record.combat.calculateSpent() + record.weaponProficiencies.calculateSpent() +
-                    record.ki.calculateSpent() + record.magic.calculateSpent() +
-                    record.summoning.calculateSpent() + record.weaponProficiencies.calcPointsInMag() +
-                    record.psychic.calculateSpent() + record.weaponProficiencies.calcPointsInPsy() +
-                    (record.combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[record.classes.ownClass.intValue].lifePointMultiple) +
-                    record.secondaryList.calculateSpent() + classes.getClassPointsByLevel(baseLevel = level)
-        //otherwise return 0
-        else 0
-    }
-
-    /**
      * Get the character record for the current level.
      *
      * @return held character for the level
@@ -318,6 +285,83 @@ class SblChar(
                     runFunc(charRefs[index]!!)
             }
         }
+    }
+
+    /**
+     * Changes the level record to the inputted list.
+     *
+     * @param newRef list of character records to check now
+     */
+    fun updateReference(newRef: List<BaseCharacter?>){
+        //for each new record item, overwrite the previous record item
+        newRef.forEach{character ->
+            charRefs[newRef.indexOf(character)] = character
+        }
+    }
+
+    /**
+     * Resets the current level record to an empty state.
+     */
+    fun resetLevel(){
+        //get the current record's class
+        val prevClass =
+            if(lvl.intValue != 0)
+                charRefs[lvl.intValue]!!.classes.ownClass.intValue
+            else 0
+
+        //get the added natural bonus for this level
+        val secondaryIndex =
+            if(lvl.intValue != 0)
+                getAddedSecondary()
+            else null
+
+        //replace current record with an empty record
+        charRefs[lvl.intValue] =
+            BaseCharacter(
+                newHost = this,
+                prevIndex = lvl.intValue - 1,
+                isAdded = lvl.intValue != 0
+            )
+
+        //reset race item, if necessary
+        setOwnRace(charRefs[0]!!.ownRace.value)
+
+        //reapply class
+        charRefs[lvl.intValue]!!.classes.setOwnClass(prevClass)
+
+        //check for changed class and remove, if necessary
+        if(charRefs[lvl.intValue +1]!!.classes.ownClass.intValue != prevClass)
+            classes.changeClasses(
+                startLevel = lvl.intValue + 1,
+                classIndex = prevClass
+            )
+
+        //update all level based items
+        setLvl(lvl.intValue)
+
+        //remove secondary bonus application from this and future level records
+        if(secondaryIndex != null)
+            secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(false)
+    }
+
+    /**
+     * Determine which secondary bonus was added this level.
+     *
+     * @return the index of the added bonus, if one is present
+     */
+    fun getAddedSecondary(): Int?{
+        //for each secondary item
+        secondaryList.getAllSecondaries().forEach{
+            it as SblSecondaryCharacteristic
+
+            //return index if bonus at this level and not on a previous one
+            if(getCharAtLevel().secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value &&
+                !charRefs[lvl.intValue - 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value)
+                return it.secondaryIndex
+        }
+
+        //return no bonus taken flag
+        return null
     }
 
     /**
@@ -539,8 +583,16 @@ class SblChar(
 
     /**
      * Initialize the SBL character.
+     *
+     * @param sourceDIR home directory of the character's level files
+     * @param secondaryFile location of custom secondary characteristic items
+     * @param techFile location of custom dominion technique items
      */
-    init{
+    constructor(
+        sourceDIR: File,
+        secondaryFile: File,
+        techFile: File
+    ): this() {
         //look through each file in the directory
         sourceDIR.listFiles()?.forEach{file ->
             //create a character based on that file data
@@ -568,6 +620,34 @@ class SblChar(
             }
         }
 
+        //run initializing steps
+        charStartup()
+
+        //set the level the character is starting at
+        setLvl(levNum = startLevel())
+    }
+
+    /**
+     * Constructor for validation SblChar
+     *
+     * @param startLevel level to set this character at
+     * @param reference character record to apply to the character
+     */
+    constructor(
+        startLevel: Int,
+        reference: List<BaseCharacter?>
+    ): this(){
+        //apply character record
+        updateReference(newRef = reference)
+
+        //initialize the character
+        charStartup()
+
+        //set the character to the indicated level
+        setLvl(levNum = startLevel)
+    }
+
+    fun charStartup(){
         //set name, exp, race, gender, appearance, and gnosis
         super.setName(charRefs[0]!!.charName.value)
         super.setExp(charRefs[0]!!.experiencePoints.intValue)
@@ -604,10 +684,8 @@ class SblChar(
         charRefs[0]!!.inventory.boughtGoods.forEach{(item, amount) ->
             inventory.boughtGoods.plus(Pair(item, amount))
         }
-
-        //set the level the character is starting at
-        setLvl(startLevel())
     }
+
 
     /**
      * Determine the starting level for a loaded character.

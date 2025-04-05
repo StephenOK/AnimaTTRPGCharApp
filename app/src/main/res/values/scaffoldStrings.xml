@@ -11,6 +11,9 @@
     <string name = "psychicLabel">Psychic</string>
     <string name = "equipmentLabel">Equipment</string>
 
+    <string name = "auditLevelLabel">Audit Level</string>
+    <string name = "resetLevelLabel">Reset Level</string>
+
     <string name = "saveLabel">Save</string>
     <string name = "exitLabel">Exit</string>
 </resources>

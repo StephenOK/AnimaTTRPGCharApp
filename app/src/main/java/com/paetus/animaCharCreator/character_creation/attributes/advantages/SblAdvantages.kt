@@ -26,8 +26,12 @@ class SblAdvantages(
 
         //if advantage successfully applied
         if(output == null)
-            //save value to the level 0 record
-            sblChar.charRefs[0]!!.advantageRecord.acquireAdvantage(advantageBase, taken, takenCost, multTaken)
+            //implement advantage to all character records
+            sblChar.levelLoop(
+                endLevel = 20
+            ){character ->
+                character.advantageRecord.acquireAdvantage(advantageBase, taken, takenCost, multTaken)
+            }
 
         //give output
         return output

@@ -140,6 +140,7 @@
     <string name = "zeonProjReduction">-points in Magic Projection is smaller than in a previous level</string>
     <string name = "bookLevelReduction">-levels of %s Book are smaller than in a previous level</string>
     <string name = "bookLevelsExceeded">-too many book level points have been spent</string>
+    <string name = "emptyFreeSpell">-Free Spell(s) have not been selected</string>
     <string name = "psychicPotentialReduction">-points in Psychic Potential are smaller than in a previous level</string>
     <string name = "psychicPointReduction">-points for Psychic Points are smaller than in a previous level</string>
     <string name = "psychicProjectionReduction">-points in Psychic Projection are smaller than in a previous level</string>

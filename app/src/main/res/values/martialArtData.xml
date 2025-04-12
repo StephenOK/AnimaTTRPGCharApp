@@ -59,7 +59,7 @@
 
     <string name = "asakusen">Asakusen</string>
     <string name = "asakusenDesc">Although the word Asakusen is used today to designate any fighting style used to kill, it is actually one of the most complex martial arts in the world. It has been prohibited for centuries due to its lethal nature. With the passage of time, it was diluted into various styles created by schools of Kung Fu that are no more than pale reflections of true Asakusen. Asakusen makes the variable +10 bonus of Kung Fu apply to Dodge, Attack, Block, Initiative, and Damage all at the same time - as long as martial arts are being used. However, the character still adds another +10 to any one of those abilities he chooses in the same way as is done for Kung Fu.</string>
-    <string name = "asakusenPrereqs">Kung Fu, more than 16- in both Attack and Defense (Unarmed)</string>
+    <string name = "asakusenPrereqs">Kung Fu, more than 16 in both Attack and Defense (Unarmed)</string>
 
     <string name = "velez">Velez</string>
     <string name = "velezDesc">To learn Velez it is necessary for the practitioner to control his internal energy and know how to channel it. This style concentrates all the spiritual power of the martial artist when he strikes, permitting him to create a flow of power capable of penetrating even physical matter. It is without doubt one of the rarest and most spectacular martial arts in the world - although the few who know its secrets are reluctant to share them. Velez permits the character to strike using the Energy Table. Nonetheless, attacks made with this style can be blocked normally, since they are not intangible. Practitioners of Velez also gain a +20 bonus to either their Block or Dodge ability while unarmed.</string>

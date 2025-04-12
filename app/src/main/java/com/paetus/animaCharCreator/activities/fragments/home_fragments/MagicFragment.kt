@@ -278,7 +278,7 @@ fun MagicFragment(
                     Button(
                         //switch imbalance preference
                         onClick = {
-                            magFragVM.setImbalanceIsAttack(isOffense = !magFragVM.imbalanceIsAttack.value)
+                            magFragVM.toggleImbalanceIsAttack()
                         },
                         modifier = Modifier
                             .weight(0.3f)
@@ -799,15 +799,19 @@ private fun BuySingleSpellButton(
 
     Button(
         onClick = {
-            //attempt to purchase the spell
-            if(magFragVM.isGifted()) {
+            //get legally buyable state
+            val buyable = magFragVM.buySingleValid()
+
+            //buy spell if able
+            if(buyable == null){
                 spellData.buySingleSpell(spellLevel = spell.level)
                 updateList()
             }
+            //notify user of failure
             else
                 Toast.makeText(
                     context,
-                    context.getString(R.string.needGiftMessage),
+                    buyable,
                     Toast.LENGTH_LONG
                 ).show()
         },
@@ -815,7 +819,7 @@ private fun BuySingleSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getSpellHeld(spell = spell)) R.string.spellRemoval
+                if(magFragVM.heldSpells.contains(element = spell)) R.string.spellRemoval
                 else R.string.spellPurchase
             ),
             textAlign = TextAlign.Center
@@ -846,14 +850,19 @@ private fun BuySingleFreeSpellButton(
     //determine if character has equivalent free spell taken
     Button(
         onClick = {
-            if(magFragVM.isGifted()) {
+            //get legally buyable state
+            val buyable = magFragVM.buySingleValid()
+
+            //buy spell if able
+            if(buyable == null) {
                 spellData.buySingleSpell(spellLevel = spellLevel)
                 updateList()
             }
+            //notify user of failure
             else
                 Toast.makeText(
                     context,
-                    context.getString(R.string.needGiftMessage),
+                    buyable,
                     Toast.LENGTH_LONG
                 ).show()
         },
@@ -861,7 +870,10 @@ private fun BuySingleFreeSpellButton(
     ){
         Text(
             text = stringResource(
-                if((spellLevel/2) - 1 in spellData.magicBook.individualSpells) R.string.spellRemoval
+                if(magFragVM.freeSpellIsHeld(
+                        spellLevel = spellLevel,
+                        spellBook = spellData.magicBook
+                )) R.string.spellRemoval
                 else R.string.spellPurchase
             )
         )
@@ -891,10 +903,12 @@ private fun FreeSpellExchange(
         //button that opens free spell exchange dialog
         Button(
             onClick = {
-                if(magFragVM.tryExchangeOpen(freeSpell = currentFreeSpell))
+                val getError = magFragVM.tryExchangeOpen(freeSpell = currentFreeSpell)
+
+                if(getError != null)
                     Toast.makeText(
                         context,
-                        context.getString(R.string.magicTiesRestriction),
+                        getError,
                         Toast.LENGTH_LONG
                     ).show()
             },
@@ -948,7 +962,7 @@ fun MagicPreview(){
     )
     val homePageVM = HomePageViewModel(charInstance)
 
-    magFragVM.setImbalanceIsAttack(false)
+    magFragVM.toggleImbalanceIsAttack()
     magFragVM.setProjectionImbalance(30)
 
     magFragVM.allBooks[0].toggleListOpen()

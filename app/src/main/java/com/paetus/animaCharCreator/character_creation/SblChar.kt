@@ -339,6 +339,14 @@ class SblChar(): BaseCharacter() {
         //update all level based items
         setLvl(lvl.intValue)
 
+        //remove advantages at level 0
+        if(lvl.intValue == 0)
+            levelLoop(endLevel = 20){character ->
+                while(!character.advantageRecord.takenAdvantages.isEmpty()){
+                    character.advantageRecord.removeAdvantage(character.advantageRecord.takenAdvantages.first())
+                }
+            }
+
         //remove secondary bonus application from this and future level records
         if(secondaryIndex != null)
             secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(false)
@@ -536,6 +544,10 @@ class SblChar(): BaseCharacter() {
         if(!magic.legalMagLevels())
             output.add{stringResource(R.string.bookLevelsExceeded)}
 
+        //catch empty free spell slots
+        if(!magic.validFreeSpells())
+            output.add{stringResource(R.string.emptyFreeSpell)}
+
         //catch invalid psychic potential growth
         if(!psychic.validPsyPotentialGrowth())
             output.add{stringResource(R.string.psychicPotentialReduction)}
@@ -675,9 +687,13 @@ class SblChar(): BaseCharacter() {
         //set primary weapon
         weaponProficiencies.setPrimaryWeapon(charRefs[0]!!.weaponProficiencies.primaryWeapon.intValue)
 
+        //set magic projection imbalance
+        magic.setProjImbalance(charRefs[0]!!.magic.magProjImbalance.intValue)
+        magic.imbalanceIsAttack.value = charRefs[0]!!.magic.imbalanceIsAttack.value
+
         //set advantages
         charRefs[0]!!.advantageRecord.takenAdvantages.forEach{
-            advantageRecord.takenAdvantages.add(it)
+            advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
         }
 
         //set inventory items

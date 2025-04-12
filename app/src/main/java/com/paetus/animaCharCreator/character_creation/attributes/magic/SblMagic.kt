@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic
 
 import com.paetus.animaCharCreator.character_creation.SblChar
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.NecromancyBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SblMagBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SblNecromancy
@@ -102,6 +103,39 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
     }
 
     /**
+     * Applies the input value to the character's magic projection imbalance.
+     *
+     * @param imbalance value to set as projection imbalance
+     */
+    override fun setProjImbalance(imbalance: Int) {
+        //set main imbalance
+        super.setProjImbalance(imbalance)
+
+        //set imbalance to be saved
+        sblChar.charRefs[0]!!.magic.setProjImbalance(imbalance = imbalance)
+    }
+
+    /**
+     * Toggles the imbalance direction.
+     *
+     * @return true if favoring attack; false if defense
+     */
+    override fun toggleImbalance(): Boolean {
+        //toggle main value
+        super.toggleImbalance()
+
+        //toggle all record values
+        sblChar.levelLoop(
+            endLevel = 20
+        ){character ->
+            character.magic.toggleImbalance()
+        }
+
+        //return the value imbalance is set to
+        return imbalanceIsAttack.value
+    }
+
+    /**
      * Updates the number of bought zeon points.
      */
     private fun updateBoughtZeon(){
@@ -195,6 +229,23 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
     }
 
     /**
+     * Set the taken state of the Magic Ties disadvantage.
+     *
+     * @param hasTies taken state of the Magic Ties disadvantage
+     */
+    override fun setMagicTies(hasTies: Boolean) {
+        //apply ties to the sbl character
+        super.setMagicTies(hasTies)
+
+        //apply ties to the level records
+        sblChar.levelLoop(
+            endLevel = 20
+        ){character ->
+            character.magic.setMagicTies(hasTies)
+        }
+    }
+
+    /**
      * Function to run on confirmed removal of The Gift advantage.
      */
     override fun loseMagic() {
@@ -251,4 +302,22 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
      * @return true if no loss in points
      */
     fun validProjGrowth(): Boolean{return sblChar.getCharAtLevel().magic.boughtMagProjection.intValue >= 0}
+
+    /**
+     * Determine the valid state of free spells taken.
+     *
+     * @return true if legal state for free spells
+     */
+    fun validFreeSpells(): Boolean{
+        //return true if free spells cannot be taken
+        if(magicTies.value) return true
+
+        //return false if any empty free spell slots
+        getAllSpells().forEach{spell ->
+            if(spell is FreeSpell && spell.saveName == "PlaceHolder") return false
+        }
+
+        //notify of valid state
+        return true
+    }
 }

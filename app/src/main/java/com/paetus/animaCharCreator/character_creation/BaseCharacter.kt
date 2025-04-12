@@ -551,6 +551,11 @@ open class BaseCharacter{
 
             //apply primary weapon choice
             weaponProficiencies.setPrimaryWeapon(newHost.weaponProficiencies.primaryWeapon.intValue)
+
+            //apply advantages to character
+            newHost.advantageRecord.takenAdvantages.forEach{
+                advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
+            }
         }
     }
 

@@ -288,6 +288,26 @@ open class Magic(val charInstance: BaseCharacter){
     }
 
     /**
+     * Applies the input value to the character's magic projection imbalance.
+     *
+     * @param imbalance value to set as projection imbalance
+     */
+    open fun setProjImbalance(imbalance: Int){
+        magProjImbalance.intValue = imbalance
+    }
+
+    /**
+     * Toggles the imbalance direction.
+     *
+     * @return true if favoring attack; false if defense
+     */
+    open fun toggleImbalance(): Boolean{
+        //toggle item and return new state
+        imbalanceIsAttack.value = !imbalanceIsAttack.value
+        return imbalanceIsAttack.value
+    }
+
+    /**
      * Determine the character's Magic Level based on their intelligence.
      */
     fun setMagicLevelMax(){
@@ -421,7 +441,7 @@ open class Magic(val charInstance: BaseCharacter){
      *
      * @param hasTies taken state of the Magic Ties disadvantage
      */
-    fun setMagicTies(hasTies: Boolean){
+    open fun setMagicTies(hasTies: Boolean){
         if(hasTies){
             //clear all individually purchased and free spells
             retrieveBooks().forEach{book ->

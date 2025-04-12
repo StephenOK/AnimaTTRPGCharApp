@@ -64,7 +64,9 @@
     <string name = "duplicateTechName">There is already a custom technique with that name!</string>
 
     <string name = "needGiftMessage">You need The Gift in order to change this!</string>
+    <string name = "magicTiesIndividualRestriction">Magic Ties prevents getting individual Spells!</string>
     <string name = "magicTiesRestriction">Magic Ties prevents getting Free Spells!</string>
+    <string name = "freeSpellEarlier">Free Spell was acquired at an earlier level!</string>
 
     <string name = "needDisciplineMessage">You lack the Advantage to access the %s Discipline!</string>
 

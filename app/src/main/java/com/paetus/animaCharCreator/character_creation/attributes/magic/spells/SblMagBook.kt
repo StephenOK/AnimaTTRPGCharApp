@@ -41,6 +41,85 @@ open class SblMagBook(
     }
 
     /**
+     * Purchase a spell individually by the given spell level.
+     *
+     * @param spellLevel level of the spell to individually purchase
+     */
+    override fun changeIndividualSpell(spellLevel: Int) {
+        val spellIndex =  (spellLevel/2) - 1
+
+        //apply change if spell not taken or spell taken previously at this level
+        if(!individualSpells.contains(spellIndex) ||
+            charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].individualSpells.contains(spellIndex)) {
+            //apply change to level
+            charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].changeIndividualSpell(
+                spellLevel = spellLevel
+            )
+
+            //clear future instances of this spell
+            if(charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].individualSpells.contains(spellIndex))
+                charInstance.levelLoop(
+                    startLevel =  charInstance.lvl.intValue + 1,
+                    endLevel = 20
+                ){character ->
+                    if(character.magic.retrieveBooks()[bookIndex].individualSpells.contains(spellIndex))
+                        character.magic.retrieveBooks()[bookIndex].changeIndividualSpell(spellLevel = spellLevel)
+                }
+        }
+
+        //update spell list
+        updateIndividualSpells()
+
+        //update primary investment if needed
+        if(hasInvestment() && !isPrimary.value && !magic.retrieveBooks()[opposingIndex].isPrimary.value)
+            changePrimary(isTaking = true)
+        else if (!hasInvestment())
+            changePrimary(isTaking = false)
+    }
+
+    /**
+     * Attempts to add a free spell to this book's list.
+     *
+     * @param spell freespell to attempt to add to this book
+     */
+    override fun addFreeSpell(spell: FreeSpell) {
+        //stop function if character possesses this spell
+        if(charHasFreeSpell(freeSpell = spell) == null){
+            //search for a freespell in this book of equivalent level
+            var removedSpell: FreeSpell? = null
+            freeSpells.forEach{freeSpell ->
+                //record spell to remove
+                if(freeSpell.level == spell.level){
+                    removedSpell = freeSpell
+                    return@forEach
+                }
+            }
+
+            //remove spell from the level record
+            if(removedSpell != null)
+                charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].freeSpells.remove(removedSpell)
+
+            //add this spell to the level record
+            charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].freeSpells.add(element = spell)
+
+            //update the character's free spells
+            updateFreeSpells()
+
+            //remove this spell from any future level records
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                //determine that this spell is taken by this character
+                val bookWithSpell = character.magic.retrieveBooks()[10].charHasFreeSpell(freeSpell = spell)
+
+                //remove spell if present
+                bookWithSpell?.freeSpells?.remove(bookWithSpell.getFreeSpell(spell.level))
+            }
+        }
+    }
+
+    /**
      * Sets the total magic levels invested in this book.
      */
     override fun updateMagLevels(){
@@ -127,6 +206,32 @@ open class SblMagBook(
     }
 
     /**
+     * Update the individual spells taken by the character.
+     */
+    fun updateIndividualSpells(){
+        //remove all individual spells
+        individualSpells.clear()
+
+        //add individual spells taken at each level
+        charInstance.levelLoop{character ->
+            individualSpells.addAll(character.magic.retrieveBooks()[bookIndex].individualSpells)
+        }
+    }
+
+    /**
+     * Update the free spells taken by the character.
+     */
+    fun updateFreeSpells(){
+        //remove all free spells taken
+        freeSpells.clear()
+
+        //add individual free spells taken at each level
+        charInstance.levelLoop{character ->
+            freeSpells.addAll(character.magic.retrieveBooks()[bookIndex].freeSpells)
+        }
+    }
+
+    /**
      * Gets whether the points spent in this book are valid for an SBL character.
      *
      * @return true if points not removed
@@ -141,5 +246,7 @@ open class SblMagBook(
     fun levelUpdate(){
         updateMagLevels()
         updatePrimary()
+        updateIndividualSpells()
+        updateFreeSpells()
     }
 }

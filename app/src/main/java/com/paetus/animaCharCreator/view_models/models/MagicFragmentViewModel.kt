@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
@@ -143,9 +144,9 @@ class MagicFragmentViewModel(
      * @param imbalance value to set the magic imbalance to
      */
     fun setProjectionImbalance(imbalance: Int){
-        magic.magProjImbalance.intValue = imbalance
-        setProjectionImbalance(imbalance.toString())
-        refreshImbalance(imbalanceIsAttack.value)
+        magic.setProjImbalance(imbalance = imbalance)
+        setProjectionImbalance(display = imbalance.toString())
+        refreshImbalance(isOffense = imbalanceIsAttack.value)
     }
 
     /**
@@ -183,13 +184,10 @@ class MagicFragmentViewModel(
 
     /**
      * Sets the magic imbalance bias to the inputted value.
-     *
-     * @param isOffense true if setting bias to offense
      */
-    fun setImbalanceIsAttack(isOffense: Boolean){
-        _imbalanceIsAttack.update{isOffense}
-        refreshImbalance(isOffense)
-        _imbalanceTypeString.update{if(isOffense) R.string.offenseLabel else R.string.defenseLabel}
+    fun toggleImbalanceIsAttack(){
+        _imbalanceIsAttack.update{magic.toggleImbalance()}
+        refreshImbalance(magic.imbalanceIsAttack.value)
     }
 
     /**
@@ -200,6 +198,8 @@ class MagicFragmentViewModel(
     private fun refreshImbalance(isOffense: Boolean){
         _offenseImbalance.update{determineImbalanceValue(isOffense)}
         _defenseImbalance.update{determineImbalanceValue(!isOffense)}
+
+        _imbalanceTypeString.update{if(magic.imbalanceIsAttack.value) R.string.offenseLabel else R.string.defenseLabel}
     }
 
     /**
@@ -226,10 +226,15 @@ class MagicFragmentViewModel(
      */
     fun tryExchangeOpen(
         freeSpell: FreeSpell
-    ): Boolean{
+    ): Int?{
         //terminate if character has Magic Ties disadvantage
         if(magic.magicTies.value)
-            return true
+            return R.string.magicTiesRestriction
+
+        //check that free spell wasn't picked in an earlier level
+        if(charInstance is SblChar &&
+            !charInstance.getCharAtLevel().magic.hasCopyOf(freeSpell))
+            return R.string.freeSpellEarlier
 
         //set free spell values
         setFreeElement(element = getFreeElement(freeSpell = freeSpell))
@@ -237,6 +242,7 @@ class MagicFragmentViewModel(
 
         //set the book the free spell will be added to
         val book = magic.getFreeSpellBook(freeSpell = freeSpell)
+
         allBooks.forEach{bookData ->
             if(bookData.magicBook == book){
                 setFreeBookAddition(bookData = bookData)
@@ -247,7 +253,7 @@ class MagicFragmentViewModel(
         toggleFreeExchangeOpen()
 
         //terminate process
-        return false
+        return null
     }
 
     /**
@@ -288,6 +294,30 @@ class MagicFragmentViewModel(
     fun setSelectedFreeSpell(freeSpell: FreeSpell?){_selectedFreeSpell.update{freeSpell}}
 
     /**
+     * Determines that a free spell of the given level is present in the given book.
+     *
+     * @param spellLevel level of spell to look for
+     * @param spellBook book to check for free spell
+     * @return true if one is found
+     */
+    fun freeSpellIsHeld(
+        spellLevel: Int,
+        spellBook: MagicBook
+    ): Boolean{
+        //create hypothetical spell present
+        val spellCopy = spellBook.getFreeSpell(level = spellLevel)
+
+        //look for spell in held list
+        heldSpells.forEach{spell ->
+            //return that one is found
+            if(spell is FreeSpell && spell.equals(spellCopy)) return true
+        }
+
+        //notify of spell's absence
+        return false
+    }
+
+    /**
      * Gets whether a spell of the given level is castable by the character.
      *
      * @param spellLevel spell to check the castability of
@@ -320,6 +350,23 @@ class MagicFragmentViewModel(
      */
     fun isGifted(): Boolean{
         return charInstance.advantageRecord.getAdvantage(advantageString = "gift") != null
+    }
+
+    /**
+     * Determines if the character can acquire individual spells.
+     *
+     * @return null if purchase valid; give error message reference if not
+     */
+    fun buySingleValid(): Int?{
+        //notify of no gift presence
+        return if(!isGifted())
+            R.string.needGiftMessage
+        //notify of magic ties presence
+        else if(magic.magicTies.value)
+            R.string.magicTiesIndividualRestriction
+        //give go-ahead flag
+        else
+            null
     }
 
     /**
@@ -403,7 +450,7 @@ class MagicFragmentViewModel(
      * @param spell spell to determine the character has
      * @return true if the character has learned this spell
      */
-    fun getSpellHeld(spell: Spell): Boolean{return magic.hasCopyOf(check = spell)}
+    fun getSpellHeld(spell: Spell): Boolean{return heldSpells.contains(element = spell)}
 
     /**
      * Add the user's selected free spell item to the character.
@@ -713,6 +760,7 @@ class MagicFragmentViewModel(
          */
         fun buySingleSpell(spellLevel: Int){
             magicBook.changeIndividualSpell(spellLevel = spellLevel)
+            magFragVM.updateHeldSpells()
         }
 
         /**
@@ -732,7 +780,7 @@ class MagicFragmentViewModel(
 
     init{
         //set the initial imbalance bias
-        setImbalanceIsAttack(isOffense = magic.imbalanceIsAttack.value)
+        refreshImbalance(magic.imbalanceIsAttack.value)
         allBooks.forEach{it.refreshItem()}
         updateHeldSpells()
     }

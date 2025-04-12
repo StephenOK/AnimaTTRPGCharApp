@@ -375,8 +375,15 @@ class CharacterFragmentViewModel(
                 false
             else{
                 //update validator if inputted flag notifies for such
-                if(firstLoop)
-                    validator!!.updateReference(charInstance.charRefs)
+                if(firstLoop) {
+                    //update validator's primary stats
+                    validator!!.primaryList.allPrimaries().forEach{
+                        it.setInput(charInstance.primaryList.allPrimaries()[it.charIndex].inputValue.intValue)
+                    }
+
+                    //update validator's level record
+                    validator.updateReference(charInstance.charRefs)
+                }
 
                 //set the validator to the indicated level
                 validator!!.setLvl(levelString.toInt() - 1)

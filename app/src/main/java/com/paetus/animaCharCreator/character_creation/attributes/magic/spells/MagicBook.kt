@@ -117,7 +117,7 @@ open class MagicBook(
      *
      * @param spellLevel level of the spell to individually purchase
      */
-    fun changeIndividualSpell(
+    open fun changeIndividualSpell(
         spellLevel: Int
     ){
         //convert the spell's level to its index
@@ -125,15 +125,12 @@ open class MagicBook(
 
         //if spell is not currently purchased
         if(spellIndex !in individualSpells) {
-            //if spell is not acquired by point investment
-            if (spellIndex > getCap()) {
-                //add spell to individually purchased record
-                individualSpells.add(element = spellIndex)
+            //add spell to individually purchased record
+            individualSpells.add(element = spellIndex)
 
-                //apply primary status if needed
-                if(!isPrimary.value)
-                    changePrimary(isTaking = true)
-            }
+            //apply primary status if needed
+            if(!isPrimary.value && !magic.retrieveBooks()[opposingIndex].isPrimary.value)
+                changePrimary(isTaking = true)
         }
 
         //remove spell if it is already purchased
@@ -151,7 +148,7 @@ open class MagicBook(
      *
      * @param spell freespell to attempt to add to this book
      */
-    fun addFreeSpell(spell: FreeSpell){
+    open fun addFreeSpell(spell: FreeSpell){
         //if the character does not already possess this free spell
         if(charHasFreeSpell(freeSpell = spell) == null){
             //search for a freespell in this book of equivalent level
@@ -250,7 +247,7 @@ open class MagicBook(
         }
 
         //double value if book is not primary book
-        if(!isPrimary.value) output * 2
+        if(!isPrimary.value) output *= 2
 
         //return individual cost with directly invested points
         return output + pointsIn.intValue
@@ -270,7 +267,7 @@ open class MagicBook(
      * @param level free spell's level to find
      * @return either the spell of that level or a placeholder object
      */
-    private fun getFreeSpell(level: Int): FreeSpell{
+    fun getFreeSpell(level: Int): FreeSpell{
         //search for the free spell based on the level
         freeSpells.forEach{freeSpell ->
             if(freeSpell.level == level) return freeSpell

@@ -106,11 +106,12 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      *
      * @param weaponCheck archetype module to add or remove
      * @param isAdded whether to add weaponCheck or remove it
+     * @return true if archetype is still present, false if not
      */
     open fun updateModulesTaken(
         weaponCheck: List<Weapon>,
         isAdded: Boolean
-    ){
+    ): Boolean{
         //add or remove module list
         if(isAdded)
             takenModules += listOf(weaponCheck)
@@ -120,7 +121,11 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
         //remove any individual weapon modules from added archetype weapons
         individualModules -= weaponsFromArchetypes().toSet()
 
+        //update DP spent
         charInstance.updateTotalSpent()
+
+        //return taken state of the archetype
+        return takenModules.contains(element = weaponCheck)
     }
 
     /**

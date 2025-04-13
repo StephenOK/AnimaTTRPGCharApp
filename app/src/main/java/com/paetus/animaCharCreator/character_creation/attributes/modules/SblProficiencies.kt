@@ -51,7 +51,10 @@ class SblProficiencies(
             charInstance.getCharAtLevel().weaponProficiencies.changeIndividualModule(weapon, true)
 
             //remove module added in any future levels
-            charInstance.levelLoop(startLevel = charInstance.lvl.intValue + 1, endLevel = 20){
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){
                 it.weaponProficiencies.changeIndividualModule(weapon = weapon, toAdd = false)
             }
         }
@@ -68,16 +71,44 @@ class SblProficiencies(
      *
      * @param weaponCheck archetype module to add or remove
      * @param isAdded whether to add weaponCheck or remove it
+     *
+     * @return true if archetype is still present, false if not
      */
     override fun updateModulesTaken(
         weaponCheck: List<Weapon>,
         isAdded: Boolean
-    ) {
-        //update the archetype's taken state in the level record
-        charInstance.getCharAtLevel().weaponProficiencies.updateModulesTaken(weaponCheck, isAdded)
+    ): Boolean{
+        //add proficiency if not held by this character
+        if(isAdded && !takenModules.contains(weaponCheck)){
+            charInstance.getCharAtLevel().weaponProficiencies.updateModulesTaken(
+                weaponCheck = weaponCheck,
+                isAdded = true
+            )
+
+            //remove future additions of this archetype
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                character.weaponProficiencies.updateModulesTaken(
+                    weaponCheck = weaponCheck,
+                    isAdded = false
+                )
+            }
+        }
+
+        //remove proficiency if held in this level record
+        else if(!isAdded && charInstance.getCharAtLevel().weaponProficiencies.takenModules.contains(element = weaponCheck))
+            charInstance.getCharAtLevel().weaponProficiencies.updateModulesTaken(
+                weaponCheck = weaponCheck,
+                isAdded = false
+            )
 
         //update the archetypes taken
         archetypeUpdate()
+
+        //return taken state of the archetype
+        return takenModules.contains(element = weaponCheck)
     }
 
     /**

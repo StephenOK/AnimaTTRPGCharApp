@@ -485,8 +485,13 @@ class ModuleFragmentViewModel(
          * Toggles the taken checkbox of this archetype module.
          */
         fun toggleCheck(){
-            _takenCheck.update{!takenCheck.value}
-            weaponProficiencies.updateModulesTaken(weaponCheck = weapons, isAdded = takenCheck.value)
+            //attempt to apply the change to the archetype item
+            _takenCheck.update{
+                weaponProficiencies.updateModulesTaken(
+                    weaponCheck = weapons,
+                    isAdded = !takenCheck.value
+                )
+            }
 
             //update individually taken weapons
             modFragVM.allSecondaryWeapons.forEach{(weapon, isTaken) ->

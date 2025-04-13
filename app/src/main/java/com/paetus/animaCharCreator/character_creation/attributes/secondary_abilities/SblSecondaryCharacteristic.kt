@@ -104,6 +104,11 @@ class SblSecondaryCharacteristic(
     override fun refreshTotal() {
         total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue
 
+        //add special level bonus from each record
+        parent.sblChar.levelLoop{character ->
+            total.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].specialPerLevel.intValue * character.lvl.intValue
+        }
+
         //add natural bonus points
         if (parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
             total.intValue += 5

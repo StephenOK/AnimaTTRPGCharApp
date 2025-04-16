@@ -74,10 +74,10 @@ class SblChar(): BaseCharacter() {
      */
     override fun setName(newName: String) {
         //set name as normal
-        super.setName(newName)
+        super.setName(newName = newName)
 
         //record name in level 0 record
-        charRefs[0]!!.setName(charName.value)
+        charRefs[0]!!.setName(newName = charName.value)
     }
 
     /**
@@ -299,34 +299,45 @@ class SblChar(): BaseCharacter() {
         }
     }
 
-    /**
-     * Resets the current level record to an empty state.
-     */
-    fun resetLevel(){
-        //get the current record's class
-        val prevClass =
-            if(lvl.intValue != 0)
-                charRefs[lvl.intValue]!!.classes.ownClass.intValue
-            else 0
+    fun zeroReset(){
+        //run level reset
+        resetLevel()
 
-        //get the added natural bonus for this level
-        val secondaryIndex =
-            if(lvl.intValue != 0)
-                getAddedSecondary()
-            else null
-
-        //replace current record with an empty record
-        charRefs[lvl.intValue] =
-            BaseCharacter(
-                newHost = this,
-                prevIndex = lvl.intValue - 1,
-                isAdded = lvl.intValue != 0
-            )
-
-        //reset race item, if necessary
+        //apply race
         setOwnRace(charRefs[0]!!.ownRace.value)
 
-        //reapply class
+        //reset initial class to freelancer
+        classes.changeClasses(
+            startLevel = 1,
+            classIndex = 0
+        )
+
+        weaponProficiencies.setPrimaryWeapon(charRefs[0]!!.weaponProficiencies.primaryWeapon.intValue)
+
+        magic.setProjImbalance(imbalance = charRefs[0]!!.magic.magProjImbalance.intValue)
+        magic.imbalanceIsAttack.value = charRefs[0]!!.magic.imbalanceIsAttack.value
+
+        //remove advantages
+        while(!advantageRecord.takenAdvantages.isEmpty())
+            advantageRecord.removeAdvantage(advantageRecord.takenAdvantages.first())
+
+        super.setName(newName = charRefs[0]!!.charName.value)
+        super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
+        super.setAppearance(newAppearance = charRefs[0]!!.appearance.intValue)
+        super.setGnosis(newGnosis = charRefs[0]!!.gnosis.intValue)
+    }
+
+    fun nonZeroReset(){
+        //get the class at this level
+        val prevClass = charRefs[lvl.intValue]!!.classes.ownClass.intValue
+
+        //get any natural bonus applied at this level
+        val secondaryIndex = getAddedSecondary()
+
+        //run level reset
+        resetLevel()
+
+        //reapply previously held class
         charRefs[lvl.intValue]!!.classes.setOwnClass(prevClass)
 
         //check for changed class and remove, if necessary
@@ -336,20 +347,25 @@ class SblChar(): BaseCharacter() {
                 classIndex = prevClass
             )
 
-        //update all level based items
-        setLvl(lvl.intValue)
-
-        //remove advantages at level 0
-        if(lvl.intValue == 0)
-            levelLoop(endLevel = 20){character ->
-                while(!character.advantageRecord.takenAdvantages.isEmpty()){
-                    character.advantageRecord.removeAdvantage(character.advantageRecord.takenAdvantages.first())
-                }
-            }
-
-        //remove secondary bonus application from this and future level records
+        //remove any applied secondary natural bonus
         if(secondaryIndex != null)
             secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(false)
+    }
+
+    /**
+     * Resets the current level record to an empty state.
+     */
+    fun resetLevel(){
+        //replace current record with an empty record
+        charRefs[lvl.intValue] =
+            BaseCharacter(
+                newHost = this,
+                prevIndex = lvl.intValue - 1,
+                isAdded = lvl.intValue != 0
+            )
+
+        //update all level based items
+        setLvl(lvl.intValue)
     }
 
     /**

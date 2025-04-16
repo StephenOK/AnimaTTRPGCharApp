@@ -831,7 +831,13 @@ class HomeActivity : AppCompatActivity() {
                 TextButton(
                     onClick = {
                         //reset the level and update the required items
-                        charInstance.resetLevel()
+                        if(charInstance.lvl.intValue == 0)
+                            charInstance.zeroReset()
+                        else
+                            charInstance.nonZeroReset()
+
+                        //update required visual items
+                        homePageVM.updateMaximums()
                         homePageVM.updateExpenditures()
                         charFragVM.refreshPage()
                         closeDialog()

@@ -47,6 +47,10 @@ class SblAdvantages(
         super.removeAdvantage(advantage)
 
         //save value to the level 0 record
-        sblChar.charRefs[0]!!.advantageRecord.removeAdvantage(advantage)
+        sblChar.levelLoop(
+            endLevel = 20
+        ){character ->
+            character.advantageRecord.removeAdvantage(advantage = advantage)
+        }
     }
 }

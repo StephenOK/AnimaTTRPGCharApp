@@ -3,6 +3,7 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
@@ -108,14 +109,16 @@ class CharacterFragmentViewModel(
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
 
-    //initialize level checking character obect
+    //initialize level checking character object
     val validator =
-        if(charInstance is SblChar)
-            SblChar(
-                startLevel = 0,
-                reference = charInstance.charRefs
-            )
-        else null
+        mutableStateOf(
+            if(charInstance is SblChar)
+                SblChar(
+                    startLevel = 0,
+                    reference = charInstance.charRefs
+                )
+            else null
+        )
 
     /**
      * Sets the character's name to the user's input.
@@ -376,20 +379,18 @@ class CharacterFragmentViewModel(
             else{
                 //update validator if inputted flag notifies for such
                 if(firstLoop) {
-                    //update validator's primary stats
-                    validator!!.primaryList.allPrimaries().forEach{
-                        it.setInput(charInstance.primaryList.allPrimaries()[it.charIndex].inputValue.intValue)
-                    }
-
-                    //update validator's level record
-                    validator.updateReference(charInstance.charRefs)
+                    //update validator
+                    validator.value = SblChar(
+                        startLevel = 0,
+                        reference = charInstance.charRefs
+                    )
                 }
 
                 //set the validator to the indicated level
-                validator!!.setLvl(levelString.toInt() - 1)
+                validator.value!!.setLvl(levelString.toInt() - 1)
 
                 //return legal validator and validation for the previous level
-                validator.levelChangeLegal().isEmpty() &&
+                validator.value!!.levelChangeLegal().isEmpty() &&
                         getValidLevel(
                             levelString = (levelString.toInt() - 1).toString(),
                             firstLoop = false
@@ -702,6 +703,9 @@ class CharacterFragmentViewModel(
      * Refreshes items on returning to this page.
      */
     fun refreshPage(){
+        _nameInput.update{charInstance.charName.value}
+        _experiencePoints.update{charInstance.experiencePoints.intValue.toString()}
+
         dropdownList[0].data.refreshDisplay()
         dropdownList[1].data.refreshDisplay()
 

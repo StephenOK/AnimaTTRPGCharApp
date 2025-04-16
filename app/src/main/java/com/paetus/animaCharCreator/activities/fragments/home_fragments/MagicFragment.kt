@@ -141,8 +141,19 @@ fun MagicFragment(
                         modifier = Modifier
                             .onFocusChanged {
                                 //change DP display to appropriate value
-                                if (it.isFocused)
+                                if (it.isFocused) {
                                     magFragVM.setBoughtZeonDP(dpCost = dpString)
+
+                                    //notify user of inability to change this item
+                                    if(!magFragVM.isGifted())
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                context.getString(R.string.needGiftMessage),
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                }
                                 else
                                     magFragVM.setBoughtZeonDP(dpCost = "")
                             }
@@ -498,7 +509,7 @@ private fun ZeonPurchaseItem(
             NumberInput(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || !it.contains(char = '\n'))
+                    if(magFragVM.isGifted() || it.contains(char = '\n'))
                         tableItem.setBoughtString(buyValue = it.toInt())
                 },
                 emptyFunction = {tableItem.setBoughtString(display = "")},

@@ -126,7 +126,10 @@ class MainPageViewModel: ViewModel() {
                 //display character name input
                 TextInput(
                     display = characterName.collectAsState().value,
-                    onValueChange = {setCharacterName(it)}
+                    onValueChange = {
+                        if(!it.contains("/"))
+                            setCharacterName(it)
+                    }
                 )
 
                 //display save by level option
@@ -240,13 +243,15 @@ class MainPageViewModel: ViewModel() {
 
             //delete the selected file
             file.delete()
+
+            loadChar.setCharacterName(charName = "")
         },
         display = {characterName, setCharacterName ->
             val context = LocalContext.current
             val homeDir = File("${context.filesDir}/AnimaChars")
 
             LazyColumn{
-                homeDir.listFiles()?.forEach{ file ->
+                homeDir.listFiles()?.forEach{file ->
                     //if the file is a character file
                     item{
                         Row(

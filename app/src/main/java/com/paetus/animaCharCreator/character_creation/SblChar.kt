@@ -5,6 +5,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.SblAdvantages
+import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.SblClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatAbilities
@@ -708,7 +709,10 @@ class SblChar(): BaseCharacter() {
         magic.imbalanceIsAttack.value = charRefs[0]!!.magic.imbalanceIsAttack.value
 
         //set advantages
-        charRefs[0]!!.advantageRecord.takenAdvantages.forEach{
+        val advantageCopy = mutableListOf<Advantage>()
+        advantageCopy.addAll(charRefs[0]!!.advantageRecord.takenAdvantages)
+
+        advantageCopy.forEach{
             advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
         }
 

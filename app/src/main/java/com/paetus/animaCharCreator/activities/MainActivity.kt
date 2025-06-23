@@ -372,11 +372,12 @@ class MainActivity : AppCompatActivity() {
                         ).show()
 
                     //run action on user's indicated character
-                    else
+                    else {
                         alertData.clickAct(context, alertData.characterName.value)
 
-                    //close the dialog
-                    mainVM.toggleActionOpen()
+                        //close the dialog
+                        mainVM.toggleActionOpen()
+                    }
                 }) {
                     Text(
                         text = stringResource(id = alertData.buttonName),

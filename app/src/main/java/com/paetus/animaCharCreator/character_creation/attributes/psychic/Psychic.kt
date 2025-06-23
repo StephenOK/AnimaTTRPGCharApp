@@ -94,7 +94,7 @@ open class Psychic(private val charInstance: BaseCharacter){
             1, 2 -> 10
             in 3..5 -> 20
             in 6..9 -> 30
-            in 11..14 -> 40
+            in 10..14 -> 40
             in 15..20 -> 50
             in 21..27 -> 60
             in 28..35 -> 70
@@ -135,7 +135,7 @@ open class Psychic(private val charInstance: BaseCharacter){
             //set points to 0 if at level 0
             if (charInstance.lvl.intValue == 0) 0
             //start character at 1 point and add more depending on additional levels
-            else 1 + (charInstance.lvl.intValue - 1)/charInstance.classes.getClass().psyPerTurn
+            else 1 + charInstance.lvl.intValue/charInstance.classes.getClass().psyPerTurn
 
         //update total
         updatePsyPointTotal()

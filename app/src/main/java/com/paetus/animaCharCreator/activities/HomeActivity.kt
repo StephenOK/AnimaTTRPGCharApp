@@ -9,6 +9,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -476,7 +477,8 @@ class HomeActivity : AppCompatActivity() {
                             scope.launch{drawerState.open()}
                         else
                             scope.launch{drawerState.close()}
-                    }
+                    },
+                    modifier = Modifier.focusable()
                 ){
                     Icon(
                         painter = painterResource(R.drawable.baseline_menu_24),

@@ -164,6 +164,11 @@ open class Psychic(private val charInstance: BaseCharacter){
     }
 
     /**
+     * Gets the base modifier value for the character's psychic projection.
+     */
+    fun getPsyProjBase(): Int{return charInstance.primaryList.dex.outputMod.intValue}
+
+    /**
      * Set the amount of bought Psychic Projection for the character.
      *
      * @param projBuy number of Psychic Projection points to buy for the character
@@ -179,7 +184,7 @@ open class Psychic(private val charInstance: BaseCharacter){
      * Recalculates the total amount of Psychic Projection points the character can utilize.
      */
     fun updatePsyProjection(){
-        psyProjectionTotal.intValue = psyProjectionBought.intValue + charInstance.primaryList.dex.outputMod.intValue
+        psyProjectionTotal.intValue = psyProjectionBought.intValue + getPsyProjBase()
     }
 
     /**
@@ -459,10 +464,10 @@ open class Psychic(private val charInstance: BaseCharacter){
         buyPsyProjection(projBuy = fileReader.readLine().toInt())
 
         //load discipline investment data
-        (0 until fileReader.readLine().toInt()).forEach{
+        repeat(times = fileReader.readLine().toInt()){
             val searchName = fileReader.readLine()
             getPsyLibrary().allDisciplines.forEach search@{discipline ->
-                if(discipline.saveName == searchName) {
+                if (discipline.saveName == searchName) {
                     updateInvestment(discipline = discipline, isTaken = true)
                     return@search
                 }
@@ -470,7 +475,7 @@ open class Psychic(private val charInstance: BaseCharacter){
         }
 
         //load mastered powers
-        (0 until fileReader.readLine().toInt()).forEach{
+        repeat(times = fileReader.readLine().toInt()){
             //retrieve power name
             val spellName = fileReader.readLine()
 

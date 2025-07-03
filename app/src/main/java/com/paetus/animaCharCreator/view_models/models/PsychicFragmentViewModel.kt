@@ -15,12 +15,10 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding psychic fragment.
  *
  * @param psychic character's psychic abilities
- * @param dexMod character's dexterity modifier
  * @param context source of the accessed resources
  */
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
-    dexMod: Int,
     private val context: Context
 ): ViewModel() {
     //initialize character's free psychic point text
@@ -151,7 +149,7 @@ class PsychicFragmentViewModel(
     //initialize data in regards to the character's psychic projection
     private val psychicProjection = PsychicPurchaseItemData(
         title = R.string.psyProjectionLabel,
-        baseString = {dexMod},
+        baseString = {psychic.getPsyProjBase()},
         boughtVal = {psychic.psyProjectionBought.intValue},
         totalVal = {psychic.psyProjectionTotal.intValue},
         getResource = {R.string.dpLabel},

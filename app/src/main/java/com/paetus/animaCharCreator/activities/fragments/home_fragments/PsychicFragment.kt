@@ -441,7 +441,6 @@ fun PsychicPreview(){
     val charInstance = BaseCharacter()
     val psyFragVM = PsychicFragmentViewModel(
         charInstance.psychic,
-        charInstance.primaryList.dex.outputMod.intValue,
         LocalContext.current
     )
     val homePageFrag = HomePageViewModel(charInstance)

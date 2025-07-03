@@ -129,7 +129,6 @@ class CustomFactory(
                 PsychicFragmentViewModel::class.java ->{
                     return PsychicFragmentViewModel(
                         psychic = charInstance.psychic,
-                        dexMod = charInstance.primaryList.dex.outputMod.intValue,
                         context = context
                     ) as T
                 }

@@ -713,6 +713,7 @@ class CharacterFragmentViewModel(
         setExp(display = charInstance.experiencePoints.intValue.toString())
         primaryDataList.forEach{primary -> primary.refreshItem()}
         setSizeInput()
+        setWeightIndex()
         setAppearInput(display = charInstance.appearance.intValue.toString())
         setGnosisDisplay(display = charInstance.gnosis.intValue.toString())
     }

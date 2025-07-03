@@ -326,6 +326,11 @@ class SblChar(): BaseCharacter() {
         super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
         super.setAppearance(newAppearance = charRefs[0]!!.appearance.intValue)
         super.setGnosis(newGnosis = charRefs[0]!!.gnosis.intValue)
+
+        //reset primary data
+        primaryList.allPrimaries().forEach{primary ->
+            primary.setInput(5)
+        }
     }
 
     fun nonZeroReset(){

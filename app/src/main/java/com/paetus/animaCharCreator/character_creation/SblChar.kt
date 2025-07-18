@@ -337,9 +337,6 @@ class SblChar(): BaseCharacter() {
         //get the class at this level
         val prevClass = charRefs[lvl.intValue]!!.classes.ownClass.intValue
 
-        //get any natural bonus applied at this level
-        val secondaryIndex = getAddedSecondary()
-
         //run level reset
         resetLevel()
 
@@ -352,10 +349,6 @@ class SblChar(): BaseCharacter() {
                 startLevel = lvl.intValue + 1,
                 classIndex = prevClass
             )
-
-        //remove any applied secondary natural bonus
-        if(secondaryIndex != null)
-            secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(false)
     }
 
     /**
@@ -372,26 +365,21 @@ class SblChar(): BaseCharacter() {
 
         //update all level based items
         setLvl(lvl.intValue)
-    }
 
-    /**
-     * Determine which secondary bonus was added this level.
-     *
-     * @return the index of the added bonus, if one is present
-     */
-    fun getAddedSecondary(): Int?{
-        //for each secondary item
-        secondaryList.getAllSecondaries().forEach{
-            it as SblSecondaryCharacteristic
+        //check validity of taken natural bonuses in future levels
+        levelLoop(
+            startLevel = lvl.intValue + 1,
+            endLevel = 20
+        ){character ->
+            character.secondaryList.getAllSecondaries().forEach{secondary ->
+                if(secondary.bonusApplied.value){
+                    if(secondary.pointsApplied.intValue == 0)
+                        secondary.bonusApplied.value = false
 
-            //return index if bonus at this level and not on a previous one
-            if(getCharAtLevel().secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value &&
-                !charRefs[lvl.intValue - 1]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value)
-                return it.secondaryIndex
+                    return@forEach
+                }
+            }
         }
-
-        //return no bonus taken flag
-        return null
     }
 
     /**

@@ -88,14 +88,31 @@ class SblSecondaryCharacteristic(
      * @param natBonus true if applying a natural bonus to the characteristic
      */
     override fun setNatBonus(natBonus: Boolean) {
-        (parent.charInstance as SblChar).levelLoop(
-            startLevel = parent.charInstance.lvl.intValue,
-            endLevel = 20
-        ){character ->
-            character.secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
-        }
+        //apply natural bonus to record
+        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
 
         super.setNatBonus(natBonus = natBonus)
+    }
+
+    /**
+     * Determines that this characteristic has had a natural bonus applied to it.
+     *
+     * @return true if natural bonus is taken
+     */
+    fun natTaken(): Boolean{
+        //initialize output
+        var output = false
+
+        //search previous levels for bonus acquisition
+        parent.sblChar.levelLoop{character ->
+            if(character.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value) {
+                output = true
+                return@levelLoop
+            }
+        }
+
+        //return taken state
+        return output
     }
 
     /**
@@ -110,7 +127,7 @@ class SblSecondaryCharacteristic(
         }
 
         //add natural bonus points
-        if (parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
+        if (natTaken())
             total.intValue += 5
 
         //add points for jack of all trades advantage

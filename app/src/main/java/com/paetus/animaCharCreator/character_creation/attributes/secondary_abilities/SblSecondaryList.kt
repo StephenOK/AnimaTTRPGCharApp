@@ -71,7 +71,7 @@ class SblSecondaryList(
         //if natural bonus is currently on
         else{
             //toggle off if not applied in a previous level
-            if(!(charInstance as SblChar).charRefs[charInstance.lvl.intValue - 1]!!.secondaryList.getAllSecondaries()[(characteristic as SblSecondaryCharacteristic).secondaryIndex].bonusApplied.value)
+            if(sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[(characteristic as SblSecondaryCharacteristic).secondaryIndex].bonusApplied.value)
                 characteristic.setNatBonus(natBonus = false)
         }
     }
@@ -81,7 +81,7 @@ class SblSecondaryList(
      */
     fun levelUpdate() {
         fullList().forEach{secondary ->
-            (secondary as SblSecondaryCharacteristic).bonusApplied.value = sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondary.secondaryIndex].bonusApplied.value
+            (secondary as SblSecondaryCharacteristic).bonusApplied.value = secondary.natTaken()
             secondary.pointsAppliedUpdate()
             secondary.classTotalRefresh()
         }

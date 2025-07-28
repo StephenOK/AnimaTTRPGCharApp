@@ -17,6 +17,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProf
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SblSummonAbility
@@ -29,6 +30,20 @@ import java.io.File
  * Each level is saved as its own BaseCharacter and recompiled in this item.
  */
 class SblChar(): BaseCharacter() {
+    //initialize character's other item data
+    override val primaryList = SblPrimaryList(charInstance = this)
+    override val combat = SblCombatAbilities(charInstance = this)
+    override val secondaryList = SblSecondaryList(sblChar = this)
+    override val weaponProficiencies = SblProficiencies(charInstance = this)
+    override val ki = SblKi(charInstance = this)
+    override val magic = SblMagic(sblChar = this)
+    override val summoning = SblSummoning(charInstance = this)
+    override val psychic = SblPsychic(charInstance = this)
+    override val advantageRecord = SblAdvantages(sblChar = this)
+    override val inventory = SblInventory(sblChar = this)
+
+    override val classes = SblClassInstances(charInstance = this)
+
     //initialize level data for this character
     val charRefs = mutableListOf(
         BaseCharacter(newHost = this, prevIndex = -1, isAdded = false),
@@ -53,20 +68,6 @@ class SblChar(): BaseCharacter() {
         null,
         null
     )
-
-    //initialize character's other item data
-    override val primaryList = SblPrimaryList(charInstance = this)
-    override val combat = SblCombatAbilities(charInstance = this)
-    override val secondaryList = SblSecondaryList(sblChar = this)
-    override val weaponProficiencies = SblProficiencies(charInstance = this)
-    override val ki = SblKi(charInstance = this)
-    override val magic = SblMagic(sblChar = this)
-    override val summoning = SblSummoning(charInstance = this)
-    override val psychic = SblPsychic(charInstance = this)
-    override val advantageRecord = SblAdvantages(sblChar = this)
-    override val inventory = SblInventory(sblChar = this)
-
-    override val classes = SblClassInstances(charInstance = this)
 
     /**
      * Sets the character's name value.
@@ -468,13 +469,17 @@ class SblChar(): BaseCharacter() {
 
         //determine that no points have been removed from secondary items
         secondaryList.getAllSecondaries().forEach{
-            if(!(it as SblSecondaryCharacteristic).validGrowth())
-                output.add{
+            if(!(it as SblSecondaryCharacteristic).validGrowth()) {
+                output.add {
                     stringResource(
                         R.string.secondaryInputPointReduction,
-                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                        if (it.secondaryIndex < 38)
+                            stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                        else
+                            (it as SblCustomCharacteristic).name.value
                     )
                 }
+            }
 
             //determine that the secondary item has a legal minimum input
             if(it.pointsApplied.intValue in 1..4)
@@ -615,6 +620,12 @@ class SblChar(): BaseCharacter() {
         secondaryFile: File,
         techFile: File
     ): this() {
+        //apply custom secondaries
+        secondaryList.applySecondaryChars(
+            input = secondaryFile,
+            filename = sourceDIR.name
+        )
+
         //look through each file in the directory
         sourceDIR.listFiles()?.forEach{file ->
             //create a character based on that file data

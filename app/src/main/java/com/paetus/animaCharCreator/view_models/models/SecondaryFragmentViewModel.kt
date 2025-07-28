@@ -10,6 +10,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
@@ -403,6 +404,13 @@ class SecondaryFragmentViewModel(
          * @return characteristic's name
          */
         fun getCustomName(): String{return (secondaryItem as CustomCharacteristic).name.value}
+
+        /**
+         * Retrieves the name of the characteristic if it is custom and in an Sbl character.
+         *
+         * @return characteristic's name
+         */
+        fun getSblCustomName(): String{return (secondaryItem as SblCustomCharacteristic).name.value}
 
         /**
          * Retrieves the modifier value of the characteristic.

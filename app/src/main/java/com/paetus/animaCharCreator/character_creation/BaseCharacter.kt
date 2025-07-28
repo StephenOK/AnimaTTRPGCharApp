@@ -15,6 +15,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
@@ -527,6 +528,20 @@ open class BaseCharacter{
         //set level to not zero if not the zeroth level
         if(prevIndex >= 0)
             setLvl(levNum = 1)
+
+        //apply custom characteristics
+        newHost.secondaryList.getAllSblCustoms().forEach{
+            secondaryList.addCustomSecondary(
+                newSecondary = CustomCharacteristic(
+                    parent = secondaryList,
+                    name = it.name.value,
+                    filename = it.filename.value,
+                    isPublic = it.isPublic.value,
+                    field = it.fieldIndex.intValue,
+                    primary = it.primaryCharIndex.intValue
+                )
+            )
+        }
 
         //if character is a new level added to the record
         if(isAdded) {

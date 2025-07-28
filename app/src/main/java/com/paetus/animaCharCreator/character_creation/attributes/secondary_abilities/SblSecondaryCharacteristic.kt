@@ -8,7 +8,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  * @param parent full list that holds this object
  * @param secondaryIndex where to find this item's equivalent in the BaseCharacter records
  */
-class SblSecondaryCharacteristic(
+open class SblSecondaryCharacteristic(
     private val parent: SblSecondaryList,
     val secondaryIndex: Int
 ): SecondaryCharacteristic(parent){
@@ -21,7 +21,7 @@ class SblSecondaryCharacteristic(
         val charInstance = parent.sblChar
 
         //set current level value
-        charInstance.getCharAtLevel().secondaryList.fullList()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
+        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
 
         //if character is not level 0
         if(charInstance.lvl.intValue != 0) {
@@ -145,7 +145,7 @@ class SblSecondaryCharacteristic(
 
         //add points from levels up to this one
         parent.sblChar.levelLoop{character ->
-            pointsApplied.intValue += character.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
+            pointsApplied.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
         }
 
         updateDevSpent()
@@ -164,7 +164,7 @@ class SblSecondaryCharacteristic(
 
         //count points applied per level
         parent.sblChar.levelLoop(endLevel = level){
-            output += it.secondaryList.fullList()[secondaryIndex].pointsApplied.intValue
+            output += it.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
         }
 
         //give result

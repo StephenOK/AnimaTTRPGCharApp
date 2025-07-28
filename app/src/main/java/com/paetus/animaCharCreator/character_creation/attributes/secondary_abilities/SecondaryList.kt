@@ -77,6 +77,7 @@ open class SecondaryList(
     open val strengthFeat = SecondaryCharacteristic(parent = this)
     open val resistPain = SecondaryCharacteristic(parent = this)
 
+    //initialize custom characteristic field lists
     private val customAthletics = mutableListOf<CustomCharacteristic>()
     private val customSocials = mutableListOf<CustomCharacteristic>()
     private val customPercs = mutableListOf<CustomCharacteristic>()
@@ -85,6 +86,7 @@ open class SecondaryList(
     private val customSubs = mutableListOf<CustomCharacteristic>()
     private val customCreates = mutableListOf<CustomCharacteristic>()
 
+    //initialize custom characteristic mod lists
     private val customSTR = mutableListOf<CustomCharacteristic>()
     private val customDEX = mutableListOf<CustomCharacteristic>()
     private val customAGI = mutableListOf<CustomCharacteristic>()
@@ -109,6 +111,8 @@ open class SecondaryList(
 
     /**
      * Retrieves all custom characteristics available to this character.
+     *
+     * @return list of all custom characteristics
      */
     fun getAllCustoms(): List<CustomCharacteristic>{
         return customAthletics + customSocials + customPercs + customIntells + customVigors + customSubs + customCreates
@@ -143,8 +147,10 @@ open class SecondaryList(
 
     /**
      * Retrieves all secondary characteristics this character has access to.
+     *
+     * @return all secondaries available to the character
      */
-    fun getAllSecondaries(): List<SecondaryCharacteristic>{
+    open fun getAllSecondaries(): List<SecondaryCharacteristic>{
         return fullList() + getAllCustoms()
     }
 
@@ -154,7 +160,7 @@ open class SecondaryList(
      * @param fieldInteger number to convert to a secondary field
      * @return list of characteristics associated with the desired field
      */
-    fun intToField(
+    open fun intToField(
         fieldInteger: Int
     ): List<SecondaryCharacteristic>{
         return when(fieldInteger){
@@ -362,7 +368,7 @@ open class SecondaryList(
 
         //for files created after custom secondaries were implemented
         if(writeVersion >= 22) {
-            (0 until fileReader!!.readLine().toInt()).forEach{
+            repeat(times = fileReader!!.readLine().toInt()){
 
                 //get the custom characteristic's name
                 val customName = fileReader.readLine()
@@ -427,7 +433,7 @@ open class SecondaryList(
      * @param input directory for custom secondary characteristics
      * @param filename name of the character file that may be associated with private custom characteristics
      */
-    fun applySecondaryChars(
+    open fun applySecondaryChars(
         input: File,
         filename: String
     ){
@@ -441,20 +447,17 @@ open class SecondaryList(
             //retrieve data about the custom secondary characteristic
             val valid = fileReader.readLine().toBoolean()
             val fileCheck = fileReader.readLine()
-            val name = fileReader.readLine()
-            val field = fileReader.readLine().toInt()
-            val primary = fileReader.readLine().toInt()
 
             //if characteristic is either public or private to this character
             if (valid || fileCheck == filename) {
                 //create custom characteristic item
                 val newTech = CustomCharacteristic(
                     parent = this,
-                    name = name,
+                    name = fileReader.readLine(),
                     filename = filename,
                     isPublic = valid,
-                    field = field,
-                    primary = primary
+                    field = fileReader.readLine().toInt(),
+                    primary = fileReader.readLine().toInt()
                 )
 
                 //add characteristic to character
@@ -610,12 +613,11 @@ open class SecondaryList(
         fieldList.add(element = newSecondary)
         newSecondary.setDevCost(dpCost = newGrowth)
 
-        //determine if the character has a advantage bonus in this field
+        //determine if the character has an advantage bonus in this field
         val fieldAdvantage = charInstance.advantageRecord.getAdvantage(advantageString = "fieldAptitude")
 
         //apply that bonus, if available
-        if(fieldAdvantage != null && fieldAdvantage.picked == newSecondary.fieldIndex.intValue){
+        if(fieldAdvantage != null && fieldAdvantage.picked == newSecondary.fieldIndex.intValue)
             newSecondary.setDevelopmentDeduction(dpDeduction = 1)
-        }
     }
 }

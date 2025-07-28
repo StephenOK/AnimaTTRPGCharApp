@@ -25,6 +25,7 @@ import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
@@ -284,10 +285,11 @@ private fun MakeRow(
 ){
     //get this characteristic's displayed name
     val itemName =
-        if(secondaryChar.secondaryItem is CustomCharacteristic)
-            secondaryChar.getCustomName()
-        else
-            stringArrayResource(R.array.secondaryCharacteristics)[secondaryChar.getName()]
+        when (secondaryChar.secondaryItem) {
+            is CustomCharacteristic -> secondaryChar.getCustomName()
+            is SblCustomCharacteristic -> secondaryChar.getSblCustomName()
+            else -> stringArrayResource(id = R.array.secondaryCharacteristics)[secondaryChar.getName()]
+        }
 
     Row{Spacer(modifier = Modifier.height(5.dp))}
 

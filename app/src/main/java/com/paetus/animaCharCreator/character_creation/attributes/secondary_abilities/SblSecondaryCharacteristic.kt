@@ -69,8 +69,8 @@ open class SblSecondaryCharacteristic(
             if(parent.charInstance.lvl.intValue != 0){
                 var output = 0
 
-                (parent.charInstance as SblChar).levelLoop(startLevel = 1){
-                    output += it.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue
+                (parent.charInstance as SblChar).levelLoop(startLevel = 1){character ->
+                    output += character.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue
                 }
 
                 output

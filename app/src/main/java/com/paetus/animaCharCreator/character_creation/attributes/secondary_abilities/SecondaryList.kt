@@ -254,7 +254,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new strength modifier.
      */
-    fun updateSTR() {
+    open fun updateSTR() {
         jump.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
         strengthFeat.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
 
@@ -264,7 +264,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new dexterity modifier.
      */
-    fun updateDEX() {
+    open fun updateDEX() {
         forging.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
         sleightHand.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
         disguise.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
@@ -278,7 +278,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new agility modifier.
      */
-    fun updateAGI() {
+    open fun updateAGI() {
         acrobatics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
         athletics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
         climb.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
@@ -293,14 +293,14 @@ open class SecondaryList(
     /**
      * Updates needed values based on new constitution modifier.
      */
-    fun updateCON(){
+    open fun updateCON(){
         customCON.forEach{customChar -> customChar.setModVal(charInstance.primaryList.con.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new intelligence modifier.
      */
-    fun updateINT() {
+    open fun updateINT() {
         persuasion.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
         poisons.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
         animals.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
@@ -319,7 +319,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new power modifier.
      */
-    fun updatePOW() {
+    open fun updatePOW() {
         art.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
         music.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
         leadership.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
@@ -332,7 +332,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new willpower modifier.
      */
-    fun updateWP() {
+    open fun updateWP() {
         intimidate.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
         composure.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
         resistPain.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
@@ -343,7 +343,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new perception modifier
      */
-    fun updatePER() {
+    open fun updatePER() {
         notice.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
         search.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
         track.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)

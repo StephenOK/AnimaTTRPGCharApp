@@ -673,6 +673,20 @@ class SblChar(): BaseCharacter() {
         //apply character record
         updateReference(newRef = reference)
 
+        reference[0]!!.secondaryList.getAllCustoms().forEach{custom ->
+            secondaryList.addSblCustom(
+                newSecondary = SblCustomCharacteristic(
+                    parent = secondaryList,
+                    secondaryIndex = reference[0]!!.secondaryList.getAllSecondaries().indexOf(custom),
+                    name = custom.name.value,
+                    filename = custom.filename.value,
+                    isPublic = custom.isPublic.value,
+                    field = custom.fieldIndex.intValue,
+                    primary = custom.primaryCharIndex.intValue
+                )
+            )
+        }
+
         //initialize the character
         charStartup()
 

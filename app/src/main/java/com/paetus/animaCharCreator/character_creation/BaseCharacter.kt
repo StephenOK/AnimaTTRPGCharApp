@@ -530,15 +530,15 @@ open class BaseCharacter{
             setLvl(levNum = 1)
 
         //apply custom characteristics
-        newHost.secondaryList.getAllSblCustoms().forEach{
+        newHost.secondaryList.getAllSblCustoms().forEach{customSecondary ->
             secondaryList.addCustomSecondary(
                 newSecondary = CustomCharacteristic(
                     parent = secondaryList,
-                    name = it.name.value,
-                    filename = it.filename.value,
-                    isPublic = it.isPublic.value,
-                    field = it.fieldIndex.intValue,
-                    primary = it.primaryCharIndex.intValue
+                    name = customSecondary.name.value,
+                    filename = customSecondary.filename.value,
+                    isPublic = customSecondary.isPublic.value,
+                    field = customSecondary.fieldIndex.intValue,
+                    primary = customSecondary.primaryCharIndex.intValue
                 )
             )
         }
@@ -557,12 +557,6 @@ open class BaseCharacter{
                 classes.toggleMagPaladin()
             if(classes.ownClass.intValue !in 3..4)
                 classes.paladinDeactivate()
-
-            //apply secondary natural bonuses
-            newHost.secondaryList.getAllSecondaries().forEach {
-                it as SblSecondaryCharacteristic
-                secondaryList.getAllSecondaries()[it.secondaryIndex].setNatBonus(newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries()[it.secondaryIndex].bonusApplied.value)
-            }
 
             //apply primary weapon choice
             weaponProficiencies.setPrimaryWeapon(newHost.weaponProficiencies.primaryWeapon.intValue)

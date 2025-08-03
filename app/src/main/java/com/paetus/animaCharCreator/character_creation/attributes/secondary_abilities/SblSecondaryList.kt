@@ -139,6 +139,76 @@ class SblSecondaryList(
     }
 
     /**
+     * Update needed values based on new strength modifier.
+     */
+    override fun updateSTR() {
+        super.updateSTR()
+
+        customSblSTR.forEach{customChar -> customChar.setModVal(charInstance.primaryList.str.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new dexterity modifier.
+     */
+    override fun updateDEX() {
+        super.updateDEX()
+
+        customSblDEX.forEach{customChar -> customChar.setModVal(charInstance.primaryList.dex.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new agility modifier.
+     */
+    override fun updateAGI() {
+        super.updateAGI()
+
+        customSblAGI.forEach{customChar -> customChar.setModVal(charInstance.primaryList.agi.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new constitution modifier.
+     */
+    override fun updateCON(){
+        customSblCON.forEach{customChar -> customChar.setModVal(charInstance.primaryList.con.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new intelligence modifier.
+     */
+    override fun updateINT() {
+        super.updateINT()
+
+        customSblINT.forEach{customChar -> customChar.setModVal(charInstance.primaryList.int.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new power modifier.
+     */
+    override fun updatePOW(){
+        super.updatePOW()
+
+        customSblPOW.forEach{customChar -> customChar.setModVal(charInstance.primaryList.pow.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new willpower modifier.
+     */
+    override fun updateWP() {
+        super.updateWP()
+
+        customSblWP.forEach{customChar -> customChar.setModVal(charInstance.primaryList.wp.outputMod.intValue)}
+    }
+
+    /**
+     * Update needed values based on new perception modifier.
+     */
+    override fun updatePER() {
+        super.updatePER()
+
+        customSblPER.forEach{customChar -> customChar.setModVal(charInstance.primaryList.per.outputMod.intValue)}
+    }
+
+    /**
      * Applies custom secondaries from the inputted file to the character.
      *
      * @param input directory for custom secondary characteristics
@@ -148,6 +218,14 @@ class SblSecondaryList(
         input: File,
         filename: String
     ){
+        //apply characteristic to level records
+        sblChar.levelLoop(
+            startLevel = 0,
+            endLevel = 20
+        ){character ->
+            character.secondaryList.applySecondaryChars(input = input, filename = filename)
+        }
+
         //for each file in this directory
         input.listFiles()?.forEach{file ->
             //initialize this file's reader
@@ -178,11 +256,6 @@ class SblSecondaryList(
 
             //close reader
             customInput.close()
-        }
-
-        //apply characteristic to level records
-        sblChar.levelLoop{character ->
-            character.secondaryList.applySecondaryChars(input = input, filename = filename)
         }
     }
 

@@ -380,6 +380,9 @@ class SblChar(): BaseCharacter() {
                     return@forEach
                 }
             }
+
+            //check psychic power investment in future levels
+            psychic.legalDisciplines.forEach{discipline -> psychic.removeIllegal(discipline)}
         }
     }
 

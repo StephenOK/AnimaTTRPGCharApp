@@ -46,7 +46,7 @@ open class SblMagBook(
      * @param spellLevel level of the spell to individually purchase
      */
     override fun changeIndividualSpell(spellLevel: Int) {
-        val spellIndex =  (spellLevel/2) - 1
+        val spellIndex = (spellLevel/2) - 1
 
         //apply change if spell not taken or spell taken previously at this level
         if(!individualSpells.contains(spellIndex) ||
@@ -131,8 +131,9 @@ open class SblMagBook(
             pointsIn.intValue += character.magic.retrieveBooks()[bookIndex].pointsIn.intValue
         }
 
-        //updates the primary state of this book
+        //updates the primary state of this and opposing book
         updatePrimary()
+        magic.retrieveBooks()[opposed].updatePrimary()
     }
 
     /**
@@ -146,8 +147,8 @@ open class SblMagBook(
             if(magic.retrieveBooks()[10].isPrimary.value){
                 //check that necromancy was not taken before this level
                 var necPrevious = false
-                charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){
-                    if(it.magic.retrieveBooks()[10].isPrimary.value) necPrevious = true
+                charInstance.levelLoop(endLevel = charInstance.lvl.intValue - 1){character ->
+                    if(character.magic.retrieveBooks()[10].isPrimary.value) necPrevious = true
                 }
                 //remove necromancy from this and future levels
                 if(!necPrevious)

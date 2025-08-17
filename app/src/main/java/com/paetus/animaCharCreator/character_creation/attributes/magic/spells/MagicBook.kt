@@ -78,7 +78,7 @@ open class MagicBook(
             //invest in either opposite book or necromancy if points in these books
             if(magic.retrieveBooks()[opposingIndex].hasInvestment())
                 magic.retrieveBooks()[opposingIndex].isPrimary.value = true
-            else if(magic.retrieveBooks()[10].hasInvestment())
+            else if(magic.retrieveBooks()[10].hasInvestment() && !magic.retrieveBooks()[10].getOpposedInvestment())
                 magic.retrieveBooks()[10].changePrimary(isTaking = true)
         }
     }
@@ -129,7 +129,8 @@ open class MagicBook(
             individualSpells.add(element = spellIndex)
 
             //apply primary status if needed
-            if(!isPrimary.value && !magic.retrieveBooks()[opposingIndex].isPrimary.value)
+            if(!isPrimary.value &&
+                !magic.retrieveBooks()[opposingIndex].isPrimary.value && !magic.retrieveBooks()[10].isPrimary.value)
                 changePrimary(isTaking = true)
         }
 
@@ -215,10 +216,17 @@ open class MagicBook(
      * @return level maximum from these inputs
      */
     fun getCap(): Int{
-        //half points invested if not primary
-        return (if(isPrimary.value) pointsIn.intValue else pointsIn.intValue/2) +
-                //add 40 to level if natural path applied
-                (if(isNatural.value) 40 else 0)
+        //initialize output
+        var output = 0
+
+        //add points spent to output
+        output += if(isPrimary.value) pointsIn.intValue else pointsIn.intValue/2
+
+        //add natural points to output
+        output += if(isNatural.value) 40 else 0
+
+        //return either output or max cap value
+        return if(output <= 100) output else 100
     }
 
     /**

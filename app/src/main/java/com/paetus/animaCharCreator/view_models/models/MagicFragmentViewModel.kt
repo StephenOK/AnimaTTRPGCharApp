@@ -139,6 +139,15 @@ class MagicFragmentViewModel(
     fun currentZeonPoints(): Int{return magic.boughtZeon.intValue}
 
     /**
+     * Determines if the magic projection can be changed at this time.
+     *
+     * @return true if item is changeable
+     */
+    fun getImbalanceChangeable(): Boolean{
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
+
+    /**
      * Change the character's magic imbalance input.
      *
      * @param imbalance value to set the magic imbalance to

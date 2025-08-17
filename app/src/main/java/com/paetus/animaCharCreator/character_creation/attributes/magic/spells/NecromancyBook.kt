@@ -63,6 +63,34 @@ open class NecromancyBook(
     }
 
     /**
+     * Purchase a spell individually by the given spell level.
+     *
+     * @param spellLevel level of the spell to individually purchase
+     */
+    override fun changeIndividualSpell(spellLevel: Int) {
+        //convert the spells level to its index
+        val spellIndex = (spellLevel/2) - 1
+
+        //if spell is not currently purchased
+        if(spellIndex !in individualSpells){
+            //add spell to individually purchased record
+            individualSpells.add(element = spellIndex)
+
+            //apply primary status if needed
+            if(!isPrimary.value && !getOpposedInvestment())
+                changePrimary(isTaking = true)
+        }
+        //remove spell if it is already purchased
+        else{
+            individualSpells.remove(element = spellIndex)
+
+            //remove primary status, if needed
+            if(!hasInvestment())
+                changePrimary(isTaking = false)
+        }
+    }
+
+    /**
      * Check if the character has the indicated free spell.
      *
      * @param freeSpell spell to search for in the books
@@ -90,10 +118,13 @@ open class NecromancyBook(
      * @return true if points in opposite element's book
      */
     override fun getOpposedInvestment(): Boolean {
+        //check each magic book for primary status
         for(index in 0..9)
+            //return true if any single book is primary
             if(magic.retrieveBooks()[index].isPrimary.value)
                 return true
 
+        //notify of no opposed primary
         return false
     }
 }

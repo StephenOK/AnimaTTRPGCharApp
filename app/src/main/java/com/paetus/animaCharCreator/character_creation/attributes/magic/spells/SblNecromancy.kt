@@ -15,7 +15,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.sp
 class SblNecromancy(
     val charInstance: SblChar,
     necromancy: NecromancySpells,
-    magic: Magic
+    magic: SblMagic
 ): NecromancyBook(necromancy, magic){
     /**
      * Sets the direct point investment in this book to the indicated value.
@@ -34,6 +34,44 @@ class SblNecromancy(
 
         //update book level totals
         updateMagLevels()
+    }
+
+    /**
+     * Purchase a spell individually by the given spell level.
+     *
+     * @param spellLevel level of the spell to individually purchase
+     */
+    override fun changeIndividualSpell(spellLevel: Int) {
+        //convert the spell's level to its index
+        val spellIndex = (spellLevel/2) - 1
+
+        //apply change if spell not taken or spell taken previously at this level
+        if(!individualSpells.contains(element = spellIndex) ||
+            charInstance.getCharAtLevel().magic.retrieveBooks()[10].individualSpells.contains(spellIndex)){
+            //apply change to the level
+            charInstance.getCharAtLevel().magic.retrieveBooks()[10].changeIndividualSpell(
+                spellLevel = spellLevel
+            )
+
+            //clear future instances of this spell
+            if(charInstance.getCharAtLevel().magic.retrieveBooks()[10].individualSpells.contains(element = spellIndex))
+                charInstance.levelLoop(
+                    startLevel = charInstance.lvl.intValue + 1,
+                    endLevel = 20
+                ){character ->
+                    if(character.magic.retrieveBooks()[10].individualSpells.contains(element = spellIndex))
+                        character.magic.retrieveBooks()[10].changeIndividualSpell(spellLevel = spellLevel)
+                }
+
+            //update spell list
+            updateIndividualSpells()
+
+            //update primary investment
+            if(hasInvestment() && !isPrimary.value && !getOpposedInvestment())
+                changePrimary(isTaking = true)
+            else if(!hasInvestment())
+                changePrimary(isTaking = false)
+        }
     }
 
     /**
@@ -137,6 +175,31 @@ class SblNecromancy(
     }
 
     /**
+     * Update the individual spells taken by the character.
+     */
+    fun updateIndividualSpells(){
+        //remove all individual spells
+        individualSpells.clear()
+
+        //add individual spells taken at each level
+        charInstance.levelLoop{character ->
+            individualSpells.addAll(elements = character.magic.retrieveBooks()[10].individualSpells)
+        }
+    }
+
+    /**
+     * Updates the free spells taken by the character.
+     */
+    fun updateFreeSpells(){
+        freeSpells.clear()
+
+        //add individual free spells taken at each level
+        charInstance.levelLoop{character ->
+            freeSpells.addAll(elements = character.magic.retrieveBooks()[10].freeSpells)
+        }
+    }
+
+    /**
      * Gets whether the points spent in this book are valid for an SBL character.
      *
      * @return true if points not removed
@@ -151,5 +214,7 @@ class SblNecromancy(
     fun levelUpdate(){
         updateMagLevels()
         updatePrimary()
+        updateIndividualSpells()
+        updateFreeSpells()
     }
 }

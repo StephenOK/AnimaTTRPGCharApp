@@ -263,7 +263,10 @@ fun MagicFragment(
                         inputText = magFragVM.projectionImbalance.collectAsState().value,
                         inputFunction = {
                             //if imbalance is a legal input
-                            if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains(char = '\n'))
+                            if (magFragVM.getImbalanceChangeable() &&
+                                (it.toInt() in 0..30 &&
+                                magFragVM.isGifted() || it.contains(char = '\n'))
+                            )
                                 magFragVM.setProjectionImbalance(imbalance = it.toInt())
                         },
                         emptyFunction = {
@@ -587,7 +590,7 @@ private fun SpellBookInvestment(
             NumberInput(
                 inputText = spellData.elementInvestment.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || it.contains(char = '\n'))
+                    if(it.toInt() <= 100 && (magFragVM.isGifted() || it.contains(char = '\n')))
                         spellData.setElementInvestment(magLevels = it.toInt())
                 },
                 emptyFunction = {spellData.setElementInvestment(display = "")},
@@ -662,7 +665,7 @@ private fun SpellBookInvestment(
                             spellData = spellData,
                             magFragVM = magFragVM,
                             updateList = {
-                                spellData.setPrimaryElement(isPrimary = spellData.isPrimary.value)
+                                spellData.setPrimaryElement(isPrimary = spellData.magicBook.isPrimary.value)
                                 magFragVM.setMagicLevelSpent()
                             }
                         )

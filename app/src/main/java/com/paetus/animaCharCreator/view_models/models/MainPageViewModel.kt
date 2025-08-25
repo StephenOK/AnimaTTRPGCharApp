@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.crashlytics
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.composables.TextInput
 import com.paetus.animaCharCreator.activities.HomeActivity

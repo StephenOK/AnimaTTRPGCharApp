@@ -9,14 +9,14 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.paetus.animaCharCreator"
-        minSdk 21
-        targetSdk 35
+        minSdk 23
+        targetSdk 36
 
-        versionCode 45
+        versionCode 46
 
         versionName "1.0.9"
 

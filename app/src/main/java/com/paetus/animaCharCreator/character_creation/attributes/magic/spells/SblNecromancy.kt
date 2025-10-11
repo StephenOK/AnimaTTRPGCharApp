@@ -1,7 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 
+import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
-import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.NecromancySpells
 
@@ -30,10 +30,30 @@ class SblNecromancy(
         }
 
         //determine number of points added to this level
-        charInstance.getCharAtLevel().magic.retrieveBooks()[10].buyLevels(pointBuy = pointBuy - prevPoints)
+        charInstance.getCharAtLevel().magic.retrieveBooks()[10].pointsIn.intValue = pointBuy - prevPoints
 
         //update book level totals
         updateMagLevels()
+
+        //apply primary status if no other book is primary and points are invested
+        if(!isPrimary.value && !getOpposedPrimary() && pointBuy != 0)
+            changePrimary(isTaking = true)
+
+        //remove primary status if no points are invested
+        else if(isPrimary.value && !hasInvestment() &&
+            charInstance.getCharAtLevel().magic.retrieveBooks()[10].pointsIn.intValue >= 0)
+            changePrimary(isTaking = false)
+
+        //update individual spells taken
+        individualSpells.forEach{spellIndex ->
+            val spellLevel = (spellIndex + 1)/2
+            if(charInstance.getCharAtLevel().magic.retrieveBooks()[10].individualSpells.contains(element = spellIndex) &&
+                spellLevel <= getCap())
+                charInstance.getCharAtLevel().magic.retrieveBooks()[10].individualSpells.remove(element = spellIndex)
+        }
+
+        //update spell list
+        updateIndividualSpells()
     }
 
     /**
@@ -67,7 +87,7 @@ class SblNecromancy(
             updateIndividualSpells()
 
             //update primary investment
-            if(hasInvestment() && !isPrimary.value && !getOpposedInvestment())
+            if(hasInvestment() && !isPrimary.value && !getOpposedPrimary())
                 changePrimary(isTaking = true)
             else if(!hasInvestment())
                 changePrimary(isTaking = false)
@@ -98,7 +118,12 @@ class SblNecromancy(
                 //remove all primary statuses from other books
                 for(index in 0..9){
                     charInstance.magic.retrieveBooks()[index].isPrimary.value = false
-                    charInstance.getCharAtLevel().magic.retrieveBooks()[index].isPrimary.value = false
+                    charInstance.levelLoop(
+                        startLevel = charInstance.lvl.intValue,
+                        endLevel = 20
+                    ){character ->
+                        character.magic.retrieveBooks()[index].isPrimary.value = false
+                    }
                 }
 
                 //add necromancy to this character
@@ -107,41 +132,102 @@ class SblNecromancy(
         }
 
         //if removing primary state and status taken at this level
-        else if(!isTaking && isPrimary.value && charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value){
+        else if(!isTaking && isPrimary.value && charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value && getOpposedInvestment()){
             //remove state from SBL record and level record
             isPrimary.value = false
             charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value = false
 
-            //initialize opposing book pointer
-            var index = 0
+            //initialize list of checked element pairs
+            val exceptions = mutableListOf<Int>()
 
-            while(index < 10){
-                //retrieve the two opposing books
-                val book1 = magic.retrieveBooks()[index++]
-                val book2 = magic.retrieveBooks()[index++]
+            //retrieve any checked element pairs for this level
+            exceptions.addAll(elements = primaryDistribute(character = charInstance.getCharAtLevel()))
 
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                //get this level's necromancy book
+                val levelNec = character.magic.retrieveBooks()[10] as NecromancyBook
+
+                //apply primary to this book's necromancy if applicable
+                if(exceptions.isEmpty() && levelNec.hasInvestment())
+                    levelNec.isPrimary.value = true
+
+                //apply element pair primaries as needed at this level
+                else if(levelNec.getOpposedInvestment())
+                    exceptions.addAll(
+                        elements = primaryDistribute(
+                            character = character,
+                            exceptions = exceptions
+                        )
+                    )
+            }
+        }
+
+        //update primary records
+        (magic as SblMagic).updateBookPrimaries()
+    }
+
+    /**
+     * Applies primary state to element pairs after necromancy has its primary status removed.
+     *
+     * @param character item holding the changing data
+     * @param exceptions any indicated element pairs that do not need checking
+     * @return list of elements that were affected by this run
+     */
+    private fun primaryDistribute(
+        character: BaseCharacter,
+        exceptions: List<Int> = listOf()
+    ): MutableList<Int>{
+        //initialize opposing book pointer
+        var index = 0
+
+        //initialize output
+        val output = mutableListOf<Int>()
+
+        while (index < 10) {
+            val firstIndex = index++
+            val secondIndex = index++
+
+            //retrieve the two opposing books
+            val book1 = character.magic.retrieveBooks()[firstIndex]
+            val book2 = character.magic.retrieveBooks()[secondIndex]
+
+            if(!exceptions.contains(firstIndex) || !exceptions.contains(secondIndex)) {
                 //if only first book invested in, set first book as primary element
-                if(book1.hasInvestment() && !book2.hasInvestment())
+                if (book1.hasInvestment() && !book2.hasInvestment()) {
                     book1.changePrimary(true)
+                    output.add(firstIndex)
+                }
 
                 //if only second book invested in, set second book as primary element
-                else if(book2.hasInvestment() && !book1.hasInvestment())
+                else if (book2.hasInvestment() && !book1.hasInvestment()) {
                     book2.changePrimary(true)
+                    output.add(secondIndex)
+                }
+
                 //if both books invested in
-                else if(book1.hasInvestment() && book2.hasInvestment()){
+                else if (book1.hasInvestment() && book2.hasInvestment()) {
                     //set second book as primary if it has more points, more individual spells, or if the only one with a natural bonus
-                    if(book2.pointsIn.intValue > book1.pointsIn.intValue ||
+                    if (book2.pointsIn.intValue > book1.pointsIn.intValue ||
                         book2.individualSpells.size > book1.individualSpells.size ||
-                        book2.isNatural.value && !book1.isNatural.value)
+                        book2.isNatural.value && !book1.isNatural.value
+                    ) {
                         book2.changePrimary(true)
+                        output.add(secondIndex)
+                    }
+
                     //otherwise, set first book as primary
-                    else
+                    else {
                         book1.changePrimary(true)
+                        output.add(firstIndex)
+                    }
                 }
             }
         }
 
-        (magic as SblMagic).updateBookPrimaries()
+        return output
     }
 
     /**

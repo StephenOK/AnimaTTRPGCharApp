@@ -34,10 +34,29 @@ open class SblMagBook(
         }
 
         //value for magic levels gained this level
-        charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].buyLevels(pointBuy = pointBuy - prevPoints)
+        charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].pointsIn.intValue = pointBuy - prevPoints
 
         //update magic level total
         updateMagLevels()
+
+        //apply appropriate primary status to the character record
+        if(!isPrimary.value && !getOpposedPrimary() && pointBuy != 0)
+            changePrimary(isTaking = true)
+
+        else if(isPrimary.value && !hasInvestment() &&
+            charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].pointsIn.intValue >= 0)
+            changePrimary(isTaking = false)
+
+        //remove individual spells that are acquired by this purchase
+        individualSpells.forEach{spellIndex ->
+            val spellLevel = (spellIndex + 1) * 2
+            if(charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].individualSpells.contains(element = spellIndex) &&
+                spellLevel <= getCap())
+                charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].individualSpells.remove(element = spellIndex)
+        }
+
+        //update the spell list
+        updateIndividualSpells()
     }
 
     /**
@@ -131,9 +150,8 @@ open class SblMagBook(
             pointsIn.intValue += character.magic.retrieveBooks()[bookIndex].pointsIn.intValue
         }
 
-        //updates the primary state of this and opposing book
-        updatePrimary()
-        magic.retrieveBooks()[opposed].updatePrimary()
+        //updates the primary state of all books
+        homeMagic.updateBookPrimaries()
     }
 
     /**
@@ -163,29 +181,69 @@ open class SblMagBook(
                         opposePrevious = true
                 }
                 //remove this book from this and future levels
-                if(!opposePrevious) {
+                if(!opposePrevious){
                     magic.retrieveBooks()[opposed].isPrimary.value = false
 
                     charInstance.levelLoop(
                         startLevel = charInstance.lvl.intValue,
                         endLevel = 20
-                    ){
-                        it.magic.retrieveBooks()[opposed].isPrimary.value = false
+                    ){character ->
+                        character.magic.retrieveBooks()[opposed].isPrimary.value = false
                     }
                 }
             }
 
             //if no opposing books still have primary status
-            if(!magic.retrieveBooks()[opposed].isPrimary.value && !magic.retrieveBooks()[10].isPrimary.value)
+            if(!magic.retrieveBooks()[opposed].isPrimary.value && !magic.retrieveBooks()[10].isPrimary.value) {
                 //reflect change in level record
                 charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].isPrimary.value = true
+                charInstance.levelLoop(
+                    startLevel = charInstance.lvl.intValue + 1,
+                    endLevel = 20
+                ){character ->
+                    character.magic.retrieveBooks()[opposed].isPrimary.value = false
+                    character.magic.retrieveBooks()[10].isPrimary.value = false
+                }
+            }
         }
         else if(!isTaking && charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].isPrimary.value){
             //invest in either opposite book or necromancy if points in these books
             if(magic.retrieveBooks()[opposingIndex].hasInvestment())
                 magic.retrieveBooks()[opposingIndex].changePrimary(isTaking = true)
-            else if(magic.retrieveBooks()[10].hasInvestment())
+            else if(magic.retrieveBooks()[10].hasInvestment() &&
+                !(magic.retrieveBooks()[10] as NecromancyBook).getElseInvestment(exclude = bookIndex))
                 magic.retrieveBooks()[10].changePrimary(isTaking = true)
+            else if(!hasInvestment()) {
+                //remove primary status from the level record
+                charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].isPrimary.value =
+                    false
+
+                //update future level records
+                charInstance.levelLoop(
+                    startLevel = charInstance.lvl.intValue + 1,
+                    endLevel = 20
+                ){character ->
+                    //if future levels have points in this book,
+                    if(character.magic.retrieveBooks()[bookIndex].hasInvestment()){
+                        //set it as primary
+                        character.magic.retrieveBooks()[bookIndex].isPrimary.value = true
+                        return@levelLoop
+                    }
+                    //if the opposing book has points in it,
+                    else if(character.magic.retrieveBooks()[opposingIndex].hasInvestment()){
+                        //set the opposing book as primary
+                        character.magic.retrieveBooks()[opposingIndex].isPrimary.value = true
+                        return@levelLoop
+                    }
+                    //if there are points in necromancy and no other books at this level,
+                    else if(character.magic.retrieveBooks()[10].hasInvestment() &&
+                        !(magic.retrieveBooks()[10] as NecromancyBook).getElseInvestment(exclude = bookIndex)){
+                        //set necromancy as primary
+                        character.magic.retrieveBooks()[10].isPrimary.value = true
+                        return@levelLoop
+                    }
+                }
+            }
         }
 
         //update all book primary values
@@ -215,7 +273,10 @@ open class SblMagBook(
 
         //add individual spells taken at each level
         charInstance.levelLoop{character ->
-            individualSpells.addAll(character.magic.retrieveBooks()[bookIndex].individualSpells)
+            character.magic.retrieveBooks()[bookIndex].individualSpells.forEach{spellIndex ->
+                val spellLevel = (spellIndex + 1) * 2
+                if(spellLevel > getCap()) individualSpells.add(spellIndex)
+            }
         }
     }
 

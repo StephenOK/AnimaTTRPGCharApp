@@ -72,14 +72,14 @@ open class MagicBook(
             isPrimary.value = true
         }
         else if(!isTaking && isPrimary.value){
-            //remove this item's primary flag
-            isPrimary.value = false
-
             //invest in either opposite book or necromancy if points in these books
             if(magic.retrieveBooks()[opposingIndex].hasInvestment())
                 magic.retrieveBooks()[opposingIndex].isPrimary.value = true
-            else if(magic.retrieveBooks()[10].hasInvestment() && !magic.retrieveBooks()[10].getOpposedInvestment())
+            else if(magic.retrieveBooks()[10].hasInvestment() &&
+                !(magic.retrieveBooks()[10] as NecromancyBook).getElseInvestment(exclude = magic.retrieveBooks().indexOf(this)))
                 magic.retrieveBooks()[10].changePrimary(isTaking = true)
+            else if(!hasInvestment())
+                isPrimary.value = false
         }
     }
 
@@ -92,11 +92,8 @@ open class MagicBook(
         //set the invested point value
         pointsIn.intValue = pointBuy
 
-        //determine if any opposing books are primary elements
-        val opposingInvestment = getOpposedInvestment()
-
         //set this element as primary if it has points and no opposing element is primary
-        if(!isPrimary.value && !opposingInvestment && pointBuy != 0)
+        if(!isPrimary.value && !getOpposedPrimary() && pointBuy != 0)
             changePrimary(isTaking = true)
 
         //remove own primary status if no points in this item
@@ -303,9 +300,9 @@ open class MagicBook(
      *
      * @return true if points in opposite element's book
      */
-    open fun getOpposedInvestment(): Boolean{
-        return (magic.retrieveBooks()[opposingIndex].hasInvestment()) ||
-                magic.retrieveBooks()[10].hasInvestment()
+    open fun getOpposedPrimary(): Boolean{
+        return (magic.retrieveBooks()[opposingIndex].isPrimary.value) ||
+                magic.retrieveBooks()[10].isPrimary.value
     }
 
     /**
@@ -364,12 +361,12 @@ open class MagicBook(
         buyLevels(pointBuy = fileReader.readLine().toInt())
 
         //apply individual spells purchased
-        (0 until fileReader.readLine().toInt()).forEach{
+        (0 until fileReader.readLine().toInt()).forEach{ _ ->
             changeIndividualSpell(spellLevel = (fileReader.readLine().toInt() + 1) * 2)
         }
 
         //apply recorded free spells to this book
-        (0 until fileReader.readLine().toInt()).forEach{
+        (0 until fileReader.readLine().toInt()).forEach{ _ ->
             //get the free spell base from this data
             val spellBase = freeSpells.findFreeSpell(saveName = fileReader.readLine())
 

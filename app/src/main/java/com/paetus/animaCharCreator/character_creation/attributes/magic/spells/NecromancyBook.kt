@@ -77,7 +77,7 @@ open class NecromancyBook(
             individualSpells.add(element = spellIndex)
 
             //apply primary status if needed
-            if(!isPrimary.value && !getOpposedInvestment())
+            if(!isPrimary.value && !getOpposedPrimary())
                 changePrimary(isTaking = true)
         }
         //remove spell if it is already purchased
@@ -117,7 +117,7 @@ open class NecromancyBook(
      *
      * @return true if points in opposite element's book
      */
-    override fun getOpposedInvestment(): Boolean {
+    override fun getOpposedPrimary(): Boolean {
         //check each magic book for primary status
         for(index in 0..9)
             //return true if any single book is primary
@@ -125,6 +125,38 @@ open class NecromancyBook(
                 return true
 
         //notify of no opposed primary
+        return false
+    }
+
+    /**
+     * Determines if any element book has any points in them.
+     *
+     * @return true if any points invested in another book
+     */
+    fun getOpposedInvestment(): Boolean{
+        //check each book for invested points
+        for(index in 0..9)
+            if(magic.retrieveBooks()[index].hasInvestment())
+                return true
+
+        //notify of no points invested in other books
+        return false
+    }
+
+    /**
+     * Determines if any element book other than the indicated items have any points in them.
+     *
+     * @param exclude item to ignore in the search
+     * @return true if any points invested in the indicated books
+     */
+    fun getElseInvestment(exclude: Int): Boolean{
+        //loop through each magic book
+        for(index in 0..9)
+            //determine if the book needs to be checked and if it has primary status
+            if(index != exclude && magic.retrieveBooks()[index].isPrimary.value)
+                return true
+
+        //notify of no points invested in the indicated books
         return false
     }
 }

@@ -251,6 +251,40 @@ open class SblMagBook(
     }
 
     /**
+     * Determines if a free spell of the given level was selected at an earlier character level.
+     *
+     * @param spellLevel level of the free spell to be checked
+     * @return true if spell from earlier level
+     */
+    override fun freeSpellEarlier(
+        spellLevel: Int
+    ): Boolean{
+        //initialize output
+        var output = false
+
+        //initialize magic level counter
+        var prevCap = 0
+
+        //for each level up to this point
+        charInstance.levelLoop(
+            endLevel = charInstance.lvl.intValue - 1
+        ){character ->
+            //increment the point counter
+            prevCap += character.magic.retrieveBooks()[bookIndex].pointsIn.intValue
+
+            //return found free spell in bought levels or individual purchases
+            if(spellLevel <= prevCap ||
+                character.magic.retrieveBooks()[bookIndex].individualSpells.contains(spellLevel/2 - 1)) {
+                output = true
+                return@levelLoop
+            }
+        }
+
+        //return final result
+        return output
+    }
+
+    /**
      * Updates the primary status of the magic book.
      */
     override fun updatePrimary(){

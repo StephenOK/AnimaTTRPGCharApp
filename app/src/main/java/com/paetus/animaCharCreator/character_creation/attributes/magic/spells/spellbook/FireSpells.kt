@@ -20,7 +20,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val putOutFire = Spell(
@@ -33,7 +34,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val fireImmunity = Spell(
@@ -46,7 +48,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val detectHeat = Spell(
@@ -59,7 +62,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 7
     )
 
     private val fireBall = Spell(
@@ -72,7 +76,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 7
     )
 
     private val controlFire = Spell(
@@ -85,7 +90,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val fireBarrier = Spell(
@@ -98,7 +104,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic, SpellType.Defense)
+        type = listOf(SpellType.Automatic, SpellType.Defense),
+        bookIndex = 7
     )
 
     private val igneousWeapon = Spell(
@@ -111,7 +118,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val heatWave = Spell(
@@ -124,7 +132,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 7
     )
 
     private val readAshes = Spell(
@@ -137,7 +146,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val raiseTemperature = Spell(
@@ -150,7 +160,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val fireMine = Spell(
@@ -163,7 +174,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val increaseCritical = Spell(
@@ -176,7 +188,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val dry = Spell(
@@ -189,7 +202,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val melt = Spell(
@@ -202,7 +216,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val fireBody = Spell(
@@ -215,7 +230,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val vitalSacrifice = Spell(
@@ -228,7 +244,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val incinerate = Spell(
@@ -241,7 +258,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 7
     )
 
     private val consumeEssence = Spell(
@@ -254,7 +272,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val powerSacrifice = Spell(
@@ -267,7 +286,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val directCritical = Spell(
@@ -280,7 +300,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val magicCapacities = Spell(
@@ -293,7 +314,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val fireStorm = Spell(
@@ -306,7 +328,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 7
     )
 
     private val lifeForMagic = Spell(
@@ -319,7 +342,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val createIfreet = Spell(
@@ -332,7 +356,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val pyre = Spell(
@@ -345,7 +370,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 7
     )
 
     private val devastation = Spell(
@@ -358,7 +384,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 7
     )
 
     private val sacrificingOthers = Spell(
@@ -371,7 +398,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 7
     )
 
     private val lordOfFire = Spell(
@@ -384,7 +412,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 7
     )
 
     private val armageddon = Spell(
@@ -397,7 +426,8 @@ class FireSpells: SpellList(Element.Fire){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 7
     )
 
     init{

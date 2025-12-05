@@ -20,7 +20,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val detectEssence = Spell(
@@ -33,7 +34,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val essenceCommunicate = Spell(
@@ -46,7 +48,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val naturalKnowledge = Spell(
@@ -59,7 +62,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val healing = Spell(
@@ -72,7 +76,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val soulBarrier = Spell(
@@ -85,7 +90,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 8
     )
 
     private val shareSenses = Spell(
@@ -98,7 +104,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val modifyEssence = Spell(
@@ -111,7 +118,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val soulPoison = Spell(
@@ -124,7 +132,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val analyzeSoul = Spell(
@@ -137,7 +146,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val acquireNaturalCapacities = Spell(
@@ -150,7 +160,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val revitalize = Spell(
@@ -163,7 +174,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val lifeMind = Spell(
@@ -176,7 +188,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val alterGrowth = Spell(
@@ -189,7 +202,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val naturalImitation = Spell(
@@ -202,7 +216,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val spiritualForm = Spell(
@@ -215,7 +230,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val naturalControl = Spell(
@@ -228,7 +244,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val stateInduction = Spell(
@@ -241,7 +258,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val flowReturn = Spell(
@@ -254,7 +272,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val shieldArea = Spell(
@@ -267,7 +286,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val supernaturalControl = Spell(
@@ -280,7 +300,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val shareEssence = Spell(
@@ -293,7 +314,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val transmigrateSoul = Spell(
@@ -306,7 +328,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val spiritualExistence = Spell(
@@ -319,7 +342,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val spiritCreation = Spell(
@@ -332,7 +356,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val tieVitalEssence = Spell(
@@ -345,7 +370,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 8
     )
 
     private val greenness = Spell(
@@ -358,7 +384,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val lifeDominion = Spell(
@@ -371,7 +398,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     private val resurrection = Spell(
@@ -384,7 +412,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 8
     )
 
     private val soulLord = Spell(
@@ -397,7 +426,8 @@ class EssenceSpells: SpellList(Element.Essence){
         zMax = 50,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 8
     )
 
     init{

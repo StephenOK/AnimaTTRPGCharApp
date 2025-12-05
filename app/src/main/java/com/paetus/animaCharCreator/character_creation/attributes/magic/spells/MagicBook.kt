@@ -54,6 +54,14 @@ open class MagicBook(
     open fun updateMagLevels(){}
 
     /**
+     * Determines if a free spell of the given level was selected at an earlier character level.
+     *
+     * @param spellLevel level of the free spell to be checked
+     * @return true if spell from earlier level
+     */
+    open fun freeSpellEarlier(spellLevel: Int): Boolean{return false}
+
+    /**
      * Sets the primary status of this element to the indicated value.
      *
      * @param isTaking value to set the primary status to
@@ -291,7 +299,8 @@ open class MagicBook(
             maintenance = null,
             isDaily = false,
             type = listOf(),
-            forbiddenElements = listOf(spells.element)
+            forbiddenElements = listOf(spells.element),
+            bookIn = magic.retrieveBooks().indexOf(this)
         )
     }
 
@@ -383,7 +392,8 @@ open class MagicBook(
                 maintenance = spellBase.maintenance,
                 isDaily = spellBase.isDaily,
                 type = spellBase.type,
-                forbiddenElements = spellBase.forbiddenElements
+                forbiddenElements = spellBase.forbiddenElements,
+                bookIn = magic.retrieveBooks().indexOf(this)
             ))
         }
 

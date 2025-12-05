@@ -15,6 +15,7 @@ import com.paetus.animaCharCreator.enumerations.SpellType
  * @param maintenance zeon needed to maintain the spell
  * @param isDaily whether the spell is daily maintained
  * @param type category of spell
+ * @param bookIndex magic book associated with this spell
  */
 open class Spell(
     val name: Int,
@@ -26,5 +27,6 @@ open class Spell(
     val zMax: Int,
     val maintenance: Int?,
     val isDaily: Boolean,
-    val type: List<SpellType>
+    val type: List<SpellType>,
+    val bookIndex: Int
 )

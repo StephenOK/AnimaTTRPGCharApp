@@ -128,7 +128,7 @@ class SblChar(): BaseCharacter() {
      */
     override fun setLvl(levNum: Int) {
         //initialize character if no record at that level
-        if(charRefs[levNum + 1] == null)
+        if(levNum + 1 <= 20 && charRefs[levNum + 1] == null)
             charRefs[levNum + 1] = BaseCharacter(newHost = this, prevIndex = levNum, isAdded = true)
 
         super.setLvl(levNum)

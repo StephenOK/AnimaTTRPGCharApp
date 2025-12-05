@@ -20,7 +20,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val moveSpell = Spell(
@@ -33,7 +34,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val reduceWeight = Spell(
@@ -46,7 +48,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val stopBreathing = Spell(
@@ -59,7 +62,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val freeMotion = Spell(
@@ -72,7 +76,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val airBlow = Spell(
@@ -85,7 +90,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 4
     )
 
     private val airScreen = Spell(
@@ -98,7 +104,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 4
     )
 
     private val autoTransport = Spell(
@@ -111,7 +118,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val flight = Spell(
@@ -124,7 +132,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val reactionIncrease = Spell(
@@ -137,7 +146,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val electrify = Spell(
@@ -150,7 +160,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val airCut = Spell(
@@ -163,7 +174,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 4
     )
 
     private val speedSpell = Spell(
@@ -176,7 +188,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val lightning = Spell(
@@ -189,7 +202,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 4
     )
 
     private val whirlwind = Spell(
@@ -202,7 +216,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 5,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 4
     )
 
     private val etherealForm = Spell(
@@ -215,7 +230,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val airControl = Spell(
@@ -228,7 +244,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 4
     )
 
     private val electricityControl = Spell(
@@ -241,7 +258,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 4
     )
 
     private val defensiveMovement = Spell(
@@ -254,7 +272,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 4
     )
 
     private val teletransportation = Spell(
@@ -267,7 +286,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val immateriality = Spell(
@@ -280,7 +300,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 4
     )
 
     private val hurricane = Spell(
@@ -293,7 +314,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 4
     )
 
     private val solidAir = Spell(
@@ -306,7 +328,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect, SpellType.Attack)
+        type = listOf(SpellType.Effect, SpellType.Attack),
+        bookIndex = 4
     )
 
     private val weatherControl = Spell(
@@ -319,7 +342,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val createSylph = Spell(
@@ -332,7 +356,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val superiorPsychokinesis = Spell(
@@ -345,7 +370,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val relocateMagic = Spell(
@@ -358,7 +384,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val passiveMagic = Spell(
@@ -371,7 +398,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 4
     )
 
     private val airLord = Spell(
@@ -384,7 +412,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 4
     )
 
     private val placeInTheWorld = Spell(
@@ -397,7 +426,8 @@ class AirSpells: SpellList(Element.Air) {
         zMax = 40,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 4
     )
 
     init{

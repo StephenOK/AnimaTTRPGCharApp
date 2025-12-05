@@ -17,7 +17,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 10
     )
 
     private val seeBeyond = Spell(
@@ -30,7 +31,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val controlScavengers = Spell(
@@ -43,7 +45,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val spectralShield = Spell(
@@ -56,7 +59,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 10
     )
 
     private val drainLife = Spell(
@@ -69,7 +73,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val necromanticDetection = Spell(
@@ -82,7 +87,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 10
     )
 
     private val talkToDead = Spell(
@@ -95,7 +101,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     private val necromanticParalysis = Spell(
@@ -108,7 +115,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val necromitude = Spell(
@@ -121,7 +129,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val deathBeam = Spell(
@@ -134,7 +143,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 10
     )
 
     private val raiseCorpses = Spell(
@@ -147,7 +157,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val deadBody = Spell(
@@ -160,7 +171,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val drainMagic = Spell(
@@ -173,7 +185,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val destroyUndead = Spell(
@@ -186,7 +199,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val drainCharacteristic = Spell(
@@ -199,7 +213,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val controlDead = Spell(
@@ -212,7 +227,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val witherLife = Spell(
@@ -225,7 +241,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     private val necromanticShield = Spell(
@@ -238,7 +255,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 10
     )
 
     private val dominateLife = Spell(
@@ -251,7 +269,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val vampireStigma = Spell(
@@ -264,7 +283,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val spectralForm = Spell(
@@ -277,7 +297,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val necromanticModification = Spell(
@@ -290,7 +311,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val summonDead = Spell(
@@ -303,7 +325,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val raiseSpecters = Spell(
@@ -316,7 +339,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val drainLifeForce = Spell(
@@ -329,7 +353,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val kill = Spell(
@@ -342,7 +367,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val soulBeam = Spell(
@@ -355,7 +381,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 10
     )
 
     private val necromanticChimera = Spell(
@@ -368,7 +395,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val lifePerversion = Spell(
@@ -381,7 +409,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val vassalage = Spell(
@@ -394,7 +423,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val drainSouls = Spell(
@@ -407,7 +437,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 10
     )
 
     private val surpassDeath = Spell(
@@ -420,7 +451,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val trueRise = Spell(
@@ -433,7 +465,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val wellOfLife = Spell(
@@ -446,7 +479,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     private val cursedLand = Spell(
@@ -459,7 +493,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 40,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val sustenance = Spell(
@@ -472,7 +507,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val rawMaterial = Spell(
@@ -485,7 +521,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 10
     )
 
     private val lordOfTheDead = Spell(
@@ -498,7 +535,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     private val comeBackFromDead = Spell(
@@ -511,7 +549,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     private val awakening = Spell(
@@ -524,7 +563,8 @@ class NecromancySpells: SpellList(Element.Necromancy) {
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 10
     )
 
     init{

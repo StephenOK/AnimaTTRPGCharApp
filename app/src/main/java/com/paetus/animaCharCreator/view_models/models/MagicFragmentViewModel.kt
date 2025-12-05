@@ -242,7 +242,9 @@ class MagicFragmentViewModel(
 
         //check that free spell wasn't picked in an earlier level
         if(charInstance is SblChar &&
-            !charInstance.getCharAtLevel().magic.hasCopyOf(freeSpell))
+            charInstance.magic.retrieveBooks()[freeSpell.bookIndex].freeSpellEarlier(
+                spellLevel = freeSpell.level
+            ))
             return R.string.freeSpellEarlier
 
         //set free spell values
@@ -479,7 +481,8 @@ class MagicFragmentViewModel(
                 maintenance = selectedFreeSpell.value!!.maintenance,
                 isDaily = selectedFreeSpell.value!!.isDaily,
                 type = selectedFreeSpell.value!!.type,
-                forbiddenElements = selectedFreeSpell.value!!.forbiddenElements
+                forbiddenElements = selectedFreeSpell.value!!.forbiddenElements,
+                bookIn = magic.retrieveBooks().indexOf(freeBookAddition.value.magicBook)
             )
 
             //add it to the character

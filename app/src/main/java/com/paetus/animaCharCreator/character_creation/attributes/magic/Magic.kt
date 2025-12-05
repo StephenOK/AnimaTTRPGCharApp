@@ -538,7 +538,7 @@ open class Magic(val charInstance: BaseCharacter){
                 (0 until fileReader.readLine().toInt()).forEach{
 
                     val level = fileReader.readLine().toInt()
-                    val freeBase = freeBook.findFreeSpell(fileReader.readLine())
+                    val freeBase = freeBook.findFreeSpell(saveName = fileReader.readLine())
                     book.addFreeSpell(
                         FreeSpell(
                             saveName = freeBase.saveName,
@@ -552,7 +552,8 @@ open class Magic(val charInstance: BaseCharacter){
                             maintenance = freeBase.maintenance,
                             isDaily = freeBase.isDaily,
                             type = freeBase.type,
-                            forbiddenElements = freeBase.forbiddenElements
+                            forbiddenElements = freeBase.forbiddenElements,
+                            bookIn = retrieveBooks().indexOf(book)
                         )
                     )
                 }

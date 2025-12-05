@@ -40,8 +40,7 @@ class SblNecromancy(
             changePrimary(isTaking = true)
 
         //remove primary status if no points are invested
-        else if(isPrimary.value && !hasInvestment() &&
-            charInstance.getCharAtLevel().magic.retrieveBooks()[10].pointsIn.intValue >= 0)
+        else if(isPrimary.value && !hasInvestment())
             changePrimary(isTaking = false)
 
         //update individual spells taken
@@ -95,6 +94,48 @@ class SblNecromancy(
     }
 
     /**
+     * Attempts to add a free spell to this book's list.
+     *
+     * @param spell freespell to attempt to add to this book
+     */
+    override fun addFreeSpell(spell: FreeSpell) {
+        //stop function if character possesses this spell
+        if(charHasFreeSpell(freeSpell = spell) == null){
+            //search for a freespell in this book of equivalent level
+            var removedSpell: FreeSpell? = null
+            freeSpells.forEach{freeSpell ->
+                //record spell to remove
+                if(freeSpell.level == spell.level){
+                    removedSpell = freeSpell
+                    return@forEach
+                }
+            }
+
+            //remove spell from the level record
+            if(removedSpell != null)
+                charInstance.getCharAtLevel().magic.retrieveBooks()[10].freeSpells.remove(removedSpell)
+
+            //add this spell to the level record
+            charInstance.getCharAtLevel().magic.retrieveBooks()[10].freeSpells.add(element = spell)
+
+            //update the character's free spells
+            updateFreeSpells()
+
+            //remove this spell from any future level records
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                //determine that this spell is taken by this character
+                val bookWithSpell = character.magic.retrieveBooks()[10].charHasFreeSpell(freeSpell = spell)
+
+                //remove spell if present
+                bookWithSpell?.freeSpells?.remove(bookWithSpell.getFreeSpell(spell.level))
+            }
+        }
+    }
+
+    /**
      * Sets the primary status of this book in ways unique to the necromancy book.
      *
      * @param isTaking value to set the primary status to
@@ -132,7 +173,7 @@ class SblNecromancy(
         }
 
         //if removing primary state and status taken at this level
-        else if(!isTaking && isPrimary.value && charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value && getOpposedInvestment()){
+        else if(!isTaking && isPrimary.value && charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value){
             //remove state from SBL record and level record
             isPrimary.value = false
             charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value = false
@@ -194,7 +235,7 @@ class SblNecromancy(
             val book1 = character.magic.retrieveBooks()[firstIndex]
             val book2 = character.magic.retrieveBooks()[secondIndex]
 
-            if(!exceptions.contains(firstIndex) || !exceptions.contains(secondIndex)) {
+            if(!exceptions.contains(firstIndex) && !exceptions.contains(secondIndex)) {
                 //if only first book invested in, set first book as primary element
                 if (book1.hasInvestment() && !book2.hasInvestment()) {
                     book1.changePrimary(true)
@@ -271,6 +312,40 @@ class SblNecromancy(
         charInstance.levelLoop{character ->
             individualSpells.addAll(elements = character.magic.retrieveBooks()[10].individualSpells)
         }
+    }
+
+    /**
+     * Determines if a free spell of the given level was selected at an earlier character level.
+     *
+     * @param spellLevel level of the free spell to be checked
+     * @return true if spell from earlier level
+     */
+    override fun freeSpellEarlier(
+        spellLevel: Int
+    ): Boolean{
+        //initialize output
+        var output = false
+
+        //initialize magic level counter
+        var prevCap = 0
+
+        //for each level up to this point
+        charInstance.levelLoop(
+            endLevel = charInstance.lvl.intValue - 1
+        ){character ->
+            //increment the point counter
+            prevCap += character.magic.retrieveBooks()[10].pointsIn.intValue
+
+            //return found free spell in bought levels or individual purchases
+            if(spellLevel <= prevCap ||
+                character.magic.retrieveBooks()[10].individualSpells.contains(spellLevel)) {
+                output = true
+                return@levelLoop
+            }
+        }
+
+        //return final result
+        return output
     }
 
     /**

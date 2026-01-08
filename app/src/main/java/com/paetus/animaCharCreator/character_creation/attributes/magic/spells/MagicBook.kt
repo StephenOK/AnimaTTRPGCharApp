@@ -437,9 +437,6 @@ open class MagicBook(
      * @param byteArray output stream to write data to
      */
     fun write(byteArray: ByteArrayOutputStream){
-        //clear any unneeded free spells
-        validateFreeSpells()
-
         //write invested point data
         writeDataTo(writer = byteArray, input = pointsIn.intValue)
 

@@ -916,6 +916,8 @@ class HomeActivity : AppCompatActivity() {
         filename: String,
         showToast: Boolean
     ){
+        charInstance.magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
+
         if(charInstance is SblChar) sblSave(charInstance, filename, showToast)
         else defaultSave(charInstance, filename, showToast)
     }

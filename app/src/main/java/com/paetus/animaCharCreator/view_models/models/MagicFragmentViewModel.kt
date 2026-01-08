@@ -240,6 +240,8 @@ class MagicFragmentViewModel(
         if(magic.magicTies.value)
             return R.string.magicTiesRestriction
 
+        magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
+
         //check that free spell wasn't picked in an earlier level
         if(charInstance is SblChar &&
             charInstance.magic.retrieveBooks()[freeSpell.bookIndex].freeSpellEarlier(

@@ -131,6 +131,9 @@ class SblChar(): BaseCharacter() {
         if(levNum + 1 <= 20 && charRefs[levNum + 1] == null)
             charRefs[levNum + 1] = BaseCharacter(newHost = this, prevIndex = levNum, isAdded = true)
 
+        //update free spells held before saving
+        magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
+
         super.setLvl(levNum)
 
         //update primary bonus amounts

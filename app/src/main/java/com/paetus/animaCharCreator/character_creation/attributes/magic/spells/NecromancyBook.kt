@@ -22,8 +22,10 @@ open class NecromancyBook(
         //if making necromancy book primary element
         if(hasInvestment() && isTaking){
             //remove all other elements' primary statuses
-            for(index in 0..9)
+            for(index in 0..9) {
                 magic.retrieveBooks()[index].isPrimary.value = false
+                magic.retrieveBooks()[index].validateFreeSpells()
+            }
 
             //apply primary status to this book
             isPrimary.value = true
@@ -31,6 +33,7 @@ open class NecromancyBook(
         //if removing primary element status
         else if (!isTaking && isPrimary.value){
             isPrimary.value = false
+            validateFreeSpells()
 
             //initialize opposing book pointer
             var index = 0
@@ -87,6 +90,8 @@ open class NecromancyBook(
             //remove primary status, if needed
             if(!hasInvestment())
                 changePrimary(isTaking = false)
+
+            validateFreeSpells()
         }
     }
 

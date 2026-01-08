@@ -82,6 +82,8 @@ class SblNecromancy(
                         character.magic.retrieveBooks()[10].changeIndividualSpell(spellLevel = spellLevel)
                 }
 
+            validateFreeSpells()
+
             //update spell list
             updateIndividualSpells()
 
@@ -164,6 +166,7 @@ class SblNecromancy(
                         endLevel = 20
                     ){character ->
                         character.magic.retrieveBooks()[index].isPrimary.value = false
+                        character.magic.retrieveBooks()[index].validateFreeSpells()
                     }
                 }
 
@@ -177,6 +180,7 @@ class SblNecromancy(
             //remove state from SBL record and level record
             isPrimary.value = false
             charInstance.getCharAtLevel().magic.retrieveBooks()[10].isPrimary.value = false
+            validateFreeSpells()
 
             //initialize list of checked element pairs
             val exceptions = mutableListOf<Int>()
@@ -358,6 +362,31 @@ class SblNecromancy(
         charInstance.levelLoop{character ->
             freeSpells.addAll(elements = character.magic.retrieveBooks()[10].freeSpells)
         }
+    }
+
+    /**
+     * Determines if free spells in record are still valid for the character to have.
+     */
+    override fun validateFreeSpells() {
+        //check this and higher levels
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue,
+            endLevel = 20
+        ){character ->
+            freeSpells.forEach { spell ->
+                if (character.magic.retrieveBooks()[10].freeSpells.contains(spell)){
+                    //determine spell index
+                    val spellIndex = (spell.level / 2) - 1
+
+                    //remove spell if in neither individual spells nor magic level investment
+                    if (getCap() < spell.level && !individualSpells.contains(spellIndex))
+                        character.magic.retrieveBooks()[10].freeSpells.remove(element = spell)
+                }
+            }
+        }
+
+        //update displayed free spells
+        updateFreeSpells()
     }
 
     /**

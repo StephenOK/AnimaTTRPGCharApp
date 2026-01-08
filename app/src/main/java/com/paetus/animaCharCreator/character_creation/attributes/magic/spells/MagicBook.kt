@@ -73,16 +73,20 @@ open class MagicBook(
                 magic.retrieveBooks()[10].changePrimary(isTaking = false)
 
             //remove the other opposing book's primary status, if needed
-            else if(magic.retrieveBooks()[opposingIndex].isPrimary.value)
+            else if(magic.retrieveBooks()[opposingIndex].isPrimary.value) {
                 magic.retrieveBooks()[opposingIndex].isPrimary.value = false
+                magic.retrieveBooks()[opposingIndex].validateFreeSpells()
+            }
 
             //set this element as the primary one
             isPrimary.value = true
         }
         else if(!isTaking && isPrimary.value){
             //invest in either opposite book or necromancy if points in these books
-            if(magic.retrieveBooks()[opposingIndex].hasInvestment())
+            if(magic.retrieveBooks()[opposingIndex].hasInvestment()) {
                 magic.retrieveBooks()[opposingIndex].isPrimary.value = true
+                isPrimary.value = false
+            }
             else if(magic.retrieveBooks()[10].hasInvestment() &&
                 !(magic.retrieveBooks()[10] as NecromancyBook).getElseInvestment(exclude = magic.retrieveBooks().indexOf(this)))
                 magic.retrieveBooks()[10].changePrimary(isTaking = true)
@@ -114,6 +118,7 @@ open class MagicBook(
             val spellLevel = (spellIndex + 1) * 2
             if(spellLevel <= getCap()) removalList.add(element = spellIndex)
         }
+
         individualSpells.removeAll(elements = removalList)
     }
 
@@ -146,6 +151,9 @@ open class MagicBook(
             //remove primary status, if needed
             if(!hasInvestment())
                 changePrimary(isTaking = false)
+
+            //remove potentially associated free spell
+            validateFreeSpells()
         }
     }
 
@@ -346,6 +354,28 @@ open class MagicBook(
     }
 
     /**
+     * Determines if free spells in record are still valid for the character to have.
+     */
+    open fun validateFreeSpells(){
+        //initialize the spells to be removed
+        val removeSpells = mutableListOf<FreeSpell>()
+
+        //validate each individual spell
+        freeSpells.forEach{spell ->
+            //get the index of the spell's level
+            val spellIndex = (spell.level/2) - 1
+
+            //add to removed spell list if spell's level is below the inputted magic levels or
+            //no longer individually purchased
+            if(getCap() < spell.level && !individualSpells.contains(spellIndex))
+                removeSpells.add(spell)
+        }
+
+        //remove indicated free spells
+        freeSpells.removeAll(elements = removeSpells)
+    }
+
+    /**
      * Clears all data in this item.
      */
     fun clear(){
@@ -407,6 +437,9 @@ open class MagicBook(
      * @param byteArray output stream to write data to
      */
     fun write(byteArray: ByteArrayOutputStream){
+        //clear any unneeded free spells
+        validateFreeSpells()
+
         //write invested point data
         writeDataTo(writer = byteArray, input = pointsIn.intValue)
 

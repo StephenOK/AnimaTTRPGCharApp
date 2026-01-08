@@ -86,6 +86,8 @@ open class SblMagBook(
                 }
         }
 
+        validateFreeSpells()
+
         //update spell list
         updateIndividualSpells()
 
@@ -116,7 +118,7 @@ open class SblMagBook(
 
             //remove spell from the level record
             if(removedSpell != null)
-                charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].freeSpells.remove(removedSpell)
+                charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].freeSpells.remove(element = removedSpell)
 
             //add this spell to the level record
             charInstance.getCharAtLevel().magic.retrieveBooks()[bookIndex].freeSpells.add(element = spell)
@@ -169,8 +171,10 @@ open class SblMagBook(
                     if(character.magic.retrieveBooks()[10].isPrimary.value) necPrevious = true
                 }
                 //remove necromancy from this and future levels
-                if(!necPrevious)
+                if(!necPrevious) {
                     magic.retrieveBooks()[10].changePrimary(isTaking = false)
+                    magic.retrieveBooks()[10].validateFreeSpells()
+                }
             }
             //remove the other opposing book's primary status, if needed
             if(magic.retrieveBooks()[opposed].isPrimary.value) {
@@ -190,6 +194,8 @@ open class SblMagBook(
                     ){character ->
                         character.magic.retrieveBooks()[opposed].isPrimary.value = false
                     }
+
+                    magic.retrieveBooks()[opposed].validateFreeSpells()
                 }
             }
 
@@ -244,6 +250,8 @@ open class SblMagBook(
                     }
                 }
             }
+
+            validateFreeSpells()
         }
 
         //update all book primary values
@@ -325,6 +333,31 @@ open class SblMagBook(
         charInstance.levelLoop{character ->
             freeSpells.addAll(character.magic.retrieveBooks()[bookIndex].freeSpells)
         }
+    }
+
+    /**
+     * Determines if free spells in record are still valid for the character to have.
+     */
+    override fun validateFreeSpells() {
+        //for this and all higher levels
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue,
+            endLevel = 20
+        ){character ->
+            freeSpells.forEach {spell ->
+                if (character.magic.retrieveBooks()[bookIndex].freeSpells.contains(spell)){
+                    //retrieve the spell's index
+                    val spellIndex = (spell.level / 2) - 1
+
+                    //remove the spell from the record if neither book levels nor individual spells would hold it
+                    if (getCap() < spell.level && !individualSpells.contains(spellIndex))
+                        character.magic.retrieveBooks()[bookIndex].freeSpells.remove(element = spell)
+                }
+            }
+        }
+
+        //update character's displayed free spells
+        updateFreeSpells()
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.update
  */
 class CustomSecondaryViewModel(
     val secondarySource: SecondaryFragmentViewModel
-){
+): ViewModel(){
     //initialize created characteristic
     val customSecondary = CustomCharacteristic(parent = secondarySource.charInstance.secondaryList)
 

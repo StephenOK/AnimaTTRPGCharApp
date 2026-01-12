@@ -13,6 +13,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Fr
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeSpells
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -28,7 +29,7 @@ class MagicFragmentViewModel(
     private val magic: Magic,
     private val charInstance: BaseCharacter,
     val context: Context
-): ViewModel() {
+): FragmentVM() {
     //initialize the character's bought zeon input
     private val _boughtZeonString = MutableStateFlow(value = magic.boughtZeon.intValue.toString())
     val boughtZeonString = _boughtZeonString.asStateFlow()
@@ -802,7 +803,7 @@ class MagicFragmentViewModel(
     /**
      * Refreshes all items on this page when it is loaded.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         if(_boughtZeonString.value != "")
             setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
 

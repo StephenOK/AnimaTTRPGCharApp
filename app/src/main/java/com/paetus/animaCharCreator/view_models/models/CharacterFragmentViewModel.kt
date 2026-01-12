@@ -12,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.update
  */
 class CharacterFragmentViewModel(
     private val charInstance: BaseCharacter
-): ViewModel() {
+): FragmentVM() {
     //initialize input for the character's name
     private val _nameInput = MutableStateFlow(value = charInstance.charName.value)
     val nameInput = _nameInput.asStateFlow()
@@ -702,7 +703,7 @@ class CharacterFragmentViewModel(
     /**
      * Refreshes items on returning to this page.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         _nameInput.update{charInstance.charName.value}
         _experiencePoints.update{charInstance.experiencePoints.intValue.toString()}
 

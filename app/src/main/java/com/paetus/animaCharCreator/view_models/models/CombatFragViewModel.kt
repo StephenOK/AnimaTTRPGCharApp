@@ -6,6 +6,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAb
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.combat.ResistanceItem
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.update
 class CombatFragViewModel(
     private val combat: CombatAbilities,
     primaryList: PrimaryList
-): ViewModel() {
+): FragmentVM() {
     //initialize life multiples taken input string
     private val _lifeMults = MutableStateFlow(value = combat.lifeMultsTaken.intValue.toString())
     val lifeMults = _lifeMults.asStateFlow()
@@ -284,7 +285,7 @@ class CombatFragViewModel(
     /**
      * Function to run on loading this model's page.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //update life point information
         setLifeMults(display = combat.lifeMultsTaken.intValue.toString())
         _classLife.update{combat.lifeClassTotal.intValue}

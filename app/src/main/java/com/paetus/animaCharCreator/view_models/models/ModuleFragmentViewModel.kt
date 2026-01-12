@@ -9,6 +9,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.modules.Martial
 import com.paetus.animaCharCreator.character_creation.attributes.modules.StyleModule
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.equipment.weapons.weapon_classes.Weapon
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,7 +23,7 @@ import kotlinx.coroutines.flow.update
 class ModuleFragmentViewModel(
     private val weaponProficiencies: WeaponProficiencies,
     val context: Context
-) : ViewModel() {
+) : FragmentVM() {
     //initialize character's current primary weapon selection
     private val _primaryWeapon = MutableStateFlow(value = getPrimaryWeapon())
     val primaryWeapon = _primaryWeapon.asStateFlow()
@@ -535,7 +536,7 @@ class ModuleFragmentViewModel(
     /**
      * Function to run on opening the module fragment.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //update weapon rows' individually taken checkboxes
         allSecondaryWeapons.keys.forEach{weapon ->
             allSecondaryWeapons[weapon]!!.value = weaponProficiencies.individualModules.contains(weaponProficiencies.getArmory().allWeapons.indexOf(weapon)) ||

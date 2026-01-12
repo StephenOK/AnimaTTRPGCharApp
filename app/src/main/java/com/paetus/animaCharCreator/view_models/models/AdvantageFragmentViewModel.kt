@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.update
 class AdvantageFragmentViewModel(
     private val charInstance: BaseCharacter,
     private val advantageRecord: AdvantageRecord
-): ViewModel() {
+): FragmentVM() {
     //initialize creation point display state flow
     private val _creationPoints = MutableStateFlow(value = 3 - advantageRecord.creationPointSpent.intValue)
     val creationPoints = _creationPoints.asStateFlow()
@@ -323,7 +324,7 @@ class AdvantageFragmentViewModel(
     /**
      * Refreshes the page items on the fragment's reload.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //update the advantage list
         updateAdvantagesTaken()
     }

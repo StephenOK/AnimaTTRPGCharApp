@@ -15,6 +15,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.secondary_abili
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.update
 class SecondaryFragmentViewModel(
     val charInstance: BaseCharacter,
     val secondaryList: SecondaryList
-): ViewModel() {
+): FragmentVM() {
     //initialize open state of the freelancer bonus options
     private val _freelancerOptionsOpen = MutableStateFlow(isFreelancer())
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
@@ -449,7 +450,7 @@ class SecondaryFragmentViewModel(
     /**
      * Refreshes the fragment's values for changes on other pages.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //check if freelancer options are available to the character
         _freelancerOptionsOpen.update{isFreelancer()}
 

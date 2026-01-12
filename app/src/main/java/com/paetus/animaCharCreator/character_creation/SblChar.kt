@@ -370,11 +370,11 @@ class SblChar(): BaseCharacter() {
         //update all level based items
         setLvl(lvl.intValue)
 
-        //check validity of taken natural bonuses in future levels
         levelLoop(
             startLevel = lvl.intValue + 1,
             endLevel = 20
         ){character ->
+            //check validity of taken natural bonuses in future levels
             character.secondaryList.getAllSecondaries().forEach{secondary ->
                 if(secondary.bonusApplied.value){
                     if(secondary.pointsApplied.intValue == 0)

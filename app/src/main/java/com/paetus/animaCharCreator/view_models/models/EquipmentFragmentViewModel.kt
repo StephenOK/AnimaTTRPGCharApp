@@ -8,6 +8,7 @@ import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.update
  */
 class EquipmentFragmentViewModel(
     private val inventory: Inventory
-) : ViewModel() {
+) : FragmentVM() {
     //initialize open state of item details
     private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
@@ -537,7 +538,7 @@ class EquipmentFragmentViewModel(
         fun toggleCatOpen(){_catOpen.update{!catOpen.value}}
     }
 
-    fun refreshPage(){
+    override fun refreshPage(){
         allQuantityMaximums.forEach{maxCoin -> maxCoin.setMaxValue(maxCoin.maxInput().toString())}
         allCategoryData.forEach{category ->
             if(category.catOpen.value)

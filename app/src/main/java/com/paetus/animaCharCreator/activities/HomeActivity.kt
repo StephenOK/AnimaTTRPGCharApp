@@ -60,6 +60,7 @@ import com.paetus.animaCharCreator.theme.drawerLightColors
 import com.paetus.animaCharCreator.theme.headerLightColors
 import com.paetus.animaCharCreator.theme.homeLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
@@ -411,7 +412,18 @@ class HomeActivity : AppCompatActivity() {
                         LevelClearAlert(
                             charInstance = (charInstance as SblChar),
                             homePageVM = homePageVM,
-                            charFragVM = charFragVM,
+                            currentFragment = when(homePageVM.getCurrentFragment()){
+                                ScreenPage.Character -> charFragVM
+                                ScreenPage.Combat -> combatFragVM
+                                ScreenPage.SecondaryCharacteristics -> secondaryFragVM
+                                ScreenPage.Advantages -> advantageFragVM
+                                ScreenPage.Modules -> modFragVM
+                                ScreenPage.Ki -> kiFragVM
+                                ScreenPage.Magic -> magFragVM
+                                ScreenPage.Summoning -> summonFragVM
+                                ScreenPage.Psychic -> psyFragVM
+                                ScreenPage.Equipment -> equipFragVM
+                            },
                             closeDialog = {homePageVM.toggleLevelClear()}
                         )
                     }
@@ -815,14 +827,14 @@ class HomeActivity : AppCompatActivity() {
      *
      * @param charInstance character object to affect
      * @param homePageVM viewModel for the home page
-     * @param charFragVM viewModel for the character page
+     * @param currentFragment page the app is currently on
      * @param closeDialog function to run on option chosen
      */
     @Composable
     private fun LevelClearAlert(
         charInstance: SblChar,
         homePageVM: HomePageViewModel,
-        charFragVM: CharacterFragmentViewModel,
+        currentFragment: FragmentVM,
         closeDialog: () -> Unit
     ){
         AlertDialog(
@@ -841,7 +853,7 @@ class HomeActivity : AppCompatActivity() {
                         //update required visual items
                         homePageVM.updateMaximums()
                         homePageVM.updateExpenditures()
-                        charFragVM.refreshPage()
+                        currentFragment.refreshPage()
                         closeDialog()
                     }
                 ){Text(text = stringResource(R.string.confirmLabel))}

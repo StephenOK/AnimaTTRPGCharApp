@@ -33,6 +33,13 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     val exitOpen = _exitOpen.asStateFlow()
 
     /**
+     * Gets the currently displayed fragment.
+     *
+     * @return the screenpage flag for the current fragment
+     */
+    fun getCurrentFragment(): ScreenPage{return currentFragment.value}
+
+    /**
      * Changes the current page to the indicated one.
      *
      * @param input page to now display

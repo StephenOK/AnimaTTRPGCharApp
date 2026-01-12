@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SummonAbility
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.update
  */
 class SummoningFragmentViewModel(
     val summoning: Summoning
-): ViewModel() {
+): FragmentVM() {
     //initialize all summoning ability data
     private val summon =
         SummonItemData(
@@ -114,7 +115,7 @@ class SummoningFragmentViewModel(
     /**
      * Function to run on loading this page.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         allRows.forEach{summoningRow -> summoningRow.refreshItem()}
     }
 }

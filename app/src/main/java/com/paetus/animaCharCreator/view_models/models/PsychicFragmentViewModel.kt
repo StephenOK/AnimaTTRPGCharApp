@@ -6,6 +6,7 @@ import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.update
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
     private val context: Context
-): ViewModel() {
+): FragmentVM() {
     //initialize character's free psychic point text
     private val _freePsyPoints = MutableStateFlow(value = psychic.getFreePsyPoints())
     val freePsyPoints = _freePsyPoints.asStateFlow()
@@ -528,7 +529,7 @@ class PsychicFragmentViewModel(
     /**
      * Refresh the displayed items for a page reload.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //refresh each bought item
         buyItems.forEach{power -> power.refreshItem()}
 

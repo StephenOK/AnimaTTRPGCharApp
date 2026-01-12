@@ -10,6 +10,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.ab
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.PrebuiltTech
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.update
 class KiFragmentViewModel(
     private val ki: Ki,
     private val context: Context
-): ViewModel() {
+): FragmentVM() {
     //initialize remaining martial knowledge display
     private val _remainingMK = MutableStateFlow(value = ki.martialKnowledgeRemaining.intValue)
     val remainingMK = _remainingMK.asStateFlow()
@@ -430,7 +431,7 @@ class KiFragmentViewModel(
     /**
      * Refreshes the page on the user returning to it.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //refresh each ki point and accumulation item
         allRowData.forEach{kiRowData ->
             kiRowData.refreshItem()

@@ -1,10 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.geometry.Size
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
@@ -181,7 +177,7 @@ class SecondaryFragmentViewModel(
         val isOpen = _isOpen.asStateFlow()
 
         //initialize displayed icon
-        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
+        private val _icon = MutableStateFlow(value = R.drawable.outline_arrow_drop_down_24)
         val icon = _icon.asStateFlow()
 
         /**
@@ -220,8 +216,8 @@ class SecondaryFragmentViewModel(
 
             //update the icon to match the new open state
             _icon.update{
-                if(isOpen.value) Icons.Filled.KeyboardArrowUp
-                else Icons.Filled.KeyboardArrowDown
+                if(isOpen.value) R.drawable.outline_arrow_drop_up_24
+                else R.drawable.outline_arrow_drop_down_24
             }
         }
     }

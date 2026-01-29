@@ -1,9 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Size
@@ -78,7 +75,7 @@ class CustomTechniqueViewModel(
     val dropdownOpen = _dropdownOpen.asStateFlow()
 
     //initialize logo displayed on the dropdown
-    private val _dropdownIcon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
+    private val _dropdownIcon = MutableStateFlow(value = R.drawable.outline_arrow_drop_down_24)
     val dropdownIcon = _dropdownIcon.asStateFlow()
 
     //initialize the size for the dropdowns in this dialog
@@ -655,8 +652,8 @@ class CustomTechniqueViewModel(
 
         //appropriately change the icon state
         _dropdownIcon.update{
-            if(dropdownOpen.value) Icons.Filled.KeyboardArrowUp
-            else Icons.Filled.KeyboardArrowDown
+            if(dropdownOpen.value) R.drawable.outline_arrow_drop_up_24
+            else R.drawable.outline_arrow_drop_down_24
         }
     }
 

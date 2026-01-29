@@ -12,10 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -136,7 +139,7 @@ private fun FreelancerDropdown(
             readOnly = true,
             trailingIcon = {
                 Icon(
-                    imageVector = selection.icon.collectAsState().value,
+                    imageVector = ImageVector.vectorResource( selection.icon.collectAsState().value),
                     contentDescription = "contentDescription",
                     modifier = Modifier
                         .clickable{selection.openToggle()}

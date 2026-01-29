@@ -10,10 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.toSize
 import com.paetus.animaCharCreator.DropdownData
 
@@ -51,7 +53,7 @@ fun OutlinedDropdown(
         readOnly = true,
         trailingIcon = {
             Icon(
-                imageVector = data.icon.collectAsState().value,
+                imageVector = ImageVector.vectorResource(data.icon.collectAsState().value),
                 contentDescription = "",
                 modifier = Modifier
                     .clickable{

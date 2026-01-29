@@ -1,8 +1,5 @@
 package com.paetus.animaCharCreator
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.geometry.Size
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,7 +34,7 @@ class DropdownData(
     val isOpen = _isOpen.asStateFlow()
 
     //initialize dropdown icon
-    private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
+    private val _icon = MutableStateFlow(value = R.drawable.outline_arrow_drop_down_24)
     val icon = _icon.asStateFlow()
 
     /**
@@ -70,8 +67,8 @@ class DropdownData(
 
         //set icon to the appropriate value
         _icon.update{
-            if(isOpen.value) Icons.Filled.KeyboardArrowUp
-            else Icons.Filled.KeyboardArrowDown
+            if(isOpen.value) R.drawable.outline_arrow_drop_up_24
+            else R.drawable.outline_arrow_drop_down_24
         }
     }
 

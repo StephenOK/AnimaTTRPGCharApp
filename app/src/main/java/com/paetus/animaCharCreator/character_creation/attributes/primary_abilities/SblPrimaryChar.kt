@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.primary_abilities
 
 import com.paetus.animaCharCreator.character_creation.SblChar
+import kotlin.math.ceil
 
 /**
  * Subclass of PrimaryCharacteristic.
@@ -61,6 +62,34 @@ class SblPrimaryChar(
 
         //update all relevant items
         updateValues()
+    }
+
+    /**
+     * Determines the mod bonus at the inputted level.
+     *
+     * @param level character level to check the value at
+     * @return mod bonus at the queried level
+     */
+    fun getLevelModBonus(level: Int): Int{
+        //initialize the output at the first record's stat input
+        var output = charInstance.charRefs[0]!!.primaryList.allPrimaries()[charIndex].total.intValue
+
+        //add the level bonus inputted at each level
+        charInstance.levelLoop(
+            startLevel = 1,
+            endLevel = level
+        ){character ->
+            output += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
+        }
+
+        //return the mod bonus applied by the output
+        return when(output){
+            1 -> -30
+            2 -> -20
+            3 -> -10
+            4 -> -5
+            else -> (15 * output/5 - 1 + 5 * ceil(output % 5 / 2.0)).toInt()
+        }
     }
 
     /**

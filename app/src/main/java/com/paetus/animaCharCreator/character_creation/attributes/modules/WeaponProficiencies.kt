@@ -197,8 +197,10 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
     /**
      * Check that all taken martial arts still qualify.
      */
-    fun doubleCheck() {
+    open fun doubleCheck() {
+        //check each martial held
         takenMartialList.forEach{martial ->
+            //remove it if it no longer qualifies
             if(!martial.qualification(charInstance))
                 takenMartialList -= martial
         }
@@ -216,9 +218,17 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
                     charInstance.combat.dodge.total.intValue
         martialMax.intValue /= 40
 
-        //remove martial arts that exceed the new found limit
-        if(takenMartialList.size > martialMax.intValue)
-            takenMartialList.dropLast(takenMartialList.size - martialMax.intValue)
+        validateMartials()
+    }
+
+    /**
+     * Removes martial arts that exceed the character's maximum.
+     */
+    open fun validateMartials(){
+        //remove martial arts that exceed the new limit
+        while(takenMartialList.size > martialMax.intValue){
+            changeMartial(changeItem = takenMartialList.last(), isAdded = false)
+        }
     }
 
     /**

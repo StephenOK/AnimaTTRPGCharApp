@@ -21,7 +21,8 @@ open class SblSecondaryCharacteristic(
         val charInstance = parent.sblChar
 
         //set current level value
-        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setPointsApplied(pointInput - getPreviousPoints())
+        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue = pointInput - getPreviousPoints()
+        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].updateDevSpent()
 
         //if character is not level 0
         if(charInstance.lvl.intValue != 0) {
@@ -148,8 +149,9 @@ open class SblSecondaryCharacteristic(
             pointsApplied.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
         }
 
-        updateDevSpent()
         refreshTotal()
+        updateDevSpent()
+        parent.charInstance.updateTotalSpent()
     }
 
     /**

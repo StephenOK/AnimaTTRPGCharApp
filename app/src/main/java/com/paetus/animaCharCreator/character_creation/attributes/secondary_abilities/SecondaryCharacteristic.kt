@@ -67,8 +67,9 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
         if(pointInput == 0 && bonusApplied.value)
             setNatBonus(natBonus = false)
 
-        updateDevSpent()
         refreshTotal()
+        updateDevSpent()
+        parent.charInstance.updateTotalSpent()
     }
 
     /**
@@ -79,6 +80,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     fun setDevCost(dpCost: Int){
         devPerPoint.intValue = dpCost
         updateDevSpent()
+        parent.charInstance.updateTotalSpent()
     }
 
     /**
@@ -89,6 +91,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
     fun setDevelopmentDeduction(dpDeduction: Int){
         developmentDeduction.intValue += dpDeduction
         updateDevSpent()
+        parent.charInstance.updateTotalSpent()
     }
 
     /**
@@ -149,8 +152,6 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
         pointsIn.intValue =
             if(devPerPoint.intValue > developmentDeduction.intValue) pointsApplied.intValue * (devPerPoint.intValue - developmentDeduction.intValue)
             else pointsApplied.intValue
-
-        parent.charInstance.updateTotalSpent()
     }
 
     /**

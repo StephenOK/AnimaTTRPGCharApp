@@ -42,8 +42,8 @@ open class CombatItem(
      */
     open fun setInputVal(purchase: Int){
         inputVal.intValue = purchase
-        charInstance.updateTotalSpent()
         updateTotal()
+        charInstance.updateTotalSpent()
     }
 
     /**

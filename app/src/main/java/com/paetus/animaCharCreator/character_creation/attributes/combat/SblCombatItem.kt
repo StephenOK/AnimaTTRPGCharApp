@@ -1,6 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.combat
 
 import com.paetus.animaCharCreator.character_creation.SblChar
+import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 
 /**
  * Subclass of CombatItem for use in a SBL character.
@@ -56,7 +57,7 @@ class SblCombatItem(
      * @param classBonus amount to increment the bonus by
      */
     override fun setClassBonus(classBonus: Int) {
-        charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].setClassBonus(classBonus)
+        charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].classBonus.intValue = classBonus
         updateClassTotal()
     }
 
@@ -91,6 +92,46 @@ class SblCombatItem(
 
         //update overall total
         updateTotal()
+    }
+
+    /**
+     * Get the total for this item at the indicated level.
+     *
+     * @param level character level to get the total for
+     * @return the total value of this item at this level
+     */
+    fun getLevelTotal(level: Int): Int{
+        //initialize final output and class point tracker
+        var output = 0
+        var dummyClass = 0
+
+        //for each level record up to the indicated point
+        charInstance.levelLoop(endLevel = level){character ->
+            //retrieve the record's associated combat item
+            val checkedItem = character.combat.allAbilities()[combatIndex]
+
+            //add the point input to the output
+            output += checkedItem.inputVal.intValue
+
+            //increment the class point tracker by the appropriate amount
+            dummyClass += checkedItem.pointPerLevel.intValue
+            dummyClass += checkedItem.classBonus.intValue
+        }
+
+        //add either the class point value or the cap of 50 to the output
+        output +=
+            if(dummyClass < 50) dummyClass
+            else 50
+
+        //add the character's appropriate mod bonus to the output
+        output += when(combatIndex){
+            2 -> (charInstance.primaryList.allPrimaries()[2] as SblPrimaryChar).getLevelModBonus(level = level)
+            3 -> (charInstance.primaryList.allPrimaries()[0] as SblPrimaryChar).getLevelModBonus(level = level)
+            else -> (charInstance.primaryList.allPrimaries()[1] as SblPrimaryChar).getLevelModBonus(level = level)
+        }
+
+        //return the final output
+        return output
     }
 
     /**

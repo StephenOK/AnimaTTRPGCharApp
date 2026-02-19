@@ -346,7 +346,7 @@ class HomeActivity : AppCompatActivity() {
                         )
                     }
 
-                    //route to combat page
+                    //route to modules page
                     composable(route = ScreenPage.Modules.name) {
                         modFragVM.refreshPage()
                         ModuleFragment(

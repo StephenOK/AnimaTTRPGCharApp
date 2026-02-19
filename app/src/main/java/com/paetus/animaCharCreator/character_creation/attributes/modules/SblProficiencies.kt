@@ -150,6 +150,80 @@ class SblProficiencies(
     }
 
     /**
+     * Check that all taken martial arts still qualify.
+     */
+    override fun doubleCheck() {
+        //check each martial held
+        takenMartialList.forEach{martial ->
+            //if martial is no longer qualified and held at this level
+            if(!martial.qualification(charInstance) &&
+                charInstance.getCharAtLevel().weaponProficiencies.takenMartialList.contains(martial)){
+                //remove from the character record and the SBL record
+                charInstance.getCharAtLevel().weaponProficiencies.takenMartialList -= martial
+                takenMartialList -= martial
+            }
+        }
+    }
+
+    /**
+     * Removes martial arts that exceed the character's maximum.
+     */
+    override fun validateMartials(){
+        //remove invalidated martial arts at this level
+        super.validateMartials()
+
+        //remove invalidated martial arts at future levels
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue,
+            endLevel = 20
+        ){character ->
+            //retrieve this record's level
+            val charLevel = charInstance.charRefs.indexOf(character)
+
+            //determine the martial art max and the number of martial arts taken at this level
+            while(getLevelMartialSize(level = charLevel) > getLevelMartialMax(level = charLevel)){
+                //remove martial arts that exceed the maximum
+                character.weaponProficiencies.takenMartialList -= character.weaponProficiencies.takenMartialList.last()
+            }
+        }
+    }
+
+    /**
+     * Retrieves the maximum martial arts the character can hold at the indicated level.
+     *
+     * @param level character level to determine the maximum at
+     * @return number of arts the character can have at this level
+     */
+    fun getLevelMartialMax(level: Int): Int{
+        //get the block and dodge values at this level
+        val dummyBlock = charInstance.combat.block.getLevelTotal(level = level)
+        val dummyDodge = charInstance.combat.dodge.getLevelTotal(level = level)
+
+        //get the maximum based on the attack and the higher of the block and dodge
+        return (charInstance.combat.attack.getLevelTotal(level = level) +
+                if(dummyBlock > dummyDodge) dummyBlock else dummyDodge)/40
+    }
+
+    /**
+     * Retrieves the number of martial arts taken by the character at the indicated level.
+     *
+     * @param level character level to check the size at
+     * @return
+     */
+    fun getLevelMartialSize(level: Int): Int{
+        //initialize final result
+        var output = 0
+
+        //tally martial arts in each record up to the indicated level
+        charInstance.levelLoop(endLevel = level){character ->
+            output += character.weaponProficiencies.takenMartialList.size
+        }
+
+        //return the total size
+        return output
+    }
+
+    /**
      * Acquire or remove the indicated style.
      *
      * @param style style to alter with this action

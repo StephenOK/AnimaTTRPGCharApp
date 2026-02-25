@@ -150,11 +150,11 @@ class SblChar(): BaseCharacter() {
         //update secondary items
         secondaryList.levelUpdate()
 
-        //update weapon proficiencies
-        weaponProficiencies.levelUpdate()
-
         //update ki abilities
         ki.levelUpdate()
+
+        //update weapon proficiencies
+        weaponProficiencies.levelUpdate()
 
         //update magic abilities
         magic.levelUpdate()
@@ -639,7 +639,8 @@ class SblChar(): BaseCharacter() {
                 charFile = file,
                 secondaryFile = secondaryFile,
                 techFile = techFile,
-                objectDB = objectDB
+                objectDB = objectDB,
+                host = true
             )
 
             //set character at the indicated index

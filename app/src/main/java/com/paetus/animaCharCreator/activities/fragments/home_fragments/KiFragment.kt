@@ -219,7 +219,8 @@ fun KiFragment(
                     kiFragVM.getAllKiAbilities().forEach {kiAbility ->
                         KiAbilityRow(
                             ability = kiAbility,
-                            kiFragVM = kiFragVM
+                            kiFragVM = kiFragVM,
+                            homePageVM = homePageVM
                         )
                     }
                 }
@@ -417,11 +418,13 @@ private fun KiFromStatRow(
  *
  * @param ability ki ability to display in this row
  * @param kiFragVM viewModel managing this page's data
+ * @param homePageVM viewModel that manages the bottom bar that's being updated by this function
  */
 @Composable
 private fun KiAbilityRow(
     ability: KiAbility,
-    kiFragVM: KiFragmentViewModel
+    kiFragVM: KiFragmentViewModel,
+    homePageVM: HomePageViewModel
 ){
     Row(
         modifier = Modifier
@@ -436,6 +439,8 @@ private fun KiAbilityRow(
                     kiAbility = ability,
                     isTaken = it
                 )
+
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )

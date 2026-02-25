@@ -198,11 +198,13 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * Check that all taken martial arts still qualify.
      */
     open fun doubleCheck() {
-        //check each martial held
-        takenMartialList.forEach{martial ->
-            //remove it if it no longer qualifies
-            if(!martial.qualification(charInstance))
-                takenMartialList -= martial
+        if(!charInstance.hasHost.value) {
+            //check each martial held
+            takenMartialList.forEach { martial ->
+                //remove it if it no longer qualifies
+                if (!martial.qualification(charInstance))
+                    takenMartialList -= martial
+            }
         }
     }
 
@@ -210,15 +212,17 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
      * Updates the maximum number of martial arts the character can take.
      */
     fun updateMartialMax() {
-        //determine martial art number based on attack and highest defense abilities
-        martialMax.intValue = charInstance.combat.attack.total.intValue +
-                if (charInstance.combat.block.total.intValue > charInstance.combat.dodge.total.intValue)
-                    charInstance.combat.block.total.intValue
-                else
-                    charInstance.combat.dodge.total.intValue
-        martialMax.intValue /= 40
+        if(!charInstance.hasHost.value) {
+            //determine martial art number based on attack and highest defense abilities
+            martialMax.intValue = charInstance.combat.attack.total.intValue +
+                    if (charInstance.combat.block.total.intValue > charInstance.combat.dodge.total.intValue)
+                        charInstance.combat.block.total.intValue
+                    else
+                        charInstance.combat.dodge.total.intValue
+            martialMax.intValue /= 40
 
-        validateMartials()
+            validateMartials()
+        }
     }
 
     /**

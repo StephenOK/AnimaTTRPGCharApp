@@ -88,6 +88,7 @@ class SblKi(
             takenAbilities -= ability
             charInstance.getCharAtLevel().ki.takenAbilities -= ability
 
+            //TODO: Check that there isn't a reason for the repeated level loops
             //get all other abilities that need removal
             val removeList = mutableListOf<KiAbility>()
             charInstance.levelLoop(
@@ -95,7 +96,7 @@ class SblKi(
                 endLevel = 20
             ){character ->
                 character.ki.takenAbilities.forEach {
-                    if (!isQualified(it)) removeList += it
+                    if (!isQualified(ability = it)) removeList += it
                 }
             }
 
@@ -134,6 +135,9 @@ class SblKi(
                 takenAbilities.add(it)
             }
         }
+
+        //check that martial arts are still valid and update total
+        charInstance.updateTotalSpent()
 
         //update martial knowledge spent
         updateMkSpent()

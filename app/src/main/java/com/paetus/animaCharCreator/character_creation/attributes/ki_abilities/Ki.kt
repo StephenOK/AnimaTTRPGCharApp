@@ -218,14 +218,18 @@ open class Ki(private val charInstance: BaseCharacter){
 
         //remove techniques if Ki Control removed
         if(!takenAbilities.contains(getKiRecord().kiControl)) {
-            allPrebuilts.forEach { prebuilts -> prebuilts.value.value = false }
+            allPrebuilts.forEach {prebuilts -> prebuilts.value.value = false }
             customTechniques.forEach { customs -> customs.value.value = false }
         }
+
+        //check that martial arts are still valid and update total
+        charInstance.updateTotalSpent()
 
         //update martial knowledge expenditure
         updateMkSpent()
     }
 
+    //TODO: Check that isQualified works properly with SBL characters
     /**
      * Determines if the inputted Ki Ability is valid for the character to have.
      * 

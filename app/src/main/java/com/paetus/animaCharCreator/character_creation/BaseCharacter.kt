@@ -11,12 +11,12 @@ import com.paetus.animaCharCreator.character_creation.attributes.secondary_abili
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
+import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArt
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
-import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
@@ -27,6 +27,9 @@ import java.nio.charset.StandardCharsets
  * Holder class of all other character creation objects
  */
 open class BaseCharacter{
+    //boolean indicating if this is a level record or standalone
+    val hasHost = mutableStateOf(value = false)
+
     //character's name
     val charName = mutableStateOf(value = "")
 
@@ -240,6 +243,7 @@ open class BaseCharacter{
         maxPsyDP.intValue = (devPT.intValue * percPsyDP.doubleValue).toInt()
     }
 
+    //TODO: Check for redundant running of this function (especially in load or save).
     /**
      * Updates the total development points spent.
      */
@@ -414,16 +418,20 @@ open class BaseCharacter{
      * @param charFile file to load the character data from
      * @param secondaryFile directory for the custom secondary items
      * @param techFile directory for the custom technique items
+     * @param objectDB database that may be passed down from an SBLChar to this
+     * @param host potential SBLChar that holds this object
      */
     constructor(
         charFile: File,
         secondaryFile: File,
         techFile: File,
-        objectDB: ObjectDatabase = ObjectDatabase()
+        objectDB: ObjectDatabase = ObjectDatabase(),
+        host: Boolean = false
     ){
         this.objectDB = objectDB
+        hasHost.value = host
 
-        //get custom custom items for this character
+        //get custom items for this character
         secondaryList.applySecondaryChars(
             input = secondaryFile,
             filename = charFile.name
@@ -476,15 +484,39 @@ open class BaseCharacter{
         //load character's secondary abilities
         secondaryList.loadList(fileReader = fileReader, writeVersion = version)
 
-        //load character's combat modules
-        weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
+        //catch change in save data order
+        if(version < 47) {
+            //load character's combat modules
+            weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
 
-        //load character's ki abilities
-        ki.loadKiAttributes(
-            fileReader = fileReader,
-            writeVersion = version,
-            filename = charFile.name
-        )
+            //acquire all loaded martial art items
+            val catchList = mutableListOf<MartialArt>()
+            catchList.addAll(weaponProficiencies.takenMartialList)
+
+            //load character's ki abilities
+            ki.loadKiAttributes(
+                fileReader = fileReader,
+                writeVersion = version,
+                filename = charFile.name
+            )
+
+            //apply any accidentally removed martial arts
+            catchList.forEach{
+                if(!weaponProficiencies.takenMartialList.contains(it))
+                    weaponProficiencies.takenMartialList.add(it)
+            }
+        }
+        else{
+            //load character's ki abilities
+            ki.loadKiAttributes(
+                fileReader = fileReader,
+                writeVersion = version,
+                filename = charFile.name
+            )
+
+            //load character's combat modules
+            weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
+        }
 
         //load character's magic abilities
         magic.loadMagic(
@@ -611,11 +643,11 @@ open class BaseCharacter{
             //write secondary characteristic data
             secondaryList.writeList(byteArray = byteArray)
 
-            //write module data
-            weaponProficiencies.writeProficiencies(byteArray = byteArray)
-
             //write ki ability data
             ki.writeKiAttributes(byteArray = byteArray)
+
+            //write module data
+            weaponProficiencies.writeProficiencies(byteArray = byteArray)
 
             //write magic data
             magic.writeMagic(byteArray = byteArray)

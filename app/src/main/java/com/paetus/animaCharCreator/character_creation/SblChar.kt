@@ -208,6 +208,9 @@ class SblChar(): BaseCharacter() {
         //make sure martial arts taken are still legal
         weaponProficiencies.doubleCheck()
 
+        //initialize first martial art taken tracker
+        var firstArt = false
+
         //add DP spent in each level
         levelLoop{checkChar ->
             //add level's combat expenditures
@@ -215,6 +218,17 @@ class SblChar(): BaseCharacter() {
                 checkChar.combat.calculateSpent() +
                         checkChar.weaponProficiencies.calculateSpent() +
                         checkChar.ki.calculateSpent()
+
+            //add points missed in calculating points spent in martial arts
+            if(firstArt && checkChar.weaponProficiencies.takenMartialList.isNotEmpty()) {
+                ptInCombat.intValue +=
+                    if (checkChar.classes.ownClass.intValue == 7) 40
+                    else 25
+            }
+
+            //notify of martial art list no longer being empty
+            if(checkChar.weaponProficiencies.takenMartialList.isNotEmpty())
+                firstArt = true
 
             //add level's magic expenditures
             ptInMag.intValue +=

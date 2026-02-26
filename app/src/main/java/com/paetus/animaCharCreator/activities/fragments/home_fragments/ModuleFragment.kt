@@ -227,8 +227,7 @@ private fun WeaponRow(
 
         //secondary checkbox item
         Checkbox(
-            checked = modFragVM.allSecondaryWeapons[weapon]!!.value ||
-                    modFragVM.archetypesHasWeapon(weapon = weapon),
+            checked = modFragVM.allSecondaryWeapons[weapon]!!.value,
             onCheckedChange = {
                 //if primary check is not taken
                 if(weapon != modFragVM.getPrimaryWeapon())

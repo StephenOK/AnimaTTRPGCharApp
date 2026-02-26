@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArt
 import com.paetus.animaCharCreator.character_creation.attributes.modules.StyleModule
@@ -55,9 +54,6 @@ class ModuleFragmentViewModel(
     //initialize list of secondary weapon checkboxes
     val allSecondaryWeapons = mutableMapOf<Weapon, MutableState<Boolean>>()
 
-    //initialize list of archetype checkboxes
-    private val allArchetypes = mutableMapOf<List<Weapon>, MutableState<Boolean>>()
-
     //initialize list of martial art checkboxes
     val allMartials = mutableMapOf<MartialArt, MutableState<Boolean>>()
 
@@ -83,23 +79,6 @@ class ModuleFragmentViewModel(
      * Changes the open state of the archetype module list.
      */
     fun toggleArchetypeOpen() {_archetypeOpen.update{!archetypeOpen.value}}
-
-    /**
-     * Determine that the inputted weapon is gained from a character's selected archetype.
-     *
-     * @param weapon weapon to look for in archetypes
-     */
-    fun archetypesHasWeapon(weapon: Weapon): Boolean{
-        //search through each archetype
-        allArchetypes.forEach{(archetype, isTaken) ->
-            //return true if the weapon is in the archetype and that archetype is taken
-            if(archetype.contains(element = weapon) && isTaken.value)
-                return true
-        }
-
-        //weapon is not taken from an archetype
-        return false
-    }
 
     /**
      * Changes the open state of the martial arts list.
@@ -515,11 +494,6 @@ class ModuleFragmentViewModel(
         //create checkboxes for each individual weapon
         weaponProficiencies.getArmory().allWeapons.forEach{weapon ->
             allSecondaryWeapons += Pair(weapon, mutableStateOf(weaponProficiencies.individualModules.contains(element = weaponProficiencies.getArmory().allWeapons.indexOf(weapon))))
-        }
-
-        //create checkboxes for each archetype module
-        weaponProficiencies.getArmory().allArchetypes.values.forEach{archetype ->
-            allArchetypes += Pair(archetype, mutableStateOf(weaponProficiencies.takenModules.contains(element = archetype)))
         }
 
         //create checkboxes for each martial art

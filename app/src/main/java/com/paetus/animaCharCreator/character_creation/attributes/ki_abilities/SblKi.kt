@@ -2,6 +2,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities
 
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 
 /**
  * Component that manages a SBL Character's ki points and accumulation.
@@ -57,6 +58,60 @@ class SblKi(
 
         //update spent amount of martial knowledge
         updateMkSpent()
+    }
+
+    /**
+     * Get the martial knowledge spent at the indicated level.
+     *
+     * @param level character level to check the spent value at
+     * @return spent knowledge at the indicated level
+     */
+    fun getSpentMKAtLevel(level: Int): Int{
+        //initialize final result
+        var output = 0
+
+        //add knowledge spent from acquiring ki abilities
+        kiAbilitiesAtLevel(level = level).forEach{kiAbility ->
+            output += kiAbility.mkCost
+        }
+
+        //add knowledge spent from acquiring techniques
+        techsAtLevel(level = level).forEach{techniques ->
+            output += techniques.mkCost()
+        }
+
+        //give the final result
+        return output
+    }
+
+    /**
+     * Get the martial knowledge available at the indicated level.
+     *
+     * @param level character level to check the martial knowledge value at
+     * @return martial knowledge available at the indicated level
+     */
+    fun getMKAtLevel(level: Int): Int{
+        //initialize final result
+        var output = 0
+
+        //if checking zeroth level, get half of the class level's mk bonus
+        if(level == 0) output += charInstance.charRefs[0]!!.classes.getClass().mkPerLevel/2
+        //if checking any other level
+        else {
+            //add the zeroth level's class' mk bonus in place of the first level record to avoid bug with resetting a class change
+            output += charInstance.charRefs[0]!!.classes.getClass().mkPerLevel
+
+            //add class mk from each level after 2
+            charInstance.levelLoop(
+                startLevel = 2,
+                endLevel = level
+            ) { character ->
+                output += character.classes.getClass().mkPerLevel
+            }
+        }
+
+        //return class total plus knowledge from advantages and martial arts
+        return output + martialKnowledgeSpec.intValue + charInstance.weaponProficiencies.mkFromArtsAtLevel(level = level)
     }
 
     /**
@@ -120,6 +175,44 @@ class SblKi(
             //fully update main list
             updateKiAbilities()
         }
+    }
+
+    /**
+     * Retrieves a list of ki abilities held at the indicated level.
+     *
+     * @param level character level to get the list at
+     * @return list of ki abilities the character has at this level
+     */
+    fun kiAbilitiesAtLevel(level: Int): List<KiAbility>{
+        //initialize final list
+        val output = mutableListOf<KiAbility>()
+
+        //add ki abilities held at each level
+        charInstance.levelLoop(endLevel = level){character ->
+            output += character.ki.takenAbilities
+        }
+
+        //give the final result
+        return output
+    }
+
+    /**
+     * Retrieves the techniques held at the indicated level.
+     *
+     * @param level character level to get the data at
+     * @return list of techniques at the indicated level
+     */
+    fun techsAtLevel(level: Int): List<TechniqueBase>{
+        //initialize the final result
+        val output = mutableListOf<TechniqueBase>()
+
+        //add techniques to the list from each level
+        charInstance.levelLoop(endLevel = level){character ->
+            output += character.ki.getTakenTechs()
+        }
+
+        //give the final result
+        return output
     }
 
     /**

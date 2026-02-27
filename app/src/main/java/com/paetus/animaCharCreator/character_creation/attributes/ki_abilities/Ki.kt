@@ -407,7 +407,7 @@ open class Ki(private val charInstance: BaseCharacter){
      *
      * @return all techniques possessed by this character
      */
-    private fun getTakenTechs(): List<TechniqueBase>{
+    fun getTakenTechs(): List<TechniqueBase>{
         //initialize output
         val output = mutableListOf<TechniqueBase>()
 

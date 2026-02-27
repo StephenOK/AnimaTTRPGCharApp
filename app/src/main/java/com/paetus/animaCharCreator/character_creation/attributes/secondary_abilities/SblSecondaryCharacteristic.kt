@@ -160,7 +160,7 @@ open class SblSecondaryCharacteristic(
      * @param level last character reference to check before outputting total
      * @return point total up to the indicated level
      */
-    private fun getPreviousPoints(level: Int = parent.sblChar.lvl.intValue - 1): Int{
+    fun getPreviousPoints(level: Int = parent.sblChar.lvl.intValue - 1): Int{
         //initialize point counter
         var output = 0
 

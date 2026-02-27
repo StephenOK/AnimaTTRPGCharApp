@@ -189,6 +189,45 @@ class SblProficiencies(
     }
 
     /**
+     * Retrieves the list of martial arts held at the indicated level.
+     *
+     * @param level character level to check the martial list at
+     * @return the martial arts held at the indicated level
+     */
+    fun martialsAtLevel(level: Int): List<MartialArt>{
+        //initialize final list
+        val output = mutableListOf<MartialArt>()
+
+        //add the martial arts from each level to the output
+        charInstance.levelLoop(endLevel = level){character ->
+            output.addAll(elements = character.weaponProficiencies.takenMartialList)
+        }
+
+        //give the final output
+        return output.toList()
+    }
+
+    /**
+     * Gets the total value of martial knowledge from martial arts at the indicated level.
+     *
+     * @param level character level to get the martial art mk value at
+     * @return total martial art mk at the indicated level
+     */
+    fun mkFromArtsAtLevel(level: Int): Int{
+        //initialize the final result
+        var output = 0
+
+        //get the martial arts held at the indicated level
+        martialsAtLevel(level = level).forEach{martial ->
+            //add each art's mk bonus to the output
+            output += martial.mkBonus
+        }
+
+        //give the final result
+        return output
+    }
+
+    /**
      * Retrieves the maximum martial arts the character can hold at the indicated level.
      *
      * @param level character level to determine the maximum at

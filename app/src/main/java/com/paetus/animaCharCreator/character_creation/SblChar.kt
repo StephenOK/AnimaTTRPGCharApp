@@ -12,6 +12,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.SblComba
 import com.paetus.animaCharCreator.character_creation.attributes.combat.SblCombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
@@ -388,16 +389,38 @@ class SblChar(): BaseCharacter() {
             startLevel = lvl.intValue + 1,
             endLevel = 20
         ){character ->
+            //get the record's corresponding level
+            val charLevel = charRefs.indexOf(character)
+
             //check validity of taken natural bonuses in future levels
             character.secondaryList.getAllSecondaries().forEach{secondary ->
                 if(secondary.bonusApplied.value){
-                    if(secondary.pointsApplied.intValue == 0)
+                    if((secondaryList.getAllSecondaries()[character.secondaryList.getAllSecondaries().indexOf(secondary)] as SblSecondaryCharacteristic).getPreviousPoints(level = charRefs.indexOf(character) - 1) == 0)
                         secondary.bonusApplied.value = false
 
                     return@forEach
                 }
             }
 
+            //initialize list of ki abilities to remove
+            val removeList = mutableListOf<KiAbility>()
+
+            //check validity of taken ki abilities in future levels
+            character.ki.takenAbilities.forEach{kiAbility ->
+                val levelAbilities = ki.kiAbilitiesAtLevel(level = charLevel)
+
+                //add ability to removal list if either there are insufficient MK points or if it's no longer qualified
+                if(ki.getMKAtLevel(level = charLevel) - ki.getSpentMKAtLevel(level = charLevel - 1) < kiAbility.mkCost ||
+                    (kiAbility.prerequisite != null &&
+                            (!levelAbilities.contains(kiAbility.prerequisite) ||
+                            removeList.contains(kiAbility.prerequisite))))
+                    removeList.add(kiAbility)
+            }
+
+            //remove the indicated ki abilities
+            character.ki.takenAbilities.removeAll(removeList)
+
+            //TODO: Check that it should be just psychic and not character.psychic
             //check psychic power investment in future levels
             psychic.legalDisciplines.forEach{discipline -> psychic.removeIllegal(discipline)}
         }

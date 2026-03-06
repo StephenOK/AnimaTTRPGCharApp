@@ -69,13 +69,8 @@ open class Ki(private val charInstance: BaseCharacter){
     //initialize list of taken ki abilities
     val takenAbilities = mutableListOf<KiAbility>()
 
-    //create of map of prebuilt techniques and their taken states
-    val allPrebuilts =
-        getPrebuiltTechs()
-            .allTechniques.associateBy(
-                keySelector = {it},
-                valueTransform = {mutableStateOf(false)}
-            )
+    //initialize list of the character's techniques
+    val heldTechniques = mutableListOf<TechniqueBase>()
 
     //initialize character's custom techniques
     val customTechniques = mutableMapOf<CustomTechnique, MutableState<Boolean>>()
@@ -218,7 +213,7 @@ open class Ki(private val charInstance: BaseCharacter){
 
         //remove techniques if Ki Control removed
         if(!takenAbilities.contains(getKiRecord().kiControl)) {
-            allPrebuilts.forEach {prebuilts -> prebuilts.value.value = false }
+            heldTechniques.clear()
             customTechniques.forEach { customs -> customs.value.value = false }
         }
 
@@ -279,7 +274,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     private fun addTechnique(technique: TechniqueBase){
         //if prebuilt technique, toggle the corresponding checkbox
-        if(technique is PrebuiltTech) allPrebuilts[technique]!!.value = true
+        if(technique is PrebuiltTech) heldTechniques.add(technique)
 
         //if custom technique
         else {
@@ -331,7 +326,7 @@ open class Ki(private val charInstance: BaseCharacter){
      */
     fun removeTechnique(technique: TechniqueBase){
         //remove technique from the appropriate list
-        if(technique is PrebuiltTech) allPrebuilts[technique]!!.value = false
+        if(technique is PrebuiltTech) heldTechniques.remove(element = technique)
         else customTechniques[technique as CustomTechnique]!!.value = false
 
         //remove any potential invalidated techniques after this one's removal
@@ -345,22 +340,28 @@ open class Ki(private val charInstance: BaseCharacter){
     private fun removeExtra(){
         //remove second level techniques if not enough first level techniques
         if(getLevelCount(1) < 2) {
-            allPrebuilts.forEach{(heldPrebuilt, isHeld) ->
-                if(heldPrebuilt.level.intValue == 2 && isHeld.value) isHeld.value = false
+            val removeList = mutableListOf<TechniqueBase>()
+            heldTechniques.forEach{tech ->
+                if(tech.level.intValue == 2) removeList.add(tech)
             }
             customTechniques.forEach{(heldCustom, isHeld) ->
                 if(heldCustom.level.intValue == 2 && isHeld.value) isHeld.value = false
             }
+
+            heldTechniques.removeAll(elements = removeList)
         }
 
         //remove third level techniques if not enough second level techniques
         if(getLevelCount(2) < 2){
-            allPrebuilts.forEach{(heldCustom, isHeld) ->
-                if(heldCustom.level.intValue == 3 && isHeld.value) isHeld.value = false
+            val removeList = mutableListOf<TechniqueBase>()
+            heldTechniques.forEach{tech ->
+                if(tech.level.intValue == 3) removeList.add(tech)
             }
             customTechniques.forEach{(heldCustom, isHeld) ->
                 if(heldCustom.level.intValue == 3 && isHeld.value) isHeld.value = false
             }
+
+            heldTechniques.removeAll(elements = removeList)
         }
     }
 
@@ -374,7 +375,7 @@ open class Ki(private val charInstance: BaseCharacter){
         compareTo: TechniqueBase
     ): TechniqueBase?{
         //look through prebuilts for a match
-        allPrebuilts.keys.forEach{prebuilts ->
+        getPrebuiltTechs().allTechniques.forEach{prebuilts ->
             //return technique if match found
             if(prebuilts.equivalentTo(compareTo = compareTo))
                 return prebuilts
@@ -394,7 +395,7 @@ open class Ki(private val charInstance: BaseCharacter){
         input: String
     ): PrebuiltTech?{
         //check each technique's save tag for a match
-        allPrebuilts.keys.forEach{prebuilt ->
+        getPrebuiltTechs().allTechniques.forEach{prebuilt ->
             if(prebuilt.saveName == input) return prebuilt
         }
 
@@ -411,11 +412,7 @@ open class Ki(private val charInstance: BaseCharacter){
         //initialize output
         val output = mutableListOf<TechniqueBase>()
 
-        //get all taken prebuilt techniques
-        allPrebuilts.forEach{(prebuilt, isHeld) ->
-            if(isHeld.value)
-                output += prebuilt
-        }
+        output.addAll(elements = heldTechniques)
 
         //get all taken custom techniques
         customTechniques.forEach{(custom, isHeld) ->
@@ -463,7 +460,7 @@ open class Ki(private val charInstance: BaseCharacter){
             in 10 .. 24 -> {
                 //retrieve each applied prebuilt
                 (0 until fileReader.readLine().toInt()).forEach {
-                    allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
+                    heldTechniques.add(element = findPrebuilt(input = fileReader.readLine())!!)
                 }
 
                 //load all custom techniques
@@ -477,7 +474,7 @@ open class Ki(private val charInstance: BaseCharacter){
             else -> {
                 //retrieve each applied prebuilt
                 (0 until fileReader.readLine().toInt()).forEach{
-                    allPrebuilts[findPrebuilt(input = fileReader.readLine())!!]!!.value = true
+                    heldTechniques.add(element = findPrebuilt(input = fileReader.readLine())!!)
                 }
 
                 //for each indicated custom technique held
@@ -914,16 +911,10 @@ open class Ki(private val charInstance: BaseCharacter){
             writeDataTo(writer = byteArray, input = kiAbility.saveTag)
         }
 
-        //gather held prebuilt techniques
-        val writePrebuilts = mutableListOf<PrebuiltTech>()
-        allPrebuilts.forEach{(prebuilt, isHeld) ->
-            if(isHeld.value) writePrebuilts += prebuilt
-        }
-
         //write held prebuilts and prebuilt data
-        writeDataTo(writer = byteArray, input = writePrebuilts.size)
-        writePrebuilts.forEach{heldPrebuilt ->
-            heldPrebuilt.write(byteArray = byteArray)
+        writeDataTo(writer = byteArray, input = heldTechniques.size)
+        heldTechniques.forEach{tech ->
+            tech.write(byteArray = byteArray)
         }
 
         //write data on held custom techniques

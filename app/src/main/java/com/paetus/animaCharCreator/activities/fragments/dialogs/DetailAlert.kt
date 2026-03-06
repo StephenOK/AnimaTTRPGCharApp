@@ -1569,7 +1569,7 @@ fun KiDetailPreview(){
 @Composable
 fun TechniqueDetailPreview(){
     val charInstance = BaseCharacter()
-    val technique = charInstance.ki.allPrebuilts.keys.first()
+    val technique = charInstance.ki.getPrebuiltTechs().allTechniques[1]
     technique.maintArray[4] = 2
 
     DetailAlert(stringResource(id = technique.name), technique){}

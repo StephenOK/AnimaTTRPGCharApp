@@ -253,10 +253,9 @@ fun KiFragment(
             AnimatedVisibility(visible = kiFragVM.techListOpen.collectAsState().value) {
                 GeneralCard{
                     //display each prebuilt technique
-                    kiFragVM.getAllPrebuilts().forEach {(technique, taken) ->
+                    kiFragVM.getAllPrebuilts().forEach {technique ->
                         TechniqueRow(
                             technique = technique,
-                            isTaken = taken,
                             kiFragVM = kiFragVM
                         )
                     }
@@ -272,7 +271,6 @@ fun KiFragment(
                     kiFragVM.getCustomTechniques().forEach {(technique, taken) ->
                         TechniqueRow(
                             technique = technique,
-                            isTaken = taken,
                             kiFragVM = kiFragVM
                         )
                     }
@@ -476,13 +474,11 @@ private fun KiAbilityRow(
  * Displays a technique the user can add to their character.
  *
  * @param technique technique associated with the row
- * @param isTaken taken state of the inputted technique
  * @param kiFragVM viewModel that is managing the data on this page
  */
 @Composable
 private fun TechniqueRow(
     technique: TechniqueBase,
-    isTaken: MutableState<Boolean>,
     kiFragVM: KiFragmentViewModel
 ) {
     //retrieve the technique's name
@@ -497,7 +493,7 @@ private fun TechniqueRow(
     ){
         //checkbox to apply or remove technique to the character
         Checkbox(
-            checked = isTaken.value,
+            checked = kiFragVM.allTechniques[technique]!!.value,
             onCheckedChange ={
                 kiFragVM.attemptTechniqueChange(
                     technique = technique,

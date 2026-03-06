@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.KiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
@@ -59,6 +58,9 @@ class KiFragmentViewModel(
 
     //initialize map of all ki ability checkboxes
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
+
+    //initialize map of all technique checkboxes
+    val allTechniques = mutableMapOf<PrebuiltTech, MutableState<Boolean>>()
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -187,6 +189,8 @@ class KiFragmentViewModel(
             ki.removeTechnique(technique = technique)
         }
 
+        updateTechniquesTaken()
+
         //update the martial knowledge display
         setRemainingMK()
     }
@@ -208,6 +212,15 @@ class KiFragmentViewModel(
         )
 
         ki.attemptTechAddition(technique = copy)
+    }
+
+    /**
+     * Updates the techniques taken checkboxes.
+     */
+    private fun updateTechniquesTaken(){
+        allTechniques.forEach{ (tech, isTaken) ->
+            isTaken.value = ki.heldTechniques.contains(tech)
+        }
     }
 
     /**
@@ -250,7 +263,9 @@ class KiFragmentViewModel(
      *
      * @return list of available prebuilt techniques
      */
-    fun getAllPrebuilts(): Map<PrebuiltTech, MutableState<Boolean>>{return ki.allPrebuilts}
+    fun getAllPrebuilts(): List<PrebuiltTech>{return ki.getPrebuiltTechs().allTechniques}
+
+    fun getHeldTechniques(): List<TechniqueBase>{return ki.heldTechniques}
 
     /**
      * Retrieves the list of custom techniques the character has access to.
@@ -425,6 +440,9 @@ class KiFragmentViewModel(
             allKiAbilities += Pair(kiAbility, mutableStateOf(value = ki.takenAbilities.contains(element = kiAbility)))
         }
         updateKiTaken()
+        ki.getPrebuiltTechs().allTechniques.forEach{tech ->
+            allTechniques += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
+        }
         setRemainingMK()
     }
 

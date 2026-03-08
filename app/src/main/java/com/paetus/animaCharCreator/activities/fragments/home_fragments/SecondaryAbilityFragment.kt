@@ -163,7 +163,7 @@ private fun FreelancerDropdown(
 
             //display all secondary characteristic options
             secondaryFragVM.allFields.forEach{discipline ->
-                discipline.fieldCharacteristics.forEach {characteristic ->
+                discipline.fieldCharacteristics.value.forEach {characteristic ->
                     val displayName =
                         if(characteristic.secondaryItem is CustomCharacteristic)
                             characteristic.getCustomName()
@@ -217,7 +217,7 @@ private fun MakeTableDisplay(
             RowHead()
 
             //display each of the field's characteristics
-            field.fieldCharacteristics.forEach {characteristic ->
+            field.fieldCharacteristics.collectAsState().value.forEach {characteristic ->
                 MakeRow(
                     secondaryChar = characteristic,
                     homePageVM = homePageVM

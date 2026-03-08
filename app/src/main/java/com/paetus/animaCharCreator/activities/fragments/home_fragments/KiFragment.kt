@@ -268,7 +268,7 @@ fun KiFragment(
                     }
 
                     //display custom techniques
-                    kiFragVM.allTechniques.forEach {(technique, _) ->
+                    kiFragVM.allTechniques.collectAsState().value.forEach {(technique, _) ->
                         if(technique is  CustomTechnique)
                             TechniqueRow(
                                 technique = technique,
@@ -494,7 +494,7 @@ private fun TechniqueRow(
     ){
         //checkbox to apply or remove technique to the character
         Checkbox(
-            checked = kiFragVM.allTechniques[technique]!!.value,
+            checked = kiFragVM.allTechniques.collectAsState().value[technique]!!.value,
             onCheckedChange ={
                 kiFragVM.attemptTechniqueChange(
                     technique = technique,

@@ -101,9 +101,14 @@ class SecondaryFragmentViewModel(
     val allFields = listOf(athletics, social, perceptive, intellectual, vigor, subterfuge, creative)
 
     //get all individual characteristic items
-    private val allCharacteristics = athletics.fieldCharacteristics + social.fieldCharacteristics +
-            perceptive.fieldCharacteristics + intellectual.fieldCharacteristics +
-            vigor.fieldCharacteristics + subterfuge.fieldCharacteristics + creative.fieldCharacteristics
+    private val allCharacteristics =
+        athletics.fieldCharacteristics.value +
+                social.fieldCharacteristics.value +
+            perceptive.fieldCharacteristics.value +
+                intellectual.fieldCharacteristics.value +
+            vigor.fieldCharacteristics.value +
+                subterfuge.fieldCharacteristics.value +
+                creative.fieldCharacteristics.value
 
     //create a object for each freelancer bonus option
     private val firstSelection = FreelancerSelection(
@@ -244,7 +249,8 @@ class SecondaryFragmentViewModel(
         fun toggleOpen(){_tableOpen.update{!tableOpen.value}}
 
         //initialize data for each of the field's characteristics
-        val fieldCharacteristics = mutableListOf<SecondaryItem>()
+        private val _fieldCharacteristics = MutableStateFlow(mutableListOf<SecondaryItem>())
+        val fieldCharacteristics = _fieldCharacteristics.asStateFlow()
 
         /**
          * Adds a characteristic to the field's data list.
@@ -252,23 +258,24 @@ class SecondaryFragmentViewModel(
          * @param customChar new characteristic to add to the list
          */
         fun addFieldChar(customChar: CustomCharacteristic){
-            fieldCharacteristics.add(
-                element = SecondaryItem(
-                    secondaryItem = customChar,
-                    secondaryList = secondaryList
-                )
-            )
+            _fieldCharacteristics.update{
+                fieldCharacteristics.value.plus(
+                    element = SecondaryItem(
+                        secondaryItem = customChar,
+                        secondaryList = secondaryList
+                    )
+                ) as MutableList<SecondaryItem>
+            }
         }
 
         init{
             //create data objects for each field characteristic
             fieldItems.forEach{secondary ->
-                fieldCharacteristics.add(
-                    element = SecondaryItem(
+                fieldCharacteristics.value +=
+                    SecondaryItem(
                         secondaryItem = secondary,
                         secondaryList = secondaryList
                     )
-                )
             }
         }
     }

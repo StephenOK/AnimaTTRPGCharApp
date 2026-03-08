@@ -60,7 +60,8 @@ class KiFragmentViewModel(
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
 
     //initialize map of all technique checkboxes
-    val allTechniques = mutableMapOf<TechniqueBase, MutableState<Boolean>>()
+    private val _allTechniques = MutableStateFlow(value = mutableMapOf<TechniqueBase, MutableState<Boolean>>())
+    val allTechniques = _allTechniques.asStateFlow()
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -214,14 +215,21 @@ class KiFragmentViewModel(
         ki.attemptTechAddition(technique = copy)
 
         //add technique to tracking list
-        allTechniques.plus(Pair(copy, mutableStateOf(ki.heldTechniques.contains(copy))))
+        _allTechniques.update{
+            allTechniques.value.plus(
+                Pair(
+                    copy,
+                    mutableStateOf(value = ki.heldTechniques.contains(copy))
+                )
+            ) as MutableMap<TechniqueBase, MutableState<Boolean>>
+        }
     }
 
     /**
      * Updates the techniques taken checkboxes.
      */
     private fun updateTechniquesTaken(){
-        allTechniques.forEach{ (tech, isTaken) ->
+        allTechniques.value.forEach{ (tech, isTaken) ->
             isTaken.value = ki.heldTechniques.contains(tech)
         }
     }
@@ -437,10 +445,10 @@ class KiFragmentViewModel(
 
         //add all techniques to the tracking list
         ki.getPrebuiltTechs().allTechniques.forEach{tech ->
-            allTechniques += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
+            allTechniques.value += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
         }
         ki.availableCustomTechs.forEach{tech ->
-            allTechniques += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
+            allTechniques.value += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
         }
         setRemainingMK()
     }

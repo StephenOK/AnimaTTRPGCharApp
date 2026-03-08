@@ -268,11 +268,12 @@ fun KiFragment(
                     }
 
                     //display custom techniques
-                    kiFragVM.getCustomTechniques().forEach {(technique, taken) ->
-                        TechniqueRow(
-                            technique = technique,
-                            kiFragVM = kiFragVM
-                        )
+                    kiFragVM.allTechniques.forEach {(technique, _) ->
+                        if(technique is  CustomTechnique)
+                            TechniqueRow(
+                                technique = technique,
+                                kiFragVM = kiFragVM
+                            )
                     }
                 }
             }

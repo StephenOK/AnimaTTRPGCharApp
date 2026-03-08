@@ -208,7 +208,7 @@ class SblKi(
 
         //add techniques to the list from each level
         charInstance.levelLoop(endLevel = level){character ->
-            output += character.ki.getTakenTechs()
+            output.addAll(elements = character.ki.heldTechniques)
         }
 
         //give the final result

@@ -22,6 +22,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
+import kotlin.collections.forEach
 
 /**
  * Component that manages a character's ki points and accumulation.
@@ -73,7 +74,7 @@ open class Ki(private val charInstance: BaseCharacter){
     val heldTechniques = mutableListOf<TechniqueBase>()
 
     //initialize character's custom techniques
-    val customTechniques = mutableMapOf<CustomTechnique, MutableState<Boolean>>()
+    val availableCustomTechs = mutableListOf<CustomTechnique>()
 
     /**
      * Gets the class's ki accumulation DP cost.
@@ -98,7 +99,7 @@ open class Ki(private val charInstance: BaseCharacter){
         }
 
         //removes martial knowledge for each dominion technique taken
-        getTakenTechs().forEach{techniques ->
+        heldTechniques.forEach{techniques ->
             martialKnowledgeRemaining.intValue -= techniques.mkCost()
         }
     }
@@ -214,7 +215,6 @@ open class Ki(private val charInstance: BaseCharacter){
         //remove techniques if Ki Control removed
         if(!takenAbilities.contains(getKiRecord().kiControl)) {
             heldTechniques.clear()
-            customTechniques.forEach { customs -> customs.value.value = false }
         }
 
         //check that martial arts are still valid and update total
@@ -273,25 +273,12 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param technique technique to add to the character
      */
     private fun addTechnique(technique: TechniqueBase){
-        //if prebuilt technique, toggle the corresponding checkbox
-        if(technique is PrebuiltTech) heldTechniques.add(technique)
+        //add technique to the held list
+        heldTechniques += technique
 
-        //if custom technique
-        else {
-            //search for existing copy of this technique
-            var found = false
-            customTechniques.keys.forEach{customTech ->
-                //toggle the associated checkbox if found
-                if(customTech.equivalentTo(compareTo = technique)){
-                    customTechniques[customTech]!!.value = true
-                    found = true
-                    return@forEach
-                }
-            }
-
-            //add custom technique if never found
-            if(!found)
-                customTechniques += Pair(technique as CustomTechnique, mutableStateOf(value = true))
+        //add custom technique to the tracking list
+        if(technique is CustomTechnique && !availableCustomTechs.contains(technique)){
+            availableCustomTechs += technique
         }
 
         //update the spent martial knowledge
@@ -311,8 +298,8 @@ open class Ki(private val charInstance: BaseCharacter){
         var output = 0
 
         //count each technique with the desired level
-        getTakenTechs().forEach{heldTech ->
-            if(heldTech.level.intValue == level) output++
+        heldTechniques.forEach{tech ->
+            if(tech.level.intValue == level) output++
         }
 
         //return the final count
@@ -325,9 +312,8 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param technique the technique to remove from the character
      */
     fun removeTechnique(technique: TechniqueBase){
-        //remove technique from the appropriate list
-        if(technique is PrebuiltTech) heldTechniques.remove(element = technique)
-        else customTechniques[technique as CustomTechnique]!!.value = false
+        //remove technique from the held list
+        heldTechniques.remove(element = technique)
 
         //remove any potential invalidated techniques after this one's removal
         removeExtra()
@@ -344,9 +330,6 @@ open class Ki(private val charInstance: BaseCharacter){
             heldTechniques.forEach{tech ->
                 if(tech.level.intValue == 2) removeList.add(tech)
             }
-            customTechniques.forEach{(heldCustom, isHeld) ->
-                if(heldCustom.level.intValue == 2 && isHeld.value) isHeld.value = false
-            }
 
             heldTechniques.removeAll(elements = removeList)
         }
@@ -356,9 +339,6 @@ open class Ki(private val charInstance: BaseCharacter){
             val removeList = mutableListOf<TechniqueBase>()
             heldTechniques.forEach{tech ->
                 if(tech.level.intValue == 3) removeList.add(tech)
-            }
-            customTechniques.forEach{(heldCustom, isHeld) ->
-                if(heldCustom.level.intValue == 3 && isHeld.value) isHeld.value = false
             }
 
             heldTechniques.removeAll(elements = removeList)
@@ -401,27 +381,6 @@ open class Ki(private val charInstance: BaseCharacter){
 
         //notify of no match found
         return null
-    }
-
-    /**
-     * Retrieves all techniques this character has access to.
-     *
-     * @return all techniques possessed by this character
-     */
-    fun getTakenTechs(): List<TechniqueBase>{
-        //initialize output
-        val output = mutableListOf<TechniqueBase>()
-
-        output.addAll(elements = heldTechniques)
-
-        //get all taken custom techniques
-        customTechniques.forEach{(custom, isHeld) ->
-            if(isHeld.value)
-                output += custom
-        }
-
-        //return all techniques as a list
-        return output.toList()
     }
 
     /**
@@ -471,7 +430,8 @@ open class Ki(private val charInstance: BaseCharacter){
                 )
             }
 
-            else -> {
+            //version before heldTechnique object
+            in 25..47 -> {
                 //retrieve each applied prebuilt
                 (0 until fileReader.readLine().toInt()).forEach{
                     heldTechniques.add(element = findPrebuilt(input = fileReader.readLine())!!)
@@ -484,9 +444,27 @@ open class Ki(private val charInstance: BaseCharacter){
                     val hasFile = fileReader.readLine().toBoolean()
 
                     //apply held state to the indicated custom technique, if available
-                    customTechniques.forEach{(custom, isHeld) ->
-                        if(custom.name.value == techName)
-                            isHeld.value = hasFile
+                    availableCustomTechs.forEach{tech ->
+                        if(tech.name.value == techName && hasFile)
+                            heldTechniques += tech
+                    }
+                }
+            }
+
+            else -> {
+                //get the number of held techniques
+                (0 until fileReader.readLine().toInt()).forEach{
+                    //if technique is prebuilt, find its object and apply to the character
+                    if(fileReader.readLine().toBoolean())
+                        heldTechniques.add(element = findPrebuilt(input = fileReader.readLine())!!)
+                    else{
+                        //get the custom technique's name
+                        val matchName = fileReader.readLine()
+
+                        //find the custom tech and apply to the character
+                        availableCustomTechs.forEach{tech ->
+                            if(tech.name.value == matchName) heldTechniques.add(element = tech)
+                        }
                     }
                 }
             }
@@ -914,14 +892,18 @@ open class Ki(private val charInstance: BaseCharacter){
         //write held prebuilts and prebuilt data
         writeDataTo(writer = byteArray, input = heldTechniques.size)
         heldTechniques.forEach{tech ->
-            tech.write(byteArray = byteArray)
-        }
-
-        //write data on held custom techniques
-        writeDataTo(writer = byteArray, input = customTechniques.size)
-        customTechniques.forEach{(custom, isHeld) ->
-            writeDataTo(writer = byteArray, input = custom.name.value)
-            writeDataTo(writer = byteArray, input = isHeld.value)
+            //if tech is prebuilt
+            if(tech is PrebuiltTech){
+                //note that it's prebuilt and write the tech's data
+                writeDataTo(writer = byteArray, input = true)
+                tech.write(byteArray = byteArray)
+            }
+            //if tech is custom
+            else{
+                //note that it's not prebuilt and write its name
+                writeDataTo(writer = byteArray, input = false)
+                writeDataTo(writer = byteArray, input = (tech as CustomTechnique).name.value)
+            }
         }
     }
 
@@ -980,18 +962,15 @@ open class Ki(private val charInstance: BaseCharacter){
             //if character can access the technique
             if(public || filename == fileOrigin){
                 //add to the character's available list
-                customTechniques +=
-                    Pair(
-                        CustomTechnique(
-                            name = name,
-                            isPublic = public,
-                            fileOrigin = fileOrigin,
-                            description = description,
-                            level = level,
-                            maintArray = maintArray,
-                            givenAbilities = givenAbilities
-                        ),
-                        mutableStateOf(value = false)
+                availableCustomTechs +=
+                    CustomTechnique(
+                        name = name,
+                        isPublic = public,
+                        fileOrigin = fileOrigin,
+                        description = description,
+                        level = level,
+                        maintArray = maintArray,
+                        givenAbilities = givenAbilities
                     )
             }
         }
@@ -1005,7 +984,7 @@ open class Ki(private val charInstance: BaseCharacter){
     fun saveOutCustoms(
         directory: File
     ){
-        customTechniques.keys.forEach{customTech ->
+        availableCustomTechs.forEach{customTech ->
             //open the file and byte writer
             val fileWriter = File(directory, customTech.name.value).outputStream()
             val byteArray = ByteArrayOutputStream()

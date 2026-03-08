@@ -60,7 +60,7 @@ class KiFragmentViewModel(
     val allKiAbilities = mutableMapOf<KiAbility, MutableState<Boolean>>()
 
     //initialize map of all technique checkboxes
-    val allTechniques = mutableMapOf<PrebuiltTech, MutableState<Boolean>>()
+    val allTechniques = mutableMapOf<TechniqueBase, MutableState<Boolean>>()
 
     /**
      * Sets the remaining martial knowledge display to the character's recorded value.
@@ -212,6 +212,9 @@ class KiFragmentViewModel(
         )
 
         ki.attemptTechAddition(technique = copy)
+
+        //add technique to tracking list
+        allTechniques.plus(Pair(copy, mutableStateOf(ki.heldTechniques.contains(copy))))
     }
 
     /**
@@ -264,15 +267,6 @@ class KiFragmentViewModel(
      * @return list of available prebuilt techniques
      */
     fun getAllPrebuilts(): List<PrebuiltTech>{return ki.getPrebuiltTechs().allTechniques}
-
-    fun getHeldTechniques(): List<TechniqueBase>{return ki.heldTechniques}
-
-    /**
-     * Retrieves the list of custom techniques the character has access to.
-     *
-     * @return list of available custom techniques
-     */
-    fun getCustomTechniques(): Map<CustomTechnique, MutableState<Boolean>>{return ki.customTechniques}
 
     //initialize all ki items for each relevant primary characteristic
     private val kiSTR = KiRowData(
@@ -440,7 +434,12 @@ class KiFragmentViewModel(
             allKiAbilities += Pair(kiAbility, mutableStateOf(value = ki.takenAbilities.contains(element = kiAbility)))
         }
         updateKiTaken()
+
+        //add all techniques to the tracking list
         ki.getPrebuiltTechs().allTechniques.forEach{tech ->
+            allTechniques += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
+        }
+        ki.availableCustomTechs.forEach{tech ->
             allTechniques += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
         }
         setRemainingMK()

@@ -2,6 +2,7 @@ package com.paetus.animaCharCreator.character_creation.attributes.ki_abilities
 
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.TechniqueBase
 
 /**
@@ -124,6 +125,15 @@ class SblKi(
         //check if character has the necessary martial knowledge for the ability
         if(martialKnowledgeRemaining.intValue - newAbility.mkCost >= 0){
             charInstance.getCharAtLevel().ki.takenAbilities += newAbility
+
+            //remove copies of the taken ki ability in future levels
+            charInstance.levelLoop(
+                startLevel = charInstance.lvl.intValue + 1,
+                endLevel = 20
+            ){character ->
+                character.ki.takenAbilities -= newAbility
+            }
+
             updateKiAbilities()
             updateMkSpent()
         }
@@ -167,13 +177,129 @@ class SblKi(
                 }
             }
 
-            //if(!takenAbilities.contains(kiRecord.kiControl)){
-            //    allPrebuilts.forEach{it.value.value = false}
-            //    customTechniques.forEach{it.value.value = false}
-            //}
+            //remove all held techniques if ki control is removed
+            if(!takenAbilities.contains(getKiRecord().kiControl)) {
+                charInstance.levelLoop(
+                    startLevel = charInstance.lvl.intValue,
+                    endLevel = 20
+                ){character ->
+                    character.ki.heldTechniques.clear()
+                }
+
+                updateTechniques()
+            }
 
             //fully update main list
             updateKiAbilities()
+        }
+    }
+
+    /**
+     * Adds the inputted technique to the character.
+     *
+     * @param technique technique to add to the character
+     */
+    override fun addTechnique(technique: TechniqueBase) {
+        //add technique to the character record
+        charInstance.getCharAtLevel().ki.heldTechniques += technique
+
+        //remove future instances of this technique being taken
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue + 1,
+            endLevel = 20
+        ){character ->
+            character.ki.heldTechniques -= technique
+        }
+
+        //add custom technique to the tracking list
+        if(technique is CustomTechnique && !availableCustomTechs.contains(technique)){
+            availableCustomTechs += technique
+
+            //add technique tracker to each level record
+            charInstance.levelLoop(
+                endLevel = 20
+            ){character ->
+                character.ki.availableCustomTechs += technique
+            }
+        }
+
+        //update held techniques
+        updateTechniques()
+    }
+
+    /**
+     * Retrieves the number of techniques of the indicated level.
+     *
+     * @param level technique level to retrieve the number of
+     * @return the number of techniques the character has with the indicated level
+     */
+    override fun getLevelCount(level: Int): Int {
+        //initialize the counter
+        var output = 0
+
+        //get the number of techniques at this level with the searched for level
+        techsAtLevel(level = charInstance.lvl.intValue).forEach{tech ->
+            if(tech.level.intValue == level) output++
+        }
+
+        //print the final result
+        return output
+    }
+
+    /**
+     * Removes a technique from the character.
+     *
+     * @param technique the technique to remove from a character
+     */
+    override fun removeTechnique(technique: TechniqueBase) {
+        //remove the technique from the record
+        charInstance.getCharAtLevel().ki.heldTechniques -= technique
+
+        //remove potentially invalidated techniques
+        removeExtra()
+
+        //update held techniques
+        updateTechniques()
+    }
+
+    /**
+     * Checks if second and third level techniques are still valid for the character to take.
+     */
+    override fun removeExtra() {
+        //validate each future record's techniques
+        charInstance.levelLoop(
+            startLevel = charInstance.lvl.intValue,
+            endLevel = 20
+        ){character ->
+            //retrieve the current list of techniques
+            val workList = techsAtLevel(charInstance.charRefs.indexOf(character)) as MutableList
+
+            //count the number of level 1 techs in this list
+            var firstCount = 0
+            workList.forEach{tech -> if(tech.level.intValue == 1) firstCount++}
+
+            //if character has less than two first level techniques
+            if(firstCount < 2) {
+                //remove all invalidated second level techniques
+                val removeList = mutableListOf<TechniqueBase>()
+                workList.forEach{tech ->
+                    if(tech.level.intValue == 2) character.ki.heldTechniques -= tech
+                    removeList.add(tech)
+                }
+                workList.removeAll(elements = removeList)
+            }
+
+            //count the number of level 2 techs in this list
+            var secondCount = 0
+            workList.forEach{tech -> if(tech.level.intValue == 2) secondCount++}
+
+            //if character has less than two second level techniques
+            if(secondCount < 2) {
+                //remove any invalidated third level techniques
+                workList.forEach{tech ->
+                    if(tech.level.intValue == 3) character.ki.heldTechniques -= tech
+                }
+            }
         }
     }
 
@@ -237,6 +363,22 @@ class SblKi(
     }
 
     /**
+     * Updates the main list of techniques taken.
+     */
+    private fun updateTechniques(){
+        //clear the current list
+        heldTechniques.clear()
+
+        //get all techniques at each level record
+        charInstance.levelLoop{character ->
+            heldTechniques.addAll(elements = character.ki.heldTechniques)
+        }
+
+        //update the martial knowledge spent
+        updateMkSpent()
+    }
+
+    /**
      * Function to run when the character changes level.
      */
     fun levelUpdate(){
@@ -248,6 +390,9 @@ class SblKi(
 
         //update ki abilities taken
         updateKiAbilities()
+
+        //update taken techniques
+        updateTechniques()
 
         //update martial knowledge
         updateMK()

@@ -13,6 +13,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.SblComba
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
@@ -417,6 +418,10 @@ class SblChar(): BaseCharacter() {
                     removeList.add(kiAbility)
             }
 
+            //remove future techniques if ki control is removed
+            if(!ki.kiAbilitiesAtLevel(charRefs.indexOf(character)).contains(objectDB.kiRecord.kiControl))
+                character.ki.heldTechniques.clear()
+
             //remove the indicated ki abilities
             character.ki.takenAbilities.removeAll(removeList)
 
@@ -424,6 +429,9 @@ class SblChar(): BaseCharacter() {
             //check psychic power investment in future levels
             psychic.legalDisciplines.forEach{discipline -> psychic.removeIllegal(discipline)}
         }
+
+        //validate techniques in future levels
+        ki.removeExtra()
     }
 
     /**
@@ -666,6 +674,12 @@ class SblChar(): BaseCharacter() {
         //apply custom secondaries
         secondaryList.applySecondaryChars(
             input = secondaryFile,
+            filename = sourceDIR.name
+        )
+
+        //apply custom techniques
+        ki.applyCustomTechs(
+            customTechDir = techFile,
             filename = sourceDIR.name
         )
 

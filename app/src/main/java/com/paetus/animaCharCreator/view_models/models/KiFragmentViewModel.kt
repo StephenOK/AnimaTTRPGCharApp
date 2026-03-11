@@ -202,24 +202,14 @@ class KiFragmentViewModel(
      * @param customTech technique to add
      */
     fun addTechnique(customTech: CustomTechnique){
-        val copy = CustomTechnique(
-            name = customTech.name.value,
-            isPublic = customTech.isPublic.value,
-            fileOrigin = customTech.fileOrigin.value,
-            description = customTech.description.value,
-            level = customTech.level.intValue,
-            maintArray = customTech.maintArray,
-            givenAbilities = customTech.givenAbilities
-        )
-
-        ki.attemptTechAddition(technique = copy)
+        ki.attemptTechAddition(technique = customTech)
 
         //add technique to tracking list
         _allTechniques.update{
             allTechniques.value.plus(
                 Pair(
-                    copy,
-                    mutableStateOf(value = ki.heldTechniques.contains(copy))
+                    customTech,
+                    mutableStateOf(value = ki.heldTechniques.contains(customTech))
                 )
             ) as MutableMap<TechniqueBase, MutableState<Boolean>>
         }
@@ -465,6 +455,11 @@ class KiFragmentViewModel(
         //update the ki ability taken checkboxes
         allKiAbilities.forEach{(ability, taken) ->
             taken.value = ki.takenAbilities.contains(ability)
+        }
+
+        //update the techniques taken checkboxes
+        allTechniques.value.forEach{(tech, taken) ->
+            taken.value = ki.heldTechniques.contains(tech)
         }
 
         //refresh the martial knowledge items

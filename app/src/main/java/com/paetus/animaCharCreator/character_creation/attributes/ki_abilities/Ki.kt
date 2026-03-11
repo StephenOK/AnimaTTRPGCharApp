@@ -272,7 +272,7 @@ open class Ki(private val charInstance: BaseCharacter){
      *
      * @param technique technique to add to the character
      */
-    private fun addTechnique(technique: TechniqueBase){
+    open fun addTechnique(technique: TechniqueBase){
         //add technique to the held list
         heldTechniques += technique
 
@@ -291,7 +291,7 @@ open class Ki(private val charInstance: BaseCharacter){
      * @param level technique level to retrieve the number of
      * @return the number of techniques the character has with the indicated level
      */
-    fun getLevelCount(
+    open fun getLevelCount(
         level: Int
     ): Int{
         //initialize the counter
@@ -311,7 +311,7 @@ open class Ki(private val charInstance: BaseCharacter){
      *
      * @param technique the technique to remove from the character
      */
-    fun removeTechnique(technique: TechniqueBase){
+    open fun removeTechnique(technique: TechniqueBase){
         //remove technique from the held list
         heldTechniques.remove(element = technique)
 
@@ -323,7 +323,7 @@ open class Ki(private val charInstance: BaseCharacter){
     /**
      * Checks if second and third level techniques are still valid for the character to take.
      */
-    private fun removeExtra(){
+    open fun removeExtra(){
         //remove second level techniques if not enough first level techniques
         if(getLevelCount(1) < 2) {
             val removeList = mutableListOf<TechniqueBase>()

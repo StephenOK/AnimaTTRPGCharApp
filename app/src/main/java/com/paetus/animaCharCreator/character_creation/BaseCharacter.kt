@@ -436,10 +436,13 @@ open class BaseCharacter{
             input = secondaryFile,
             filename = charFile.name
         )
-        ki.applyCustomTechs(
-            customTechDir = techFile,
-            filename = charFile.name
-        )
+
+        //only apply customs if not already held in the host's object database
+        if(!host)
+            ki.applyCustomTechs(
+                customTechDir = techFile,
+                filename = charFile.name
+            )
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)

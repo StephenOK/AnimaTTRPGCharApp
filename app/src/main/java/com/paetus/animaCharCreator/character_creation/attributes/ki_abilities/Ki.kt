@@ -34,6 +34,7 @@ open class Ki(private val charInstance: BaseCharacter){
     fun getKiRecord(): KiRecord {return charInstance.objectDB.kiRecord}
     fun getTechData(): TechniqueTableDataRecord {return charInstance.objectDB.techniqueDatabase}
     fun getPrebuiltTechs(): TechniquePrebuilts {return charInstance.objectDB.prebuiltTechs}
+    fun getCustomTechs(): MutableList<CustomTechnique> {return charInstance.objectDB.customTechs}
 
     //initialize martial knowledge values
     val martialKnowledgeMax = mutableIntStateOf(value = 10)
@@ -72,9 +73,6 @@ open class Ki(private val charInstance: BaseCharacter){
 
     //initialize list of the character's techniques
     val heldTechniques = mutableListOf<TechniqueBase>()
-
-    //initialize character's custom techniques
-    val availableCustomTechs = mutableListOf<CustomTechnique>()
 
     /**
      * Gets the class's ki accumulation DP cost.
@@ -277,8 +275,8 @@ open class Ki(private val charInstance: BaseCharacter){
         heldTechniques += technique
 
         //add custom technique to the tracking list
-        if(technique is CustomTechnique && !availableCustomTechs.contains(technique)){
-            availableCustomTechs += technique
+        if(technique is CustomTechnique && !getCustomTechs().contains(technique)){
+            getCustomTechs().add(technique)
         }
 
         //update the spent martial knowledge
@@ -444,7 +442,7 @@ open class Ki(private val charInstance: BaseCharacter){
                     val hasFile = fileReader.readLine().toBoolean()
 
                     //apply held state to the indicated custom technique, if available
-                    availableCustomTechs.forEach{tech ->
+                    getCustomTechs().forEach{tech ->
                         if(tech.name.value == techName && hasFile)
                             heldTechniques += tech
                     }
@@ -462,7 +460,7 @@ open class Ki(private val charInstance: BaseCharacter){
                         val matchName = fileReader.readLine()
 
                         //find the custom tech and apply to the character
-                        availableCustomTechs.forEach{tech ->
+                        getCustomTechs().forEach{tech ->
                             if(tech.name.value == matchName) heldTechniques.add(element = tech)
                         }
                     }
@@ -962,7 +960,7 @@ open class Ki(private val charInstance: BaseCharacter){
             //if character can access the technique
             if(public || filename == fileOrigin){
                 //add to the character's available list
-                availableCustomTechs +=
+                getCustomTechs() +=
                     CustomTechnique(
                         name = name,
                         isPublic = public,
@@ -984,7 +982,7 @@ open class Ki(private val charInstance: BaseCharacter){
     fun saveOutCustoms(
         directory: File
     ){
-        availableCustomTechs.forEach{customTech ->
+        getCustomTechs().forEach{customTech ->
             //open the file and byte writer
             val fileWriter = File(directory, customTech.name.value).outputStream()
             val byteArray = ByteArrayOutputStream()

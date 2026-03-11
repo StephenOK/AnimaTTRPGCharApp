@@ -437,7 +437,7 @@ class KiFragmentViewModel(
         ki.getPrebuiltTechs().allTechniques.forEach{tech ->
             allTechniques.value += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
         }
-        ki.availableCustomTechs.forEach{tech ->
+        ki.getCustomTechs().forEach{tech ->
             allTechniques.value += Pair(tech, mutableStateOf(value = ki.heldTechniques.contains(element = tech)))
         }
         setRemainingMK()

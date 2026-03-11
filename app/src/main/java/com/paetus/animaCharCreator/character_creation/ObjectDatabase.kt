@@ -7,6 +7,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.advantages.adva
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassRecord
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiRecord
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.TechniquePrebuilts
+import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.effect.TechniqueTableDataRecord
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicLibrary
 import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArts
@@ -29,6 +30,7 @@ class ObjectDatabase {
     val kiRecord = KiRecord()
     val techniqueDatabase = TechniqueTableDataRecord()
     val prebuiltTechs = TechniquePrebuilts(techniqueDataRecord = techniqueDatabase)
+    val customTechs = mutableListOf<CustomTechnique>()
 
     val magicLibrary = MagicLibrary()
     val psyLibrary = PsyLibrary()

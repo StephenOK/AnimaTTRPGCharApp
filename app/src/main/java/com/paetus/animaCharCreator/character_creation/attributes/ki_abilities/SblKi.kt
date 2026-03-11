@@ -212,14 +212,14 @@ class SblKi(
         }
 
         //add custom technique to the tracking list
-        if(technique is CustomTechnique && !availableCustomTechs.contains(technique)){
-            availableCustomTechs += technique
+        if(technique is CustomTechnique && !getCustomTechs().contains(technique)){
+            getCustomTechs() += technique
 
             //add technique tracker to each level record
             charInstance.levelLoop(
                 endLevel = 20
             ){character ->
-                character.ki.availableCustomTechs += technique
+                character.ki.getCustomTechs() += technique
             }
         }
 

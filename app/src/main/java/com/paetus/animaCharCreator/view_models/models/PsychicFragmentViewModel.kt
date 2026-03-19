@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic

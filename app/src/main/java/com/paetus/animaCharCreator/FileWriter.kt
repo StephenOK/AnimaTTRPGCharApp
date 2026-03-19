@@ -8,13 +8,15 @@ import java.nio.charset.StandardCharsets
  *
  * @param writer output stream to write to
  * @param input item to write to the output stream
+ * @param permitNegative flag for if the inputted item is allowed to be a negative integer
  */
 fun writeDataTo(
     writer: ByteArrayOutputStream,
-    input: Any?
+    input: Any?,
+    permitNegative: Boolean = false
 ){
     //catch negative inputs and record them as 0s instead
-    if(input is Int && input < 0){
+    if(input is Int && input < 0 && !permitNegative){
         writer.write(
             """0""".toByteArray(StandardCharsets.UTF_8),
             0,

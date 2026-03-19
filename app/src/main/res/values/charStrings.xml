@@ -130,6 +130,7 @@
     <string name = "lifeMultReduction">-life multiples taken are reduced in this level</string>
     <string name = "combatPointMisuse">-points in combat abilities have not been appropriately spent</string>
     <string name = "combatInputPointReduction">-a combat item\'s value (%s) is smaller than in a previous level</string>
+    <string name = "freelancerSelectionNeeded">-as a Freelancer, you must select all secondary characteristic bonuses</string>
     <string name = "secondaryInputPointReduction">-a secondary item\'s value (%s) is smaller than in a previous level</string>
     <string name = "secondaryInputTooFewPoints">-a secondary item\'s input (%s) is too small to be a valid input</string>
     <string name = "natBonusNotDistributed">-all secondary natural bonuses have not been distributed</string>

@@ -1339,8 +1339,8 @@ class ClassRecord{
         onTake = {character ->
             character.classes.freelancerSelection.forEach{secondarySelected ->
                 //update characteristic's class value if a selection was made
-                if(secondarySelected != 0)
-                    character.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(classBonus = 10)
+                if(secondarySelected != -1)
+                    character.secondaryList.getAllSecondaries()[secondarySelected].setClassPointsPerLevel(classBonus = 10)
             }
 
             //apply max zeon gained per level
@@ -1349,8 +1349,8 @@ class ClassRecord{
     ) {character ->
         //update characteristic's class value if a selection was made
         character.classes.freelancerSelection.forEach {secondarySelected ->
-            if (secondarySelected != 0)
-                character.secondaryList.getAllSecondaries()[secondarySelected - 1].setClassPointsPerLevel(
+            if (secondarySelected != -1)
+                character.secondaryList.getAllSecondaries()[secondarySelected].setClassPointsPerLevel(
                     classBonus = 0
                 )
         }

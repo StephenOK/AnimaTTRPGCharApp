@@ -18,7 +18,7 @@ open class ClassInstances(
     fun getClassRecord(): ClassRecord{return charInstance.objectDB.classRecord}
 
     //initialize freelancer bonus selections
-    val freelancerSelection = mutableListOf(0, 0, 0, 0, 0)
+    val freelancerSelection = mutableListOf(-1, -1, -1, -1, -1)
 
     //initialize pointer to class item
     val ownClass = mutableIntStateOf(value = 0)
@@ -97,16 +97,16 @@ open class ClassInstances(
         secondarySelection: Int
     ): Int{
         //record current selected value
-        val prevIndex = freelancerSelection[selectionIndex] - 1
+        val prevIndex = freelancerSelection[selectionIndex]
 
         //if user is clearing selection
-        if(secondarySelection == 0) {
+        if(secondarySelection == -1) {
             //remove previous bonus if one taken
             if(prevIndex >= 0)
                 charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
 
             //set new input
-            freelancerSelection[selectionIndex] = 0
+            freelancerSelection[selectionIndex] = -1
         }
 
         //user is making a selection
@@ -118,15 +118,22 @@ open class ClassInstances(
                     return freelancerSelection[selectionIndex]
             }
 
-            //remove previous bonus if one taken
-            if(prevIndex >= 0)
-                charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
-
             //set new input
             freelancerSelection[selectionIndex] = secondarySelection
 
-            //add new bonus
-            charInstance.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(classBonus = 10)
+            //apply bonus change only if character is a freelancer
+            if(ownClass.intValue == 0) {
+                //remove previous bonus if one taken
+                if (prevIndex >= 0)
+                    charInstance.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(
+                        0
+                    )
+
+                //add new bonus
+                charInstance.secondaryList.getAllSecondaries()[secondarySelection].setClassPointsPerLevel(
+                    classBonus = 10
+                )
+            }
         }
 
         //return changed value
@@ -215,8 +222,14 @@ open class ClassInstances(
             else 5
 
         //get each freelancer selected characteristic
-        for(index in 0 until loopNum)
-            setSelection(selectionIndex = index, secondarySelection = fileReader.readLine().toInt())
+        for(index in 0 until loopNum) {
+            setSelection(
+                selectionIndex = index,
+                secondarySelection =
+                    if(writeVersion <= 48) fileReader.readLine().toInt() - 1
+                    else fileReader.readLine().toInt()
+            )
+        }
     }
 
     /**
@@ -228,7 +241,7 @@ open class ClassInstances(
         writeDataTo(writer = byteArray, input = magPaladin.value)
 
         freelancerSelection.forEach{
-            writeDataTo(writer = byteArray, input = it)
+            writeDataTo(writer = byteArray, input = it, permitNegative = true)
         }
     }
 }

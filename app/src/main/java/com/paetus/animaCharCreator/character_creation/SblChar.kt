@@ -13,7 +13,6 @@ import com.paetus.animaCharCreator.character_creation.attributes.combat.SblComba
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKi
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.SblKiStat
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.abilities.KiAbility
-import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.techniques.base.CustomTechnique
 import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
@@ -333,6 +332,13 @@ class SblChar(): BaseCharacter() {
             classIndex = 0
         )
 
+        //apply empty freelancer selection list
+        for(index in 0..4)
+            classes.setSelection(
+                selectionIndex = index,
+                secondarySelection = -1
+            )
+
         weaponProficiencies.setPrimaryWeapon(charRefs[0]!!.weaponProficiencies.primaryWeapon.intValue)
 
         magic.setProjImbalance(imbalance = charRefs[0]!!.magic.magProjImbalance.intValue)
@@ -363,8 +369,19 @@ class SblChar(): BaseCharacter() {
         //reapply previously held class
         charRefs[lvl.intValue]!!.classes.setOwnClass(prevClass)
 
+        //reapply freelancer's selected bonuses
+        if(charRefs[lvl.intValue]!!.classes.ownClass.intValue == 0)
+            classes.freelancerSelection.forEach{selection ->
+                if(selection != -1) {
+                    charRefs[lvl.intValue]!!.secondaryList.getAllSecondaries()[selection].setClassPointsPerLevel(
+                        classBonus = 10
+                    )
+                    secondaryList.getAllSecondaries()[selection].classTotalRefresh()
+                }
+            }
+
         //check for changed class and remove, if necessary
-        if(charRefs[lvl.intValue +1]!!.classes.ownClass.intValue != prevClass)
+        if(charRefs[lvl.intValue + 1]!!.classes.ownClass.intValue != prevClass)
             classes.changeClasses(
                 startLevel = lvl.intValue + 1,
                 classIndex = prevClass
@@ -375,6 +392,14 @@ class SblChar(): BaseCharacter() {
      * Resets the current level record to an empty state.
      */
     fun resetLevel(){
+        //check for reset of freelancer bonus selection
+        if(firstFreelancer() == lvl.intValue)
+            for(index in 0..4)
+                classes.setSelection(
+                    selectionIndex = index,
+                    secondarySelection = -1
+                )
+
         //replace current record with an empty record
         charRefs[lvl.intValue] =
             BaseCharacter(
@@ -432,6 +457,24 @@ class SblChar(): BaseCharacter() {
 
         //validate techniques in future levels
         ki.removeExtra()
+    }
+
+    /**
+     * Determines the first level the character has the freelancer class at.
+     *
+     * @return the level the character first has the freelancer class at.
+     */
+    fun firstFreelancer(): Int{
+        //initialize output at unfound indicator
+        var output = -1
+
+        //search each level for the freelancer class
+        levelLoop(endLevel = 20){character ->
+            if(output == -1 && character.classes.ownClass.intValue == 0)
+                output = charRefs.indexOf(character)
+        }
+
+        return output
     }
 
     /**
@@ -517,6 +560,10 @@ class SblChar(): BaseCharacter() {
                     )
                 }
         }
+
+        //determine that all freelancer selections have been made at the first instance of the freelancer class
+        if(lvl.intValue == firstFreelancer() && classes.freelancerSelection.contains(-1))
+            output.add{stringResource(id = R.string.freelancerSelectionNeeded)}
 
         //determine that no points have been removed from secondary items
         secondaryList.getAllSecondaries().forEach{
@@ -750,6 +797,12 @@ class SblChar(): BaseCharacter() {
 
         //set the character to the indicated level
         setLvl(levNum = startLevel)
+
+        //apply freelancer bonuses to the character
+        if(firstFreelancer() >= 0)
+            for(index in 0..4){
+                classes.freelancerSelection[index] = charRefs[firstFreelancer()]!!.classes.freelancerSelection[index]
+            }
     }
 
     fun charStartup(){
@@ -765,11 +818,13 @@ class SblChar(): BaseCharacter() {
         classes.setOwnClass(charRefs[0]!!.classes.ownClass.intValue)
 
         //set freelancer selection options
-        for(index in 0..4){
-            classes.setSelection(
-                selectionIndex = index,
-                secondarySelection = charRefs[0]!!.classes.freelancerSelection[index]
-            )
+        if(firstFreelancer() >= 0) {
+            for (index in 0..4) {
+                classes.setSelection(
+                    selectionIndex = index,
+                    secondarySelection = charRefs[firstFreelancer()]!!.classes.freelancerSelection[index]
+                )
+            }
         }
 
         //set primary items

@@ -1,7 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.CoinType
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory

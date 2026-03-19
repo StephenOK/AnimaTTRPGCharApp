@@ -57,6 +57,12 @@ class SblClassInstances(
         //initialize class changed again flag
         var changed = false
 
+        //get freelancer selections if changing to freelancer and another record has freelancer
+        val freelancerRecord =
+            if(charInstance.getCharAtLevel().classes.ownClass.intValue != 0 && classIndex == 0 && charInstance.firstFreelancer() >= 0)
+                charInstance.charRefs[charInstance.firstFreelancer()]!!.classes.freelancerSelection
+            else null
+
         //change all recorded level classes up to any change
         charInstance.levelLoop(
             startLevel = startLevel,
@@ -68,6 +74,13 @@ class SblClassInstances(
             //notify of another class change
             else changed = true
         }
+
+        //apply freelancer bonuses to this character
+        if(freelancerRecord != null)
+            for(index in 0..4){
+                setSelection(selectionIndex = index, secondarySelection = freelancerRecord[index])
+                charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[freelancerRecord[index] - 1].setClassPointsPerLevel(classBonus = 10)
+            }
     }
 
     /**
@@ -106,31 +119,29 @@ class SblClassInstances(
         secondarySelection: Int
     ): Int {
         //record current selected value
-        val prevIndex = freelancerSelection[selectionIndex] - 1
+        val prevIndex = freelancerSelection[selectionIndex]
 
         //if user is clearing selection
-        if(secondarySelection == 0){
+        if(secondarySelection == -1){
             //remove previous bonus if one taken
             if(prevIndex >= 0)
                 charInstance.levelLoop(startLevel = 0, endLevel = 20){
                     if(it.classes.ownClass.intValue == 0) {
                         it.secondaryList.getAllSecondaries()[prevIndex].setClassPointsPerLevel(0)
-                        it.classes.freelancerSelection[selectionIndex] = 0
+                        it.classes.freelancerSelection[selectionIndex] = -1
                     }
                 }
 
             //set new input
-            freelancerSelection[selectionIndex] = 0
+            freelancerSelection[selectionIndex] = -1
         }
 
         //user is making a selection
         else{
             //determine that this input is not taken in another record index
-            freelancerSelection.forEach{secondary->
-                //return current value if match found
-                if(secondary == secondarySelection)
-                    return freelancerSelection[selectionIndex]
-            }
+            if(freelancerSelection.contains(secondarySelection) &&
+                freelancerSelection.indexOf(secondarySelection) != selectionIndex)
+                return freelancerSelection[selectionIndex]
 
             //remove previous bonus if one taken
             if(prevIndex >= 0)
@@ -146,7 +157,7 @@ class SblClassInstances(
             charInstance.levelLoop(startLevel= 0, endLevel = 20){
                 if(it.classes.ownClass.intValue == 0) {
                     it.classes.freelancerSelection[selectionIndex] = secondarySelection
-                    it.secondaryList.getAllSecondaries()[secondarySelection - 1].setClassPointsPerLevel(
+                    it.secondaryList.getAllSecondaries()[secondarySelection].setClassPointsPerLevel(
                         classBonus = 10
                     )
                 }

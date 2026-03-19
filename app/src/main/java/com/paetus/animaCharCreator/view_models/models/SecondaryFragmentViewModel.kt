@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.view_models.models
 
+import android.content.Context
 import androidx.compose.ui.geometry.Size
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -206,6 +207,7 @@ class SecondaryFragmentViewModel(
                 )
             }
 
+            /*TODO: Require update to only the removed bonus item and the added bonus item.*/
             //update the class bonus displays of all characteristic data
             allCharacteristics.forEach{secondary ->
                 secondary.setClassPoints()
@@ -216,14 +218,25 @@ class SecondaryFragmentViewModel(
          * Toggles the open state of the characteristic dropdown.
          */
         fun openToggle(){
-            //toggle the open state
-            _isOpen.update{!isOpen.value}
+            //run if character isn't SBL or is the first level with freelancer
+            if(classes.charInstance !is SblChar ||
+                (classes.charInstance as SblChar).firstFreelancer() == classes.charInstance.lvl.intValue){
+                //toggle the open state
+                _isOpen.update { !isOpen.value }
 
-            //update the icon to match the new open state
-            _icon.update{
-                if(isOpen.value) R.drawable.outline_arrow_drop_up_24
-                else R.drawable.outline_arrow_drop_down_24
+                //update the icon to match the new open state
+                _icon.update {
+                    if (isOpen.value) R.drawable.outline_arrow_drop_up_24
+                    else R.drawable.outline_arrow_drop_down_24
+                }
             }
+        }
+
+        /**
+         * Updates the item with any changes to this fragment.
+         */
+        fun refresh(){
+            _selectedIndex.update{classes.freelancerSelection[selection]}
         }
     }
 
@@ -396,25 +409,16 @@ class SecondaryFragmentViewModel(
         /**
          * Retrieves the name of the characteristic if it is prebuilt.
          *
-         * @return characteristic's name reference
+         * @param context app context to retrieve resources from
+         * @return characteristic's name
          */
-        fun getName(): Int{
-            return secondaryList.fullList().indexOf(element = secondaryItem)
+        fun getName(context: Context): String{
+            return when(secondaryItem) {
+                is CustomCharacteristic -> secondaryItem.name.value
+                is SblCustomCharacteristic -> secondaryItem.name.value
+                else -> context.resources.getStringArray(R.array.secondaryCharacteristics)[secondaryList.fullList().indexOf(element = secondaryItem)]
+            }
         }
-
-        /**
-         * Retrieves the name of the characteristic if it is custom.
-         *
-         * @return characteristic's name
-         */
-        fun getCustomName(): String{return (secondaryItem as CustomCharacteristic).name.value}
-
-        /**
-         * Retrieves the name of the characteristic if it is custom and in an Sbl character.
-         *
-         * @return characteristic's name
-         */
-        fun getSblCustomName(): String{return (secondaryItem as SblCustomCharacteristic).name.value}
 
         /**
          * Retrieves the modifier value of the characteristic.
@@ -456,6 +460,9 @@ class SecondaryFragmentViewModel(
     override fun refreshPage(){
         //check if freelancer options are available to the character
         _freelancerOptionsOpen.update{isFreelancer()}
+
+        //update the displayed freelancer selections
+        allFreelancerSelections.forEach{it.refresh()}
 
         allCharacteristics.forEach{
             //update the point input data for each secondary

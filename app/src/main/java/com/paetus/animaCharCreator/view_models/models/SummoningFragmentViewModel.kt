@@ -1,6 +1,5 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.SummonAbility
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning

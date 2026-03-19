@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -124,12 +124,16 @@ private fun FreelancerDropdown(
         OutlinedTextField(
             //display currently selected characteristic
             value =
-                if(selection.selectedIndex.collectAsState().value == 0)
-                    stringResource(id = R.string.selectCharPrompt)
-                else if (selection.selectedIndex.collectAsState().value < 39)
-                    stringArrayResource(R.array.secondaryCharacteristics)[selection.selectedIndex.collectAsState().value - 1]
-                else
-                    (secondaryFragVM.getAllSecondaries()[selection.selectedIndex.collectAsState().value - 1] as CustomCharacteristic).name.value,
+                when(selection.selectedIndex.collectAsState().value){
+                    -1 -> stringResource(id = R.string.selectCharPrompt)
+                    in 0..37 -> stringArrayResource(id = R.array.secondaryCharacteristics)[selection.selectedIndex.collectAsState().value]
+                    else -> {
+                        val secondaryItem = secondaryFragVM.getAllSecondaries()[selection.selectedIndex.collectAsState().value]
+
+                        if(secondaryItem is CustomCharacteristic) secondaryItem.name.value
+                        else (secondaryItem as SblCustomCharacteristic).name.value
+                    }
+                },
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,7 +160,7 @@ private fun FreelancerDropdown(
             DropdownMenuItem(
                 text = {Text(text = stringResource(id = R.string.selectCharPrompt))},
                 onClick = {
-                    selection.setSelection(newSecondary = 0)
+                    selection.setSelection(newSecondary = -1)
                     selection.openToggle()
                 }
             )
@@ -164,16 +168,10 @@ private fun FreelancerDropdown(
             //display all secondary characteristic options
             secondaryFragVM.allFields.forEach{discipline ->
                 discipline.fieldCharacteristics.value.forEach {characteristic ->
-                    val displayName =
-                        if(characteristic.secondaryItem is CustomCharacteristic)
-                            characteristic.getCustomName()
-                        else
-                            stringArrayResource(id = R.array.secondaryCharacteristics)[characteristic.getName()]
-
                     DropdownMenuItem(
-                        text = {Text(text = displayName)},
+                        text = {Text(text = characteristic.getName(context = LocalContext.current))},
                         onClick = {
-                            selection.setSelection(newSecondary = secondaryFragVM.getAllSecondaries().indexOf(characteristic.secondaryItem) + 1)
+                            selection.setSelection(newSecondary = secondaryFragVM.getAllSecondaries().indexOf(characteristic.secondaryItem))
                             selection.openToggle()
                         }
                     )
@@ -287,12 +285,7 @@ private fun MakeRow(
     homePageVM: HomePageViewModel
 ){
     //get this characteristic's displayed name
-    val itemName =
-        when (secondaryChar.secondaryItem) {
-            is CustomCharacteristic -> secondaryChar.getCustomName()
-            is SblCustomCharacteristic -> secondaryChar.getSblCustomName()
-            else -> stringArrayResource(id = R.array.secondaryCharacteristics)[secondaryChar.getName()]
-        }
+    val itemName = secondaryChar.getName(context = LocalContext.current)
 
     Row{Spacer(modifier = Modifier.height(5.dp))}
 

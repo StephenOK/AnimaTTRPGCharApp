@@ -425,6 +425,15 @@ class CharacterFragmentViewModel(
 
     fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
 
+    /**
+     * Determines if the character is allowed to change their paladin's magical ability selection.
+     *
+     * @return true if character is not an SBL character or if it's the first paladin level
+     */
+    fun getPaladinChangeable(): Boolean{
+        return charInstance !is SblChar || charInstance.lvl.intValue == charInstance.firstPaladin()
+    }
+
     //set race dropdown data
     val raceDropdown = DropdownRowData(
         data = DropdownData(

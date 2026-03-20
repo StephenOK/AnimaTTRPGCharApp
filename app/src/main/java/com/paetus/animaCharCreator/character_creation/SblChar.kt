@@ -380,6 +380,21 @@ class SblChar(): BaseCharacter() {
                 }
             }
 
+        //if the character is a paladin and chose not to take magical abilities
+        if(firstPaladin() >= 0 && !charRefs[firstPaladin()]!!.classes.magPaladin.value) {
+            //toggle the character record's decision and apply the appropriate bonuses
+            if(charRefs[lvl.intValue]!!.classes.ownClass.intValue == 3 || charRefs[lvl.intValue]!!.classes.ownClass.intValue == 4) {
+                charRefs[lvl.intValue]!!.classes.toggleMagPaladin()
+
+                secondaryList.getAllSecondaries().forEach{it.classTotalRefresh()}
+                magic.updateZeonFromClass()
+                summoning.allSummoning().forEach{it.updateLevelTotal()}
+            }
+
+            //only toggle the record if this level is not a paladin level
+            else charRefs[lvl.intValue]!!.classes.magPaladin.value = false
+        }
+
         //check for changed class and remove, if necessary
         if(charRefs[lvl.intValue + 1]!!.classes.ownClass.intValue != prevClass)
             classes.changeClasses(
@@ -471,6 +486,24 @@ class SblChar(): BaseCharacter() {
         //search each level for the freelancer class
         levelLoop(endLevel = 20){character ->
             if(output == -1 && character.classes.ownClass.intValue == 0)
+                output = charRefs.indexOf(character)
+        }
+
+        return output
+    }
+
+    /**
+     * Determines the first level the character has a paladin class at.
+     *
+     * @return the level the character first has a paladin class at.
+     */
+    fun firstPaladin(): Int{
+        //initialize output at unfound indicator
+        var output = -1
+
+        //search each level for a paladin class
+        levelLoop(endLevel = 20){character ->
+            if(output == -1 && character.classes.ownClass.intValue in 3..4)
                 output = charRefs.indexOf(character)
         }
 

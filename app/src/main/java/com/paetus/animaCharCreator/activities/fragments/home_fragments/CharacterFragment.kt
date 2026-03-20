@@ -189,7 +189,8 @@ fun CharacterPageFragment(
                                 checked = charFragVM.magPaladin.collectAsState().value,
                                 onCheckedChange = {charFragVM.toggleMagPaladin()},
                                 modifier = Modifier
-                                    .weight(0.1f)
+                                    .weight(0.1f),
+                                enabled = charFragVM.getPaladinChangeable()
                             )
 
                             //prompt for paladin's magic abilities

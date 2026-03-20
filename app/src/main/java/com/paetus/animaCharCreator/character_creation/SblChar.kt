@@ -571,8 +571,8 @@ class SblChar(): BaseCharacter() {
                 output.add {
                     stringResource(
                         R.string.secondaryInputPointReduction,
-                        if (it.secondaryIndex < 38)
-                            stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                        if (it.getIndex() < 38)
+                            stringArrayResource(id = R.array.secondaryCharacteristics)[it.getIndex()]
                         else
                             (it as SblCustomCharacteristic).name.value
                     )
@@ -584,7 +584,7 @@ class SblChar(): BaseCharacter() {
                 output.add{
                     stringResource(
                         R.string.secondaryInputTooFewPoints,
-                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.secondaryIndex]
+                        stringArrayResource(id = R.array.secondaryCharacteristics)[it.getIndex()]
                     )
                 }
         }
@@ -782,7 +782,6 @@ class SblChar(): BaseCharacter() {
             secondaryList.addSblCustom(
                 newSecondary = SblCustomCharacteristic(
                     parent = secondaryList,
-                    secondaryIndex = reference[0]!!.secondaryList.getAllSecondaries().indexOf(custom),
                     name = custom.name.value,
                     filename = custom.filename.value,
                     isPublic = custom.isPublic.value,

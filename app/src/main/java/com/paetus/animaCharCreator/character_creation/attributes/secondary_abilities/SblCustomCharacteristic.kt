@@ -10,14 +10,11 @@ import java.io.ByteArrayOutputStream
  * Extends the SblSecondaryCharacteristic class.
  *
  * @param parent secondary list that will hold this object
- * @param secondaryIndex index to find the level record version of this characteristic
  */
 class SblCustomCharacteristic(
-    val parent: SblSecondaryList,
-    secondaryIndex: Int
+    val parent: SblSecondaryList
 ): SblSecondaryCharacteristic(
-    parent = parent,
-    secondaryIndex = secondaryIndex
+    parent = parent
 ){
     //initialize inputted name
     val name = mutableStateOf(value = "")
@@ -83,7 +80,6 @@ class SblCustomCharacteristic(
      * Constructs a custom characteristic with the given data.
      *
      * @param parent secondary list that holds this object
-     * @param secondaryIndex index to find the level record version of this characteristic
      * @param filename name of the creating character's file
      * @param isPublic public state of the characteristic
      * @param field which field this item belongs to
@@ -91,13 +87,12 @@ class SblCustomCharacteristic(
      */
     constructor(
         parent: SblSecondaryList,
-        secondaryIndex: Int,
         name: String,
         filename: String,
         isPublic: Boolean,
         field: Int,
         primary: Int
-    ): this(parent = parent, secondaryIndex = secondaryIndex){
+    ): this(parent = parent){
         setName(name = name)
         setFileName(filename = filename)
         setPublic(isPublic = isPublic)

@@ -6,12 +6,19 @@ import com.paetus.animaCharCreator.character_creation.SblChar
  * Subclass of SecondaryCharacteristic for use in a SBL character.
  *
  * @param parent full list that holds this object
- * @param secondaryIndex where to find this item's equivalent in the BaseCharacter records
  */
 open class SblSecondaryCharacteristic(
-    private val parent: SblSecondaryList,
-    val secondaryIndex: Int
+    private val parent: SblSecondaryList
 ): SecondaryCharacteristic(parent){
+    /**
+     * Retrieves the index pointer for this item in the secondary list.
+     *
+     * @return item's index in the secondary list
+     */
+    fun getIndex(): Int{
+        return parent.getAllSecondaries().indexOf(this)
+    }
+
     /**
      * Setter for points applied by user.
      *
@@ -21,8 +28,8 @@ open class SblSecondaryCharacteristic(
         val charInstance = parent.sblChar
 
         //set current level value
-        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue = pointInput - getPreviousPoints()
-        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].updateDevSpent()
+        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue = pointInput - getPreviousPoints()
+        charInstance.getCharAtLevel().secondaryList.getAllSecondaries()[getIndex()].updateDevSpent()
 
         //if character is not level 0
         if(charInstance.lvl.intValue != 0) {
@@ -30,7 +37,7 @@ open class SblSecondaryCharacteristic(
             val previousLevel = charInstance.charRefs[charInstance.lvl.intValue - 1]
 
             //set natural bonus if points applied aren't zero and previous level has a natural bonus
-            if (pointInput - getPreviousPoints() == 0 && previousLevel!!.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value)
+            if (pointInput - getPreviousPoints() == 0 && previousLevel!!.secondaryList.getAllSecondaries()[getIndex()].bonusApplied.value)
                 setNatBonus(true)
         }
 
@@ -42,7 +49,7 @@ open class SblSecondaryCharacteristic(
                 endLevel = 20
             ){
                 //remove any applied natural bonus
-                val secondary = it.secondaryList.getAllSecondaries()[secondaryIndex]
+                val secondary = it.secondaryList.getAllSecondaries()[getIndex()]
                 if(secondary.bonusApplied.value && getPreviousPoints(level = parent.sblChar.charRefs.indexOf(it)) == 0)
                     secondary.setNatBonus(false)
             }
@@ -56,7 +63,7 @@ open class SblSecondaryCharacteristic(
      * @param classBonus value to set the class points to
      */
     override fun setClassPointsPerLevel(classBonus: Int) {
-        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setClassPointsPerLevel(classBonus)
+        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[getIndex()].setClassPointsPerLevel(classBonus)
         classTotalRefresh()
     }
 
@@ -71,13 +78,13 @@ open class SblSecondaryCharacteristic(
                 var output = 0
 
                 (parent.charInstance as SblChar).levelLoop(startLevel = 1){character ->
-                    output += character.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue
+                    output += character.secondaryList.getAllSecondaries()[getIndex()].classPointsPerLevel.intValue
                 }
 
                 output
             }
             //get half of the first level's class bonus
-            else (parent.charInstance as SblChar).charRefs[0]!!.secondaryList.getAllSecondaries()[secondaryIndex].classPointsPerLevel.intValue/2
+            else (parent.charInstance as SblChar).charRefs[0]!!.secondaryList.getAllSecondaries()[getIndex()].classPointsPerLevel.intValue/2
 
         //update secondary total
         refreshTotal()
@@ -90,7 +97,7 @@ open class SblSecondaryCharacteristic(
      */
     override fun setNatBonus(natBonus: Boolean) {
         //apply natural bonus to record
-        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[secondaryIndex].setNatBonus(natBonus = natBonus)
+        parent.sblChar.getCharAtLevel().secondaryList.getAllSecondaries()[getIndex()].setNatBonus(natBonus = natBonus)
 
         super.setNatBonus(natBonus = natBonus)
     }
@@ -106,7 +113,7 @@ open class SblSecondaryCharacteristic(
 
         //search previous levels for bonus acquisition
         parent.sblChar.levelLoop{character ->
-            if(character.secondaryList.getAllSecondaries()[secondaryIndex].bonusApplied.value) {
+            if(character.secondaryList.getAllSecondaries()[getIndex()].bonusApplied.value) {
                 output = true
                 return@levelLoop
             }
@@ -124,7 +131,7 @@ open class SblSecondaryCharacteristic(
 
         //add special level bonus from each record
         parent.sblChar.levelLoop{character ->
-            total.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].specialPerLevel.intValue * character.lvl.intValue
+            total.intValue += character.secondaryList.getAllSecondaries()[getIndex()].specialPerLevel.intValue * character.lvl.intValue
         }
 
         //add natural bonus points
@@ -146,7 +153,7 @@ open class SblSecondaryCharacteristic(
 
         //add points from levels up to this one
         parent.sblChar.levelLoop{character ->
-            pointsApplied.intValue += character.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
+            pointsApplied.intValue += character.secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue
         }
 
         refreshTotal()
@@ -166,7 +173,7 @@ open class SblSecondaryCharacteristic(
 
         //count points applied per level
         parent.sblChar.levelLoop(endLevel = level){
-            output += it.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue
+            output += it.secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue
         }
 
         //give result
@@ -182,7 +189,7 @@ open class SblSecondaryCharacteristic(
 
         //determine whether the level has any points removed in that level
         parent.sblChar.levelLoop{
-            if(it.secondaryList.getAllSecondaries()[secondaryIndex].pointsApplied.intValue < 0)
+            if(it.secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue < 0)
                 output = false
         }
 

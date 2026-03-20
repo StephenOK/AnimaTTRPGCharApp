@@ -436,14 +436,14 @@ class SecondaryFragmentViewModel(
             //get default cost for buying points in this item
             val devPerPoint =
                 if(secondaryList is SblSecondaryList)
-                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].devPerPoint.intValue
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).getIndex()].devPerPoint.intValue
                 else
                     secondaryItem.devPerPoint.intValue
 
             //get reduction level for this character's level
             val pointReduction =
                 if(secondaryList is SblSecondaryList)
-                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).secondaryIndex].developmentDeduction.intValue
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).getIndex()].developmentDeduction.intValue
                 else
                     secondaryItem.developmentDeduction.intValue
 

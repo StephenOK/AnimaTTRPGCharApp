@@ -46,7 +46,7 @@ open class MagicBook(
      *
      * @return true if points not removed
      */
-    open fun validBookGrowth(): Boolean{return true}
+    open fun validBookGrowthAtLevel(level: Int): Boolean{return true}
 
     /**
      * Sets the total magic levels invested in this book.

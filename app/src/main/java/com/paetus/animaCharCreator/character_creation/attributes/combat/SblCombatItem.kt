@@ -135,9 +135,32 @@ class SblCombatItem(
     }
 
     /**
-     * Checks if the item does not remove points over the levels.
+     * Determines the DP spent on this item at the indicated level.
+     *
+     * @param level character level to get this total at
+     * @return DP total spent
      */
-    fun validGrowth(): Boolean{
-        return charInstance.getCharAtLevel().combat.allAbilities()[combatIndex].inputVal.intValue >= 0
+    fun pointsSpentAtLevel(level: Int): Int{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            //retrieve the character's points invested in the related item
+            character.combat.allAbilities()[combatIndex].inputVal.intValue *
+                    //multiply by the appropriate class item
+                    when(combatIndex){
+                        0 -> character.classes.getClass().atkGrowth
+                        1 -> character.classes.getClass().blockGrowth
+                        2 -> character.classes.getClass().dodgeGrowth
+                        else -> character.classes.getClass().armorGrowth
+                    }
+        }
+    }
+
+    /**
+     * Validates the item's growth up to the indicated level.
+     *
+     * @param level character level to check
+     * @return true if held value is positive or zero
+     */
+    fun validGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.combat.allAbilities()[combatIndex].inputVal.intValue >= 0
     }
 }

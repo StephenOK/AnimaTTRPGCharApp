@@ -793,7 +793,7 @@ class HomeActivity : AppCompatActivity() {
             text = {
                 Column {
                     //get level errors
-                    val display = (homeFragVM.charInstance as SblChar).levelChangeLegal()
+                    val display = (homeFragVM.charInstance as SblChar).levelChangeLegal(atLevel = homeFragVM.charInstance.lvl.intValue)
 
                     //notify user of no errors found
                     if(display.isEmpty()){

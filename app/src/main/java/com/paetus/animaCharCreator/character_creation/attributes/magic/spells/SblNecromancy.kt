@@ -390,12 +390,13 @@ class SblNecromancy(
     }
 
     /**
-     * Gets whether the points spent in this book are valid for an SBL character.
+     * Gets whether the points spent in this book at this level are valid for an SBL character.
      *
+     * @param level character level to check this at
      * @return true if points not removed
      */
-    override fun validBookGrowth(): Boolean {
-        return charInstance.getCharAtLevel().magic.retrieveBooks()[10].pointsIn.intValue >= 0
+    override fun validBookGrowthAtLevel(level: Int): Boolean {
+        return charInstance.charRefs[level]!!.magic.retrieveBooks()[10].pointsIn.intValue >= 0
     }
 
     /**

@@ -78,8 +78,7 @@ fun CharacterPageFragment(
                         if(dropdown.data.nameRef == R.string.levelText)
                             {levelString: String ->
                                 charFragVM.getValidLevel(
-                                    levelString = levelString,
-                                    firstLoop = true
+                                    levelString = levelString
                                 )
                             }
                         else {_: String -> true}

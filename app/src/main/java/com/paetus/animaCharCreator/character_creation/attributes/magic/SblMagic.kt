@@ -5,6 +5,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Fr
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.NecromancyBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SblMagBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SblNecromancy
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
 
 /**
  * Component that holds a SBL Character's magical abilities.
@@ -283,41 +284,123 @@ class SblMagic(val sblChar: SblChar): Magic(sblChar) {
     }
 
     /**
-     * Determines if the spent points in zeon points are valid.
+     * Determines if the spent points in zeon points are valid at the indicated level.
      *
+     * @param level character level to check at
      * @return true if no loss in points
      */
-    fun validPointGrowth(): Boolean{return sblChar.getCharAtLevel().magic.boughtZeon.intValue >= 0}
+    fun validPointGrowthAtLevel(level: Int): Boolean{
+        return sblChar.charRefs[level]!!.magic.boughtZeon.intValue >= 0
+    }
 
     /**
-     * Determines if the spent points in zeon accumulation are valid.
+     * Determines if the spent points in zeon accumulation are valid at the indicated level.
      *
+     * @param level character level to check at
      * @return true if no loss in points
      */
-    fun validAccGrowth(): Boolean{return sblChar.getCharAtLevel().magic.zeonAccMult.intValue >= 1}
+    fun validAccGrowthAtLevel(level: Int): Boolean{
+        return sblChar.charRefs[level]!!.magic.zeonAccMult.intValue >= 1
+    }
 
     /**
-     * Determine if the spent points in magic projection are valid.
+     * Determine if the spent points in magic projection are valid at the indicated level.
      *
+     * @param level character level to check at
      * @return true if no loss in points
      */
-    fun validProjGrowth(): Boolean{return sblChar.getCharAtLevel().magic.boughtMagProjection.intValue >= 0}
+    fun validProjGrowthAtLevel(level: Int): Boolean{
+        return sblChar.charRefs[level]!!.magic.boughtMagProjection.intValue >= 0
+    }
 
     /**
-     * Determine the valid state of free spells taken.
+     * Gets the total magic levels spent at the indicated level.
      *
+     * @param level character level to get the total at
+     * @return number of levels spent
+     */
+    fun magicLevelsSpentAtLevel(level: Int): Int{
+        return sblChar.getRecordSum(endLevel = level){character ->
+            //initialize level sum
+            var output = 0
+
+            //add each book's invested points to this level's result
+            character.magic.retrieveBooks().forEach{book ->
+                output += book.getMagLevels()
+            }
+
+            //return the amount for this record
+            output
+        }
+    }
+
+    /**
+     * Get the magic levels available to the character at the indicated level.
+     *
+     * @param level character level to check at
+     * @return number of magic levels available
+     */
+    fun magicLevelMaxAtLevel(level: Int): Int{
+        return when(val primeStat = sblChar.primaryList.int.getCharacteristicAtLevel(level = level)){
+            in 1..6 -> 0
+            in 6..10 -> (primeStat - 5) * 10
+            11 -> 75
+            12 -> 100
+            13 -> 150
+            else -> (primeStat - 12) * 100
+        }
+    }
+
+    /**
+     * Determine that too many magic levels have not been spent at the indicated level.
+     *
+     * @param level character level to check magic levels at
+     * @return true if magic levels spent are less than or equal to the available amount
+     */
+    fun legalMagLevelsSpentAtLevel(level: Int): Boolean{
+        return magicLevelsSpentAtLevel(level = level) <= magicLevelMaxAtLevel(level = level)
+    }
+
+    /**
+     * Get the spells the character has taken at the indicated level.
+     *
+     * @param level character level to get the list for
+     * @return spells available
+     */
+    fun getSpellsAtLevel(level: Int): List<Spell>{
+        return sblChar.getRecordList(endLevel = level){character ->
+            character.magic.getAllSpells()
+        } as List<Spell>
+    }
+
+    /**
+     * Determine the valid state of free spells taken at the indicated level.
+     *
+     * @param level character level to check spells at
      * @return true if legal state for free spells
      */
-    fun validFreeSpells(): Boolean{
+    fun validFreeSpellsAtLevel(level: Int): Boolean{
         //return true if free spells cannot be taken
         if(magicTies.value) return true
 
         //return false if any empty free spell slots
-        getAllSpells().forEach{spell ->
+        getSpellsAtLevel(level = level).forEach{spell ->
             if(spell is FreeSpell && spell.saveName == "PlaceHolder") return false
         }
 
         //notify of valid state
         return true
+    }
+
+    /**
+     * Determines that an appropriate number of DP have been invested into magic projection.
+     *
+     * @param level character level to validate this value at
+     * @return true if points are less than or equal to the alloted amount
+     */
+    fun getValidProjectionAtLevel(level: Int): Boolean{
+        return sblChar.getRecordSum(endLevel = level){character ->
+            character.magic.boughtMagProjection.intValue * character.classes.getClass().maProjGrowth
+        } <= sblChar.getMagicMaxAtLevel(level = level)/2
     }
 }

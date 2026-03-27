@@ -81,20 +81,22 @@ class SblKiStat(
     }
 
     /**
-     * Determine the validity of the point acquisition for this item.
+     * Determine the validity of the point acquisition for this item at the indicated level.
      *
+     * @param level character level to check
      * @return true if no error found
      */
-    fun validPointGrowth(): Boolean{
-        return kiParent.charInstance.getCharAtLevel().ki.allKiStats()[kiIndex].boughtKiPoints.intValue >= 0
+    fun validPointGrowthAtLevel(level: Int): Boolean{
+        return kiParent.charInstance.charRefs[level]!!.ki.allKiStats()[kiIndex].boughtKiPoints.intValue >= 0
     }
 
     /**
-     * Determine the validity of the accumulation acquisition for this item.
+     * Determine the validity of the accumulation acquisition for this item at the indicated level.
      *
+     * @param level character level to check
      * @return true if no error found
      */
-    fun validAccGrowth(): Boolean{
-        return kiParent.charInstance.getCharAtLevel().ki.allKiStats()[kiIndex].boughtAccumulation.intValue >= 0
+    fun validAccGrowthAtLevel(level: Int): Boolean{
+        return kiParent.charInstance.charRefs[level]!!.ki.allKiStats()[kiIndex].boughtAccumulation.intValue >= 0
     }
 }

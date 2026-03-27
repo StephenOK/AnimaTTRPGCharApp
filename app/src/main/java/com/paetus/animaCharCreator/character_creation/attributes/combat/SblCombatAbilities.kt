@@ -141,7 +141,51 @@ class SblCombatAbilities(
      *
      * @return true if valid expenditure made
      */
-    fun validLifeGrowth(): Boolean{
-        return charInstance.getCharAtLevel().combat.lifeMultsTaken.intValue >= 0
+    fun validLifeGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.combat.lifeMultsTaken.intValue >= 0
+    }
+
+    /**
+     * Determines the DP spent on life mults at the indicated level.
+     *
+     * @param level character level to determine points for
+     * @return DP spent on life mults at the given level
+     */
+    fun getLifeMultsCostAtLevel(level: Int): Int{
+        //get the sum of DP spent at each individual level
+        return charInstance.getRecordSum(endLevel = level){character ->
+            character.combat.lifeMultsTaken.intValue * character.classes.getClass().lifePointMultiple
+        }
+    }
+
+    /**
+     * Validates the combat item point distribution at the indicated level.
+     *
+     * @param level character level to check combat validity at
+     * @return true if points are distributed appropriately
+     */
+    fun validAttackDodgeBlockAtLevel(level: Int): Boolean{
+        //get attack, block, and dodge points spent at this level
+        val attackDpAtLevel = attack.pointsSpentAtLevel(level = level)
+        val blockDpAtLevel = block.pointsSpentAtLevel(level = level)
+        val dodgeDpAtLevel = dodge.pointsSpentAtLevel(level = level)
+
+        //get attack, block, and dodge totals at this level
+        val attackAtLevel = attack.getLevelTotal(level = level)
+        val blockAtLevel = block.getLevelTotal(level = level)
+        val dodgeAtLevel = dodge.getLevelTotal(level = level)
+
+        //get the available DP at this level
+        val dpAtLevel = charInstance.getMaxDPAtLevel(level = level)
+
+        //point distribution is valid if one stat is invested in and uses up to a quarter of available points
+        return ((blockDpAtLevel == 0 && dodgeDpAtLevel == 0 && attackDpAtLevel <= dpAtLevel/4) ||
+                (attackDpAtLevel == 0 && dodgeDpAtLevel == 0 && blockDpAtLevel <= dpAtLevel/4) ||
+                (attackDpAtLevel == 0 && blockDpAtLevel == 0 && dodgeDpAtLevel <= dpAtLevel/4)) ||
+
+                //or totals to less than half available DP with a difference between and attack and defense of 50 or less
+                ((attackDpAtLevel + blockDpAtLevel + dodgeDpAtLevel <= dpAtLevel/2) &&
+                        (attackAtLevel - blockAtLevel <= 50 || attackAtLevel - dodgeAtLevel <= 50) &&
+                        (blockAtLevel - attackAtLevel <= 50 && dodgeAtLevel - attackAtLevel <= 50))
     }
 }

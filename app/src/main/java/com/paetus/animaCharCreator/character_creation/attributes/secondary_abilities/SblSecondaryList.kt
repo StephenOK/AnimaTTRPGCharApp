@@ -411,6 +411,45 @@ class SblSecondaryList(
     }
 
     /**
+     * Determines if a natural bonus has been taken at the indicated level.
+     *
+     * @param level character level to check
+     * @return true if a bonus has been taken at this level
+     */
+    fun natBonusAtLevel(level: Int): Boolean{
+        //return true if character is level 0
+        if(level == 0) return true
+
+        //check each secondary for a taken bonus
+        sblChar.charRefs[level]!!.secondaryList.getAllSecondaries().forEach{secondary ->
+            //return true if one found
+            if(secondary.bonusApplied.value) return true
+        }
+
+        //return false if none found
+        return false
+    }
+
+    /**
+     * Get all secondary points spent at the indicated level.
+     *
+     * @param level character level to check
+     * @return total points spent in secondary characteristics
+     */
+    fun getSecondaryPointsSpentAtLevel(level: Int): Int{
+        //initialize final result
+        var output = 0
+
+        //add each secondary's point investment
+        getAllSecondaries().forEach{secondary ->
+            output += (secondary as SblSecondaryCharacteristic).getPointsInAtLevel(level = level)
+        }
+
+        //return final outcome
+        return output
+    }
+
+    /**
      * Updates the relevant values of secondary characteristics when the character changes level.
      */
     fun levelUpdate() {

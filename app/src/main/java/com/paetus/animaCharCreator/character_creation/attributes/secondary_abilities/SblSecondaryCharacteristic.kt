@@ -181,19 +181,24 @@ open class SblSecondaryCharacteristic(
     }
 
     /**
-     * Determines if the character's growth in this characteristic has valid growth through levels.
+     * Determines if the character's growth in this characteristic has valid growth at this level.
+     *
+     * @param level character level to check at
+     * @return true if value is zero or positive
      */
-    fun validGrowth(): Boolean{
-        //initialize output
-        var output = true
+    fun validGrowthAtLevel(level: Int): Boolean{
+        return parent.sblChar.charRefs[level]!!.secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue >= 0
+    }
 
-        //determine whether the level has any points removed in that level
-        parent.sblChar.levelLoop{
-            if(it.secondaryList.getAllSecondaries()[getIndex()].pointsApplied.intValue < 0)
-                output = false
+    /**
+     * Determines the DP spent in this characteristic at the inndicated level.
+     *
+     * @param level character level to check this stat at
+     * @return points invested in this item
+     */
+    fun getPointsInAtLevel(level: Int): Int{
+        return parent.sblChar.getRecordSum(endLevel = level){character ->
+            character.secondaryList.getAllSecondaries()[getIndex()].pointsIn.intValue
         }
-
-        //return valid status
-        return output
     }
 }

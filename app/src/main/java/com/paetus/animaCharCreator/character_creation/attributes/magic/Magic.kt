@@ -317,7 +317,7 @@ open class Magic(val charInstance: BaseCharacter){
             11 -> 75
             12 -> 100
             13 -> 150
-            else -> (charInstance.primaryList.int.total.intValue - 12)* 100
+            else -> (charInstance.primaryList.int.total.intValue - 12) * 100
         }
     }
 
@@ -332,30 +332,6 @@ open class Magic(val charInstance: BaseCharacter){
         retrieveBooks().forEach{book ->
             magicLevelSpent.intValue += book.getMagLevels()
         }
-    }
-
-    /**
-     * Check that magic levels spent have not exceeded the maximum cap.
-     *
-     * @return true if levels spent less than or equal to maximum levels
-     */
-    fun legalMagLevels(): Boolean{return magicLevelSpent.intValue <= magicLevelMax.intValue}
-
-    /**
-     * Determines if the character possesses the given spell or a free spell of equivalent element
-     * and level.
-     *
-     * @param check spell to identify in the spell list
-     * @return true if inputted spell has been found
-     */
-    fun hasCopyOf(check: Spell): Boolean{
-        //search each held spell for a match
-        getAllSpells().forEach{heldSpell ->
-            if(heldSpell.name == check.name) return true
-        }
-
-        //notify of no match found
-        return false
     }
 
     /**

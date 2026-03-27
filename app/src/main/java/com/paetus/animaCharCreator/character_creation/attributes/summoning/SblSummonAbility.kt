@@ -76,10 +76,13 @@ class SblSummonAbility(
     }
 
     /**
-     * Determine if the points bought are not negative in this level.
+     * Determine if the points bought are not negative in the indicated level.
+     *
+     * @param level character level to check
+     * @return true if value is zero or positive
      */
-    fun legalGrowth(): Boolean{
-        return charInstance.getCharAtLevel().summoning.allSummoning()[summoningIndex].buyVal.intValue >= 0
+    fun legalGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.summoning.allSummoning()[summoningIndex].buyVal.intValue >= 0
     }
 
     /**

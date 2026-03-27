@@ -3,7 +3,6 @@ package com.paetus.animaCharCreator.view_models.models
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -108,17 +107,6 @@ class CharacterFragmentViewModel(
     //initialize open state of class detail alert
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
-
-    //initialize level checking character object
-    val validator =
-        mutableStateOf(
-            if(charInstance is SblChar)
-                SblChar(
-                    startLevel = 0,
-                    reference = charInstance.charRefs
-                )
-            else null
-        )
 
     /**
      * Sets the character's name to the user's input.
@@ -365,37 +353,18 @@ class CharacterFragmentViewModel(
      * Determines if level is legal to display to the user
      *
      * @param levelString level to look for in the character
-     * @param firstLoop flag for whether the validator needs to be updated
      * @return true if not a SBL character or SBL character has access to the queried level
      */
     fun getValidLevel(
-        levelString: String,
-        firstLoop: Boolean
+        levelString: String
     ): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
         return if(levelString.toInt() != 0 && charInstance is SblChar) {
             if(charInstance.charRefs[levelString.toInt()] == null)
                 false
-            else{
-                //update validator if inputted flag notifies for such
-                if(firstLoop) {
-                    //update validator
-                    validator.value = SblChar(
-                        startLevel = 0,
-                        reference = charInstance.charRefs
-                    )
-                }
-
-                //set the validator to the indicated level
-                validator.value!!.setLvl(levelString.toInt() - 1)
-
-                //return legal validator and validation for the previous level
-                validator.value!!.levelChangeLegal().isEmpty() &&
-                        getValidLevel(
-                            levelString = (levelString.toInt() - 1).toString(),
-                            firstLoop = false
-                        )
-            }
+            //check that the indicated SBL level is legal
+            else
+                charInstance.levelChangeLegal(atLevel = levelString.toInt() - 1).isEmpty()
         }
         //true if looking for level 0 or character is not SBL
         else true

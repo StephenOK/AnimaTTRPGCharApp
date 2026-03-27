@@ -223,8 +223,9 @@ class SblChar(): BaseCharacter() {
             //add points missed in calculating points spent in martial arts
             if(firstArt && checkChar.weaponProficiencies.takenMartialList.isNotEmpty()) {
                 ptInCombat.intValue +=
-                    if (checkChar.classes.ownClass.intValue == 7) 40
-                    else 25
+                    if (checkChar.classes.ownClass.intValue == 7) 10
+                    else if(weaponProficiencies.primaryWeapon.intValue == 0) 25
+                    else 0
             }
 
             //notify of martial art list no longer being empty
@@ -305,6 +306,61 @@ class SblChar(): BaseCharacter() {
                     runFunc(charRefs[index]!!)
             }
         }
+    }
+
+    /**
+     * Get the sum of the indicated item from the character record.
+     *
+     * @param startLevel record index to start the sum at
+     * @param endLevel record index to finish the sum at
+     * @param sumFunc method to run on the character record to get the added number
+     * @return total sum gained from each record
+     */
+    fun getRecordSum(
+        startLevel: Int = 0,
+        endLevel: Int = lvl.intValue,
+        sumFunc: (BaseCharacter) -> Int
+    ): Int{
+        //initialize the result
+        var output = 0
+
+        //add each record's data as indicated
+        levelLoop(
+            startLevel = startLevel,
+            endLevel = endLevel
+        ){character ->
+            output += sumFunc(character)
+        }
+
+        //give final outcome
+        return output
+    }
+
+    /**
+     * Get a list of items as indicated from each character level record.
+     *
+     * @param startLevel record index to start the collection at
+     * @param endLevel record index to finish the collection at
+     * @param listFunc method to run on the character record to get the listed items
+     * @return final list of each record's items
+     */
+    fun getRecordList(
+        startLevel: Int = 0,
+        endLevel: Int = lvl.intValue,
+        listFunc: (BaseCharacter) -> List<Any>
+    ): List<Any>{
+        //initialize the final list
+        val output = mutableListOf<Any>()
+
+        levelLoop(
+            startLevel = startLevel,
+            endLevel = endLevel
+        ){character ->
+            output.addAll(listFunc(character))
+        }
+
+        //give final outcome
+        return output.toList()
     }
 
     /**
@@ -511,19 +567,192 @@ class SblChar(): BaseCharacter() {
     }
 
     /**
+     * Determine the development points spent at the indicated level.
+     *
+     * @param level character level to get the data for
+     * @return points spent at this level
+     */
+    fun getDPSpentAtLevel(level: Int): Int{
+        //give the total as the sum of this level's combat abilities,
+        return getCombatSpentAtLevel(level = level) +
+                //magic abilities,
+                getMagicSpentAtLevel(level = level) +
+                //psychic abilities,
+                getPsychicSpentAtLevel(level = level) +
+                //life mults,
+                combat.getLifeMultsCostAtLevel(level = level) +
+                //and secondary items
+                secondaryList.getSecondaryPointsSpentAtLevel(level = level)
+    }
+
+    /**
+     * Gets the number of points spent in combat items at this level.
+     *
+     * @param level character level to check the points spent at
+     * @return total points spent in combat abilities at the indicated level
+     */
+    fun getCombatSpentAtLevel(level: Int): Int{
+        //initialize first martial art taken flag
+        var firstArt = false
+
+        //start output at sum of each record's combat, module, and ki items
+        var output = getRecordSum(endLevel = level){character ->
+            character.combat.calculateSpent() +
+                    character.weaponProficiencies.calculateSpent() +
+                    character.ki.calculateSpent()
+        }
+
+        //catch missed points from martial arts taken
+        levelLoop(endLevel = level){character ->
+            //if record has martial arts taken and isn't the first record with arts
+            output += if (firstArt && character.weaponProficiencies.takenMartialList.isNotEmpty()) {
+                //add 10 points if character is a Tao
+                if (character.classes.ownClass.intValue == 7) 10
+                //add 25 points if primary weapon is unarmed
+                else if (weaponProficiencies.primaryWeapon.intValue == 0) 25
+                //add no points if neither apply
+                else 0
+            } else 0
+
+            //indicate first record with martial arts taken
+            if(character.weaponProficiencies.takenMartialList.isNotEmpty())
+                firstArt = true
+        }
+
+        //give final result
+        return output
+    }
+
+    /**
+     * Gets number of points spent in magic items at this level.
+     *
+     * @param level character level to check the points spent at
+     * @return total points spent in magic abilities at the indicated level
+     */
+    fun getMagicSpentAtLevel(level: Int): Int{
+        //give the total as a sum of the character's
+        return getRecordSum(endLevel = level){character ->
+            //magic abilities,
+            character.magic.calculateSpent() +
+                    //summoning abilities,
+                    character.summoning.calculateSpent() +
+                    //and any magic related style modules
+                    character.weaponProficiencies.calcPointsInMag()
+        }
+    }
+
+    /**
+     * Gets the number of points spent in psychic items at this level.
+     *
+     * @param level character level to check the points spent at
+     * @return total points spent in psychic abilities at the indicated level
+     */
+    fun getPsychicSpentAtLevel(level: Int): Int{
+        //give the total as a sum of the character's
+        return getRecordSum(endLevel = level){character ->
+            //psychic abilities
+            character.psychic.calculateSpent() +
+                    //and any psychic related style modules
+                    character.weaponProficiencies.calcPointsInPsy()
+        }
+    }
+
+    /**
+     * Get available DP at the indicated level.
+     *
+     * @param level character level to get the total for
+     * @return DP the character may spend at this level
+     */
+    fun getMaxDPAtLevel(level: Int): Int{
+        //give 400 points to level 0 character
+        return if(level == 0) 400
+        //calculate the appropriate value based on the level
+        else 500 + level * 100
+    }
+
+    /**
+     * Determines the category maximum at the indicated level.
+     *
+     * @param level character level to get the data for
+     * @param multFunc method to run to get the DP data
+     * @return DP available to the category at this level
+     */
+    fun levelMaxCalc(
+        level: Int,
+        multFunc: (BaseCharacter) -> Double
+    ): Int{
+        //get percentage of 400 for level 0 characters
+        return if(level == 0)
+            (400 * multFunc(charRefs[0]!!)).toInt()
+        else
+            //start calculation with percentage of 600 DP
+            (600 * multFunc(charRefs[1]!!)).toInt() +
+                    //get sum of each record after the first level
+                    getRecordSum(
+                        startLevel = 2,
+                        endLevel = level
+                    ){character ->
+                        (100 * multFunc(character)).toInt()
+                    }
+    }
+
+    /**
+     * Gets the DP available for combat abilities at the indicated level.
+     *
+     * @param level character level to get the amount for
+     * @return combat DP the character may spend
+     */
+    fun getCombatMaxAtLevel(level: Int): Int{
+        //determine points based on each level's class combat maximums
+        return levelMaxCalc(level = level){character ->
+            character.classes.getClass().combatMax
+        }
+    }
+
+    /**
+     * Gets the DP available for magic abilities at the indicated level.
+     *
+     * @param level character level to get the amount for
+     * @return magic DP the character may spend
+     */
+    fun getMagicMaxAtLevel(level: Int): Int{
+        //determine points based on each level's class magic maximums
+        return levelMaxCalc(level = level){character ->
+            character.classes.getClass().magMax
+        }
+    }
+
+    /**
+     * Gets the DP available for psychic abilities at the indicated level.
+     *
+     * @param level character level to get the amount for
+     * @return psychic DP the character may spend
+     */
+    fun getPsyMaxAtLevel(level: Int): Int{
+        //determine points based on each level's class psychic maximums
+        return levelMaxCalc(level = level){character ->
+            character.classes.getClass().psyMax
+        }
+    }
+
+    /**
      * Determine that the character is allowed to change its level.
      *
      * @return list of error strings that would prevent a change in level
      */
-    fun levelChangeLegal(): List<@Composable () -> String>{
+    fun levelChangeLegal(atLevel: Int): List<@Composable () -> String>{
         //initialize final result
         val output = mutableListOf<@Composable () -> String>()
 
+        //get DP total spent and total available at this level
+        val dpSpent = getDPSpentAtLevel(level = atLevel)
+        val levelMax = getMaxDPAtLevel(level = atLevel)
+
         //determine if DP spent appropriately
-        if(spentTotal.intValue != devPT.intValue)
+        if(dpSpent != levelMax)
             output.add{
                 //add either indicator of overspent DP
-                if (spentTotal.intValue > devPT.intValue) {
+                if (dpSpent > levelMax) {
                     stringResource(R.string.overDpFailure)
                 }
                 //or indicator of underspent DP
@@ -533,7 +762,7 @@ class SblChar(): BaseCharacter() {
             }
 
         //determine if combat max maintained
-        if(ptInCombat.intValue > maxCombatDP.intValue)
+        if(getCombatSpentAtLevel(level = atLevel) > getCombatMaxAtLevel(level = atLevel))
             output.add{
                 stringResource(
                     R.string.sectionCapBreach,
@@ -542,7 +771,7 @@ class SblChar(): BaseCharacter() {
             }
 
         //determine if magic max maintained
-        if(ptInMag.intValue > maxMagDP.intValue)
+        if(getMagicSpentAtLevel(level = atLevel) > getMagicMaxAtLevel(level = atLevel))
             output.add{
                 stringResource(
                     R.string.sectionCapBreach,
@@ -551,7 +780,7 @@ class SblChar(): BaseCharacter() {
             }
 
         //determine if psychic max maintained
-        if(ptInPsy.intValue > maxPsyDP.intValue)
+        if(getPsychicSpentAtLevel(level = atLevel) > getPsyMaxAtLevel(level = atLevel))
             output.add{
                 stringResource(
                     R.string.sectionCapBreach,
@@ -561,7 +790,7 @@ class SblChar(): BaseCharacter() {
 
         //check each primary characteristic
         primaryList.allPrimaries().forEach{
-            if(!(it as SblPrimaryChar).validGrowth())
+            if(!(it as SblPrimaryChar).validGrowthAtLevel(level = atLevel))
                 //if growth is not logical, notify of error in this stat
                 output.add {
                     stringResource(
@@ -572,20 +801,20 @@ class SblChar(): BaseCharacter() {
         }
 
         //notify of too many primary bonus points added
-        if(primaryList.getPrimaryBonusTotal() > lvl.intValue/2)
+        if(primaryList.getPrimaryBonusesAtLevel(level = atLevel) > atLevel/2)
             output.add{stringResource(R.string.invalidPrimaryBonus)}
 
         //notify of illegal life multiple growth
-        if(!combat.validLifeGrowth())
+        if(!combat.validLifeGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.lifeMultReduction)}
 
         //notify of bad combat ability point distribution
-        if(!combat.validAttackDodgeBlock())
+        if(!combat.validAttackDodgeBlockAtLevel(level = atLevel))
             output.add{stringResource(id = R.string.combatPointMisuse)}
 
         //determine if points removed from combat items
         combat.allAbilities().forEach{
-            if(!(it as SblCombatItem).validGrowth())
+            if(!(it as SblCombatItem).validGrowthAtLevel(level = atLevel))
                 output.add{
                     stringResource(
                         R.string.combatInputPointReduction,
@@ -595,13 +824,13 @@ class SblChar(): BaseCharacter() {
         }
 
         //determine that all freelancer selections have been made at the first instance of the freelancer class
-        if(lvl.intValue == firstFreelancer() && classes.freelancerSelection.contains(-1))
+        if(atLevel == firstFreelancer() && charRefs[atLevel]!!.classes.freelancerSelection.contains(-1))
             output.add{stringResource(id = R.string.freelancerSelectionNeeded)}
 
         //determine that no points have been removed from secondary items
         secondaryList.getAllSecondaries().forEach{
-            if(!(it as SblSecondaryCharacteristic).validGrowth()) {
-                output.add {
+            if(!(it as SblSecondaryCharacteristic).validGrowthAtLevel(level = atLevel)) {
+                output.add{
                     stringResource(
                         R.string.secondaryInputPointReduction,
                         if (it.getIndex() < 38)
@@ -623,7 +852,7 @@ class SblChar(): BaseCharacter() {
         }
 
         //determine that all natural bonuses have been distributed
-        if(secondaryList.countNatBonuses() < lvl.intValue)
+        if(!secondaryList.natBonusAtLevel(level = atLevel))
             output.add{
                 stringResource(R.string.natBonusNotDistributed)
             }
@@ -631,7 +860,7 @@ class SblChar(): BaseCharacter() {
         //look through each ki stat
         ki.allKiStats().forEach{kiStat ->
             //check for valid point growth
-            if(!(kiStat as SblKiStat).validPointGrowth())
+            if(!(kiStat as SblKiStat).validPointGrowthAtLevel(level = atLevel))
                 output.add{
                     stringResource(
                         R.string.kiPointReduction,
@@ -647,7 +876,7 @@ class SblChar(): BaseCharacter() {
                 }
 
             //check for valid accumulation growth
-            if(!kiStat.validAccGrowth())
+            if(!kiStat.validAccGrowthAtLevel(level = atLevel))
                 output.add{
                     stringResource(
                         R.string.kiAccReduction,
@@ -664,20 +893,24 @@ class SblChar(): BaseCharacter() {
         }
 
         //catch invalid zeon point growth
-        if(!magic.validPointGrowth())
+        if(!magic.validPointGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.zeonPointReduction)}
 
         //catch invalid zeon accumulation growth
-        if(!magic.validAccGrowth())
+        if(!magic.validAccGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.zeonAccReduction)}
 
         //catch invalid magic projection growth
-        if(!magic.validProjGrowth())
-            output.add{stringResource(R.string.zeonProjReduction)}
+        if(!magic.validProjGrowthAtLevel(level = atLevel))
+            output.add{stringResource(R.string.magicProjReduction)}
+
+        //catch invalid magic projection value
+        if(!magic.getValidProjectionAtLevel(level = atLevel))
+            output.add{stringResource(R.string.magicProjMisuse)}
 
         //catch invalid book level growth
         magic.retrieveBooks().forEach{
-            if(!it.validBookGrowth())
+            if(!it.validBookGrowthAtLevel(level = atLevel))
                 output.add{
                     stringResource(
                         R.string.bookLevelReduction,
@@ -687,35 +920,39 @@ class SblChar(): BaseCharacter() {
         }
 
         //catch book levels spent maximum exceeded
-        if(!magic.legalMagLevels())
+        if(!magic.legalMagLevelsSpentAtLevel(level = atLevel))
             output.add{stringResource(R.string.bookLevelsExceeded)}
 
         //catch empty free spell slots
-        if(!magic.validFreeSpells())
+        if(!magic.validFreeSpellsAtLevel(level = atLevel))
             output.add{stringResource(R.string.emptyFreeSpell)}
 
         //catch invalid psychic potential growth
-        if(!psychic.validPsyPotentialGrowth())
+        if(!psychic.validPsyPotentialGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.psychicPotentialReduction)}
 
         //catch invalid psychic point growth
-        if(!psychic.validPsyPointGrowth())
+        if(!psychic.validPsyPointGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.psychicPointReduction)}
 
         //catch invalid psychic projection growth
-        if(!psychic.validPsyProjGrowth())
+        if(!psychic.validPsyProjGrowthAtLevel(level = atLevel))
             output.add{stringResource(R.string.psychicProjectionReduction)}
 
+        //catch invalid psychic projection value
+        if(!psychic.getValidProjectionAtLevel(level = atLevel))
+            output.add{stringResource(R.string.psychicProjectionMisuse)}
+
         //catch invalid psychic innate slot growth
-        if(!psychic.validInnateSlots())
+        if(!psychic.validInnateSlotsAtLevel(level = atLevel))
             output.add{stringResource(R.string.psyInnateSlotReduction)}
 
         //catch invalid psychic points spent
-        if(psychic.getFreePsyPoints() < 0)
+        if(psychic.getFreePsyPointsAtLevel(level = atLevel) < 0)
             output.add{stringResource(R.string.overPsyPointFailure)}
 
         //catch all invalid psychic power enhancement growth
-        psychic.findIllegalEnhancement().forEach{power ->
+        psychic.findIllegalEnhancementAtLevel(level = atLevel).forEach{ power ->
             output.add{
                 stringResource(
                     R.string.psyPowerEnhancementReduction,
@@ -726,7 +963,7 @@ class SblChar(): BaseCharacter() {
 
         //catch all invalid summoning ability growth
         summoning.allSummoning().forEach{ability ->
-            if(!(ability as SblSummonAbility).legalGrowth()){
+            if(!(ability as SblSummonAbility).legalGrowthAtLevel(level = atLevel)){
                 output.add{
                     stringResource(
                         R.string.summoningAbilityReduction,
@@ -902,7 +1139,7 @@ class SblChar(): BaseCharacter() {
             setLvl(index)
 
             //return index if all points in this level are not spent
-            if(!levelChangeLegal().isEmpty()) return index
+            if(!levelChangeLegal(atLevel = index).isEmpty()) return index
         }
 
         //return final level option

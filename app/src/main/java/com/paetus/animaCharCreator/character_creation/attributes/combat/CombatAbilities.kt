@@ -149,13 +149,18 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
      * @return valid status of the combat inputs
      */
     fun validAttackDodgeBlock(): Boolean{
+        //get points spent in each relevant combat ability
+        val atkPoints = attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth
+        val blockPoints = block.inputVal.intValue * charInstance.classes.getClass().blockGrowth
+        val dodgePoints = dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth
+
         //if only one stat developed, cannot exceed 25% of overall devPT
-        return ((block.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth <= charInstance.devPT.intValue/4) ||
-                (attack.inputVal.intValue == 0 && dodge.inputVal.intValue == 0 && block.inputVal.intValue * charInstance.classes.getClass().blockGrowth <= charInstance.devPT.intValue/4) ||
-                (attack.inputVal.intValue == 0 && block.inputVal.intValue == 0 && dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth <= charInstance.devPT.intValue/4)) ||
+        return ((blockPoints == 0 && dodgePoints == 0 && atkPoints <= charInstance.devPT.intValue/4) ||
+                (atkPoints == 0 && dodgePoints == 0 && blockPoints <= charInstance.devPT.intValue/4) ||
+                (atkPoints == 0 && blockPoints == 0 && dodgePoints <= charInstance.devPT.intValue/4)) ||
 
                 //attack, dodge, and block cannot equate to over 50% of overall devPT
-                (((attack.inputVal.intValue * charInstance.classes.getClass().atkGrowth) + (block.inputVal.intValue * charInstance.classes.getClass().blockGrowth) + (dodge.inputVal.intValue * charInstance.classes.getClass().dodgeGrowth) <= charInstance.devPT.intValue/2) &&
+                ((atkPoints + blockPoints + dodgePoints <= charInstance.devPT.intValue/2) &&
 
                         //attack can not be more than 50 of either one of block or dodge
                         (attack.total.intValue - block.total.intValue <= 50 || attack.total.intValue - dodge.total.intValue <= 50) &&

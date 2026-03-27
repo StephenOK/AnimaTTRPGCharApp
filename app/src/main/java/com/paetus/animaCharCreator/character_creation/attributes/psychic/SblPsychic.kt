@@ -197,39 +197,43 @@ class SblPsychic(
     }
 
     /**
-     * Determines that psychic potential is not reduced in this level.
+     * Determines that psychic potential is not reduced in the indicated level.
      *
+     * @param level character level to check
      * @return true if no reduction
      */
-    fun validPsyPotentialGrowth(): Boolean{
-        return charInstance.getCharAtLevel().psychic.pointsInPotential.intValue >= 0
+    fun validPsyPotentialGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.psychic.pointsInPotential.intValue >= 0
     }
 
     /**
-     * Determines that psychic points are not reduced in this level.
+     * Determines that psychic points are not reduced in the indicated level.
      *
+     * @param level character level to check
      * @return true if no reduction
      */
-    fun validPsyPointGrowth(): Boolean{
-        return charInstance.getCharAtLevel().psychic.boughtPsyPoints.intValue >= 0
+    fun validPsyPointGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.psychic.boughtPsyPoints.intValue >= 0
     }
 
     /**
-     * Determines that psychic projection is not reduced in this level.
+     * Determines that psychic projection is not reduced in the indicated level.
      *
+     * @param level character level to check
      * @return true if no reduction
      */
-    fun validPsyProjGrowth(): Boolean{
-        return charInstance.getCharAtLevel().psychic.psyProjectionBought.intValue >= 0
+    fun validPsyProjGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.psychic.psyProjectionBought.intValue >= 0
     }
 
     /**
-     * Determines that innate slots are not reduced in this level.
+     * Determines that innate slots are not reduced in the indicated level.
      *
+     * @param level character level to check
      * @return true if no reduction
      */
-    fun validInnateSlots(): Boolean{
-        return charInstance.getCharAtLevel().psychic.innateSlotCount.intValue >= 0
+    fun validInnateSlotsAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.psychic.innateSlotCount.intValue >= 0
     }
 
     /**
@@ -476,22 +480,163 @@ class SblPsychic(
     /**
      * Finds any reductions in power enhancement and returns a list of offending items.
      *
+     * @param level character level to check
      * @return list of psychic powers that hold point reductions
      */
-    fun findIllegalEnhancement(): List<PsychicPower>{
+    fun findIllegalEnhancementAtLevel(level: Int): List<PsychicPower>{
         //initialize output list
         val output = mutableListOf<PsychicPower>()
 
         //check each acquired power
-        masteredPowers.keys.forEach{power ->
+        charInstance.charRefs[level]!!.psychic.masteredPowers.forEach{(power, enhancement) ->
             //if level record holds a negative value, add power to the output
-            if(charInstance.getCharAtLevel().psychic.masteredPowers.containsKey(power) &&
-                charInstance.getCharAtLevel().psychic.masteredPowers[power]!! < 0)
+            if(enhancement < 0)
                 output.add(power)
         }
 
         //return list of offending powers
         return output
+    }
+
+    /**
+     * Determines the psychic points available at the indicated level.
+     *
+     * @param level character level to check
+     * @return psychic points available
+     */
+    fun getTotalPPAtLevel(level: Int): Int{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            character.psychic.boughtPsyPoints.intValue
+        } + innatePsyAtLevel(level = level)
+    }
+
+    /**
+     * Determines psychic points available from class levels at the indicated level.
+     *
+     * @param level character level to check
+     * @return psychic points innately gained
+     */
+    fun innatePsyAtLevel(level: Int): Int{
+        //initialize the final result
+        var output = 0.0
+
+        //add each level's class psychic points
+        charInstance.levelLoop(
+            startLevel = 1,
+            endLevel = level
+        ){
+            output += 1.0/it.classes.getClass().psyPerTurn.toDouble()
+        }
+
+        //return the final outcome as an integer
+        return output.toInt()
+    }
+
+    /**
+     * Determines the psychic points spent at the indicated level.
+     *
+     * @param level character level to check
+     * @return number of psychic points spent
+     */
+    fun getPPSpentAtLevel(level: Int): Int{
+        //initialize the number of points spent as power enhancements
+        var reinforcement = 0
+
+        //add all power enhancements applied
+        getPowersAtLevel(level = level).forEach{power -> reinforcement += power.value}
+
+        //return sum of number of disciplines taken,
+        return getDisciplinesAtLevel(level = level).size +
+                //number of powers taken,
+                getPowersAtLevel(level = level).size +
+                //power reinforcement value,
+                reinforcement +
+                //points spent on psychic potential,
+                psyPotentialPointsAtLevel(level = level) +
+                //and points spent on innate slots
+                (innateSlotsAtLevel(level = level) * 2)
+    }
+
+    /**
+     * Gets the list of disciplines taken at the indicated level.
+     *
+     * @param level character level to check
+     * @return list of taken disciplines
+     */
+    fun getDisciplinesAtLevel(level: Int): List<Discipline> {
+        return charInstance.getRecordList(endLevel = level){character ->
+            character.psychic.disciplineInvestment
+        } as List<Discipline>
+    }
+
+    /**
+     * Gets the map of psychic powers to their enhancements at the indicated level.
+     *
+     * @param level character level to check
+     * @return map of taken powers and enhancements
+     */
+    fun getPowersAtLevel(level: Int): Map<PsychicPower, Int>{
+        //initialize the resulting map
+        val output = mutableMapOf<PsychicPower, Int>()
+
+        charInstance.levelLoop(endLevel = level){character ->
+            //for each of the record's taken powers
+            character.psychic.masteredPowers.forEach{(power, enhancement) ->
+                //add any new power taken
+                if(output.contains(power)) output[power] = output[power]!! + enhancement
+                //enhance any previously taken power
+                else output[power] = enhancement
+            }
+        }
+
+        //return the final outcome
+        return output
+    }
+
+    /**
+     * Determines the psychic potential at the indicated level.
+     *
+     * @param level character level to check
+     * @return psychic potential at this level
+     */
+    fun psyPotentialPointsAtLevel(level: Int): Int{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            character.psychic.pointsInPotential.intValue
+        }
+    }
+
+    /**
+     * Determines the character's available innate slots at the indicated level.
+     *
+     * @param level character level to check
+     * @return number of available innate slots
+     */
+    fun innateSlotsAtLevel(level: Int): Int{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            character.psychic.innateSlotCount.intValue
+        }
+    }
+
+    /**
+     * Determines the number of psychic points available at the indicated level.
+     *
+     * @param level character level to check
+     * @return remaining psychic points at this level
+     */
+    fun getFreePsyPointsAtLevel(level: Int): Int{
+        return getTotalPPAtLevel(level = level) - getPPSpentAtLevel(level = level)
+    }
+
+    /**
+     * Determines that psychic projection taken at this level is a legal value.
+     *
+     * @param level character level to check
+     * @return true if value is valid
+     */
+    fun getValidProjectionAtLevel(level: Int): Boolean{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            character.psychic.psyProjectionBought.intValue * character.classes.getClass().psyProjGrowth
+        } <= charInstance.getPsyMaxAtLevel(level = level)/2
     }
 
     /**

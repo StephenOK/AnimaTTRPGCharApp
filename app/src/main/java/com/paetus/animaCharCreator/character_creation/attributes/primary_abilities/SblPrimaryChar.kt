@@ -65,39 +65,45 @@ class SblPrimaryChar(
     }
 
     /**
+     * Determines this characteristic's value at the indicated level.
+     *
+     * @param level character level to determine the value at
+     * @return the final characteristic value
+     */
+    fun getCharacteristicAtLevel(level: Int): Int{
+        return charInstance.charRefs[0]!!.primaryList.allPrimaries()[charIndex].total.intValue +
+                charInstance.getRecordSum(
+                    startLevel = 2,
+                    endLevel = level
+                ){character ->
+                    character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
+                }
+    }
+
+    /**
      * Determines the mod bonus at the inputted level.
      *
      * @param level character level to check the value at
      * @return mod bonus at the queried level
      */
     fun getLevelModBonus(level: Int): Int{
-        //initialize the output at the first record's stat input
-        var output = charInstance.charRefs[0]!!.primaryList.allPrimaries()[charIndex].total.intValue
-
-        //add the level bonus inputted at each level
-        charInstance.levelLoop(
-            startLevel = 1,
-            endLevel = level
-        ){character ->
-            output += character.primaryList.allPrimaries()[charIndex].levelBonus.intValue
-        }
-
         //return the mod bonus applied by the output
-        return when(output){
+        return when(val statAtLevel = getCharacteristicAtLevel(level = level)){
             1 -> -30
             2 -> -20
             3 -> -10
             4 -> -5
-            else -> (15 * output/5 - 1 + 5 * ceil(output % 5 / 2.0)).toInt()
+            else -> (15 * statAtLevel/5 - 1 + 5 * ceil(statAtLevel % 5 / 2.0)).toInt()
         }
     }
 
     /**
-     * Determines if all inputs for this item are valid.
+     * Determines if all inputs for this item are valid at this level.
      *
+     * @param level to check the item at
      * @return true if inputs are valid
      */
-    fun validGrowth(): Boolean{
-        return charInstance.getCharAtLevel().primaryList.allPrimaries()[charIndex].levelBonus.intValue >= 0
+    fun validGrowthAtLevel(level: Int): Boolean{
+        return charInstance.charRefs[level]!!.primaryList.allPrimaries()[charIndex].levelBonus.intValue >= 0
     }
 }

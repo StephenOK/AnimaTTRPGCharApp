@@ -599,6 +599,7 @@ class HomeActivity : AppCompatActivity() {
                             selected = false,
                             onClick = {
                                 scope.launch{drawerState.close()}
+                                currentFocus?.clearFocus()
                                 homePageVM.toggleLevelClear()
                             }
                         )

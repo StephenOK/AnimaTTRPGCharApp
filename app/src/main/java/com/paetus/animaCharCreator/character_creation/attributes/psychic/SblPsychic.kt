@@ -34,13 +34,35 @@ class SblPsychic(
             if(charInstance.lvl.intValue == 0) 0
             //sum up each level's bonus for the character
             else {
-                var output = 1.0
+                //initialize value at 1
+                var output = 1
+
+                //initialize per level counters
+                var twoTally = 0
+                var threeTally = 0
 
                 charInstance.levelLoop(startLevel = 1){
-                    output += 1.0/it.classes.getClass().psyPerTurn.toDouble()
+                    when(it.classes.getClass().psyPerTurn){
+                        2 ->{
+                            if(twoTally == 0)
+                                twoTally++
+                            else{
+                                output++
+                                twoTally--
+                            }
+                        }
+                        3 ->{
+                            if(threeTally == 2){
+                                output++
+                                threeTally = 0
+                            }
+                            else threeTally++
+                        }
+                        else -> output++
+                    }
                 }
 
-                output.toInt()
+                output
             }
 
         updatePsyPointTotal()

@@ -457,6 +457,8 @@ class SblChar(): BaseCharacter() {
                 startLevel = lvl.intValue + 1,
                 classIndex = prevClass
             )
+
+        magic.updateZeonFromClass()
     }
 
     /**

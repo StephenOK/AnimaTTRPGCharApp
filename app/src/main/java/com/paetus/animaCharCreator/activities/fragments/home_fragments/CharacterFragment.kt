@@ -141,11 +141,36 @@ fun CharacterPageFragment(
 
         item{Spacer(modifier = Modifier.height(20.dp))}
 
-        //display gender bonus selection if the character is a duk'zarist
+        //display gender bonus selection if the character is a duk'zarist, a paladin, or may apply experience point restriction
         item {
             if(charFragVM.raceDropdown.data.output.collectAsState().value == 6 ||
-                charFragVM.magPaladinOpen.collectAsState().value) {
+                charFragVM.magPaladinOpen.collectAsState().value ||
+                charFragVM.expLockChangeable()) {
                 GeneralCard {
+                    //give choice for experience point restriction if available
+                    if(charFragVM.expLockChangeable()){
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ){
+                            //display checkbox for selection
+                            Checkbox(
+                                checked = charFragVM.expLockActive.collectAsState().value,
+                                onCheckedChange = {charFragVM.toggleExpLock()},
+                                modifier = Modifier
+                                    .weight(0.1f)
+                            )
+                            //display option to user
+                            Text(
+                                text = stringResource(id = R.string.expLockOption),
+                                modifier = Modifier
+                                    .clickable {charFragVM.toggleExpLock()}
+                                    .weight(0.5f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
                     if (charFragVM.raceDropdown.data.output.collectAsState().value == 6) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,

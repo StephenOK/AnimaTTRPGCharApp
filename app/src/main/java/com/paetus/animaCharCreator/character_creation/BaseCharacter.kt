@@ -36,6 +36,9 @@ open class BaseCharacter{
     //character's current experience point amount
     val experiencePoints = mutableIntStateOf(value = 0)
 
+    //whether the character's level ups are restricted by inputted exp points
+    val expLock = mutableStateOf(false)
+
     //character's gender (default male)
     val isMale = mutableStateOf(value = true)
 
@@ -542,6 +545,9 @@ open class BaseCharacter{
         //load character's gnosis
         setGnosis(newGnosis = fileReader.readLine().toInt())
 
+        //load experience point restriction flag
+        expLock.value = fileReader.readLine().toBoolean()
+
         //end file reading
         restoreChar.close()
 
@@ -580,6 +586,9 @@ open class BaseCharacter{
 
         //if character is a new level added to the record
         if(isAdded) {
+            //set applied experience point restriction
+            expLock.value = newHost.expLock.value
+
             //set class to the previous level's class
             classes.setOwnClass(newHost.charRefs[prevIndex]!!.classes.ownClass.intValue)
 
@@ -669,6 +678,9 @@ open class BaseCharacter{
 
             //write gnosis data
             writeDataTo(writer = byteArray, input = gnosis.intValue)
+
+            //write experience point restriction flag
+            writeDataTo(writer = byteArray, input = expLock.value)
 
             //end writing data
             byteArray.close()

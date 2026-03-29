@@ -89,11 +89,78 @@ class SblChar(): BaseCharacter() {
      * @param newExp value to set as the character's experience points
      */
     override fun setExp(newExp: Int) {
-        //set exp as normal
-        super.setExp(newExp)
+        //get experience points gained in previous levels
+        val prevPoints = getRecordSum(endLevel = lvl.intValue - 1){character ->
+            character.experiencePoints.intValue
+        }
 
-        //record exp in level 0 record
-        charRefs[0]!!.setExp(experiencePoints.intValue)
+        //apply additional experience points to the current level record
+        charRefs[lvl.intValue]!!.experiencePoints.intValue = newExp - prevPoints
+
+        //apply exp points to the main record
+        updateExperiencePoints()
+    }
+
+    /**
+     * Get the number of experience points held at the given level.
+     *
+     * @param level character level checked
+     */
+    fun expPointsAtLevel(level: Int): Int{
+        return getRecordSum(endLevel = level){character ->
+            character.experiencePoints.intValue
+        }
+    }
+
+    /**
+     * Refresh the current experience points held by the character.
+     */
+    fun updateExperiencePoints(){
+        //reset the held points
+        experiencePoints.intValue = 0
+
+        //add each record's experience points held
+        levelLoop{character ->
+            experiencePoints.intValue += character.experiencePoints.intValue
+        }
+    }
+
+    /**
+     * Determines if the character has enough experience points to pass the indicated level.
+     *
+     * @param level character level checked
+     * @return true if character can go to a higher level
+     */
+    fun expValReachedAtLevel(level: Int): Boolean{
+        return when(level){
+            //level 0 characters may always level up from exp
+            0 -> true
+            in 1..14 -> {
+                //initialize the needed point counter
+                var needed = 0
+
+                //add an increasing amount for each level, starting with 100 exp
+                for(loopNum in 0 ..< level){
+                    needed += 100 + 25 * loopNum
+                }
+
+                //check that current points exceeds the calculated requirement
+                expPointsAtLevel(level = level) >= needed
+            }
+            //set a fixed increase value for levels higher than 14
+            else -> expPointsAtLevel(level = level) >= 3675 + 450 * (level - 14)
+        }
+    }
+
+    /**
+     * Toggles the experience point level restriction flag.
+     */
+    fun toggleExpLock(){
+        //toggle the main flag
+        expLock.value = !expLock.value
+
+        //toggle the flags in each record
+        levelLoop{character -> character.expLock.value = expLock.value}
     }
 
     /**
@@ -136,6 +203,9 @@ class SblChar(): BaseCharacter() {
         magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
 
         super.setLvl(levNum)
+
+        //update the experience points held
+        updateExperiencePoints()
 
         //update primary bonus amounts
         primaryList.allPrimaries().forEach{
@@ -363,18 +433,6 @@ class SblChar(): BaseCharacter() {
         return output.toList()
     }
 
-    /**
-     * Changes the level record to the inputted list.
-     *
-     * @param newRef list of character records to check now
-     */
-    fun updateReference(newRef: List<BaseCharacter?>){
-        //for each new record item, overwrite the previous record item
-        newRef.forEach{character ->
-            charRefs[newRef.indexOf(character)] = character
-        }
-    }
-
     fun zeroReset(){
         //run level reset
         resetLevel()
@@ -408,6 +466,9 @@ class SblChar(): BaseCharacter() {
         super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
         super.setAppearance(newAppearance = charRefs[0]!!.appearance.intValue)
         super.setGnosis(newGnosis = charRefs[0]!!.gnosis.intValue)
+
+        //prevent any potential change to the exp restriction flag
+        charRefs[0]!!.expLock.value = expLock.value
 
         //reset primary data
         primaryList.allPrimaries().forEach{primary ->
@@ -494,7 +555,7 @@ class SblChar(): BaseCharacter() {
             //check validity of taken natural bonuses in future levels
             character.secondaryList.getAllSecondaries().forEach{secondary ->
                 if(secondary.bonusApplied.value){
-                    if((secondaryList.getAllSecondaries()[character.secondaryList.getAllSecondaries().indexOf(secondary)] as SblSecondaryCharacteristic).getPreviousPoints(level = charRefs.indexOf(character) - 1) == 0)
+                    if((secondaryList.getAllSecondaries()[character.secondaryList.getAllSecondaries().indexOf(secondary)] as SblSecondaryCharacteristic).getPointsInAtLevel(level = charLevel) == 0)
                         secondary.bonusApplied.value = false
 
                     return@forEach
@@ -790,6 +851,16 @@ class SblChar(): BaseCharacter() {
                 )
             }
 
+        //check exp points if restriction is enabled
+        if(expLock.value){
+            //check that the character has enough points to level up
+            if (!expValReachedAtLevel(level = atLevel))
+                output.add{stringResource(R.string.expLevelTooLow)}
+            //check that the level does not have negative experience points
+            if(charRefs[atLevel]!!.experiencePoints.intValue < 0)
+                output.add{stringResource(R.string.invalidExpGrowth)}
+        }
+
         //check each primary characteristic
         primaryList.allPrimaries().forEach{
             if(!(it as SblPrimaryChar).validGrowthAtLevel(level = atLevel))
@@ -1037,49 +1108,9 @@ class SblChar(): BaseCharacter() {
         setLvl(levNum = startLevel())
     }
 
-    /**
-     * Constructor for validation SblChar
-     *
-     * @param startLevel level to set this character at
-     * @param reference character record to apply to the character
-     */
-    constructor(
-        startLevel: Int,
-        reference: List<BaseCharacter?>
-    ): this(){
-        //apply character record
-        updateReference(newRef = reference)
-
-        reference[0]!!.secondaryList.getAllCustoms().forEach{custom ->
-            secondaryList.addSblCustom(
-                newSecondary = SblCustomCharacteristic(
-                    parent = secondaryList,
-                    name = custom.name.value,
-                    filename = custom.filename.value,
-                    isPublic = custom.isPublic.value,
-                    field = custom.fieldIndex.intValue,
-                    primary = custom.primaryCharIndex.intValue
-                )
-            )
-        }
-
-        //initialize the character
-        charStartup()
-
-        //set the character to the indicated level
-        setLvl(levNum = startLevel)
-
-        //apply freelancer bonuses to the character
-        if(firstFreelancer() >= 0)
-            for(index in 0..4){
-                classes.freelancerSelection[index] = charRefs[firstFreelancer()]!!.classes.freelancerSelection[index]
-            }
-    }
-
     fun charStartup(){
         //set name, exp, race, gender, appearance, and gnosis
         super.setName(charRefs[0]!!.charName.value)
-        super.setExp(charRefs[0]!!.experiencePoints.intValue)
         super.setOwnRace(charRefs[0]!!.ownRace.value)
         super.setGender(charRefs[0]!!.isMale.value)
         super.setAppearance(charRefs[0]!!.appearance.intValue)
@@ -1097,6 +1128,9 @@ class SblChar(): BaseCharacter() {
                 )
             }
         }
+
+        //set experience point lock state
+        expLock.value = charRefs[0]!!.expLock.value
 
         //set primary items
         charRefs[0]!!.primaryList.allPrimaries().forEach{primary ->

@@ -58,6 +58,10 @@ class CharacterFragmentViewModel(
     )
     val magPaladin = _magPaladin.asStateFlow()
 
+    //initialize experience point restriction items
+    private val _expLockActive = MutableStateFlow(value = charInstance.expLock.value)
+    val expLockActive = _expLockActive.asStateFlow()
+
     //initialize the character's size category display
     private val _sizeInput = MutableStateFlow(value = charInstance.sizeCategory.intValue)
     val sizeInput = _sizeInput.asStateFlow()
@@ -181,6 +185,26 @@ class CharacterFragmentViewModel(
         //determine that the class is a paladin class
         return checkedClass.ownClass.intValue == 3 ||
                 checkedClass.ownClass.intValue == 4
+    }
+
+    /**
+     * Determines if the user can change the experience point restriction state.
+     *
+     * @return true if character is a SBL character at level 0
+     */
+    fun expLockChangeable(): Boolean{
+        return charInstance is SblChar && charInstance.lvl.intValue == 0
+    }
+
+    /**
+     * Changes the experrience point restriction state.
+     */
+    fun toggleExpLock(){
+        //toggle the value in the character
+        (charInstance as SblChar).toggleExpLock()
+
+        //reflect the change in the fragment
+        _expLockActive.update{charInstance.expLock.value}
     }
 
     /**

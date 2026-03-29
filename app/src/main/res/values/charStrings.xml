@@ -105,6 +105,8 @@
         <item>20</item>
     </string-array>
 
+    <string name = "expLockOption">Enable Exp Point Lock</string>
+
     <string name = "maleString">Male Bonus (PhR)</string>
     <string name = "femaleString">Female Bonus (MR)</string>
 
@@ -125,6 +127,8 @@
     <string name = "underDpFailure">-all DP have not been spent</string>
     <string name = "overDpFailure">-too many DP have been spent</string>
     <string name = "sectionCapBreach">-limit for the character\'s %s Abilities has been passed</string>
+    <string name = "expLevelTooLow">-the character does not have enough experience points to progress</string>
+    <string name = "invalidExpGrowth">-experience points are smaller than in a previous level</string>
     <string name = "invalidPrimaryBonus">-too many points added as bonus to primary characteristics</string>
     <string name = "primaryBonusPointReduction">-a primary characteristic\'s bonus (%s) is smaller than in a previous level</string>
     <string name = "lifeMultReduction">-life multiples taken are reduced in this level</string>

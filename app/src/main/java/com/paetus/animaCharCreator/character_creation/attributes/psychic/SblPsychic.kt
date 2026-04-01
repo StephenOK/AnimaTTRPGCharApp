@@ -290,7 +290,7 @@ class SblPsychic(
             charInstance.getCharAtLevel().psychic.disciplineInvestment.contains(element = discipline)){
 
             //if character isn't duk'zarist or pyrokinesis isn't removed
-            if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages || discipline != pyrokinesis){
+            if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages || discipline != pyrokinesis()){
                 //remove the discipline from this and the level record
                 disciplineInvestment.remove(element = discipline)
                 charInstance.getCharAtLevel().psychic.disciplineInvestment.remove(element = discipline)
@@ -307,6 +307,7 @@ class SblPsychic(
                     while(character.psychic.disciplineInvestment.isNotEmpty()){
                         val current = character.psychic.disciplineInvestment[0]
                         character.psychic.disciplineInvestment.remove(element = current)
+                        updateDisciplines()
                         removeIllegal(discipline = current)
                     }
                 }
@@ -459,6 +460,51 @@ class SblPsychic(
     }
 
     /**
+     * Enforces a duk'zarist's fire devotion to the existing character.
+     */
+    override fun applyDukzaristPyro() {
+        //scan through all level records
+        charInstance.levelLoop(endLevel = 20){character ->
+            //record the character's level at this record
+            val level = charInstance.charRefs.indexOf(character)
+
+            //if the character has taken disciplines at this level,
+            if(getDisciplinesAtLevel(level = level).isNotEmpty()){
+                //if pyrokinesis is not taken,
+                if(!getDisciplinesAtLevel(level = level).contains(pyrokinesis())){
+                    //and the character may acquire pyrokinesis
+                    if(legalDisciplines.contains(pyrokinesis())){
+                        //add pyrokinesis to this level's record
+                        character.psychic.disciplineInvestment.add(element = pyrokinesis())
+
+                        //remove any future takings of the pyrokinesis disciplinne
+                        charInstance.levelLoop(
+                            startLevel = level + 1,
+                            endLevel = 20
+                        ){character ->
+                            character.psychic.disciplineInvestment.remove(element = pyrokinesis())
+                        }
+                    }
+                    //if the character may not acquire pyrokinesis
+                    else
+                        //remove all disciplines and powers from all level records
+                        charInstance.levelLoop(
+                            endLevel = 20
+                        ){character ->
+                            character.psychic.disciplineInvestment.clear()
+                            character.psychic.masteredPowers.clear()
+                        }
+                }
+
+                //update the disciplines held
+                updateDisciplines()
+                //stop scanning through levels
+                return@levelLoop
+            }
+        }
+    }
+
+    /**
      * Update current disciplines available to the character.
      */
     private fun updateDisciplines(){
@@ -539,8 +585,11 @@ class SblPsychic(
      * @return psychic points innately gained
      */
     fun innatePsyAtLevel(level: Int): Int{
+        //no points from classes at level 0
+        if(level == 0) return 0
+
         //initialize the final result
-        var output = 0.0
+        var output = 1.0
 
         //add each level's class psychic points
         charInstance.levelLoop(

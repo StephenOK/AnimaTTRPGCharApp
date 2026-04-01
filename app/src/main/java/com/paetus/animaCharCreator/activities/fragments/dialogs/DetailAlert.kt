@@ -1588,7 +1588,7 @@ fun SpellDetailPreview(){
 @Composable
 fun PowerDetailPreview(){
     val charInstance = BaseCharacter()
-    val power = charInstance.psychic.matrixPowers.allPowers[3]
+    val power = charInstance.psychic.matrixPowers().allPowers[3]
 
     DetailAlert(stringArrayResource(R.array.powerNames)[power.name], power){}
 }

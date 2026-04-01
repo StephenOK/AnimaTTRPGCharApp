@@ -168,63 +168,63 @@ class PsychicFragmentViewModel(
     private val telepathy = DisciplineItemData(
         psychic = psychic,
         nameRef = 0,
-        discipline = psychic.telepathy,
+        discipline = psychic.telepathy(),
         psyFragVM = this
     )
 
     private val kinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 1,
-        discipline = psychic.psychokinesis,
+        discipline = psychic.psychokinesis(),
         psyFragVM = this
     )
 
     private val pyrokinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 2,
-        discipline = psychic.pyrokinesis,
+        discipline = psychic.pyrokinesis(),
         psyFragVM = this
     )
 
     private val cryokinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 3,
-        discipline = psychic.cryokinesis,
+        discipline = psychic.cryokinesis(),
         psyFragVM = this
     )
 
     private val physIncrease = DisciplineItemData(
         psychic = psychic,
         nameRef = 4,
-        discipline = psychic.physicalIncrease,
+        discipline = psychic.physicalIncrease(),
         psyFragVM = this
     )
 
     private val energy = DisciplineItemData(
         psychic = psychic,
         nameRef = 5,
-        discipline = psychic.energyPowers,
+        discipline = psychic.energyPowers(),
         psyFragVM = this
     )
 
     private val sentience = DisciplineItemData(
         psychic = psychic,
         nameRef = 6,
-        discipline = psychic.sentiencePowers,
+        discipline = psychic.sentiencePowers(),
         psyFragVM = this
     )
 
     private val telemetry = DisciplineItemData(
         psychic = psychic,
         nameRef = 7,
-        discipline = psychic.telemetry,
+        discipline = psychic.telemetry(),
         psyFragVM = this
     )
 
     private val matrixPowers = DisciplineItemData(
         psychic = psychic,
         nameRef = 8,
-        discipline = psychic.matrixPowers,
+        discipline = psychic.matrixPowers(),
         psyFragVM = this
     )
 

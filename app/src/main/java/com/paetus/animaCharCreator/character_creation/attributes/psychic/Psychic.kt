@@ -44,16 +44,68 @@ open class Psychic(private val charInstance: BaseCharacter){
     val disciplineInvestment = mutableListOf<Discipline>()
     val masteredPowers = mutableMapOf<PsychicPower, Int>()
 
-    //initialize psychic power items
-    val telepathy = getPsyLibrary().allDisciplines[0]
-    val psychokinesis = getPsyLibrary().allDisciplines[1]
-    val pyrokinesis = getPsyLibrary().allDisciplines[2]
-    val cryokinesis = getPsyLibrary().allDisciplines[3]
-    val physicalIncrease = getPsyLibrary().allDisciplines[4]
-    val energyPowers = getPsyLibrary().allDisciplines[5]
-    val sentiencePowers = getPsyLibrary().allDisciplines[6]
-    val telemetry = getPsyLibrary().allDisciplines[7]
-    val matrixPowers = getPsyLibrary().allDisciplines[8]
+    /**
+     * Gets the telepathy discipline from the database.
+     *
+     * @return the telepathy discipline object
+     */
+    fun telepathy(): Discipline{return getPsyLibrary().allDisciplines[0]}
+
+    /**
+     * Gets the psychokinesis discipline from the database.
+     *
+     * @return the psychokinesis discipline object
+     */
+    fun psychokinesis(): Discipline{return getPsyLibrary().allDisciplines[1]}
+
+    /**
+     * Gets the pyrokinesis discipline from the database.
+     *
+     * @return the pyrokinesis discipline object
+     */
+    fun pyrokinesis(): Discipline{return getPsyLibrary().allDisciplines[2]}
+
+    /**
+     * Gets the cryokinesis discipline from the database.
+     *
+     * @return the cryokinesis discipline object
+     */
+    fun cryokinesis(): Discipline{return getPsyLibrary().allDisciplines[3]}
+
+    /**
+     * Gets the physical increase discipline from the database.
+     *
+     * @return the physical increase discipline object
+     */
+    fun physicalIncrease(): Discipline{return getPsyLibrary().allDisciplines[4]}
+
+    /**
+     * Gets the energy discipline from the database.
+     *
+     * @return the energy discipline object
+     */
+    fun energyPowers(): Discipline{return getPsyLibrary().allDisciplines[5]}
+
+    /**
+     * Gets the sentience discipline from the database.
+     *
+     * @return the sentience discipline object
+     */
+    fun sentiencePowers(): Discipline{return getPsyLibrary().allDisciplines[6]}
+
+    /**
+     * Gets the telemetry discipline from the database.
+     *
+     * @return the telemetry discipline object
+     */
+    fun telemetry(): Discipline{return getPsyLibrary().allDisciplines[7]}
+
+    /**
+     * Gets the matrix powers from the database.
+     *
+     * @return the matrix powers object
+     */
+    fun matrixPowers(): Discipline{return getPsyLibrary().allDisciplines[8]}
 
     /**
      * Gets the class's psychic point DP cost.
@@ -146,11 +198,6 @@ open class Psychic(private val charInstance: BaseCharacter){
      */
     fun updatePsyPointTotal(){
         totalPsychicPoints.intValue = boughtPsyPoints.intValue + innatePsyPoints.intValue
-
-        //sets pyrokinesis as set if character is duk'zarist and does not have pyrokinesis
-        if(totalPsychicPoints.intValue > 0 && charInstance.ownRace.value == charInstance.objectDB.races.dukzaristAdvantages &&
-            !disciplineInvestment.contains(element = pyrokinesis))
-            updateInvestment(discipline = pyrokinesis, isTaken = true)
     }
 
     /**
@@ -260,15 +307,12 @@ open class Psychic(private val charInstance: BaseCharacter){
             //add item and spend points
             disciplineInvestment.add(element = discipline)
             recalcPsyPointsSpent()
-
-            //notify of successful acquisition
-            return true
         }
 
         //if attempting to remove the discipline
         else if (!isTaken) {
             //if character isn't duk'zarist or pyrokinesis isn't removed
-            if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages || discipline != pyrokinesis) {
+            if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages || discipline != pyrokinesis()) {
                 //remove the discipline
                 disciplineInvestment.remove(element = discipline)
 
@@ -285,7 +329,7 @@ open class Psychic(private val charInstance: BaseCharacter){
         }
 
         //notify of either successful removal or failed addition
-        return false
+        return disciplineInvestment.contains(element = discipline)
     }
 
     /**
@@ -301,10 +345,10 @@ open class Psychic(private val charInstance: BaseCharacter){
         if(charInstance.ownRace.value != charInstance.objectDB.races.dukzaristAdvantages) return true
 
         //return true if the duk'zarist already has pyrokinesis
-        else if (disciplineInvestment.contains(pyrokinesis)) return true
+        else if (disciplineInvestment.contains(pyrokinesis())) return true
 
         //return true if no disciplines taken, but is currently taking pyrokinesis
-        else if (addingDiscipline == pyrokinesis) return true
+        else if (addingDiscipline == pyrokinesis()) return true
 
         //notify of failed addition
         return false
@@ -372,7 +416,7 @@ open class Psychic(private val charInstance: BaseCharacter){
         discipline: Discipline
     ): Boolean{
         if(disciplineInvestment.contains(element = discipline) ||
-            (discipline == matrixPowers && legalDisciplines.isNotEmpty())
+            (discipline == matrixPowers() && legalDisciplines.isNotEmpty())
         ){
             //add no matter what if it is level 1 or 0
             if (power.level <= 1)
@@ -414,7 +458,7 @@ open class Psychic(private val charInstance: BaseCharacter){
         power: PsychicPower
     ): Discipline?{
         //search each discipline for the given power
-        getPsyLibrary().allDisciplines.forEach{ discipline ->
+        getPsyLibrary().allDisciplines.forEach{discipline ->
             //return the discipline if it is found
             if(discipline.allPowers.contains(element = power))
                 return discipline
@@ -434,11 +478,34 @@ open class Psychic(private val charInstance: BaseCharacter){
 
         //remove any illegal powers of this discipline
         masteredPowers.keys.forEach{power ->
-            if(!legalBuy(power = power, discipline = discipline))
+            if(discipline.allPowers.contains(power))
                 toRemove += power
         }
 
         toRemove.forEach{power -> masteredPowers.remove(key = power)}
+        recalcPsyPointsSpent()
+    }
+
+    /**
+     * Enforces a duk'zarist's fire devotion to the existing character.
+     */
+    open fun applyDukzaristPyro(){
+        //if user has invested in a discipline,
+        if(disciplineInvestment.isNotEmpty() &&
+            //but pyrokinesis is not one of them
+            !disciplineInvestment.contains(pyrokinesis())
+            ){
+            //add pyrokinesis if the character is allowed to
+            if(legalDisciplines.contains(pyrokinesis()))
+                disciplineInvestment.add(element = pyrokinesis())
+            //remove all taken disciplines and powers if they can not
+            else{
+                disciplineInvestment.clear()
+                masteredPowers.clear()
+            }
+        }
+
+        //recalculate psychic points spent
         recalcPsyPointsSpent()
     }
 

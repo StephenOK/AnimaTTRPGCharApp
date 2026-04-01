@@ -174,13 +174,14 @@ class SblClassInstances(
     /**
      * Gets the DP spent in this section.
      */
-    fun calculateSpent(): Int{
+    fun calculateSpentAtLevel(level: Int): Int{
         //initialize point output
         var output = 0
         
         //look through the level record
         charInstance.levelLoop(
-            startLevel = 1
+            startLevel = 1,
+            endLevel = level
         ){character ->
             //add class difference points for each level
             output += getClassPointsByLevel(baseLevel = charInstance.charRefs.indexOf(character))

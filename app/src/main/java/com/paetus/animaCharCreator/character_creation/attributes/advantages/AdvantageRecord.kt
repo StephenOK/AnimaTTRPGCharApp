@@ -140,7 +140,7 @@ open class AdvantageRecord(
 
                     //Dukzarist must develop pyrokinesis first
                     commonAdvantages().psyDisciplineAccess ->{
-                        if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis))
+                        if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis()))
                             return R.string.dukzaristPyroRestriction
                     }
                 }

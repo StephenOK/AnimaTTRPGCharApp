@@ -319,7 +319,7 @@ class SblChar(): BaseCharacter() {
                         checkChar.secondaryList.calculateSpent()
         }
 
-        spentTotal.intValue += classes.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
+        spentTotal.intValue += classes.calculateSpentAtLevel(lvl.intValue) + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
     /**
@@ -520,6 +520,7 @@ class SblChar(): BaseCharacter() {
             )
 
         magic.updateZeonFromClass()
+        updateTotalSpent()
     }
 
     /**
@@ -644,8 +645,10 @@ class SblChar(): BaseCharacter() {
                 getPsychicSpentAtLevel(level = level) +
                 //life mults,
                 combat.getLifeMultsCostAtLevel(level = level) +
-                //and secondary items
-                secondaryList.getSecondaryPointsSpentAtLevel(level = level)
+                //secondary items,
+                secondaryList.getSecondaryPointsSpentAtLevel(level = level) +
+                //and class changes
+                classes.calculateSpentAtLevel(level = level)
     }
 
     /**

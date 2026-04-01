@@ -426,32 +426,8 @@ class RaceAdvantages{
         name = R.string.fireDevotion,
         description = R.string.devoteFireDesc,
         onTake = {character, _, _ ->
-            //if the character has any psychic points to work with
-            if(character.psychic.totalPsychicPoints.intValue > 0) {
-                //if character currently has no free psychic points
-                if (character.psychic.getFreePsyPoints() == 0) {
-                    //remove the most recently acquired power, if available
-                    if(character.psychic.masteredPowers.isNotEmpty()) {
-                        val power = character.psychic.masteredPowers.keys.last()
-                        character.psychic.masterPower(
-                            power = power,
-                            discipline = character.psychic.getPowerDiscipline(power = power)!!,
-                            isMastering = false
-                        )
-                    }
-                    else{
-                        //remove most recently added discipline, if available
-                        if(character.psychic.disciplineInvestment.isNotEmpty())
-                            character.psychic.updateInvestment(
-                                discipline = character.psychic.disciplineInvestment.last(),
-                                isTaken = false
-                            )
-                    }
-                }
-
-                //attempt to add pyrokinesis to the character's accessible disciplines
-                character.psychic.updateInvestment(character.psychic.pyrokinesis, true)
-            }
+            //give character pyromancy discipline, if needed
+            character.psychic.applyDukzaristPyro()
         },
         onRemove = null
     )

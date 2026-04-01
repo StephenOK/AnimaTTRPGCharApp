@@ -120,7 +120,7 @@ class CommonAdvantages{
         onTake = {character, input, _ ->
             //add access to the indicated psychic discipline and matrix powers
             character.psychic.legalDisciplines.add(element = character.objectDB.psyLibrary.allDisciplines[input!!])
-            character.psychic.legalDisciplines.add(element = character.psychic.matrixPowers)
+            character.psychic.legalDisciplines.add(element = character.psychic.matrixPowers())
         },
         onRemove = {character, input, _ ->
             //remove the indicated psychic discipline from accessibility

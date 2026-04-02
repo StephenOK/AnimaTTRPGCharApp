@@ -267,9 +267,9 @@ fun EquipmentRow(
         //display item's base cost
         Text(text =
                 when(item.coinType){
-                    CoinType.Copper -> stringResource(id = R.string.copperLabel, item.baseCost)
-                    CoinType.Silver -> stringResource(id = R.string.silverLabel, item.baseCost)
-                    CoinType.Gold -> stringResource(id = R.string.goldLabel, item.baseCost)
+                    CoinType.Copper -> stringResource(id = R.string.copperLabel, item.baseCost.toInt())
+                    CoinType.Silver -> stringResource(id = R.string.silverLabel, item.baseCost.toInt())
+                    CoinType.Gold -> stringResource(id = R.string.goldLabel, item.baseCost.toInt())
                 },
             modifier = Modifier
                 .weight(0.2f),

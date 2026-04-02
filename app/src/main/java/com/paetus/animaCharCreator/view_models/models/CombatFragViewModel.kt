@@ -114,6 +114,13 @@ class CombatFragViewModel(
     fun getLifeDP(): Int{return combat.getLifeCost()}
 
     /**
+     * Retrieves the character's action total for display.
+     *
+     * @return character's action total
+     */
+    fun getActionTotal(): String{return combat.actionCount.intValue.toString()}
+
+    /**
      * Retrieves the character's initiative to display.
      *
      * @return string of the character's initiative

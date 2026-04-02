@@ -1465,9 +1465,9 @@ fun EquipmentDetails(
     //create price string of the object
     val priceString =
             when(equipment.coinType){
-                CoinType.Gold -> stringResource(id = R.string.goldLabel, equipment.baseCost)
-                CoinType.Silver -> stringResource(id = R.string.silverLabel, equipment.baseCost)
-                CoinType.Copper -> stringResource(id = R.string.copperLabel, equipment.baseCost)
+                CoinType.Gold -> stringResource(id = R.string.goldLabel, equipment.baseCost.toInt())
+                CoinType.Silver -> stringResource(id = R.string.silverLabel, equipment.baseCost.toInt())
+                CoinType.Copper -> stringResource(id = R.string.copperLabel, equipment.baseCost.toInt())
             }
 
     Column{

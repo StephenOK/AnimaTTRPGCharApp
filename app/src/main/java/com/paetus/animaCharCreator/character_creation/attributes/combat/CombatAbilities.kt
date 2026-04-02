@@ -58,6 +58,9 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
     val specRegen = mutableIntStateOf(0)
     val totalRegen = mutableIntStateOf(1)
 
+    //initialize round action counter
+    val actionCount = mutableIntStateOf(value = 1)
+
     /**
      * Gets the class's cost for life point multiples.
      */
@@ -223,6 +226,26 @@ open class CombatAbilities(private val charInstance: BaseCharacter){
      */
     fun updateRegeneration(){
         totalRegen.intValue = baseRegen.intValue + specRegen.intValue
+    }
+
+    /**
+     * Recalculates the action count of the character on agility or dexterity changes.
+     */
+    fun actionCountUpdate(){
+        //base the actions on the sum of the character's dex and agi
+        actionCount.intValue = when(
+            charInstance.primaryList.dex.total.intValue +
+                    charInstance.primaryList.agi.total.intValue
+        ){
+            in 1..10 -> 1
+            in 11..14 -> 2
+            in 15..19 -> 3
+            in 20..22 -> 4
+            in 23..25 -> 5
+            in 26..28 -> 6
+            in 29..31 -> 7
+            else -> 8
+        }
     }
 
     /**

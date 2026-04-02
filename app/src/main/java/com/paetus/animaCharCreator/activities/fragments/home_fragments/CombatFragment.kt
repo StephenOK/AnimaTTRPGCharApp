@@ -264,6 +264,16 @@ fun CombatFragment(
 
         item{
             GeneralCard{
+                //display character's action amount
+                InfoRow(
+                    label = stringResource(id = R.string.actionCount)
+                ){modifier, _ ->
+                    Text(
+                        text = combatFragVM.getActionTotal(),
+                        modifier = modifier
+                    )
+                }
+
                 //display character's initiative
                 InfoRow(
                     label = stringResource(id = R.string.totalInitiative)

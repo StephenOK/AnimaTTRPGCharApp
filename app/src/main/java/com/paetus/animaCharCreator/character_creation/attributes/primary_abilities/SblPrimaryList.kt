@@ -33,6 +33,7 @@ class SblPrimaryList(
             charInstance.combat.attack.setModPoints(modVal = mod)
             charInstance.combat.block.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.dexKi.primaryUpdate(primeBase = total)
             charInstance.magic.calcMagProj()
             charInstance.psychic.updatePsyProjection()
@@ -48,6 +49,7 @@ class SblPrimaryList(
             charInstance.secondaryList.updateAGI()
             charInstance.combat.dodge.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.agiKi.primaryUpdate(primeBase = total)
         }
     )

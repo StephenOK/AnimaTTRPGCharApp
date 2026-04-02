@@ -159,7 +159,7 @@ open class Inventory(val charInstance: BaseCharacter) {
     /**
      * Determines the amount of money spent by the character on equipment.
      */
-    private fun countSpent(){
+    fun countSpent(){
         //reset spent values
         copperSpent.doubleValue = 0.0
         silverSpent.doubleValue = 0.0

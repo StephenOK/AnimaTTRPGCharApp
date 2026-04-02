@@ -316,20 +316,6 @@ class EquipmentFragmentViewModel(
     }
 
     /**
-     * Retrieves the amount of the indicated coin spent by the character.
-     *
-     * @param coin type of coin to look up
-     * @return amount of that coin spent
-     */
-    fun getCoinSpent(coin: CoinType): Int{
-        return when(coin){
-            CoinType.Copper -> inventory.copperSpent.doubleValue.toInt()
-            CoinType.Silver -> inventory.silverSpent.doubleValue.toInt()
-            CoinType.Gold -> inventory.goldSpent.doubleValue.toInt()
-        }
-    }
-
-    /**
      * Determines the category a piece of equipment belongs to.
      *
      * @param equipment equipment to find the category of
@@ -393,6 +379,25 @@ class EquipmentFragmentViewModel(
 
     //collect all maximum data
     val allQuantityMaximums = listOf(maxGold, maxSilver, maxCopper)
+
+    //initialize all spent item data
+    //for gold
+    private val spentGold = SpentItemData(
+        coinType = CoinType.Gold
+    ){inventory.goldSpent.doubleValue.toInt()}
+
+    //for silver
+    private val spentSilver = SpentItemData(
+        coinType = CoinType.Silver
+    ){inventory.silverSpent.doubleValue.toInt()}
+
+    //for copper
+    private val spentCopper = SpentItemData(
+        coinType = CoinType.Copper
+    ){inventory.copperSpent.doubleValue.toInt()}
+
+    //put all spent item data into a list
+    val allSpentItems = listOf(spentGold, spentSilver, spentCopper)
 
     //instantiate all category data
     private val clothes = CategoryData(
@@ -518,6 +523,26 @@ class EquipmentFragmentViewModel(
     }
 
     /**
+     * Data item for spent coin displays.
+     *
+     * @param coinType the coin type spent for this display
+     * @param updateSpent function to retrieve the spent data on the item's coin
+     */
+    class SpentItemData(
+        val coinType: CoinType,
+        val updateSpent: () -> Int
+    ){
+        //integer to display the coin value spent
+        private val _spentDisplay = MutableStateFlow(value = updateSpent())
+        val spentDisplay = _spentDisplay.asStateFlow()
+
+        /**
+         * Updates the display to the correct spent value.
+         */
+        fun updateDisplay(){_spentDisplay.update{updateSpent()}}
+    }
+
+    /**
      * Data object for an equipment category type.
      *
      * @param nameRef resource reference to the displayed name
@@ -538,10 +563,13 @@ class EquipmentFragmentViewModel(
     }
 
     override fun refreshPage(){
+        //update maximum data
         allQuantityMaximums.forEach{maxCoin -> maxCoin.setMaxValue(maxCoin.maxInput().toString())}
-        allCategoryData.forEach{category ->
-            if(category.catOpen.value)
-                category.toggleCatOpen()
-        }
+
+        //update list of acquired items
+        updateBoughtGoods()
+
+        //update coin spent displays
+        allSpentItems.forEach{it.updateDisplay()}
     }
 }

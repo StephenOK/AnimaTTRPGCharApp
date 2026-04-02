@@ -474,6 +474,17 @@ class SblChar(): BaseCharacter() {
         primaryList.allPrimaries().forEach{primary ->
             primary.setInput(5)
         }
+
+        //reset available coin maximums
+        inventory.maxGold.intValue = 0
+        inventory.maxSilver.intValue = 0
+        inventory.maxCopper.intValue = 0
+
+        //remove all purchased items
+        inventory.boughtGoods.clear()
+
+        //update spent coin values
+        inventory.countSpent()
     }
 
     fun nonZeroReset(){
@@ -1155,10 +1166,18 @@ class SblChar(): BaseCharacter() {
             advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
         }
 
+        //set currency maximums
+        inventory.maxGold.intValue = charRefs[0]!!.inventory.maxGold.intValue
+        inventory.maxSilver.intValue = charRefs[0]!!.inventory.maxSilver.intValue
+        inventory.maxCopper.intValue = charRefs[0]!!.inventory.maxCopper.intValue
+
         //set inventory items
         charRefs[0]!!.inventory.boughtGoods.forEach{(item, amount) ->
-            inventory.boughtGoods.plus(Pair(item, amount))
+            inventory.boughtGoods += Pair(item, amount)
         }
+
+        //update spent coin values
+        inventory.countSpent()
     }
 
 

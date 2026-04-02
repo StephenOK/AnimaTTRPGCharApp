@@ -99,29 +99,14 @@ fun EquipmentFragment(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                 ) {
-                    //gold spent
-                    SpentDisplay(
-                        coinType = CoinType.Gold,
-                        amount = equipFragVM.getCoinSpent(CoinType.Gold),
-                        modifier = Modifier
-                            .weight(0.2f)
-                    )
-
-                    //silver spent
-                    SpentDisplay(
-                        coinType = CoinType.Silver,
-                        amount = equipFragVM.getCoinSpent(CoinType.Silver),
-                        modifier = Modifier
-                            .weight(0.2f)
-                    )
-
-                    //copper spent
-                    SpentDisplay(
-                        coinType = CoinType.Copper,
-                        amount = equipFragVM.getCoinSpent(CoinType.Copper),
-                        modifier = Modifier
-                            .weight(0.2f)
-                    )
+                    //display all spent item data
+                    equipFragVM.allSpentItems.forEach{
+                        SpentDisplay(
+                            spentData = it,
+                            modifier = Modifier
+                                .weight(0.2f)
+                        )
+                    }
                 }
             }
         }
@@ -306,14 +291,12 @@ fun EquipmentRow(
 /**
  * Row that displays the amount of the given coin spent.
  *
- * @param coinType kind of coin displayed in this row
- * @param amount number of this coin type spent
+ * @param spentData data item to contain the spent coin data
  * @param modifier code to alter the form of the item
  */
 @Composable
 fun SpentDisplay(
-    coinType: CoinType,
-    amount: Int,
+    spentData: EquipmentFragmentViewModel.SpentItemData,
     modifier: Modifier
 ){
     Row(
@@ -321,7 +304,7 @@ fun SpentDisplay(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(id = R.string.spentAmount, coinType.name),
+            text = stringResource(id = R.string.spentAmount, spentData.coinType.name),
             modifier = Modifier
                 .weight(0.6f),
             textAlign = TextAlign.Center,
@@ -331,11 +314,11 @@ fun SpentDisplay(
         Spacer(modifier = Modifier.weight(0.1f))
 
         AnimatedContent(
-            targetState = amount,
+            targetState = spentData.spentDisplay.collectAsState().value,
             modifier = Modifier
                 .weight(0.3f),
             transitionSpec = numberScroll,
-            label = "${coinType.name}Spent"
+            label = "${spentData.coinType.name}Spent"
         ){
             Text(
                 text = "$it",

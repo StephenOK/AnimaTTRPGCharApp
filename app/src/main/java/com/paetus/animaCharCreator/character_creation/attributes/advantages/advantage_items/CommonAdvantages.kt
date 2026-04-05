@@ -20,6 +20,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, input, _ ->
             //increase characteristic by one point
             character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = 1)
@@ -42,6 +43,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply bonuses to perception and search
             character.secondaryList.notice.setSpecial(specBonus = 30)
@@ -66,6 +68,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -82,6 +85,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -98,6 +102,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, input, _ ->
             //set the determined primary stat to 9
             character.primaryList.allPrimaries()[input!!].setInput(baseIn = 9)
@@ -117,6 +122,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, input, _ ->
             //add access to the indicated psychic discipline and matrix powers
             character.psychic.legalDisciplines.add(element = character.objectDB.psyLibrary.allDisciplines[input!!])
@@ -140,6 +146,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -156,6 +163,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -172,6 +180,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -188,6 +197,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -204,6 +214,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -220,6 +231,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, input, cost ->
             //reduce the cost of the indicated secondary characteristic
             if(input!! < 38)
@@ -252,6 +264,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -268,6 +281,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, input, _ ->
             //reduce the cost of each item in the indicated field
             val field = character.secondaryList.intToField(fieldInteger = input!!)
@@ -298,6 +312,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -314,6 +329,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //add the desired amount of martial knowledge
             when(cost){
@@ -344,6 +360,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -360,6 +377,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -376,6 +394,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //let secondary list know of the change and update characteristics accordingly
             character.secondaryList.allTradesTaken.value = true
@@ -404,6 +423,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -420,6 +440,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -436,6 +457,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //update fatigue points as desired
             when(cost){
@@ -470,6 +492,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, input, _ ->
             character.changeSize(sizeInput = input!!)
         },
@@ -490,6 +513,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //set bonus wealth to the indicated value
             when(cost){
@@ -516,6 +540,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //set regeneration bonus value
             when(cost){
@@ -550,6 +575,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -566,6 +592,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -582,6 +609,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = true,
         onTake = null,
         onRemove = {character, _, _ ->
             character.magic.loseMagic()
@@ -600,6 +628,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -616,6 +645,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -632,6 +662,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -648,6 +679,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, _, _ ->
             //remove any individual discipline access acquired
             val removable = character.advantageRecord.getAdvantage(advantageString = "psyDisciplineAccess")
@@ -677,6 +709,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //apply desired initiative bonus to the character
             when(cost){
@@ -707,6 +740,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -723,6 +757,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, input, cost ->
             //apply the desired bonus to the indicated characteristic
             val characteristic =
@@ -761,6 +796,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(2, 3),
         pickedCost = 0,
+        fullSBL = true,
         onTake = {character, input, cost ->
             //add level bonuses to the indicated field characteristics
             val charList = character.secondaryList.intToField(fieldInteger = input!!)
@@ -795,6 +831,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //add desired bonus to magic resistance
             when(cost){
@@ -823,6 +860,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             when(cost){
                 //set bonuses for the appropriate resistances
@@ -869,6 +907,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1, 2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //give bonus points to psychic resistance
             when(cost){
@@ -897,6 +936,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -927,6 +967,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -943,6 +984,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -959,6 +1001,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -975,6 +1018,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -991,6 +1035,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1007,6 +1052,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1023,6 +1069,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1039,6 +1086,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1055,6 +1103,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1071,6 +1120,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1087,6 +1137,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply penalty to physical resistance
             character.combat.physicalRes.setMultiplier(multVal = 0.5)
@@ -1109,6 +1160,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1125,6 +1177,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, input, _ ->
             //apply penalty to stat
             character.primaryList.allPrimaries()[input!!].setBonus(bonusInput = -2)
@@ -1147,6 +1200,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1163,6 +1217,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1179,6 +1234,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply fatigue penalty
             character.combat.specFatigue.intValue -= 1
@@ -1203,6 +1259,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1219,6 +1276,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1235,6 +1293,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply penalty to disease resistance
             character.combat.diseaseRes.setMultiplier(multVal = 0.5)
@@ -1257,6 +1316,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply regeneration penalty
             character.combat.specRegen.intValue -= 1
@@ -1281,6 +1341,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1, -2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -1297,6 +1358,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1, -2),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, cost ->
             //apply desired initiative penalty
             when(cost){
@@ -1329,6 +1391,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply magic resistance penalty
             character.combat.magicRes.setMultiplier(multVal = 0.5)
@@ -1351,6 +1414,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             //apply poison resistance penalty
             character.combat.venomRes.setMultiplier(multVal = 0.5)
@@ -1373,6 +1437,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = {character, _, _ ->
             character.setAppearance(newAppearance = 2)
         },
@@ -1391,6 +1456,7 @@ class CommonAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
+        fullSBL = false,
         onTake = null,
         onRemove = null
     )

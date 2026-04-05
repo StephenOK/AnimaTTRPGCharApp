@@ -54,6 +54,7 @@ class RaceAdvantages{
                 multPicked = null,
                 cost = reference.cost,
                 pickedCost = reference.pickedCost,
+                fullSBL = false,
                 onTake = reference.onTake,
                 onRemove = reference.onRemove
             )
@@ -162,6 +163,7 @@ class RaceAdvantages{
                 multPicked = null,
                 cost = reference.cost,
                 pickedCost = reference.pickedCost,
+                fullSBL = false,
                 onTake = reference.onTake,
                 onRemove = reference.onRemove
             )
@@ -369,6 +371,7 @@ class RaceAdvantages{
                 multPicked = null,
                 cost = reference.cost,
                 pickedCost = reference.pickedCost,
+                fullSBL = false,
                 onTake = reference.onTake,
                 onRemove = reference.onRemove
             )

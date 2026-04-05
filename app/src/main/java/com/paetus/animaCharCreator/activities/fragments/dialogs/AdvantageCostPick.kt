@@ -142,11 +142,19 @@ fun AdvantageCostPick(
             //button to confirm user's selection
             TextButton(
                 onClick = {
-                    //if selecting option and cost must also be chosen, go to cost selection
-                    if(advantageFragVM.adjustingPage.value == 1 &&
-                        advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
-                        advantageFragVM.setAdjustingPage(pageNum = 2)
-                    //otherwise attempt advantage acquisition
+                    //if selecting advantage's option
+                    if(advantageFragVM.adjustingPage.value == 1){
+                        //if the user has made a selection
+                        if(advantageFragVM.optionPicked.value != null){
+                            //go to the cost selection if one is needed
+                            if(advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
+                                advantageFragVM.setAdjustingPage(pageNum = 2)
+                            //otherwise, acquire the advantage
+                            else
+                                closeDialog(advantageFragVM.acquireAdvantage())
+                        }
+                    }
+                    //acquire the advantage if on the cost page
                     else
                         closeDialog(advantageFragVM.acquireAdvantage())
                 }

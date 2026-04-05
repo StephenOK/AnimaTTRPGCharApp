@@ -25,13 +25,42 @@ class SblAdvantages(
         val output = super.acquireAdvantage(advantageBase, taken, takenCost, multTaken)
 
         //if advantage successfully applied
-        if(output == null)
-            //implement advantage to all character records
-            sblChar.levelLoop(
-                endLevel = 20
-            ){character ->
-                character.advantageRecord.acquireAdvantage(advantageBase, taken, takenCost, multTaken)
-            }
+        if(output == null) {
+            //create a copy of the applied advantage
+            val advantageCopy = Advantage(
+                saveTag = advantageBase.saveTag,
+                name = advantageBase.name,
+                description = advantageBase.description,
+                effect = advantageBase.effect,
+                restriction = advantageBase.restriction,
+                special = advantageBase.special,
+                options = advantageBase.options,
+                picked = taken,
+                multPicked = multTaken,
+                cost = advantageBase.cost,
+                pickedCost = takenCost,
+                fullSBL = advantageBase.fullSBL,
+                onTake = advantageBase.onTake,
+                onRemove = advantageBase.onRemove
+            )
+
+            //apply it to the level 0 record
+            sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.add(advantageCopy)
+
+            //implement advantage to all character records if needed
+            if(advantageCopy.fullSBL)
+                sblChar.levelLoop(
+                    endLevel = 20
+                ) { character ->
+                    advantageCopy.onTake?.let {
+                        it(
+                            character,
+                            taken,
+                            takenCost
+                        )
+                    }
+                }
+        }
 
         //give output
         return output

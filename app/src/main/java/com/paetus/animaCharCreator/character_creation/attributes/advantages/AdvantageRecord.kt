@@ -260,6 +260,7 @@ open class AdvantageRecord(
             multPicked = multTaken,
             cost = advantageBase.cost,
             pickedCost = takenCost,
+            fullSBL = advantageBase.fullSBL,
             onTake = advantageBase.onTake,
             onRemove = advantageBase.onRemove
         )

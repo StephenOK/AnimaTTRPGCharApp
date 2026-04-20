@@ -371,7 +371,7 @@ private fun HeldAdvantageDisplay(
                 " (${stringArrayResource(id = advantage.options)[advantage.picked]})"
             //otherwise get custom characteristic name
             else
-                " (${advantageFragVM.getCustomName(38 - advantage.picked)} - Custom)"
+                " (${advantageFragVM.getCustomName(advantage.picked)} - Custom)"
         }
         else null
 

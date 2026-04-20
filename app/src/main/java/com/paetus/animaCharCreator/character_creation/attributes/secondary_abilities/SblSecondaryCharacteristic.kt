@@ -58,6 +58,23 @@ open class SblSecondaryCharacteristic(
     }
 
     /**
+     * Change any deduction to the development point cost by the indicated amount.
+     *
+     * @param dpDeduction amount to change the deduction by
+     */
+    override fun setDevelopmentDeduction(dpDeduction: Int) {
+        //apply the deduction to the SBL level
+        developmentDeduction.intValue += dpDeduction
+
+        //apply the deduction to each level record
+        parent.sblChar.levelLoop(
+            endLevel = 20
+        ){character ->
+            character.secondaryList.getAllSecondaries()[getIndex()].setDevelopmentDeduction(dpDeduction = dpDeduction)
+        }
+    }
+
+    /**
      * Set the class points obtained for this characteristic.
      *
      * @param classBonus value to set the class points to
@@ -127,12 +144,7 @@ open class SblSecondaryCharacteristic(
      * Recalculates the total value after any other setter is called.
      */
     override fun refreshTotal() {
-        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue
-
-        //add special level bonus from each record
-        parent.sblChar.levelLoop{character ->
-            total.intValue += character.secondaryList.getAllSecondaries()[getIndex()].specialPerLevel.intValue * character.lvl.intValue
-        }
+        total.intValue = modVal.intValue + special.intValue + pointsApplied.intValue + classPointTotal.intValue + specialPerLevel.intValue * parent.sblChar.lvl.intValue
 
         //add natural bonus points
         if (natTaken())

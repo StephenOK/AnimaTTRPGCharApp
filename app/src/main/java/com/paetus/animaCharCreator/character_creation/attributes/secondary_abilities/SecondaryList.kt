@@ -139,7 +139,7 @@ open class SecondaryList(
      *
      * @param charName name of the custom characteristic to find
      */
-    fun getCustomIndex(
+    open fun getCustomIndex(
         charName: String
     ): Int{
         return getAllCustoms().indexOf(getCustomCharacteristic(charName = charName))

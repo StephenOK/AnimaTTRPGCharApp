@@ -458,9 +458,28 @@ class SblChar(): BaseCharacter() {
         magic.setProjImbalance(imbalance = charRefs[0]!!.magic.magProjImbalance.intValue)
         magic.imbalanceIsAttack.value = charRefs[0]!!.magic.imbalanceIsAttack.value
 
-        //remove advantages
-        while(!advantageRecord.takenAdvantages.isEmpty())
-            advantageRecord.removeAdvantage(advantageRecord.takenAdvantages.first())
+        while(!advantageRecord.takenAdvantages.isEmpty()){
+            //get the next removed advantage
+            val nextAdvantage = advantageRecord.takenAdvantages.first()
+
+            //perform an action based on the advantage removed
+            when(nextAdvantage.name){
+                //apply cost deduction to the indicated characteristic
+                R.string.subjectAptitude ->{
+                    charRefs[0]!!.secondaryList.getAllSecondaries()[nextAdvantage.picked!!].setDevelopmentDeduction(dpDeduction = nextAdvantage.cost[nextAdvantage.pickedCost])
+                }
+                //apply cost deduction to the indicated secondary field
+                R.string.fieldAptitude ->{
+                    charRefs[0]!!.secondaryList.intToField(fieldInteger = nextAdvantage.picked!!).forEach{
+                        it.setDevelopmentDeduction(dpDeduction = 1)
+                    }
+                }
+                else -> {}
+            }
+
+            //remove the advantage
+            advantageRecord.removeAdvantage(nextAdvantage)
+        }
 
         super.setName(newName = charRefs[0]!!.charName.value)
         super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
@@ -1163,7 +1182,16 @@ class SblChar(): BaseCharacter() {
         advantageCopy.addAll(charRefs[0]!!.advantageRecord.takenAdvantages)
 
         advantageCopy.forEach{
-            advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
+            //remove the advantage from the record
+            charRefs[0]!!.advantageRecord.removeAdvantage(it)
+
+            //apply the advantage at the SBL level
+            advantageRecord.acquireAdvantage(
+                advantageBase = it,
+                taken = it.picked,
+                takenCost = it.pickedCost,
+                multTaken = it.multPicked
+            )
         }
 
         //set currency maximums

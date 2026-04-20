@@ -19,7 +19,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -36,7 +35,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = {character, input, _ ->
             //add the desired element as a natural path bonus
             character.magic.retrieveBooks()[input!!].setNatural(isNat = true)
@@ -59,7 +57,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -76,7 +73,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -93,7 +89,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -110,7 +105,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -127,7 +121,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -144,7 +137,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -161,7 +153,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        fullSBL = false,
         onTake = {character, _, cost ->
             //apply the desired zeon recovery bonus
             when(cost){
@@ -197,7 +188,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -214,7 +204,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -231,7 +220,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -248,7 +236,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -265,7 +252,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = true,
         onTake = {character, _, _ ->
             character.magic.setMagicTies(true)
         },
@@ -286,7 +272,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = {character, _, _ ->
             //apply zeon recovery penalty
             character.magic.changeRecoveryMult(0.5)
@@ -309,7 +294,6 @@ class MagicAdvantages{
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
-        fullSBL = true,
         onTake = {character, _, _ ->
             //remove any ability to recover zeon
             character.magic.changeRecoveryMult(0.0)
@@ -333,7 +317,6 @@ class MagicAdvantages{
         cost = listOf(-1),
         pickedCost = 0,
         onTake = null,
-        fullSBL = false,
         onRemove = null
     )
 

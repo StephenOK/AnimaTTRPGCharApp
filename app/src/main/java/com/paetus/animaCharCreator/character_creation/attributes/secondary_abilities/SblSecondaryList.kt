@@ -89,6 +89,31 @@ class SblSecondaryList(
     }
 
     /**
+     * Retrieves the desired custom characteristic from the name input.
+     *
+     * @param charName name of the custom characteristic to find
+     * @return the desired characteristic, if found
+     */
+    private fun getCustomSblCharacteristic(
+        charName: String
+    ): SblCustomCharacteristic? {
+        getAllSblCustoms().forEach{customChar ->
+            if(customChar.name.value == charName) return customChar
+        }
+
+        return null
+    }
+
+    /**
+     * Get the index number of the indicated custom characteristic.
+     *
+     * @param charName name of the custom characteristic to find
+     */
+    override fun getCustomIndex(charName: String): Int {
+        return getAllSblCustoms().indexOf(getCustomSblCharacteristic(charName = charName))
+    }
+
+    /**
      * Retrieves all secondary characteristics this character has access to.
      *
      * @return all secondaries available to the character

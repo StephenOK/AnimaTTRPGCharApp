@@ -39,27 +39,12 @@ class SblAdvantages(
                 multPicked = multTaken,
                 cost = advantageBase.cost,
                 pickedCost = takenCost,
-                fullSBL = advantageBase.fullSBL,
                 onTake = advantageBase.onTake,
                 onRemove = advantageBase.onRemove
             )
 
             //apply it to the level 0 record
             sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.add(advantageCopy)
-
-            //implement advantage to all character records if needed
-            if(advantageCopy.fullSBL)
-                sblChar.levelLoop(
-                    endLevel = 20
-                ) { character ->
-                    advantageCopy.onTake?.let {
-                        it(
-                            character,
-                            taken,
-                            takenCost
-                        )
-                    }
-                }
         }
 
         //give output
@@ -75,11 +60,7 @@ class SblAdvantages(
         //attempt to remove advantage
         super.removeAdvantage(advantage)
 
-        //save value to the level 0 record
-        sblChar.levelLoop(
-            endLevel = 20
-        ){character ->
-            character.advantageRecord.removeAdvantage(advantage = advantage)
-        }
+        //remove item from the level 0 record
+        sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.remove(element = advantage)
     }
 }

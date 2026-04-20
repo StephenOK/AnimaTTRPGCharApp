@@ -168,9 +168,7 @@ open class AdvantageRecord(
             //forbid reduction of growth stat to below zero
             commonAdvantages().subjectAptitude -> {
                 //get the indicated characteristic, be it default or custom
-                val secondary =
-                    if(taken!! < 38) charInstance.secondaryList.fullList()[taken]
-                    else charInstance.secondaryList.getAllCustoms()[taken - 38]
+                val secondary = charInstance.secondaryList.getAllSecondaries()[taken!!]
 
                 //check that stat does not fall to or below zero
                 if(secondary.devPerPoint.intValue - advantageBase.cost[takenCost] <= 0)
@@ -260,7 +258,6 @@ open class AdvantageRecord(
             multPicked = multTaken,
             cost = advantageBase.cost,
             pickedCost = takenCost,
-            fullSBL = advantageBase.fullSBL,
             onTake = advantageBase.onTake,
             onRemove = advantageBase.onRemove
         )

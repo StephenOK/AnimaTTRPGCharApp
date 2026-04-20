@@ -30,7 +30,6 @@ open class Advantage(
     val multPicked: List<Int>?,
     val cost: List<Int>,
     val pickedCost: Int,
-    val fullSBL: Boolean,
     val onTake: ((BaseCharacter, Int?, Int) -> Unit)?,
     val onRemove: ((BaseCharacter, Int?, Int) -> Unit)?
 ){
@@ -50,7 +49,6 @@ open class Advantage(
                 picked == comparison.picked &&
                 cost == comparison.cost &&
                 pickedCost == comparison.pickedCost &&
-                fullSBL == comparison.fullSBL &&
                 onTake == comparison.onTake &&
                 onRemove == comparison.onRemove
     }

@@ -7,6 +7,8 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -134,7 +136,13 @@ class AdvantageFragmentViewModel(
     fun getCustomName(
         customIndex: Int
     ): String{
-        return charInstance.secondaryList.getAllCustoms()[customIndex].name.value
+        //get the characteristic item
+        val characteristic = charInstance.secondaryList.getAllSecondaries()[customIndex]
+
+        //return the item's name
+        return if(characteristic is CustomCharacteristic)
+            characteristic.name.value
+        else (characteristic as SblCustomCharacteristic).name.value
     }
 
     /**

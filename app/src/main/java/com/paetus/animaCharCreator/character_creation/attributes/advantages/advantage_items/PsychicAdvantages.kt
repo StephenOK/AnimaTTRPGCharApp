@@ -19,7 +19,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -36,7 +35,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(1, 2, 3),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -53,7 +51,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -70,7 +67,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -87,7 +83,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -104,7 +99,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -121,7 +115,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -144,7 +137,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -161,7 +153,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(-2),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -178,7 +169,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )
@@ -195,7 +185,6 @@ class PsychicAdvantages{
         multPicked = null,
         cost = listOf(-1),
         pickedCost = 0,
-        fullSBL = false,
         onTake = null,
         onRemove = null
     )

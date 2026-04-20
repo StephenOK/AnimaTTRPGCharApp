@@ -17,6 +17,7 @@ import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summo
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
@@ -605,9 +606,18 @@ open class BaseCharacter{
             //apply primary weapon choice
             weaponProficiencies.setPrimaryWeapon(newHost.weaponProficiencies.primaryWeapon.intValue)
 
-            //apply advantages to character
-            newHost.advantageRecord.takenAdvantages.forEach{
-                advantageRecord.acquireAdvantage(it, it.picked, it.pickedCost, it.multPicked)
+            //apply secondary characteristic deduction
+            newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries().forEach{secondary ->
+                //get the matching index's location
+                val index = newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries().indexOf(secondary)
+
+                //get the deduction value for this characteristic at this and the previous level
+                val thisDeduction = secondaryList.getAllSecondaries()[index].developmentDeduction.intValue
+                val prevDeduction = secondary.developmentDeduction.intValue
+
+                //apply the appropriate deduction to this level's item
+                if(thisDeduction != prevDeduction)
+                    secondaryList.getAllSecondaries()[index].setDevelopmentDeduction(dpDeduction = prevDeduction - thisDeduction)
             }
         }
     }

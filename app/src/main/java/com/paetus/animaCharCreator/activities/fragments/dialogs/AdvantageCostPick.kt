@@ -21,6 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 
@@ -84,10 +87,24 @@ fun AdvantageCostPick(
                         //add custom secondary characteristic options for natural learner and subject aptitude
                         if(advantageFragVM.adjustedAdvantage.value!!.saveTag == "subjectAptitude" ||
                             advantageFragVM.adjustedAdvantage.value!!.saveTag == "naturalLearner"){
-                            secondaryList.getAllCustoms().forEach{secondary ->
+                            //get the appropriate custom secondary items
+                            val customList =
+                                if(secondaryList is SblSecondaryList)
+                                    secondaryList.getAllSblCustoms()
+                                else
+                                    secondaryList.getAllCustoms()
+
+                            customList.forEach{secondary ->
+                                //get the characteristic's name
+                                val scName =
+                                    if(secondary is CustomCharacteristic)
+                                        secondary.name.value
+                                    else
+                                        (secondary as SblCustomCharacteristic).name.value
+
                                 item{
                                     OptionRow(
-                                        name = secondary.name.value + " (Custom)",
+                                        name = "$scName (Custom)",
                                         secondaryList = secondaryList,
                                         advantageFragVM = advantageFragVM
                                     )

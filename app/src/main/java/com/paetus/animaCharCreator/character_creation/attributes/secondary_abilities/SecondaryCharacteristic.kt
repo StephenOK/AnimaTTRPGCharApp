@@ -88,7 +88,7 @@ open class SecondaryCharacteristic(private val parent: SecondaryList){
      *
      * @param dpDeduction amount to change the deduction by
      */
-    fun setDevelopmentDeduction(dpDeduction: Int){
+    open fun setDevelopmentDeduction(dpDeduction: Int){
         developmentDeduction.intValue += dpDeduction
         updateDevSpent()
         parent.charInstance.updateTotalSpent()

@@ -57,11 +57,11 @@ open class PrimaryCharacteristic(
         //remove any excess advantage bonuses
         while(inputValue.intValue + bonus.intValue > advantageCap &&
                 charInstance.advantageRecord.getAdvantage(
-                    name = "Add One Point to a Characteristic",
+                    name = "characteristicPoint",
                     taken = charIndex,
                     cost = 0
                 ) != null){
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0)!!)
+            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.getAdvantage("characteristicPoint", charIndex, 0)!!)
         }
 
         //update related values

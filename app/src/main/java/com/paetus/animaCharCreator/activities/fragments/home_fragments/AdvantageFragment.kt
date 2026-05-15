@@ -383,7 +383,7 @@ private fun HeldAdvantageDisplay(
         buttonIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.outline_close_24),
-                contentDescription = "Add Advantage"
+                contentDescription = "Remove Advantage"
             )
         }
     ){

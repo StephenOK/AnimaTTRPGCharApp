@@ -17,6 +17,8 @@ import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.modules.SblProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryChar
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.SblPrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
+import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
@@ -479,6 +481,13 @@ class SblChar(): BaseCharacter() {
 
             //remove the advantage
             advantageRecord.removeAdvantage(nextAdvantage)
+        }
+
+        //remove all psychic discipline and power investment
+        levelLoop(endLevel = 20){character ->
+            psychic.getPsyLibrary().allDisciplines.forEach{discipline ->
+                character.psychic.removeLegalDiscipline(discipline = discipline)
+            }
         }
 
         super.setName(newName = charRefs[0]!!.charName.value)
@@ -1181,6 +1190,16 @@ class SblChar(): BaseCharacter() {
         val advantageCopy = mutableListOf<Advantage>()
         advantageCopy.addAll(charRefs[0]!!.advantageRecord.takenAdvantages)
 
+        //record held psychic discipline and power investments
+        val disciplineList = mutableListOf<Discipline>()
+        disciplineList.addAll(charRefs[0]!!.psychic.disciplineInvestment)
+
+        val powerList = mutableMapOf<PsychicPower, Int>()
+        charRefs[0]!!.psychic.masteredPowers.forEach{(power, enhancement) ->
+            powerList += Pair(power, enhancement)
+        }
+        powerList.plus(charRefs[0]!!.psychic.masteredPowers)
+
         advantageCopy.forEach{
             //remove the advantage from the record
             charRefs[0]!!.advantageRecord.removeAdvantage(it)
@@ -1192,6 +1211,12 @@ class SblChar(): BaseCharacter() {
                 takenCost = it.pickedCost,
                 multTaken = it.multPicked
             )
+        }
+
+        //restore level 0 psychic disciplines, powers, and enhancements
+        charRefs[0]!!.psychic.disciplineInvestment.addAll(disciplineList)
+        powerList.forEach{(power, enhancement) ->
+            charRefs[0]!!.psychic.masteredPowers += Pair(power, enhancement)
         }
 
         //set currency maximums

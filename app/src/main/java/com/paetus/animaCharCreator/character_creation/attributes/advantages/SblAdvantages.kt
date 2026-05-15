@@ -60,7 +60,17 @@ class SblAdvantages(
         //attempt to remove advantage
         super.removeAdvantage(advantage)
 
+        var removeItem: Advantage? = null
+
+        //find thhe advantage to be removed from the level 0 record
+        sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.forEach{heldAdv ->
+            if(heldAdv.isEquivalent(comparison = advantage)){
+                removeItem = heldAdv
+                return@forEach
+            }
+        }
+
         //remove item from the level 0 record
-        sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.remove(element = advantage)
+        sblChar.charRefs[0]!!.advantageRecord.takenAdvantages.remove(element = removeItem)
     }
 }

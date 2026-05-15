@@ -719,6 +719,5 @@ class SblPsychic(
         updatePsyProjectionBought()
         updateInnateSlots()
         updateDisciplines()
-        updatePowers()
     }
 }

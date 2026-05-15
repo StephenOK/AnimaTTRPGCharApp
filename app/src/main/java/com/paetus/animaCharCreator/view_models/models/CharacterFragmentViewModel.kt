@@ -509,14 +509,16 @@ class CharacterFragmentViewModel(
         changeFunc = {
             this.setSizeInput()
             this.setWeightIndex()
-        }
+        },
+        charFragVM = this
     )
 
     private val dexterityData = PrimeCharacteristicData(
         name = 1,
         primaryStat = charInstance.primaryList.dex,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val agilityData = PrimeCharacteristicData(
@@ -526,42 +528,48 @@ class CharacterFragmentViewModel(
             setBonusColor()
             this.setMovementDisplay()
         },
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val constitutionData = PrimeCharacteristicData(
         name = 3,
         primaryStat = charInstance.primaryList.con,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {this.setSizeInput()}
+        changeFunc = {this.setSizeInput()},
+        charFragVM = this
     )
 
     private val intelligenceData = PrimeCharacteristicData(
         name = 4,
         primaryStat = charInstance.primaryList.int,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val powerData = PrimeCharacteristicData(
         name = 5,
         primaryStat = charInstance.primaryList.pow,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val willpowerData = PrimeCharacteristicData(
         name = 6,
         primaryStat = charInstance.primaryList.wp,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val perceptionData = PrimeCharacteristicData(
         name = 7,
         primaryStat = charInstance.primaryList.per,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     //gather all primary data
@@ -604,7 +612,8 @@ class CharacterFragmentViewModel(
         val name: Int,
         private val primaryStat: PrimaryCharacteristic,
         val bonusColorChange: () -> Unit,
-        val changeFunc: () -> Unit
+        val changeFunc: () -> Unit,
+        val charFragVM: CharacterFragmentViewModel
     ){
         //initialize characteristic input value
         private val _input = MutableStateFlow(value = primaryStat.inputValue.intValue.toString())
@@ -689,6 +698,20 @@ class CharacterFragmentViewModel(
         fun setOutput() {
             _bonus.update{primaryStat.bonus.intValue}
             _modTotal.update{primaryStat.outputMod.intValue}
+        }
+
+        /**
+         * Determines if the primary characteristic is fixed.
+         *
+         * @return true if user may not change the value
+         */
+        fun statLocked(): Boolean{
+            //search for the associated advantage and return its presence
+            return charFragVM.charInstance.advantageRecord.getAdvantage(
+                name = "characteristicToNine",
+                taken = name,
+                cost = 0,
+            ) != null
         }
 
         /**

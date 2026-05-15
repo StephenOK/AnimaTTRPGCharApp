@@ -446,13 +446,32 @@ private fun PrimaryRow(
             inputText = primeItem.input.collectAsState().value,
             inputFunction = {
                 //change input and other necessary items if able and in legal range
-                if(charFragVM.getChangeable() && it.toInt() in 1..20)
-                    primeItem.setInput(statVal = it.toInt())
+                if(charFragVM.getChangeable() && it.toInt() in 1..20){
+                    //stop change if stat is fixed
+                    if(primeItem.statLocked())
+                        Toast.makeText(
+                            context,
+                            R.string.lockedToNine,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    else
+                        primeItem.setInput(statVal = it.toInt())
+                }
                 //notify user of failure do to not currently changeable
                 else if(!charFragVM.getChangeable())
                     Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
             },
-            emptyFunction = {primeItem.setInput(display = "")},
+            emptyFunction = {
+                //stop change if stat is fixed
+                if(primeItem.statLocked())
+                    Toast.makeText(
+                        context,
+                        R.string.lockedToNine,
+                        Toast.LENGTH_LONG
+                    ).show()
+                else
+                    primeItem.setInput(display = "")
+            },
             refill = {primeItem.currentInput()},
             modifier = Modifier
                 .weight(0.2f)

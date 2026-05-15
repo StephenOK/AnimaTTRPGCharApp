@@ -221,6 +221,8 @@ open class WeaponProficiencies(private val charInstance: BaseCharacter){
                         charInstance.combat.dodge.total.intValue
             martialMax.intValue /= 40
 
+            if(martialMax.intValue < 0) martialMax.intValue = 0
+
             validateMartials()
         }
     }

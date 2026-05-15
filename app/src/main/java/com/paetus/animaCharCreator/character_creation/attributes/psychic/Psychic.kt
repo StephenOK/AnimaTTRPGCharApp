@@ -278,7 +278,7 @@ open class Psychic(private val charInstance: BaseCharacter){
     /**
      * Removes a discipline from the legally acquirable list.
      *
-     * @param discipline discipline to be removed from the legal list
+     * @param discipline psychic school to be removed from the legal list
      */
     fun removeLegalDiscipline(discipline: Discipline){
         //remove the item from the legal list

@@ -9,6 +9,7 @@ import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
+import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
@@ -533,7 +534,12 @@ class MagicFragmentViewModel(
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
         },
-        getValid = {magic.getValidProjection()}
+        getValid = {
+            if(charInstance is SblChar)
+                (magic as SblMagic).getValidProjectionAtLevel(charInstance.lvl.intValue)
+            else
+                magic.getValidProjection()
+        }
     ){it.update{magic.magProjTotal.intValue.toString()}}
 
     //gather purchase data created

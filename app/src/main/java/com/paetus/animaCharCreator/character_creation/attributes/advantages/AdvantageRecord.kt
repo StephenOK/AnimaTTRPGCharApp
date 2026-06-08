@@ -103,7 +103,7 @@ open class AdvantageRecord(
                     commonAdvantages().magicSusceptibility -> return R.string.sylvainRestriction
 
                     //forbid Dark element option for elemental compatibility
-                    charInstance.objectDB.magicAdvantages.elementalCompatibility -> if(taken == 1)
+                    magicAdvantages().elementalCompatibility -> if(taken == 1)
                         return R.string.sylvainDarkRestriction
                 }
             }
@@ -180,12 +180,12 @@ open class AdvantageRecord(
                 val prevGrowth =
                     when(taken){
                         0 -> charInstance.classes.getClass().athGrowth
-                        1 -> charInstance.classes.getClass().createGrowth
+                        1 -> charInstance.classes.getClass().socGrowth
                         2 -> charInstance.classes.getClass().percGrowth
-                        3 -> charInstance.classes.getClass().socGrowth
-                        4 -> charInstance.classes.getClass().subterGrowth
-                        5 -> charInstance.classes.getClass().intellGrowth
-                        6 -> charInstance.classes.getClass().vigGrowth
+                        3 -> charInstance.classes.getClass().intellGrowth
+                        4 -> charInstance.classes.getClass().vigGrowth
+                        5 -> charInstance.classes.getClass().subterGrowth
+                        6 -> charInstance.classes.getClass().createGrowth
                         else -> 0
                     }
 
@@ -198,6 +198,12 @@ open class AdvantageRecord(
             commonAdvantages().psyDisciplineAccess -> {
                 if(this.getAdvantage("allPsyDisciplines") != null)
                     return R.string.redundantPsychicDiscipline
+            }
+
+            //prevent decreasing a characteristic below 3
+            commonAdvantages().deductCharacteristic -> {
+                if(charInstance.primaryList.allPrimaries()[taken!!].total.intValue < 5)
+                    return R.string.deductPrimaryRestriction
             }
 
             //character's class archetype must be one of the indicated types

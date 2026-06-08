@@ -83,7 +83,7 @@ open class ClassInstances(
     /**
      * Retrieves the class associated with the current pointer state.
      */
-    fun getClass(): CharClass{return getClassRecord().allClasses[ownClass.intValue]}
+    open fun getClass(): CharClass{return getClassRecord().allClasses[ownClass.intValue]}
 
     /**
      * Attempts to change the selection in the indicated record index.

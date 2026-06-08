@@ -42,6 +42,13 @@ class SblClassInstances(
     }
 
     /**
+     * Retrieves the class associated with the current pointer state.
+     */
+    override fun getClass(): CharClass {
+        return charInstance.charRefs[charInstance.lvl.intValue]!!.classes.getClass()
+    }
+
+    /**
      * Function to change the necessary class records as requested.
      *
      * @param startLevel level record to begin the change at

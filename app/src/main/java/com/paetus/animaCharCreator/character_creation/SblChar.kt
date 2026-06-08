@@ -1190,33 +1190,24 @@ class SblChar(): BaseCharacter() {
         val advantageCopy = mutableListOf<Advantage>()
         advantageCopy.addAll(charRefs[0]!!.advantageRecord.takenAdvantages)
 
-        //record held psychic discipline and power investments
-        val disciplineList = mutableListOf<Discipline>()
-        disciplineList.addAll(charRefs[0]!!.psychic.disciplineInvestment)
-
-        val powerList = mutableMapOf<PsychicPower, Int>()
-        charRefs[0]!!.psychic.masteredPowers.forEach{(power, enhancement) ->
-            powerList += Pair(power, enhancement)
-        }
-        powerList.plus(charRefs[0]!!.psychic.masteredPowers)
-
-        advantageCopy.forEach{
-            //remove the advantage from the record
-            charRefs[0]!!.advantageRecord.removeAdvantage(it)
+        advantageCopy.forEach{advantage ->
+            //remove advantage, but prevent removing saved magic and psychic abilities
+            if(advantage.name == R.string.psyDiscAccess ||
+                  advantage.name == R.string.gift ||
+                  advantage.name == R.string.allPsyDisciplines){
+                charRefs[0]!!.advantageRecord.takenAdvantages -= advantage
+            }
+            else
+                //remove the advantage from the record
+                charRefs[0]!!.advantageRecord.removeAdvantage(advantage)
 
             //apply the advantage at the SBL level
             advantageRecord.acquireAdvantage(
-                advantageBase = it,
-                taken = it.picked,
-                takenCost = it.pickedCost,
-                multTaken = it.multPicked
+                advantageBase = advantage,
+                taken = advantage.picked,
+                takenCost = advantage.pickedCost,
+                multTaken = advantage.multPicked
             )
-        }
-
-        //restore level 0 psychic disciplines, powers, and enhancements
-        charRefs[0]!!.psychic.disciplineInvestment.addAll(disciplineList)
-        powerList.forEach{(power, enhancement) ->
-            charRefs[0]!!.psychic.masteredPowers += Pair(power, enhancement)
         }
 
         //set currency maximums

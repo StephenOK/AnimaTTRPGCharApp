@@ -257,7 +257,12 @@ class CharacterFragmentViewModel(
      *
      * @param display value to set the display to
      */
-    fun setAppearInput(display: String){_appearInput.update{display}}
+    fun setAppearInput(display: String){
+        if(isNotUnattractive())
+            _appearInput.update{display}
+        else
+            _appearInput.update{"2"}
+    }
 
     /**
      * Get current value input for the character's appearance value.
@@ -270,7 +275,7 @@ class CharacterFragmentViewModel(
      * @return true if character has the Unattractive disadvantage
      */
     fun isNotUnattractive(): Boolean{
-        return charInstance.advantageRecord.getAdvantage(advantageString = "unattractive") == null
+        return !charInstance.isUnattractive.value
     }
 
     /**

@@ -1363,9 +1363,11 @@ class CommonAdvantages{
         cost = listOf(-1),
         pickedCost = 0,
         onTake = {character, _, _ ->
-            character.setAppearance(newAppearance = 2)
+            character.setUnattractive(isUnattractive = true)
         },
-        onRemove = null
+        onRemove = {character, _, _ ->
+            character.setUnattractive(isUnattractive = false)
+        }
     )
 
     private val temperatureVulnerability = Advantage(

@@ -2,9 +2,11 @@ package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
 import com.paetus.animaCharCreator.R
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
+import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
 import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -154,7 +156,12 @@ class PsychicFragmentViewModel(
         totalVal = {psychic.psyProjectionTotal.intValue},
         getResource = {R.string.dpLabel},
         getValue = {psychic.psyProjCost()},
-        getValid = {psychic.getValidProjection()},
+        getValid = {
+            if(psychic is SblPsychic)
+                psychic.getValidProjectionAtLevel(psychic.charInstance.lvl.intValue)
+            else
+                psychic.getValidProjection()
+        },
         totalUpdate = {input, item ->
             psychic.buyPsyProjection(projBuy = input)
             item.update{psychic.psyProjectionTotal.intValue}

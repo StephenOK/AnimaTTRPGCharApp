@@ -54,15 +54,28 @@ open class PrimaryCharacteristic(
         //set the base stat value
         else inputValue.intValue = baseIn
 
+        //find any advantage giving bonus to this item
+        val boonAdvantage = charInstance.advantageRecord.getAdvantage(
+            name = "characteristicPoint",
+            taken = charIndex,
+            cost = 0
+        )
+
         //remove any excess advantage bonuses
-        while(inputValue.intValue + bonus.intValue > advantageCap &&
-                charInstance.advantageRecord.getAdvantage(
-                    name = "characteristicPoint",
-                    taken = charIndex,
-                    cost = 0
-                ) != null){
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.getAdvantage("characteristicPoint", charIndex, 0)!!)
+        while(inputValue.intValue + bonus.intValue > advantageCap && boonAdvantage != null){
+            charInstance.advantageRecord.removeAdvantage(advantage = boonAdvantage)
         }
+
+        //find any disadvantage detracting from this item
+        val baneAdvantage = charInstance.advantageRecord.getAdvantage(
+            name = "charDeduction",
+            taken = charIndex,
+            cost = 0
+        )
+
+        //remove invalid stat deduction
+        if(inputValue.intValue <= 3 && baneAdvantage!= null)
+            charInstance.advantageRecord.removeAdvantage(advantage = baneAdvantage)
 
         //update related values
         updateValues()

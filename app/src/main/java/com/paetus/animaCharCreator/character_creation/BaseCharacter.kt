@@ -90,6 +90,7 @@ open class BaseCharacter{
 
     //character's appearance
     val appearance = mutableIntStateOf(value = 5)
+    val isUnattractive = mutableStateOf(value = false)
 
     //character's movement value
     val movement = mutableIntStateOf(value = 20)
@@ -314,14 +315,12 @@ open class BaseCharacter{
      * @param newAppearance value to attempt to set the character's appearance to
      */
     open fun setAppearance(newAppearance: Int){
-        //set appearance to 2 if character has unattractive disadvantage
-        if(advantageRecord.getAdvantage(advantageString = "unattractive") != null)
-            appearance.intValue = 2
-
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
+        if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
             appearance.intValue = newAppearance
     }
+
+    fun setUnattractive(isUnattractive: Boolean){this.isUnattractive.value = isUnattractive}
 
     /**
      * Set the character's gnosis value.

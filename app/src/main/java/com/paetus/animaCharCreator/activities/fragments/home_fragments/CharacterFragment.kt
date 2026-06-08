@@ -300,7 +300,7 @@ fun CharacterPageFragment(
                         inputText = charFragVM.appearInput.collectAsState().value,
                         inputFunction = {
                             //attempt new input and notify user of failed input
-                            if (it.toInt() <= 10 && !charFragVM.setAppearInput(appearance = it.toInt()))
+                            if (charFragVM.isNotUnattractive() && it.toInt() <= 10 && !charFragVM.setAppearInput(appearance = it.toInt()))
                                 Toast.makeText(
                                     context,
                                     context.getString(R.string.appearanceFailure),

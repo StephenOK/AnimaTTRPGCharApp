@@ -162,7 +162,8 @@ fun AdvantageCostPick(
                     //if selecting advantage's option
                     if(advantageFragVM.adjustingPage.value == 1){
                         //if the user has made a selection
-                        if(advantageFragVM.optionPicked.value != null){
+                        if(advantageFragVM.optionPicked.value != null ||
+                            advantageFragVM.halfAttunedOptions.value.size == 5){
                             //go to the cost selection if one is needed
                             if(advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
                                 advantageFragVM.setAdjustingPage(pageNum = 2)

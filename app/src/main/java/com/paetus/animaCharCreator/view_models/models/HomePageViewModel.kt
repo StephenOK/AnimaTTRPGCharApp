@@ -32,6 +32,16 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     private val _exitOpen = MutableStateFlow(value = false)
     val exitOpen = _exitOpen.asStateFlow()
 
+    //initialize reset radio button trackers
+    private val _advantageResetting = MutableStateFlow(value = true)
+    val advantageResetting = _advantageResetting.asStateFlow()
+
+    private val _primaryCharResetting = MutableStateFlow(value = true)
+    val primaryCharResetting = _primaryCharResetting.asStateFlow()
+
+    private val _inventoryResetting = MutableStateFlow(value = true)
+    val inventoryResetting = _inventoryResetting.asStateFlow()
+
     /**
      * Gets the currently displayed fragment.
      *
@@ -50,6 +60,27 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
      * Toggles the open state of the level clear alert.
      */
     fun toggleLevelClear(){_levelClearOpen.update{!levelClearOpen.value}}
+
+    /**
+     * Toggle character's resetting advantage.
+     */
+    fun toggleAdvantageReset(){
+        _advantageResetting.update{!advantageResetting.value}
+    }
+
+    /**
+     * Toggle character's resetting primary characteristics.
+     */
+    fun togglePrimaryCharReset(){
+        _primaryCharResetting.update{!primaryCharResetting.value}
+    }
+
+    /**
+     * Toggle character's resetting inventory.
+     */
+    fun toggleInventoryReset(){
+        _inventoryResetting.update{!inventoryResetting.value}
+    }
 
     /**
      * Opens and closes the failed level change alert.

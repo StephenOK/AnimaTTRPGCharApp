@@ -107,7 +107,8 @@ class SummoningFragmentViewModel(
          * Refreshes the item on page loading.
          */
         fun refreshItem(){
-            setBoughtVal(summonAbility.buyVal.intValue)
+            if(_boughtVal.value != "")
+                setBoughtVal(summonAbility.buyVal.intValue)
         }
     }
 

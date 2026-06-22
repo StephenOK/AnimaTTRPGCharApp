@@ -435,7 +435,18 @@ class SblChar(): BaseCharacter() {
         return output.toList()
     }
 
-    fun zeroReset(){
+    /**
+     * Reset the character's items at level 0.
+     *
+     * @param primaryReset true if the primary stats are being reset
+     * @param advantageReset true if advantages are being reset
+     * @param goodsReset true if inventory is being reset
+     */
+    fun zeroReset(
+        primaryReset: Boolean,
+        advantageReset: Boolean,
+        goodsReset: Boolean
+    ){
         //run level reset
         resetLevel()
 
@@ -460,6 +471,35 @@ class SblChar(): BaseCharacter() {
         magic.setProjImbalance(imbalance = charRefs[0]!!.magic.magProjImbalance.intValue)
         magic.imbalanceIsAttack.value = charRefs[0]!!.magic.imbalanceIsAttack.value
 
+        if(advantageReset) advantageReset()
+
+        super.setName(newName = charRefs[0]!!.charName.value)
+        super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
+        super.setAppearance(newAppearance = charRefs[0]!!.appearance.intValue)
+        super.setGnosis(newGnosis = charRefs[0]!!.gnosis.intValue)
+
+        //prevent any potential change to the exp restriction flag
+        charRefs[0]!!.expLock.value = expLock.value
+
+        if(primaryReset) primaryReset()
+
+        if(goodsReset) inventoryReset()
+    }
+
+    /**
+     * Reset's the character's primary characteristic items.
+     */
+    fun primaryReset(){
+        //reset primary data
+        primaryList.allPrimaries().forEach{primary ->
+            primary.setInput(5)
+        }
+    }
+
+    /**
+     * Reset's the character's advantages.
+     */
+    fun advantageReset(){
         while(!advantageRecord.takenAdvantages.isEmpty()){
             //get the next removed advantage
             val nextAdvantage = advantageRecord.takenAdvantages.first()
@@ -489,20 +529,12 @@ class SblChar(): BaseCharacter() {
                 character.psychic.removeLegalDiscipline(discipline = discipline)
             }
         }
+    }
 
-        super.setName(newName = charRefs[0]!!.charName.value)
-        super.setExp(newExp = charRefs[0]!!.experiencePoints.intValue)
-        super.setAppearance(newAppearance = charRefs[0]!!.appearance.intValue)
-        super.setGnosis(newGnosis = charRefs[0]!!.gnosis.intValue)
-
-        //prevent any potential change to the exp restriction flag
-        charRefs[0]!!.expLock.value = expLock.value
-
-        //reset primary data
-        primaryList.allPrimaries().forEach{primary ->
-            primary.setInput(5)
-        }
-
+    /**
+     * Reset the character's inventory.
+     */
+    fun inventoryReset(){
         //reset available coin maximums
         inventory.maxGold.intValue = 0
         inventory.maxSilver.intValue = 0
@@ -515,6 +547,9 @@ class SblChar(): BaseCharacter() {
         inventory.countSpent()
     }
 
+    /**
+     * Reset the character's items for a non-zero level character.
+     */
     fun nonZeroReset(){
         //get the class at this level
         val prevClass = charRefs[lvl.intValue]!!.classes.ownClass.intValue

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -840,14 +842,70 @@ class HomeActivity : AppCompatActivity() {
     ){
         AlertDialog(
             onDismissRequest = {},
-            title = {Text(text = stringResource(id = R.string.clearLevelTitle))},
+            title = {
+                Column {
+                    Text(text = stringResource(id = R.string.clearLevelTitle))
+
+                    //display options for level 0 reset
+                    if(charInstance.lvl.intValue == 0){
+                        //advantage reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.advantageResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.toggleAdvantageReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetAdvantages),
+                                fontSize = 15.sp
+                            )
+                        }
+
+                        //primary characteristic reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.primaryCharResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.togglePrimaryCharReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetPrimaries),
+                                fontSize = 15.sp
+                            )
+                        }
+
+                        //inventory reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.inventoryResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.toggleInventoryReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetInventory),
+                                fontSize = 15.sp
+                            )
+                        }
+                    }
+                }
+            },
             confirmButton = {
                 //button to confirm reset action
                 TextButton(
                     onClick = {
                         //reset the level and update the required items
                         if(charInstance.lvl.intValue == 0)
-                            charInstance.zeroReset()
+                            charInstance.zeroReset(
+                                primaryReset = homePageVM.primaryCharResetting.value,
+                                advantageReset = homePageVM.advantageResetting.value,
+                                goodsReset = homePageVM.inventoryResetting.value
+                            )
                         else
                             charInstance.nonZeroReset()
 

@@ -265,14 +265,14 @@ fun MagicFragment(
                             //if imbalance is a legal input
                             if (magFragVM.getImbalanceChangeable() &&
                                 (it.toInt() in 0..30 &&
-                                magFragVM.isGifted() || it.contains(char = '\n'))
+                                        magFragVM.isGifted() || it.contains(char = '\n'))
                             )
                                 magFragVM.setProjectionImbalance(imbalance = it.toInt())
                         },
                         emptyFunction = {
                             magFragVM.setProjectionImbalance(display = "")
                         },
-                        refill = {magFragVM.currentImbalance()},
+                        refill = { magFragVM.currentImbalance() },
                         modifier = Modifier
                             .onFocusChanged {
                                 if (it.isFocused && !magFragVM.isGifted())
@@ -287,8 +287,13 @@ fun MagicFragment(
                             .weight(0.22f)
                     )
 
-                    Spacer(modifier = Modifier.weight(0.01f))
+                }
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     Button(
                         //switch imbalance preference
                         onClick = {

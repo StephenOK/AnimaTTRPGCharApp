@@ -4,8 +4,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.Advantage
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +24,7 @@ import kotlinx.coroutines.flow.update
 class AdvantageFragmentViewModel(
     private val charInstance: BaseCharacter,
     private val advantageRecord: AdvantageRecord
-): ViewModel() {
+): FragmentVM() {
     //initialize creation point display state flow
     private val _creationPoints = MutableStateFlow(value = 3 - advantageRecord.creationPointSpent.intValue)
     val creationPoints = _creationPoints.asStateFlow()
@@ -132,7 +136,13 @@ class AdvantageFragmentViewModel(
     fun getCustomName(
         customIndex: Int
     ): String{
-        return charInstance.secondaryList.getAllCustoms()[customIndex].name.value
+        //get the characteristic item
+        val characteristic = charInstance.secondaryList.getAllSecondaries()[customIndex]
+
+        //return the item's name
+        return if(characteristic is CustomCharacteristic)
+            characteristic.name.value
+        else (characteristic as SblCustomCharacteristic).name.value
     }
 
     /**
@@ -173,6 +183,16 @@ class AdvantageFragmentViewModel(
      * @param advantage advantage to display
      */
     fun setDetailItem(advantage: Advantage){_detailItem.update{advantage}}
+
+    /**
+     * Determine whether the character can currently acquire or remove advantages.
+     *
+     * return true if changeable
+     */
+    fun getAdvantageChangeable(): Boolean{
+        //return true for non-SBL characters or level 0 SBL characters
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
 
     /**
      * Attempts to give an advantage to the character.
@@ -258,27 +278,27 @@ class AdvantageFragmentViewModel(
     //initialize the data for all of the advantage and disadvantage categories
     private val commonAdv = AdvantageButtonData(
         category = R.string.commonAdv,
-        advList = advantageRecord.commonAdvantages.advantages
+        advList = advantageRecord.commonAdvantages().advantages
     )
     private val commonDisadv = AdvantageButtonData(
         category = R.string.commonDisadv,
-        advList = advantageRecord.commonAdvantages.disadvantages
+        advList = advantageRecord.commonAdvantages().disadvantages
     )
     private val magicAdv = AdvantageButtonData(
         category = R.string.magicAdv,
-        advList = advantageRecord.magicAdvantages.advantages
+        advList = advantageRecord.magicAdvantages().advantages
     )
     private val magicDisadv = AdvantageButtonData(
         category = R.string.magicDisadv,
-        advList = advantageRecord.magicAdvantages.disadvantages
+        advList = advantageRecord.magicAdvantages().disadvantages
     )
     private val psychicAdv = AdvantageButtonData(
         category = R.string.psychicAdv,
-        advList = advantageRecord.psychicAdvantages.advantages
+        advList = advantageRecord.psyAdvantages().advantages
     )
     private val psychicDisadv = AdvantageButtonData(
         category = R.string.psychicDisadv,
-        advList = advantageRecord.psychicAdvantages.disadvantages
+        advList = advantageRecord.psyAdvantages().disadvantages
     )
 
     //gather all advantage items
@@ -312,7 +332,7 @@ class AdvantageFragmentViewModel(
     /**
      * Refreshes the page items on the fragment's reload.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //update the advantage list
         updateAdvantagesTaken()
     }

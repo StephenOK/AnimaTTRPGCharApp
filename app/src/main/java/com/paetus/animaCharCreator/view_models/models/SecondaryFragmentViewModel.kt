@@ -1,16 +1,18 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import android.content.Context
 import androidx.compose.ui.geometry.Size
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -25,14 +27,28 @@ import kotlinx.coroutines.flow.update
 class SecondaryFragmentViewModel(
     val charInstance: BaseCharacter,
     val secondaryList: SecondaryList
-): ViewModel() {
+): FragmentVM() {
     //initialize open state of the freelancer bonus options
-    private val _freelancerOptionsOpen = MutableStateFlow(value = charInstance.classes.ownClass.value == charInstance.classes.freelancer)
+    private val _freelancerOptionsOpen = MutableStateFlow(isFreelancer())
     val freelancerOptionsOpen = _freelancerOptionsOpen.asStateFlow()
 
     //initialize open state of custom secondaries page
     private val _customIsOpen = MutableStateFlow(value = false)
     val customIsOpen = _customIsOpen.asStateFlow()
+
+    /**
+     * Determines if the character's current class is freelancer.
+     *
+     * @return true if the character is currently a freelancer
+     */
+    private fun isFreelancer(): Boolean{
+        //if SBL, check the character's current level's class
+        return if(charInstance is SblChar)
+            charInstance.getCharAtLevel().classes.ownClass.intValue == 0
+        //check the character's current class
+        else
+            charInstance.classes.ownClass.intValue == 0
+    }
 
     /**
      * Toggles the open state of the custom secondary characteristic creation dialog.
@@ -86,9 +102,14 @@ class SecondaryFragmentViewModel(
     val allFields = listOf(athletics, social, perceptive, intellectual, vigor, subterfuge, creative)
 
     //get all individual characteristic items
-    private val allCharacteristics = athletics.fieldCharacteristics + social.fieldCharacteristics +
-            perceptive.fieldCharacteristics + intellectual.fieldCharacteristics +
-            vigor.fieldCharacteristics + subterfuge.fieldCharacteristics + creative.fieldCharacteristics
+    private val allCharacteristics =
+        athletics.fieldCharacteristics.value +
+                social.fieldCharacteristics.value +
+            perceptive.fieldCharacteristics.value +
+                intellectual.fieldCharacteristics.value +
+            vigor.fieldCharacteristics.value +
+                subterfuge.fieldCharacteristics.value +
+                creative.fieldCharacteristics.value
 
     //create a object for each freelancer bonus option
     private val firstSelection = FreelancerSelection(
@@ -162,7 +183,7 @@ class SecondaryFragmentViewModel(
         val isOpen = _isOpen.asStateFlow()
 
         //initialize displayed icon
-        private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
+        private val _icon = MutableStateFlow(value = R.drawable.outline_arrow_drop_down_24)
         val icon = _icon.asStateFlow()
 
         /**
@@ -186,6 +207,7 @@ class SecondaryFragmentViewModel(
                 )
             }
 
+            /*TODO: Require update to only the removed bonus item and the added bonus item.*/
             //update the class bonus displays of all characteristic data
             allCharacteristics.forEach{secondary ->
                 secondary.setClassPoints()
@@ -196,14 +218,25 @@ class SecondaryFragmentViewModel(
          * Toggles the open state of the characteristic dropdown.
          */
         fun openToggle(){
-            //toggle the open state
-            _isOpen.update{!isOpen.value}
+            //run if character isn't SBL or is the first level with freelancer
+            if(classes.charInstance !is SblChar ||
+                (classes.charInstance as SblChar).firstFreelancer() == classes.charInstance.lvl.intValue){
+                //toggle the open state
+                _isOpen.update { !isOpen.value }
 
-            //update the icon to match the new open state
-            _icon.update{
-                if(isOpen.value) Icons.Filled.KeyboardArrowUp
-                else Icons.Filled.KeyboardArrowDown
+                //update the icon to match the new open state
+                _icon.update {
+                    if (isOpen.value) R.drawable.outline_arrow_drop_up_24
+                    else R.drawable.outline_arrow_drop_down_24
+                }
             }
+        }
+
+        /**
+         * Updates the item with any changes to this fragment.
+         */
+        fun refresh(){
+            _selectedIndex.update{classes.freelancerSelection[selection]}
         }
     }
 
@@ -229,7 +262,8 @@ class SecondaryFragmentViewModel(
         fun toggleOpen(){_tableOpen.update{!tableOpen.value}}
 
         //initialize data for each of the field's characteristics
-        val fieldCharacteristics = mutableListOf<SecondaryItem>()
+        private val _fieldCharacteristics = MutableStateFlow(mutableListOf<SecondaryItem>())
+        val fieldCharacteristics = _fieldCharacteristics.asStateFlow()
 
         /**
          * Adds a characteristic to the field's data list.
@@ -237,23 +271,24 @@ class SecondaryFragmentViewModel(
          * @param customChar new characteristic to add to the list
          */
         fun addFieldChar(customChar: CustomCharacteristic){
-            fieldCharacteristics.add(
-                element = SecondaryItem(
-                    secondaryItem = customChar,
-                    secondaryList = secondaryList
-                )
-            )
+            _fieldCharacteristics.update{
+                fieldCharacteristics.value.plus(
+                    element = SecondaryItem(
+                        secondaryItem = customChar,
+                        secondaryList = secondaryList
+                    )
+                ) as MutableList<SecondaryItem>
+            }
         }
 
         init{
             //create data objects for each field characteristic
             fieldItems.forEach{secondary ->
-                fieldCharacteristics.add(
-                    element = SecondaryItem(
+                fieldCharacteristics.value +=
+                    SecondaryItem(
                         secondaryItem = secondary,
                         secondaryList = secondaryList
                     )
-                )
             }
         }
     }
@@ -300,6 +335,13 @@ class SecondaryFragmentViewModel(
             secondaryList.toggleNatBonus(characteristic = secondaryItem)
 
             //update the appropriate values
+            updateNaturalBonus()
+        }
+
+        /**
+         * Updates the natural bonus checkbox and associated text.
+         */
+        fun updateNaturalBonus(){
             _natBonusCheck.update{secondaryItem.bonusApplied.value}
             updateTotal()
             _checkedText.update{updateCheckedText()}
@@ -367,18 +409,16 @@ class SecondaryFragmentViewModel(
         /**
          * Retrieves the name of the characteristic if it is prebuilt.
          *
-         * @return characteristic's name reference
-         */
-        fun getName(): Int{
-            return secondaryList.fullList().indexOf(element = secondaryItem)
-        }
-
-        /**
-         * Retrieves the name of the characteristic if it is custom.
-         *
+         * @param context app context to retrieve resources from
          * @return characteristic's name
          */
-        fun getCustomName(): String{return (secondaryItem as CustomCharacteristic).name.value}
+        fun getName(context: Context): String{
+            return when(secondaryItem) {
+                is CustomCharacteristic -> secondaryItem.name.value
+                is SblCustomCharacteristic -> secondaryItem.name.value
+                else -> context.resources.getStringArray(R.array.secondaryCharacteristics)[secondaryList.fullList().indexOf(element = secondaryItem)]
+            }
+        }
 
         /**
          * Retrieves the modifier value of the characteristic.
@@ -393,8 +433,23 @@ class SecondaryFragmentViewModel(
          * @return string of the characteristic's development point cost
          */
         fun getMultiplier(): Int{
-            return if(secondaryItem.devPerPoint.intValue > secondaryItem.developmentDeduction.intValue)
-                secondaryItem.devPerPoint.intValue - secondaryItem.developmentDeduction.intValue
+            //get default cost for buying points in this item
+            val devPerPoint =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).getIndex()].devPerPoint.intValue
+                else
+                    secondaryItem.devPerPoint.intValue
+
+            //get reduction level for this character's level
+            val pointReduction =
+                if(secondaryList is SblSecondaryList)
+                    (secondaryList.charInstance as SblChar).getCharAtLevel().secondaryList.getAllSecondaries()[(secondaryItem as SblSecondaryCharacteristic).getIndex()].developmentDeduction.intValue
+                else
+                    secondaryItem.developmentDeduction.intValue
+
+            //return default cost minus any deductions
+            return if(devPerPoint > pointReduction)
+                devPerPoint - pointReduction
             else 1
         }
     }
@@ -402,9 +457,12 @@ class SecondaryFragmentViewModel(
     /**
      * Refreshes the fragment's values for changes on other pages.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //check if freelancer options are available to the character
-        _freelancerOptionsOpen.update{charInstance.classes.ownClass.value == charInstance.classes.freelancer}
+        _freelancerOptionsOpen.update{isFreelancer()}
+
+        //update the displayed freelancer selections
+        allFreelancerSelections.forEach{it.refresh()}
 
         allCharacteristics.forEach{
             //update the point input data for each secondary
@@ -412,6 +470,9 @@ class SecondaryFragmentViewModel(
 
             //update the displayed secondary class points
             it.setClassPoints()
+
+            //update the displayed natural bonus taken
+            it.updateNaturalBonus()
 
             //update the displayed secondary totals
             it.updateTotal()

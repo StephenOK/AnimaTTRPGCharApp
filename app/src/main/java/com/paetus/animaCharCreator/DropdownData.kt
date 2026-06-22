@@ -1,8 +1,5 @@
 package com.paetus.animaCharCreator
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.geometry.Size
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,12 +12,14 @@ import kotlinx.coroutines.flow.update
  * @param optionsRef reference to list of dropdown items
  * @param initialIndex starting item index to first display
  * @param onChange function to run on changing selected item
+ * @param refreshFunc function that refreshes the displayed item
  */
 class DropdownData(
     val nameRef: Int,
     val optionsRef: Int,
     initialIndex: Int,
-    val onChange: (Int) -> Unit
+    val onChange: (Int) -> Unit,
+    val refreshFunc: (() -> Int)? = null
 ){
     //initialize the selected item
     private val _output = MutableStateFlow(value = initialIndex)
@@ -35,7 +34,7 @@ class DropdownData(
     val isOpen = _isOpen.asStateFlow()
 
     //initialize dropdown icon
-    private val _icon = MutableStateFlow(value = Icons.Filled.KeyboardArrowDown)
+    private val _icon = MutableStateFlow(value = R.drawable.outline_arrow_drop_down_24)
     val icon = _icon.asStateFlow()
 
     /**
@@ -48,7 +47,9 @@ class DropdownData(
 
         //perform the required change and close the dropdown
         onChange(dropdownIndex)
-        openToggle()
+
+        //close dropdown if it's open
+        if(isOpen.value) openToggle()
     }
 
     /**
@@ -66,8 +67,16 @@ class DropdownData(
 
         //set icon to the appropriate value
         _icon.update{
-            if(isOpen.value) Icons.Filled.KeyboardArrowUp
-            else Icons.Filled.KeyboardArrowDown
+            if(isOpen.value) R.drawable.outline_arrow_drop_up_24
+            else R.drawable.outline_arrow_drop_down_24
         }
+    }
+
+    /**
+     * Changes the displayed item as indicated by the refreshFunc input.
+     */
+    fun refreshDisplay(){
+        if(refreshFunc != null)
+            _output.update{refreshFunc()}
     }
 }

@@ -318,10 +318,11 @@
 
     <string name = "slowMagRecDesc">Magic has problems passing through the wizard\'s essence; he experiences difficulties recovering power he has used.</string>
     <string name = "slowMagRecEff">Reduce the Zeonic regeneration of the character by half.</string>
+    <string name = "slowMagRestriction">This Disadvantage cannot be combined with Magic Blockage.</string>
 
     <string name = "magBlockDesc">Magic does not flow naturally through the body and soul of a character with this Disadvantage. Some type of blockage prevents him from channeling the powers of the environment, and his own soul does not regenerate magic either. When he uses his power, the character never recovers it by himself. The only way he can do so is to feed on the mystical energies of other magical beings or objects.</string>
     <string name = "magBlockEff">The character lacks Zeonic regeneration and does not naturally recover the points of Zeon he consumes. He regains magic only by draining objects that allow it or living beings with the Gift.</string>
-    <string name = "magBlockRestriction">This Disadvantage cannot be combined with Slow Recovery of Magic</string>
+    <string name = "magBlockRestriction">This Disadvantage cannot be combined with Slow Recovery of Magic.</string>
 
     <string name = "requireActionDesc">The control that a character has over the powers of the Soul Flow is fickle, and they respond for him only while he performs a certain action. If, for example, his magic is tied to dance, his spells will work only while he dances. It is possible that the magical powers work solely in specific situations or conditions, such as during the day or with one\'s feet on the ground.</string>
     <string name = "requireActionEff">The character may use magic only if the specific action is performed or the specific conditions of the Disadvantage are met. If the action is a Secondary Ability, the character must roll a check against Difficult (DIF) to cast his spells.</string>

@@ -20,9 +20,34 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     private val _currentFragment = MutableStateFlow(value = ScreenPage.Character)
     val currentFragment = _currentFragment.asStateFlow()
 
+    //initialize open state of level clear dialog
+    private val _levelClearOpen = MutableStateFlow(value = false)
+    val levelClearOpen = _levelClearOpen.asStateFlow()
+
+    //initialize failed level change alert
+    private val _failedLevelChangeOpen = MutableStateFlow(value = false)
+    val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
+
     //initialize open state of exit dialog
     private val _exitOpen = MutableStateFlow(value = false)
     val exitOpen = _exitOpen.asStateFlow()
+
+    //initialize reset radio button trackers
+    private val _advantageResetting = MutableStateFlow(value = true)
+    val advantageResetting = _advantageResetting.asStateFlow()
+
+    private val _primaryCharResetting = MutableStateFlow(value = true)
+    val primaryCharResetting = _primaryCharResetting.asStateFlow()
+
+    private val _inventoryResetting = MutableStateFlow(value = true)
+    val inventoryResetting = _inventoryResetting.asStateFlow()
+
+    /**
+     * Gets the currently displayed fragment.
+     *
+     * @return the screenpage flag for the current fragment
+     */
+    fun getCurrentFragment(): ScreenPage{return currentFragment.value}
 
     /**
      * Changes the current page to the indicated one.
@@ -32,11 +57,42 @@ class HomePageViewModel(val charInstance: BaseCharacter): ViewModel() {
     fun setCurrentFragment(input: ScreenPage){_currentFragment.update{input}}
 
     /**
+     * Toggles the open state of the level clear alert.
+     */
+    fun toggleLevelClear(){_levelClearOpen.update{!levelClearOpen.value}}
+
+    /**
+     * Toggle character's resetting advantage.
+     */
+    fun toggleAdvantageReset(){
+        _advantageResetting.update{!advantageResetting.value}
+    }
+
+    /**
+     * Toggle character's resetting primary characteristics.
+     */
+    fun togglePrimaryCharReset(){
+        _primaryCharResetting.update{!primaryCharResetting.value}
+    }
+
+    /**
+     * Toggle character's resetting inventory.
+     */
+    fun toggleInventoryReset(){
+        _inventoryResetting.update{!inventoryResetting.value}
+    }
+
+    /**
+     * Opens and closes the failed level change alert.
+     */
+    fun toggleFailedLevelChangeOpen(){
+        _failedLevelChangeOpen.update{!failedLevelChangeOpen.value}
+    }
+
+    /**
      * Toggles the open state of the exit alert.
      */
-    fun toggleExitAlert() {
-        _exitOpen.update{!exitOpen.value}
-    }
+    fun toggleExitAlert() {_exitOpen.update{!exitOpen.value}}
 
     //initialize bottom bar maximum values
     val maximums = BottomBarRowData(

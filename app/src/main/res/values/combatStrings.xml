@@ -14,6 +14,7 @@
     <string name = "vrLabel">VR</string>
     <string name = "psrLabel">PsR</string>
 
+    <string name = "actionCount">Number of Actions</string>
     <string name = "totalInitiative">Total Initiative</string>
     <string name = "fatigueLabel">Fatigue</string>
     <string name = "regenLabel">Regeneration</string>

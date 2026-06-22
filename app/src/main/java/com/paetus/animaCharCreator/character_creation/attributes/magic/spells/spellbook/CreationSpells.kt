@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the creation element.
  */
-class CreationBook: MagicBook(Element.Creation){
+class CreationSpells: SpellList(Element.Creation){
     private val minorCreation = Spell(
         name = R.string.minorCreation,
         isActive = true,
@@ -20,7 +20,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val reconstruct = Spell(
@@ -33,7 +34,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val createEnergy = Spell(
@@ -46,7 +48,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val regeneration = Spell(
@@ -59,7 +62,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val inorganicModification = Spell(
@@ -72,7 +76,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val increaseResistances = Spell(
@@ -85,7 +90,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val royalShield = Spell(
@@ -98,7 +104,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 30,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 2
     )
 
     private val heal = Spell(
@@ -111,7 +118,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val damageBarrier = Spell(
@@ -124,7 +132,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val homunculus = Spell(
@@ -137,7 +146,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val minorChange = Spell(
@@ -150,7 +160,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val imitate = Spell(
@@ -163,7 +174,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val immunity = Spell(
@@ -176,7 +188,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val reduceDamage = Spell(
@@ -189,7 +202,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 2
     )
 
     private val physicalControl = Spell(
@@ -202,7 +216,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val raiseAbilities = Spell(
@@ -215,7 +230,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val fuse = Spell(
@@ -228,7 +244,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val createMemories = Spell(
@@ -241,7 +258,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val recover = Spell(
@@ -254,7 +272,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val acquirePowers = Spell(
@@ -267,7 +286,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 5,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val createMonstrosity = Spell(
@@ -280,7 +300,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val protectiveAura = Spell(
@@ -293,7 +314,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 30,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val spiritualStandstill = Spell(
@@ -306,7 +328,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val perfectShield = Spell(
@@ -319,7 +342,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 2
     )
 
     private val vitality = Spell(
@@ -331,7 +355,8 @@ class CreationBook: MagicBook(Element.Creation){
         addedEffect = R.string.vitalityEff,
         zMax = 20, maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val completeCreation = Spell(
@@ -344,7 +369,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val reinforceMagic = Spell(
@@ -357,7 +383,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val transmute = Spell(
@@ -370,7 +397,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val metamorphism = Spell(
@@ -383,7 +411,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 2
     )
 
     private val recreate = Spell(
@@ -396,7 +425,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val createBeing = Spell(
@@ -409,7 +439,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val chimera = Spell(
@@ -422,7 +453,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val safetyZone = Spell(
@@ -435,7 +467,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 2
     )
 
     private val maintainMagic = Spell(
@@ -448,7 +481,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val provideSoul = Spell(
@@ -461,7 +495,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val greaterCreation = Spell(
@@ -474,7 +509,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 40,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val eternalMagic = Spell(
@@ -487,7 +523,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val barrierSpell = Spell(
@@ -500,7 +537,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 50,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val giftOfLife = Spell(
@@ -513,7 +551,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     private val createSpell = Spell(
@@ -526,7 +565,8 @@ class CreationBook: MagicBook(Element.Creation){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 2
     )
 
     init{

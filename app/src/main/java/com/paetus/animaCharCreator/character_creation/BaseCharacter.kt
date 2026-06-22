@@ -5,17 +5,19 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.BuildConfig
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.AdvantageRecord
-import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_items.RaceAdvantages
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.ki_abilities.Ki
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.ClassInstances
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
+import com.paetus.animaCharCreator.character_creation.attributes.modules.MartialArt
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.summoning.Summoning
 import com.paetus.animaCharCreator.character_creation.attributes.modules.WeaponProficiencies
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryCharacteristic
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.*
@@ -25,36 +27,39 @@ import java.nio.charset.StandardCharsets
  * Character being built by the user
  * Holder class of all other character creation objects
  */
-open class BaseCharacter() {
+open class BaseCharacter{
+    //boolean indicating if this is a level record or standalone
+    val hasHost = mutableStateOf(value = false)
+
     //character's name
     val charName = mutableStateOf(value = "")
 
     //character's current experience point amount
     val experiencePoints = mutableIntStateOf(value = 0)
 
+    //whether the character's level ups are restricted by inputted exp points
+    val expLock = mutableStateOf(false)
+
     //character's gender (default male)
     val isMale = mutableStateOf(value = true)
 
     //character's rule settings
     val rules = RuleRecord()
+    var objectDB = ObjectDatabase()
 
     //list of character's other abilities
     open val primaryList = PrimaryList(charInstance = this)
-    val combat = CombatAbilities(charInstance = this)
+    open val combat = CombatAbilities(charInstance = this)
     open val secondaryList = SecondaryList(charInstance = this)
-    val weaponProficiencies = WeaponProficiencies(charInstance = this)
-    val ki = Ki(charInstance = this)
-    val magic = Magic(charInstance = this)
-    val summoning = Summoning(charInstance = this)
-    val psychic = Psychic(charInstance = this)
-    val advantageRecord = AdvantageRecord(charInstance = this)
-    val inventory = Inventory(charInstance = this)
+    open val weaponProficiencies = WeaponProficiencies(charInstance = this)
+    open val ki = Ki(charInstance = this)
+    open val magic = Magic(charInstance = this)
+    open val summoning = Summoning(charInstance = this)
+    open val psychic = Psychic(charInstance = this)
+    open val advantageRecord = AdvantageRecord(charInstance = this)
+    open val inventory = Inventory(charInstance = this)
 
-    //list of all classes available
-    val classes = ClassInstances(charInstance = this)
-
-    //list of all race advantages
-    val races = RaceAdvantages(charInstance = this)
+    open val classes = ClassInstances(charInstance = this)
 
     //initialize character's race
     val ownRace = mutableStateOf<List<RacialAdvantage>>(value = listOf())
@@ -85,6 +90,7 @@ open class BaseCharacter() {
 
     //character's appearance
     val appearance = mutableIntStateOf(value = 5)
+    val isUnattractive = mutableStateOf(value = false)
 
     //character's movement value
     val movement = mutableIntStateOf(value = 20)
@@ -96,13 +102,27 @@ open class BaseCharacter() {
     val gnosis = mutableIntStateOf(value = 0)
 
     /**
+     * Sets the character's name value.
+     *
+     * @param newName string to set as the character's name
+     */
+    open fun setName(newName: String){charName.value = newName}
+
+    /**
+     * Sets the character's experience point value.
+     *
+     * @param newExp value to set as the character's experience points
+     */
+    open fun setExp(newExp: Int){experiencePoints.intValue = newExp}
+
+    /**
      * Changes the character's gender depending on the input
      *
      * @param gender true if male, false if female
      */
-    fun setGender(gender: Boolean){
+    open fun setGender(gender: Boolean){
         //remove previous buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = -5)
             else combat.magicRes.setSpecial(specChange = -5)
         }
@@ -111,7 +131,7 @@ open class BaseCharacter() {
         isMale.value = gender
 
         //apply gendered buff if character is a duk'zarist
-        if(ownRace.value == races.dukzaristAdvantages){
+        if(ownRace.value == objectDB.races.dukzaristAdvantages){
             if(isMale.value) combat.physicalRes.setSpecial(specChange = 5)
             else combat.magicRes.setSpecial(specChange = 5)
         }
@@ -122,12 +142,16 @@ open class BaseCharacter() {
      *
      * @param raceIn new race to set the character to
      */
-    private fun setOwnRace(raceIn: List<RacialAdvantage>) {
+    open fun setOwnRace(raceIn: List<RacialAdvantage>) {
         //remove previous race buffs
         ownRace.value.forEach{advantage ->
             //if the advantage has an onRemove effect, run it
             if(advantage.onRemove != null)
-                advantage.onRemove(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onRemove(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
 
         //apply new race and buffs
@@ -136,7 +160,11 @@ open class BaseCharacter() {
         ownRace.value.forEach{advantage ->
             //if the advantage has an onTake effect, run it
             if(advantage.onTake != null)
-                advantage.onTake(advantage.picked, advantage.cost[advantage.pickedCost])
+                advantage.onTake(
+                    this@BaseCharacter,
+                    advantage.picked,
+                    advantage.cost[advantage.pickedCost]
+                )
         }
     }
 
@@ -147,7 +175,7 @@ open class BaseCharacter() {
      */
     private fun setOwnRace(raceName: String) {
         //set the character's race to the indicated item
-        setOwnRace(races.getFromString(raceName))
+        setOwnRace(objectDB.races.getFromString(raceName))
     }
 
     /**
@@ -157,7 +185,7 @@ open class BaseCharacter() {
      */
     fun setOwnRace(raceNum: Int){
         //apply the indicated race to the character
-        setOwnRace(races.allAdvantageLists[raceNum])
+        setOwnRace(objectDB.races.allAdvantageLists[raceNum])
     }
 
     /**
@@ -184,7 +212,7 @@ open class BaseCharacter() {
         combat.updateClassLife()
 
         //recalculate the other combat abilities
-        combat.allAbilities.forEach{combatItem ->
+        combat.allAbilities().forEach{combatItem ->
             combatItem.updateClassTotal()
         }
 
@@ -198,7 +226,7 @@ open class BaseCharacter() {
         magic.updateZeonFromClass()
 
         //recalculate summoning abilities
-        summoning.allSummoning.forEach{summonItem ->
+        summoning.allSummoning().forEach{summonItem ->
             summonItem.updateLevelTotal()
         }
 
@@ -220,6 +248,7 @@ open class BaseCharacter() {
         maxPsyDP.intValue = (devPT.intValue * percPsyDP.doubleValue).toInt()
     }
 
+    //TODO: Check for redundant running of this function (especially in load or save).
     /**
      * Updates the total development points spent.
      */
@@ -245,7 +274,7 @@ open class BaseCharacter() {
                     weaponProficiencies.calcPointsInPsy()
 
         //update the total expenditure
-        spentTotal.intValue = combat.lifeMultsTaken.intValue * classes.ownClass.value.lifePointMultiple +
+        spentTotal.intValue = combat.lifeMultsTaken.intValue * objectDB.classRecord.allClasses[classes.ownClass.intValue].lifePointMultiple +
                 secondaryList.calculateSpent() + ptInCombat.intValue + ptInMag.intValue + ptInPsy.intValue
     }
 
@@ -285,15 +314,20 @@ open class BaseCharacter() {
      *
      * @param newAppearance value to attempt to set the character's appearance to
      */
-    fun setAppearance(newAppearance: Int){
-        //set appearance to 2 if character has unattractive disadvantage
-        if(advantageRecord.getAdvantage(advantageString = "unattractive") != null)
-            appearance.intValue = 2
-
+    open fun setAppearance(newAppearance: Int){
         //only apply appearance if character is either not a dan'jayni or if it is a legal value for that race
-        else if(ownRace.value != races.danjayniAdvantages || newAppearance in 3..7)
+        if(ownRace.value != objectDB.races.danjayniAdvantages || newAppearance in 3..7)
             appearance.intValue = newAppearance
     }
+
+    fun setUnattractive(isUnattractive: Boolean){this.isUnattractive.value = isUnattractive}
+
+    /**
+     * Set the character's gnosis value.
+     *
+     * @param newGnosis value to set to the character's gnosis
+     */
+    open fun setGnosis(newGnosis: Int){gnosis.intValue = newGnosis}
 
     /**
      * Sets the character's movement distance depending on the inputted value.
@@ -356,6 +390,13 @@ open class BaseCharacter() {
     }
 
     /**
+     * Default constructor for a new character.
+     */
+    constructor(){
+        objectDB = ObjectDatabase()
+    }
+
+    /**
      * Default constructor for new character.
      *
      * @param filename file associated with this character
@@ -366,7 +407,7 @@ open class BaseCharacter() {
         filename: String,
         secondaryFile: File,
         techFile: File
-    ) : this() {
+    ): this(){
         //retrieve custom secondaries for this character
         secondaryList.applySecondaryChars(input = secondaryFile, filename = filename)
 
@@ -380,22 +421,31 @@ open class BaseCharacter() {
      * @param charFile file to load the character data from
      * @param secondaryFile directory for the custom secondary items
      * @param techFile directory for the custom technique items
+     * @param objectDB database that may be passed down from an SBLChar to this
+     * @param host potential SBLChar that holds this object
      */
     constructor(
         charFile: File,
         secondaryFile: File,
-        techFile: File
-    ) : this() {
+        techFile: File,
+        objectDB: ObjectDatabase = ObjectDatabase(),
+        host: Boolean = false
+    ){
+        this.objectDB = objectDB
+        hasHost.value = host
 
-        //get custom custom items for this character
+        //get custom items for this character
         secondaryList.applySecondaryChars(
             input = secondaryFile,
             filename = charFile.name
         )
-        ki.applyCustomTechs(
-            customTechDir = techFile,
-            filename = charFile.name
-        )
+
+        //only apply customs if not already held in the host's object database
+        if(!host)
+            ki.applyCustomTechs(
+                customTechDir = techFile,
+                filename = charFile.name
+            )
 
         //initialize file input reader
         val restoreChar = FileInputStream(charFile)
@@ -409,10 +459,10 @@ open class BaseCharacter() {
         rules.loadRules(fileReader = fileReader)
 
         //get the character's name
-        charName.value = fileReader.readLine()
+        setName(fileReader.readLine())
 
         //get the character's experience point amount
-        experiencePoints.intValue = fileReader.readLine().toInt()
+        setExp(fileReader.readLine().toInt())
 
         //get the character's gender
         setGender(gender = fileReader.readLine().toBoolean())
@@ -440,15 +490,39 @@ open class BaseCharacter() {
         //load character's secondary abilities
         secondaryList.loadList(fileReader = fileReader, writeVersion = version)
 
-        //load character's combat modules
-        weaponProficiencies.loadProficiencies(fileReader = fileReader)
+        //catch change in save data order
+        if(version < 47) {
+            //load character's combat modules
+            weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
 
-        //load character's ki abilities
-        ki.loadKiAttributes(
-            fileReader = fileReader,
-            writeVersion = version,
-            filename = charFile.name
-        )
+            //acquire all loaded martial art items
+            val catchList = mutableListOf<MartialArt>()
+            catchList.addAll(weaponProficiencies.takenMartialList)
+
+            //load character's ki abilities
+            ki.loadKiAttributes(
+                fileReader = fileReader,
+                writeVersion = version,
+                filename = charFile.name
+            )
+
+            //apply any accidentally removed martial arts
+            catchList.forEach{
+                if(!weaponProficiencies.takenMartialList.contains(it))
+                    weaponProficiencies.takenMartialList.add(it)
+            }
+        }
+        else{
+            //load character's ki abilities
+            ki.loadKiAttributes(
+                fileReader = fileReader,
+                writeVersion = version,
+                filename = charFile.name
+            )
+
+            //load character's combat modules
+            weaponProficiencies.loadProficiencies(fileReader = fileReader, writeVersion = version)
+        }
 
         //load character's magic abilities
         magic.loadMagic(
@@ -468,11 +542,83 @@ open class BaseCharacter() {
         //load character's inventory
         inventory.loadInventory(fileReader = fileReader)
 
+        //load character's gnosis
+        setGnosis(newGnosis = fileReader.readLine().toInt())
+
+        //load experience point restriction flag
+        expLock.value = fileReader.readLine().toBoolean()
+
         //end file reading
         restoreChar.close()
 
         //update character's development point expenditure
         updateTotalSpent()
+    }
+
+    /**
+     * Creates a character for use in a SBL character's level record.
+     */
+    constructor(
+        newHost: SblChar,
+        prevIndex: Int,
+        isAdded: Boolean
+    ){
+        //set class record of host
+        objectDB = newHost.objectDB
+
+        //set level to not zero if not the zeroth level
+        if(prevIndex >= 0)
+            setLvl(levNum = 1)
+
+        //apply custom characteristics
+        newHost.secondaryList.getAllSblCustoms().forEach{customSecondary ->
+            secondaryList.addCustomSecondary(
+                newSecondary = CustomCharacteristic(
+                    parent = secondaryList,
+                    name = customSecondary.name.value,
+                    filename = customSecondary.filename.value,
+                    isPublic = customSecondary.isPublic.value,
+                    field = customSecondary.fieldIndex.intValue,
+                    primary = customSecondary.primaryCharIndex.intValue
+                )
+            )
+        }
+
+        //if character is a new level added to the record
+        if(isAdded) {
+            //set applied experience point restriction
+            expLock.value = newHost.expLock.value
+
+            //set class to the previous level's class
+            classes.setOwnClass(newHost.charRefs[prevIndex]!!.classes.ownClass.intValue)
+
+            //apply freelancer selections
+            for (index in 0..4)
+                classes.freelancerSelection[index] = newHost.classes.freelancerSelection[index]
+
+            //apply paladin magic selection
+            if(!newHost.classes.magPaladin.value)
+                classes.toggleMagPaladin()
+            if(classes.ownClass.intValue !in 3..4)
+                classes.paladinDeactivate()
+
+            //apply primary weapon choice
+            weaponProficiencies.setPrimaryWeapon(newHost.weaponProficiencies.primaryWeapon.intValue)
+
+            //apply secondary characteristic deduction
+            newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries().forEach{secondary ->
+                //get the matching index's location
+                val index = newHost.charRefs[prevIndex]!!.secondaryList.getAllSecondaries().indexOf(secondary)
+
+                //get the deduction value for this characteristic at this and the previous level
+                val thisDeduction = secondaryList.getAllSecondaries()[index].developmentDeduction.intValue
+                val prevDeduction = secondary.developmentDeduction.intValue
+
+                //apply the appropriate deduction to this level's item
+                if(thisDeduction != prevDeduction)
+                    secondaryList.getAllSecondaries()[index].setDevelopmentDeduction(dpDeduction = prevDeduction - thisDeduction)
+            }
+        }
     }
 
     /**
@@ -499,8 +645,8 @@ open class BaseCharacter() {
             writeDataTo(writer = byteArray, input = isMale.value)
 
             //add class, race, and level data
-            writeDataTo(writer = byteArray, input = classes.ownClass.value.saveName)
-            writeDataTo(writer = byteArray, input = races.getNameOfList(ownRace.value))
+            writeDataTo(writer = byteArray, input = objectDB.classRecord.allClasses[classes.ownClass.intValue].saveName)
+            writeDataTo(writer = byteArray, input = objectDB.races.getNameOfList(ownRace.value))
             writeDataTo(writer = byteArray, input = lvl.intValue)
 
             //write paladin's chosen level boon
@@ -518,11 +664,11 @@ open class BaseCharacter() {
             //write secondary characteristic data
             secondaryList.writeList(byteArray = byteArray)
 
-            //write module data
-            weaponProficiencies.writeProficiencies(byteArray = byteArray)
-
             //write ki ability data
             ki.writeKiAttributes(byteArray = byteArray)
+
+            //write module data
+            weaponProficiencies.writeProficiencies(byteArray = byteArray)
 
             //write magic data
             magic.writeMagic(byteArray = byteArray)
@@ -538,6 +684,12 @@ open class BaseCharacter() {
 
             //write inventory data
             inventory.writeInventory(byteArray = byteArray)
+
+            //write gnosis data
+            writeDataTo(writer = byteArray, input = gnosis.intValue)
+
+            //write experience point restriction flag
+            writeDataTo(writer = byteArray, input = expLock.value)
 
             //end writing data
             byteArray.close()

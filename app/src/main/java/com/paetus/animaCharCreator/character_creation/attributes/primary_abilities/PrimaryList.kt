@@ -33,6 +33,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
             charInstance.combat.attack.setModPoints(modVal = mod)
             charInstance.combat.block.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.dexKi.primaryUpdate(primeBase = total)
             charInstance.magic.calcMagProj()
             charInstance.psychic.updatePsyProjection()
@@ -48,6 +49,7 @@ open class PrimaryList(private val charInstance: BaseCharacter){
             charInstance.secondaryList.updateAGI()
             charInstance.combat.dodge.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.agiKi.primaryUpdate(primeBase = total)
         }
     )
@@ -133,12 +135,24 @@ open class PrimaryList(private val charInstance: BaseCharacter){
      *
      * @return true if bonus does not exceed half of the character's level
      */
-    fun validLevelBonuses(): Boolean{
+    open fun validLevelBonuses(): Boolean{
+        return getPrimaryBonusTotal() <= charInstance.lvl.intValue/2
+    }
+
+    /**
+     * Gets the total amount of primary bonus points applied to the character.
+     *
+     * @return number of primary bonus points spent
+     */
+    fun getPrimaryBonusTotal(): Int{
+        //initialize counter
         var total = 0
 
+        //add points from each primary characteristic
         allPrimaries().forEach{primary -> total += primary.levelBonus.intValue}
 
-        return total <= charInstance.lvl.intValue/2
+        //give final total
+        return total
     }
 
     /**

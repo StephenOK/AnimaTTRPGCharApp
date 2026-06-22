@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the destruction element.
  */
-class DestructionBook: MagicBook(Element.Destruction){
+class DestructionSpells: SpellList(Element.Destruction){
     private val fragility = Spell(
         name = R.string.fragility,
         isActive = true,
@@ -20,7 +20,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val dismantle = Spell(
@@ -33,7 +34,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destroyIntensities = Spell(
@@ -46,7 +48,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val minorDestruction = Spell(
@@ -59,7 +62,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destructionSphere = Spell(
@@ -72,7 +76,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 3
     )
 
     private val increaseWeakness = Spell(
@@ -85,7 +90,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val magicDestruction = Spell(
@@ -98,7 +104,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val aggravateDamage = Spell(
@@ -111,7 +118,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destructMatrices = Spell(
@@ -124,7 +132,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val woundSpell = Spell(
@@ -137,7 +146,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val destroyKi = Spell(
@@ -150,7 +160,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val produceDamage = Spell(
@@ -163,7 +174,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val senseDestroy = Spell(
@@ -176,7 +188,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val mysticBolt = Spell(
@@ -189,7 +202,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 3
     )
 
     private val unravelTies = Spell(
@@ -202,7 +216,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val destroyResistances = Spell(
@@ -215,7 +230,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val undoState = Spell(
@@ -228,7 +244,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destructionDome = Spell(
@@ -241,7 +258,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 3
     )
 
     private val decayZone = Spell(
@@ -254,7 +272,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     private val destructionAura = Spell(
@@ -267,7 +286,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destroyMemories = Spell(
@@ -280,7 +300,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val blockLearning = Spell(
@@ -293,7 +314,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val forbid = Spell(
@@ -306,7 +328,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val destroyPowers = Spell(
@@ -319,7 +342,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val greatMysticBolt = Spell(
@@ -332,7 +356,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 3
     )
 
     private val destroyWill = Spell(
@@ -345,7 +370,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val weaknessZone = Spell(
@@ -358,7 +384,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     private val destructionEssence = Spell(
@@ -371,7 +398,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val deathSpell = Spell(
@@ -384,7 +412,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val devouringZone = Spell(
@@ -397,7 +426,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     private val destroyCapabilities = Spell(
@@ -410,7 +440,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val severExistence = Spell(
@@ -423,7 +454,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 3
     )
 
     private val destructionRain = Spell(
@@ -436,7 +468,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 3
     )
 
     private val zeonDestruction = Spell(
@@ -449,7 +482,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val heavenSweep = Spell(
@@ -462,7 +496,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val void = Spell(
@@ -475,7 +510,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val greaterDestruction = Spell(
@@ -488,7 +524,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 3
     )
 
     private val destroySouls = Spell(
@@ -501,7 +538,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     private val chaos = Spell(
@@ -514,7 +552,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 50,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     private val uncreation = Spell(
@@ -527,7 +566,8 @@ class DestructionBook: MagicBook(Element.Destruction){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 3
     )
 
     init{

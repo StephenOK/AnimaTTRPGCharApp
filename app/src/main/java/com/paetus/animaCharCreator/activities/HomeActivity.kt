@@ -9,10 +9,12 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -59,6 +62,7 @@ import com.paetus.animaCharCreator.theme.drawerLightColors
 import com.paetus.animaCharCreator.theme.headerLightColors
 import com.paetus.animaCharCreator.theme.homeLightColors
 import com.paetus.animaCharCreator.view_models.CustomFactory
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CharacterFragmentViewModel
 import com.paetus.animaCharCreator.view_models.models.CombatFragViewModel
@@ -344,7 +348,7 @@ class HomeActivity : AppCompatActivity() {
                         )
                     }
 
-                    //route to combat page
+                    //route to modules page
                     composable(route = ScreenPage.Modules.name) {
                         modFragVM.refreshPage()
                         ModuleFragment(
@@ -399,6 +403,32 @@ class HomeActivity : AppCompatActivity() {
                         )
                     }
                 }
+
+                //displayed failed level change detail
+                if(homePageVM.failedLevelChangeOpen.collectAsState().value)
+                    LevelChangeAlert(homeFragVM = homePageVM)
+
+                //show level clear alert if user opens it
+                if(homePageVM.levelClearOpen.collectAsState().value)
+                    MaterialTheme(colorScheme = detailLightColors){
+                        LevelClearAlert(
+                            charInstance = (charInstance as SblChar),
+                            homePageVM = homePageVM,
+                            currentFragment = when(homePageVM.getCurrentFragment()){
+                                ScreenPage.Character -> charFragVM
+                                ScreenPage.Combat -> combatFragVM
+                                ScreenPage.SecondaryCharacteristics -> secondaryFragVM
+                                ScreenPage.Advantages -> advantageFragVM
+                                ScreenPage.Modules -> modFragVM
+                                ScreenPage.Ki -> kiFragVM
+                                ScreenPage.Magic -> magFragVM
+                                ScreenPage.Summoning -> summonFragVM
+                                ScreenPage.Psychic -> psyFragVM
+                                ScreenPage.Equipment -> equipFragVM
+                            },
+                            closeDialog = {homePageVM.toggleLevelClear()}
+                        )
+                    }
 
                 //show exit alert if user opens it
                 if (homePageVM.exitOpen.collectAsState().value)
@@ -461,7 +491,8 @@ class HomeActivity : AppCompatActivity() {
                             scope.launch{drawerState.open()}
                         else
                             scope.launch{drawerState.close()}
-                    }
+                    },
+                    modifier = Modifier.focusable()
                 ){
                     Icon(
                         painter = painterResource(R.drawable.baseline_menu_24),
@@ -541,6 +572,40 @@ class HomeActivity : AppCompatActivity() {
                         ),
                         shape = RectangleShape
                     )
+                }
+
+                //display SBL character features
+                if(charInstance is SblChar){
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider()
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+
+                    //button for character level audit
+                    item{
+                        NavigationDrawerItem(
+                            label = {Text(text = stringResource(id = R.string.auditLevelLabel))},
+                            selected = false,
+                            onClick = {
+                                scope.launch{drawerState.close()}
+                                homePageVM.toggleFailedLevelChangeOpen()
+                            }
+                        )
+                    }
+
+                    //button for character level clear
+                    item{
+                        NavigationDrawerItem(
+                            label = {Text(text = stringResource(id = R.string.resetLevelLabel))},
+                            selected = false,
+                            onClick = {
+                                scope.launch{drawerState.close()}
+                                currentFocus?.clearFocus()
+                                homePageVM.toggleLevelClear()
+                            }
+                        )
+                    }
                 }
 
                 //divide page items from actions
@@ -717,6 +782,151 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
+     * Notifies the user of any problems with the current level.
+     *
+     * @param homeFragVM view model for this fragment
+     */
+    @Composable
+    fun LevelChangeAlert(
+        homeFragVM: HomePageViewModel
+    ){
+        AlertDialog(
+            onDismissRequest = {homeFragVM.toggleFailedLevelChangeOpen()},
+            title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
+            text = {
+                Column {
+                    //get level errors
+                    val display = (homeFragVM.charInstance as SblChar).levelChangeLegal(atLevel = homeFragVM.charInstance.lvl.intValue)
+
+                    //notify user of no errors found
+                    if(display.isEmpty()){
+                        Row{Text(text = stringResource(R.string.allGood))}
+                    }
+                    else {
+                        //display dialog head
+                        Row {Text(text = stringResource(R.string.failedLevelChangeBody)) }
+
+                        //display all errors found
+                        display.forEach {
+                            Row {Text(text = it())}
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                //button to close dialog
+                TextButton(onClick = {homeFragVM.toggleFailedLevelChangeOpen()}){
+                    Text(
+                        text = stringResource(id = R.string.closeLabel),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        )
+    }
+
+    /**
+     * Dialog that give the user the option to clear the current level record.
+     *
+     * @param charInstance character object to affect
+     * @param homePageVM viewModel for the home page
+     * @param currentFragment page the app is currently on
+     * @param closeDialog function to run on option chosen
+     */
+    @Composable
+    private fun LevelClearAlert(
+        charInstance: SblChar,
+        homePageVM: HomePageViewModel,
+        currentFragment: FragmentVM,
+        closeDialog: () -> Unit
+    ){
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Column {
+                    Text(text = stringResource(id = R.string.clearLevelTitle))
+
+                    //display options for level 0 reset
+                    if(charInstance.lvl.intValue == 0){
+                        //advantage reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.advantageResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.toggleAdvantageReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetAdvantages),
+                                fontSize = 15.sp
+                            )
+                        }
+
+                        //primary characteristic reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.primaryCharResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.togglePrimaryCharReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetPrimaries),
+                                fontSize = 15.sp
+                            )
+                        }
+
+                        //inventory reset option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Checkbox(
+                                checked = homePageVM.inventoryResetting.collectAsState().value,
+                                onCheckedChange = {homePageVM.toggleInventoryReset()}
+                            )
+
+                            Text(
+                                text = stringResource(id = R.string.resetInventory),
+                                fontSize = 15.sp
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                //button to confirm reset action
+                TextButton(
+                    onClick = {
+                        //reset the level and update the required items
+                        if(charInstance.lvl.intValue == 0)
+                            charInstance.zeroReset(
+                                primaryReset = homePageVM.primaryCharResetting.value,
+                                advantageReset = homePageVM.advantageResetting.value,
+                                goodsReset = homePageVM.inventoryResetting.value
+                            )
+                        else
+                            charInstance.nonZeroReset()
+
+                        //update required visual items
+                        homePageVM.updateMaximums()
+                        homePageVM.updateExpenditures()
+                        currentFragment.refreshPage()
+                        closeDialog()
+                    }
+                ){Text(text = stringResource(R.string.confirmLabel))}
+            },
+            dismissButton = {
+                //close the dialog without running anything
+                TextButton(
+                    onClick = {closeDialog()}
+                ){Text(text = stringResource(R.string.cancelLabel))}
+            }
+        )
+    }
+
+    /**
      * Alert for when user wishes to leave the current activity.
      *
      * @param charInstance character object for save option
@@ -732,11 +942,7 @@ class HomeActivity : AppCompatActivity() {
         AlertDialog(
             //close alert on dismissal
             onDismissRequest = {closeDialog()},
-            title = {
-                Text(
-                    text = stringResource(id = R.string.exitTitle)
-                )
-            },
+            title = {Text(text = stringResource(id = R.string.exitTitle))},
             confirmButton = {
                 //attempt to save then leave page
                 TextButton(
@@ -781,6 +987,8 @@ class HomeActivity : AppCompatActivity() {
         filename: String,
         showToast: Boolean
     ){
+        charInstance.magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
+
         if(charInstance is SblChar) sblSave(charInstance, filename, showToast)
         else defaultSave(charInstance, filename, showToast)
     }
@@ -856,7 +1064,9 @@ class HomeActivity : AppCompatActivity() {
                 file.mkdir()
 
             //write each character's individual levels to their own files
-            charInstance.charRefs.forEach {subChar ->
+            charInstance.levelLoop(
+                endLevel = 20
+            ){subChar ->
                 //get the individual file's location
                 val writeFile = File(file, "${charInstance.charRefs.indexOf(subChar)}")
 
@@ -864,7 +1074,7 @@ class HomeActivity : AppCompatActivity() {
                 val saveStream = FileOutputStream(writeFile)
 
                 //get and write character's bytes
-                val charData = charInstance.bytes
+                val charData = subChar.bytes
                 saveStream.write(charData)
                 saveStream.close()
             }

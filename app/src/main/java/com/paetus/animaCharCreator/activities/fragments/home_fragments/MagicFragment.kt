@@ -141,8 +141,19 @@ fun MagicFragment(
                         modifier = Modifier
                             .onFocusChanged {
                                 //change DP display to appropriate value
-                                if (it.isFocused)
+                                if (it.isFocused) {
                                     magFragVM.setBoughtZeonDP(dpCost = dpString)
+
+                                    //notify user of inability to change this item
+                                    if(!magFragVM.isGifted())
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                context.getString(R.string.needGiftMessage),
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                }
                                 else
                                     magFragVM.setBoughtZeonDP(dpCost = "")
                             }
@@ -252,13 +263,16 @@ fun MagicFragment(
                         inputText = magFragVM.projectionImbalance.collectAsState().value,
                         inputFunction = {
                             //if imbalance is a legal input
-                            if ((it.toInt() in 0..30 && magFragVM.isGifted()) || it.contains(char = '\n'))
+                            if (magFragVM.getImbalanceChangeable() &&
+                                (it.toInt() in 0..30 &&
+                                        magFragVM.isGifted() || it.contains(char = '\n'))
+                            )
                                 magFragVM.setProjectionImbalance(imbalance = it.toInt())
                         },
                         emptyFunction = {
                             magFragVM.setProjectionImbalance(display = "")
                         },
-                        refill = {magFragVM.currentImbalance()},
+                        refill = { magFragVM.currentImbalance() },
                         modifier = Modifier
                             .onFocusChanged {
                                 if (it.isFocused && !magFragVM.isGifted())
@@ -273,12 +287,17 @@ fun MagicFragment(
                             .weight(0.22f)
                     )
 
-                    Spacer(modifier = Modifier.weight(0.01f))
+                }
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     Button(
                         //switch imbalance preference
                         onClick = {
-                            magFragVM.setImbalanceIsAttack(isOffense = !magFragVM.imbalanceIsAttack.value)
+                            magFragVM.toggleImbalanceIsAttack()
                         },
                         modifier = Modifier
                             .weight(0.3f)
@@ -498,7 +517,7 @@ private fun ZeonPurchaseItem(
             NumberInput(
                 inputText = tableItem.boughtString.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || !it.contains(char = '\n'))
+                    if(magFragVM.isGifted() || it.contains(char = '\n'))
                         tableItem.setBoughtString(buyValue = it.toInt())
                 },
                 emptyFunction = {tableItem.setBoughtString(display = "")},
@@ -567,7 +586,7 @@ private fun SpellBookInvestment(
 
             //display associated element
             Text(
-                text = spellData.magicBook.element.name,
+                text = spellData.magicBook.spells.element.name,
                 modifier = Modifier
                     .weight(0.25f)
             )
@@ -576,7 +595,7 @@ private fun SpellBookInvestment(
             NumberInput(
                 inputText = spellData.elementInvestment.collectAsState().value,
                 inputFunction = {
-                    if(magFragVM.isGifted() || it.contains(char = '\n'))
+                    if(it.toInt() <= 100 && (magFragVM.isGifted() || it.contains(char = '\n')))
                         spellData.setElementInvestment(magLevels = it.toInt())
                 },
                 emptyFunction = {spellData.setElementInvestment(display = "")},
@@ -625,7 +644,7 @@ private fun SpellBookInvestment(
                 var freeSpellLevel = 0
 
                 //for each of the element's spells
-                spellData.magicBook.fullBook.forEach {spell ->
+                spellData.magicBook.spells.fullBook.forEach {spell ->
                     //display the given spell if one is given
                     if (spell != null) {
                         SpellRow(
@@ -647,11 +666,11 @@ private fun SpellBookInvestment(
                     else
                         FreeSpellRow(
                             spellLevel = freeSpellLevel,
-                            spellElement = spellData.magicBook.element,
+                            spellElement = spellData.magicBook.spells.element,
                             spellData = spellData,
                             magFragVM = magFragVM,
                             updateList = {
-                                spellData.setPrimaryElement(isPrimary = spellData.isPrimary.value)
+                                spellData.setPrimaryElement(isPrimary = spellData.magicBook.isPrimary.value)
                                 magFragVM.setMagicLevelSpent()
                             }
                         )
@@ -799,15 +818,19 @@ private fun BuySingleSpellButton(
 
     Button(
         onClick = {
-            //attempt to purchase the spell
-            if(magFragVM.isGifted()) {
+            //get legally buyable state
+            val buyable = magFragVM.buySingleValid()
+
+            //buy spell if able
+            if(buyable == null){
                 spellData.buySingleSpell(spellLevel = spell.level)
                 updateList()
             }
+            //notify user of failure
             else
                 Toast.makeText(
                     context,
-                    context.getString(R.string.needGiftMessage),
+                    buyable,
                     Toast.LENGTH_LONG
                 ).show()
         },
@@ -815,7 +838,7 @@ private fun BuySingleSpellButton(
     ){
         Text(
             text = stringResource(
-                if(magFragVM.getSpellHeld(spell = spell)) R.string.spellRemoval
+                if(magFragVM.heldSpells.contains(element = spell)) R.string.spellRemoval
                 else R.string.spellPurchase
             ),
             textAlign = TextAlign.Center
@@ -846,14 +869,19 @@ private fun BuySingleFreeSpellButton(
     //determine if character has equivalent free spell taken
     Button(
         onClick = {
-            if(magFragVM.isGifted()) {
+            //get legally buyable state
+            val buyable = magFragVM.buySingleValid()
+
+            //buy spell if able
+            if(buyable == null) {
                 spellData.buySingleSpell(spellLevel = spellLevel)
                 updateList()
             }
+            //notify user of failure
             else
                 Toast.makeText(
                     context,
-                    context.getString(R.string.needGiftMessage),
+                    buyable,
                     Toast.LENGTH_LONG
                 ).show()
         },
@@ -861,7 +889,10 @@ private fun BuySingleFreeSpellButton(
     ){
         Text(
             text = stringResource(
-                if((spellLevel/2) - 1 in spellData.magicBook.individualSpells) R.string.spellRemoval
+                if(magFragVM.freeSpellIsHeld(
+                        spellLevel = spellLevel,
+                        spellBook = spellData.magicBook
+                )) R.string.spellRemoval
                 else R.string.spellPurchase
             )
         )
@@ -891,10 +922,12 @@ private fun FreeSpellExchange(
         //button that opens free spell exchange dialog
         Button(
             onClick = {
-                if(magFragVM.tryExchangeOpen(freeSpell = currentFreeSpell))
+                val getError = magFragVM.tryExchangeOpen(freeSpell = currentFreeSpell)
+
+                if(getError != null)
                     Toast.makeText(
                         context,
-                        context.getString(R.string.magicTiesRestriction),
+                        getError,
                         Toast.LENGTH_LONG
                     ).show()
             },
@@ -944,17 +977,16 @@ fun MagicPreview(){
     val magFragVM = MagicFragmentViewModel(
         charInstance.magic,
         charInstance,
-        charInstance.classes.ownClass,
         LocalContext.current
     )
     val homePageVM = HomePageViewModel(charInstance)
 
-    magFragVM.setImbalanceIsAttack(false)
+    magFragVM.toggleImbalanceIsAttack()
     magFragVM.setProjectionImbalance(30)
 
     magFragVM.allBooks[0].toggleListOpen()
-    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[2]!!.level)
-    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.fullBook[3]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.spells.fullBook[2]!!.level)
+    magFragVM.allBooks[0].buySingleSpell(magFragVM.allBooks[0].magicBook.spells.fullBook[3]!!.level)
 
     MagicFragment(magFragVM, homePageVM)
 }

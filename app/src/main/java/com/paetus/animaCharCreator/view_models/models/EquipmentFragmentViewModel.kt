@@ -1,13 +1,13 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.enumerations.CoinType
 import com.paetus.animaCharCreator.character_creation.equipment.Inventory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.QualityModifier
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
  */
 class EquipmentFragmentViewModel(
     private val inventory: Inventory
-) : ViewModel() {
+) : FragmentVM() {
     //initialize open state of item details
     private val _detailAlertOpen = MutableStateFlow(value = false)
     val detailAlertOpen = _detailAlertOpen.asStateFlow()
@@ -316,20 +316,6 @@ class EquipmentFragmentViewModel(
     }
 
     /**
-     * Retrieves the amount of the indicated coin spent by the character.
-     *
-     * @param coin type of coin to look up
-     * @return amount of that coin spent
-     */
-    fun getCoinSpent(coin: CoinType): Int{
-        return when(coin){
-            CoinType.Copper -> inventory.copperSpent.doubleValue.toInt()
-            CoinType.Silver -> inventory.silverSpent.doubleValue.toInt()
-            CoinType.Gold -> inventory.goldSpent.doubleValue.toInt()
-        }
-    }
-
-    /**
      * Determines the category a piece of equipment belongs to.
      *
      * @param equipment equipment to find the category of
@@ -338,7 +324,7 @@ class EquipmentFragmentViewModel(
     fun getCategory(
         equipment: GeneralEquipment
     ): GeneralCategory?{
-        inventory.allCategories.forEach{category ->
+        inventory.getAllCategories().forEach{category ->
             if(category.findEquipment(
                     equipName = equipment.saveName,
                     quality = equipment.currentQuality
@@ -393,6 +379,25 @@ class EquipmentFragmentViewModel(
 
     //collect all maximum data
     val allQuantityMaximums = listOf(maxGold, maxSilver, maxCopper)
+
+    //initialize all spent item data
+    //for gold
+    private val spentGold = SpentItemData(
+        coinType = CoinType.Gold
+    ){inventory.goldSpent.doubleValue.toInt()}
+
+    //for silver
+    private val spentSilver = SpentItemData(
+        coinType = CoinType.Silver
+    ){inventory.silverSpent.doubleValue.toInt()}
+
+    //for copper
+    private val spentCopper = SpentItemData(
+        coinType = CoinType.Copper
+    ){inventory.copperSpent.doubleValue.toInt()}
+
+    //put all spent item data into a list
+    val allSpentItems = listOf(spentGold, spentSilver, spentCopper)
 
     //instantiate all category data
     private val clothes = CategoryData(
@@ -518,6 +523,26 @@ class EquipmentFragmentViewModel(
     }
 
     /**
+     * Data item for spent coin displays.
+     *
+     * @param coinType the coin type spent for this display
+     * @param updateSpent function to retrieve the spent data on the item's coin
+     */
+    class SpentItemData(
+        val coinType: CoinType,
+        val updateSpent: () -> Int
+    ){
+        //integer to display the coin value spent
+        private val _spentDisplay = MutableStateFlow(value = updateSpent())
+        val spentDisplay = _spentDisplay.asStateFlow()
+
+        /**
+         * Updates the display to the correct spent value.
+         */
+        fun updateDisplay(){_spentDisplay.update{updateSpent()}}
+    }
+
+    /**
      * Data object for an equipment category type.
      *
      * @param nameRef resource reference to the displayed name
@@ -537,11 +562,14 @@ class EquipmentFragmentViewModel(
         fun toggleCatOpen(){_catOpen.update{!catOpen.value}}
     }
 
-    fun refreshPage(){
+    override fun refreshPage(){
+        //update maximum data
         allQuantityMaximums.forEach{maxCoin -> maxCoin.setMaxValue(maxCoin.maxInput().toString())}
-        allCategoryData.forEach{category ->
-            if(category.catOpen.value)
-                category.toggleCatOpen()
-        }
+
+        //update list of acquired items
+        updateBoughtGoods()
+
+        //update coin spent displays
+        allSpentItems.forEach{it.updateDisplay()}
     }
 }

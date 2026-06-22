@@ -7,7 +7,7 @@ import com.paetus.animaCharCreator.enumerations.SpellType
 /**
  * List of spells associated with no element.
  */
-class FreeBook{
+class FreeSpells{
     private val tieSpell = FreeSpell(
         saveName = "tie",
         name = R.string.tie,

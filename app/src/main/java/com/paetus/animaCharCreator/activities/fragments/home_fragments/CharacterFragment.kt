@@ -6,11 +6,8 @@ import com.paetus.animaCharCreator.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,18 +73,13 @@ fun CharacterPageFragment(
 
                 //class, race, and level dropdown items
                 charFragVM.dropdownList.forEach {dropdown ->
-                    //get openable state of this dropdown
-                    val isOpenable =
-                        if(dropdown.data.nameRef == R.string.levelText)
-                            charFragVM.getLevelChangeable()
-                        else
-                            true
-
                     //get which options qualify for dropdown display
                     val qualifyOption =
                         if(dropdown.data.nameRef == R.string.levelText)
                             {levelString: String ->
-                                charFragVM.getExistingCharacter(levelString)
+                                charFragVM.getValidLevel(
+                                    levelString = levelString
+                                )
                             }
                         else {_: String -> true}
 
@@ -101,8 +93,8 @@ fun CharacterPageFragment(
                             data = dropdown.data,
                             modifier = Modifier
                                 .weight(dropdown.weight),
-                            isOpenable = isOpenable,
-                            unopenFunc = {charFragVM.toggleFailedLevelChangeOpen()},
+                            isOpenable = dropdown.isOpenable(),
+                            unopenFunc = {dropdown.failedOpen(context)},
                             qualifyOption = qualifyOption,
                             itemSelection = {
                                 maxNumVM.updateMaximums()
@@ -115,6 +107,19 @@ fun CharacterPageFragment(
                                 onClick = {dropdown.detailOpen()},
                                 modifier = Modifier
                                     .weight(1f - dropdown.weight)
+                            )
+                        }
+                    }
+
+                    //display if at class object and if next level's class is different
+                    if(dropdown.data.nameRef == R.string.classLabel &&
+                        charFragVM.getClassChanged()){
+                        //notify of changing class
+                        InfoRow(label = stringResource(R.string.classChangedNotice)){modifier, _ ->
+                            //display next level's class name
+                            Text(
+                                text = stringArrayResource(id = R.array.classArray)[charFragVM.getNextLevelClass()],
+                                modifier = modifier
                             )
                         }
                     }
@@ -136,11 +141,36 @@ fun CharacterPageFragment(
 
         item{Spacer(modifier = Modifier.height(20.dp))}
 
-        //display gender bonus selection if the character is a duk'zarist
+        //display gender bonus selection if the character is a duk'zarist, a paladin, or may apply experience point restriction
         item {
             if(charFragVM.raceDropdown.data.output.collectAsState().value == 6 ||
-                charFragVM.magPaladinOpen.collectAsState().value) {
+                charFragVM.magPaladinOpen.collectAsState().value ||
+                charFragVM.expLockChangeable()) {
                 GeneralCard {
+                    //give choice for experience point restriction if available
+                    if(charFragVM.expLockChangeable()){
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ){
+                            //display checkbox for selection
+                            Checkbox(
+                                checked = charFragVM.expLockActive.collectAsState().value,
+                                onCheckedChange = {charFragVM.toggleExpLock()},
+                                modifier = Modifier
+                                    .weight(0.1f)
+                            )
+                            //display option to user
+                            Text(
+                                text = stringResource(id = R.string.expLockOption),
+                                modifier = Modifier
+                                    .clickable {charFragVM.toggleExpLock()}
+                                    .weight(0.5f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
                     if (charFragVM.raceDropdown.data.output.collectAsState().value == 6) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -158,7 +188,7 @@ fun CharacterPageFragment(
                             AnimatedContent(
                                 targetState = stringResource(id = charFragVM.genderString.collectAsState().value),
                                 modifier = Modifier
-                                    .clickable { charFragVM.toggleGender() }
+                                    .clickable {charFragVM.toggleGender()}
                                     .weight(0.5f),
                                 transitionSpec = textScrollUp,
                                 label = "genderDisplay"
@@ -183,7 +213,8 @@ fun CharacterPageFragment(
                                 checked = charFragVM.magPaladin.collectAsState().value,
                                 onCheckedChange = {charFragVM.toggleMagPaladin()},
                                 modifier = Modifier
-                                    .weight(0.1f)
+                                    .weight(0.1f),
+                                enabled = charFragVM.getPaladinChangeable()
                             )
 
                             //prompt for paladin's magic abilities
@@ -269,7 +300,7 @@ fun CharacterPageFragment(
                         inputText = charFragVM.appearInput.collectAsState().value,
                         inputFunction = {
                             //attempt new input and notify user of failed input
-                            if (it.toInt() <= 10 && !charFragVM.setAppearInput(appearance = it.toInt()))
+                            if (charFragVM.isNotUnattractive() && it.toInt() <= 10 && !charFragVM.setAppearInput(appearance = it.toInt()))
                                 Toast.makeText(
                                     context,
                                     context.getString(R.string.appearanceFailure),
@@ -384,10 +415,6 @@ fun CharacterPageFragment(
             item = charFragVM.racialDisplayed.collectAsState().value,
             closeFunc = {charFragVM.toggleRacialAdvantageOpen()}
         )
-
-    //displayed failed level change detail
-    if(charFragVM.failedLevelChangeOpen.collectAsState().value)
-        LevelChangeAlert(charFragVM = charFragVM)
 }
 
 /**
@@ -401,6 +428,9 @@ private fun PrimaryRow(
     primeItem: CharacterFragmentViewModel.PrimeCharacteristicData,
     charFragVM: CharacterFragmentViewModel
 ){
+    //get current context
+    val context = LocalContext.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -415,11 +445,33 @@ private fun PrimaryRow(
         NumberInput(
             inputText = primeItem.input.collectAsState().value,
             inputFunction = {
-                //change input and other necessary items if in legal range
-                if(it.toInt() in 1..20)
-                    primeItem.setInput(statVal = it.toInt())
+                //change input and other necessary items if able and in legal range
+                if(charFragVM.getChangeable() && it.toInt() in 1..20){
+                    //stop change if stat is fixed
+                    if(primeItem.statLocked())
+                        Toast.makeText(
+                            context,
+                            R.string.lockedToNine,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    else
+                        primeItem.setInput(statVal = it.toInt())
+                }
+                //notify user of failure do to not currently changeable
+                else if(!charFragVM.getChangeable())
+                    Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
             },
-            emptyFunction = {primeItem.setInput(display = "")},
+            emptyFunction = {
+                //stop change if stat is fixed
+                if(primeItem.statLocked())
+                    Toast.makeText(
+                        context,
+                        R.string.lockedToNine,
+                        Toast.LENGTH_LONG
+                    ).show()
+                else
+                    primeItem.setInput(display = "")
+            },
             refill = {primeItem.currentInput()},
             modifier = Modifier
                 .weight(0.2f)
@@ -468,30 +520,6 @@ private fun PrimaryRow(
     }
 
     Spacer(modifier = Modifier.height(5.dp))
-}
-
-/**
- * Notifies the user of insufficient DP expenditure for this level of an SBL character.
- *
- * @param charFragVM view model for this fragment
- */
-@Composable
-fun LevelChangeAlert(
-    charFragVM: CharacterFragmentViewModel
-){
-    AlertDialog(
-        onDismissRequest = {charFragVM.toggleFailedLevelChangeOpen()},
-        title = {Text(text = stringResource(id = R.string.failedLevelChangeTitle))},
-        text = {Text(text = stringResource(id = R.string.failedLevelChangeText))},
-        confirmButton = {
-            TextButton(onClick = {charFragVM.toggleFailedLevelChangeOpen()}){
-                Text(
-                    text = stringResource(id = R.string.closeLabel),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    )
 }
 
 @Preview

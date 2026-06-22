@@ -1,13 +1,11 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.compose.runtime.MutableState
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatAbilities
 import com.paetus.animaCharCreator.character_creation.attributes.combat.CombatItem
 import com.paetus.animaCharCreator.character_creation.attributes.combat.ResistanceItem
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryList
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,16 +16,18 @@ import kotlinx.coroutines.flow.update
  *
  * @param combat character's combat abilities
  * @param primaryList character's primary characteristics that affect this section
- * @param charClass character's character object for DP displays
  */
 class CombatFragViewModel(
     private val combat: CombatAbilities,
-    primaryList: PrimaryList,
-    private val charClass: MutableState<CharClass>
-): ViewModel() {
+    primaryList: PrimaryList
+): FragmentVM() {
     //initialize life multiples taken input string
     private val _lifeMults = MutableStateFlow(value = combat.lifeMultsTaken.intValue.toString())
     val lifeMults = _lifeMults.asStateFlow()
+
+    //initialize class life display
+    private val _classLife = MutableStateFlow(value = combat.lifeClassTotal.intValue)
+    val classLife = _classLife.asStateFlow()
 
     //initialize maximum life point display
     private val _lifeTotal = MutableStateFlow(value = combat.lifeMax.intValue)
@@ -111,7 +111,14 @@ class CombatFragViewModel(
      *
      * @return value of the DP required
      */
-    fun getLifeDP(): Int{return charClass.value.lifePointMultiple}
+    fun getLifeDP(): Int{return combat.getLifeCost()}
+
+    /**
+     * Retrieves the character's action total for display.
+     *
+     * @return character's action total
+     */
+    fun getActionTotal(): String{return combat.actionCount.intValue.toString()}
 
     /**
      * Retrieves the character's initiative to display.
@@ -171,33 +178,29 @@ class CombatFragViewModel(
     //initialize all combat items
     private val attack = CombatItemData(
         combat = combat,
-        label = R.string.attackLabel,
         combatItem = combat.attack,
-        growthGetter = {charClass.value.atkGrowth},
+        growthGetter = {combat.getAtkCost()},
         setPointValid = {setPointColor(isValid = it)}
     )
 
     private val block = CombatItemData(
         combat = combat,
-        label = R.string.blockLabel,
         combatItem = combat.block,
-        growthGetter = {charClass.value.blockGrowth},
+        growthGetter = {combat.getBlockCost()},
         setPointValid = {setPointColor(isValid = it)}
     )
 
     private val dodge = CombatItemData(
         combat = combat,
-        label = R.string.dodgeLabel,
         combatItem = combat.dodge,
-        growthGetter = {charClass.value.dodgeGrowth},
+        growthGetter = {combat.getDodgeCost()},
         setPointValid = {setPointColor(isValid = it)}
     )
 
     private val wearArmor = CombatItemData(
         combat = combat,
-        label = R.string.wearLabel,
         combatItem = combat.wearArmor,
-        growthGetter = {charClass.value.armorGrowth},
+        growthGetter = {combat.getWearCost()},
         setPointValid = {}
     )
 
@@ -221,14 +224,12 @@ class CombatFragViewModel(
      * Object that holds data on one of the character's combat abilities.
      *
      * @param combat section of the character to work on
-     * @param label name of the item in question
      * @param combatItem data regarding this individual item
      * @param growthGetter function to run to get the stat's associated DP amount
      * @param setPointValid changes the point color in the combat fragment's view model
      */
     class CombatItemData(
         private val combat: CombatAbilities,
-        val label: Int,
         val combatItem: CombatItem,
         val growthGetter: () -> Int,
         val setPointValid: (Boolean) -> Unit
@@ -290,9 +291,13 @@ class CombatFragViewModel(
     /**
      * Function to run on loading this model's page.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
+        //update life point information
         setLifeMults(display = combat.lifeMultsTaken.intValue.toString())
+        _classLife.update{combat.lifeClassTotal.intValue}
         setLifeTotal(totalDisplay = combat.lifeMax.intValue)
+
+        //update all combat item info
         allCombatItems.forEach{combatItemData ->
             combatItemData.setPointsIn(display = combatItemData.combatItem.inputVal.intValue.toString())
             combatItemData.setTotalVal()

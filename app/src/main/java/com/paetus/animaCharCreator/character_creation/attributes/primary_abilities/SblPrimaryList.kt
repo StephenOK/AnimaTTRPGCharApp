@@ -33,6 +33,7 @@ class SblPrimaryList(
             charInstance.combat.attack.setModPoints(modVal = mod)
             charInstance.combat.block.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.dexKi.primaryUpdate(primeBase = total)
             charInstance.magic.calcMagProj()
             charInstance.psychic.updatePsyProjection()
@@ -48,6 +49,7 @@ class SblPrimaryList(
             charInstance.secondaryList.updateAGI()
             charInstance.combat.dodge.setModPoints(modVal = mod)
             charInstance.combat.updateInitiative()
+            charInstance.combat.actionCountUpdate()
             charInstance.ki.agiKi.primaryUpdate(primeBase = total)
         }
     )
@@ -118,4 +120,40 @@ class SblPrimaryList(
             charInstance.secondaryList.updatePER()
         }
     )
+
+    /**
+     * Determines if the total level bonuses applied are valid.
+     *
+     * @return true if bonus does not exceed half of the character's level
+     */
+    override fun validLevelBonuses(): Boolean {
+        //notify of bad characteristic bonus growth if one found
+        allPrimaries().forEach{primary ->
+            if(!(primary as SblPrimaryChar).validGrowthAtLevel(charInstance.lvl.intValue)) return false
+        }
+
+        //run the normal check
+        return super.validLevelBonuses()
+    }
+
+    /**
+     * Gets the total number of bonus points applied at the indicated level.
+     *
+     * @param level character level to check the value at
+     * @return total primary bonuses at this level
+     */
+    fun getPrimaryBonusesAtLevel(level: Int): Int{
+        return charInstance.getRecordSum(endLevel = level){character ->
+            //initialize this record's count
+            var output = 0
+
+            //add each primary's bonus to the record total
+            character.primaryList.allPrimaries().forEach{primary ->
+                output += primary.levelBonus.intValue
+            }
+
+            //add the total
+            output
+        }
+    }
 }

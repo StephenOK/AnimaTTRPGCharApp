@@ -219,7 +219,8 @@ fun KiFragment(
                     kiFragVM.getAllKiAbilities().forEach {kiAbility ->
                         KiAbilityRow(
                             ability = kiAbility,
-                            kiFragVM = kiFragVM
+                            kiFragVM = kiFragVM,
+                            homePageVM = homePageVM
                         )
                     }
                 }
@@ -252,10 +253,9 @@ fun KiFragment(
             AnimatedVisibility(visible = kiFragVM.techListOpen.collectAsState().value) {
                 GeneralCard{
                     //display each prebuilt technique
-                    kiFragVM.getAllPrebuilts().forEach {(technique, taken) ->
+                    kiFragVM.getAllPrebuilts().forEach {technique ->
                         TechniqueRow(
                             technique = technique,
-                            isTaken = taken,
                             kiFragVM = kiFragVM
                         )
                     }
@@ -268,12 +268,12 @@ fun KiFragment(
                     }
 
                     //display custom techniques
-                    kiFragVM.getCustomTechniques().forEach {(technique, taken) ->
-                        TechniqueRow(
-                            technique = technique,
-                            isTaken = taken,
-                            kiFragVM = kiFragVM
-                        )
+                    kiFragVM.allTechniques.collectAsState().value.forEach {(technique, _) ->
+                        if(technique is  CustomTechnique)
+                            TechniqueRow(
+                                technique = technique,
+                                kiFragVM = kiFragVM
+                            )
                     }
                 }
             }
@@ -417,11 +417,13 @@ private fun KiFromStatRow(
  *
  * @param ability ki ability to display in this row
  * @param kiFragVM viewModel managing this page's data
+ * @param homePageVM viewModel that manages the bottom bar that's being updated by this function
  */
 @Composable
 private fun KiAbilityRow(
     ability: KiAbility,
-    kiFragVM: KiFragmentViewModel
+    kiFragVM: KiFragmentViewModel,
+    homePageVM: HomePageViewModel
 ){
     Row(
         modifier = Modifier
@@ -436,6 +438,8 @@ private fun KiAbilityRow(
                     kiAbility = ability,
                     isTaken = it
                 )
+
+                homePageVM.updateExpenditures()
             },
             modifier = Modifier.weight(0.1f)
         )
@@ -471,13 +475,11 @@ private fun KiAbilityRow(
  * Displays a technique the user can add to their character.
  *
  * @param technique technique associated with the row
- * @param isTaken taken state of the inputted technique
  * @param kiFragVM viewModel that is managing the data on this page
  */
 @Composable
 private fun TechniqueRow(
     technique: TechniqueBase,
-    isTaken: MutableState<Boolean>,
     kiFragVM: KiFragmentViewModel
 ) {
     //retrieve the technique's name
@@ -492,7 +494,7 @@ private fun TechniqueRow(
     ){
         //checkbox to apply or remove technique to the character
         Checkbox(
-            checked = isTaken.value,
+            checked = kiFragVM.allTechniques.collectAsState().value[technique]!!.value,
             onCheckedChange ={
                 kiFragVM.attemptTechniqueChange(
                     technique = technique,
@@ -544,7 +546,10 @@ private fun TechniqueRow(
 fun KiPreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.classes.ownClass, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(
+        charInstance.ki,
+        LocalContext.current
+    )
     kiFragVM.toggleTechOpen()
 
     val homePageVM = HomePageViewModel(charInstance)

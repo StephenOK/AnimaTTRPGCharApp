@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types
 
+import com.paetus.animaCharCreator.character_creation.BaseCharacter
+
 /**
  * Object that holds information on an advantage a character can take.
  *
@@ -28,8 +30,8 @@ open class Advantage(
     val multPicked: List<Int>?,
     val cost: List<Int>,
     val pickedCost: Int,
-    val onTake: ((Int?, Int) -> Unit)?,
-    val onRemove: ((Int?, Int) -> Unit)?
+    val onTake: ((BaseCharacter, Int?, Int) -> Unit)?,
+    val onRemove: ((BaseCharacter, Int?, Int) -> Unit)?
 ){
     /**
      * Checks that another advantage is exactly the same as this one.

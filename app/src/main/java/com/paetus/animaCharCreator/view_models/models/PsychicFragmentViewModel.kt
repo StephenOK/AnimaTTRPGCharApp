@@ -1,13 +1,13 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
-import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Discipline
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.Psychic
 import com.paetus.animaCharCreator.character_creation.attributes.psychic.PsychicPower
+import com.paetus.animaCharCreator.character_creation.attributes.psychic.SblPsychic
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,16 +17,12 @@ import kotlinx.coroutines.flow.update
  * Works on variables in the corresponding psychic fragment.
  *
  * @param psychic character's psychic abilities
- * @param charClass class record of the character
- * @param dexMod character's dexterity modifier
  * @param context source of the accessed resources
  */
 class PsychicFragmentViewModel(
     private val psychic: Psychic,
-    private val charClass: MutableState<CharClass>,
-    dexMod: Int,
     private val context: Context
-): ViewModel() {
+): FragmentVM() {
     //initialize character's free psychic point text
     private val _freePsyPoints = MutableStateFlow(value = psychic.getFreePsyPoints())
     val freePsyPoints = _freePsyPoints.asStateFlow()
@@ -143,7 +139,7 @@ class PsychicFragmentViewModel(
         boughtVal = {psychic.boughtPsyPoints.intValue},
         totalVal = {psychic.totalPsychicPoints.intValue},
         getResource = {R.string.dpLabel},
-        getValue = {charClass.value.psyPointGrowth},
+        getValue = {psychic.psyPointCost()},
         getValid = {true},
         totalUpdate = {input, item ->
             psychic.buyPsyPoints(ppBuy = input)
@@ -155,12 +151,17 @@ class PsychicFragmentViewModel(
     //initialize data in regards to the character's psychic projection
     private val psychicProjection = PsychicPurchaseItemData(
         title = R.string.psyProjectionLabel,
-        baseString = {dexMod},
+        baseString = {psychic.getPsyProjBase()},
         boughtVal = {psychic.psyProjectionBought.intValue},
         totalVal = {psychic.psyProjectionTotal.intValue},
         getResource = {R.string.dpLabel},
-        getValue = {charClass.value.psyProjGrowth},
-        getValid = {psychic.getValidProjection()},
+        getValue = {psychic.psyProjCost()},
+        getValid = {
+            if(psychic is SblPsychic)
+                psychic.getValidProjectionAtLevel(psychic.charInstance.lvl.intValue)
+            else
+                psychic.getValidProjection()
+        },
         totalUpdate = {input, item ->
             psychic.buyPsyProjection(projBuy = input)
             item.update{psychic.psyProjectionTotal.intValue}
@@ -174,63 +175,63 @@ class PsychicFragmentViewModel(
     private val telepathy = DisciplineItemData(
         psychic = psychic,
         nameRef = 0,
-        discipline = psychic.telepathy,
+        discipline = psychic.telepathy(),
         psyFragVM = this
     )
 
     private val kinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 1,
-        discipline = psychic.psychokinesis,
+        discipline = psychic.psychokinesis(),
         psyFragVM = this
     )
 
     private val pyrokinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 2,
-        discipline = psychic.pyrokinesis,
+        discipline = psychic.pyrokinesis(),
         psyFragVM = this
     )
 
     private val cryokinesis = DisciplineItemData(
         psychic = psychic,
         nameRef = 3,
-        discipline = psychic.cryokinesis,
+        discipline = psychic.cryokinesis(),
         psyFragVM = this
     )
 
     private val physIncrease = DisciplineItemData(
         psychic = psychic,
         nameRef = 4,
-        discipline = psychic.physicalIncrease,
+        discipline = psychic.physicalIncrease(),
         psyFragVM = this
     )
 
     private val energy = DisciplineItemData(
         psychic = psychic,
         nameRef = 5,
-        discipline = psychic.energyPowers,
+        discipline = psychic.energyPowers(),
         psyFragVM = this
     )
 
     private val sentience = DisciplineItemData(
         psychic = psychic,
         nameRef = 6,
-        discipline = psychic.sentiencePowers,
+        discipline = psychic.sentiencePowers(),
         psyFragVM = this
     )
 
     private val telemetry = DisciplineItemData(
         psychic = psychic,
         nameRef = 7,
-        discipline = psychic.telemetry,
+        discipline = psychic.telemetry(),
         psyFragVM = this
     )
 
     private val matrixPowers = DisciplineItemData(
         psychic = psychic,
         nameRef = 8,
-        discipline = psychic.matrixPowers,
+        discipline = psychic.matrixPowers(),
         psyFragVM = this
     )
 
@@ -324,7 +325,7 @@ class PsychicFragmentViewModel(
          * Refreshes the item value on loading this page.
          */
         fun refreshItem(){
-            if(_purchaseAmount.value != "")
+            if(purchaseAmount.value != "")
                 setPurchaseAmount(buyVal = boughtVal())
         }
     }
@@ -534,7 +535,7 @@ class PsychicFragmentViewModel(
     /**
      * Refresh the displayed items for a page reload.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         //refresh each bought item
         buyItems.forEach{power -> power.refreshItem()}
 

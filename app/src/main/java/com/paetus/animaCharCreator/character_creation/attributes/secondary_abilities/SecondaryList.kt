@@ -77,6 +77,7 @@ open class SecondaryList(
     open val strengthFeat = SecondaryCharacteristic(parent = this)
     open val resistPain = SecondaryCharacteristic(parent = this)
 
+    //initialize custom characteristic field lists
     private val customAthletics = mutableListOf<CustomCharacteristic>()
     private val customSocials = mutableListOf<CustomCharacteristic>()
     private val customPercs = mutableListOf<CustomCharacteristic>()
@@ -85,6 +86,7 @@ open class SecondaryList(
     private val customSubs = mutableListOf<CustomCharacteristic>()
     private val customCreates = mutableListOf<CustomCharacteristic>()
 
+    //initialize custom characteristic mod lists
     private val customSTR = mutableListOf<CustomCharacteristic>()
     private val customDEX = mutableListOf<CustomCharacteristic>()
     private val customAGI = mutableListOf<CustomCharacteristic>()
@@ -109,6 +111,8 @@ open class SecondaryList(
 
     /**
      * Retrieves all custom characteristics available to this character.
+     *
+     * @return list of all custom characteristics
      */
     fun getAllCustoms(): List<CustomCharacteristic>{
         return customAthletics + customSocials + customPercs + customIntells + customVigors + customSubs + customCreates
@@ -135,7 +139,7 @@ open class SecondaryList(
      *
      * @param charName name of the custom characteristic to find
      */
-    fun getCustomIndex(
+    open fun getCustomIndex(
         charName: String
     ): Int{
         return getAllCustoms().indexOf(getCustomCharacteristic(charName = charName))
@@ -143,8 +147,10 @@ open class SecondaryList(
 
     /**
      * Retrieves all secondary characteristics this character has access to.
+     *
+     * @return all secondaries available to the character
      */
-    fun getAllSecondaries(): List<SecondaryCharacteristic>{
+    open fun getAllSecondaries(): List<SecondaryCharacteristic>{
         return fullList() + getAllCustoms()
     }
 
@@ -154,7 +160,7 @@ open class SecondaryList(
      * @param fieldInteger number to convert to a secondary field
      * @return list of characteristics associated with the desired field
      */
-    fun intToField(
+    open fun intToField(
         fieldInteger: Int
     ): List<SecondaryCharacteristic>{
         return when(fieldInteger){
@@ -175,7 +181,7 @@ open class SecondaryList(
      *
      * @param characteristic secondary characteristic to toggle the bonus of
      */
-    fun toggleNatBonus(characteristic: SecondaryCharacteristic){
+    open fun toggleNatBonus(characteristic: SecondaryCharacteristic){
         //if natural bonus is currently off
         if(!characteristic.bonusApplied.value){
             //make true if characteristic is invested in and there are bonuses available
@@ -193,7 +199,7 @@ open class SecondaryList(
      *
      * @return number of natural bonuses held
      */
-    private fun countNatBonuses(): Int{
+    fun countNatBonuses(): Int{
         //initialize counter
         var total = 0
 
@@ -248,7 +254,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new strength modifier.
      */
-    fun updateSTR() {
+    open fun updateSTR() {
         jump.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
         strengthFeat.setModVal(modValue = charInstance.primaryList.str.outputMod.intValue)
 
@@ -258,7 +264,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new dexterity modifier.
      */
-    fun updateDEX() {
+    open fun updateDEX() {
         forging.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
         sleightHand.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
         disguise.setModVal(modValue = charInstance.primaryList.dex.outputMod.intValue)
@@ -272,7 +278,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new agility modifier.
      */
-    fun updateAGI() {
+    open fun updateAGI() {
         acrobatics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
         athletics.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
         climb.setModVal(modValue = charInstance.primaryList.agi.outputMod.intValue)
@@ -287,14 +293,14 @@ open class SecondaryList(
     /**
      * Updates needed values based on new constitution modifier.
      */
-    fun updateCON(){
+    open fun updateCON(){
         customCON.forEach{customChar -> customChar.setModVal(charInstance.primaryList.con.outputMod.intValue)}
     }
 
     /**
      * Update needed values based on new intelligence modifier.
      */
-    fun updateINT() {
+    open fun updateINT() {
         persuasion.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
         poisons.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
         animals.setModVal(modValue = charInstance.primaryList.int.outputMod.intValue)
@@ -313,7 +319,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new power modifier.
      */
-    fun updatePOW() {
+    open fun updatePOW() {
         art.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
         music.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
         leadership.setModVal(modValue = charInstance.primaryList.pow.outputMod.intValue)
@@ -326,7 +332,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new willpower modifier.
      */
-    fun updateWP() {
+    open fun updateWP() {
         intimidate.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
         composure.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
         resistPain.setModVal(modValue = charInstance.primaryList.wp.outputMod.intValue)
@@ -337,7 +343,7 @@ open class SecondaryList(
     /**
      * Update needed values based on new perception modifier
      */
-    fun updatePER() {
+    open fun updatePER() {
         notice.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
         search.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
         track.setModVal(modValue = charInstance.primaryList.per.outputMod.intValue)
@@ -362,7 +368,7 @@ open class SecondaryList(
 
         //for files created after custom secondaries were implemented
         if(writeVersion >= 22) {
-            (0 until fileReader!!.readLine().toInt()).forEach{
+            repeat(times = fileReader!!.readLine().toInt()){
 
                 //get the custom characteristic's name
                 val customName = fileReader.readLine()
@@ -427,7 +433,7 @@ open class SecondaryList(
      * @param input directory for custom secondary characteristics
      * @param filename name of the character file that may be associated with private custom characteristics
      */
-    fun applySecondaryChars(
+    open fun applySecondaryChars(
         input: File,
         filename: String
     ){
@@ -441,20 +447,17 @@ open class SecondaryList(
             //retrieve data about the custom secondary characteristic
             val valid = fileReader.readLine().toBoolean()
             val fileCheck = fileReader.readLine()
-            val name = fileReader.readLine()
-            val field = fileReader.readLine().toInt()
-            val primary = fileReader.readLine().toInt()
 
             //if characteristic is either public or private to this character
             if (valid || fileCheck == filename) {
                 //create custom characteristic item
                 val newTech = CustomCharacteristic(
                     parent = this,
-                    name = name,
+                    name = fileReader.readLine(),
                     filename = filename,
                     isPublic = valid,
-                    field = field,
-                    primary = primary
+                    field = fileReader.readLine().toInt(),
+                    primary = fileReader.readLine().toInt()
                 )
 
                 //add characteristic to character
@@ -481,7 +484,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customAthletics,
-                    newGrowth = charInstance.classes.ownClass.value.athGrowth
+                    newGrowth = charInstance.classes.getClass().athGrowth
                 )
             }
 
@@ -490,7 +493,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSocials,
-                    newGrowth = charInstance.classes.ownClass.value.socGrowth
+                    newGrowth = charInstance.classes.getClass().socGrowth
                 )
             }
 
@@ -499,7 +502,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customPercs,
-                    newGrowth = charInstance.classes.ownClass.value.percGrowth
+                    newGrowth = charInstance.classes.getClass().percGrowth
                 )
             }
 
@@ -508,7 +511,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customIntells,
-                    newGrowth = charInstance.classes.ownClass.value.intellGrowth
+                    newGrowth = charInstance.classes.getClass().intellGrowth
                 )
             }
 
@@ -517,7 +520,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customVigors,
-                    newGrowth = charInstance.classes.ownClass.value.vigGrowth
+                    newGrowth = charInstance.classes.getClass().vigGrowth
                 )
             }
 
@@ -526,7 +529,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customSubs,
-                    newGrowth = charInstance.classes.ownClass.value.subterGrowth
+                    newGrowth = charInstance.classes.getClass().subterGrowth
                 )
             }
 
@@ -535,7 +538,7 @@ open class SecondaryList(
                 addCustomToField(
                     newSecondary = newSecondary,
                     fieldList = customCreates,
-                    newGrowth = charInstance.classes.ownClass.value.createGrowth
+                    newGrowth = charInstance.classes.getClass().createGrowth
                 )
             }
 
@@ -610,12 +613,11 @@ open class SecondaryList(
         fieldList.add(element = newSecondary)
         newSecondary.setDevCost(dpCost = newGrowth)
 
-        //determine if the character has a advantage bonus in this field
+        //determine if the character has an advantage bonus in this field
         val fieldAdvantage = charInstance.advantageRecord.getAdvantage(advantageString = "fieldAptitude")
 
         //apply that bonus, if available
-        if(fieldAdvantage != null && fieldAdvantage.picked == newSecondary.fieldIndex.intValue){
+        if(fieldAdvantage != null && fieldAdvantage.picked == newSecondary.fieldIndex.intValue)
             newSecondary.setDevelopmentDeduction(dpDeduction = 1)
-        }
     }
 }

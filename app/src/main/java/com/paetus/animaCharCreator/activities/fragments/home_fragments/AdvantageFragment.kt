@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -23,9 +20,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -237,7 +237,7 @@ private fun AdvantageDisplay(
                         advantageFragVM = advantageFragVM,
                         buttonIcon = {
                             Icon(
-                                imageVector = Icons.Filled.Add,
+                                imageVector = ImageVector.vectorResource(R.drawable.outline_add_24),
                                 contentDescription = "Add Advantage"
                             )
                         }
@@ -299,6 +299,9 @@ private fun AdvantageRow(
     buttonIcon: @Composable () -> Unit,
     buttonAction: (() -> Unit)?,
 ){
+    //get current context
+    val context = LocalContext.current
+
     //initialize the advantage's name with potential additional information
     val nameString =
         if(takenAddition != null) stringResource(id = advantage.name) + takenAddition
@@ -312,7 +315,14 @@ private fun AdvantageRow(
         if(buttonAction != null) {
             //implement button with given image and function
             Button(
-                onClick = {buttonAction()},
+                onClick = {
+                    //perform action if can change ability list
+                    if(advantageFragVM.getAdvantageChangeable())
+                        buttonAction()
+                    //notify user of failed change
+                    else
+                        Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
+                },
                 modifier = Modifier
                     .weight(0.25f)
             ){buttonIcon()}
@@ -361,7 +371,7 @@ private fun HeldAdvantageDisplay(
                 " (${stringArrayResource(id = advantage.options)[advantage.picked]})"
             //otherwise get custom characteristic name
             else
-                " (${advantageFragVM.getCustomName(38 - advantage.picked)} - Custom)"
+                " (${advantageFragVM.getCustomName(advantage.picked)} - Custom)"
         }
         else null
 
@@ -372,8 +382,8 @@ private fun HeldAdvantageDisplay(
         advantageFragVM = advantageFragVM,
         buttonIcon = {
             Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = "Add Advantage"
+                imageVector = ImageVector.vectorResource(R.drawable.outline_close_24),
+                contentDescription = "Remove Advantage"
             )
         }
     ){
@@ -395,7 +405,7 @@ fun AdvantagePreview(){
     val charInstance = BaseCharacter()
     charInstance.setOwnRace(1)
 
-    charInstance.advantageRecord.acquireAdvantage(charInstance.advantageRecord.commonAdvantages.gift, null, 0, null)
+    charInstance.advantageRecord.acquireAdvantage(charInstance.objectDB.commonAdvantages.gift, null, 0, null)
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
     advantageFragVM.advantageButtons[4].toggleOpen()

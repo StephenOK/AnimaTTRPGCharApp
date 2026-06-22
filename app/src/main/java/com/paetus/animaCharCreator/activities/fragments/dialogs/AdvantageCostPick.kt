@@ -21,6 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblSecondaryList
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SecondaryList
 import com.paetus.animaCharCreator.view_models.models.AdvantageFragmentViewModel
 
@@ -84,10 +87,24 @@ fun AdvantageCostPick(
                         //add custom secondary characteristic options for natural learner and subject aptitude
                         if(advantageFragVM.adjustedAdvantage.value!!.saveTag == "subjectAptitude" ||
                             advantageFragVM.adjustedAdvantage.value!!.saveTag == "naturalLearner"){
-                            secondaryList.getAllCustoms().forEach{secondary ->
+                            //get the appropriate custom secondary items
+                            val customList =
+                                if(secondaryList is SblSecondaryList)
+                                    secondaryList.getAllSblCustoms()
+                                else
+                                    secondaryList.getAllCustoms()
+
+                            customList.forEach{secondary ->
+                                //get the characteristic's name
+                                val scName =
+                                    if(secondary is CustomCharacteristic)
+                                        secondary.name.value
+                                    else
+                                        (secondary as SblCustomCharacteristic).name.value
+
                                 item{
                                     OptionRow(
-                                        name = secondary.name.value + " (Custom)",
+                                        name = "$scName (Custom)",
                                         secondaryList = secondaryList,
                                         advantageFragVM = advantageFragVM
                                     )
@@ -142,11 +159,20 @@ fun AdvantageCostPick(
             //button to confirm user's selection
             TextButton(
                 onClick = {
-                    //if selecting option and cost must also be chosen, go to cost selection
-                    if(advantageFragVM.adjustingPage.value == 1 &&
-                        advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
-                        advantageFragVM.setAdjustingPage(pageNum = 2)
-                    //otherwise attempt advantage acquisition
+                    //if selecting advantage's option
+                    if(advantageFragVM.adjustingPage.value == 1){
+                        //if the user has made a selection
+                        if(advantageFragVM.optionPicked.value != null ||
+                            advantageFragVM.halfAttunedOptions.value.size == 5){
+                            //go to the cost selection if one is needed
+                            if(advantageFragVM.adjustedAdvantage.value!!.cost.size > 1)
+                                advantageFragVM.setAdjustingPage(pageNum = 2)
+                            //otherwise, acquire the advantage
+                            else
+                                closeDialog(advantageFragVM.acquireAdvantage())
+                        }
+                    }
+                    //acquire the advantage if on the cost page
                     else
                         closeDialog(advantageFragVM.acquireAdvantage())
                 }
@@ -339,7 +365,7 @@ fun AdvantageCostPreview(){
     val charInstance = BaseCharacter()
 
     val advantageFragVM = AdvantageFragmentViewModel(charInstance, charInstance.advantageRecord)
-    advantageFragVM.setAdjustedAdvantage(charInstance.advantageRecord.commonAdvantages.naturalPsychicPower)
+    advantageFragVM.setAdjustedAdvantage(charInstance.objectDB.commonAdvantages.naturalPsychicPower)
     //advantageFragVM.setAdjustingPage(2)
 
     AdvantageCostPick(charInstance.secondaryList, advantageFragVM){}

@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the dark element.
  */
-class DarkBook: MagicBook(Element.Dark){
+class DarkSpells: SpellList(Element.Dark){
     private val createDark = Spell(
         name = R.string.createDark,
         isActive = true,
@@ -20,7 +20,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val induceFear = Spell(
@@ -33,7 +34,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val seeInDarkness = Spell(
@@ -46,7 +48,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkShield = Spell(
@@ -59,7 +62,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 1
     )
 
     private val shadow = Spell(
@@ -72,7 +76,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkArmor = Spell(
@@ -85,7 +90,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val banishLight = Spell(
@@ -98,7 +104,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual, SpellType.Effect)
+        type = listOf(SpellType.Spiritual, SpellType.Effect),
+        bookIndex = 1
     )
 
     private val hideMagic = Spell(
@@ -111,7 +118,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkBeam = Spell(
@@ -124,7 +132,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 1
     )
 
     private val darkzone = Spell(
@@ -137,7 +146,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkBond = Spell(
@@ -150,7 +160,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 1
     )
 
     private val controlDark = Spell(
@@ -163,7 +174,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual, SpellType.Effect)
+        type = listOf(SpellType.Spiritual, SpellType.Effect),
+        bookIndex = 1
     )
 
     private val concealment = Spell(
@@ -176,7 +188,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val obfuscate = Spell(
@@ -189,7 +202,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val enrage = Spell(
@@ -202,7 +216,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val banishPositiveEmotions = Spell(
@@ -215,7 +230,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val night = Spell(
@@ -228,7 +244,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkSphere = Spell(
@@ -241,7 +258,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 1
     )
 
     private val concealZone = Spell(
@@ -254,7 +272,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 1
     )
 
     private val enterNightmare = Spell(
@@ -267,7 +286,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 50,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val darkForm = Spell(
@@ -280,7 +300,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val perdition = Spell(
@@ -293,7 +314,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 1
     )
 
     private val createNegativeFeelings = Spell(
@@ -306,7 +328,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val eliminateTraces = Spell(
@@ -319,7 +342,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val shieldFromPositive = Spell(
@@ -332,7 +356,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 1
     )
 
     private val devouringDark = Spell(
@@ -345,7 +370,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 1
     )
 
     private val devastate = Spell(
@@ -358,7 +384,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val markOfFear = Spell(
@@ -371,7 +398,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 1
     )
 
     private val catastrophicDarkness = Spell(
@@ -384,7 +412,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 1
     )
 
     private val darkMaterialObjects = Spell(
@@ -397,7 +426,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val shadowTravel = Spell(
@@ -410,7 +440,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Spiritual, SpellType.Effect)
+        type = listOf(SpellType.Spiritual, SpellType.Effect),
+        bookIndex = 1
     )
 
     private val nightmareLord = Spell(
@@ -423,7 +454,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual, SpellType.Effect)
+        type = listOf(SpellType.Spiritual, SpellType.Effect),
+        bookIndex = 1
     )
 
     private val createDarkBeing = Spell(
@@ -436,7 +468,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val concealmentFromMagic = Spell(
@@ -449,7 +482,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darknessKingdom = Spell(
@@ -462,7 +496,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 30,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 1
     )
 
     private val undetectable = Spell(
@@ -475,7 +510,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val prisonOfDarkness = Spell(
@@ -488,7 +524,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 1
     )
 
     private val oneWithDarkness = Spell(
@@ -501,7 +538,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkAscension = Spell(
@@ -514,7 +552,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 1
     )
 
     private val darkHolocaust = Spell(
@@ -527,7 +566,8 @@ class DarkBook: MagicBook(Element.Dark){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack, SpellType.Spiritual)
+        type = listOf(SpellType.Attack, SpellType.Spiritual),
+        bookIndex = 1
     )
 
     init{

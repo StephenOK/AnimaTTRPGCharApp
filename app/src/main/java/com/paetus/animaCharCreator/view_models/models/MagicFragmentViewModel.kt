@@ -1,19 +1,20 @@
 package com.paetus.animaCharCreator.view_models.models
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.enumerations.Element
-import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
+import com.paetus.animaCharCreator.character_creation.attributes.magic.SblMagic
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.FreeSpell
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeBook
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeSpells
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,14 +25,12 @@ import kotlinx.coroutines.flow.update
  *
  * @param magic character's magic abilities section
  * @param charInstance full character object
- * @param charClass state of this character's class
  */
 class MagicFragmentViewModel(
     private val magic: Magic,
     private val charInstance: BaseCharacter,
-    private val charClass: MutableState<CharClass>,
     val context: Context
-): ViewModel() {
+): FragmentVM() {
     //initialize the character's bought zeon input
     private val _boughtZeonString = MutableStateFlow(value = magic.boughtZeon.intValue.toString())
     val boughtZeonString = _boughtZeonString.asStateFlow()
@@ -142,14 +141,23 @@ class MagicFragmentViewModel(
     fun currentZeonPoints(): Int{return magic.boughtZeon.intValue}
 
     /**
+     * Determines if the magic projection can be changed at this time.
+     *
+     * @return true if item is changeable
+     */
+    fun getImbalanceChangeable(): Boolean{
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
+
+    /**
      * Change the character's magic imbalance input.
      *
      * @param imbalance value to set the magic imbalance to
      */
     fun setProjectionImbalance(imbalance: Int){
-        magic.magProjImbalance.intValue = imbalance
-        setProjectionImbalance(imbalance.toString())
-        refreshImbalance(imbalanceIsAttack.value)
+        magic.setProjImbalance(imbalance = imbalance)
+        setProjectionImbalance(display = imbalance.toString())
+        refreshImbalance(isOffense = imbalanceIsAttack.value)
     }
 
     /**
@@ -187,13 +195,10 @@ class MagicFragmentViewModel(
 
     /**
      * Sets the magic imbalance bias to the inputted value.
-     *
-     * @param isOffense true if setting bias to offense
      */
-    fun setImbalanceIsAttack(isOffense: Boolean){
-        _imbalanceIsAttack.update{isOffense}
-        refreshImbalance(isOffense)
-        _imbalanceTypeString.update{if(isOffense) R.string.offenseLabel else R.string.defenseLabel}
+    fun toggleImbalanceIsAttack(){
+        _imbalanceIsAttack.update{magic.toggleImbalance()}
+        refreshImbalance(magic.imbalanceIsAttack.value)
     }
 
     /**
@@ -204,6 +209,8 @@ class MagicFragmentViewModel(
     private fun refreshImbalance(isOffense: Boolean){
         _offenseImbalance.update{determineImbalanceValue(isOffense)}
         _defenseImbalance.update{determineImbalanceValue(!isOffense)}
+
+        _imbalanceTypeString.update{if(magic.imbalanceIsAttack.value) R.string.offenseLabel else R.string.defenseLabel}
     }
 
     /**
@@ -215,7 +222,7 @@ class MagicFragmentViewModel(
     fun getSpellData(spell: Spell): SpellRowData{
         //search for the spell in each book
         allBooks.forEach{book ->
-            if(spell in book.magicBook.fullBook) return book
+            if(spell in book.magicBook.spells.fullBook) return book
         }
 
         //return necromancy if nothing found
@@ -230,10 +237,19 @@ class MagicFragmentViewModel(
      */
     fun tryExchangeOpen(
         freeSpell: FreeSpell
-    ): Boolean{
+    ): Int?{
         //terminate if character has Magic Ties disadvantage
         if(magic.magicTies.value)
-            return true
+            return R.string.magicTiesRestriction
+
+        magic.retrieveBooks().forEach{book -> book.validateFreeSpells()}
+
+        //check that free spell wasn't picked in an earlier level
+        if(charInstance is SblChar &&
+            charInstance.magic.retrieveBooks()[freeSpell.bookIndex].freeSpellEarlier(
+                spellLevel = freeSpell.level
+            ))
+            return R.string.freeSpellEarlier
 
         //set free spell values
         setFreeElement(element = getFreeElement(freeSpell = freeSpell))
@@ -241,6 +257,7 @@ class MagicFragmentViewModel(
 
         //set the book the free spell will be added to
         val book = magic.getFreeSpellBook(freeSpell = freeSpell)
+
         allBooks.forEach{bookData ->
             if(bookData.magicBook == book){
                 setFreeBookAddition(bookData = bookData)
@@ -251,7 +268,7 @@ class MagicFragmentViewModel(
         toggleFreeExchangeOpen()
 
         //terminate process
-        return false
+        return null
     }
 
     /**
@@ -281,7 +298,7 @@ class MagicFragmentViewModel(
      */
     fun getFreeElement(freeSpell: FreeSpell): Element {
         val book = magic.necromancyBook.charHasFreeSpell(freeSpell = freeSpell)
-        return book?.element ?: freeSpell.forbiddenElements[0]
+        return book?.spells?.element ?: freeSpell.forbiddenElements[0]
     }
 
     /**
@@ -290,6 +307,30 @@ class MagicFragmentViewModel(
      * @param freeSpell free spell to set
      */
     fun setSelectedFreeSpell(freeSpell: FreeSpell?){_selectedFreeSpell.update{freeSpell}}
+
+    /**
+     * Determines that a free spell of the given level is present in the given book.
+     *
+     * @param spellLevel level of spell to look for
+     * @param spellBook book to check for free spell
+     * @return true if one is found
+     */
+    fun freeSpellIsHeld(
+        spellLevel: Int,
+        spellBook: MagicBook
+    ): Boolean{
+        //create hypothetical spell present
+        val spellCopy = spellBook.getFreeSpell(level = spellLevel)
+
+        //look for spell in held list
+        heldSpells.forEach{spell ->
+            //return that one is found
+            if(spell is FreeSpell && spell.equals(spellCopy)) return true
+        }
+
+        //notify of spell's absence
+        return false
+    }
 
     /**
      * Gets whether a spell of the given level is castable by the character.
@@ -327,6 +368,23 @@ class MagicFragmentViewModel(
     }
 
     /**
+     * Determines if the character can acquire individual spells.
+     *
+     * @return null if purchase valid; give error message reference if not
+     */
+    fun buySingleValid(): Int?{
+        //notify of no gift presence
+        return if(!isGifted())
+            R.string.needGiftMessage
+        //notify of magic ties presence
+        else if(magic.magicTies.value)
+            R.string.magicTiesIndividualRestriction
+        //give go-ahead flag
+        else
+            null
+    }
+
+    /**
      * Retrieves the base zeon points the character has.
      *
      * @return character's base zeon
@@ -345,21 +403,21 @@ class MagicFragmentViewModel(
      *
      * @return the DP cost of zeon points
      */
-    fun getBoughtZeonDP(): Int{return charClass.value.zeonGrowth}
+    fun getBoughtZeonDP(): Int{return magic.getZeonPointCost()}
 
     /**
      * Gets the DP cost of the character's magic accumulation.
      *
      * @return the DP cost of magic accumulation
      */
-    private fun getZeonAccDP(): Int{return charClass.value.maGrowth}
+    private fun getZeonAccDP(): Int{return magic.getZeonAccCost()}
 
     /**
      * Gets the DP cost of the character's magic projection.
      *
      * @return the DP cost of magic projection
      */
-    private fun getMagProjDP(): Int{return charClass.value.maProjGrowth}
+    private fun getMagProjDP(): Int{return magic.getMagProjCost()}
 
     /**
      * Retrieve the maximum magic level the character can spend.
@@ -373,7 +431,7 @@ class MagicFragmentViewModel(
      *
      * @return free spell record
      */
-    fun getFreeSpellbook(): FreeBook{return magic.freeBook}
+    fun getFreeSpellbook(): FreeSpells{return magic.freeBook}
 
     /**
      * Determines if the indicated spell can be individually bought or removed from the character.
@@ -407,7 +465,7 @@ class MagicFragmentViewModel(
      * @param spell spell to determine the character has
      * @return true if the character has learned this spell
      */
-    fun getSpellHeld(spell: Spell): Boolean{return magic.hasCopyOf(check = spell)}
+    fun getSpellHeld(spell: Spell): Boolean{return heldSpells.contains(element = spell)}
 
     /**
      * Add the user's selected free spell item to the character.
@@ -427,7 +485,8 @@ class MagicFragmentViewModel(
                 maintenance = selectedFreeSpell.value!!.maintenance,
                 isDaily = selectedFreeSpell.value!!.isDaily,
                 type = selectedFreeSpell.value!!.type,
-                forbiddenElements = selectedFreeSpell.value!!.forbiddenElements
+                forbiddenElements = selectedFreeSpell.value!!.forbiddenElements,
+                bookIn = magic.retrieveBooks().indexOf(freeBookAddition.value.magicBook)
             )
 
             //add it to the character
@@ -475,7 +534,12 @@ class MagicFragmentViewModel(
             magic.buyMagProj(it)
             refreshImbalance(imbalanceIsAttack.value)
         },
-        getValid = {magic.getValidProjection()}
+        getValid = {
+            if(charInstance is SblChar)
+                (magic as SblMagic).getValidProjectionAtLevel(charInstance.lvl.intValue)
+            else
+                magic.getValidProjection()
+        }
     ){it.update{magic.magProjTotal.intValue.toString()}}
 
     //gather purchase data created
@@ -717,6 +781,7 @@ class MagicFragmentViewModel(
          */
         fun buySingleSpell(spellLevel: Int){
             magicBook.changeIndividualSpell(spellLevel = spellLevel)
+            magFragVM.updateHeldSpells()
         }
 
         /**
@@ -736,7 +801,7 @@ class MagicFragmentViewModel(
 
     init{
         //set the initial imbalance bias
-        setImbalanceIsAttack(isOffense = magic.imbalanceIsAttack.value)
+        refreshImbalance(magic.imbalanceIsAttack.value)
         allBooks.forEach{it.refreshItem()}
         updateHeldSpells()
     }
@@ -744,7 +809,7 @@ class MagicFragmentViewModel(
     /**
      * Refreshes all items on this page when it is loaded.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
         if(_boughtZeonString.value != "")
             setBoughtZeonString(zeonBought = magic.boughtZeon.intValue)
 

@@ -1,5 +1,6 @@
 package com.paetus.animaCharCreator.activities.fragments.home_fragments
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
@@ -195,6 +196,9 @@ private fun WeaponRow(
     modFragVM: ModuleFragmentViewModel,
     homePageVM: HomePageViewModel
 ){
+    //get current context
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -202,10 +206,17 @@ private fun WeaponRow(
     ){
         //primary checkbox item
         Checkbox(
-            checked = weapon == modFragVM.primaryWeapon.collectAsState().value,
+            checked = weapon == modFragVM.getPrimaryWeapon(),
             onCheckedChange = {
+                //get initial primary weapon
+                val before = modFragVM.primaryWeapon.value
+
                 //update character's primary weapon
                 modFragVM.setPrimaryWeapon(primeWeapon = weapon)
+
+                //if change could not happen do to level, notify user of failure
+                if(before != weapon && before == modFragVM.primaryWeapon.value)
+                    Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()
 
                 //update character's spent points
                 homePageVM.updateExpenditures()
@@ -216,11 +227,10 @@ private fun WeaponRow(
 
         //secondary checkbox item
         Checkbox(
-            checked = modFragVM.allSecondaryWeapons[weapon]!!.value ||
-                    modFragVM.archetypesHasWeapon(weapon = weapon),
+            checked = modFragVM.allSecondaryWeapons[weapon]!!.value,
             onCheckedChange = {
                 //if primary check is not taken
-                if(weapon != modFragVM.primaryWeapon.value)
+                if(weapon != modFragVM.getPrimaryWeapon())
                 //perform appropriate action for input
                     modFragVM.changeIndividualModule(weapon = weapon, isTaking = it)
 

@@ -3,15 +3,24 @@ package com.paetus.animaCharCreator.character_creation.attributes.magic.spells
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeBook
-import com.paetus.animaCharCreator.enumerations.Element
+import com.paetus.animaCharCreator.character_creation.attributes.magic.Magic
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook.FreeSpells
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 
+/**
+ * Item that holds data for a character's investment in a particular magical element.
+ *
+ * @param spells actual spells associated with this element
+ * @param magic the character's entire magical capacity section
+ * @param opposingIndex index of the element that is opposite to this one
+ */
 open class MagicBook(
-    val element: Element
-) {
+    val spells: SpellList,
+    val magic: Magic,
+    val opposingIndex: Int
+){
     //initialize points in this book
     val pointsIn = mutableIntStateOf(value = 0)
 
@@ -21,17 +30,36 @@ open class MagicBook(
     //initialize the state of this book being a primary element
     val isPrimary = mutableStateOf(value = false)
 
-    //initialize the list of opposing magic books
-    val opposingBooks = mutableListOf<MagicBook>()
-
     //initialize natural path taken for this element
     val isNatural = mutableStateOf(false)
 
-    //initialize spell book
-    val fullBook = mutableListOf<Spell?>()
-
     //initialize free spells associated with this element
     val freeSpells = mutableListOf<FreeSpell>()
+
+    /**
+     * Updates the primary status of the magic book.
+     */
+    open fun updatePrimary(){}
+
+    /**
+     * Gets whether the points spent in this book are valid for an SBL character.
+     *
+     * @return true if points not removed
+     */
+    open fun validBookGrowthAtLevel(level: Int): Boolean{return true}
+
+    /**
+     * Sets the total magic levels invested in this book.
+     */
+    open fun updateMagLevels(){}
+
+    /**
+     * Determines if a free spell of the given level was selected at an earlier character level.
+     *
+     * @param spellLevel level of the free spell to be checked
+     * @return true if spell from earlier level
+     */
+    open fun freeSpellEarlier(spellLevel: Int): Boolean{return false}
 
     /**
      * Sets the primary status of this element to the indicated value.
@@ -41,31 +69,29 @@ open class MagicBook(
     open fun changePrimary(isTaking: Boolean){
         if(hasInvestment() && isTaking){
             //remove necromancy's primary status, if needed
-            if(opposingBooks[1].isPrimary.value)
-                opposingBooks[1].changePrimary(isTaking = false)
+            if(magic.retrieveBooks()[10].isPrimary.value)
+                magic.retrieveBooks()[10].changePrimary(isTaking = false)
 
             //remove the other opposing book's primary status, if needed
-            if(opposingBooks[0].isPrimary.value)
-                opposingBooks[0].isPrimary.value = false
+            else if(magic.retrieveBooks()[opposingIndex].isPrimary.value) {
+                magic.retrieveBooks()[opposingIndex].isPrimary.value = false
+                magic.retrieveBooks()[opposingIndex].validateFreeSpells()
+            }
 
             //set this element as the primary one
             isPrimary.value = true
         }
         else if(!isTaking && isPrimary.value){
-            //look through opposing books for point investment
-            opposingBooks.forEach{opposing ->
-                //if investment found
-                if(opposing.hasInvestment()){
-                    //remove this item's primary flag
-                    isPrimary.value = false
-
-                    //apply primary flag to this item
-                    opposing.changePrimary(isTaking = true)
-
-                    //only do this once
-                    return@forEach
-                }
+            //invest in either opposite book or necromancy if points in these books
+            if(magic.retrieveBooks()[opposingIndex].hasInvestment()) {
+                magic.retrieveBooks()[opposingIndex].isPrimary.value = true
+                isPrimary.value = false
             }
+            else if(magic.retrieveBooks()[10].hasInvestment() &&
+                !(magic.retrieveBooks()[10] as NecromancyBook).getElseInvestment(exclude = magic.retrieveBooks().indexOf(this)))
+                magic.retrieveBooks()[10].changePrimary(isTaking = true)
+            else if(!hasInvestment())
+                isPrimary.value = false
         }
     }
 
@@ -74,18 +100,12 @@ open class MagicBook(
      *
      * @param pointBuy magic levels to invest into this book
      */
-    fun buyLevels(pointBuy: Int){
+    open fun buyLevels(pointBuy: Int){
         //set the invested point value
         pointsIn.intValue = pointBuy
 
-        //determine if any opposing books are primary elements
-        var opposingInvestment = false
-        opposingBooks.forEach{opposing ->
-            if(opposing.hasInvestment()) opposingInvestment = true
-        }
-
         //set this element as primary if it has points and no opposing element is primary
-        if(!isPrimary.value && !opposingInvestment && pointBuy != 0)
+        if(!isPrimary.value && !getOpposedPrimary() && pointBuy != 0)
             changePrimary(isTaking = true)
 
         //remove own primary status if no points in this item
@@ -98,6 +118,7 @@ open class MagicBook(
             val spellLevel = (spellIndex + 1) * 2
             if(spellLevel <= getCap()) removalList.add(element = spellIndex)
         }
+
         individualSpells.removeAll(elements = removalList)
     }
 
@@ -106,7 +127,7 @@ open class MagicBook(
      *
      * @param spellLevel level of the spell to individually purchase
      */
-    fun changeIndividualSpell(
+    open fun changeIndividualSpell(
         spellLevel: Int
     ){
         //convert the spell's level to its index
@@ -114,15 +135,13 @@ open class MagicBook(
 
         //if spell is not currently purchased
         if(spellIndex !in individualSpells) {
-            //if spell is not acquired by point investment
-            if (spellIndex > getCap()) {
-                //add spell to individually purchased record
-                individualSpells.add(element = spellIndex)
+            //add spell to individually purchased record
+            individualSpells.add(element = spellIndex)
 
-                //apply primary status if needed
-                if(!isPrimary.value)
-                    changePrimary(isTaking = true)
-            }
+            //apply primary status if needed
+            if(!isPrimary.value &&
+                !magic.retrieveBooks()[opposingIndex].isPrimary.value && !magic.retrieveBooks()[10].isPrimary.value)
+                changePrimary(isTaking = true)
         }
 
         //remove spell if it is already purchased
@@ -132,6 +151,9 @@ open class MagicBook(
             //remove primary status, if needed
             if(!hasInvestment())
                 changePrimary(isTaking = false)
+
+            //remove potentially associated free spell
+            validateFreeSpells()
         }
     }
 
@@ -140,7 +162,7 @@ open class MagicBook(
      *
      * @param spell freespell to attempt to add to this book
      */
-    fun addFreeSpell(spell: FreeSpell){
+    open fun addFreeSpell(spell: FreeSpell){
         //if the character does not already possess this free spell
         if(charHasFreeSpell(freeSpell = spell) == null){
             //search for a freespell in this book of equivalent level
@@ -171,13 +193,9 @@ open class MagicBook(
         //set the natural value
         isNatural.value = isNat
 
-        //initialize opposing elements' primary status
-        var hasOpposing = false
-
         //check if any opposing book is a primary element
-        opposingBooks.forEach{
-            if(it.isPrimary.value) hasOpposing = true
-        }
+        val hasOpposing = magic.retrieveBooks()[opposingIndex].isPrimary.value ||
+                magic.retrieveBooks()[10].isPrimary.value
 
         //add primary element status if needed
         if(isNat && !hasOpposing) isPrimary.value = true
@@ -202,7 +220,7 @@ open class MagicBook(
      * @return magic book the free spell belongs to
      */
     open fun charHasFreeSpell(freeSpell: FreeSpell): MagicBook?{
-        return opposingBooks[1].charHasFreeSpell(freeSpell = freeSpell)
+        return magic.retrieveBooks()[10].charHasFreeSpell(freeSpell = freeSpell)
     }
 
     /**
@@ -211,10 +229,17 @@ open class MagicBook(
      * @return level maximum from these inputs
      */
     fun getCap(): Int{
-        //half points invested if not primary
-        return (if(isPrimary.value) pointsIn.intValue else pointsIn.intValue/2) +
-                //add 40 to level if natural path applied
-                (if(isNatural.value) 40 else 0)
+        //initialize output
+        var output = 0
+
+        //add points spent to output
+        output += if(isPrimary.value) pointsIn.intValue else pointsIn.intValue/2
+
+        //add natural points to output
+        output += if(isNatural.value) 40 else 0
+
+        //return either output or max cap value
+        return if(output <= 100) output else 100
     }
 
     /**
@@ -243,7 +268,7 @@ open class MagicBook(
         }
 
         //double value if book is not primary book
-        if(!isPrimary.value) output * 2
+        if(!isPrimary.value) output *= 2
 
         //return individual cost with directly invested points
         return output + pointsIn.intValue
@@ -263,7 +288,7 @@ open class MagicBook(
      * @param level free spell's level to find
      * @return either the spell of that level or a placeholder object
      */
-    private fun getFreeSpell(level: Int): FreeSpell{
+    fun getFreeSpell(level: Int): FreeSpell{
         //search for the free spell based on the level
         freeSpells.forEach{freeSpell ->
             if(freeSpell.level == level) return freeSpell
@@ -282,8 +307,19 @@ open class MagicBook(
             maintenance = null,
             isDaily = false,
             type = listOf(),
-            forbiddenElements = listOf(element)
+            forbiddenElements = listOf(spells.element),
+            bookIn = magic.retrieveBooks().indexOf(this)
         )
+    }
+
+    /**
+     * Gets if the opposite element has any points invested in it.
+     *
+     * @return true if points in opposite element's book
+     */
+    open fun getOpposedPrimary(): Boolean{
+        return (magic.retrieveBooks()[opposingIndex].isPrimary.value) ||
+                magic.retrieveBooks()[10].isPrimary.value
     }
 
     /**
@@ -299,7 +335,7 @@ open class MagicBook(
         for(index in 0 until getCap()/2){
             //add elemental spell
             output +=
-                if(fullBook[index] != null) fullBook[index]!!
+                if(spells.fullBook[index] != null) spells.fullBook[index]!!
                 //add free spell
                 else getFreeSpell(level = (index + 1) * 2)
         }
@@ -308,13 +344,35 @@ open class MagicBook(
         individualSpells.forEach{index ->
             //add elemental spell
             output +=
-                if(fullBook[index] != null) fullBook[index]!!
+                if(spells.fullBook[index] != null) spells.fullBook[index]!!
                 //add free spell
                 else getFreeSpell(level = (index + 1) * 2)
         }
 
         //produce final output
         return output.toList()
+    }
+
+    /**
+     * Determines if free spells in record are still valid for the character to have.
+     */
+    open fun validateFreeSpells(){
+        //initialize the spells to be removed
+        val removeSpells = mutableListOf<FreeSpell>()
+
+        //validate each individual spell
+        freeSpells.forEach{spell ->
+            //get the index of the spell's level
+            val spellIndex = (spell.level/2) - 1
+
+            //add to removed spell list if spell's level is below the inputted magic levels or
+            //no longer individually purchased
+            if(getCap() < spell.level && !individualSpells.contains(spellIndex))
+                removeSpells.add(spell)
+        }
+
+        //remove indicated free spells
+        freeSpells.removeAll(elements = removeSpells)
     }
 
     /**
@@ -332,24 +390,24 @@ open class MagicBook(
      * Loads data from file into this item.
      *
      * @param fileReader file input reader to get data from
-     * @param freeBook reference to free spell data
+     * @param freeSpells reference to free spell data
      */
     fun load(
         fileReader: BufferedReader,
-        freeBook: FreeBook
+        freeSpells: FreeSpells
     ){
         //set the magic level investment
         buyLevels(pointBuy = fileReader.readLine().toInt())
 
         //apply individual spells purchased
-        (0 until fileReader.readLine().toInt()).forEach{
+        (0 until fileReader.readLine().toInt()).forEach{ _ ->
             changeIndividualSpell(spellLevel = (fileReader.readLine().toInt() + 1) * 2)
         }
 
         //apply recorded free spells to this book
-        (0 until fileReader.readLine().toInt()).forEach{
+        (0 until fileReader.readLine().toInt()).forEach{ _ ->
             //get the free spell base from this data
-            val spellBase = freeBook.findFreeSpell(saveName = fileReader.readLine())
+            val spellBase = freeSpells.findFreeSpell(saveName = fileReader.readLine())
 
             //add the free spell base with the appropriate level
             addFreeSpell(spell = FreeSpell(
@@ -364,7 +422,8 @@ open class MagicBook(
                 maintenance = spellBase.maintenance,
                 isDaily = spellBase.isDaily,
                 type = spellBase.type,
-                forbiddenElements = spellBase.forbiddenElements
+                forbiddenElements = spellBase.forbiddenElements,
+                bookIn = magic.retrieveBooks().indexOf(this)
             ))
         }
 

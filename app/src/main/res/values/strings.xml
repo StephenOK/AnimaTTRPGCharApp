@@ -111,11 +111,16 @@
     <string name = "inhuman">Inhuman</string>
     <string name = "zenData">Zen</string>
 
+    <string name = "resetAdvantages">Reset Advantages</string>
+    <string name = "resetPrimaries">Reset Primary Characteristics</string>
+    <string name = "resetInventory">Reset Inventory</string>
+
     <string name = "settingsLabel">Settings</string>
 
     <string name = "lightMode">Light Mode</string>
     <string name = "darkMode">Dark Mode</string>
 
+    <string name = "clearLevelTitle">Reset this level?</string>
     <string name = "exitTitle">Save before exiting?</string>
 
     <string name = "publicLabel">Public</string>

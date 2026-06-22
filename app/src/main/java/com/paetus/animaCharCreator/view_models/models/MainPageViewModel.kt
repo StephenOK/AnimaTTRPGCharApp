@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
@@ -124,26 +126,29 @@ class MainPageViewModel: ViewModel() {
                 //display character name input
                 TextInput(
                     display = characterName.collectAsState().value,
-                    onValueChange = {setCharacterName(it)}
+                    onValueChange = {
+                        if(!it.contains("/"))
+                            setCharacterName(it)
+                    }
                 )
 
                 //display save by level option
-                //Row(
-                //    modifier = Modifier
-                //        .fillMaxWidth(),
-                //    verticalAlignment = Alignment.CenterVertically,
-                //    horizontalArrangement = Arrangement.Center
-                //){
-                //    //display setter for the by level save option
-                //    Checkbox(
-                //        checked = isByLevel.value,
-                //        onCheckedChange = {isByLevel.value = !isByLevel.value}
-                //    )
-//
-                //    Text(
-                //        text = stringResource(R.string.saveByLevelPrompt),
-                //    )
-                //}
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    //display setter for the by level save option
+                    Checkbox(
+                        checked = isByLevel.value,
+                        onCheckedChange = {isByLevel.value = !isByLevel.value}
+                    )
+
+                    Text(
+                        text = stringResource(R.string.saveByLevelPrompt),
+                    )
+                }
             }
         }
     )
@@ -229,15 +234,24 @@ class MainPageViewModel: ViewModel() {
         buttonName = R.string.deleteLabel,
         failedText = R.string.noCharSelected,
         clickAct = {context, name ->
+            //retrieve the indicated file
+            val file = File("${context.filesDir}/AnimaChars/$name")
+
+            //delete file held in SBL directories
+            if(file.isDirectory)
+                file.listFiles()?.forEach{it.delete()}
+
             //delete the selected file
-            File("${context.filesDir}/AnimaChars/$name").delete()
+            file.delete()
+
+            loadChar.setCharacterName(charName = "")
         },
         display = {characterName, setCharacterName ->
             val context = LocalContext.current
             val homeDir = File("${context.filesDir}/AnimaChars")
 
             LazyColumn{
-                homeDir.listFiles()?.forEach{ file ->
+                homeDir.listFiles()?.forEach{file ->
                     //if the file is a character file
                     item{
                         Row(

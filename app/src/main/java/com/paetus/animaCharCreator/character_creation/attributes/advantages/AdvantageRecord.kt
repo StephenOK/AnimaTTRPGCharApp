@@ -21,13 +21,12 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance head character object that holds this section
  */
-class AdvantageRecord(
+open class AdvantageRecord(
     private val charInstance: BaseCharacter
 ){
-    //initialize instances of advantages and disadvantages
-    val commonAdvantages = CommonAdvantages(charInstance = charInstance)
-    val magicAdvantages = MagicAdvantages(charInstance = charInstance)
-    val psychicAdvantages = PsychicAdvantages()
+    fun commonAdvantages(): CommonAdvantages{return charInstance.objectDB.commonAdvantages}
+    fun magicAdvantages(): MagicAdvantages{return charInstance.objectDB.magicAdvantages}
+    fun psyAdvantages(): PsychicAdvantages{return charInstance.objectDB.psychicAdvantages}
 
     //initialize list of taken advantages
     val takenAdvantages = mutableListOf<Advantage>()
@@ -45,27 +44,27 @@ class AdvantageRecord(
         findAdvantage: String
     ): Advantage?{
         //search through each base list to find a match
-        commonAdvantages.advantages.forEach{advantage ->
+        commonAdvantages().advantages.forEach{advantage ->
             //return if a common advantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
-        magicAdvantages.advantages.forEach{advantage ->
+        magicAdvantages().advantages.forEach{advantage ->
             //return if a magic advantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
-        psychicAdvantages.advantages.forEach{advantage ->
+        psyAdvantages().advantages.forEach{advantage ->
             //return if a psychic advantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
-        commonAdvantages.disadvantages.forEach{advantage ->
+        commonAdvantages().disadvantages.forEach{advantage ->
             //return if a common disadvantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
-        magicAdvantages.disadvantages.forEach{advantage ->
+        magicAdvantages().disadvantages.forEach{advantage ->
             //return if a magic disadvantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
-        psychicAdvantages.disadvantages.forEach{advantage ->
+        psyAdvantages().disadvantages.forEach{advantage ->
             //return if a psychic disadvantage matches
             if(advantage.saveTag == findAdvantage) return advantage
         }
@@ -83,7 +82,7 @@ class AdvantageRecord(
      * @param multTaken list of taken options if applicable to the advantage
      * @return either an error message for a failed addition or a null item for a successful addition
      */
-    fun acquireAdvantage(
+    open fun acquireAdvantage(
         advantageBase: Advantage,
         taken: Int?,
         takenCost: Int,
@@ -96,52 +95,52 @@ class AdvantageRecord(
         //implement racial restrictions on advantages
         when(charInstance.ownRace.value){
             //advantage restrictions for sylvain
-            charInstance.races.sylvainAdvantages -> {
+            charInstance.objectDB.races.sylvainAdvantages -> {
                 when(advantageBase){
                     //forbid sickly, serious illness, and magic susceptibility for sylvain
-                    commonAdvantages.sickly,
-                    commonAdvantages.seriousIllness,
-                    commonAdvantages.magicSusceptibility -> return R.string.sylvainRestriction
+                    commonAdvantages().sickly,
+                    commonAdvantages().seriousIllness,
+                    commonAdvantages().magicSusceptibility -> return R.string.sylvainRestriction
 
                     //forbid Dark element option for elemental compatibility
-                    magicAdvantages.elementalCompatibility -> if(taken == 1)
+                    magicAdvantages().elementalCompatibility -> if(taken == 1)
                         return R.string.sylvainDarkRestriction
                 }
             }
 
             //advantage restrictions for jayan
-            charInstance.races.jayanAdvantages -> {
+            charInstance.objectDB.races.jayanAdvantages -> {
                 when(advantageBase){
                     //forbid size reduction in Jayan
-                    commonAdvantages.uncommonSize -> if(taken!! < 5)
+                    commonAdvantages().uncommonSize -> if(taken!! < 5)
                         return R.string.jayanSizeRestriction
                     //forbid Strength reduction for Jayan
-                    commonAdvantages.deductCharacteristic -> if(taken == 0)
+                    commonAdvantages().deductCharacteristic -> if(taken == 0)
                         return R.string.jayanStrengthRestriction
                 }
             }
 
             //advantage restrictions for duk'zarist
-            charInstance.races.dukzaristAdvantages -> {
+            charInstance.objectDB.races.dukzaristAdvantages -> {
                 when(advantageBase){
                     //forbid these disadvantages for dukzarist
-                    commonAdvantages.atrophiedLimb,
-                    commonAdvantages.blind,
-                    commonAdvantages.deafness,
-                    commonAdvantages.mute,
-                    commonAdvantages.nearsighted,
-                    commonAdvantages.physicalWeakness,
-                    commonAdvantages.seriousIllness,
-                    commonAdvantages.sickly,
-                    commonAdvantages.poisonSusceptibility -> return R.string.dukzaristRestriction
+                    commonAdvantages().atrophiedLimb,
+                    commonAdvantages().blind,
+                    commonAdvantages().deafness,
+                    commonAdvantages().mute,
+                    commonAdvantages().nearsighted,
+                    commonAdvantages().physicalWeakness,
+                    commonAdvantages().seriousIllness,
+                    commonAdvantages().sickly,
+                    commonAdvantages().poisonSusceptibility -> return R.string.dukzaristRestriction
 
                     //forbid Light element option for this advantage
-                    magicAdvantages.elementalCompatibility -> if(taken == 0)
+                    magicAdvantages().elementalCompatibility -> if(taken == 0)
                         return R.string.dukzaristLightRestriction
 
                     //Dukzarist must develop pyrokinesis first
-                    commonAdvantages.psyDisciplineAccess ->{
-                        if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis))
+                    commonAdvantages().psyDisciplineAccess ->{
+                        if(taken != 2 && !charInstance.psychic.legalDisciplines.contains(charInstance.psychic.pyrokinesis()))
                             return R.string.dukzaristPyroRestriction
                     }
                 }
@@ -151,7 +150,7 @@ class AdvantageRecord(
 
         //implement advantage restrictions
         when(advantageBase){
-            commonAdvantages.characteristicPoint -> {
+            commonAdvantages().characteristicPoint -> {
                 //apply amount cap to each stat
                 when(taken) {
                     0 -> if(charInstance.primaryList.str.total.intValue + 1 > 11) return R.string.strengthIncreaseRestriction
@@ -167,28 +166,26 @@ class AdvantageRecord(
             }
 
             //forbid reduction of growth stat to below zero
-            commonAdvantages.subjectAptitude -> {
+            commonAdvantages().subjectAptitude -> {
                 //get the indicated characteristic, be it default or custom
-                val secondary =
-                    if(taken!! < 38) charInstance.secondaryList.fullList()[taken]
-                    else charInstance.secondaryList.getAllCustoms()[taken - 38]
+                val secondary = charInstance.secondaryList.getAllSecondaries()[taken!!]
 
                 //check that stat does not fall to or below zero
                 if(secondary.devPerPoint.intValue - advantageBase.cost[takenCost] <= 0)
                     return R.string.costReductionRestriction
             }
 
-            commonAdvantages.fieldAptitude -> {
+            commonAdvantages().fieldAptitude -> {
                 //get current growth value that will be changed by this advantage
                 val prevGrowth =
                     when(taken){
-                        0 -> charInstance.classes.ownClass.value.athGrowth
-                        1 -> charInstance.classes.ownClass.value.createGrowth
-                        2 -> charInstance.classes.ownClass.value.percGrowth
-                        3 -> charInstance.classes.ownClass.value.socGrowth
-                        4 -> charInstance.classes.ownClass.value.subterGrowth
-                        5 -> charInstance.classes.ownClass.value.intellGrowth
-                        6 -> charInstance.classes.ownClass.value.vigGrowth
+                        0 -> charInstance.classes.getClass().athGrowth
+                        1 -> charInstance.classes.getClass().socGrowth
+                        2 -> charInstance.classes.getClass().percGrowth
+                        3 -> charInstance.classes.getClass().intellGrowth
+                        4 -> charInstance.classes.getClass().vigGrowth
+                        5 -> charInstance.classes.getClass().subterGrowth
+                        6 -> charInstance.classes.getClass().createGrowth
                         else -> 0
                     }
 
@@ -198,29 +195,35 @@ class AdvantageRecord(
             }
 
             //no need to acquire more disciplines if all are already taken
-            commonAdvantages.psyDisciplineAccess -> {
+            commonAdvantages().psyDisciplineAccess -> {
                 if(this.getAdvantage("allPsyDisciplines") != null)
                     return R.string.redundantPsychicDiscipline
             }
 
+            //prevent decreasing a characteristic below 3
+            commonAdvantages().deductCharacteristic -> {
+                if(charInstance.primaryList.allPrimaries()[taken!!].total.intValue < 5)
+                    return R.string.deductPrimaryRestriction
+            }
+
             //character's class archetype must be one of the indicated types
-            commonAdvantages.exclusiveWeapon -> {
-                if(!charInstance.classes.ownClass.value.archetype.contains(Archetype.Fighter) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Domine) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Prowler) &&
-                        !charInstance.classes.ownClass.value.archetype.contains(Archetype.Novel))
+            commonAdvantages().exclusiveWeapon -> {
+                if(!charInstance.classes.getClass().archetype.contains(Archetype.Fighter) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Domine) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Prowler) &&
+                        !charInstance.classes.getClass().archetype.contains(Archetype.Novel))
                     return R.string.classRestriction
             }
 
             //check minimum appearance before taking this disadvantage
-            commonAdvantages.unattractive ->
+            commonAdvantages().unattractive ->
                 if(charInstance.appearance.intValue < 7) return R.string.appearanceRestriction
 
             //assure all elements picked for half attuned to tree advantage
-            magicAdvantages.halfTreeAttuned ->
+            magicAdvantages().halfTreeAttuned ->
                 if (multTaken!!.size != 5) return R.string.incompleteHalfTree
 
-            magicAdvantages.superiorMagicRecovery -> {
+            magicAdvantages().superiorMagicRecovery -> {
                 if(this.getAdvantage("slowMagRecover") != null)
                     return R.string.magicRecoveryRestriction
                 else if(this.getAdvantage("magicBlockage") != null)
@@ -228,13 +231,13 @@ class AdvantageRecord(
             }
 
             //prevent either of these disadvantages from being taken with the other one
-            magicAdvantages.slowMagicRecovery -> {
+            charInstance.objectDB.magicAdvantages.slowMagicRecovery -> {
                 if (this.getAdvantage("magicBlockage") != null)
                     return R.string.magicBlockageRestriction
                 else if(this.getAdvantage("superiorMagRecovery") != null)
                     return R.string.superiorMagRecoveryRestriction
             }
-            magicAdvantages.magicBlockage -> {
+            charInstance.objectDB.magicAdvantages.magicBlockage -> {
                 if (this.getAdvantage("slowMagRecover") != null)
                     return R.string.magicRecoveryRestriction
                 else if(this.getAdvantage("superiorMagRecovery") != null)
@@ -271,7 +274,11 @@ class AdvantageRecord(
 
             //apply effect
             if(copyAdvantage.onTake != null)
-                copyAdvantage.onTake(taken, copyAdvantage.cost[takenCost])
+                copyAdvantage.onTake(
+                    charInstance,
+                    taken,
+                    copyAdvantage.cost[takenCost]
+                )
 
             refreshSpent()
             return null
@@ -286,7 +293,7 @@ class AdvantageRecord(
      *
      * @param advantage item to be removed
      */
-    fun removeAdvantage(
+    open fun removeAdvantage(
         advantage: Advantage
     ){
         //search for copy of inputted advantage
@@ -297,7 +304,11 @@ class AdvantageRecord(
 
                 //undo its effect
                 if(heldCopy.onRemove != null)
-                    heldCopy.onRemove(heldCopy.picked, heldCopy.cost[heldCopy.pickedCost])
+                    heldCopy.onRemove(
+                        charInstance,
+                        heldCopy.picked,
+                        heldCopy.cost[heldCopy.pickedCost]
+                    )
 
                 //terminate process
                 refreshSpent()

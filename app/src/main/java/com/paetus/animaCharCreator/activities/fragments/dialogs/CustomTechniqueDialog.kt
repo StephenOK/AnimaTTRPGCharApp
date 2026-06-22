@@ -13,11 +13,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -750,7 +753,7 @@ private fun TechniqueAbilityDropdown(
                 },
             trailingIcon = {
                 Icon(
-                    imageVector = customTechVM.dropdownIcon.collectAsState().value,
+                    imageVector = ImageVector.vectorResource(customTechVM.dropdownIcon.collectAsState().value),
                     contentDescription = "contentDescription",
                     modifier = Modifier.clickable{customTechVM.toggleDropdownOpen()}
                 )
@@ -1291,7 +1294,7 @@ private fun getElementString(
 fun CustomTechniquePreview(){
     val charInstance = BaseCharacter()
 
-    val kiFragVM = KiFragmentViewModel(charInstance.ki, charInstance.classes.ownClass, LocalContext.current)
+    val kiFragVM = KiFragmentViewModel(charInstance.ki, LocalContext.current)
 
     val customTechVM = CustomTechniqueViewModel(charInstance.ki, LocalContext.current)
     customTechVM.setCustomPageNum(1)

@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the illusion element.
  */
-class IllusionBook: MagicBook(Element.Illusion){
+class IllusionSpells: SpellList(Element.Illusion){
     private val illusorySound = Spell(
         name = R.string.illusorySound,
         isActive = true,
@@ -20,7 +20,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val illusorySmell = Spell(
@@ -33,7 +34,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val illusoryTouch = Spell(
@@ -46,7 +48,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val visualIllusion = Spell(
@@ -59,7 +62,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val detectIllusion = Spell(
@@ -72,7 +76,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 9
     )
 
     private val sweetTalk = Spell(
@@ -85,7 +90,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 9
     )
 
     private val alterAppearance = Spell(
@@ -98,7 +104,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val illusoryInvisibility = Spell(
@@ -111,7 +118,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val mirrorImage = Spell(
@@ -124,7 +132,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val totalIllusion = Spell(
@@ -137,7 +146,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 50,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val confusion = Spell(
@@ -150,7 +160,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val createIllusoryBeing = Spell(
@@ -163,7 +174,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val illusionResistance = Spell(
@@ -176,7 +188,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 9
     )
 
     private val detectLie = Spell(
@@ -189,7 +202,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val ghostlyIllusion = Spell(
@@ -202,7 +216,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val distortDetection = Spell(
@@ -215,7 +230,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val lie = Spell(
@@ -228,7 +244,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val destroyIllusion = Spell(
@@ -241,7 +258,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 40,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 9
     )
 
     private val ghostlyBeing = Spell(
@@ -254,7 +272,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val gullibility = Spell(
@@ -267,7 +286,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val ghostlyAttack = Spell(
@@ -280,7 +300,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack, SpellType.Spiritual)
+        type = listOf(SpellType.Attack, SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val lyingGift = Spell(
@@ -293,7 +314,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val illusoryLie = Spell(
@@ -306,7 +328,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val majorIllusion = Spell(
@@ -319,7 +342,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val fixIllusion = Spell(
@@ -332,7 +356,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 9
     )
 
     private val illusionSense = Spell(
@@ -345,7 +370,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 9
     )
 
     private val nonExistence = Spell(
@@ -358,7 +384,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val deceiveDeath = Spell(
@@ -371,7 +398,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 40,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 9
     )
 
     private val worldOfLies = Spell(
@@ -384,7 +412,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 40,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     private val falseReality = Spell(
@@ -397,7 +426,8 @@ class IllusionBook: MagicBook(Element.Illusion){
         zMax = 50,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 9
     )
 
     init{

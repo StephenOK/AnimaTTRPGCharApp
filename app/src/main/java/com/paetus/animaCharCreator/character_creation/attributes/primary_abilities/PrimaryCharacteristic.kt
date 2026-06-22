@@ -41,7 +41,7 @@ open class PrimaryCharacteristic(
      *
      * @param baseIn value to set the base to
      */
-    fun setInput(baseIn: Int){
+    open fun setInput(baseIn: Int){
         //set base to 9 if advantage requires it
         if(charInstance.advantageRecord.getAdvantage(
                 "Increase One Characteristic to Nine",
@@ -54,15 +54,28 @@ open class PrimaryCharacteristic(
         //set the base stat value
         else inputValue.intValue = baseIn
 
+        //find any advantage giving bonus to this item
+        val boonAdvantage = charInstance.advantageRecord.getAdvantage(
+            name = "characteristicPoint",
+            taken = charIndex,
+            cost = 0
+        )
+
         //remove any excess advantage bonuses
-        while(inputValue.intValue + bonus.intValue > advantageCap &&
-                charInstance.advantageRecord.getAdvantage(
-                    name = "Add One Point to a Characteristic",
-                    taken = charIndex,
-                    cost = 0
-                ) != null){
-            charInstance.advantageRecord.removeAdvantage(advantage = charInstance.advantageRecord.getAdvantage("Add One Point to a Characteristic", charIndex, 0)!!)
+        while(inputValue.intValue + bonus.intValue > advantageCap && boonAdvantage != null){
+            charInstance.advantageRecord.removeAdvantage(advantage = boonAdvantage)
         }
+
+        //find any disadvantage detracting from this item
+        val baneAdvantage = charInstance.advantageRecord.getAdvantage(
+            name = "charDeduction",
+            taken = charIndex,
+            cost = 0
+        )
+
+        //remove invalid stat deduction
+        if(inputValue.intValue <= 3 && baneAdvantage!= null)
+            charInstance.advantageRecord.removeAdvantage(advantage = baneAdvantage)
 
         //update related values
         updateValues()

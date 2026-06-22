@@ -1,14 +1,11 @@
 package com.paetus.animaCharCreator.character_creation.attributes.modules
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.BaseCharacter
 
 /**
  * Record of martial arts the character may acquire.
- *
- * @param charInstance character object that holds this item
  */
-class MartialArts(private val charInstance: BaseCharacter) {
+class MartialArts{
     private val kempo = MartialArt(
         saveName = "kempo",
         name = R.string.kempo,
@@ -24,7 +21,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.capoeiraDesc,
         prereqList = R.string.capoeiraPrereqs,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.dance.total.intValue >= 40}
+        qualification = {it.secondaryList.dance.total.intValue >= 40}
     )
 
     private val taiChi = MartialArt(
@@ -33,7 +30,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.taiChiDesc,
         prereqList = R.string.kiUse,
         mkBonus = 30,
-        qualification = {charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfKi)}
+        qualification = {it.ki.takenAbilities.contains(it.objectDB.kiRecord.useOfKi)}
     )
 
     private val shotokan = MartialArt(
@@ -61,9 +58,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.kungFuPrereqs,
         mkBonus = 10,
         qualification = {
-            charInstance.secondaryList.acrobatics.total .intValue >= 40 &&
-                    charInstance.secondaryList.sleightHand.total.intValue >= 40 &&
-                    charInstance.secondaryList.style.total.intValue >= 20
+            it.secondaryList.acrobatics.total .intValue >= 40 &&
+                    it.secondaryList.sleightHand.total.intValue >= 40 &&
+                    it.secondaryList.style.total.intValue >= 20
         }
     )
 
@@ -82,7 +79,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.aikidoDesc,
         prereqList = R.string.aikidoPrereqs,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.sleightHand.total.intValue >= 40}
+        qualification = {it.secondaryList.sleightHand.total.intValue >= 40}
     )
 
     private val muayThai = MartialArt(
@@ -91,7 +88,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.muayThaiDesc,
         prereqList = R.string.feats40Prereq,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.strengthFeat.total.intValue >= 40}
+        qualification = {it.secondaryList.strengthFeat.total.intValue >= 40}
     )
 
     private val grappling = MartialArt(
@@ -100,7 +97,7 @@ class MartialArts(private val charInstance: BaseCharacter) {
         description = R.string.grapplingDesc,
         prereqList = R.string.feats40Prereq,
         mkBonus = 10,
-        qualification = {charInstance.secondaryList.strengthFeat.total.intValue >= 40}
+        qualification = {it.secondaryList.strengthFeat.total.intValue >= 40}
     )
 
     private val melkaiah = MartialArt(
@@ -110,10 +107,10 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.melkaiahPrereqs,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(grappling) || charInstance.weaponProficiencies.takenMartialList.contains(sambo)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.inhumanity) &&
-                    charInstance.combat.attack.total.intValue >= 160 && (charInstance.combat.block.total.intValue >= 160 || charInstance.combat.dodge.total.intValue >= 160) &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            (it.weaponProficiencies.takenMartialList.contains(grappling) || it.weaponProficiencies.takenMartialList.contains(sambo)) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.inhumanity) &&
+                    it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -124,10 +121,10 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.seraphitePrereq,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(shotokan) || charInstance.weaponProficiencies.takenMartialList.contains(kempo)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion) &&
-                    charInstance.combat.attack.total.intValue >= 180 &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            (it.weaponProficiencies.takenMartialList.contains(shotokan) || it.weaponProficiencies.takenMartialList.contains(kempo)) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.presenceExtrusion) &&
+                    it.combat.attack.total.intValue >= 180 &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -138,8 +135,8 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.dumahPrereq,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(kempo) || charInstance.weaponProficiencies.takenMartialList.contains(capoeira)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
+            (it.weaponProficiencies.takenMartialList.contains(kempo) || it.weaponProficiencies.takenMartialList.contains(capoeira)) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.presenceExtrusion)
         }
     )
 
@@ -150,9 +147,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.empPrereqs,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(kempo) || charInstance.weaponProficiencies.takenMartialList.contains(taekwondo)) &&
-                    charInstance.combat.attack.total.intValue >= 200 &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            (it.weaponProficiencies.takenMartialList.contains(kempo) || it.weaponProficiencies.takenMartialList.contains(taekwondo)) &&
+                    it.combat.attack.total.intValue >= 200 &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -163,9 +160,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.enuthPrereqs,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(sambo) || charInstance.weaponProficiencies.takenMartialList.contains(shotokan)) &&
-                    charInstance.combat.attack.total.intValue >= 160 && (charInstance.combat.block.total.intValue >= 160 || charInstance.combat.dodge.total.intValue >= 160) &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            (it.weaponProficiencies.takenMartialList.contains(sambo) || it.weaponProficiencies.takenMartialList.contains(shotokan)) &&
+                    it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -176,10 +173,10 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.shephonPrereqs,
         mkBonus = 10,
         qualification = {
-            charInstance.weaponProficiencies.takenMartialList.contains(aikido) && charInstance.weaponProficiencies.takenMartialList.contains(kungFu) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.kiControl) &&
-                    (charInstance.combat.block.total.intValue >= 200 || charInstance.combat.dodge.total.intValue >= 200) &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            it.weaponProficiencies.takenMartialList.contains(aikido) && it.weaponProficiencies.takenMartialList.contains(kungFu) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.kiControl) &&
+                    (it.combat.block.total.intValue >= 200 || it.combat.dodge.total.intValue >= 200) &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -190,9 +187,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.asakusenPrereqs,
         mkBonus = 10,
         qualification = {
-            charInstance.weaponProficiencies.takenMartialList.contains(kungFu) &&
-                    charInstance.combat.attack.total.intValue >= 160 && (charInstance.combat.block.total.intValue >= 160 || charInstance.combat.dodge.total.intValue >= 160) &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            it.weaponProficiencies.takenMartialList.contains(kungFu) &&
+                    it.combat.attack.total.intValue >= 160 && (it.combat.block.total.intValue >= 160 || it.combat.dodge.total.intValue >= 160) &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -203,8 +200,8 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.velezPrereqs,
         mkBonus = 20,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(taiChi) || charInstance.weaponProficiencies.takenMartialList.contains(kungFu)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.presenceExtrusion)
+            (it.weaponProficiencies.takenMartialList.contains(taiChi) || it.weaponProficiencies.takenMartialList.contains(kungFu)) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.presenceExtrusion)
         }
     )
 
@@ -215,9 +212,9 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.selenePrereqs,
         mkBonus = 10,
         qualification = {
-            charInstance.weaponProficiencies.takenMartialList.contains(aikido) &&
-                    (charInstance.combat.block.total.intValue >= 200 || charInstance.combat.dodge.total.intValue >= 200) &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            it.weaponProficiencies.takenMartialList.contains(aikido) &&
+                    (it.combat.block.total.intValue >= 200 || it.combat.dodge.total.intValue >= 200) &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 
@@ -228,10 +225,10 @@ class MartialArts(private val charInstance: BaseCharacter) {
         prereqList = R.string.hakyoukukenPrereqs,
         mkBonus = 10,
         qualification = {
-            (charInstance.weaponProficiencies.takenMartialList.contains(shotokan) || charInstance.weaponProficiencies.takenMartialList.contains(muayThai)) &&
-                    charInstance.ki.takenAbilities.contains(charInstance.ki.kiRecord.useOfNecessaryEnergy) &&
-                    charInstance.combat.attack.total.intValue >= 200 &&
-                    (charInstance.weaponProficiencies.primaryWeapon.value == charInstance.weaponProficiencies.unarmed || charInstance.weaponProficiencies.individualModules.contains(charInstance.weaponProficiencies.unarmed))
+            (it.weaponProficiencies.takenMartialList.contains(shotokan) || it.weaponProficiencies.takenMartialList.contains(muayThai)) &&
+                    it.ki.takenAbilities.contains(it.objectDB.kiRecord.useOfNecessaryEnergy) &&
+                    it.combat.attack.total.intValue >= 200 &&
+                    (it.weaponProficiencies.primaryWeapon.intValue == 0 || it.weaponProficiencies.individualModules.contains(0))
         }
     )
 

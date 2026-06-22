@@ -12,10 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +28,7 @@ import com.paetus.animaCharCreator.composables.GeneralCard
 import com.paetus.animaCharCreator.composables.NumberInput
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
 import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.CustomCharacteristic
+import com.paetus.animaCharCreator.character_creation.attributes.secondary_abilities.SblCustomCharacteristic
 import com.paetus.animaCharCreator.numberScroll
 import com.paetus.animaCharCreator.textScrollUp
 import com.paetus.animaCharCreator.view_models.models.CustomSecondaryViewModel
@@ -120,12 +124,16 @@ private fun FreelancerDropdown(
         OutlinedTextField(
             //display currently selected characteristic
             value =
-                if(selection.selectedIndex.collectAsState().value == 0)
-                    stringResource(id = R.string.selectCharPrompt)
-                else if (selection.selectedIndex.collectAsState().value < 39)
-                    stringArrayResource(R.array.secondaryCharacteristics)[selection.selectedIndex.collectAsState().value - 1]
-                else
-                    (secondaryFragVM.getAllSecondaries()[selection.selectedIndex.collectAsState().value - 1] as CustomCharacteristic).name.value,
+                when(selection.selectedIndex.collectAsState().value){
+                    -1 -> stringResource(id = R.string.selectCharPrompt)
+                    in 0..37 -> stringArrayResource(id = R.array.secondaryCharacteristics)[selection.selectedIndex.collectAsState().value]
+                    else -> {
+                        val secondaryItem = secondaryFragVM.getAllSecondaries()[selection.selectedIndex.collectAsState().value]
+
+                        if(secondaryItem is CustomCharacteristic) secondaryItem.name.value
+                        else (secondaryItem as SblCustomCharacteristic).name.value
+                    }
+                },
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,7 +143,7 @@ private fun FreelancerDropdown(
             readOnly = true,
             trailingIcon = {
                 Icon(
-                    imageVector = selection.icon.collectAsState().value,
+                    imageVector = ImageVector.vectorResource( selection.icon.collectAsState().value),
                     contentDescription = "contentDescription",
                     modifier = Modifier
                         .clickable{selection.openToggle()}
@@ -152,24 +160,18 @@ private fun FreelancerDropdown(
             DropdownMenuItem(
                 text = {Text(text = stringResource(id = R.string.selectCharPrompt))},
                 onClick = {
-                    selection.setSelection(newSecondary = 0)
+                    selection.setSelection(newSecondary = -1)
                     selection.openToggle()
                 }
             )
 
             //display all secondary characteristic options
             secondaryFragVM.allFields.forEach{discipline ->
-                discipline.fieldCharacteristics.forEach {characteristic ->
-                    val displayName =
-                        if(characteristic.secondaryItem is CustomCharacteristic)
-                            characteristic.getCustomName()
-                        else
-                            stringArrayResource(id = R.array.secondaryCharacteristics)[characteristic.getName()]
-
+                discipline.fieldCharacteristics.value.forEach {characteristic ->
                     DropdownMenuItem(
-                        text = {Text(text = displayName)},
+                        text = {Text(text = characteristic.getName(context = LocalContext.current))},
                         onClick = {
-                            selection.setSelection(newSecondary = secondaryFragVM.getAllSecondaries().indexOf(characteristic.secondaryItem) + 1)
+                            selection.setSelection(newSecondary = secondaryFragVM.getAllSecondaries().indexOf(characteristic.secondaryItem))
                             selection.openToggle()
                         }
                     )
@@ -213,7 +215,7 @@ private fun MakeTableDisplay(
             RowHead()
 
             //display each of the field's characteristics
-            field.fieldCharacteristics.forEach {characteristic ->
+            field.fieldCharacteristics.collectAsState().value.forEach {characteristic ->
                 MakeRow(
                     secondaryChar = characteristic,
                     homePageVM = homePageVM
@@ -283,11 +285,7 @@ private fun MakeRow(
     homePageVM: HomePageViewModel
 ){
     //get this characteristic's displayed name
-    val itemName =
-        if(secondaryChar.secondaryItem is CustomCharacteristic)
-            secondaryChar.getCustomName()
-        else
-            stringArrayResource(R.array.secondaryCharacteristics)[secondaryChar.getName()]
+    val itemName = secondaryChar.getName(context = LocalContext.current)
 
     Row{Spacer(modifier = Modifier.height(5.dp))}
 

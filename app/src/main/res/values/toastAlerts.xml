@@ -33,6 +33,8 @@
     <string name = "willpowerIncreaseRestriction">Cannot increase Willpower further!</string>
     <string name = "perceptionIncreaseRestriction">Cannot increase Perception further!</string>
 
+    <string name = "deductPrimaryRestriction">Cannot reduce this characteristic below 3!</string>
+
     <string name = "costReductionRestriction">Cannot reduce characteristic growth below zero!</string>
     <string name = "fieldReductionRestriction">Cannot reduce field growth to zero!</string>
 
@@ -64,10 +66,15 @@
     <string name = "duplicateTechName">There is already a custom technique with that name!</string>
 
     <string name = "needGiftMessage">You need The Gift in order to change this!</string>
+    <string name = "magicTiesIndividualRestriction">Magic Ties prevents getting individual Spells!</string>
     <string name = "magicTiesRestriction">Magic Ties prevents getting Free Spells!</string>
+    <string name = "freeSpellEarlier">Free Spell was acquired at an earlier level!</string>
 
     <string name = "needDisciplineMessage">You lack the Advantage to access the %s Discipline!</string>
 
     <string name = "nameCustomSecondary">Please name your Secondary Ability!</string>
     <string name = "duplicateCustomSecondary">There already exists a custom Secondary Ability with that name!</string>
+
+    <string name = "changeAtZero">Can only change this item at Level 0!</string>
+    <string name = "lockedToNine">An advantage you have forces this characteristic to be 9!</string>
 </resources>

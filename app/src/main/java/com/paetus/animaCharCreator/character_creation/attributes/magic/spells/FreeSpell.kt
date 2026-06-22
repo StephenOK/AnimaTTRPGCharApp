@@ -19,6 +19,7 @@ import com.paetus.animaCharCreator.enumerations.SpellType
  * @param isDaily whether the spell is maintained daily or not
  * @param type list of types of uses the spell has
  * @param forbiddenElements books the spell is not permitted to be in
+ * @param bookIn magic book that this spell is currently associated with
  */
 class FreeSpell(
     val saveName: String,
@@ -32,7 +33,8 @@ class FreeSpell(
     maintenance: Int?,
     isDaily: Boolean,
     type: List<SpellType>,
-    val forbiddenElements: List<Element>
+    val forbiddenElements: List<Element>,
+    bookIn: Int = 11
 ) : Spell(
     name = name,
     isActive = isActive,
@@ -43,5 +45,37 @@ class FreeSpell(
     zMax = zMax,
     maintenance = maintenance,
     isDaily = isDaily,
-    type = type
-)
+    type = type,
+    bookIndex = bookIn
+){
+    /**
+     * Function to determine equivalence between this spell and the inputted item.
+     *
+     * @param spell item to compare this one to
+     * @return true if all parameters are equivalent
+     */
+    fun equals(spell: FreeSpell): Boolean{
+        //catch forbidden element size difference
+        if(spell.forbiddenElements.size != forbiddenElements.size)
+            return false
+
+        //check that all elements are the same
+        spell.forbiddenElements.forEach{
+            if(!forbiddenElements.contains(it)) return false
+        }
+
+        //return all other parameters match
+        return saveName == spell.saveName &&
+                name == spell.name &&
+                isActive == spell.isActive &&
+                level == spell.level &&
+                zCost == spell.zCost &&
+                effect == spell.effect &&
+                addedEffect == spell.addedEffect &&
+                zMax == spell.zMax &&
+                maintenance == spell.maintenance &&
+                isDaily == spell.isDaily &&
+                type == spell.type
+
+    }
+}

@@ -1,6 +1,8 @@
 package com.paetus.animaCharCreator.view_models.models
 
-import androidx.lifecycle.ViewModel
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.runtime.Composable
 import com.paetus.animaCharCreator.DropdownData
 import com.paetus.animaCharCreator.R
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
@@ -8,6 +10,7 @@ import com.paetus.animaCharCreator.character_creation.SblChar
 import com.paetus.animaCharCreator.character_creation.attributes.advantages.advantage_types.RacialAdvantage
 import com.paetus.animaCharCreator.character_creation.attributes.class_objects.CharClass
 import com.paetus.animaCharCreator.character_creation.attributes.primary_abilities.PrimaryCharacteristic
+import com.paetus.animaCharCreator.view_models.FragmentVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +23,7 @@ import kotlinx.coroutines.flow.update
  */
 class CharacterFragmentViewModel(
     private val charInstance: BaseCharacter
-): ViewModel() {
+): FragmentVM() {
     //initialize input for the character's name
     private val _nameInput = MutableStateFlow(value = charInstance.charName.value)
     val nameInput = _nameInput.asStateFlow()
@@ -46,8 +49,18 @@ class CharacterFragmentViewModel(
     val magPaladinOpen = _magPaladinOpen.asStateFlow()
 
     //initialize magic paladin checkbox input
-    private val _magPaladin = MutableStateFlow(value = charInstance.classes.magPaladin.value)
+    private val _magPaladin = MutableStateFlow(
+        value =
+            if(charInstance is SblChar)
+                charInstance.getCharAtLevel().classes.magPaladin.value
+            else
+                charInstance.classes.magPaladin.value
+    )
     val magPaladin = _magPaladin.asStateFlow()
+
+    //initialize experience point restriction items
+    private val _expLockActive = MutableStateFlow(value = charInstance.expLock.value)
+    val expLockActive = _expLockActive.asStateFlow()
 
     //initialize the character's size category display
     private val _sizeInput = MutableStateFlow(value = charInstance.sizeCategory.intValue)
@@ -92,20 +105,12 @@ class CharacterFragmentViewModel(
     val raceAdvantageOpen = _raceAdvantageOpen.asStateFlow()
 
     //initialize racial advantage displayed
-    private val _racialDisplayed = MutableStateFlow(value = charInstance.races.sylvainAdvantages[0])
+    private val _racialDisplayed = MutableStateFlow(value = charInstance.objectDB.races.sylvainAdvantages[0])
     val racialDisplayed = _racialDisplayed.asStateFlow()
 
     //initialize open state of class detail alert
     private val _classDetailOpen = MutableStateFlow(value = false)
     val classDetailOpen = _classDetailOpen.asStateFlow()
-
-    //initialize class shown in detail alert
-    private val _classDetailItem = MutableStateFlow(value = charInstance.classes.freelancer)
-    val classDetailItem = _classDetailItem.asStateFlow()
-
-    //initialize failed level change alert
-    private val _failedLevelChangeOpen = MutableStateFlow(value = false)
-    val failedLevelChangeOpen = _failedLevelChangeOpen.asStateFlow()
 
     /**
      * Sets the character's name to the user's input.
@@ -113,7 +118,7 @@ class CharacterFragmentViewModel(
      * @param nameIn name to set for the character
      */
     fun setNameInput(nameIn: String){
-        charInstance.charName.value = nameIn
+        charInstance.setName(nameIn)
         _nameInput.update{nameIn}
     }
 
@@ -123,7 +128,7 @@ class CharacterFragmentViewModel(
      * @param expVal number of points to set
      */
     fun setExp(expVal: Int){
-        charInstance.experiencePoints.intValue = expVal
+        charInstance.setExp(newExp = expVal)
         setExp(display = expVal.toString())
     }
 
@@ -173,14 +178,39 @@ class CharacterFragmentViewModel(
      * @return true if character is a paladin or dark paladin
      */
     private fun getPaladin(): Boolean{
-        return charInstance.classes.ownClass.value == charInstance.classes.paladin ||
-                charInstance.classes.ownClass.value == charInstance.classes.darkPaladin
+        //get the class to check
+        val checkedClass = if(charInstance is SblChar) charInstance.getCharAtLevel().classes
+            else charInstance.classes
+
+        //determine that the class is a paladin class
+        return checkedClass.ownClass.intValue == 3 ||
+                checkedClass.ownClass.intValue == 4
+    }
+
+    /**
+     * Determines if the user can change the experience point restriction state.
+     *
+     * @return true if character is a SBL character at level 0
+     */
+    fun expLockChangeable(): Boolean{
+        return charInstance is SblChar && charInstance.lvl.intValue == 0
+    }
+
+    /**
+     * Changes the experrience point restriction state.
+     */
+    fun toggleExpLock(){
+        //toggle the value in the character
+        (charInstance as SblChar).toggleExpLock()
+
+        //reflect the change in the fragment
+        _expLockActive.update{charInstance.expLock.value}
     }
 
     /**
      * Retrieves the freelancer class from the character.
      */
-    fun getFreelancer(): CharClass {return charInstance.classes.freelancer}
+    fun getFreelancer(): CharClass {return charInstance.objectDB.classRecord.allClasses[0]}
 
     /**
      * Retrieves the character's selections for their freelancer bonuses.
@@ -227,7 +257,12 @@ class CharacterFragmentViewModel(
      *
      * @param display value to set the display to
      */
-    fun setAppearInput(display: String){_appearInput.update{display}}
+    fun setAppearInput(display: String){
+        if(isNotUnattractive())
+            _appearInput.update{display}
+        else
+            _appearInput.update{"2"}
+    }
 
     /**
      * Get current value input for the character's appearance value.
@@ -240,7 +275,7 @@ class CharacterFragmentViewModel(
      * @return true if character has the Unattractive disadvantage
      */
     fun isNotUnattractive(): Boolean{
-        return charInstance.advantageRecord.getAdvantage(advantageString = "unattractive") == null
+        return !charInstance.isUnattractive.value
     }
 
     /**
@@ -266,7 +301,7 @@ class CharacterFragmentViewModel(
      * @param gnosisInput value to set the gnosis to
      */
     fun setGnosisDisplay(gnosisInput: Int){
-        charInstance.gnosis.intValue = gnosisInput
+        charInstance.setGnosis(gnosisInput)
         setGnosisDisplay(display = gnosisInput.toString())
     }
 
@@ -307,6 +342,16 @@ class CharacterFragmentViewModel(
     fun getCharWeight(): Int{return charInstance.weightIndex.intValue}
 
     /**
+     * Determines if the character can change their primary characteristic.
+     *
+     * @return true if item is changeable
+     */
+    fun getChangeable(): Boolean{
+        //return true if non-SBL character or SBL character is level 0
+        return charInstance !is SblChar || charInstance.lvl.intValue == 0
+    }
+
+    /**
      * Updates the validation flag for the characteristic bonus.
      */
     private fun setBonusColor(){_bonusValid.update{charInstance.primaryList.validLevelBonuses()}}
@@ -327,18 +372,10 @@ class CharacterFragmentViewModel(
     fun toggleRacialAdvantageOpen(){_raceAdvantageOpen.update{!raceAdvantageOpen.value}}
 
     /**
-     * Sets the class to be shown in the detail alert to the currently held one.
+     * Retrieves the class displayed inn the class dropdown item.
      */
-    private fun setClassDetail(){_classDetailItem.update{charInstance.classes.ownClass.value}}
-
-    /**
-     * Determines if the user may change the level of the character.
-     *
-     * @return true when character is not SBL or has all DP at this level spent
-     */
-    fun getLevelChangeable(): Boolean{
-        return !(charInstance is SblChar &&
-                charInstance.spentTotal.intValue != charInstance.devPT.intValue)
+    fun getDisplayedClass(): CharClass{
+        return charInstance.objectDB.classRecord.allClasses[classDropdown.data.output.value]
     }
 
     /**
@@ -347,27 +384,60 @@ class CharacterFragmentViewModel(
      * @param levelString level to look for in the character
      * @return true if not a SBL character or SBL character has access to the queried level
      */
-    fun getExistingCharacter(levelString: String): Boolean{
+    fun getValidLevel(
+        levelString: String
+    ): Boolean{
         //return level option is legal if not looking for 0 or character is SBL
-        return if(levelString.toInt() != 0 && charInstance is SblChar)
-            charInstance.charRefs[levelString.toInt() - 1] != null
+        return if(levelString.toInt() != 0 && charInstance is SblChar) {
+            if(charInstance.charRefs[levelString.toInt()] == null)
+                false
+            //check that the indicated SBL level is legal
+            else
+                charInstance.levelChangeLegal(atLevel = levelString.toInt() - 1).isEmpty()
+        }
         //true if looking for level 0 or character is not SBL
         else true
     }
 
     /**
-     * Opens and closes the failed level change alert.
+     * Gets whether the character's class changes next level.
+     *
+     * @return true if a change is found
      */
-    fun toggleFailedLevelChangeOpen(){_failedLevelChangeOpen.update{!failedLevelChangeOpen.value}}
+    fun getClassChanged(): Boolean{
+        //only needs to check if SblChar
+        return if(charInstance is SblChar)
+            charInstance.getCharAtLevel().classes.ownClass.intValue != charInstance.charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+            //otherwise, always false
+            else false
+    }
+
+    /**
+     * Gets the recorded class of the next level for the character.
+     *
+     * @return class pointer in the next level
+     */
+    fun getNextLevelClass(): Int{
+        return (charInstance as SblChar).charRefs[charInstance.lvl.intValue + 1]!!.classes.ownClass.intValue
+    }
 
     fun setRacialAdvantage(racial: RacialAdvantage){_racialDisplayed.update{racial}}
+
+    /**
+     * Determines if the character is allowed to change their paladin's magical ability selection.
+     *
+     * @return true if character is not an SBL character or if it's the first paladin level
+     */
+    fun getPaladinChangeable(): Boolean{
+        return charInstance !is SblChar || charInstance.lvl.intValue == charInstance.firstPaladin()
+    }
 
     //set race dropdown data
     val raceDropdown = DropdownRowData(
         data = DropdownData(
             nameRef = R.string.raceText,
             optionsRef = R.array.raceArray,
-            initialIndex = charInstance.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
+            initialIndex = charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value),
             onChange = {
                 //change the character's race
                 charInstance.setOwnRace(raceNum = it)
@@ -378,10 +448,13 @@ class CharacterFragmentViewModel(
 
                 //update the appearance value for this character
                 setAppearInput(display = charInstance.appearance.intValue.toString())
-            }
+            },
+            refreshFunc = {charInstance.objectDB.races.allAdvantageLists.indexOf(charInstance.ownRace.value)}
         ),
         weight = 0.6f,
-        detailOpen = {toggleRaceDetailOpen()}
+        detailOpen = {toggleRaceDetailOpen()},
+        isOpenable = {getChangeable()},
+        failedOpen = {context -> Toast.makeText(context, R.string.changeAtZero, Toast.LENGTH_LONG).show()}
     )
 
     //set class dropdown data
@@ -389,11 +462,21 @@ class CharacterFragmentViewModel(
         data = DropdownData(
             nameRef = R.string.classLabel,
             optionsRef = R.array.classArray,
-            initialIndex = charInstance.classes.allClasses.indexOf(charInstance.classes.ownClass.value),
+            initialIndex =
+                if(charInstance is SblChar)
+                    charInstance.getCharAtLevel().classes.ownClass.intValue
+                else
+                    charInstance.classes.ownClass.intValue,
             onChange = {
-                charInstance.classes.setOwnClass(classInt = it)
-                setClassDetail()
+                charInstance.classes.setOwnClass(classIndex = it)
                 setMagPaladinOpen()
+            },
+            refreshFunc = {
+                //get current level's class pointer
+                if (charInstance is SblChar)
+                    charInstance.getCharAtLevel().classes.ownClass.intValue
+                else
+                    charInstance.classes.ownClass.intValue
             }
         ),
         weight = 0.6f,
@@ -409,6 +492,11 @@ class CharacterFragmentViewModel(
             onChange = {newLevel ->
                 charInstance.setLvl(levNum = newLevel)
                 setBonusColor()
+
+                //get the character's class at this level
+                if(charInstance is SblChar)
+                    classDropdown.data.refreshDisplay()
+
             }
         ),
         weight = 1f,
@@ -426,14 +514,16 @@ class CharacterFragmentViewModel(
         changeFunc = {
             this.setSizeInput()
             this.setWeightIndex()
-        }
+        },
+        charFragVM = this
     )
 
     private val dexterityData = PrimeCharacteristicData(
         name = 1,
         primaryStat = charInstance.primaryList.dex,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val agilityData = PrimeCharacteristicData(
@@ -443,42 +533,48 @@ class CharacterFragmentViewModel(
             setBonusColor()
             this.setMovementDisplay()
         },
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val constitutionData = PrimeCharacteristicData(
         name = 3,
         primaryStat = charInstance.primaryList.con,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {this.setSizeInput()}
+        changeFunc = {this.setSizeInput()},
+        charFragVM = this
     )
 
     private val intelligenceData = PrimeCharacteristicData(
         name = 4,
         primaryStat = charInstance.primaryList.int,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val powerData = PrimeCharacteristicData(
         name = 5,
         primaryStat = charInstance.primaryList.pow,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val willpowerData = PrimeCharacteristicData(
         name = 6,
         primaryStat = charInstance.primaryList.wp,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     private val perceptionData = PrimeCharacteristicData(
         name = 7,
         primaryStat = charInstance.primaryList.per,
         bonusColorChange = {setBonusColor()},
-        changeFunc = {}
+        changeFunc = {},
+        charFragVM = this
     )
 
     //gather all primary data
@@ -499,11 +595,14 @@ class CharacterFragmentViewModel(
      * @param data item that is used in the dropdown object
      * @param weight size percentile of the dropdown object
      * @param detailOpen function to run on opening this row's details
+     * @param isOpenable determines if the dropdown can be accessed
      */
     class DropdownRowData(
         val data: DropdownData,
         val weight: Float,
-        val detailOpen: () -> Unit
+        val detailOpen: () -> Unit,
+        val isOpenable: @Composable () -> Boolean = {true},
+        val failedOpen: (Context) -> Unit = {}
     )
 
     /**
@@ -518,7 +617,8 @@ class CharacterFragmentViewModel(
         val name: Int,
         private val primaryStat: PrimaryCharacteristic,
         val bonusColorChange: () -> Unit,
-        val changeFunc: () -> Unit
+        val changeFunc: () -> Unit,
+        val charFragVM: CharacterFragmentViewModel
     ){
         //initialize characteristic input value
         private val _input = MutableStateFlow(value = primaryStat.inputValue.intValue.toString())
@@ -606,6 +706,20 @@ class CharacterFragmentViewModel(
         }
 
         /**
+         * Determines if the primary characteristic is fixed.
+         *
+         * @return true if user may not change the value
+         */
+        fun statLocked(): Boolean{
+            //search for the associated advantage and return its presence
+            return charFragVM.charInstance.advantageRecord.getAdvantage(
+                name = "characteristicToNine",
+                taken = name,
+                cost = 0,
+            ) != null
+        }
+
+        /**
          * Resets the display for this item on returning to this page.
          */
         fun refreshItem(){
@@ -618,10 +732,18 @@ class CharacterFragmentViewModel(
     /**
      * Refreshes items on returning to this page.
      */
-    fun refreshPage(){
+    override fun refreshPage(){
+        _nameInput.update{charInstance.charName.value}
+        _experiencePoints.update{charInstance.experiencePoints.intValue.toString()}
+
+        dropdownList[0].data.refreshDisplay()
+        dropdownList[1].data.refreshDisplay()
+
+        setMagPaladinOpen()
         setExp(display = charInstance.experiencePoints.intValue.toString())
         primaryDataList.forEach{primary -> primary.refreshItem()}
         setSizeInput()
+        setWeightIndex()
         setAppearInput(display = charInstance.appearance.intValue.toString())
         setGnosisDisplay(display = charInstance.gnosis.intValue.toString())
     }

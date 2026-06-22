@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the earth element.
  */
-class EarthBook: MagicBook(Element.Earth){
+class EarthSpells: SpellList(Element.Earth){
     private val detectMinerals = Spell(
         name = R.string.detectMinerals,
         isActive = true,
@@ -20,7 +20,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Detection)
+        type = listOf(SpellType.Detection),
+        bookIndex = 5
     )
 
     private val mineralControl = Spell(
@@ -33,7 +34,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect, SpellType.Spiritual)
+        type = listOf(SpellType.Effect, SpellType.Spiritual),
+        bookIndex = 5
     )
 
     private val weightIncrement = Spell(
@@ -46,7 +48,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val transformMineral = Spell(
@@ -59,7 +62,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val firmness = Spell(
@@ -72,7 +76,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val stoneBarrier = Spell(
@@ -85,7 +90,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 5
     )
 
     private val slowness = Spell(
@@ -98,7 +104,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 5
     )
 
     private val shell = Spell(
@@ -111,7 +118,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val magneticShield = Spell(
@@ -124,7 +132,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 5
     )
 
     private val passThroughMatter = Spell(
@@ -137,7 +146,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val earthSpike = Spell(
@@ -150,7 +160,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 5
     )
 
     private val breakage = Spell(
@@ -163,7 +174,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val telemetry = Spell(
@@ -176,7 +188,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val magneticControl = Spell(
@@ -189,7 +202,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val forge = Spell(
@@ -202,7 +216,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val solidBody = Spell(
@@ -215,7 +230,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val resistanceSpell = Spell(
@@ -228,7 +244,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val petrify = Spell(
@@ -241,7 +258,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 5
     )
 
     private val fissure = Spell(
@@ -254,7 +272,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val reverseGravity = Spell(
@@ -267,7 +286,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     private val mineralCreation = Spell(
@@ -280,7 +300,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val terrainErudition = Spell(
@@ -293,7 +314,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val earthquake = Spell(
@@ -306,7 +328,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val gravityDestruction = Spell(
@@ -319,7 +342,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     private val createGolem = Spell(
@@ -332,7 +356,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 5
     )
 
     private val gravityIncrement = Spell(
@@ -345,7 +370,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     private val meteor = Spell(
@@ -358,7 +384,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 5
     )
 
     private val gravityControl = Spell(
@@ -371,7 +398,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 40,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     private val oneWithEarth = Spell(
@@ -384,7 +412,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     private val atomicControl = Spell(
@@ -397,7 +426,8 @@ class EarthBook: MagicBook(Element.Earth){
         zMax = 40,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 5
     )
 
     init{

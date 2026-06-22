@@ -1,5 +1,7 @@
 package com.paetus.animaCharCreator.character_creation.attributes.modules
 
+import com.paetus.animaCharCreator.character_creation.BaseCharacter
+
 /**
  * Art that the character can buy for (primarily) unarmed combat.
  *
@@ -16,5 +18,5 @@ class MartialArt (
     val description: Int,
     val prereqList: Int,
     val mkBonus: Int,
-    val qualification: () -> Boolean
+    val qualification: (BaseCharacter) -> Boolean
 )

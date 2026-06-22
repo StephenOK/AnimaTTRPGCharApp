@@ -1,15 +1,15 @@
 package com.paetus.animaCharCreator.character_creation.attributes.magic.spells.spellbook
 
 import com.paetus.animaCharCreator.R
-import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.MagicBook
 import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.Spell
+import com.paetus.animaCharCreator.character_creation.attributes.magic.spells.SpellList
 import com.paetus.animaCharCreator.enumerations.Element
 import com.paetus.animaCharCreator.enumerations.SpellType
 
 /**
  * List of spells associated with the water element.
  */
-class WaterBook: MagicBook(Element.Water){
+class WaterSpells: SpellList(Element.Water){
     private val spring = Spell(
         name = R.string.spring,
         isActive = true,
@@ -20,7 +20,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val createChill = Spell(
@@ -33,7 +34,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val aquaticCapability = Spell(
@@ -46,7 +48,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val coldImmunity = Spell(
@@ -59,7 +62,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 20,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val protectionBubble = Spell(
@@ -72,7 +76,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 6
     )
 
     private val waterImpact = Spell(
@@ -85,7 +90,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 6
     )
 
     private val liquidControl = Spell(
@@ -98,7 +104,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 6
     )
 
     private val freezeEmotions = Spell(
@@ -111,7 +118,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val controlCold = Spell(
@@ -124,7 +132,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 6
     )
 
     private val freeze = Spell(
@@ -137,7 +146,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 6
     )
 
     private val iceScreen = Spell(
@@ -150,7 +160,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Defense)
+        type = listOf(SpellType.Defense),
+        bookIndex = 6
     )
 
     private val createLiquids = Spell(
@@ -163,7 +174,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val iceAttack = Spell(
@@ -176,7 +188,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Attack)
+        type = listOf(SpellType.Attack),
+        bookIndex = 6
     )
 
     private val crystallization = Spell(
@@ -189,7 +202,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 6
     )
 
     private val reflectedControl = Spell(
@@ -202,7 +216,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Spiritual)
+        type = listOf(SpellType.Spiritual),
+        bookIndex = 6
     )
 
     private val liquidBody = Spell(
@@ -215,7 +230,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 10,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val reflectStates = Spell(
@@ -228,7 +244,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val iceStorm = Spell(
@@ -241,7 +258,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val tideControl = Spell(
@@ -254,7 +272,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 40,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val waterConfinement = Spell(
@@ -267,7 +286,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 20,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val glacier = Spell(
@@ -280,7 +300,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val tsunami = Spell(
@@ -293,7 +314,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 30,
         maintenance = null,
         isDaily = false,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val soulReflection = Spell(
@@ -306,7 +328,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val slowTime = Spell(
@@ -319,7 +342,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 20,
         maintenance = 10,
         isDaily = false,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val createUndine = Spell(
@@ -332,7 +356,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val freezeMagic = Spell(
@@ -345,7 +370,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 30,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val inTheMirror = Spell(
@@ -358,7 +384,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 40,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Effect)
+        type = listOf(SpellType.Effect),
+        bookIndex = 6
     )
 
     private val lordOfIce = Spell(
@@ -371,7 +398,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val lordOfWater = Spell(
@@ -384,7 +412,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 30,
         maintenance = 10,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     private val perfectWorld = Spell(
@@ -397,7 +426,8 @@ class WaterBook: MagicBook(Element.Water){
         zMax = 40,
         maintenance = 5,
         isDaily = true,
-        type = listOf(SpellType.Automatic)
+        type = listOf(SpellType.Automatic),
+        bookIndex = 6
     )
 
     init{

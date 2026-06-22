@@ -4,8 +4,8 @@ import android.os.Build
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import com.paetus.animaCharCreator.character_creation.BaseCharacter
+import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralCategory
 import com.paetus.animaCharCreator.character_creation.equipment.general_goods.GeneralEquipment
-import com.paetus.animaCharCreator.character_creation.equipment.general_goods.instances.*
 import com.paetus.animaCharCreator.enumerations.CoinType
 import com.paetus.animaCharCreator.writeDataTo
 import java.io.BufferedReader
@@ -16,40 +16,24 @@ import java.io.ByteArrayOutputStream
  *
  * @param charInstance object that holds all of the character's data
  */
-class Inventory(val charInstance: BaseCharacter) {
-    //instantiate all equipment category objects
-    val clothing = Clothing()
-    val travel = Travel()
-    val transport = Transport()
-    val foodAndDrink = FoodAndDrink()
-    val lodging = Lodging()
-    val dwellings = Dwellings()
-    val services = Services()
-    val art = Art()
-    val gems = Gems()
-    val painting = Painting()
-    val poisons = Poisons()
-    val miscellaneous = Miscellaneous()
-    val weapons = Weapons()
-    val armors = Armors()
+open class Inventory(val charInstance: BaseCharacter) {
+    fun getAllCategories(): List<GeneralCategory>{return charInstance.objectDB.goods.allCategories}
 
-    //gather all categories
-    val allCategories = listOf(
-        clothing,
-        travel,
-        transport,
-        foodAndDrink,
-        lodging,
-        dwellings,
-        services,
-        art,
-        gems,
-        painting,
-        poisons,
-        miscellaneous,
-        weapons,
-        armors
-    )
+    //instantiate all equipment category objects
+    val clothing = charInstance.objectDB.goods.allCategories[0]
+    val travel = charInstance.objectDB.goods.allCategories[1]
+    val transport = charInstance.objectDB.goods.allCategories[2]
+    val foodAndDrink = charInstance.objectDB.goods.allCategories[3]
+    val lodging = charInstance.objectDB.goods.allCategories[4]
+    val dwellings = charInstance.objectDB.goods.allCategories[5]
+    val services = charInstance.objectDB.goods.allCategories[6]
+    val art = charInstance.objectDB.goods.allCategories[7]
+    val gems = charInstance.objectDB.goods.allCategories[8]
+    val painting = charInstance.objectDB.goods.allCategories[9]
+    val poisons = charInstance.objectDB.goods.allCategories[10]
+    val miscellaneous = charInstance.objectDB.goods.allCategories[11]
+    val weapons = charInstance.objectDB.goods.allCategories[12]
+    val armors = charInstance.objectDB.goods.allCategories[13]
 
     //initialize maximum coin expenditures
     val maxGold = mutableIntStateOf(value = 0)
@@ -72,28 +56,28 @@ class Inventory(val charInstance: BaseCharacter) {
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxGold(maxVal: Int){maxGold.intValue = maxVal}
+    open fun setMaxGold(maxVal: Int){maxGold.intValue = maxVal}
 
     /**
      * Setter for the character's maximum silver limit.
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxSilver(maxVal: Int){maxSilver.intValue = maxVal}
+    open fun setMaxSilver(maxVal: Int){maxSilver.intValue = maxVal}
 
     /**
      * Setter for the character's maximum copper limit.
      *
      * @param maxVal value to set the maximum to
      */
-    fun setMaxCopper(maxVal: Int){maxCopper.intValue = maxVal}
+    open fun setMaxCopper(maxVal: Int){maxCopper.intValue = maxVal}
 
     /**
      * Setter for the character's bonus wealth from the advantage Starting Wealth.
      *
      * @param bonusWealth value to set the bonus to
      */
-    fun setWealthBonus(bonusWealth: Int){wealthBonus.intValue = bonusWealth}
+    open fun setWealthBonus(bonusWealth: Int){wealthBonus.intValue = bonusWealth}
 
     /**
      * Function to run when the user purchases an amount of items for their character.
@@ -101,7 +85,7 @@ class Inventory(val charInstance: BaseCharacter) {
      * @param equipment piece of equipment to acquire
      * @param quantity amount of the given item to purchase
      */
-    fun buyItem(
+    open fun buyItem(
         equipment: GeneralEquipment,
         quantity: Int
     ){
@@ -138,7 +122,7 @@ class Inventory(val charInstance: BaseCharacter) {
      *
      * @param equipment piece of equipment to remove from the character
      */
-    fun removeItem(equipment: GeneralEquipment){
+    open fun removeItem(equipment: GeneralEquipment){
         //initialize equipment removed
         var checkedItem: GeneralEquipment? = null
 
@@ -175,7 +159,7 @@ class Inventory(val charInstance: BaseCharacter) {
     /**
      * Determines the amount of money spent by the character on equipment.
      */
-    private fun countSpent(){
+    fun countSpent(){
         //reset spent values
         copperSpent.doubleValue = 0.0
         silverSpent.doubleValue = 0.0
@@ -268,7 +252,7 @@ class Inventory(val charInstance: BaseCharacter) {
         quality: Int?
     ): GeneralEquipment?{
         //search through each category
-        allCategories.forEach{category ->
+        charInstance.objectDB.goods.allCategories.forEach{category ->
             //search category for equipment
             val item = category.findEquipment(equipName = name, quality = quality)
 

@@ -18,7 +18,7 @@ android {
 
         versionCode 49
 
-        versionName "1.0.9"
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
